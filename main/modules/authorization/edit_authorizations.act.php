@@ -16,10 +16,8 @@ $mainScreen =& $harmoni->getAttachedData('mainScreen');
 $statusBar =& $harmoni->getAttachedData('statusBar');
 $centerPane =& $harmoni->getAttachedData('centerPane');
 
-// Our
+// Layout
 $actionRows =& new RowLayout();
-
-
 $centerPane->addComponent($actionRows, TOP, CENTER);
 
 // Intro
@@ -29,6 +27,10 @@ $authZManager =& Services::getService("AuthZ");
 // In order to preserve proper nesting on the HTML output
 $actionRows->setPreSurroundingText("<form method='post' action='".MYURL."/".implode("/", $harmoni->pathInfoParts)."?selection=".urlencode($_REQUEST["selection"])."'>");
 $actionRows->setPostSurroundingText("</form>");
+
+// Intro message
+$intro =new Content("&nbsp &nbsp Check or uncheck authorization(s) for the section(s) of your choice.<br />
+			&nbsp &nbsp After each check/uncheck, the changes are saved automatically.<br /><br />");
 
 
 // Get the id and type (group/member) of the selected agent using $_REQUEST
@@ -53,10 +55,16 @@ $actionRows->setPostSurroundingText("</form>");
  }
 
  $actionRows->addComponent($introHeader);
+ $actionRows->addComponent($intro);
  
 // Buttons to go back to edit auths for a different user, or to go home
-$back = new Content("<a href='".MYURL."/authorization/choose_agent'><button>Choose a different Group/Member to edit</button></a>");
-$actionRows->addComponent($back, MIDDLE, LEFT);
+ob_start();
+print "<table><tr><td>";
+print "<a href='".MYURL."/authorization/choose_agent'><button>Choose a different Group/Member to edit</button></a></td>";
+print "<td><a href='".MYURL."'><button>Return to Concerto Home</button></a></td></tr></table>";
+$nav = new Content(ob_get_contents());
+$actionRows->addComponent($nav, MIDDLE, LEFT);
+ob_end_clean();
  
 
 // Get all hierarchies and their root qualifiers
@@ -88,8 +96,13 @@ while ($hierarchyIds->hasNext()) {
 print"</table>";
 
 // Buttons to go back to edit auths for a different user, or to go home
-$back = new Content("<a href='".MYURL."/authorization/choose_agent'><button>Choose a different Group/Member to edit</button></a>");
-$actionRows->addComponent($back, MIDDLE, LEFT);
+ob_start();
+print "<table><tr><td>";
+print "<a href='".MYURL."/authorization/choose_agent'><button>Choose a different Group/Member to edit</button></a></td>";
+print "<td><a href='".MYURL."'><button>Return to Concerto Home</button></a></td></tr></table>";
+$nav = new Content(ob_get_contents());
+$actionRows->addComponent($nav, MIDDLE, LEFT);
+ob_end_clean();
 
 return $mainScreen;
 
@@ -136,14 +149,14 @@ function printEditOptions(& $qualifier) {
 	  	$functionId =& $function->getId();
 
 		// IF an authorization exists for the user on this qualifier, make checkbox already checked
-		//  Remember to actually create or remove authorization tripletts!!!
+		//  Remember to actually create or remove authorization triplets!!!
 	    print "<tr><td>";
 	    if ($authZManager->isAuthorized($agentId, $functionId, $qualifierId)) {
-	    	print "<input type='checkbox' checked name='authOption' value='".$functionId->getIdString()."'";
+	    	print "<input type='checkbox' checked name='authOption' value='".$functionId."'";
 	} else {
-		print "<input type='checkbox' name='authOption' value='".$functionId->getIdString()."'";
+		print "<input type='checkbox' name='authOption' value='".$functionId."'";
 	}
-	    print " onClick='Javascript:submit()'>";
+	    print "onClick='Javascript:submit()'>";
 
 	    print $function->getReferenceName()."</td></tr>";
 	  }
@@ -154,11 +167,6 @@ function printEditOptions(& $qualifier) {
 
 
 }
-
-// Buttons to go back to edit auths for a different user, or to go home
-print "<a href='".MYURL."/authorization/choose_agent'><button>Choose a different Group/Member to edit</button></a>";
-
-
 
 
 
