@@ -11,10 +11,10 @@ require_once(dirname(__FILE__)."/WizardStep.interface.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: WizardStep.class.php,v 1.6 2004/07/16 22:14:31 adamfranco Exp $
+ * @version $Id: MultiValuedWizardStep.class.php,v 1.1 2004/07/16 22:14:31 adamfranco Exp $
  */
 
-class WizardStep 
+class MultiValuedWizardStep 
 	extends WizardStepInterface {
 	
 	/**
@@ -30,14 +30,21 @@ class WizardStep
 	var $_properties;
 	
 	/**
+	 * Sets of properties created in this step
+	 * @attribute private array _propertySets
+	 */
+	var $_propertySets;
+	
+	/**
 	 * Constructor
 	 * @param string $displayName The displayName of this step.
 	 */
-	function WizardStep ( $displayName ) {
+	function MultiValuedWizardStep ( $displayName ) {
 		ArgumentValidator::validate($displayName, new StringValidatorRule, true);
 		
 		$this->_displayName = $displayName;
 		$this->_properties = array();
+		$this->_propertySets = array();
 	}
 	
 	/**
@@ -65,7 +72,114 @@ class WizardStep
 			throwError(new Error("Property, ".$propertyName.", already exists in Wizard.", "Wizard", 1));
 
 		$this->_properties[$propertyName] =& new WizardProperty( $propertyName, $validatorRule, $isValueRequired );
+		$this->_registeredProperties[$propertyName] = array( "propertyName" => $propertyName, "validatorRule" => $validatorRule, "isValueRequired" => $isValueRequired );
+
 		return $this->_properties[$propertyName];
+	}
+	
+	/**
+	 * Save the values of the currentProperties as a new Set.
+	 * 
+	 * @return integer The index of the new set
+	 * @access public
+	 * @date 7/14/04
+	 */
+	function saveCurrentPropertiesAsNewSet () {
+		$newIndex = count($this->_propertySets);
+		$this->_propertySets[$newIndex] = array();
+		
+		foreach (array_keys($this->_properties) as $propertyName) {
+			$this->_propertySets[$newIndex][$propertyName] = $this->_properties[$propertyName]->getValue();
+		}
+		
+		return $newIndex;
+	}
+	
+	/**
+	 * Save the values of the currentProperties to $setIndex.
+	 * 
+	 * @param integer $setIndex The index of the set to save to.
+	 * @return void
+	 * @access public
+	 * @date 7/14/04
+	 */
+	function saveCurrentPropertiesToSet ($setIndex) {
+		if (!$this->_propertySets[$setIndex])
+			throwError(new Error("Unknown setIndex, '$setIndex'.", "Wizard"));
+		
+		foreach (array_keys($this->_properties) as $propertyName) {
+			$this->_propertySets[$setIndex][$propertyName] = $this->_properties[$propertyName]->getValue();
+		}
+	}	
+
+	/**
+	 * Load the values of $setIndex into the currentProperties.
+	 * 
+	 * @param integer $setIndex The index of the set to load.
+	 * @return void
+	 * @access public
+	 * @date 7/14/04
+	 */
+	function loadCurrentPropertiesFromSet ($setIndex) {
+		if (!$this->_propertySets[$setIndex])
+			throwError(new Error("Unknown setIndex, '$setIndex'.", "Wizard"));
+		
+		foreach (array_keys($this->_properties) as $propertyName) {
+			$this->_properties[$propertyName]->setValue($this->_propertySets[$setIndex][$propertyName]);
+		}
+	}
+	
+	/**
+	 * Delete a set of property values
+	 * 
+	 * @param integer $setIndex The index of the set to delete
+	 * @return void
+	 * @access public
+	 * @date 7/15/04
+	 */
+	function deleteSet ($setIndex) {
+		if (!$this->_propertySets[$setIndex])
+			throwError(new Error("Unknown setIndex, '$setIndex'.", "Wizard"));
+		
+		unset($this->_propertySets[$setIndex]);
+	}
+	
+	/**
+	 * Move the Set up in the order (closer to 0)
+	 * 
+	 * @param integer $setIndex The set to move.
+	 * @return void
+	 * @access public
+	 * @date 7/16/04
+	 */
+	function moveSetUp ( $setIndex ) {
+		if (!$this->_propertySets[$setIndex])
+			throwError(new Error("Unknown setIndex, '$setIndex'.", "Wizard"));
+		
+		if ($setIndex > 0) {
+			$tmp = $this->_propertySets[$setIndex-1];
+			$this->_propertySets[$setIndex-1] = $this->_propertySets[$setIndex];
+			$this->_propertySets[$setIndex] = $tmp;
+		}
+	}
+	
+	/**
+	 * Move the Set down in the order (further from 0)
+	 * 
+	 * @param integer $setIndex The set to move.
+	 * @return void
+	 * @access public
+	 * @date 7/16/04
+	 */
+	function moveSetDown ( $setIndex ) {
+		if (!$this->_propertySets[$setIndex])
+			throwError(new Error("Unknown setIndex, '$setIndex'.", "Wizard"));
+		
+		if ($setIndex < count($this->_propertySets)-1) {
+			$tmp = $this->_propertySets[$setIndex+1];
+			$this->_propertySets[$setIndex+1] = $this->_propertySets[$setIndex];
+			$this->_propertySets[$setIndex] = $tmp;
+		}
 	}
 	
 	/**
@@ -86,7 +200,20 @@ class WizardStep
 	 * @return array 
 	 */
 	function & getProperties () {
-		return $this->_properties;
+		$properties = array();
+		
+		foreach ($this->_propertySets as $index => $propertySet) {
+			foreach ($propertySet as $propertyName => $value) {
+				$properties[$propertyName.".".$index] = new WizardProperty (
+															$propertyName,
+															$this->_registeredProperties[$propertyName]["rule"],
+															$this->_registeredProperties[$propertyName]["isValueRequired"]
+															);
+				$properties[$propertyName.".".$index]->setValue($value);
+			}
+		}
+		
+		return $properties;
 	}
 	
 	/**
@@ -98,9 +225,41 @@ class WizardStep
 	 */
 	function updateProperties () {
 		$valid = TRUE;
-		foreach (array_keys($this->_properties) as $name) {
-			if (!$this->_properties[$name]->update())
-				$valid = FALSE;
+		
+		// On update, there are several possible situations:
+		//		someone hit the "delete set" button
+		//		someone hit the "edit set" button
+		//		someone submitted form information
+		//			the form info was for a new set
+		//			the form info was for an existing set
+
+		// First, lets save any info requested.
+		if ($_REQUEST['__save_new'] || $_REQUEST['__current_property_set']) {
+			foreach (array_keys($this->_properties) as $name) {
+				if (!$this->_properties[$name]->update())
+					$valid = FALSE;
+			}
+			
+			if ($_REQUEST['__current_property_set']) {
+				$this->saveCurrentPropertiesToSet($_REQUEST['__current_property_set']);
+			} else {
+				$this->saveCurrentPropertiesAsNewSet();
+			}
+		}
+		
+		// If we requested a set to edit, load that one as the current set.
+		if ($_REQUEST['__edit_set'] !== NULL) {
+			$this->loadCurrentPropertiesFromSet($_REQUEST['__edit_set']);
+		}
+		
+		// if we requested a set to delete, delete that set.
+		if ($_REQUEST['__move_set_up'] !== NULL) {
+			$this->moveSetUp($_REQUEST['__move_set_up']);
+		}
+		
+		// if we requested a set to delete, delete that set.
+		if ($_REQUEST['__move_set_down'] !== NULL) {
+			$this->moveSetDown($_REQUEST['__move_set_down']);
 		}
 		
 		return $valid;
@@ -183,6 +342,62 @@ class WizardStep
 		// Make a copy of our form text for output
 		$outputText = $this->_text;
 		
+		
+		// First, pull out our [Buttons] elements and replace them
+		// with our buttons.
+		ob_start();
+		print "\nSave as <input type='submit' name='__save_new' value='New' />";
+		print "\n<input type='hidden' name='__update' value='Force Update' />";
+		if ($_REQUEST['__edit_set'])
+			print "\n<br />Save as number: <input type='submit' name='__current_property_set' value='".$_REQUEST['__edit_set']."' />";
+		
+		$outputText = str_replace("[Buttons]", ob_get_contents(), $outputText);
+		ob_end_clean();
+		
+		
+		// Replace the [list] ... [/list] with our list text.
+		preg_match_all("/\[List\](.*)\[\/List\]/", $outputText, $listMatches);
+//		printpre($listMatches);
+		if (count($listMatches[0])) {
+			foreach ($listMatches[0] as $key => $val) {
+				$origListMatch = $listMatches[0][$key];
+				$listMatch = $listMatches[1][$key];
+				
+				$listText = "";
+				foreach (array_keys($this->_propertySets) as $setIndex) {
+					$setText = $listMatch;
+					
+					// Edit/delete Buttons
+					ob_start();
+					print "Edit Number: <input type='submit' name='__edit_set' value='".$setIndex."' />";
+					print "\n<br />Delete Number: <input type='submit' name='__delete_set' value='".$setIndex."' />";
+					$setText = str_replace("[ListButtons]", ob_get_contents(), $setText);
+					ob_end_clean();
+					
+					// Move up/down Buttons
+					ob_start();
+					print "Move Up Number: <input type='submit' name='__move_set_up' value='".$setIndex."' />";
+//					print "\n<br />Move Down Number: <input type='submit' name='__move_set_down' value='".$setIndex."' />";
+					$setText = str_replace("[ListMoveButtons]", ob_get_contents(), $setText);
+					ob_end_clean();
+				
+					preg_match_all("/\[{2}[^\[]*\]{2}/", $setText, $matches);
+					if (count($matches[0])) {
+						foreach ($matches[0] as $match) {
+							// if this element is of the [[propertyname]] form,
+							// replace the element with the value of the property.
+							if (preg_match("/\[{2}([^|]*)\]{2}/", $match, $parts)) {
+								$setText = str_replace($match, htmlspecialchars($this->_propertySets[$setIndex][$parts[1]], ENT_QUOTES), $setText);
+							}
+						}
+					}
+					$listText .= $setText;
+				}
+				
+				$outputText = str_replace($origListMatch, $listText, $outputText);
+			}
+		}
+		
 		// Get a list of all [[xxxxx]] elements
 		preg_match_all("/\[{2}[^\[]*\]{2}/", $outputText, $matches);
 		if (count($matches[0])) {
@@ -207,10 +422,17 @@ class WizardStep
 					$name = trim($parts[1]);
 					// If the property name is quoted, get the value and quote it.
 					// RegEx Details: look for begining and ending quotes.
-					if (preg_match("/^'(.*)'$/", $name, $nameParts)) 
+					if (preg_match("/^'(.*)'$/", $name, $nameParts)) {
+						if (!$this->_properties[$nameParts[1]])
+							throwError(new Error("Property, ".$$nameParts[1].", does not exist in Wizard.", "Wizard", TRUE));
+							
 						$value = "'".$this->_properties[$nameParts[1]]->getValue()."'";
-					else
+					} else {
+						if (!$this->_properties[$name])
+							throwError(new Error("Property, ".$name.", does not exist in Wizard.", "Wizard", TRUE));
+							
 						$value = $this->_properties[$name]->getValue();
+					}
 					
 					$operator = trim($parts[2]);
 					$compVal = trim($parts[3]);
@@ -229,8 +451,6 @@ class WizardStep
 				// replace the element with the error string of the property if 
 				//the property's value doesn't validate.
 				} else if (preg_match("/\[{2}([^|]*)\|Error\]{2}/", $match, $parts)) {
-					debug::output(printpre($parts, TRUE));
-					debug::output(printpre($this->_properties[$parts[1]], TRUE));
 					if (!$this->_properties[$parts[1]]->validate())
 						$outputText = str_replace($match, $this->_properties[$parts[1]]->getErrorString(), $outputText);
 					else

@@ -8,7 +8,7 @@
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: WizardProperty.class.php,v 1.4 2004/07/12 18:53:49 adamfranco Exp $
+ * @version $Id: WizardProperty.class.php,v 1.5 2004/07/16 22:14:31 adamfranco Exp $
  */
  
 class WizardProperty {
@@ -75,6 +75,18 @@ class WizardProperty {
 	 */
 	function setDefaultValue ( $defaultValue ) {
 		$this->_defaultValue = $defaultValue;
+	}
+	
+	/**
+	 * Manually set the value of the property. No validation is done.
+	 *
+	 * @param mixed $value The new value for this Property.
+	 * @access public
+	 * @return void
+	 */
+	function setValue ( $value ) {
+		$this->_value = $value;
+		$this->_hasBeenSet = TRUE;
 	}
 	
 	/**

@@ -1,6 +1,7 @@
 <?
 
 require_once(dirname(__FILE__)."/WizardStep.class.php");
+require_once(dirname(__FILE__)."/MultiValuedWizardStep.class.php");
 
 /**
  * The Wizard class provides a system for posting, retrieving, and
@@ -13,7 +14,7 @@ require_once(dirname(__FILE__)."/WizardStep.class.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: Wizard.class.php,v 1.6 2004/07/16 19:25:43 gabeschine Exp $
+ * @version $Id: Wizard.class.php,v 1.7 2004/07/16 22:14:31 adamfranco Exp $
  */
 
 class Wizard {
@@ -66,6 +67,19 @@ class Wizard {
 	function & createStep ( $displayName ) {
 		$stepNumber = count($this->_steps) + 1;
 		$this->_steps[$stepNumber] =& new WizardStep ( $displayName );
+		return $this->_steps[$stepNumber];
+	}
+	
+	/**
+	 * Adds a class as a new Step in the Wizard
+	 * @parm object WizardStepInterface $step The class to add as a step in this wizard.
+	 * @return object The new step.
+	 */
+	function & addStep ( & $step ) {
+		ArgumentValidator::validate($step, new ExtendsValidatorRule("WizardStepInterface"), true);
+		
+		$stepNumber = count($this->_steps) + 1;
+		$this->_steps[$stepNumber] =& $step;
 		return $this->_steps[$stepNumber];
 	}
 	
@@ -165,6 +179,7 @@ class Wizard {
 	 * @return void
 	 */
 	function update () {
+		debug::output(printpre($_REQUEST, TRUE));
 		if ($_REQUEST['__next'] && $this->hasNext())
 			$this->next();
 		
@@ -173,6 +188,9 @@ class Wizard {
 		
 		else if ($_REQUEST['__go_to_step'])
 			$this->goToStep($_REQUEST['__go_to_step']);
+			
+		else if ($_REQUEST['__update'])
+			$this->updateLastStep();
 	}
 	
 	/**
