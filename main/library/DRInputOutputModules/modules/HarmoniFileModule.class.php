@@ -10,8 +10,8 @@ require_once(dirname(__FILE__)."/../DRInputOutputModule.interface.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.drinputoutput
- * @version $Id: HarmoniFileModule.class.php,v 1.1 2004/10/20 19:04:51 adamfranco Exp $
- * @date $Date: 2004/10/20 19:04:51 $
+ * @version $Id: HarmoniFileModule.class.php,v 1.2 2004/10/20 22:46:39 adamfranco Exp $
+ * @date $Date: 2004/10/20 22:46:39 $
  * @copyright 2004 Middlebury College
  */
 
@@ -216,16 +216,17 @@ class HarmoniFileModule
 			$partId =& $part->getId();
 			$fields[$partId->getIdString()] =& $field;
 		}
-		
+		printpre($_FILES['file_upload']);
 		// if a new File was uploaded, store it.
 		if (is_array($_FILES['file_upload']) 
-			&& is_uploaded_file($_FILES['file_upload']['name'])) 
+			&& $_FILES['file_upload']['name']) 
 		{
 			$name = $_FILES['file_upload']['name'];
 			$tmpName = $_FILES['file_upload']['tmp_name'];			
 			$mimeType = $_FILES['file_upload']['type'];
-			if (!$mimeType)
+			if (!$mimeType) {
 //				$mimeType = MIMETypes::getMimeTypeForFileName($uploadedName);
+			}
 			
 			$fields['FILE_DATA']->updateValue(file_get_contents($tmpName));
 			$fields['FILE_NAME']->updateValue($name);
@@ -307,7 +308,7 @@ class HarmoniFileModule
 			if ($partId->getIdString() == 'FILE_DATA') {
 				$recordId =& $record->getId();
 				
-				print "\n<a href='".MYURL."/file/view/"
+				print "\n<a href='".MYURL."/dr/viewfile/"
 					.$drId->getIdString()."/"
 					.$assetId->getIdString()."/"
 					.$recordId->getIdString()."/"
@@ -316,8 +317,11 @@ class HarmoniFileModule
 				print $fields['FILE_NAME'][0]->getValue();
 				print "</a> <br />";
 			} else {
-				print "\n<strong>".$part->getDisplayName().":</strong> \n";			
-				print$fields[$partId->getIdString()][0]->getValue();
+				print "\n<strong>".$part->getDisplayName().":</strong> \n";
+				if ($partId->getIdString() == 'FILE_SIZE')
+					print StringFunctions::getSizeString($fields[$partId->getIdString()][0]->getValue());
+				else
+					print $fields[$partId->getIdString()][0]->getValue();
 				print "\n<br />";
 			}
 		}
