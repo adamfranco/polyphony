@@ -9,7 +9,6 @@ while ($authTypes->hasNext()) {
 	$authType =& $authTypes->next();
 	
 	// Try authenticating with this type
-	print "Authenticating";
 	$authN->authenticateUser($authType);
 	
 	// If they are authenticated, quit

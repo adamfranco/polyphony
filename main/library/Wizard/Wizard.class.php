@@ -13,7 +13,7 @@ require_once(dirname(__FILE__)."/WizardStep.class.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: Wizard.class.php,v 1.1 2004/05/26 20:46:19 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.2 2004/05/26 21:44:07 adamfranco Exp $
  */
 
 class Wizard {
@@ -164,6 +164,10 @@ class Wizard {
 	 * @return object Layout
 	 */
 	function & getLayout (& $harmoni) {
+		// make sure we have the right textdomain
+		$defaultTextDomain = textdomain();
+		textdomain("polyphony");
+		
 		ArgumentValidator::validate($harmoni, new ExtendsValidatorRule("Harmoni"), true);
 		
 		// Make sure we have a valid Wizard
@@ -291,6 +295,9 @@ class Wizard {
 		
 		// :: Buttons Redeuex ::
 		$center->addComponent($buttons);
+		
+		// go back to the default textdomain
+		textdomain($defaultTextDomain);
 		
 		return $wizardLayout;
 	}

@@ -14,6 +14,10 @@ for ($i = 2; $i < count($harmoni->pathInfoParts); $i++) {
 	$currentPathInfo[] = $harmoni->pathInfoParts[$i];
 } 
 
+// Set our textdomain
+$defaultTextDomain = textdomain();
+textdomain("polyphony");
+
 // text
 $introText =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 2);
 $text = "<p>";
@@ -23,6 +27,9 @@ $text .= _("Click here to log in.");
 $text .= "</a></p>";
 $introText->addComponent(new Content($text));
 $centerPane->addComponent($introText, TOP, CENTER);
+
+// go back to the default text domain
+textdomain($defaultTextDomain);
 
 // return the main layout.
 return $mainScreen;
