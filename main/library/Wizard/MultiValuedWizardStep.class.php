@@ -11,7 +11,7 @@ require_once(dirname(__FILE__)."/WizardStep.interface.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: MultiValuedWizardStep.class.php,v 1.4 2004/08/03 15:22:29 adamfranco Exp $
+ * @version $Id: MultiValuedWizardStep.class.php,v 1.5 2004/08/03 21:09:04 adamfranco Exp $
  */
 
 class MultiValuedWizardStep 
@@ -377,7 +377,7 @@ class MultiValuedWizardStep
 		ob_start();
 		print "\nSave as <input type='submit' name='__save_new' value='New' />";
 		print "\n<input type='hidden' name='__update' value='Force Update' />";
-		if ($_REQUEST['__edit_set'])
+		if ($_REQUEST['__edit_set'] !== NULL)
 			print "\n<br />Save as number: <input type='submit' name='__current_property_set' value='".$_REQUEST['__edit_set']."' />";
 		
 		$outputText = str_replace("[Buttons]", ob_get_contents(), $outputText);
@@ -405,8 +405,8 @@ class MultiValuedWizardStep
 					
 					// Move up/down Buttons
 					ob_start();
-					print "Move Up Number: <input type='submit' name='__move_set_up' value='".$setIndex."' />";
-//					print "\n<br />Move Down Number: <input type='submit' name='__move_set_down' value='".$setIndex."' />";
+					if ($setIndex != 0)
+						print "Move Up Number: <input type='submit' name='__move_set_up' value='".$setIndex."' />";
 					$setText = str_replace("[ListMoveButtons]", ob_get_contents(), $setText);
 					ob_end_clean();
 				
