@@ -10,7 +10,7 @@ require_once(dirname(__FILE__)."/WizardStep.interface.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: WizardStep.abstract.php,v 1.3 2004/08/26 15:10:51 adamfranco Exp $
+ * @version $Id: WizardStep.abstract.php,v 1.4 2004/09/28 15:45:43 adamfranco Exp $
  */
 
 class WizardStepAbstract 
@@ -144,6 +144,12 @@ class WizardStepAbstract
 	 	$propertyName = $parts[1];
 	 	$isArray = $parts[2]!=''?true:false; // if they included a [] or a [i]
 	 	$arrayIndex = $parts[3]?$parts[3]:null;
+	 	
+	 	// Make sure that we have the requested property
+	 	if (!is_object($this->_properties[$propertyName])) {
+	 		throwError(new Error("The property-name, '$propertyName', included in the text for this step, '".$this->getDisplayName()."', does not exist in this step", "Wizard", TRUE));
+	 	}
+	 	
 	 	$propValue = $this->_properties[$propertyName]->getValue();
 	 	if ($isArray && is_array($propValue)) {
 	 		if ($arrayIndex != null) { // a specific index has been requested

@@ -11,7 +11,7 @@ require_once(dirname(__FILE__)."/WizardStep.interface.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: MultiValuedWizardStep.class.php,v 1.6 2004/08/26 15:10:51 adamfranco Exp $
+ * @version $Id: MultiValuedWizardStep.class.php,v 1.7 2004/09/28 15:45:43 adamfranco Exp $
  */
 
 class MultiValuedWizardStep 
@@ -216,8 +216,13 @@ class MultiValuedWizardStep
 		foreach ($this->_propertySets as $index => $propertySet) {
 			$properties[$index] = array();
 			foreach ($propertySet as $propertyName => $value) {
+				// We have already tested that the $propertyname is a string
+				// however, if the propertyName is a string representation of
+				// an integer, it seems that it is getting recast as an integer.
+				// We will recast it back to a string here so that it validates
+				// properly.
 				$properties[$index][$propertyName] = new WizardProperty (
-															$propertyName,
+															strval($propertyName),
 															$this->_registeredProperties[$propertyName]["validatorRule"],
 															$this->_registeredProperties[$propertyName]["isValueRequired"]
 															);
@@ -259,17 +264,22 @@ class MultiValuedWizardStep
 			}
 		}
 		
+		// if we requested a set to delete, delete that set.
+		if ($_REQUEST['__delete_set'] !== NULL) {
+			$this->deleteSet($_REQUEST['__delete_set']);
+		}
+		
 		// If we requested a set to edit, load that one as the current set.
 		if ($_REQUEST['__edit_set'] !== NULL) {
 			$this->loadCurrentPropertiesFromSet($_REQUEST['__edit_set']);
 		}
 		
-		// if we requested a set to delete, delete that set.
+		// if we requested a set to move, move that set.
 		if ($_REQUEST['__move_set_up'] !== NULL) {
 			$this->moveSetUp($_REQUEST['__move_set_up']);
 		}
 		
-		// if we requested a set to delete, delete that set.
+		// if we requested a set to move, move that set.
 		if ($_REQUEST['__move_set_down'] !== NULL) {
 			$this->moveSetDown($_REQUEST['__move_set_down']);
 		}
