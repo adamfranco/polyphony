@@ -1,9 +1,12 @@
-<?
+<?php
+/**
+ * @package polyphony.library.datamanager_gui
+ */
 
 /**
  * Privides an interface for any classes that will allow input or output between a certain DataType (in the DataManager of Harmoni) and the end user through HTML/browser.
  * @access public
- * @package polyphony.datamanagergui
+ * @package polyphony.library.datamanagergui
  * @author Gabe Schine
  */
 

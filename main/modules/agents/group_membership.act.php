@@ -1,11 +1,12 @@
-<?
+<?php
 
 /**
-* group_membership.act.php
-* This action will allow for the modification of group Membership.
-* 11/10/04 Adam Franco
-* copyright 2004 MIddlebury College
-*/
+ * group_membership.act.php
+ * This action will allow for the modification of group Membership.
+ * 11/10/04 Adam Franco
+ * copyright 2004 MIddlebury College
+ * @package polyphony.modules.agents
+ */
 
 
 // Get the Layout compontents. See core/modules/moduleStructure.txt
@@ -452,7 +453,15 @@ return $mainScreen;
 /*********************************************************
  * Functions used for the GroupPrinter
  *********************************************************/
- function printGroup(& $group) {
+/**
+ * Callback function for printing a group
+ * 
+ * @param object Group $group
+ * @return void
+ * @access public
+ * @ignore
+ */
+function printGroup(& $group) {
 	$id =& $group->getId();
 	$groupType =& $group->getType();
 	
@@ -584,6 +593,14 @@ END;
 END;
 }
 
+/**
+ * Callback function for printing an agent
+ * 
+ * @param object Agent $member
+ * @return void
+ * @access public
+ * @ignore
+ */
 function printMember(& $member) {
 	$id =& $member->getId();
 	$memberType =& $member->getType();

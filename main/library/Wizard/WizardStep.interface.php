@@ -1,16 +1,18 @@
-<?
+<?php
+/**
+ * @package polyphony.library.wizard
+ */
 
 /**
  * The Wizard class provides a system for registering Wizard properties and 
  * associating those properties with the appropriate form elements.
  *
- * @package polyphony.wizard
+ * @package polyphony.library.wizard
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: WizardStep.interface.php,v 1.3 2004/08/26 15:10:51 adamfranco Exp $
+ * @version $Id: WizardStep.interface.php,v 1.4 2005/02/04 23:06:15 adamfranco Exp $
  */
-
 class WizardStepInterface {
 	
 	/**

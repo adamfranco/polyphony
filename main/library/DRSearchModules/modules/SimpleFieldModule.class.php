@@ -1,12 +1,15 @@
 <?php
+/**
+ * @package polyphony.library.dr.search
+ */
 
 /**
  * Search Modules generate forms for and collect/format the subitions of said forms
  * for various Digital Repository search types.
  * 
- * @package polyphony.dr.search
- * @version $Id: SimpleFieldModule.class.php,v 1.3 2004/12/22 20:24:10 adamfranco Exp $
- * @date $Date: 2004/12/22 20:24:10 $
+ * @package polyphony.library.dr.search
+ * @version $Id: SimpleFieldModule.class.php,v 1.4 2005/02/04 23:06:06 adamfranco Exp $
+ * @since $Date: 2005/02/04 23:06:06 $
  * @copyright 2004 Middlebury College
  */
 
@@ -18,7 +21,7 @@ class SimpleFieldModule {
 	 * @param string $fieldName
 	 * @return object
 	 * @access public
-	 * @date 10/28/04
+	 * @since 10/28/04
 	 */
 	function SimpleFieldModule ( $fieldName ) {
 		$this->_fieldname = $fieldName;
@@ -32,7 +35,7 @@ class SimpleFieldModule {
 	 * @param string $action The destination on form submit.
 	 * @return string
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function createSearchForm ($action ) {
 		ob_start();
@@ -54,7 +57,7 @@ class SimpleFieldModule {
 	 * 
 	 * @return mixed
 	 * @access public
-	 * @date 10/28/04
+	 * @since 10/28/04
 	 */
 	function getSearchCriteria () {
 		return $_REQUEST[$this->_fieldname];

@@ -1,11 +1,11 @@
-<?
-
+<?php
 /**
-* process_authorizations.act.php
-* This action will create or delete authorizations as specified by edit_authorizations.act.php
-* 11/18/04 Ryan Richards
-* copyright 2004 MIddlebury College
-*/
+ * process_authorizations.act.php
+ * This action will create or delete authorizations as specified by edit_authorizations.act.php
+ * 11/18/04 Ryan Richards
+ * @copyright 2004 Middlebury College
+ * @package polyphony.modules.authorization
+ */
 
 // Get services
 $idManager =& Services::getService("Id");

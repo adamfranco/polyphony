@@ -1,42 +1,45 @@
-<?
+<?php
+/**
+ * @package polyphony.library.wizard
+ */
 
 /**
  * This is an abstract class that provides much of the functionality of the 
  * various WizardProperties. 
  * 
- * @package polyphony.wizard
+ * @package polyphony.library.wizard
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: WizardProperty.class.php,v 1.6 2004/12/01 15:05:35 gabeschine Exp $
+ * @version $Id: WizardProperty.class.php,v 1.7 2005/02/04 23:06:15 adamfranco Exp $
  */
  
 class WizardProperty {
 	
 	/**
-	 * @attribute string _name The name the property
+	 * @var string _name The name the property
 	 */
 	var $_name;
 	
 	/**
-	 * @attribute mixed _value The current value of the property
+	 * @var mixed _value The current value of the property
 	 */
 	var $_value;
 	
 	/**
-	 * @attribute string _isValueRequired If false, the existance of a value in
+	 * @var string _isValueRequired If false, the existance of a value in
 	 * the $_REQUEST array will not be required. This is needed for checkbox
 	 * values which are simply not submitted if unchecked.
 	 */
 	var $_isValueRequired;
 	
 	/**
-	 * @attribute mixed _defaultValue The default value of the property
+	 * @var mixed _defaultValue The default value of the property
 	 */
 	var $_defaultValue;
 	
 	/**
-	 * @attribute boolean _hasBeenSet TRUE if update() has been called.
+	 * @var boolean _hasBeenSet TRUE if update() has been called.
 	 */
 	var $_hasBeenSet = FALSE;
 	

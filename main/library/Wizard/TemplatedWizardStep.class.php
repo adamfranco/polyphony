@@ -1,12 +1,25 @@
-<?
+<?php
+/**
+ *
+ * @package polyphony.library.wizard
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: TemplatedWizardStep.class.php,v 1.3 2005/02/04 23:06:15 adamfranco Exp $
+ */
 
+/**
+ * Require our needed classes.
+ * 
+ */
 require_once(POLYPHONY."/main/library/Wizard/WizardStep.abstract.php");
 
 /**
  * This is a {@link WizardStep} that gets its output text from a {@link Template}.
- * @package polyphony.wizard
+ * @package polyphony.library.wizard
  * @copyright 2004
- * @version $Id: TemplatedWizardStep.class.php,v 1.2 2004/08/26 15:10:51 adamfranco Exp $
+ * @version $Id: TemplatedWizardStep.class.php,v 1.3 2005/02/04 23:06:15 adamfranco Exp $
  */
 class TemplatedWizardStep extends WizardStepAbstract {
 	

@@ -1,5 +1,18 @@
 <?php
+/**
+ *
+ * @package polyphony.library.repository.search
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: RepositorySearchModuleManager.class.php,v 1.2 2005/02/04 23:06:12 adamfranco Exp $
+ */
 
+/**
+ * Require our modules
+ * 
+ */
 require_once(dirname(__FILE__)."/modules/SimpleFieldModule.class.php");
 //require_once(dirname(__FILE__)."/modules/HarmoniFileModule.class.php");
 
@@ -7,9 +20,9 @@ require_once(dirname(__FILE__)."/modules/SimpleFieldModule.class.php");
  * The RepositorySearchModuleManager is responcible for sending requests for search forms
  * to the appropriate RepositorySearchModule based on their types.
  * 
- * @package polyphony.dr.search
- * @version $Id: RepositorySearchModuleManager.class.php,v 1.1 2005/01/27 21:47:25 adamfranco Exp $
- * @date $Date: 2005/01/27 21:47:25 $
+ * @package polyphony.library.repository.search
+ * @version $Id: RepositorySearchModuleManager.class.php,v 1.2 2005/02/04 23:06:12 adamfranco Exp $
+ * @since $Date: 2005/02/04 23:06:12 $
  * @copyright 2004 Middlebury College
  */
 
@@ -20,7 +33,7 @@ class RepositorySearchModuleManager {
 	 * 
 	 * @return object
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function RepositorySearchModuleManager () {
 		$this->_modules = array();
@@ -39,7 +52,7 @@ class RepositorySearchModuleManager {
 	 * @param string $action The destination on form submit.
 	 * @return string
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function createSearchForm ( & $searchType, $action ) {
 		ArgumentValidator::validate($searchType, new ExtendsValidatorRule("HarmoniType"));
@@ -61,7 +74,7 @@ class RepositorySearchModuleManager {
 	 * @param object $searchType
 	 * @return mixed
 	 * @access public
-	 * @date 10/28/04
+	 * @since 10/28/04
 	 */
 	function getSearchCriteria ( & $searchType ) {
 		ArgumentValidator::validate($searchType, new ExtendsValidatorRule("HarmoniType"));
@@ -81,7 +94,7 @@ class RepositorySearchModuleManager {
 	 * 
 	 * @return void
 	 * @access public
-	 * @date 6/28/04
+	 * @since 6/28/04
 	 */
 	function start () {
 		
@@ -92,7 +105,7 @@ class RepositorySearchModuleManager {
 	 * 
 	 * @return void
 	 * @access public
-	 * @date 6/28/04
+	 * @since 6/28/04
 	 */
 	function stop () {
 		

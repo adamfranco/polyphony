@@ -1,10 +1,13 @@
-<?
+<?php
+/**
+ * @package polyphony.library.startupcheck.requirements
+ */
 
 /**
  * This is a dummy requirement to test the Wizard functionality.
- * @package polyphony.startupcheck.requirements
+ * @package polyphony.library.startupcheck.requirements
  * @copyright 2004
- * @version $Id: DummyWizardRequirement.class.php,v 1.3 2005/01/03 20:50:08 adamfranco Exp $
+ * @version $Id: DummyWizardRequirement.class.php,v 1.4 2005/02/04 23:06:14 adamfranco Exp $
  */
 class DummyWizardRequirement extends StartupRequirement {
 

@@ -1,5 +1,18 @@
-<?
+<?php
+/**
+ *
+ * @package polyphony.library.wizard
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: Wizard.class.php,v 1.18 2005/02/04 23:06:15 adamfranco Exp $
+ */
 
+/**
+ * Require our needed classes
+ * 
+ */
 require_once(dirname(__FILE__)."/WizardStep.class.php");
 require_once(dirname(__FILE__)."/MultiValuedWizardStep.class.php");
 
@@ -10,42 +23,42 @@ require_once(dirname(__FILE__)."/MultiValuedWizardStep.class.php");
  * The wizard is designed to be called from within a single action. The values
  * of its state allow its steps to work as "sub-actions". 
  *
- * @package polyphony.wizard
+ * @package polyphony.library.wizard
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: Wizard.class.php,v 1.17 2005/01/03 20:50:08 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.18 2005/02/04 23:06:15 adamfranco Exp $
  */
 
 class Wizard {
 	
 	/**
 	 * The title of this Wizard
-	 * @attribute private string _displayName
+	 * @var private string _displayName
 	 */
 	 var $_displayName;
 	
 	/**
 	 * The (1-based) number of the current step.
-	 * @attribute private integer _currentStep
+	 * @var private integer _currentStep
 	 */
 	var $_currentStep;
 	
 	/**
 	 * The steps within the Wizard.
-	 * @attribute private array _steps
+	 * @var private array _steps
 	 */
 	var $_steps;
 	
 	/**
 	 * If true, steps can be accessed non-linearly.
-	 * @attribute private boolean _allowStepLinks
+	 * @var private boolean _allowStepLinks
 	 */
 	 var $_allowStepLinks;	
 	 
 	/**
 	 * If true, users can cancel out of the Wizard.
-	 * @attribute private boolean _allowCancel
+	 * @var private boolean _allowCancel
 	 */
 	 var $_allowCancel;	
 	

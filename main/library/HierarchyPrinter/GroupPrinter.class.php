@@ -1,11 +1,14 @@
 <?php
+/**
+ * @package polyphony.library.HierarchyPrinter
+ */
 
 /**
  * This class will print an expandable view of Groups.
  * 
- * @package polyphony.groupPrinter
- * @version $Id: GroupPrinter.class.php,v 1.5 2005/01/03 20:50:08 adamfranco Exp $
- * @date 11/11/04
+ * @package polyphony.library.HierarchyPrinter
+ * @version $Id: GroupPrinter.class.php,v 1.6 2005/02/04 23:06:11 adamfranco Exp $
+ * @since 11/11/04
  * @copyright 2004 Middlebury College
  */
 
@@ -19,7 +22,7 @@ class GroupPrinter {
 	 * @param string $printMemberFunction Prints current group in member format.
 	 * @return void
 	 * @access public
-	 * @date 11/8/04
+	 * @since 11/8/04
 	 */
 	function printGroup (& $group, & $harmoni,
 								$startingPathInfoKey,
@@ -67,7 +70,10 @@ class GroupPrinter {
 	text-decoration: none;
 	font-weight: bold;
 '>
-		<?		
+		<?php
+/**
+ * @package polyphony.library.
+ */		
 			// The child groups are already expanded for this group. 
 			// Show option to collapse the list.		
 			if (in_array($groupId->getIdString(), $expandedGroups)) {
@@ -110,7 +116,10 @@ class GroupPrinter {
 	padding-left: 10px;
 	border-left: 1px solid #000;
 '>
-		<?
+		<?php
+/**
+ * @package polyphony.library.
+ */
 			while ($childGroups->hasNext()) {
 				$childGroup =& $childGroups->next();
 				GroupPrinter::printGroup( $childGroup,

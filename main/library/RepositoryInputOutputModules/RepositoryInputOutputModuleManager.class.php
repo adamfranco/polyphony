@@ -1,5 +1,18 @@
 <?php
+/**
+ *
+ * @package polyphony.library.repository.inputoutput
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.3 2005/02/04 23:06:11 adamfranco Exp $
+ */
 
+/**
+ * Require our necessary files
+ * 
+ */
 require_once(dirname(__FILE__)."/modules/DataManagerPrimativesModule.class.php");
 require_once(dirname(__FILE__)."/modules/HarmoniFileModule.class.php");
 
@@ -7,9 +20,9 @@ require_once(dirname(__FILE__)."/modules/HarmoniFileModule.class.php");
  * The RepositoryInputOutModuleManager is responcible for sending records to the 
  * appropriate RepositoryInputOutputModule based on their Schema Formats.
  * 
- * @package polyphony.repository.inputoutput
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.2 2005/01/27 17:13:10 adamfranco Exp $
- * @date $Date: 2005/01/27 17:13:10 $
+ * @package polyphony.library.repository.inputoutput
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.3 2005/02/04 23:06:11 adamfranco Exp $
+ * @since $Date: 2005/02/04 23:06:11 $
  * @copyright 2004 Middlebury College
  */
 
@@ -20,7 +33,7 @@ class RepositoryInputOutputModuleManager {
 	 * 
 	 * @return object
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function RepositoryInputOutputModuleManager () {
 		$this->_modules = array();
@@ -40,7 +53,7 @@ class RepositoryInputOutputModuleManager {
 	 * @param array $partStructures An ordered array of the partStructures to include.
 	 * @return void
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function createWizardStepsForPartStructures ( & $record, & $wizard, & $partStructures ) {
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("Record"));
@@ -64,7 +77,7 @@ class RepositoryInputOutputModuleManager {
 	 * @param object $wizard The wizard to add the steps to.
 	 * @return void
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function createWizardSteps ( & $record, & $wizard ) {
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("Record"));
@@ -86,7 +99,7 @@ class RepositoryInputOutputModuleManager {
 	 * @param object $wizard
 	 * @return void
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function updateFromWizard ( & $record, & $wizard ) {
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("Record"));
@@ -106,7 +119,7 @@ class RepositoryInputOutputModuleManager {
 	 * @param object $record
 	 * @return string
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function generateDisplay ( & $repositoryId, & $assetId, & $record ) {
 		ArgumentValidator::validate($repositoryId, new ExtendsValidatorRule("Id"));
@@ -129,7 +142,7 @@ class RepositoryInputOutputModuleManager {
 	 * @param array $partStructures An array of partStructures to print. 
 	 * @return string
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function generateDisplayForPartStructures ( & $repositoryId, & $assetId, & $record, & $partStructures ) {
 		ArgumentValidator::validate($repositoryId, new ExtendsValidatorRule("Id"));
@@ -151,7 +164,7 @@ class RepositoryInputOutputModuleManager {
 	 * 
 	 * @return void
 	 * @access public
-	 * @date 6/28/04
+	 * @since 6/28/04
 	 */
 	function start () {
 		
@@ -162,7 +175,7 @@ class RepositoryInputOutputModuleManager {
 	 * 
 	 * @return void
 	 * @access public
-	 * @date 6/28/04
+	 * @since 6/28/04
 	 */
 	function stop () {
 		

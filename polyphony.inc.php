@@ -1,16 +1,24 @@
-<?PHP
+<?php
 
 /**
  * This file includes all necessary Polyphony classes
  *
- * @version $Id: polyphony.inc.php,v 1.11 2005/01/31 18:30:08 adamfranco Exp $
+ * @version $Id: polyphony.inc.php,v 1.12 2005/02/04 23:04:50 adamfranco Exp $
  * @copyright 2004 Middlebury College
  * @package polyphony
  * @access public
- **/
+ */
 
+/**
+ * Define a constant for the Polyphony root directory.
+ * 
+ */
 define("POLYPHONY", dirname(__FILE__));
 
+/**
+ * Include our library classes
+ * 
+ */
 require_once(dirname(__FILE__)."/main/library/Wizard/Wizard.class.php");
 require_once(dirname(__FILE__)."/main/library/ResultPrinter/IteratorResultPrinter.class.php");
 require_once(dirname(__FILE__)."/main/library/ResultPrinter/ArrayResultPrinter.class.php");

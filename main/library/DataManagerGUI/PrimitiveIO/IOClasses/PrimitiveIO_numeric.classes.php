@@ -1,7 +1,24 @@
-<?
+<?php
+/**
+ *
+ * @package polyphony.library.datamanager_gui
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: PrimitiveIO_numeric.classes.php,v 1.2 2005/02/04 23:06:10 adamfranco Exp $
+ */
 
+/**
+ * Require all of our necessary files
+ * 
+ */
 require_once(POLYPHONY."/main/library/DataManagerGUI/PrimitiveIO/IOClasses/PrimitiveIO_strings.classes.php");
 
+/**
+ * 
+ * @package polyphony.library.datamanager_gui
+ */
 class PrimitiveIO_integer extends PrimitiveIO_shortstring {
 	function &mkPrimitiveFromFormInput(&$fieldSet, $label, $index) {
 		if ($fieldSet->get("update-$label-$index")) {
@@ -19,6 +36,10 @@ class PrimitiveIO_integer extends PrimitiveIO_shortstring {
 											        }
 }
 
+/**
+ * 
+ * @package polyphony.library.datamanager_gui
+ */
 class PrimitiveIO_float extends PrimitiveIO_integer {
 	function &mkPrimitiveFromFormInput(&$fieldSet, $label, $index) {
 		if ($fieldSet->get("update-$label-$index")) {

@@ -1,11 +1,12 @@
-<?
+<?php
 
 /**
-* delete_group.act.php
-* This action will delete the group as specified by add_delete_group.act.php
-* 11/29/04 Ryan Richards
-* copyright 2004 MIddlebury College
-*/
+ * delete_group.act.php
+ * This action will delete the group as specified by add_delete_group.act.php
+ * 11/29/04 Ryan Richards
+ * copyright 2004 MIddlebury College
+ * @package polyphony.modules.agents
+ */
 
 // Get services
 $agentManager =& Services::getService("Agent");

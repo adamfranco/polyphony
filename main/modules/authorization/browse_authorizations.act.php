@@ -1,12 +1,13 @@
-<?
+<?php
 
 /**
-* edit_authorizations.act.php
-* This file will allow the user to edit authorizations for a given user.
-* The chosen user information will have been passed from choose_agents.act.php via FORM action.
-* 11/11/04 Ryan Richards
-* copyright 2004 Middlebury College
-*/
+ * edit_authorizations.act.php
+ * This file will allow the user to edit authorizations for a given user.
+ * The chosen user information will have been passed from choose_agents.act.php via FORM action.
+ * 11/11/04 Ryan Richards
+ * @copyright 2004 Middlebury College
+ * @package polyphony.modules.authorization
+ */
 
 // Check for our authorization function definitions
 if (!defined("AZ_VIEW_AZS"))
@@ -95,7 +96,14 @@ return $mainScreen;
 
 
 
-// Qualifier printing functions:
+/**
+ * Callback function for printing a qualifier.
+ * 
+ * @param object Qualifier $qualifier
+ * @return void
+ * @access public
+ * @ignore
+ */
 function printQualifier(& $qualifier) {
 	$id =& $qualifier->getId();
 	$type =& $qualifier->getQualifierType();
@@ -122,10 +130,26 @@ function printQualifier(& $qualifier) {
 	}
 }
 
+/**
+ * Callback function for determining if a qualifier has children.
+ * 
+ * @param object Qualifier $qualifier
+ * @return boolean
+ * @access public
+ * @ignore
+ */
 function hasChildQualifiers(& $qualifier) {
 	return $qualifier->isParent();
 }
 
+/**
+ * Callback function for fetching the children of a qualifier.
+ * 
+ * @param object Qualifier $qualifier
+ * @return array
+ * @access public
+ * @ignore
+ */
 function &getChildQualifiers(& $qualifier) {
 	$array = array();
 	$iterator =& $qualifier->getChildren();
@@ -135,7 +159,15 @@ function &getChildQualifiers(& $qualifier) {
 	return $array;
 }
 
-// Prints a table of all functions.  To be used for each qualifier in the hierarchy.
+/**
+ * Callback function for printing a table of all functions.  
+ * To be used for each qualifier in the hierarchy.
+ * 
+ * @param object Qualifier $qualifier
+ * @return void
+ * @access public
+ * @ignore
+ */
 function printEditOptions(& $qualifier) {
 	$qualifierId =& $qualifier->getId();
 	$harmoni =& $GLOBALS["harmoni"];
@@ -215,15 +247,5 @@ function printEditOptions(& $qualifier) {
 	print"\n</table>";
 
 }
-
-/** Sort the AZs
-
-*/
-
-
-
-
-
-
 
 ?>

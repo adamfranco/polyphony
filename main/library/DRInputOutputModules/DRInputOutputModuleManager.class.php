@@ -1,5 +1,18 @@
 <?php
+/**
+ *
+ * @package polyphony.library.dr.inputoutput
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: DRInputOutputModuleManager.class.php,v 1.4 2005/02/04 23:06:04 adamfranco Exp $
+ */
 
+/**
+ * Require our necessary files.
+ * 
+ */
 require_once(dirname(__FILE__)."/modules/DataManagerPrimativesModule.class.php");
 require_once(dirname(__FILE__)."/modules/HarmoniFileModule.class.php");
 
@@ -7,9 +20,9 @@ require_once(dirname(__FILE__)."/modules/HarmoniFileModule.class.php");
  * The DRInputOutModuleManager is responcible for sending records to the 
  * appropriate DRInputOutputModule based on their Schema Formats.
  * 
- * @package polyphony.dr.inputoutput
- * @version $Id: DRInputOutputModuleManager.class.php,v 1.3 2004/10/29 20:22:30 adamfranco Exp $
- * @date $Date: 2004/10/29 20:22:30 $
+ * @package polyphony.library.dr.inputoutput
+ * @version $Id: DRInputOutputModuleManager.class.php,v 1.4 2005/02/04 23:06:04 adamfranco Exp $
+ * @since $Date: 2005/02/04 23:06:04 $
  * @copyright 2004 Middlebury College
  */
 
@@ -20,7 +33,7 @@ class DRInputOutputModuleManager {
 	 * 
 	 * @return object
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function DRInputOutputModuleManager () {
 		$this->_modules = array();
@@ -40,7 +53,7 @@ class DRInputOutputModuleManager {
 	 * @param array $parts An ordered array of the parts to include.
 	 * @return void
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function createWizardStepsForParts ( & $record, & $wizard, & $parts ) {
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("InfoRecord"));
@@ -64,7 +77,7 @@ class DRInputOutputModuleManager {
 	 * @param object $wizard The wizard to add the steps to.
 	 * @return void
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function createWizardSteps ( & $record, & $wizard ) {
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("InfoRecord"));
@@ -86,7 +99,7 @@ class DRInputOutputModuleManager {
 	 * @param object $wizard
 	 * @return void
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function updateFromWizard ( & $record, & $wizard ) {
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("InfoRecord"));
@@ -106,7 +119,7 @@ class DRInputOutputModuleManager {
 	 * @param object $record
 	 * @return string
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function generateDisplay ( & $drId, & $assetId, & $record ) {
 		ArgumentValidator::validate($drId, new ExtendsValidatorRule("Id"));
@@ -129,7 +142,7 @@ class DRInputOutputModuleManager {
 	 * @param array $fields An array of particular fields to print. 
 	 * @return string
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function generateDisplayForFields ( & $drId, & $assetId, & $record, & $parts ) {
 		ArgumentValidator::validate($drId, new ExtendsValidatorRule("Id"));
@@ -151,7 +164,7 @@ class DRInputOutputModuleManager {
 	 * 
 	 * @return void
 	 * @access public
-	 * @date 6/28/04
+	 * @since 6/28/04
 	 */
 	function start () {
 		
@@ -162,7 +175,7 @@ class DRInputOutputModuleManager {
 	 * 
 	 * @return void
 	 * @access public
-	 * @date 6/28/04
+	 * @since 6/28/04
 	 */
 	function stop () {
 		

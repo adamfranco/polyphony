@@ -1,4 +1,7 @@
-<?
+<?php
+/**
+ * @package polyphony.modules.authorization
+ */
 
 // Get the Layout compontents. See core/modules/moduleStructure.txt
 // for more info. 

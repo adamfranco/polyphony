@@ -1,4 +1,7 @@
-<?
+<?php
+/**
+ * @package polyphony.modules.authentication
+ */
 
 $isAuthenticated = FALSE;
 $authN =& Services::getService("AuthN");

@@ -3,9 +3,9 @@
 /**
  * Display the file in the specified record.
  * 
- * @package polyphony.modules.dr
- * @version $Id: viewfile.act.php,v 1.1 2005/01/27 19:37:51 adamfranco Exp $
- * @date $Date: 2005/01/27 19:37:51 $
+ * @package polyphony.modules.repository
+ * @version $Id: viewfile.act.php,v 1.2 2005/02/04 23:06:17 adamfranco Exp $
+ * @since $Date: 2005/02/04 23:06:17 $
  * @copyright 2004 Middlebury College
  */
 $idManager =& Services::getService("Id");

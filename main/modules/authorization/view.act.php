@@ -1,4 +1,7 @@
-<?
+<?php
+/**
+ * @package polyphony.modules.authorization
+ */
 
 // Get the Layout compontents. See core/modules/moduleStructure.txt
 // for more info. 
@@ -47,16 +50,40 @@ while ($hierarchyIds->hasNext()) {
 return $mainScreen;
 
 
-// Qualifier printing functions:
+/**
+ * Callback function for printing a qualifier.  
+ * To be used for each qualifier in the hierarchy.
+ * 
+ * @param object Qualifier $qualifier
+ * @return void
+ * @access public
+ * @ignore
+ */
 function printQualifier(& $qualifier) {
 	print "<strong>".$qualifier->getDisplayName()."</strong>\n ";
 //	print "<br/ >".$qualifier->getDescription()."\n<br />\n";
 }
 
+/**
+ * Callback function for determining if a qualifier has children.
+ * 
+ * @param object Qualifier $qualifier
+ * @return boolean
+ * @access public
+ * @ignore
+ */
 function hasChildQualifiers(& $qualifier) {
 	return $qualifier->isParent();
 }
 
+/**
+ * Callback function for fetching the children of a qualifier.
+ * 
+ * @param object Qualifier $qualifier
+ * @return array
+ * @access public
+ * @ignore
+ */
 function getChildQualifiers(& $qualifier) {
 	$array = array();
 	$iterator =& $qualifier->getChildren();

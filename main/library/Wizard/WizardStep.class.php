@@ -1,5 +1,18 @@
-<?
+<?php
+/**
+ *
+ * @package polyphony.library.wizard
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: WizardStep.class.php,v 1.9 2005/02/04 23:06:15 adamfranco Exp $
+ */
 
+/**
+ * Require our needed classes.
+ * 
+ */
 require_once(dirname(__FILE__)."/WizardProperty.class.php");
 require_once(dirname(__FILE__)."/WizardStep.abstract.php");
 
@@ -7,11 +20,11 @@ require_once(dirname(__FILE__)."/WizardStep.abstract.php");
  * The Wizard class provides a system for registering Wizard properties and 
  * associating those properties with the appropriate form elements.
  *
- * @package polyphony.wizard
+ * @package polyphony.library.wizard
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: WizardStep.class.php,v 1.8 2004/12/22 17:04:05 adamfranco Exp $
+ * @version $Id: WizardStep.class.php,v 1.9 2005/02/04 23:06:15 adamfranco Exp $
  */
 
 class WizardStep 

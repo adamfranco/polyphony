@@ -1,10 +1,13 @@
-<?
+<?php
+/**
+ * @package polyphony.library.datamanager_gui
+ */
 
 /**
  *
- * @package polyphony.datamanager_gui
+ * @package polyphony.library.datamanager_gui
  * @copyright 2004
- * @version $Id: SimpleRecordPrinter.class.php,v 1.3 2005/01/03 20:50:07 adamfranco Exp $
+ * @version $Id: SimpleRecordPrinter.class.php,v 1.4 2005/02/04 23:06:06 adamfranco Exp $
  */
 class SimpleRecordPrinter {
 	

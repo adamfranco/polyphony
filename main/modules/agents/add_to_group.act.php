@@ -1,11 +1,12 @@
-<?
+<?php
 
 /**
-* add_to_group.act.php
-* This action will add the agent and group ids passed to it to the specified group.
-* 11/10/04 Adam Franco
-* copyright 2004 MIddlebury College
-*/
+ * add_to_group.act.php
+ * This action will add the agent and group ids passed to it to the specified group.
+ * 11/10/04 Adam Franco
+ * @copyright 2004 MIddlebury College
+ * @package polyphony.modules.agents
+ */
 
 
 

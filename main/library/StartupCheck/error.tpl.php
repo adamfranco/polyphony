@@ -1,6 +1,11 @@
-<HTML>
+<?php
+/**
+ * @package polyphony.library.startupcheck
+ */
+
+?><HTML>
 	<HEAD>
-		<TITLE><?=$pageTitle?></TITLE>
+		<TITLE><?php =$pageTitle?></TITLE>
 		<STYLE TYPE="text/css">
 			body {
 				background-color: #eee;
@@ -26,9 +31,9 @@
 	</HEAD>
 	
 	<BODY>
-		<P><?=$intro?>:</P>
+		<P><?php =$intro?>:</P>
 		<DIV>
-			<?=$errorString?>
+			<?php =$errorString?>
 		</DIV>
 	</BODY>
 </HTML>

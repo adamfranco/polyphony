@@ -1,11 +1,14 @@
 <?php
+/**
+ * @package polyphony.library.HierarchyPrinter
+ */
 
 /**
  * This class will print an expandible, view of a hierarchy
  * 
- * @package polyphony.hierarchyPrinter
- * @version $Id: HierarchyPrinter.class.php,v 1.6 2005/01/03 20:50:08 adamfranco Exp $
- * @date $Date: 2005/01/03 20:50:08 $
+ * @package polyphony.library.HierarchyPrinter
+ * @version $Id: HierarchyPrinter.class.php,v 1.7 2005/02/04 23:06:11 adamfranco Exp $
+ * @since $Date: 2005/02/04 23:06:11 $
  * @copyright 2004 Middlebury College
  */
 
@@ -22,7 +25,7 @@ class HierarchyPrinter {
 	 *		children of this node.
 	 * @return void
 	 * @access public
-	 * @date 11/8/04
+	 * @since 11/8/04
 	 */
 	function printNode (& $node, & $harmoni,
 								$startingPathInfoKey,
@@ -78,7 +81,10 @@ class HierarchyPrinter {
 	text-decoration: none;
 	font-weight: bold;
 '>
-		<?		
+		<?php
+/**
+ * @package polyphony.library.
+ */		
 			// The child nodes are already expanded for this node. 
 			// Show option to collapse the list.		
 			if (in_array($nodeId->getIdString(), $expandedNodes)) {

@@ -1,38 +1,41 @@
-<?
+<?php
+/**
+ * @package polyphony.library.config_system
+ */
 
 /**
 *
-* @package polyphony.config_system
+* @package polyphony.library.config_system
 * @copyright 2004
-* @version $Id: ConfigSystem.class.php,v 1.6 2004/10/26 21:05:53 adamfranco Exp $
+* @version $Id: ConfigSystem.class.php,v 1.7 2005/02/04 23:06:04 adamfranco Exp $
 */
 class ConfigSystem {
 
 	/**
-	* @variable object $_schema The {@link Schema} corresponding to our config setup.
+	* @var object $_schema The {@link Schema} corresponding to our config setup.
 	* @access private
 	**/
 	var $_schema;
 
 	/**
-	* @variable boolean $_setup Specifies if we are in setup mode, or "change settings" mode.
+	* @var boolean $_setup Specifies if we are in setup mode, or "change settings" mode.
 	* @access private
 	**/
 	var $_setup;
 
 	/**
-	* @variable object $_record The {@link Record} which is associated with this config system.
+	* @var object $_record The {@link Record} which is associated with this config system.
 	* @access private
 	**/
 	var $_record;
 
 	/**
-	* @variable object $_schemaType A {@link HarmoniType} object associated with our Record.
+	* @var object $_schemaType A {@link HarmoniType} object associated with our Record.
 	* @access private
 	**/
 	var $_schemaType;
 	/**
-	* @variable array $_defaults An array of {@link Primitive}s describing the default values for each property.
+	* @var array $_defaults An array of {@link Primitive}s describing the default values for each property.
 	* @access private
 	**/
 	var $_defaults;

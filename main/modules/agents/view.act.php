@@ -1,13 +1,14 @@
-<?
+<?php
 
 /**
-* choose_agent.act.php
-* This file will allow the user to choose an agent for which to edit authorizations.
-* The agents will be listed both by group and by agent.
-* The chosen agent information will be submitted to edit_authorizations.act.php via form action.
-* 11/10/04 Ryan Richards
-* copyright 2004 MIddlebury College
-*/
+ * choose_agent.act.php
+ * This file will allow the user to choose an agent for which to edit authorizations.
+ * The agents will be listed both by group and by agent.
+ * The chosen agent information will be submitted to edit_authorizations.act.php via form action.
+ * 11/10/04 Ryan Richards
+ * @copyright 2004 MIddlebury College
+ * @package polyphony.modules.agents
+ */
 
 
 // Get the Layout compontents. See core/modules/moduleStructure.txt
@@ -361,6 +362,17 @@ return $mainScreen;
 /*********************************************************
  * Functions used for the GroupPrinter
  *********************************************************/
+ 
+ 
+ /**
+  * Callback function for printing a group and its children.
+  * 
+  * @param object Group $group
+  * @return void
+  * @access public
+ * @ignore
+  * @since 2/4/05
+  */
  function printGroup(& $group) {
 	$id =& $group->getId();
 	$groupType =& $group->getType();
@@ -470,6 +482,14 @@ END;
 END;
 }
 
+/**
+ * Callback function for printing a member of a group.
+ * 
+ * @param object Agent $member
+ * @return void
+ * @access public
+ * @ignore
+ */
 function printMember(& $member) {
 	$id =& $member->getId();
 	$memberType =& $member->getType();

@@ -1,16 +1,29 @@
-<?
+<?php
+/**
+ *
+ * @package polyphony.library.wizard
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: WizardStep.abstract.php,v 1.6 2005/02/04 23:06:15 adamfranco Exp $
+ */
 
+/**
+ * Require our needed classes
+ * 
+ */
 require_once(dirname(__FILE__)."/WizardStep.interface.php");
 
 /**
  * The Wizard class provides a system for registering Wizard properties and 
  * associating those properties with the appropriate form elements.
  *
- * @package polyphony.wizard
+ * @package polyphony.library.wizard
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: WizardStep.abstract.php,v 1.5 2004/12/22 17:04:05 adamfranco Exp $
+ * @version $Id: WizardStep.abstract.php,v 1.6 2005/02/04 23:06:15 adamfranco Exp $
  */
 
 class WizardStepAbstract 
@@ -18,19 +31,19 @@ class WizardStepAbstract
 	
 	/**
 	 * The displayName of this WizardStep
-	 * @attribute protected string _displayName
+	 * @var protected string _displayName
 	 */
 	var $_displayName;
 	
 	/**
 	 * The properties handled by the Wizard.
-	 * @attribute protected array _properties
+	 * @var protected array _properties
 	 */
 	var $_properties;
 	
 	/**
 	 * The text with un-parsed wizard tags.
-	 * @attribute protected string _text 
+	 * @var protected string _text 
 	 */
 	var $_text;
 	
@@ -44,7 +57,7 @@ class WizardStepAbstract
 	
 	/**
 	 * creates a new Property for this step
-	 * @parm string $propertyName The property name.
+	 * @param string $propertyName The property name.
 	 * @param object $validatorRule A ValidatorRule (that exends the 
 	 * 		ValidatorRuleInterface) that will be used to validate the form
 	 *		inputs
@@ -64,7 +77,7 @@ class WizardStepAbstract
 	
 	/**
 	 * Gets a Property
-	 * @parm string $name The name of the requested property.
+	 * @param string $name The name of the requested property.
 	 * @return object WizardProperty
 	 */
 	function &getProperty ( $propertyName ) {

@@ -1,5 +1,18 @@
-<?
+<?php
+/**
+ *
+ * @package polyphony.library.startupcheck.requirements
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: include.php,v 1.3 2005/02/04 23:06:14 adamfranco Exp $
+ */
 
+/**
+ * Include our requirements classes
+ * 
+ */
 require_once POLYPHONY."/main/library/StartupCheck/CommonRequirements/HarmoniVersionRequirement.class.php";
 require_once POLYPHONY."/main/library/StartupCheck/CommonRequirements/PHPConfigValueRequirement.class.php";
 require_once POLYPHONY."/main/library/StartupCheck/CommonRequirements/ExtensionRequirement.class.php";

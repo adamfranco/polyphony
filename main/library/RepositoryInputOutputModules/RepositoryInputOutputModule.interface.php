@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package polyphony.library.repository.inputoutput
+ */
 
 /**
  * InputOutput modules are classes which generate HTML for the display or editing
@@ -7,9 +10,9 @@
  * using the "DataManagerPrimitive" Format would use the DataManagerPrimative
  * InputOutput module for displaying generating forms for editing its data.
  * 
- * @package polyphony.dr.inputoutput
- * @version $Id: RepositoryInputOutputModule.interface.php,v 1.1 2005/01/26 21:23:09 adamfranco Exp $
- * @date $Date: 2005/01/26 21:23:09 $
+ * @package polyphony.library.repository.inputoutput
+ * @version $Id: RepositoryInputOutputModule.interface.php,v 1.2 2005/02/04 23:06:11 adamfranco Exp $
+ * @since $Date: 2005/02/04 23:06:11 $
  * @copyright 2004 Middlebury College
  */
 
@@ -23,7 +26,7 @@ class RepositoryInputOutputModuleInterface {
 	 * @param object $wizard The wizard to add the steps to.
 	 * @return void
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function createWizardSteps ( & $record, & $wizard ) {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface <b> ".__CLASS__."</b> has not been overloaded in a child class.");
@@ -38,7 +41,7 @@ class RepositoryInputOutputModuleInterface {
 	 * @param array $partStructures An ordered array of the partstructures to include.
 	 * @return void
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function createWizardStepsForPartStructures ( & $record, & $wizard, & $partStructures ) {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface <b> ".__CLASS__."</b> has not been overloaded in a child class.");
@@ -51,7 +54,7 @@ class RepositoryInputOutputModuleInterface {
 	 * @param object $wizard
 	 * @return void
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function updateFromWizard ( & $record, & $wizard ) {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface <b> ".__CLASS__."</b> has not been overloaded in a child class.");
@@ -63,7 +66,7 @@ class RepositoryInputOutputModuleInterface {
 	 * @param object $record
 	 * @return string
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function generateDisplay ( & $asset, & $record ) {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface <b> ".__CLASS__."</b> has not been overloaded in a child class.");
@@ -76,7 +79,7 @@ class RepositoryInputOutputModuleInterface {
 	 * @param array $partStructures An array of particular partstructures to print. 
 	 * @return string
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function generateDisplayForPartStructures ( & $asset, & $record, & $partStructures ) {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface <b> ".__CLASS__."</b> has not been overloaded in a child class.");

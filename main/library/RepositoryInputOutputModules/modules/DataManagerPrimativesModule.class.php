@@ -1,5 +1,18 @@
 <?php
+/**
+ *
+ * @package polyphony.library.repository.inputoutput
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.2 2005/02/04 23:06:11 adamfranco Exp $
+ */
 
+/**
+ * Require the class we are extending
+ * 
+ */
 require_once(dirname(__FILE__)."/../RepositoryInputOutputModule.interface.php");
 
 /**
@@ -9,9 +22,9 @@ require_once(dirname(__FILE__)."/../RepositoryInputOutputModule.interface.php");
  * using the "DataManagerPrimitive" Format would use the DataManagerPrimative
  * InputOutput module for displaying generating forms for editing its data.
  * 
- * @package polyphony.dr.inputoutput
- * @version $Id: DataManagerPrimativesModule.class.php,v 1.1 2005/01/26 21:23:10 adamfranco Exp $
- * @date $Date: 2005/01/26 21:23:10 $
+ * @package polyphony.library.repository.inputoutput
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.2 2005/02/04 23:06:11 adamfranco Exp $
+ * @since $Date: 2005/02/04 23:06:11 $
  * @copyright 2004 Middlebury College
  */
 
@@ -23,7 +36,7 @@ class DataManagerPrimativesModule
 	 * 
 	 * @return obj
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function DataManagerPrimativesModule () {
 		
@@ -40,7 +53,7 @@ class DataManagerPrimativesModule
 	 * @param array $partStructures An ordered array of the partStructures to include.
 	 * @return void
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function createWizardStepsForPartStructures ( & $record, & $wizard, & $partStructures ) {
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("Record"));
@@ -65,7 +78,7 @@ class DataManagerPrimativesModule
 	 * @param object $wizard The wizard to add the steps to.
 	 * @return void
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function createWizardSteps ( & $record, & $wizard ) {
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("Record"));
@@ -90,7 +103,7 @@ class DataManagerPrimativesModule
 	 * @param object $wizard
 	 * @return void
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function updateFromWizard ( & $record, & $wizard ) {
 		$recordStructure =& $record->getRecordStructure();
@@ -140,7 +153,7 @@ class DataManagerPrimativesModule
 	 * @param object $record
 	 * @return string
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function generateDisplay ( & $repositoryId, & $assetId, & $record ) {
 		ArgumentValidator::validate($repositoryId, new ExtendsValidatorRule("Id"));
@@ -165,7 +178,7 @@ class DataManagerPrimativesModule
 	 * @param array $partStructures An array of particular partstructures to print. 
 	 * @return string
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function generateDisplayForPartStructures ( &$repositoryId, & $assetId, & $record, & $partStructures ) {
 		ArgumentValidator::validate($repositoryId, new ExtendsValidatorRule("Id"));
@@ -215,7 +228,7 @@ class DataManagerPrimativesModule
 	 * @param object PartStructure $partStructure The partStructure to add the step for.
 	 * @return void
 	 * @access public
-	 * @date 8/30/04
+	 * @since 8/30/04
 	 */
 	function _addPartStructureStep (& $wizard, & $record, & $partStructure) {
 		

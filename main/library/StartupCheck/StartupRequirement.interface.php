@@ -1,12 +1,15 @@
-<?
+<?php
+/**
+ * @package polyphony.library.startupcheck
+ */
 
 /**
  * A startup requirement is part of the application install/update system. A requirement class has the ability to check to make sure that
  * the environment for running said program is OK, or to make updates to settings, database tables, etc to adjust for changes
  * or program updates.
- * @package polyphony.startupcheck
+ * @package polyphony.library.startupcheck
  * @copyright 2004
- * @version $Id: StartupRequirement.interface.php,v 1.3 2004/07/22 19:36:49 gabeschine Exp $
+ * @version $Id: StartupRequirement.interface.php,v 1.4 2005/02/04 23:06:14 adamfranco Exp $
  */
 class StartupRequirement {
 

@@ -1,12 +1,15 @@
 <?php
+/**
+ * @package polyphony.library.resultprinter
+ */
 
 /**
  * Print out an Array of items in rows and columns of TEXT_BLOCK widgets 
  * spread over multiple pages.
  * 
- * @package polyphony.resultprinter
- * @version $Id: ArrayResultPrinter.class.php,v 1.3 2004/12/17 19:00:15 adamfranco Exp $
- * @date $Date: 2004/12/17 19:00:15 $
+ * @package polyphony.library.resultprinter
+ * @version $Id: ArrayResultPrinter.class.php,v 1.4 2005/02/04 23:06:13 adamfranco Exp $
+ * @since $Date: 2005/02/04 23:06:13 $
  * @copyright 2004 Middlebury College
  */
 
@@ -24,7 +27,7 @@ class ArrayResultPrinter {
 	 * @param optional mixed $callbackArgs Any additional arguements will be stored
 	 *			and passed on to the callback function.
 	 * @access public
-	 * @date 8/5/04
+	 * @since 8/5/04
 	 */
 	function ArrayResultPrinter (& $array, $numColumns, 
 									$numResultsPerPage, $callbackFunction) {
@@ -56,7 +59,7 @@ class ArrayResultPrinter {
 	 *		If null, all results are printed.
 	 * @return object Layout A layout containing the results/page links
 	 * @access public
-	 * @date 8/5/04
+	 * @since 8/5/04
 	 */
 	function &getLayout (& $harmoni, $shouldPrintFunction = NULL) {
 		$startingNumber = ($_REQUEST['starting_number'])?$_REQUEST['starting_number']:1;

@@ -1,4 +1,7 @@
-<?
+<?php
+/**
+ * @package polyphony.modules.language
+ */
 
 // Set the new language
 $langLoc =& Services::getService('Lang');

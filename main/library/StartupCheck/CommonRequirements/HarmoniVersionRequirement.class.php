@@ -1,10 +1,13 @@
-<?
+<?php
+/**
+ * @package polyphony.library.startupcheck.requirements
+ */
 
 /**
  * This {@link StartupRequirement} checks to make sure we are running a certain version of Harmoni, or newer.
- * @package polyphony.startupcheck.requirements
+ * @package polyphony.library.startupcheck.requirements
  * @copyright 2004
- * @version $Id: HarmoniVersionRequirement.class.php,v 1.3 2004/08/04 02:15:45 gabeschine Exp $
+ * @version $Id: HarmoniVersionRequirement.class.php,v 1.4 2005/02/04 23:06:14 adamfranco Exp $
  */
 class HarmoniVersionRequirement extends StartupRequirement {
 

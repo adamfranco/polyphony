@@ -1,12 +1,15 @@
 <?php
+/**
+ * @package polyphony.library.dr.search
+ */
 
 /**
  * Search Modules generate forms for and collect/format the subitions of said forms
  * for various Digital Repository search types.
  * 
- * @package polyphony.dr.search
- * @version $Id: DRSearchModule.interface.php,v 1.1 2004/10/29 20:22:30 adamfranco Exp $
- * @date $Date: 2004/10/29 20:22:30 $
+ * @package polyphony.library.dr.search
+ * @version $Id: DRSearchModule.interface.php,v 1.2 2005/02/04 23:06:05 adamfranco Exp $
+ * @since $Date: 2005/02/04 23:06:05 $
  * @copyright 2004 Middlebury College
  */
 
@@ -18,7 +21,7 @@ class DRSearchModuleInterface {
 	 * @param string $action The destination on form submit.
 	 * @return string
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function createSearchForm ($action ) {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface <b> ".__CLASS__."</b> has not been overloaded in a child class.");
@@ -29,7 +32,7 @@ class DRSearchModuleInterface {
 	 * 
 	 * @return mixed
 	 * @access public
-	 * @date 10/28/04
+	 * @since 10/28/04
 	 */
 	function getSearchCriteria () {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface <b> ".__CLASS__."</b> has not been overloaded in a child class.");

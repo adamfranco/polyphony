@@ -1,36 +1,35 @@
-<?
+<?php
+/**
+ * @package polyphony.library.startupcheck.requirements
+ */
 
 /**
- * @define int PHPINI_EQUAL 
- * @package polyphony.startupcheck.requirements
+ * @name PHPINI_EQUAL 
  */
 define("PHPINI_EQUAL",0);
 
 /**
- * @define int PHPINI_BOOLEAN 
- * @package polyphony.startupcheck.requirements
+ * @name PHPINI_BOOLEAN 
  */
 define("PHPINI_BOOLEAN",1);
 
 /**
- * @define int PHPINI_LESS 
- * @package polyphony.startupcheck.requirements
+ * @name PHPINI_LESS 
  */
 define("PHPINI_LESS",2);
 
 /**
- * @define int PHPINI_GREATER 
- * @package polyphony.startupcheck.requirements
+ * @name PHPINI_GREATER 
  */
 define("PHPINI_GREATER",3);
 
 
 /**
-* A {@link StartupRequirement} that checks the value of a PHP config option. If the check fails, it will output an error message.
-* @package polyphony.startupcheck.requirements
-* @copyright 2004
-* @version $Id: PHPConfigValueRequirement.class.php,v 1.2 2004/07/22 19:36:50 gabeschine Exp $
-*/
+ * A {@link StartupRequirement} that checks the value of a PHP config option. If the check fails, it will output an error message.
+ * @package polyphony.library.startupcheck.requirements
+ * @copyright 2004
+ * @version $Id: PHPConfigValueRequirement.class.php,v 1.3 2005/02/04 23:06:14 adamfranco Exp $
+ */
 class PHPConfigValueRequirement extends StartupRequirement {
 
 	var $_key;

@@ -1,5 +1,18 @@
 <?php
+/**
+ *
+ * @package polyphony.library.dr.search
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: DRSearchModuleManager.class.php,v 1.3 2005/02/04 23:06:05 adamfranco Exp $
+ */
 
+/**
+ * Require our module files.
+ * 
+ */
 require_once(dirname(__FILE__)."/modules/SimpleFieldModule.class.php");
 //require_once(dirname(__FILE__)."/modules/HarmoniFileModule.class.php");
 
@@ -7,9 +20,9 @@ require_once(dirname(__FILE__)."/modules/SimpleFieldModule.class.php");
  * The DRSearchModuleManager is responcible for sending requests for search forms
  * to the appropriate DRSearchModule based on their types.
  * 
- * @package polyphony.dr.search
- * @version $Id: DRSearchModuleManager.class.php,v 1.2 2004/11/02 22:24:26 adamfranco Exp $
- * @date $Date: 2004/11/02 22:24:26 $
+ * @package polyphony.library.dr.search
+ * @version $Id: DRSearchModuleManager.class.php,v 1.3 2005/02/04 23:06:05 adamfranco Exp $
+ * @since $Date: 2005/02/04 23:06:05 $
  * @copyright 2004 Middlebury College
  */
 
@@ -20,7 +33,7 @@ class DRSearchModuleManager {
 	 * 
 	 * @return object
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function DRSearchModuleManager () {
 		$this->_modules = array();
@@ -39,7 +52,7 @@ class DRSearchModuleManager {
 	 * @param string $action The destination on form submit.
 	 * @return string
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function createSearchForm ( & $searchType, $action ) {
 		ArgumentValidator::validate($searchType, new ExtendsValidatorRule("HarmoniType"));
@@ -61,7 +74,7 @@ class DRSearchModuleManager {
 	 * @param object $searchType
 	 * @return mixed
 	 * @access public
-	 * @date 10/28/04
+	 * @since 10/28/04
 	 */
 	function getSearchCriteria ( & $searchType ) {
 		ArgumentValidator::validate($searchType, new ExtendsValidatorRule("HarmoniType"));
@@ -81,7 +94,7 @@ class DRSearchModuleManager {
 	 * 
 	 * @return void
 	 * @access public
-	 * @date 6/28/04
+	 * @since 6/28/04
 	 */
 	function start () {
 		
@@ -92,7 +105,7 @@ class DRSearchModuleManager {
 	 * 
 	 * @return void
 	 * @access public
-	 * @date 6/28/04
+	 * @since 6/28/04
 	 */
 	function stop () {
 		

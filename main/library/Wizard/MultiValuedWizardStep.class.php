@@ -1,5 +1,18 @@
-<?
+<?php
+/**
+ *
+ * @package polyphony.library.wizard
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: MultiValuedWizardStep.class.php,v 1.9 2005/02/04 23:06:14 adamfranco Exp $
+ */
 
+/**
+ * Require our needed classes.
+ * 
+ */
 require_once(dirname(__FILE__)."/WizardProperty.class.php");
 require_once(dirname(__FILE__)."/WizardStep.interface.php");
 
@@ -7,11 +20,11 @@ require_once(dirname(__FILE__)."/WizardStep.interface.php");
  * The Wizard class provides a system for registering Wizard properties and 
  * associating those properties with the appropriate form elements.
  *
- * @package polyphony.wizard
+ * @package polyphony.library.wizard
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: MultiValuedWizardStep.class.php,v 1.8 2004/12/22 17:04:05 adamfranco Exp $
+ * @version $Id: MultiValuedWizardStep.class.php,v 1.9 2005/02/04 23:06:14 adamfranco Exp $
  */
 
 class MultiValuedWizardStep 
@@ -19,26 +32,26 @@ class MultiValuedWizardStep
 	
 	/**
 	 * The displayName of this WizardStep
-	 * @attribute private string _displayName
+	 * @var private string _displayName
 	 */
 	var $_displayName;
 	
 	/**
 	 * The key that will be given to the array of
 	 * 			properties returned by this step.
-	 * @attribute private string _propertyKey
+	 * @var private string _propertyKey
 	 */
 	var $_propertyKey;
 	
 	/**
 	 * The properties handled by the Wizard.
-	 * @attribute private array _properties
+	 * @var private array _properties
 	 */
 	var $_properties;
 	
 	/**
 	 * Sets of properties created in this step
-	 * @attribute private array _propertySets
+	 * @var private array _propertySets
 	 */
 	var $_propertySets;
 	
@@ -68,7 +81,7 @@ class MultiValuedWizardStep
 	
 	/**
 	 * creates a new Property for this step
-	 * @parm string $propertyName The property name.
+	 * @param string $propertyName The property name.
 	 * @param object $validatorRule A ValidatorRule (that exends the 
 	 * 		ValidatorRuleInterface) that will be used to validate the form
 	 *		inputs
@@ -93,7 +106,7 @@ class MultiValuedWizardStep
 	 * 
 	 * @return integer The index of the new set
 	 * @access public
-	 * @date 7/14/04
+	 * @since 7/14/04
 	 */
 	function saveCurrentPropertiesAsNewSet () {
 		$newIndex = count($this->_propertySets);
@@ -112,7 +125,7 @@ class MultiValuedWizardStep
 	 * @param integer $setIndex The index of the set to save to.
 	 * @return void
 	 * @access public
-	 * @date 7/14/04
+	 * @since 7/14/04
 	 */
 	function saveCurrentPropertiesToSet ($setIndex) {
 		if (!$this->_propertySets[$setIndex])
@@ -129,7 +142,7 @@ class MultiValuedWizardStep
 	 * @param integer $setIndex The index of the set to load.
 	 * @return void
 	 * @access public
-	 * @date 7/14/04
+	 * @since 7/14/04
 	 */
 	function loadCurrentPropertiesFromSet ($setIndex) {
 		if (!$this->_propertySets[$setIndex])
@@ -146,7 +159,7 @@ class MultiValuedWizardStep
 	 * @param integer $setIndex The index of the set to delete
 	 * @return void
 	 * @access public
-	 * @date 7/15/04
+	 * @since 7/15/04
 	 */
 	function deleteSet ($setIndex) {
 		if (!$this->_propertySets[$setIndex])
@@ -161,7 +174,7 @@ class MultiValuedWizardStep
 	 * @param integer $setIndex The set to move.
 	 * @return void
 	 * @access public
-	 * @date 7/16/04
+	 * @since 7/16/04
 	 */
 	function moveSetUp ( $setIndex ) {
 		if (!$this->_propertySets[$setIndex])
@@ -180,7 +193,7 @@ class MultiValuedWizardStep
 	 * @param integer $setIndex The set to move.
 	 * @return void
 	 * @access public
-	 * @date 7/16/04
+	 * @since 7/16/04
 	 */
 	function moveSetDown ( $setIndex ) {
 		if (!$this->_propertySets[$setIndex])
@@ -195,7 +208,7 @@ class MultiValuedWizardStep
 	
 	/**
 	 * Gets a Property
-	 * @parm string $name The name of the requested property.
+	 * @param string $name The name of the requested property.
 	 * @return object WizardProperty
 	 */
 	function &getProperty ( $propertyName ) {

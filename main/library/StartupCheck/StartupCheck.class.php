@@ -1,75 +1,93 @@
-<?
+<?php
+/**
+ *
+ * @package polyphony.library.startupcheck
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: StartupCheck.class.php,v 1.8 2005/02/04 23:06:13 adamfranco Exp $
+ */
 
-// include our StartupRequirement interface
+/**
+ * include our StartupRequirement interface
+ * 
+ */
 require_once POLYPHONY."/main/library/StartupCheck/StartupRequirement.interface.php";
 
-// then include our common requirements
+/**
+ * then include our common requirements
+ * 
+ */
 require_once POLYPHONY."/main/library/StartupCheck/CommonRequirements/include.php";
 
 /**
-* @define STARTUP_STATUS_OK Says requirement is met.
-* @package polyphony.startupcheck
-*/
+ * Says requirement is met.
+ * @name STARTUP_STATUS_OK
+ */
 define("STARTUP_STATUS_OK", 2);
 
 /**
-* @define STARTUP_STATUS_ERROR Says the requirement is not met and that there is an internal error that can't be fixed.
-* @package polyphony.startupcheck
-*/
+ * Says the requirement is not met and that there is an internal error that can't be fixed.
+ * @name STARTUP_STATUS_ERROR
+ */
 define("STARTUP_STATUS_ERROR", 3);
 
 /**
-* @define STARTUP_STATUS_NEEDS_UPDATE Says the requirement will be met after doing some internal updating.
-* @package polyphony.startupcheck
-*/
+ * Says the requirement will be met after doing some internal updating.
+ * @name STARTUP_STATUS_NEEDS_UPDATE 
+ */
 define("STARTUP_STATUS_NEEDS_UPDATE", 1);
 
 /**
-* @define STARTUP_STATUS_NEEDS_USER_INPUT Says the requirement will need user input before it can be updated.
-* @package polyphony.startupcheck
-*/
+ * Says the requirement will need user input before it can be updated.
+ * @name STARTUP_STATUS_NEEDS_USER_INPUT 
+ */
 define("STARTUP_STATUS_NEEDS_USER_INPUT", 5);
 
 /**
-* @define STARTUP_STATUS_NOT_CHECKED Says the requirement has not yet been checked.
-* @package polyphony.startupcheck
-*/
+ * Says the requirement has not yet been checked.
+ * @name STARTUP_STATUS_NOT_CHECKED 
+ */
 define("STARTUP_STATUS_NOT_CHECKED", 4);
 
 /**
-* @define STARTUP_STATUS_NEEDS_INSTALL Says the requirement will be met after installing/configuring some system components.
-* @package polyphony.startupcheck
-*/
+ * Says the requirement will be met after installing/configuring some system components.
+ * @name STARTUP_STATUS_NEEDS_INSTALL 
+ */
 define("STARTUP_STATUS_NEEDS_INSTALL", 0);
 
 /**
-*
-* @package polyphony.startupcheck
-* @copyright 2004
-* @version $Id: StartupCheck.class.php,v 1.7 2004/07/22 19:36:49 gabeschine Exp $
-*/
+ *
+ * @package polyphony.library.startupcheck
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: StartupCheck.class.php,v 1.8 2005/02/04 23:06:13 adamfranco Exp $
+ */
 class StartupCheck {
 
 	/**
-	* @variable array $_status Keeps a record of what parts of the program need updating.
+	* @var array $_status Keeps a record of what parts of the program need updating.
 	* @access private
 	**/
 	var $_status;
 
 	/**
-	* @variable array $_requirements An array of {@link StartupRequirements}.
+	* @var array $_requirements An array of {@link StartupRequirements}.
 	* @access private
 	**/
 	var $_requirements;
 
 	/**
-	* @variable string $_currentRequirement The name of the requirement we are in the middle of configuring (with user input).
+	* @var string $_currentRequirement The name of the requirement we are in the middle of configuring (with user input).
 	* @access private
 	**/
 	var $_currentRequirement;
 
 	/**
-	* @variable object $_currentWizard The {@link Wizard} object associated with the $_currentRequirement.
+	* @var object $_currentWizard The {@link Wizard} object associated with the $_currentRequirement.
 	* @access private
 	**/
 	var $_currentWizard;
@@ -257,7 +275,7 @@ class StartupCheck {
 	/**
 	 * Internally handles input & output from a wizard.
 	 * @param ref object $harmoni A {@link Harmoni} object.
-	 * @access public
+	 * @access private
 	 * @return void
 	 */
 	function _useWizard(&$harmoni)

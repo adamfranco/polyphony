@@ -1,5 +1,12 @@
-<?
+<?php
+/**
+ * @package polyphony.library.datamanager_gui
+ */
 
+/**
+ * 
+ * @package polyphony.library.datamanager_gui
+ */
 class PrimitiveIO_shortstring extends PrimitiveIO {
 	function mkFormHTML(&$primitive, $label, $index) {
 		$t = "[ update: <input type='checkbox' name='update-$label-$index' value='1'/> ]\n";
@@ -17,6 +24,10 @@ class PrimitiveIO_shortstring extends PrimitiveIO {
 	}
 }
 
+/**
+ * 
+ * @package polyphony.library.datamanager_gui
+ */
 class PrimitiveIO_string extends PrimitiveIO_shortstring {
 	function mkFormHTML(&$primitive, $label, $index) {
 		$t = "[ update: <input type='checkbox' name='update-$label-$index' value='1'/> ]\n";

@@ -1,11 +1,14 @@
 <?php
+/**
+ * @package polyphony.library.resultprinter
+ */
 
 /**
  * Print out an Iterator of items in a table spread over multiple pages.
  * 
- * @package polyphony.resultprinter
- * @version $Id: TableIteratorResultPrinter.class.php,v 1.4 2004/12/17 19:00:19 adamfranco Exp $
- * @date $Date: 2004/12/17 19:00:19 $
+ * @package polyphony.library.resultprinter
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.5 2005/02/04 23:06:13 adamfranco Exp $
+ * @since $Date: 2005/02/04 23:06:13 $
  * @copyright 2004 Middlebury College
  */
 
@@ -23,7 +26,7 @@ class TableIteratorResultPrinter {
 	 * @param optional mixed $callbackArgs Any additional arguements will be stored
 	 *			and passed on to the callback function.
 	 * @access public
-	 * @date 8/5/04
+	 * @since 8/5/04
 	 */
 	function TableIteratorResultPrinter (& $iterator, $numColumns, 
 									$numResultsPerPage, $callbackFunction) {
@@ -55,7 +58,7 @@ class TableIteratorResultPrinter {
 	 *		If null, all results are printed.
 	 * @return object Layout A layout containing the results/page links
 	 * @access public
-	 * @date 8/5/04
+	 * @since 8/5/04
 	 */
 	function &getLayout (& $harmoni, $shouldPrintFunction = NULL) {
 		$startingNumber = ($_REQUEST['starting_number'])?$_REQUEST['starting_number']:1;

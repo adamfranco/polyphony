@@ -1,5 +1,18 @@
 <?php
+/**
+ *
+ * @package polyphony.library.repository.inputoutput
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: HarmoniFileModule.class.php,v 1.3 2005/02/04 23:06:12 adamfranco Exp $
+ */
 
+/**
+ * Require the class that we are extending.
+ * 
+ */
 require_once(dirname(__FILE__)."/../RepositoryInputOutputModule.interface.php");
 
 /**
@@ -9,9 +22,9 @@ require_once(dirname(__FILE__)."/../RepositoryInputOutputModule.interface.php");
  * using the "DataManagerPrimitive" Format would use the DataManagerPrimative
  * InputOutput module for displaying generating forms for editing its data.
  * 
- * @package polyphony.repository.inputoutput
- * @version $Id: HarmoniFileModule.class.php,v 1.2 2005/01/27 19:37:24 adamfranco Exp $
- * @date $Date: 2005/01/27 19:37:24 $
+ * @package polyphony.library.repository.inputoutput
+ * @version $Id: HarmoniFileModule.class.php,v 1.3 2005/02/04 23:06:12 adamfranco Exp $
+ * @since $Date: 2005/02/04 23:06:12 $
  * @copyright 2004 Middlebury College
  */
 
@@ -23,7 +36,7 @@ class HarmoniFileModule
 	 * 
 	 * @return obj
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function HarmoniFileModule () {
 		
@@ -40,7 +53,7 @@ class HarmoniFileModule
 	 * @param array $partStructures An ordered array of the partStructures to include.
 	 * @return void
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function createWizardStepsForPartStructures ( & $record, & $wizard, & $partStructures ) {
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("Record"));
@@ -58,7 +71,7 @@ class HarmoniFileModule
 	 * @param object $wizard The wizard to add the steps to.
 	 * @return void
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function createWizardSteps ( & $record, & $wizard ) {
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("Record"));
@@ -241,7 +254,7 @@ class HarmoniFileModule
 	 * @param object $wizard
 	 * @return void
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function updateFromWizard ( & $record, & $wizard ) {
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("Record"));
@@ -343,7 +356,7 @@ class HarmoniFileModule
 	 * @param object $record
 	 * @return string
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function generateDisplay ( & $repositoryId, & $assetId, & $record ) {
 		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
@@ -367,7 +380,7 @@ class HarmoniFileModule
 	 * @param array $partStructures An array of particular partStructures to print. 
 	 * @return string
 	 * @access public
-	 * @date 10/19/04
+	 * @since 10/19/04
 	 */
 	function generateDisplayForPartStructures ( & $repositoryId, & $assetId, & $record, & $partStructures ) {
 		ArgumentValidator::validate($repositoryId, new ExtendsValidatorRule("Id"));

@@ -1,8 +1,11 @@
-<?
+<?php
+/**
+ * @package polyphony.library.datamanager_gui
+ */
 
 /**
  * Handles the creation of {@link PrimitiveIO} objects for different data types, as registered with the DataTypeManager of Harmoni.
- * @package polyphony.datamanagergui
+ * @package polyphony.library.datamanagergui
  * @author Gabe Schine
  * @copyright Middlebury College, 2005
  */
