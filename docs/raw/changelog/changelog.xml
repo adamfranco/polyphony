@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
+
+<changelog name="Polyphony ChangeLog">
+	<version number="0.1.0" date="Unreleased">
+		<new author='adam'>
+			The Wizard library provides a system for the generation of dynamic Multi-step
+			wizards. The Wizard library handles the catching, storing, and validating
+			of form submitions, as well as handle user-progress through the wizard.
+		</new>
+		<new author='adam'>
+			Created Polyphony directory structure.
+		</new>
+	</version>
+	
+	<authors>
+		<name short="gabe">Gabe Schine</name>
+		<name short="adam">Adam Franco</name>
+		<name short="dobo">Dobo Radichkov</name>
+		<name short="nik">Nikitas Stamatopoulos</name>
+		<name short="niraj">Niraj Dhungel</name>
+		<name short="alex">Alex Chapin</name>
+	</authors>
+	<groupid>82873</groupid>
+	<reftypes>
+		<reftype name="bug">567473</reftype>
+		<reftype name="fr">567476</reftype>
+		<reftype name="task"></reftype>
+	</reftypes>
+</changelog>
