@@ -4,7 +4,7 @@
  * This class will print an expandable view of Groups.
  * 
  * @package polyphony.groupPrinter
- * @version $Id: GroupPrinter.class.php,v 1.2 2004/11/11 22:24:32 rrichards Exp $
+ * @version $Id: GroupPrinter.class.php,v 1.3 2004/11/12 18:46:49 adamfranco Exp $
  * @date 11/11/04
  * @copyright 2004 Middlebury College
  */
@@ -105,8 +105,9 @@ class GroupPrinter {
 	border-left: 1px solid #000;
 '>
 		<?
-			foreach (array_keys($childGroups) as $key) {
-				GroupPrinter::printGroup( $childGroups[$key],
+			while ($childGroups->hasNext()) {
+				$childGroup =& $childGroups->next();
+				GroupPrinter::printGroup( $childGroup,
 											$harmoni,
 											$startingPathInfoKey,
 											$printGroupFunction,
