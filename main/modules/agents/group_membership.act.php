@@ -281,6 +281,7 @@ print <<<END
 	function submitCheckedToGroup ( destGroupId ) {
 		var elements = document.memberform.elements;
 		var i;
+		var numToAdd = 0;
 				
 		for (i = 0; i < elements.length; i++) {
 			var element = elements[i];
@@ -299,25 +300,31 @@ print <<<END
 					if ( eval("hasDescendent" + element.name + "('" + destGroupId + "')") ) {
 						alert ("$cannotAddGroup " + element.name + " $toOwnDesc.  $deselecting...");
 						element.checked = false;
+						continue;
 					}
 					
 					// Check that the new member is not already a child of the destination
 					if ( eval("hasChildGroup" + destGroupId + "('" + element.name + "')") ) {
 						alert ("$groupString " + element.name + " $isAlreadyInGroup.  $deselecting...");
 						element.checked = false;
+						continue;
 					}
 				} else {
 					// Check that the new member is not already a child of the destination
 					if ( eval("hasChildMember" + destGroupId + "('" + element.name + "')") ) {
 						alert ("$agentString " + element.name + " $isAlreadyInGroup.  $deselecting...");
 						element.checked = false;
+						continue;
 					}
 				}
+				
+				// If we haven't skipped back to the top of the loop yet, increment our ticker.
+				numToAdd++;
  			}
 		}
 		
-		if (confirm("$confirmAdd " + destGroupId + "?")) 
-		{
+		
+		if (numToAdd && confirm("$confirmAdd " + destGroupId + "?")) {
 			document.memberform.destinationgroup.value = (destGroupId);
 			document.memberform.submit();
 		}
@@ -327,6 +334,7 @@ print <<<END
 	function submitCheckedFromGroup ( destGroupId ) {
 		var elements = document.memberform.elements;
 		var i;
+		var numToAdd = 0;
 				
 		for (i = 0; i < elements.length; i++) {
 			var element = elements[i];
@@ -344,19 +352,23 @@ print <<<END
 					if ( ! eval("hasChildGroup" + destGroupId + "('" + element.name + "')") ) {
 						alert ("$groupString " + element.name + " $notInGroup.  $deselecting...");
 						element.checked = false;
+						continue;
 					}
 				} else {
 					// Check that the new member is not already a child of the destination
 					if ( ! eval("hasChildMember" + destGroupId + "('" + element.name + "')") ) {
 						alert ("$agentString " + element.name + " $notInGroup.  $deselecting...");
 						element.checked = false;
+						continue;
 					}
 				}
+				
+				// If we haven't skipped back to the top of the loop yet, increment our ticker.
+				numToAdd++;
  			}
 		}
 		
-		if (confirm("$confirmRemove " + destGroupId + "?")) 
-		{
+		if (numToAdd && confirm("$confirmRemove " + destGroupId + "?")) {
 			document.memberform.destinationgroup.value = (destGroupId);
 			document.memberform.action = document.memberform.action.replace('add_to_group', 'remove_from_group');
 			document.memberform.submit();
