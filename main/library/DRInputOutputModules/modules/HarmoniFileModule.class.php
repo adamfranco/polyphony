@@ -10,8 +10,8 @@ require_once(dirname(__FILE__)."/../DRInputOutputModule.interface.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.drinputoutput
- * @version $Id: HarmoniFileModule.class.php,v 1.4 2004/10/22 21:57:50 adamfranco Exp $
- * @date $Date: 2004/10/22 21:57:50 $
+ * @version $Id: HarmoniFileModule.class.php,v 1.5 2004/10/25 15:21:03 adamfranco Exp $
+ * @date $Date: 2004/10/25 15:21:03 $
  * @copyright 2004 Middlebury College
  */
 
@@ -287,6 +287,8 @@ class HarmoniFileModule
 			$tmpName = $_FILES['thumbnail_upload']['tmp_name'];			
 			$mimeType = $_FILES['thumbnail_upload']['type'];
 			
+			print "Saving uploaded thumbnail.";
+			
 			// If we weren't passed a mime type or were passed the generic
 			// application/octet-stream type, see if we can figure out the
 			// type.
@@ -308,6 +310,8 @@ class HarmoniFileModule
 			// If our image format is supported by the image processor,
 			// generate a thumbnail.
 			if ($imageProcessor->isFormatSupported($mimeType)) {
+				print "generating thumbnail.";
+				
 				$fields['THUMBNAIL_DATA']->updateValue(
 					$imageProcessor->generateThumbnailData($mimeType, 
 											file_get_contents($tmpName)));
@@ -316,6 +320,7 @@ class HarmoniFileModule
 			// just make our thumbnail values empty. Default icons will display
 			// instead.
 			else {
+				print "Setting thumbnail to empty.";
 				$fields['THUMBNAIL_DATA']->updateValue("");
 				$fields['THUMBNAIL_MIME_TYPE']->updateValue("");
 			}

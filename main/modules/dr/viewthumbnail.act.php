@@ -4,8 +4,8 @@
  * Display the file in the specified record.
  * 
  * @package polyphony.modules.dr
- * @version $Id: viewthumbnail.act.php,v 1.2 2004/10/22 21:57:51 adamfranco Exp $
- * @date $Date: 2004/10/22 21:57:51 $
+ * @version $Id: viewthumbnail.act.php,v 1.3 2004/10/25 15:21:57 adamfranco Exp $
+ * @date $Date: 2004/10/25 15:21:57 $
  * @copyright 2004 Middlebury College
  */
 $shared =& Services::getService("Shared");
@@ -102,7 +102,7 @@ if (!$fileId->isEqual($structure->getId())) {
 			$imageName = $typeImages[$parts[0]];
 		}
 		
-		print file_get_contents(dirname(__FILE__)."/file_images/".$imageName);
+		print file_get_contents(dirname(__FILE__)."/icons/".$imageName);
 	}
 }
 
