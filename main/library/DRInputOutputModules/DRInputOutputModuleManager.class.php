@@ -7,9 +7,9 @@ require_once(dirname(__FILE__)."/modules/HarmoniFileModule.class.php");
  * The DRInputOutModuleManager is responcible for sending records to the 
  * appropriate DRInputOutputModule based on their Schema Formats.
  * 
- * @package polyphony.drinputoutput
- * @version $Id: DRInputOutputModuleManager.class.php,v 1.2 2004/10/20 19:03:51 adamfranco Exp $
- * @date $Date: 2004/10/20 19:03:51 $
+ * @package polyphony.dr.inputoutput
+ * @version $Id: DRInputOutputModuleManager.class.php,v 1.3 2004/10/29 20:22:30 adamfranco Exp $
+ * @date $Date: 2004/10/29 20:22:30 $
  * @copyright 2004 Middlebury College
  */
 

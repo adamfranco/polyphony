@@ -9,9 +9,9 @@ require_once(dirname(__FILE__)."/../DRInputOutputModule.interface.php");
  * using the "DataManagerPrimitive" Format would use the DataManagerPrimative
  * InputOutput module for displaying generating forms for editing its data.
  * 
- * @package polyphony.drinputoutput
- * @version $Id: DataManagerPrimativesModule.class.php,v 1.2 2004/10/20 19:04:51 adamfranco Exp $
- * @date $Date: 2004/10/20 19:04:51 $
+ * @package polyphony.dr.inputoutput
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.3 2004/10/29 20:22:30 adamfranco Exp $
+ * @date $Date: 2004/10/29 20:22:30 $
  * @copyright 2004 Middlebury College
  */
 
