@@ -40,7 +40,7 @@ define("STARTUP_STATUS_NEEDS_INSTALL", 0);
 *
 * @package polyphony.startupcheck
 * @copyright 2004
-* @version $Id: StartupCheck.class.php,v 1.3 2004/06/03 21:27:53 gabeschine Exp $
+* @version $Id: StartupCheck.class.php,v 1.4 2004/07/08 19:42:11 gabeschine Exp $
 */
 class StartupCheck {
 
@@ -160,7 +160,7 @@ class StartupCheck {
 	* @access public
 	* @return boolean FALSE if error occurs.
 	*/
-	function updateNamed($name)
+	function updateRequirement($name)
 	{
 		if ($this->getStatus($name) == STARTUP_STATUS_NEEDS_UPDATE || $this->getStatus($name) == STARTUP_STATUS_NEEDS_INSTALL) {
 			if ($this->_requirements[$name]->doUpdate()) {
@@ -181,7 +181,7 @@ class StartupCheck {
 	* @param ref object $wizard A {@link Wizard} object.
 	* @return boolean FALSE if error occurs.
 	*/
-	function updateNamedWithWizard($name, &$wizard)
+	function updateRequirementWithWizard($name, &$wizard)
 	{
 		// we can't use the data until the end user has pressed the "Save" button on the wizard
 		if ($wizard->isSaveRequested()) {
@@ -242,7 +242,7 @@ class StartupCheck {
 		// if we have something to work with user-input-wise, let's handle it.
 		if ($req = $this->_currentRequirement) {
 			if ($this->_currentWizard->isSaveRequested()) {
-				$this->updateNamedWithWizard($req, $this->_currentWizard);
+				$this->updateRequirementWithWizard($req, $this->_currentWizard);
 				$this->_currentRequirement = $this->_currentWizard = null;
 				if ($this->allOK()) return true;
 				else $this->_setupNextRequirementForInput();
@@ -279,7 +279,7 @@ class StartupCheck {
 	* @access public
 	* @return boolean
 	*/
-	function allOK()
+	function areAllOK()
 	{
 		return ($this->getRequirementCount() == $this->getRequirementsOfStatus(STARTUP_STATUS_OK))?true:false;
 	}
