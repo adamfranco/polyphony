@@ -1,5 +1,30 @@
 <?php
 
+
+/**
+ * @const integer ITEM_CONTENT 
+ * @package polyphony.api.shareable
+ **/
+define("ITEM_CONTENT",1);
+
+/**
+ * @const integer ITEM_CONTENTPAGE 
+ * @package polyphony.api.shareable
+ **/
+define("ITEM_CONTENTPAGE",2);
+
+/**
+ * @const integer ITEM_CONTENTCONTAINER 
+ * @package polyphony.api.shareable
+ **/
+define("ITEM_CONTENTCONTAINER",4);
+
+/**
+ * @const integer ITEM_NAVIGATIONLEVEL 
+ * @package polyphony.api.shareable
+ **/
+define("ITEM_NAVIGATIONLEVEL",8);
+
 /**
  * The Shareable interface defines required methods for any Shareable class.
  * 
@@ -8,7 +33,7 @@
  * to parts of another program, referenced by these fields.
  *
  * @package polyphony.interfaces.api.shareable
- * @version $Id: Shareable.interface.php,v 1.2 2003/08/06 22:33:26 gabeschine Exp $
+ * @version $Id: Shareable.interface.php,v 1.3 2003/08/08 22:06:55 gabeschine Exp $
  * @copyright 2003 
  **/
 
@@ -154,6 +179,15 @@ class Shareable {
 	 * @return void
 	 **/
 	function modifySelectQuery(&$query) {
+		die ("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class."); 
+	}
+	
+	/**
+	 * 
+	 * @access public
+	 * @return void
+	 **/
+	function buildLayout($expecting) {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class."); 
 	}
 	
