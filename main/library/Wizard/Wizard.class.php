@@ -14,7 +14,7 @@ require_once(dirname(__FILE__)."/MultiValuedWizardStep.class.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: Wizard.class.php,v 1.11 2004/08/02 17:40:19 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.12 2004/08/02 20:46:04 adamfranco Exp $
  */
 
 class Wizard {
@@ -95,6 +95,8 @@ class Wizard {
 	/**
 	 * If the values of the current step are good, make the requested step
 	 * the current one.
+	 * @param integer $stepNumber The number of the step to go to.
+	 * @return void
 	 */
 	function goToStep ( $stepNumber ) {
 		ArgumentValidator::validate($stepNumber, new IntegerValidatorRule, true);
@@ -103,6 +105,20 @@ class Wizard {
 
 		if ($this->_steps[$this->_currentStep]->updateProperties())
 			$this->_currentStep = $stepNumber;
+	}
+	
+	/**
+	 * Make the requested step the current one without checking other step's values.
+	 * This is usefull for starting non-linear wizard access.
+	 * @param integer $stepNumber The number of the step to go to.
+	 * @return void
+	 */
+	function skipToStep ( $stepNumber ) {
+		ArgumentValidator::validate($stepNumber, new IntegerValidatorRule, true);
+		if (!$this->_steps[$stepNumber])
+			throwError(new Error("Step, ".$stepNumber.", does not exist in Wizard.", "Wizard", 1));
+
+		$this->_currentStep = $stepNumber;
 	}
 	
 	/**
@@ -197,6 +213,9 @@ class Wizard {
 		
 		else if ($_REQUEST['__go_to_step'])
 			$this->goToStep($_REQUEST['__go_to_step']);
+		
+		else if ($_REQUEST['__skip_to_step'] && $this->_allowStepLinks)
+			$this->skipToStep($_REQUEST['__skip_to_step']);
 			
 		else if ($_REQUEST['__update'])
 			$this->updateLastStep();
