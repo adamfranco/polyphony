@@ -146,20 +146,23 @@ function printEditOptions(& $qualifier) {
 		while ($functions->hasNext()) {
 			$function =& $functions->next();
 			$functionId =& $function->getId();
-			
-			print "\n\t\t<tr><td>";
-			print "\n\t\t\t<input type='checkbox' name='blah' value='blah'";
-			
+
 			// IF an authorization exists for the user on this qualifier, 
 			// make checkbox already checked
 			if ($authZManager->isAuthorized($agentId, $functionId, $qualifierId)) {
-				print " checked='checked'";
 				$toggleOperation = "delete";
+				print "<tr><td>";
+				print "<table border='2' bordercolor='green'><tr>";
+				print "<td><input type='checkbox' name='blah' value='blah'";
+				print " checked='checked'";
+
 			} else {
 				$toggleOperation = "create";
+				print "<tr><td>";
+				print "<table border='2' bordercolor='red'><tr>";
+				print "<td><input type='checkbox' name='blah' value='blah'";
 			}
-			
-			
+
 			// The checkbox is really just for show, the link is where we send
 			// to our processing to toggle the state of the authorization.
 			$toggleURL = MYURL."/authorization/process_authorizations/"
@@ -167,11 +170,11 @@ function printEditOptions(& $qualifier) {
 				.$functionId->getIdString()."/".$qualifierId->getIdString()
 				."/".implode("/", $harmoni->pathInfoParts)
 				."?selection=".$_GET['selection'];
-			
+
 			print "onClick=\"Javascript:window.location='".$toggleURL."'\">";
-			
-			
-			print $function->getReferenceName()."\n\t\t</td></tr>";
+
+			print "<td>".$function->getReferenceName()."</td></tr></table></td></tr>";
+
 		}
 		print "\n\t</table></td>";
 		
