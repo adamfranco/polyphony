@@ -68,23 +68,41 @@ $sharedManager =& Services::getService("Shared");
 // $authZManager->createFunction($functionId, "Comment", "Add comments to this thing.", $functionType, $qualifierHierarchyId);
 // exit;
 
+// Loop through all of the Groups and figure out which ones are childen of
+// other groups, so that we can just display the root-groups
+$childGroupIds = array();
+$groups =& $sharedManager->getGroups();
+while ($groups->hasNext()) {
+	$group =& $groups->next();
+	$childGroups =& $group->getGroups(FALSE);
+	while ($childGroups->hasNext()) {
+		$group =& $childGroups->next();
+		$groupId =& $group->getId();
+		$childGroupIds[] =& $groupId->getIdString();
+	}
+}
 
 // Get all the groups first.
 $groups =& $sharedManager->getGroups();  // Groups ARE agents
 while ($groups->hasNext()) {
 	$group =& $groups->next();
 	
-	// Create a layout for this group using the GroupPrinter
-	ob_start();
-	GroupPrinter::printGroup($group, $harmoni,
-									2,
-									"printGroup", 
-									"printMember");
-	$groupLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 3);
-	$groupLayout->addComponent(new Content(ob_get_contents()));
-	ob_end_clean();
-	$actionRows->addComponent($groupLayout);	
+	$group =& $groups->next();
+	$groupId =& $group->getId();
 	
+	if (!in_array($groupId->getIdString(), $childGroupIds)) {
+	
+		// Create a layout for this group using the GroupPrinter
+		ob_start();
+		GroupPrinter::printGroup($group, $harmoni,
+										2,
+										"printGroup", 
+										"printMember");
+		$groupLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 3);
+		$groupLayout->addComponent(new Content(ob_get_contents()));
+		ob_end_clean();
+		$actionRows->addComponent($groupLayout);	
+	}
 }
 $actionRows->addComponent($submit, MIDDLE, RIGHT);
 

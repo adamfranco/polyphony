@@ -44,6 +44,20 @@ $sharedManager =& Services::getService("Shared");
 // $group->add($member);
 
 
+// Loop through all of the Groups and figure out which ones are childen of
+// other groups, so that we can just display the root-groups
+$childGroupIds = array();
+$groups =& $sharedManager->getGroups();
+while ($groups->hasNext()) {
+	$group =& $groups->next();
+	$childGroups =& $group->getGroups(FALSE);
+	while ($childGroups->hasNext()) {
+		$group =& $childGroups->next();
+		$groupId =& $group->getId();
+		$childGroupIds[] =& $groupId->getIdString();
+	}
+}
+
 // Get all the groups first.
 $groupHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
 $groupHeader->addComponent(new Content(_("Groups")));
@@ -52,18 +66,21 @@ $actionRows->addComponent($groupHeader);
 $groups =& $sharedManager->getGroups();
 while ($groups->hasNext()) {
 	$group =& $groups->next();
+	$groupId =& $group->getId();
 	
-	// Create a layout for this group using the GroupPrinter
-	ob_start();
-	GroupPrinter::printGroup($group, $harmoni,
-									2,
-									"printGroup", 
-									"printMember");
-	$groupLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 3);
-	$groupLayout->addComponent(new Content(ob_get_contents()));
-	ob_end_clean();
-	$actionRows->addComponent($groupLayout);	
-	
+	if (!in_array($groupId->getIdString(), $childGroupIds)) {
+		
+		// Create a layout for this group using the GroupPrinter
+		ob_start();
+		GroupPrinter::printGroup($group, $harmoni,
+										2,
+										"printGroup", 
+										"printMember");
+		$groupLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 3);
+		$groupLayout->addComponent(new Content(ob_get_contents()));
+		ob_end_clean();
+		$actionRows->addComponent($groupLayout);	
+	}
 }
 
 
