@@ -29,11 +29,8 @@ $intro =& new Content("&nbsp &nbsp "._("Check or uncheck authorization(s) for th
 			&nbsp &nbsp "._("After each check/uncheck, the changes are saved automatically.")."<br /><br />");
 
 
-// Get the id and type (group/member) of the selected agent using $_REQUEST
- $selection = $_REQUEST["selection"];
- $pieces = explode(":", $selection);
- $groupOrMember = $pieces[0];
- $id = $pieces[1];
+// Get the id of the selected agent using $_REQUEST
+ $id = $_REQUEST["agent"];
  $idObject =& $sharedManager->getId($id);
  $GLOBALS["agentId"] =& $idObject;
  $GLOBALS["harmoni"] =& $harmoni;
@@ -246,7 +243,7 @@ function printEditOptions(& $qualifier) {
 				.$toggleOperation."/".$agentId->getIdString()."/"
 				.$functionId->getIdString()."/".$qualifierId->getIdString()
 				."/".implode("/", $harmoni->pathInfoParts)
-				."?selection=".$_GET['selection'];
+				."?agent=".$_GET['agent'];
 
 			print " onClick=\"Javascript:window.location='".$toggleURL."'\"></td>";
 

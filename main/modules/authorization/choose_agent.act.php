@@ -121,7 +121,7 @@ return $mainScreen;
 function printGroup(& $group) {
 	$id =& $group->getId();
 	$groupType =& $group->getType();
-	print "<input type='radio' name='selection' value='group:".$id->getIdString()."'>";
+	print "<input type='radio' name='agent' value='".$id->getIdString()."'>";
 	print "<a title='".$groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()."'>";
 	print "<u><strong>".$id->getIdString()." - ".$group->getDisplayName()."</strong></u></a>";	
 	print " - <em>".$groupType->getDescription()."</em>";
@@ -130,7 +130,7 @@ function printGroup(& $group) {
 function printMember(& $member) {
 	$id =& $member->getId();
 	$memberType =& $member->getType();
-	print "<input type='radio' name='selection' value='member:".$id->getIdString()."'>";
+	print "<input type='radio' name='agent' value='".$id->getIdString()."'>";
 	print "<a title='".$memberType->getAuthority()." :: ".$memberType->getDomain()." :: ".$memberType->getKeyword()."'>";
 	print "<u>".$id->getIdString()." - ".$member->getDisplayName()."</u></a>";
 	print " - <em>".$memberType->getDescription()."</em>";

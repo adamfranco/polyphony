@@ -40,4 +40,4 @@ if ($createOrDelete == 'create') {
 // Send us back to where we were (edit_authorizations.act.php)
 $currentPathInfo = array_slice($harmoni->pathInfoParts, 6);
 
-header("Location: ".MYURL."/".implode("/",$currentPathInfo)."?selection=".$_GET['selection']);
+header("Location: ".MYURL."/".implode("/",$currentPathInfo)."?agent=".$_GET['agent']);
