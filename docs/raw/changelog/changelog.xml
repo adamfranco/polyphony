@@ -2,7 +2,7 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
-	<version number="0.1.0" date="Unreleased">
+	<version number="0.1.0" date="2004-10-26">
 		<new author='adam'>
 			The 'dr' module provides actions for displaying images and thumbnails
 			from a Digital Repository, making use of the DRInputOutputModules.
@@ -15,7 +15,7 @@
 			The 'auth' module provides shared actions for logging in and out.
 		</new>
 		<new author='gabe'>
-			StartupCheck and ConfigSystem: These should allow easier creation of
+			StartupCheck and ConfigSystem: These should allow easy creation of
 			browser-based install/configuration options and setup. They are 
 			undocumented and untested.
 		</new>
