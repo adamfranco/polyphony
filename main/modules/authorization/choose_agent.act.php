@@ -31,7 +31,10 @@ $centerPane->addComponent($actionRows, TOP, CENTER);
 $introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
 $introHeader->addComponent(new Content(_("Edit Authorizations for which Group/User?")));
 $actionRows->addComponent($introHeader);
-//
+
+$submit = new Content("<input type='submit' value='"._("Edit Authorizations for the selected Group/User")." ---->'>");
+$actionRows->addComponent($submit, MIDDLE, RIGHT);
+
 $sharedManager =& Services::getService("Shared");
 //
 //$id =& $sharedManager->getId("181");
@@ -83,7 +86,7 @@ while ($groups->hasNext()) {
 	$actionRows->addComponent($groupLayout);	
 	
 }
-
+$actionRows->addComponent($submit, MIDDLE, RIGHT);
 
 // Return the main layout.
 return $mainScreen;

@@ -4,8 +4,8 @@
  * This class will print an expandable view of Groups.
  * 
  * @package polyphony.groupPrinter
- * @version $Id: GroupPrinter.class.php,v 1.1 2004/11/11 21:58:28 rrichards Exp $
- * @date $$
+ * @version $Id: GroupPrinter.class.php,v 1.2 2004/11/11 22:24:32 rrichards Exp $
+ * @date 11/11/04
  * @copyright 2004 Middlebury College
  */
 
