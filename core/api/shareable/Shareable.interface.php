@@ -2,25 +2,33 @@
 
 
 /**
- * @const integer ITEM_CONTENT 
+ * @const integer ITEM_CONTENT Specifies that this shareable can handle the production of a Content Item. Content 
+ * Items appear within Content Containers. These shareables are expected to return a layout object, no restrictions.
  * @package polyphony.api.shareable
  **/
 define("ITEM_CONTENT",1);
 
 /**
- * @const integer ITEM_CONTENTPAGE 
+ * @const integer ITEM_CONTENTPAGE Specifies that this shareable can handle the production of a Content Page. Content
+ * Pages appear under a Navigation Level and take up the whole viewing space of the page. They are expected to return
+ * a layout object, no restrictions.
  * @package polyphony.api.shareable
  **/
 define("ITEM_CONTENTPAGE",2);
 
 /**
- * @const integer ITEM_CONTENTCONTAINER 
+ * @const integer ITEM_CONTENTCONTAINER Specifies this shareable to be a Content Container. Content Containers hold within 
+ * them any given number of Content Items. They are expected to return a layout object with 1 restriction: Component '0' (zero)
+ * must not be set and must expect another layout object (for the Content Items).
  * @package polyphony.api.shareable
  **/
 define("ITEM_CONTENTCONTAINER",4);
 
 /**
- * @const integer ITEM_NAVIGATIONLEVEL 
+ * @const integer ITEM_NAVIGATIONLEVEL Specifies this shareable to be a Navigation Level. Navigation Levels hold both
+ * a Menu and a space for more Content, be it another Navigation Level or something else. They are expected to return
+ * a layout object with 2 restrictions: Component '0' (zero) must not be set and be expecting a Menu object, and Component '1'
+ * (one) must not be set and expecting another Layout object.
  * @package polyphony.api.shareable
  **/
 define("ITEM_NAVIGATIONLEVEL",8);
@@ -33,7 +41,7 @@ define("ITEM_NAVIGATIONLEVEL",8);
  * to parts of another program, referenced by these fields.
  *
  * @package polyphony.interfaces.api.shareable
- * @version $Id: Shareable.interface.php,v 1.3 2003/08/08 22:06:55 gabeschine Exp $
+ * @version $Id: Shareable.interface.php,v 1.4 2003/08/11 03:14:05 gabeschine Exp $
  * @copyright 2003 
  **/
 
