@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.1 2005/02/14 19:17:24 thebravecowboy Exp $
+ * @version $Id: create_agent.act.php,v 1.2 2005/02/16 15:25:07 thebravecowboy Exp $
  */
  
 // Get the Layout components. See core/modules/moduleStructure.txt
@@ -78,7 +78,7 @@ function makeNewAgent($userName, $password, $displayName, & $properties){
 	$DBAuth =& $authNHandler->getMethod("dbAuth");
 
 	$newAgent =& $DBAuth->addAgent($userName,$password, $properties, $displayName);
-	
+		
 	return $newAgent;
 }
 
