@@ -8,7 +8,7 @@
 */
 
 // Get services
-$shared =& Services::getService("Shared");
+$agentManager =& Services::getService("Agent");
 $authZ =& Services::getService("AuthZ");
 
 // Get info passed to this action via the URL

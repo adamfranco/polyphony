@@ -9,7 +9,7 @@
 
 
 
-$shared =& Services::getService("Shared");
+$agentManager =& Services::getService("Agent");
 
 printpre($_REQUEST);
 
@@ -19,13 +19,13 @@ $destGroup =& $shared->getGroup($id);
 foreach ($_REQUEST as $idString => $type) {
 
 	if ($type == "group") {
-		$id =& $shared->getId(strval($idString));
-		$member =& $shared->getGroup($id);
+		$id =& $agentManager->getId(strval($idString));
+		$member =& $agentManager->getGroup($id);
 		$destGroup->remove($member);
 		
 	} else if ($type == "agent") {
-		$id =& $shared->getId(strval($idString));
-		$member =& $shared->getAgent($id);
+		$id =& $agentManager->getId(strval($idString));
+		$member =& $agentManager->getAgent($id);
 		$destGroup->remove($member);
 	}	
 }

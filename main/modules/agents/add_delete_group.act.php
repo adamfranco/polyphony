@@ -30,7 +30,7 @@ $introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
 $introHeader->addComponent(new Content(_("Create/Delete Groups")));
 $actionRows->addComponent($introHeader);
 
-$sharedManager =& Services::getService("Shared");
+$agentManager =& Services::getService("Agent");
 
 // Build a variable to pass around our search terms when expanding
 if (count($_GET)) {
@@ -55,7 +55,7 @@ $actionRows->addComponent($deleteHeader);
 // Loop through all of the Groups and figure out which ones are childen of
 // other groups, so that we can just display the root-groups
 $childGroupIds = array();
-$groups =& $sharedManager->getGroups();
+$groups =& $agentManager->getGroups();
 while ($groups->hasNext()) {
 	$group =& $groups->next();
 	$childGroups =& $group->getGroups(FALSE);
@@ -67,7 +67,7 @@ while ($groups->hasNext()) {
 }
 
 // Get all the groups first.
-$groups =& $sharedManager->getGroups();
+$groups =& $agentManager->getGroups();
 while ($groups->hasNext()) {
 	$group =& $groups->next();
 	$groupId =& $group->getId();

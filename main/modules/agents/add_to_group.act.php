@@ -9,23 +9,23 @@
 
 
 
-$shared =& Services::getService("Shared");
+$agentManager =& Services::getService("Agent");
 
 printpre($_REQUEST);
 
-$id =& $shared->getId($_REQUEST['destinationgroup']);
-$destGroup =& $shared->getGroup($id);
+$id =& $agentManager->getId($_REQUEST['destinationgroup']);
+$destGroup =& $agentManager->getGroup($id);
 
 foreach ($_REQUEST as $idString => $type) {
 
 	if ($type == "group") {
-		$id =& $shared->getId(strval($idString));
-		$member =& $shared->getGroup($id);
+		$id =& $agentManager->getId(strval($idString));
+		$member =& $agentManager->getGroup($id);
 		$destGroup->add($member);
 		
 	} else if ($type == "agent") {
-		$id =& $shared->getId(strval($idString));
-		$member =& $shared->getAgent($id);
+		$id =& $agentManager->getId(strval($idString));
+		$member =& $agentManager->getAgent($id);
 		$destGroup->add($member);
 	}	
 }
