@@ -200,6 +200,7 @@ function printEditOptions(& $qualifier) {
 				$implicitAZ =& $implicitAZs[$i];
  				$explicitAZs =& $authZManager->getExplicitUserAZsForImplicitAZ($implicitAZ);
  				$title = "";
+ 				$k = 0;
 				while ($explicitAZs->hasNext()) {
 					$explicitAZ =& $explicitAZs->next();
 					$explicitAgentId =& $explicitAZ->getAgentId();
@@ -209,32 +210,38 @@ function printEditOptions(& $qualifier) {
 					// get the agent/group for the AZ
 					if ($shared->isAgent($explicitAgentId)) {
 						$explicitAgent =& $shared->getAgent($explicitAgentId);
-						$title = "(Agent: ".$explicitAgent->getDisplayName();
+						$title = "User: ".$explicitAgent->getDisplayName();
 					} else if ($shared->isGroup($explicitAgentId)) {
 						$explicitGroup =& $shared->getGroup($explicitAgentId);
-						$title = "(Group: ".$explicitGroup->getDisplayName();
+						$title = "Group: ".$explicitGroup->getDisplayName();
 					} else {
-						$title = "(Agent/Group: ".$explicitAgentId->getIdString();
+						$title = "User/Group: ".$explicitAgentId->getIdString();
 					}
-					$title .= ", Location: ".$explicitQualifier->getDisplayName().") ";
+					$title .= ", Location: ".$explicitQualifier->getDisplayName();
+					if ($k)
+						print "; ";
+					$k++;
 				}
 				
 				// print out a checkbox for the implicit AZ
-				print "\n\t\t\t<td>";
-				print "\n\t\t\t\t<div";
-				print " id='".$explicitAgentId->getIdString()
-						."-".$functionId->getIdString()
-						."-".$explicitQualifierId->getIdString()."'";
-				print " title='".$title."'";
-// 				print " onClick=\"Javascript:window.alert('".$title."')\"";
-				print ">";
-				print $title;
+				print "\n\t\t\t<td valign='top'>";
 				print "\n\t\t\t\t<input type='checkbox' name='blah' value='blah'";
+				print " title='".$title."'";
 				print " checked='checked' disabled='disabled'>";
-				print "\n\t\t\t\t</div>\n\t\t\t</td>";
+				print "\n\t\t\t\t<br /><a";
+// 				print " id='".$explicitAgentId->getIdString()
+// 						."-".$functionId->getIdString()
+// 						."-".$explicitQualifierId->getIdString()."'";
+				print " title='".$title."'";
+ 				print " href=\"Javascript:window.alert('".$title."')\"";
+				print ">";
+//				print $title;
+				print "\n\t\t\t\tInfo</a>";
+				print "\n\t\t\t\t</div>";
+				print "\n\t\t\t</td>";
 			}
 			
-			print "\n\t\t\t<td><input type='checkbox' name='blah' value='blah' ";
+			print "\n\t\t\t<td valign='top'><input type='checkbox' name='blah' value='blah' ";
 			print $explicitChecked;
 
 			// The checkbox is really just for show, the link is where we send
@@ -247,7 +254,7 @@ function printEditOptions(& $qualifier) {
 
 			print " onClick=\"Javascript:window.location='".$toggleURL."'\"></td>";
 
-			print "\n\t\t\t<td>".$function->getReferenceName()."</td>\n\t\t\t</tr>\n\t\t</table>\n\t</td>\n\t</tr>";
+			print "\n\t\t\t<td valign='top'>".$function->getReferenceName()."</td>\n\t\t\t</tr>\n\t\t</table>\n\t</td>\n\t</tr>";
 
 		}
 		print "\n\t</table></td>";
