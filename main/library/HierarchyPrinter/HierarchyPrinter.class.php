@@ -7,8 +7,8 @@
  * This class will print an expandible, view of a hierarchy
  * 
  * @package polyphony.library.HierarchyPrinter
- * @version $Id: HierarchyPrinter.class.php,v 1.7 2005/02/04 23:06:11 adamfranco Exp $
- * @since $Date: 2005/02/04 23:06:11 $
+ * @version $Id: HierarchyPrinter.class.php,v 1.8 2005/02/14 19:15:52 thebravecowboy Exp $
+ * @since $Date: 2005/02/14 19:15:52 $
  * @copyright 2004 Middlebury College
  */
 
@@ -50,8 +50,9 @@ class HierarchyPrinter {
 		// Build a variable to pass around our get terms when expanding
 		if (count($_GET)) {
 				$get = "?";
-				foreach ($_GET as $key => $val)
+				foreach ($_GET as $key => $val){
 					$get .= "&".urlencode($key)."=".urlencode($val);
+				}
 		}
 		
 		// Break the path info into parts for the enviroment and parts that
@@ -62,10 +63,11 @@ class HierarchyPrinter {
 		for ($i=0; $i<count($harmoni->pathInfoParts); $i++) {
 			// If the index equals or is after our starting key
 			// it designates an expanded nodeId.
-			if ($i >= $startingPathInfoKey)
+			if ($i >= $startingPathInfoKey){
 				$expandedNodes[] = $harmoni->pathInfoParts[$i];
-			else	
+			}else{	
 				$environmentInfo[] = $harmoni->pathInfoParts[$i];
+			}
 		}
 		
 		print "\n\n<table>\n\t<tr><td valign='top'>";
@@ -122,8 +124,9 @@ END;
 			}
 			
 		// The node has no children.  Do not show options to expand/collapse.
-		} else 
+		} else {
 			print "\n\t\t<div style='width: 15px;'>&nbsp;</div>";
+		}
 		
 		print "\n\t</td><td valign='top'>\n\t\t";
 		$printFunction( $node );
@@ -153,15 +156,8 @@ END;
 			
 			$children =& $getChildrenFunction($node);
 			foreach (array_keys($children) as $key) {
-				HierarchyPrinter::printNode( $children[$key],
-															$harmoni,
-															$startingPathInfoKey,
-															$printFunction, 
-															$hasChildrenFunction, 
-															$getChildrenFunction,
-															$childColor );
-			}
-			
+				HierarchyPrinter::printNode( $children[$key],														$harmoni, $startingPathInfoKey, $printFunction, $hasChildrenFunction,	$getChildrenFunction, $childColor );
+			}		
 			print "\n</div>";
 		}
 		
