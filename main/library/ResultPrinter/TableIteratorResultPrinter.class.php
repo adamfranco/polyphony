@@ -4,8 +4,8 @@
  * Print out an Iterator of items in a table spread over multiple pages.
  * 
  * @package polyphony.resultprinter
- * @version $Id: TableIteratorResultPrinter.class.php,v 1.1 2004/08/06 14:56:09 adamfranco Exp $
- * @date $Date: 2004/08/06 14:56:09 $
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.2 2004/08/06 21:52:40 adamfranco Exp $
+ * @date $Date: 2004/08/06 21:52:40 $
  * @copyright 2004 Middlebury College
  */
 
@@ -39,8 +39,8 @@ class TableIteratorResultPrinter {
 		
 		$this->_callbackParams = array();
 		$args =& func_get_args();
-		foreach (array_keys($args) as $key) {
-			$this->_callbackParams[] =& $args[$key];
+		for ($i=4; $i<count($args); $i++) {
+			$this->_callbackParams[] =& $args[$i];
 		}
 	}
 	
@@ -86,8 +86,9 @@ class TableIteratorResultPrinter {
 				
 				print "\n<td style='border: 1px solid;  padding: 5px;'>";
 				
-				$callback = $this->_callbackFunction;
-				$callback($item, $this->_callbackParams);
+				$itemArray = array (& $item);
+				$params = array_merge($itemArray, $this->_callbackParams);
+				call_user_func_array($this->_callbackFunction, $params);
 				
 				
 				print  "\n</td>";

@@ -1,16 +1,16 @@
 <?php
 
 /**
- * Print out an Iterator of items in rows and columns of TEXT_BLOCK widgets 
+ * Print out an Array of items in rows and columns of TEXT_BLOCK widgets 
  * spread over multiple pages.
  * 
  * @package polyphony.resultprinter
- * @version $Id: IteratorResultPrinter.class.php,v 1.4 2004/08/06 21:52:40 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.1 2004/08/06 21:52:40 adamfranco Exp $
  * @date $Date: 2004/08/06 21:52:40 $
  * @copyright 2004 Middlebury College
  */
 
-class IteratorResultPrinter {
+class ArrayResultPrinter {
 	
 	
 	/**
@@ -26,14 +26,14 @@ class IteratorResultPrinter {
 	 * @access public
 	 * @date 8/5/04
 	 */
-	function IteratorResultPrinter (& $iterator, $numColumns, 
+	function ArrayResultPrinter (& $array, $numColumns, 
 									$numResultsPerPage, $callbackFunction) {
-		ArgumentValidator::validate($iterator, new HasMethodsValidatorRule("hasNext", "next"));
+		ArgumentValidator::validate($array, new ArrayValidatorRule);
 		ArgumentValidator::validate($numColumns, new IntegerValidatorRule);
 		ArgumentValidator::validate($numResultsPerPage, new IntegerValidatorRule);
 		ArgumentValidator::validate($callbackFunction, new StringValidatorRule);
 		
-		$this->_iterator =& $iterator;
+		$this->_array =& $array;
 		$this->_numColumns =& $numColumns;
 		$this->_pageSize =& $numResultsPerPage;
 		$this->_callbackFunction =& $callbackFunction;
@@ -65,19 +65,22 @@ class IteratorResultPrinter {
 		$numItems = 0;
 		$resultLayout =& new RowLayout();
 		
-		if ($this->_iterator->hasNext()) {
+		if (count($this->_array)) {
+		
+			reset($this->_array);
 			
 			// trash the items before our starting number
-			while ($this->_iterator->hasNext() && $numItems+1 < $startingNumber) {
-				$item =& $this->_iterator->next();
+			while ($numItems+1 < $startingNumber && $numItems < count($this->_array)) {
+				print "Skipping.";
+				next($this->_array);
 				$numItems++;
 			}
 			
-			
 			// print up to $this->_pageSize items
 			$pageItems = 0;
-			while ($this->_iterator->hasNext() && $numItems < $endingNumber) {
-				$item =& $this->_iterator->next();
+			while ($numItems < $endingNumber && $numItems < count($this->_array)) {
+				$item =& current($this->_array);
+				next($this->_array);
 				$numItems++;
 				$pageItems++;
 				
@@ -101,8 +104,7 @@ class IteratorResultPrinter {
 // 			}
 			
 			// find the count of items 
-			while ($this->_iterator->hasNext()) {
-				$item =& $this->_iterator->next();
+			while (next($this->_array)) {
 				$numItems++;
 			}	
 		} else {
