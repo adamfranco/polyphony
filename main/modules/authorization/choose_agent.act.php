@@ -19,6 +19,10 @@ $statusBar =& $harmoni->getAttachedData('statusBar');
 $centerPane =& $harmoni->getAttachedData('centerPane');
 
 
+$agentManager =& Services::getService("Agent");
+$idManager = Services::getService("Id");
+$everyoneId =& $idManager->getId("-1");
+
 // Our
 $pageRows =& new RowLayout();
 $actionRows =& new RowLayout();
@@ -90,7 +94,6 @@ $submit = new Content(ob_get_contents());
 ob_end_clean();
 $pageRows->addComponent($submit, MIDDLE);
 
-$agentManager =& Services::getService("Agent");
 
 
 
@@ -208,11 +211,13 @@ $childGroupIds = array();
 $groups =& $agentManager->getGroups();
 while ($groups->hasNext()) {
 	$group =& $groups->next();
-	$childGroups =& $group->getGroups(FALSE);
-	while ($childGroups->hasNext()) {
-		$group =& $childGroups->next();
-		$groupId =& $group->getId();
-		$childGroupIds[] =& $groupId->getIdString();
+	if (!$everyoneId->isEqual($group->getId())) {
+		$childGroups =& $group->getGroups(FALSE);
+		while ($childGroups->hasNext()) {
+			$group =& $childGroups->next();
+			$groupId =& $group->getId();
+			$childGroupIds[] =& $groupId->getIdString();
+		}
 	}
 }
 
