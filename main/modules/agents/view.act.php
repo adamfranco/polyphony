@@ -23,7 +23,7 @@ $pageRows =& new RowLayout();
 $actionRows =& new RowLayout();
 
 // In order to preserve proper nesting on the HTML output
-$actionRows->setPreSurroundingText("<form method='post' action='".MYURL."/authorization/edit_authorizations/'>");
+$actionRows->setPreSurroundingText("<form method='post' action='".MYURL."/agents/add_to_group/".implode("/", $harmoni->pathInfoParts)."'>");
 $actionRows->setPostSurroundingText("</form>");
 
 $centerPane->addComponent($pageRows, TOP, CENTER);
@@ -59,7 +59,10 @@ $agentHeader->addComponent(new Content(_("Users")));
 $pageRows->addComponent($agentHeader);
 
 
-// the agent search form
+
+/*********************************************************
+ * the agent search form
+ *********************************************************/
 ob_start();
 
 $self = $_SERVER['PHP_SELF'];
@@ -83,12 +86,11 @@ while ($searchTypes->hasNext()) {
 	print ">$typeString</option>";
 }
 
-print <<<END
-	</select>
-	<br /><input type='submit' value='search'>
-</form>
-
-END;
+	print "\n\t</select>";
+	print "\n\t<br /><input type='submit' value='"._("Search")."'>";
+	print "\n\t<a href='".MYURL."/".implode("/", $harmoni->pathInfoParts)."/'>";
+	print "<input type='button' value='"._("Clear")."'></a>";
+print "</form>";
 
 $agentLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 2);
 $agentLayout->addComponent(new Content(ob_get_contents()), BOTTOM);
@@ -96,6 +98,12 @@ ob_end_clean();
 $pageRows->addComponent($agentLayout);
 $pageRows->addComponent($actionRows, BOTTOM, CENTER);
 
+
+
+/*********************************************************
+ * the agent search results
+ *********************************************************/
+ 
 if ($_REQUEST['search_criteria'] && $_REQUEST['search_type']) {
 	$typeParts = explode("::", $_REQUEST['search_type']);
 	$searchType =& new HarmoniType($typeParts[0], $typeParts[1], $typeParts[2]);
@@ -147,7 +155,11 @@ END;
 }
 
 
-// All Agents
+
+/*********************************************************
+ * All the agents
+ *********************************************************/
+ 
 $expandAgents = ((in_array("allagents", $harmoni->pathInfoParts))?TRUE:FALSE);
 
 // Create a layout for this group using the GroupPrinter
@@ -224,7 +236,9 @@ $actionRows->addComponent($agentLayout);
 
 
 
-// Groups
+/*********************************************************
+ * Groups
+ *********************************************************/
 
 // Loop through all of the Groups and figure out which ones are childen of
 // other groups, so that we can just display the root-groups
@@ -266,12 +280,16 @@ while ($groups->hasNext()) {
 }
 
 
-// Return the main layout.
+/*********************************************************
+ * Return the main layout.
+ *********************************************************/
 return $mainScreen;
 
 
-// Functions used for the GroupPrinter
-function printGroup(& $group) {
+/*********************************************************
+ * Functions used for the GroupPrinter
+ *********************************************************/
+ function printGroup(& $group) {
 	$id =& $group->getId();
 	$groupType =& $group->getType();
 	print "<input type='checkbox' name='user' value='".$id->getIdString()."'>";
