@@ -23,4 +23,6 @@ if ($isAuthenticated) {
 	$currentPathInfo = array_slice($harmoni->pathInfoParts, 2);
 	
 	header("Location: ".MYURL."/".implode("/",$currentPathInfo));
+} else {
+	throwError(new Error("Could not authenticate, but we weren't forwarded to the failed auth action for some reason.","Polyphony::auth::login",true));
 }
