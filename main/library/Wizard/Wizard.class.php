@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.class.php,v 1.19 2005/03/28 23:25:51 nstamato Exp $
+ * @version $Id: Wizard.class.php,v 1.20 2005/04/06 14:16:13 adamfranco Exp $
  */
 
 /**
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/MultiValuedWizardStep.class.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: Wizard.class.php,v 1.19 2005/03/28 23:25:51 nstamato Exp $
+ * @version $Id: Wizard.class.php,v 1.20 2005/04/06 14:16:13 adamfranco Exp $
  */
 
 class Wizard {
@@ -324,6 +324,9 @@ class Wizard {
 		// adding values to the hiddenFields above.
 		$javaScript = "
 		
+		<script type='text/javascript'>
+			//<![CDATA[
+			
 			// get the form
 			function getForm() {
 				var f;
@@ -359,14 +362,12 @@ class Wizard {
 				form.__go_to_step.value = step;
 				form.submit();
 			}
-		
+
+			//]]>
+		</script>
 		";
-		if (!($theme =& $harmoni->getTheme())) {
-			$harmoni->setTheme( new SimpleLinesTheme() );
-			$theme =& $harmoni->getTheme();
-		}
-		$theme->addHeadJavascript($javaScript);
-		
+		$outputHandler =& $harmoni->getOutputHandler();
+		$outputHandler->setHead($outputHandler->getHead()."\n".$javaScript);		
 		
 		// :: Heading ::
 		$heading =& new Heading($this->_displayName.": ".
