@@ -11,7 +11,7 @@ require_once(dirname(__FILE__)."/WizardStep.interface.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: MultiValuedWizardStep.class.php,v 1.3 2004/08/02 17:40:19 adamfranco Exp $
+ * @version $Id: MultiValuedWizardStep.class.php,v 1.4 2004/08/03 15:22:29 adamfranco Exp $
  */
 
 class MultiValuedWizardStep 
@@ -417,6 +417,51 @@ class MultiValuedWizardStep
 							// replace the element with the value of the property.
 							if (preg_match("/\[{2}([^|]*)\]{2}/", $match, $parts)) {
 								$setText = str_replace($match, htmlspecialchars($this->_propertySets[$setIndex][$parts[1]], ENT_QUOTES), $setText);
+							}
+							// if this element is of the 
+							// [['PropertyName' == 'ComparisonVal'|StringIfEquivalent|StringIfNotEquivalent]]
+							// form, then compare the value of the property to the ComparisonVal
+							// and replace the whole element with the appropriate.
+							//
+							// RegEx Details - Look for
+							// '[[' followed by something followed by
+							// 	== OR < OR > OR <= OR >=
+							// followed by "|", a string, "|", another string, then ']]'
+							else if (preg_match("/\[{2}(.*)(==|<|>|<=|>=)([^<>=]*)\|(.*)\|(.*)\]{2}/", $match, $parts)) {
+								
+								$name = trim($parts[1]);
+								// If the property name is quoted, get the value and quote it.
+								// RegEx Details: look for begining and ending quotes.
+								if (preg_match("/^'(.*)'$/", $name, $nameParts)) {
+									if (!$this->_propertySets[$setIndex][$nameParts[1]] === NULL)
+										throwError(new Error("Property, ".$$nameParts[1].", does not exist in Wizard.", "Wizard", TRUE));
+										
+									$value = "'".$this->_propertySets[$setIndex][$nameParts[1]]."'";
+								} else {
+									if ($this->_propertySets[$setIndex][$name] === NULL)
+										throwError(new Error("Property, ".$name.", does not exist in Wizard.", "Wizard", TRUE));
+										
+									$value = $this->_propertySets[$setIndex][$name];
+								}
+								
+								// If the replacement strings contain the name of the property, repace it with the value.
+								$replaceTrueString = $parts[4];
+								$replaceTrueString = str_replace ($name, $value, $replaceTrueString);
+								$replaceFalseString = $parts[5];
+								$replaceFalseString = str_replace ($name, $value, $replaceFalseString);
+
+								// Build our comparison operation string
+								$operator = trim($parts[2]);
+								$compVal = trim($parts[3]);
+								
+								$comparison = "if (".$value." ".$operator." ".$compVal.") return TRUE; else return FALSE;";
+								
+								// Evaluate our comparison and replace with the appropriate
+								// string.
+								if (eval($comparison))
+									$setText = str_replace($match, $replaceTrueString, $setText);
+								else
+									$setText = str_replace($match, $replaceFalseString, $setText);
 							}
 						}
 					}
