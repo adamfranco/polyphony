@@ -106,8 +106,13 @@ return $mainScreen;
 
 // Qualifier printing functions:
 function printQualifier(& $qualifier) {
+	$id =& $qualifier->getId();
+	$type =& $qualifier->getQualifierType();
+	
+	$title = _("Id: ").$id->getIdString()." ";
+	$title .= _("Type: ").$type->getDomain()."::".$type->getAuthority()."::".$type->getKeyword();
 
-	print "\n<strong>".$qualifier->getDisplayName()."</strong>";
+	print "\n<a title='$title'><strong>".$qualifier->getDisplayName()."</strong></a>";
 	print "\n<div style='margin-left: 10px;'>";
 	printEditOptions($qualifier);
 	print "\n</div>";
@@ -151,7 +156,9 @@ function printEditOptions(& $qualifier) {
 		print ">?</a>";
 		print "\n\t</th>";
 		
+		$numFunctions = 0;
 		while ($functions->hasNext()) {
+			$numFunctions++;
 			$function =& $functions->next();
 			$functionId =& $function->getId();
 			
@@ -251,7 +258,10 @@ function printEditOptions(& $qualifier) {
 			print "\n\t\t\t\t</tr>";
 			print "\n\t\t\t\t</table>";
 			print "\n\t</td>";
-
+			
+			// If we are up to six and we have more, start a new row.
+			if ($numFunctions % 5 == 0 && $functions->hasNext())
+				print "\n</tr>\n<tr>\n\t<th>\n\t\t&nbsp;\n\t</th>";
 		}
 		print "\n</tr>";
 	}
