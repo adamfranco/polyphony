@@ -144,7 +144,7 @@ return $mainScreen;
 	print <<<END
 
 
-<script language='JavaScript1.2'>
+<script type='text/javascript'>
 
 	// Function for deciding if this parent has the specified child
 	function hasDescendent$idString ( childId ) {

@@ -288,7 +288,7 @@ $confirmRemove = _("Are you sure that you wish to remove the selected Groups and
 // Print out a Javascript function for submitting our groups choices
 print <<<END
 
-<script language='JavaScript1.2'>
+<script type='text/javascript'>
 
 	// Validate ancestory and submit to add checked to the group
 	function submitCheckedToGroup ( destGroupId ) {
@@ -471,7 +471,7 @@ return $mainScreen;
 	print <<<END
 
 
-<script language='JavaScript1.2'>
+<script type='text/javascript'>
 
 	// Function for deciding if this parent has the specified child
 	function hasDescendent$idString ( childId ) {

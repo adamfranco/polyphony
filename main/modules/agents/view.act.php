@@ -272,7 +272,7 @@ while ($groups->hasNext()) {
 		// Print out a Javascript function for submitting our groups choices
 		print <<<END
 
-<script language='JavaScript1.2'>
+<script type='text/javascript'>
 
 	// Validate ancestory and submit
 	function submitCheckedToGroup ( destGroupId ) {
@@ -367,7 +367,7 @@ return $mainScreen;
 	print <<<END
 
 
-<script language='JavaScript1.2'>
+<script type='text/javascript'>
 
 	// Function for deciding if this parent has the specified child
 	function hasDescendent$idString ( childId ) {

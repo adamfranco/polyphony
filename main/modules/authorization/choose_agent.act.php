@@ -29,7 +29,7 @@ ob_start();
 $errorString = _("You must select a User or Group.");
 print<<<END
 
-<script language='JavaScript1.2'>
+<script type='text/javascript'>
 
 	// Make sure a selection has been made and submit if it has.
 	function submitAgentChoice() {
