@@ -10,21 +10,22 @@
 
 
 $agentManager =& Services::getService("Agent");
+$idManager =& Services::getService("Id");
 
-printpre($_REQUEST);
+//printpre($_REQUEST);
 
-$id =& $shared->getId($_REQUEST['destinationgroup']);
-$destGroup =& $shared->getGroup($id);
+$id =& $idManager->getId($_REQUEST['destinationgroup']);
+$destGroup =& $agentManager->getGroup($id);
 
 foreach ($_REQUEST as $idString => $type) {
 
 	if ($type == "group") {
-		$id =& $agentManager->getId(strval($idString));
+		$id =& $idManager->getId(strval($idString));
 		$member =& $agentManager->getGroup($id);
 		$destGroup->remove($member);
 		
 	} else if ($type == "agent") {
-		$id =& $agentManager->getId(strval($idString));
+		$id =& $idManager->getId(strval($idString));
 		$member =& $agentManager->getAgent($id);
 		$destGroup->remove($member);
 	}	

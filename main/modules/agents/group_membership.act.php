@@ -349,17 +349,28 @@ print <<<END
 		
 		
 		if (numToAdd && confirm("$confirmAdd " + destGroupId + "?")) {
-			document.memberform.destinationgroup.value = (destGroupId);
-			document.memberform.submit();
+			form.destinationgroup.value = (destGroupId);
+			form.submit();
 		}
 	}
 	
 	// Validate that the check are children and submit to remove them from the group
 	function submitCheckedFromGroup ( destGroupId ) {
-		var elements = document.memberform.elements;
+		var f;		
+		for (i = 0; i < document.forms.length; i++) {
+			f = document.forms[i];			
+			if (f.id == 'memberform') {
+				var form = f;
+				break;
+			}
+		}		
+		
+		var elements = form.elements;
 		var i;
 		var numToAdd = 0;
 				
+		
+		
 		for (i = 0; i < elements.length; i++) {
 			var element = elements[i];
 			
@@ -393,9 +404,9 @@ print <<<END
 		}
 		
 		if (numToAdd && confirm("$confirmRemove " + destGroupId + "?")) {
-			document.memberform.destinationgroup.value = (destGroupId);
-			document.memberform.action = document.memberform.action.replace('add_to_group', 'remove_from_group');
-			document.memberform.submit();
+			form.destinationgroup.value = (destGroupId);
+			form.action = form.action.replace('add_to_group', 'remove_from_group');
+			form.submit();
 		}
 	}
 	
