@@ -48,14 +48,20 @@ ob_end_clean();
 
 // Get all hierarchies and their root qualifiers
 $hierarchyIds =& $authZManager->getQualifierHierarchies();
+$hierarchyManager =& Services::getService("Hierarchy");
 while ($hierarchyIds->hasNext()) {
 	$hierarchyId =& $hierarchyIds->next();
+	
+	$hierarchy =& $hierarchyManager->getHierarchy($hierarchyId);
+	$header =& new SingleContentLayout(HEADING_WIDGET, 2);
+	$header->addComponent(new Content($hierarchy->getDisplayName()." - <em>".$hierarchy->getDescription()."</em>"));
+	$actionRows->addComponent($header);
 
 	// Get the root qualifiers for the Hierarchy
 	$qualifiers =& $authZManager->getRootQualifiers($hierarchyId);
 	while ($qualifiers->hasNext()) {
 		$qualifier =& $qualifiers->next();
-
+		
 		// Create a layout for this qualifier
 		ob_start();
 		HierarchyPrinter::printNode($qualifier, $harmoni,
