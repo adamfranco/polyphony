@@ -51,6 +51,9 @@ if (count($_GET)) {
 // $member =& $sharedManager->getAgent($memberId);
 // $group->add($member);
 
+// $sharedManager->deleteAgent($sharedManager->getId("208"));
+
+
 // Users header
 $agentHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
 $agentHeader->addComponent(new Content(_("Users")));
@@ -529,7 +532,27 @@ END;
 function printMember(& $member) {
 	$id =& $member->getId();
 	$memberType =& $member->getType();
-	print "<input type='checkbox' name='".$id->getIdString()."' value='agent'>";
-	print "<a title='".$memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription()."'>";
-	print "<u>".$id->getIdString()." - ".$member->getDisplayName()."</u></a>";
+	print "\n<input type='checkbox' name='".$id->getIdString()."' value='agent'>";
+	print "\n<a title='".$memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription()."'>";
+	print "\n<u>".$id->getIdString()." - ".$member->getDisplayName()."</u></a>";
+	print "\n<em>";
+	
+	// print out the properties of the Agent
+	$propertiesIterator =& $member->getProperties();
+	while($propertiesIterator->hasNext()) {
+		$properties =& $propertiesIterator->next();
+		$propertiesType =& $properties->getType();
+		print "\n\t(<a title='".$propertiesType->getDomain()." :: ".$propertiesType->getAuthority()." :: ".$propertiesType->getKeyword()." - ".$propertiesType->getDescription()."'>";
+		
+		$keys =& $properties->getKeys();
+		$i = 0;
+		while ($keys->hasNext()) {
+			$key =& $keys->next();			
+			print "\n\t\t".(($i)?", ":"").$key.": ".$properties->getProperty($key);
+			$i++;
+		}
+		
+		print "\n\t</a>)";
+	}
+	print "\n</em>";
 }
