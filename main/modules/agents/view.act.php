@@ -35,9 +35,12 @@ $actionRows->addComponent($introHeader);
 $sharedManager =& Services::getService("Shared");
 
 
-//$sharedManager->createGroup("Staff", new HarmoniType("Groups", "Middlebury College", "User Status", "Status of the user at Middlebury College"), "Middlebury College Staff.");
+// $sharedManager->createGroup("Math", new HarmoniType("Groups", "Middlebury College", "Department", "What department the user belongs to at Middlebury College"), "Middlebury College French department.");
 
-// $id =& $sharedManager->getId("200");
+// $id =& $sharedManager->getId("192");
+// $sharedManager->deleteGroup($id);
+
+// $id =& $sharedManager->getId("205");
 // $group =& $sharedManager->getGroup($id);
 // $memberId =& $sharedManager->getId("198");
 // $member =& $sharedManager->getAgent($memberId);
