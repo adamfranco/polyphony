@@ -11,7 +11,7 @@ require_once(dirname(__FILE__)."/WizardStep.interface.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: MultiValuedWizardStep.class.php,v 1.1 2004/07/16 22:14:31 adamfranco Exp $
+ * @version $Id: MultiValuedWizardStep.class.php,v 1.2 2004/07/30 18:59:46 adamfranco Exp $
  */
 
 class MultiValuedWizardStep 
@@ -266,6 +266,23 @@ class MultiValuedWizardStep
 	}
 	
 	/**
+	 * Go through all properties and check the validity of their stored values. 
+	 * Return false if any of the submitted values are invalid.
+	 *
+	 * @access public
+	 * @return boolean True on success. False on invalid Property values.
+	 */
+	function arePropertiesValid () {
+		$valid = TRUE;
+		foreach (array_keys($this->_properties) as $name) {
+			if (!$this->_properties[$name]->validate())
+				$valid = FALSE;
+		}
+		
+		return $valid;
+	}
+	
+	/**
 	 * Returns a layout of content for this WizardStep
 	 * @param object Harmoni The harmoni object which contains the current context.
 	 * @return object Layout
@@ -356,7 +373,7 @@ class MultiValuedWizardStep
 		
 		
 		// Replace the [list] ... [/list] with our list text.
-		preg_match_all("/\[List\](.*)\[\/List\]/", $outputText, $listMatches);
+		preg_match_all("/(?s)\[List\](.*)\[\/List\]/", $outputText, $listMatches);
 //		printpre($listMatches);
 		if (count($listMatches[0])) {
 			foreach ($listMatches[0] as $key => $val) {
