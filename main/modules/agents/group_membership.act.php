@@ -289,6 +289,7 @@ $confirmRemove = _("Are you sure that you wish to remove the selected Groups and
 print <<<END
 
 <script type='text/javascript'>
+//<![CDATA[ 
 
 	// Validate ancestory and submit to add checked to the group
 	function submitCheckedToGroup ( destGroupId ) {
@@ -388,6 +389,7 @@ print <<<END
 		}
 	}
 	
+//]]> 
 </script>
 
 <input type='hidden' name='destinationgroup' value='25' />
@@ -472,6 +474,7 @@ return $mainScreen;
 
 
 <script type='text/javascript'>
+//<![CDATA[ 
 
 	// Function for deciding if this parent has the specified child
 	function hasDescendent$idString ( childId ) {
@@ -554,6 +557,7 @@ END;
 		return false;
 	}
 	
+//]]> 
 </script>
 
 END;

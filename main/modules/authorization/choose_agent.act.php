@@ -30,6 +30,7 @@ $errorString = _("You must select a User or Group.");
 print<<<END
 
 <script type='text/javascript'>
+//<![CDATA[ 
 
 	// Make sure a selection has been made and submit if it has.
 	function submitAgentChoice() {
@@ -48,7 +49,8 @@ print<<<END
 			alert("$errorString");
 		}
 	}
-
+	
+//]]> 
 </script>
 
 END;

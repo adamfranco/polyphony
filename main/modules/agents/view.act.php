@@ -273,6 +273,7 @@ while ($groups->hasNext()) {
 		print <<<END
 
 <script type='text/javascript'>
+//<![CDATA[ 
 
 	// Validate ancestory and submit
 	function submitCheckedToGroup ( destGroupId ) {
@@ -322,7 +323,8 @@ while ($groups->hasNext()) {
 	function inAncestor( id ) {
 		
 	}
-	
+
+//]]> 	
 </script>
 
 END;
@@ -368,6 +370,7 @@ return $mainScreen;
 
 
 <script type='text/javascript'>
+//<![CDATA[ 
 
 	// Function for deciding if this parent has the specified child
 	function hasDescendent$idString ( childId ) {
@@ -450,6 +453,7 @@ END;
 		return false;
 	}
 	
+//]]> 
 </script>
 
 END;
