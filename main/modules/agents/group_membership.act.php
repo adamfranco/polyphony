@@ -33,6 +33,8 @@ $introHeader->addComponent(new Content(_("Manage Group Membership")));
 $pageRows->addComponent($introHeader);
 
 $agentManager =& Services::getService("Agent");
+$idManager = Services::getService("Id");
+$everyoneId =& $idManager->getId("-1");
 
 // Build a variable to pass around our search terms when expanding
 if (count($_GET)) {
@@ -40,30 +42,6 @@ if (count($_GET)) {
 		foreach ($_GET as $key => $val)
 			$search .= "&".urlencode($key)."=".urlencode($val);
 }
-
-// $propertiesType = new HarmoniType('Agents', 'Harmoni', 'Auth Properties',
-// 						'Properties known to the Harmoni Authentication System.');
-// $properties =& new HarmoniProperties($propertiesType);
-// $key = "department code";
-// $val = "span";
-// $properties->addProperty($key, $val);
-// $key2 = "department email";
-// $val2 = "spanish_department@middlebury.edu";
-// $properties->addProperty($key2, $val2);
-// 
-// $sharedManager->createGroup("Spanish", new HarmoniType("Groups", "Middlebury College", "Department", "What department the user belongs to at Middlebury College"), "Middlebury College Spanish department.", $properties);
-
-// $id =& $sharedManager->getId("256");
-// $sharedManager->deleteGroup($id);
-
-// $id =& $sharedManager->getId("205");
-// $group =& $sharedManager->getGroup($id);
-// $memberId =& $sharedManager->getId("198");
-// $member =& $sharedManager->getAgent($memberId);
-// $group->add($member);
-
-// $sharedManager->deleteAgent($sharedManager->getId("208"));
-
 
 // Users header
 $agentHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
@@ -170,86 +148,6 @@ END;
 
 
 /*********************************************************
- * All the agents
- *********************************************************/
-//  
-// $expandAgents = ((in_array("allagents", $harmoni->pathInfoParts))?TRUE:FALSE);
-// 
-// // Create a layout for this group using the GroupPrinter
-// ob_start();
-// 
-// print "\n\n<table>\n\t<tr><td valign='top'>";
-// 
-// print <<<END
-// <div style='
-// 	border: 1px solid #000; 
-// 	width: 15px; 
-// 	height: 15px;
-// 	text-align: center;
-// 	text-decoration: none;
-// 	font-weight: bold;
-// '>
-// END;
-// 
-// // Break the path info into parts for the enviroment and parts that
-// // designate which nodes to expand.
-// $environmentInfo = array();
-// $expandedNodes = array();
-// 
-// for ($i=0; $i<count($harmoni->pathInfoParts); $i++) {
-// 	// If the index equals or is after our starting key
-// 	// it designates an expanded nodeId.
-// 	if ($i >= 2)
-// 		$expandedNodes[] = $harmoni->pathInfoParts[$i];
-// 	else	
-// 		$environmentInfo[] = $harmoni->pathInfoParts[$i];
-// }
-// 		
-// if ($expandAgents) {
-// 	$nodesToRemove = array("allagents");
-// 	$newPathInfo = array_merge($environmentInfo, array_diff($expandedNodes,
-// 															$nodesToRemove)); 
-// 	print "<a style='text-decoration: none;' href='";
-// 	print MYURL."/".implode("/", $newPathInfo)."/".$search;
-// 	print "'>-</a>";
-// } else {
-// 	$newPathInfo = array_merge($environmentInfo, $expandedNodes); 
-// 	print "<a style='text-decoration: none;' href='";
-// 	print MYURL."/".implode("/", $newPathInfo)."/allagents/".$search;
-// 	print "'>+</a>";
-// }
-// print "</div>";
-// print "\n\t</td><td valign='top'>\n\t\t";
-// print _("All Agents");
-// print "\n\t</td></tr>\n</table>";
-// 
-// if ($expandAgents) {
-// 	print <<<END
-// <div style='
-// 	margin-left: 13px; 
-// 	margin-right: 0px; 
-// 	margin-top:0px; 
-// 	padding-left: 10px;
-// 	border-left: 1px solid #000;
-// '>
-// END;
-// 	$agents =& $sharedManager->getAgents();
-// 	while ($agents->hasNext()) {
-// 		$agent =& $agents->next();
-// 		printMember($agent);
-// 		print "<br />";
-// 	}
-// 	print "</div>";
-// }
-// 
-// $agentLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 3);
-// $agentLayout->addComponent(new Content(ob_get_contents()));
-// ob_end_clean();
-// $actionRows->addComponent($agentLayout);
-
-
-
-/*********************************************************
  * Groups
  *********************************************************/
 
@@ -259,11 +157,13 @@ $childGroupIds = array();
 $groups =& $agentManager->getGroups();
 while ($groups->hasNext()) {
 	$group =& $groups->next();
-	$childGroups =& $group->getGroups(FALSE);
-	while ($childGroups->hasNext()) {
-		$group =& $childGroups->next();
-		$groupId =& $group->getId();
-		$childGroupIds[] =& $groupId->getIdString();
+	if (!$everyoneId->isEqual($group->getId())) {
+		$childGroups =& $group->getGroups(FALSE);
+		while ($childGroups->hasNext()) {
+			$group =& $childGroups->next();
+			$groupId =& $group->getId();
+			$childGroupIds[] =& $groupId->getIdString();
+		}
 	}
 }
 
@@ -462,19 +362,28 @@ return $mainScreen;
  * @ignore
  */
 function printGroup(& $group) {
+	$idManager = Services::getService("Id");
+	$everyoneId =& $idManager->getId("-1");
+	
 	$id =& $group->getId();
 	$groupType =& $group->getType();
 	
-	print "\n<input type='checkbox' name='".$id->getIdString()."' value='group' />";
+	if ($id->isEqual($everyoneId))
+		print "\n&nbsp; &nbsp; &nbsp;";
+	else
+		print "\n<input type='checkbox' name='".$id->getIdString()."' value='group' />";
+	
 	print "\n<a title='".htmlspecialchars($groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()." - ".$groupType->getDescription())."'>";
 	print "\n<span style='text-decoration: underline; font-weight: bold;'>".$id->getIdString()." - ".htmlspecialchars($group->getDisplayName())."</span></a>";
 	
-	print "\n <input type='button' value='"._("Add checked")."'";
-	print " onclick='Javascript:submitCheckedToGroup(\"".$id->getIdString()."\")'";
-	print " />";
-	print "\n <input type='button' value='"._("Remove checked")."'";
-	print " onclick='Javascript:submitCheckedFromGroup(\"".$id->getIdString()."\")'";
-	print " />";
+	if (!$id->isEqual($everyoneId)) {
+		print "\n <input type='button' value='"._("Add checked")."'";
+		print " onclick='Javascript:submitCheckedToGroup(\"".$id->getIdString()."\")'";
+		print " />";
+		print "\n <input type='button' value='"._("Remove checked")."'";
+		print " onclick='Javascript:submitCheckedFromGroup(\"".$id->getIdString()."\")'";
+		print " />";
+	}
 	
 	print "\n - <em>".htmlspecialchars($group->getDescription())."</em>";
 	
@@ -567,8 +476,8 @@ END;
 
 	$agents =& $group->getMembers(FALSE);
 	$i = 0;
-	while($agents->hasNext()) {
-		$child =& $agents->next();
+	while($agents->hasNextAgent()) {
+		$child =& $agents->nextAgent();
 		$childId =& $child->getId();
 		print (($i)?", ":"")."'".$childId->getIdString()."'";
 		$i++;
