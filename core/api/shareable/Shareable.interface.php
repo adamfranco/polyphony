@@ -8,7 +8,7 @@
  * to parts of another program, referenced by these fields.
  *
  * @package polyphony.interfaces.api.shareable
- * @version $Id: Shareable.interface.php,v 1.1 2003/08/05 21:03:44 gabeschine Exp $
+ * @version $Id: Shareable.interface.php,v 1.2 2003/08/06 22:33:26 gabeschine Exp $
  * @copyright 2003 
  **/
 
@@ -22,6 +22,18 @@ class Shareable {
 	 * @return boolean Success/failure.
 	 **/
 	function commit($dbIndex) {
+		die ("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class."); 
+	}
+	
+	/**
+	 * Tells the shareable to purge all information it has stored locally for
+	 * the current ID. This is almost never used, as no content is ever deleted unless
+	 * an administrator is doing cleaning.
+	 * @param integer $dbIndex the ID of the DBHandler connection to use.
+	 * @access public
+	 * @return boolean Success/failure
+	 **/
+	function purge($dbIndex) {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class."); 
 	}
 	
@@ -79,6 +91,16 @@ class Shareable {
 	}
 	
 	/**
+	 * Returns this Shareable's class. This can be a combination of: ITEM_CONTENT, ITEM_CONTENTPAGE,
+	 * ITEM_CONTENTCONTAINER or ITEM_NAVIGATIONLEVEL. They can be joined using Bitwise-OR.
+	 * @access public
+	 * @return integer
+	 **/
+	function getClass() {
+		die ("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class."); 
+	}
+	
+	/**
 	 * Sets this shareable object's system ID to $system. This is used when a 
 	 * new shareable object is created, since the same classname can be used
 	 * for multiple systems (two instances of the same application running
@@ -87,17 +109,6 @@ class Shareable {
 	 * @return void
 	 **/
 	function setSystem($system) {
-		die ("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class."); 
-	}
-	
-	/**
-	 * Returns an associative array of permitted parent system/subsystem types. This is used
-	 * to restrict where an end user can add a specific shareable in the hierarchy.
-	 * The array is of the format [system]=>array(subsystem1, subsystem2,...),...
-	 * @access public
-	 * @return array
-	 **/
-	function getPermittedParents() {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class."); 
 	}
 	
@@ -146,6 +157,7 @@ class Shareable {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class."); 
 	}
 	
+	// @todo -cShareable Implement Shareable.buildLayout
 	// @todo -cShareable Implement Shareable.modifyWizard
 }
 

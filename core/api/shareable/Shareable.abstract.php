@@ -13,7 +13,7 @@ require_once(POLYPHONY."core/api/shareable/Shareable.interface.php");
  * to parts of another program, referenced by these fields.
  *
  * @package polyphony.interfaces.api.shareable
- * @version $Id: Shareable.abstract.php,v 1.1 2003/08/05 21:03:44 gabeschine Exp $
+ * @version $Id: Shareable.abstract.php,v 1.2 2003/08/06 22:33:26 gabeschine Exp $
  * @copyright 2003 
  **/
 
@@ -44,10 +44,10 @@ class ShareableAbstract extends Shareable {
 	
 	/**
 	 * @access private
-	 * @var string $_permittedParents An array of permitted parents. Format:
-	 * [system]=>array("subsystem1",...),...
+	 * @var string $_class A one-byte integer containing some constants defining
+	 * what type of shareable this is. See the ITEM_* constants.
 	 **/
-	var $_permittedParents;
+	var $_class;
 	
 	/**
 	 * Returns this Shareable's display name.
@@ -102,14 +102,13 @@ class ShareableAbstract extends Shareable {
 	}
 	
 	/**
-	 * Returns an associative array of permitted parent system/subsystem types. This is used
-	 * to restrict where an end user can add a specific shareable in the hierarchy.
-	 * The array is of the format [system]=>array(subsystem1, subsystem2,...),...
+	 * Returns this Shareable's class. This can be a combination of: ITEM_CONTENT, ITEM_CONTENTPAGE,
+	 * ITEM_CONTENTCONTAINER or ITEM_NAVIGATIONLEVEL. They can be joined using Bitwise-OR.
 	 * @access public
-	 * @return array
+	 * @return integer
 	 **/
-	function getPermittedParents() {
-		return $this->_permittedParents;
+	function getClass() {
+		return $this->_class;
 	}
 }
 
