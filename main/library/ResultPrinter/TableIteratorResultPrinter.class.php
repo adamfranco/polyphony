@@ -1,16 +1,15 @@
 <?php
 
 /**
- * Print out an Iterator of items in rows and columns of TEXT_BLOCK widgets 
- * spread over multiple pages.
+ * Print out an Iterator of items in a table spread over multiple pages.
  * 
  * @package polyphony.resultprinter
- * @version $Id: IteratorResultPrinter.class.php,v 1.3 2004/08/06 14:56:09 adamfranco Exp $
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.1 2004/08/06 14:56:09 adamfranco Exp $
  * @date $Date: 2004/08/06 14:56:09 $
  * @copyright 2004 Middlebury College
  */
 
-class IteratorResultPrinter {
+class TableIteratorResultPrinter {
 	
 	
 	/**
@@ -26,7 +25,7 @@ class IteratorResultPrinter {
 	 * @access public
 	 * @date 8/5/04
 	 */
-	function IteratorResultPrinter (& $iterator, $numColumns, 
+	function TableIteratorResultPrinter (& $iterator, $numColumns, 
 									$numResultsPerPage, $callbackFunction) {
 		ArgumentValidator::validate($iterator, new HasMethodsValidatorRule("hasNext", "next"));
 		ArgumentValidator::validate($numColumns, new IntegerValidatorRule);
@@ -60,11 +59,11 @@ class IteratorResultPrinter {
 		
 		$layout =& new RowLayout;
 		
-		
+		ob_start();
 		$endingNumber = $startingNumber+$this->_pageSize-1;
 		$numItems = 0;
-		$resultLayout =& new RowLayout();
-		
+		print "\n<table cellspacing='10px'>";
+		print  "\n<tr>";
 		if ($this->_iterator->hasNext()) {
 			
 			// trash the items before our starting number
@@ -82,22 +81,17 @@ class IteratorResultPrinter {
 				$pageItems++;
 				
 				// Table Rows subtract 1 since we are counting 1-based
-				if (($pageItems-1) % $this->_numColumns == 0) {
-					$currentRow =& new ColumnLayout;
-					$resultLayout->addComponent($currentRow);
-				}
+				if ($pageItems > 1 && ($pageItems-1) % $this->_numColumns == 0) 
+					print  "\n</tr>\n<tr>";
+				
+				print "\n<td style='border: 1px solid;  padding: 5px;'>";
 				
 				$callback = $this->_callbackFunction;
-				$itemLayout =& $callback($item, $this->_callbackParams);
-				$currentRow->addComponent($itemLayout);
+				$callback($item, $this->_callbackParams);
+				
+				
+				print  "\n</td>";
 			}
-			
-			//if we have a partially empty last row, add more empty layouts
-			// to better-align the columns
-// 			while ($pageItems % $this->_numColumns != 0) {
-// 				$currentRow->addComponent(new Content(" &nbsp; "));
-// 				$pageItems++;
-// 			}
 			
 			// find the count of items 
 			while ($this->_iterator->hasNext()) {
@@ -105,8 +99,15 @@ class IteratorResultPrinter {
 				$numItems++;
 			}	
 		} else {
-			$resultLayout->addComponent(new Content(_("No <em>Items</em> are availible.")));
-		}		
+			print  "\n\t<td>"._("No <em>Items</em> are availible.")."</td>";
+		}
+		print  "\n</tr>";
+		print  "\n</table>";
+		
+		$resultBlock =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 2);
+		$resultBlock->addComponent(new Content(ob_get_contents()));
+		ob_end_clean();
+		
 		
 		// print out links to skip to more items if the number of Items is greater
 		// than the number we display on the page
@@ -132,7 +133,7 @@ class IteratorResultPrinter {
 			$layout->addComponent($pageLinkBlock, MIDDLE, CENTER);
 		}
 		
-		$layout->addComponent($resultLayout);
+		$layout->addComponent($resultBlock);
 		
 		if ($numItems > $this->_pageSize) {
 			$layout->addComponent($pageLinkBlock, MIDDLE, CENTER);
