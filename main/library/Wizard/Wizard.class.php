@@ -13,7 +13,7 @@ require_once(dirname(__FILE__)."/WizardStep.class.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: Wizard.class.php,v 1.3 2004/06/01 21:25:44 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.4 2004/06/03 21:27:53 gabeschine Exp $
  */
 
 class Wizard {
@@ -176,13 +176,14 @@ class Wizard {
 	}
 	
 	/**
-	 * Returns TRUE if one of the "Save" buttons was clicked.
+	 * Returns TRUE if one of the "Save" buttons was clicked AND the properties validate successfully.
 	 * @return boolean
 	 */
 	function isSaveRequested () {
-		if ($_REQUEST['__save'] || $_REQUEST['__save_link'])
-			return TRUE;
-		else
+		if ($_REQUEST['__save'] || $_REQUEST['__save_link']) {
+			if ($this->updateLastStep()) return true;
+			return false;
+		} else
 			return FALSE;
 	}
 	
