@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.2 2005/02/16 15:25:07 thebravecowboy Exp $
+ * @version $Id: create_agent.act.php,v 1.3 2005/02/28 22:04:54 thebravecowboy Exp $
  */
  
 // Get the Layout components. See core/modules/moduleStructure.txt
@@ -23,12 +23,18 @@ if(!$_REQUEST["username"] || !$_REQUEST["password"]){
 }else{
 	$userName = $_REQUEST["username"];
 	$password = $_REQUEST["password"];
-	$displayName = $_REQUEST["display_name"];
-
-	$properties = array();
-	$properties["department"] = $_REQUEST["department"];
 	
-	$result = makeNewAgent($userName, $password, $displayName, $properties);
+	$properties = array();
+	
+	foreach($_REQUEST as $key=>$request){
+		$key_parts = explode("_",$key);
+		if($key_parts[0]=="property"){
+			$key_name = $key_parts[1];
+			$properties[$key_name] = $_REQUEST[$key];
+		}
+	}
+		
+	$result = makeNewAgent($userName, $password, $properties);
 	if($result){
 		print "User succesfully created.";
 	}else{
@@ -58,12 +64,12 @@ function createAgentForm(){
 			<tr><td>
 				Display Name:
 			</td><td>
-				<input type='text' name='display_name' />
+				<input type='text' name='property_displayName' />
 			</td></tr>
 			<tr><td>
 				Department:
 			</td><td>
-				<input type='text' name='department' />
+				<input type='text' name='property_department' />
 			</td></tr>
 			</table>	
 			<input type='submit' value='Create New User' />			
@@ -71,13 +77,13 @@ function createAgentForm(){
 }
 
 
-function makeNewAgent($userName, $password, $displayName, & $properties){
+function makeNewAgent($userName, $password, & $properties){
 
 	$authNHandler =& Services::getService("Authentication");
 
 	$DBAuth =& $authNHandler->getMethod("dbAuth");
 
-	$newAgent =& $DBAuth->addAgent($userName,$password, $properties, $displayName);
+	$newAgent =& $DBAuth->addAgent($userName,$password, $properties);
 		
 	return $newAgent;
 }

@@ -514,8 +514,8 @@ function printMember(& $member) {
 	$id =& $member->getId();
 	$memberType =& $member->getType();
 	print "\n<input type='checkbox' name='".$id->getIdString()."' value='agent' />";
-	print "\n<a title='".htmlspecialchars($memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription())."'>";
-	print "\n<span style='text-decoration: underline;'>".$id->getIdString()." - ".htmlspecialchars($member->getDisplayName())."</span></a>";
+	print "\n<a href='".MYURL."/agents/edit_agent_details/".$id->getIdString()."?callingFrom=group_membership' title='".htmlspecialchars($memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription())."'>";
+	print "\n<span style='text-decoration: none;'>".$id->getIdString()." - ".htmlspecialchars($member->getDisplayName())."</span></a>";
 	
 	// print out the properties of the Agent
 	print "\n<em>";
