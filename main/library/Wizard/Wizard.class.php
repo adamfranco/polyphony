@@ -14,7 +14,7 @@ require_once(dirname(__FILE__)."/MultiValuedWizardStep.class.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: Wizard.class.php,v 1.7 2004/07/16 22:14:31 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.8 2004/07/29 21:37:17 adamfranco Exp $
  */
 
 class Wizard {
@@ -42,19 +42,28 @@ class Wizard {
 	 * @attribute private boolean _allowStepLinks
 	 */
 	 var $_allowStepLinks;	
+	 
+	/**
+	 * If true, users can cancel out of the Wizard.
+	 * @attribute private boolean _allowCancel
+	 */
+	 var $_allowCancel;	
 	
 	/**
 	 * Constructor
 	 * @param string $displayName The title of this wizard.
 	 * @param boolean $allowStepLinks If true, steps can be accessed non-linearly.
+	 * @param boolean $allowCancel If true, users can cancel out of the Wizard.
 	 * @return void
 	 */
-	function Wizard ( $displayName, $allowStepLinks = TRUE ) {
+	function Wizard ( $displayName, $allowStepLinks = TRUE, $allowCancel = TRUE ) {
 		ArgumentValidator::validate($displayName, new StringValidatorRule, true);
 		ArgumentValidator::validate($allowStepLinks, new BooleanValidatorRule, true);
+		ArgumentValidator::validate($allowCancel, new BooleanValidatorRule, true);
 		
 		$this->_displayName = $displayName;
 		$this->_allowStepLinks = $allowStepLinks;
+		$this->_allowCancel = $allowCancel;
 		$this->_currentStep = 1;
 		$this->_steps = array();
 	}
@@ -240,11 +249,14 @@ class Wizard {
 		
 		// :: Form tags for around the layout :: 
 		$wizardLayout->setPreSurroundingText("<form action='".MYURL."/".implode("/", $harmoni->pathInfoParts)."' method='post' id='wizardform' name='wizardform'>");
-		$postText = "\n<input type='hidden' name='__go_to_step' value=''>";
-		$postText .= "\n<input type='hidden' name='__save_link' value=''>";
-		$postText .= "\n<input type='hidden' name='__cancel_link' value=''>";
-		$postText .= "\n</form>";
-		$wizardLayout->setPostSurroundingText($postText);
+		
+		ob_start();
+		print "\n<input type='hidden' name='__go_to_step' value=''>";
+		print "\n<input type='hidden' name='__save_link' value=''>";
+		print "\n<input type='hidden' name='__cancel_link' value=''>";
+		print "\n</form>";
+		$wizardLayout->setPostSurroundingText(ob_get_contents());
+		ob_end_clean();
 		
 		// Add to the page's javascript so we can skip to next pages by
 		// adding values to the hiddenFields above.
@@ -313,45 +325,50 @@ class Wizard {
 					FALSE)
 			);
 		}
-		$menu->addComponent(
-			new LinkMenuItem(_("Cancel"),
-				"Javascript:cancel()",
-				FALSE)
-		);
+		if ($this->_allowCancel) {
+			$menu->addComponent(
+				new LinkMenuItem(_("Cancel"),
+					"Javascript:cancel()",
+					FALSE)
+			);
+		}
 		
 		$center = new RowLayout;
 		$lower->addComponent($center);
 		
 		// :: Buttons ::
 		$buttons =& new SingleContentLayout (TEXT_BLOCK_WIDGET, 3);
-		$buttonText = "\n<table width='100%'>";
+		ob_start();
+		print "\n<table width='100%'>";
 		if (count($this->_steps) > 1) {
-			$buttonText .= "\n\t<tr>";
-			$buttonText .= "\n\t\t<td align='left'>";
+			print "\n\t<tr>";
+			print "\n\t\t<td align='left'>";
 			if ($this->hasPrevious())
-				$buttonText .= "\n\t\t\t<input type='submit' name='__previous' value='"._("Previous")."'>";
+				print "\n\t\t\t<input type='submit' name='__previous' value='"._("Previous")."'>";
 			else
-				$buttonText .= "\n\t\t\t &nbsp; ";
-			$buttonText .= "\n\t\t</td>";
-			$buttonText .= "\n\t\t<td align='right'>";
+				print "\n\t\t\t &nbsp; ";
+			print "\n\t\t</td>";
+			print "\n\t\t<td align='right'>";
 			if ($this->hasNext())
-				$buttonText .= "\n\t\t\t<input type='submit' name='__next' value='"._("Next")."'>";
+				print "\n\t\t\t<input type='submit' name='__next' value='"._("Next")."'>";
 			else
-				$buttonText .= "\n\t\t\t &nbsp; ";
-			$buttonText .= "\n\t\t</td>";
-			$buttonText .= "\n\t</tr>";
+				print "\n\t\t\t &nbsp; ";
+			print "\n\t\t</td>";
+			print "\n\t</tr>";
 		}
-		$buttonText .= "\n\t<tr>";
-		$buttonText .= "\n\t\t<td align='left'>";
-		$buttonText .= "\n\t\t\t<input type='submit' name='__cancel' value='"._("Cancel")."'>";
-		$buttonText .= "\n\t\t</td>";
-		$buttonText .= "\n\t\t<td align='right'>";
-		$buttonText .= "\n\t\t\t<input type='submit' name='__save' value='"._("Save")."'>";
-		$buttonText .= "\n\t\t</td>";
-		$buttonText .= "\n\t</tr>";
+		print "\n\t<tr>";
+		print "\n\t\t<td align='left'>";
+		if ($this->_allowCancel)
+			print "\n\t\t\t<input type='submit' name='__cancel' value='"._("Cancel")."'>";
+		print "\n\t\t</td>";
+		print "\n\t\t<td align='right'>";
+		print "\n\t\t\t<input type='submit' name='__save' value='"._("Save")."'>";
+		print "\n\t\t</td>";
+		print "\n\t</tr>";
 		
-		$buttonText .= "\n</table>";
-		$buttons->addComponent(new Content($buttonText));
+		print "\n</table>";
+		$buttons->addComponent(new Content(ob_get_contents()));
+		ob_end_clean();
 		$center->addComponent($buttons);
 		
 		// :: The Current Step ::
