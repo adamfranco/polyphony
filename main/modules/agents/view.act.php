@@ -23,7 +23,7 @@ $pageRows =& new RowLayout();
 $actionRows =& new RowLayout();
 
 // In order to preserve proper nesting on the HTML output
-$actionRows->setPreSurroundingText("<form name='memberform' id='memberform' method='post' action='".MYURL."/agents/add_to_group/".implode("/", $harmoni->pathInfoParts)."'>");
+$actionRows->setPreSurroundingText("<form id='memberform' method='post' action='".MYURL."/agents/add_to_group/".implode("/", $harmoni->pathInfoParts)."'>");
 $actionRows->setPostSurroundingText("</form>");
 
 $centerPane->addComponent($pageRows, TOP, CENTER);
@@ -69,7 +69,7 @@ $self = $_SERVER['PHP_SELF'];
 $lastCriteria = $_REQUEST['search_criteria'];
 $titleString = _("Search For Users").": ";
 print <<<END
-<form action='$self' method='get'>
+<form id='usersearch' action='$self' method='get'>
 	<div>
 	$titleString
 	<input type='text' name='search_criteria' value='$lastCriteria' />
@@ -149,7 +149,7 @@ END;
 		printMember($agent);
 		print "<br />";
 	}
-	print "\n</div>\n</form>";
+	print "\n</div>";
 	
 	$agentLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 3);
 	$agentLayout->addComponent(new Content(ob_get_contents()));
@@ -280,8 +280,16 @@ while ($groups->hasNext()) {
 
 	// Validate ancestory and submit
 	function submitCheckedToGroup ( destGroupId ) {
-		var elements = document.memberform.elements;
-		var i;
+		var f;		
+		for (i = 0; i < document.forms.length; i++) {
+			f = document.forms[i];			
+			if (f.id == 'memberform') {
+				var form = f;
+				break;
+			}
+		}
+		
+		var elements = form.elements;
 				
 		for (i = 0; i < elements.length; i++) {
 			var element = elements[i];
@@ -318,7 +326,7 @@ while ($groups->hasNext()) {
 		
 		if (confirm("Are you sure that you wish to add the selected groups and Agents to Group " + destGroupId + "?")) 
 		{
-			document.memberform.submit();
+			form.submit();
 		}
 	}
 
