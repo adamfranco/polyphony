@@ -4,8 +4,8 @@
  * Print out an Iterator of items in a table spread over multiple pages.
  * 
  * @package polyphony.resultprinter
- * @version $Id: TableIteratorResultPrinter.class.php,v 1.3 2004/08/26 15:10:51 adamfranco Exp $
- * @date $Date: 2004/08/26 15:10:51 $
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.4 2004/12/17 19:00:19 adamfranco Exp $
+ * @date $Date: 2004/12/17 19:00:19 $
  * @copyright 2004 Middlebury College
  */
 
@@ -50,11 +50,14 @@ class TableIteratorResultPrinter {
 	 * Returns a layout of the Results
 	 * 
 	 * @param object Harmoni The Harmoni object containing context data.
+	 * @param optional string $shouldPrintFunction The name of a function that will
+	 *		return a boolean specifying whether or not to filter a given result.
+	 *		If null, all results are printed.
 	 * @return object Layout A layout containing the results/page links
 	 * @access public
 	 * @date 8/5/04
 	 */
-	function &getLayout (& $harmoni) {
+	function &getLayout (& $harmoni, $shouldPrintFunction = NULL) {
 		$startingNumber = ($_REQUEST['starting_number'])?$_REQUEST['starting_number']:1;
 		
 		$layout =& new RowLayout;
@@ -69,7 +72,10 @@ class TableIteratorResultPrinter {
 			// trash the items before our starting number
 			while ($this->_iterator->hasNext() && $numItems+1 < $startingNumber) {
 				$item =& $this->_iterator->next();
-				$numItems++;
+				
+				// Ignore this if it should be filtered.
+				if (!$shouldPrintFunction || $shouldPrintFunction($item))
+					$numItems++;
 			}
 			
 			
@@ -77,27 +83,34 @@ class TableIteratorResultPrinter {
 			$pageItems = 0;
 			while ($this->_iterator->hasNext() && $numItems < $endingNumber) {
 				$item =& $this->_iterator->next();
-				$numItems++;
-				$pageItems++;
 				
-				// Table Rows subtract 1 since we are counting 1-based
-				if ($pageItems > 1 && ($pageItems-1) % $this->_numColumns == 0) 
-					print  "\n</tr>\n<tr>";
-				
-				print "\n<td style='border: 1px solid;  padding: 5px;'>";
-				
-				$itemArray = array (& $item);
-				$params = array_merge($itemArray, $this->_callbackParams);
-				call_user_func_array($this->_callbackFunction, $params);
-				
-				
-				print  "\n</td>";
+				// Only Act if this item isn't to be filtered.
+				if (!$shouldPrintFunction || $shouldPrintFunction($item)) {
+					$numItems++;
+					$pageItems++;
+					
+					// Table Rows subtract 1 since we are counting 1-based
+					if ($pageItems > 1 && ($pageItems-1) % $this->_numColumns == 0) 
+						print  "\n</tr>\n<tr>";
+					
+					print "\n<td style='border: 1px solid;  padding: 5px;'>";
+					
+					$itemArray = array (& $item);
+					$params = array_merge($itemArray, $this->_callbackParams);
+					call_user_func_array($this->_callbackFunction, $params);
+					
+					
+					print  "\n</td>";
+				}
 			}
 			
 			// find the count of items 
 			while ($this->_iterator->hasNext()) {
 				$item =& $this->_iterator->next();
-				$numItems++;
+				
+				// Ignore this if it should be filtered.
+				if (!$shouldPrintFunction || $shouldPrintFunction($item))
+					$numItems++;
 			}	
 		} else {
 			print  "\n\t<td>"._("No <em>Items</em> are availible.")."</td>";

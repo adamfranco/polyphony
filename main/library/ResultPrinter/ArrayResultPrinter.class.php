@@ -5,8 +5,8 @@
  * spread over multiple pages.
  * 
  * @package polyphony.resultprinter
- * @version $Id: ArrayResultPrinter.class.php,v 1.2 2004/08/26 15:10:51 adamfranco Exp $
- * @date $Date: 2004/08/26 15:10:51 $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.3 2004/12/17 19:00:15 adamfranco Exp $
+ * @date $Date: 2004/12/17 19:00:15 $
  * @copyright 2004 Middlebury College
  */
 
@@ -51,11 +51,14 @@ class ArrayResultPrinter {
 	 * Returns a layout of the Results
 	 * 
 	 * @param object Harmoni The Harmoni object containing context data.
+	 * @param optional string $shouldPrintFunction The name of a function that will
+	 *		return a boolean specifying whether or not to filter a given result.
+	 *		If null, all results are printed.
 	 * @return object Layout A layout containing the results/page links
 	 * @access public
 	 * @date 8/5/04
 	 */
-	function &getLayout (& $harmoni) {
+	function &getLayout (& $harmoni, $shouldPrintFunction = NULL) {
 		$startingNumber = ($_REQUEST['starting_number'])?$_REQUEST['starting_number']:1;
 		
 		$layout =& new RowLayout;
@@ -73,7 +76,10 @@ class ArrayResultPrinter {
 			while ($numItems+1 < $startingNumber && $numItems < count($this->_array)) {
 				print "Skipping.";
 				next($this->_array);
-				$numItems++;
+				
+				// Ignore this if it should be filtered.
+				if (!$shouldPrintFunction || $shouldPrintFunction($item))
+					$numItems++;
 			}
 			
 			// print up to $this->_pageSize items
@@ -81,19 +87,23 @@ class ArrayResultPrinter {
 			while ($numItems < $endingNumber && $numItems < count($this->_array)) {
 				$item =& current($this->_array);
 				next($this->_array);
-				$numItems++;
-				$pageItems++;
 				
-				// Table Rows subtract 1 since we are counting 1-based
-				if (($pageItems-1) % $this->_numColumns == 0) {
-					$currentRow =& new ColumnLayout;
-					$resultLayout->addComponent($currentRow);
+				// Only Act if this item isn't to be filtered.
+				if (!$shouldPrintFunction || $shouldPrintFunction($item)) {
+					$numItems++;
+					$pageItems++;
+					
+					// Table Rows subtract 1 since we are counting 1-based
+					if (($pageItems-1) % $this->_numColumns == 0) {
+						$currentRow =& new ColumnLayout;
+						$resultLayout->addComponent($currentRow);
+					}
+					
+					$itemArray = array (& $item);
+					$params = array_merge($itemArray, $this->_callbackParams);
+					$itemLayout =& call_user_func_array($this->_callbackFunction, $params);
+					$currentRow->addComponent($itemLayout);
 				}
-				
-				$itemArray = array (& $item);
-				$params = array_merge($itemArray, $this->_callbackParams);
-				$itemLayout =& call_user_func_array($this->_callbackFunction, $params);
-				$currentRow->addComponent($itemLayout);
 			}
 			
 			//if we have a partially empty last row, add more empty layouts
@@ -105,7 +115,9 @@ class ArrayResultPrinter {
 			
 			// find the count of items 
 			while (next($this->_array)) {
-				$numItems++;
+				// Ignore this if it should be filtered.
+				if (!$shouldPrintFunction || $shouldPrintFunction($item))
+					$numItems++;
 			}	
 		} else {
 			$resultLayout->addComponent(new Content(_("No <em>Items</em> are availible.")));

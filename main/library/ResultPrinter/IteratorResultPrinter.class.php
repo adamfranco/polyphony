@@ -5,8 +5,8 @@
  * spread over multiple pages.
  * 
  * @package polyphony.resultprinter
- * @version $Id: IteratorResultPrinter.class.php,v 1.5 2004/08/26 15:10:51 adamfranco Exp $
- * @date $Date: 2004/08/26 15:10:51 $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.6 2004/12/17 19:00:18 adamfranco Exp $
+ * @date $Date: 2004/12/17 19:00:18 $
  * @copyright 2004 Middlebury College
  */
 
@@ -50,12 +50,15 @@ class IteratorResultPrinter {
 	/**
 	 * Returns a layout of the Results
 	 * 
-	 * @param object Harmoni The Harmoni object containing context data.
+	 * @param object Harmoni $harmoni The Harmoni object containing context data.
+	 * @param optional string $shouldPrintFunction The name of a function that will
+	 *		return a boolean specifying whether or not to filter a given result.
+	 *		If null, all results are printed.
 	 * @return object Layout A layout containing the results/page links
 	 * @access public
 	 * @date 8/5/04
 	 */
-	function &getLayout (& $harmoni) {
+	function &getLayout (& $harmoni, $shouldPrintFunction = NULL) {
 		$startingNumber = ($_REQUEST['starting_number'])?$_REQUEST['starting_number']:1;
 		
 		$layout =& new RowLayout;
@@ -70,7 +73,10 @@ class IteratorResultPrinter {
 			// trash the items before our starting number
 			while ($this->_iterator->hasNext() && $numItems+1 < $startingNumber) {
 				$item =& $this->_iterator->next();
-				$numItems++;
+				
+				// Ignore this if it should be filtered.
+				if (!$shouldPrintFunction || $shouldPrintFunction($item))
+					$numItems++;
 			}
 			
 			
@@ -78,19 +84,23 @@ class IteratorResultPrinter {
 			$pageItems = 0;
 			while ($this->_iterator->hasNext() && $numItems < $endingNumber) {
 				$item =& $this->_iterator->next();
-				$numItems++;
-				$pageItems++;
 				
-				// Table Rows subtract 1 since we are counting 1-based
-				if (($pageItems-1) % $this->_numColumns == 0) {
-					$currentRow =& new ColumnLayout;
-					$resultLayout->addComponent($currentRow);
+				// Only Act if this item isn't to be filtered.
+				if (!$shouldPrintFunction || $shouldPrintFunction($item)) {
+					$numItems++;
+					$pageItems++;
+				
+					// Table Rows subtract 1 since we are counting 1-based
+					if (($pageItems-1) % $this->_numColumns == 0) {
+						$currentRow =& new ColumnLayout;
+						$resultLayout->addComponent($currentRow);
+					}
+					
+					$itemArray = array (& $item);
+					$params = array_merge($itemArray, $this->_callbackParams);
+					$itemLayout =& call_user_func_array($this->_callbackFunction, $params);
+					$currentRow->addComponent($itemLayout);
 				}
-				
-				$itemArray = array (& $item);
-				$params = array_merge($itemArray, $this->_callbackParams);
-				$itemLayout =& call_user_func_array($this->_callbackFunction, $params);
-				$currentRow->addComponent($itemLayout);
 			}
 			
 			//if we have a partially empty last row, add more empty layouts
@@ -103,7 +113,10 @@ class IteratorResultPrinter {
 			// find the count of items 
 			while ($this->_iterator->hasNext()) {
 				$item =& $this->_iterator->next();
-				$numItems++;
+				
+				// Ignore this if it should be filtered.
+				if (!$shouldPrintFunction || $shouldPrintFunction($item))
+					$numItems++;
 			}	
 		} else {
 			$resultLayout->addComponent(new Content(_("No <em>Items</em> are availible.")));
