@@ -10,8 +10,8 @@ require_once(dirname(__FILE__)."/../DRInputOutputModule.interface.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.drinputoutput
- * @version $Id: HarmoniFileModule.class.php,v 1.2 2004/10/20 22:46:39 adamfranco Exp $
- * @date $Date: 2004/10/20 22:46:39 $
+ * @version $Id: HarmoniFileModule.class.php,v 1.3 2004/10/21 22:34:20 adamfranco Exp $
+ * @date $Date: 2004/10/21 22:34:20 $
  * @copyright 2004 Middlebury College
  */
 
@@ -112,6 +112,20 @@ class HarmoniFileModule
 									FALSE);
 		$property->setDefaultValue("TRUE");
 		
+		$step->createProperty("thumbnail_upload",
+									new AlwaysTrueValidatorRule,
+									FALSE);
+		
+		$property =& $step->createProperty("thumbnail_mime_type",
+									new AlwaysTrueValidatorRule,
+									FALSE);
+		$property->setDefaultValue($fields['THUMBNAIL_MIME_TYPE']->getValue());
+		
+		$property =& $step->createProperty("thumbnail_type_from_file",
+									new AlwaysTrueValidatorRule,
+									FALSE);
+		$property->setDefaultValue("TRUE");
+		
 		ob_start();
 		print "\n<em>"._("Upload a new file or change file properties.")."</em>\n<hr />";
 		print "\n<br /><strong>"._("New file").":</strong>";
@@ -183,6 +197,34 @@ class HarmoniFileModule
 		print "\n\t</td>";
 		print "\n</tr>";
 		
+		print "\n<tr>";
+		print "\n\t<td>";
+		print "\n\t\t"._("Thumbnail")."";
+		print "\n\t</td>";
+		print "\n\t<td align='center'>";
+		print "\n\t\t &nbsp; ";
+		print "\n\t</td>";
+		print "\n\t<td>";
+		print "\n<input type='file' name='thumbnail_upload'  />";
+		print "\n\t</td>";
+		print "\n</tr>";
+		
+		print "\n<tr>";
+		print "\n\t<td>";
+		print "\n\t\t"._("Thumbnail Mime Type")."";
+		print "\n\t</td>";
+		print "\n\t<td align='center'>";
+		print "\n\t\t<input type='checkbox' name='thumbnail_type_from_file' value='TRUE'";
+		print " [['thumbnail_type_from_file'=='TRUE'|checked='checked'|]] />";
+		print "\n\t</td>";
+		print "\n\t<td>";
+		print "\n\t\t<input type='text'";
+		print " name='thumbnail_mime_type'";
+		print " value='[[thumbnail_mime_type]]' /> ";
+		print " [[thumbnail_mime_type|Error]]";
+		print "\n\t</td>";
+		print "\n</tr>";
+		
 		print "\n</table>";
 		
 		print "\n</p>";
@@ -231,6 +273,30 @@ class HarmoniFileModule
 			$fields['FILE_DATA']->updateValue(file_get_contents($tmpName));
 			$fields['FILE_NAME']->updateValue($name);
 			$fields['MIME_TYPE']->updateValue($mimeType);
+		}
+		
+		// If we've uploaded a thumbnail, safe it.
+		if (is_array($_FILES['thumbnail_upload']) 
+			&& $_FILES['thumbnail_upload']['name']) 
+		{
+			$name = $_FILES['thumbnail_upload']['name'];
+			$tmpName = $_FILES['thumbnail_upload']['tmp_name'];			
+			$mimeType = $_FILES['thumbnail_upload']['type'];
+			if (!$mimeType) {
+//				$mimeType = MIMETypes::getMimeTypeForFileName($uploadedName);
+			}
+			
+			$fields['THUMBNAIL_DATA']->updateValue(file_get_contents($tmpName));
+//			$fields['FILE_NAME']->updateValue($name);
+			$fields['THUMBNAIL_MIME_TYPE']->updateValue($mimeType);
+		}
+		// otherwise, if we've uploaded a new file only, get rid of this one
+		else if (is_array($_FILES['file_upload']) 
+			&& $_FILES['file_upload']['name']) 
+		{
+			$fields['THUMBNAIL_DATA']->updateValue("");
+//			$fields['FILE_NAME']->updateValue($name);
+			$fields['THUMBNAIL_MIME_TYPE']->updateValue("");
 		}
 		
 		// if the "Take from new file" box was unchecked store the name.
@@ -301,22 +367,16 @@ class HarmoniFileModule
 		// print out the fields;
 		ob_start();
 		
+		$partsToSkip = array ('FILE_DATA', 'THUMBNAIL_DATA', 'THUMBNAIL_MIME_TYPE');
+		$printThumbnail = FALSE;
+		
+		
+		
 		foreach (array_keys($parts) as $key) {
 			$part =& $parts[$key];
 			$partId =& $part->getId();
 			
-			if ($partId->getIdString() == 'FILE_DATA') {
-				$recordId =& $record->getId();
-				
-				print "\n<a href='".MYURL."/dr/viewfile/"
-					.$drId->getIdString()."/"
-					.$assetId->getIdString()."/"
-					.$recordId->getIdString()."/"
-					.$fields['FILE_NAME'][0]->getValue()."'";
-				print " target='_blank'>";
-				print $fields['FILE_NAME'][0]->getValue();
-				print "</a> <br />";
-			} else {
+			if(!in_array($partId->getIdString(), $partsToSkip)){
 				print "\n<strong>".$part->getDisplayName().":</strong> \n";
 				if ($partId->getIdString() == 'FILE_SIZE')
 					print StringFunctions::getSizeString($fields[$partId->getIdString()][0]->getValue());
@@ -324,10 +384,41 @@ class HarmoniFileModule
 					print $fields[$partId->getIdString()][0]->getValue();
 				print "\n<br />";
 			}
+			// If we've specified that we want the data, or part of the thumb, 
+			// print the tumb.
+			else {
+				$printThumbnail = TRUE;
+			}
 		}
 		
 		$html = ob_get_contents();
 		ob_end_clean();
+		
+		if ($printThumbnail) {
+			ob_start();
+			$recordId =& $record->getId();
+			
+			print "\n<a href='".MYURL."/dr/viewfile/"
+				.$drId->getIdString()."/"
+				.$assetId->getIdString()."/"
+				.$recordId->getIdString()."/"
+				.$fields['FILE_NAME'][0]->getValue()."'";
+			print " target='_blank'>";
+			
+			// If we have a thumbnail with a valid mime type, print a link to that.
+			print "\n<img src='".MYURL."/dr/viewthumbnail/"
+			.$drId->getIdString()."/"
+			.$assetId->getIdString()."/"
+			.$recordId->getIdString()."/"
+			.$fields['FILE_NAME'][0]->getValue()."'";
+			print " border='0' />";
+		
+			
+			print "</a> <br />";
+			
+			$html = ob_get_contents().$html;
+			ob_end_clean();
+		}
 		
 		return $html;
 	}
