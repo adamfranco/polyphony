@@ -14,7 +14,7 @@ require_once(dirname(__FILE__)."/MultiValuedWizardStep.class.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: Wizard.class.php,v 1.8 2004/07/29 21:37:17 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.9 2004/07/29 22:11:15 adamfranco Exp $
  */
 
 class Wizard {
@@ -302,18 +302,20 @@ class Wizard {
 		$menu =& new VerticalMenuLayout(MENU_WIDGET, 2);
 		$lower->addComponent($menu);
 		foreach (array_keys($this->_steps) as $number) {
+			$itemText = $number.". ".$this->_steps[$number]->getDisplayName();
+			if (!$this->_steps[$number]->arePropertiesValid())
+				$itemText .= " *";
+			
 			if ($number != $this->_currentStep
 				&& $this->_allowStepLinks) {
 				$menu->addComponent(
-					new LinkMenuItem($number.". ".
-						$this->_steps[$number]->getDisplayName(),
+					new LinkMenuItem($itemText,
 						"Javascript:goToStep('".$number."')",
 						FALSE)
 				);			
 			} else {
 				$menu->addComponent(
-					new StandardMenuItem($number.". ".
-						$this->_steps[$number]->getDisplayName(),
+					new StandardMenuItem($itemText,
 						($number == $this->_currentStep)?TRUE:FALSE)
 				);
 			}

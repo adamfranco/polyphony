@@ -8,7 +8,7 @@
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: WizardStep.interface.php,v 1.1 2004/07/16 22:14:31 adamfranco Exp $
+ * @version $Id: WizardStep.interface.php,v 1.2 2004/07/29 22:11:15 adamfranco Exp $
  */
 
 class WizardStepInterface {
@@ -37,6 +37,17 @@ class WizardStepInterface {
 	 * @return boolean True on success. False on invalid Property values.
 	 */
 	function updateProperties () {
+		die ("Method <b>".__FUNCTION__."()</b> declared in interface <b> ".__CLASS__."</b> has not been overloaded in a child class.");
+	}
+	
+	/**
+	 * Go through all properties and check the validity of their stored values. 
+	 * Return false if any of the submitted values are invalid.
+	 *
+	 * @access public
+	 * @return boolean True on success. False on invalid Property values.
+	 */
+	function arePropertiesValid () {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface <b> ".__CLASS__."</b> has not been overloaded in a child class.");
 	}
 	
