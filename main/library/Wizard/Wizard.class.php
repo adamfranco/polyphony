@@ -9,11 +9,11 @@ require_once(dirname(__FILE__)."/WizardStep.class.php");
  * The wizard is designed to be called from within a single action. The values
  * of its state allow its steps to work as "sub-actions". 
  *
- * @package concerto.wizard
+ * @package polyphony.wizard
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: Wizard.class.php,v 1.4 2004/06/03 21:27:53 gabeschine Exp $
+ * @version $Id: Wizard.class.php,v 1.5 2004/06/08 17:43:51 adamfranco Exp $
  */
 
 class Wizard {

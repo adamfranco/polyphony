@@ -4,11 +4,11 @@
  * This is an abstract class that provides much of the functionality of the 
  * various WizardProperties. 
  * 
- * @package concerto.wizard
+ * @package polyphony.wizard
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: WizardProperty.class.php,v 1.2 2004/06/01 20:08:11 adamfranco Exp $
+ * @version $Id: WizardProperty.class.php,v 1.3 2004/06/08 17:43:51 adamfranco Exp $
  */
  
 class WizardProperty {
