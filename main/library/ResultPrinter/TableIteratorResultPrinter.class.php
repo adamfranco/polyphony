@@ -4,8 +4,8 @@
  * Print out an Iterator of items in a table spread over multiple pages.
  * 
  * @package polyphony.resultprinter
- * @version $Id: TableIteratorResultPrinter.class.php,v 1.2 2004/08/06 21:52:40 adamfranco Exp $
- * @date $Date: 2004/08/06 21:52:40 $
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.3 2004/08/26 15:10:51 adamfranco Exp $
+ * @date $Date: 2004/08/26 15:10:51 $
  * @copyright 2004 Middlebury College
  */
 
@@ -54,7 +54,7 @@ class TableIteratorResultPrinter {
 	 * @access public
 	 * @date 8/5/04
 	 */
-	function & getLayout (& $harmoni) {
+	function &getLayout (& $harmoni) {
 		$startingNumber = ($_REQUEST['starting_number'])?$_REQUEST['starting_number']:1;
 		
 		$layout =& new RowLayout;

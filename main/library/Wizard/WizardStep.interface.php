@@ -8,7 +8,7 @@
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: WizardStep.interface.php,v 1.2 2004/07/29 22:11:15 adamfranco Exp $
+ * @version $Id: WizardStep.interface.php,v 1.3 2004/08/26 15:10:51 adamfranco Exp $
  */
 
 class WizardStepInterface {
@@ -25,7 +25,7 @@ class WizardStepInterface {
 	 * Gets an array all Properties indexed by property name.
 	 * @return array 
 	 */
-	function & getProperties () {
+	function &getProperties () {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface <b> ".__CLASS__."</b> has not been overloaded in a child class.");
 	}
 	
@@ -56,7 +56,7 @@ class WizardStepInterface {
 	 * @param object Harmoni The harmoni object which contains the current context.
 	 * @return object Layout
 	 */
-	function & getLayout (& $harmoni) {
+	function &getLayout (& $harmoni) {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface <b> ".__CLASS__."</b> has not been overloaded in a child class.");
 	}
 }

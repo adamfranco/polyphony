@@ -6,7 +6,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardStep.abstract.php");
  * This is a {@link WizardStep} that gets its output text from a {@link Template}.
  * @package polyphony.wizard
  * @copyright 2004
- * @version $Id: TemplatedWizardStep.class.php,v 1.1 2004/07/22 19:36:50 gabeschine Exp $
+ * @version $Id: TemplatedWizardStep.class.php,v 1.2 2004/08/26 15:10:51 adamfranco Exp $
  */
 class TemplatedWizardStep extends WizardStepAbstract {
 	
@@ -27,7 +27,7 @@ class TemplatedWizardStep extends WizardStepAbstract {
 	 * @param object Harmoni The harmoni object which contains the current context.
 	 * @return object Layout
 	 */
-	function & getLayout (& $harmoni) {
+	function &getLayout (& $harmoni) {
 		// build our fieldset of values
 		$fSet =& new FieldSet;
 		foreach (array_keys($this->_properties) as $key) {

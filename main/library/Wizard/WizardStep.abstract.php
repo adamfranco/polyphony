@@ -10,7 +10,7 @@ require_once(dirname(__FILE__)."/WizardStep.interface.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: WizardStep.abstract.php,v 1.2 2004/07/29 22:11:15 adamfranco Exp $
+ * @version $Id: WizardStep.abstract.php,v 1.3 2004/08/26 15:10:51 adamfranco Exp $
  */
 
 class WizardStepAbstract 
@@ -50,7 +50,7 @@ class WizardStepAbstract
 	 *		inputs
 	 * @return object WizardProperty
 	 */
-	function & createProperty ( $propertyName, & $validatorRule, $isValueRequired = TRUE ) {
+	function &createProperty ( $propertyName, & $validatorRule, $isValueRequired = TRUE ) {
 		ArgumentValidator::validate($propertyName, new StringValidatorRule, true);
 		ArgumentValidator::validate($validatorRule, new ExtendsValidatorRule("ValidatorRuleInterface"), true);
 		ArgumentValidator::validate($isValueRequired, new BooleanValidatorRule, true);
@@ -67,7 +67,7 @@ class WizardStepAbstract
 	 * @parm string $name The name of the requested property.
 	 * @return object WizardProperty
 	 */
-	function & getProperty ( $propertyName ) {
+	function &getProperty ( $propertyName ) {
 		ArgumentValidator::validate($propertyName, new StringValidatorRule, true);
 		if (!$this->_properties[$propertyName])
 			throwError(new Error("Property, ".$propertyName.", does not exist in Wizard.", "Wizard", 1));
@@ -79,7 +79,7 @@ class WizardStepAbstract
 	 * Gets an array all Properties indexed by property name.
 	 * @return array 
 	 */
-	function & getProperties () {
+	function &getProperties () {
 		return $this->_properties;
 	}
 	
@@ -122,7 +122,7 @@ class WizardStepAbstract
 	 * @param object Harmoni The harmoni object which contains the current context.
 	 * @return object Layout
 	 */
-	function & getLayout (& $harmoni) {
+	function &getLayout (& $harmoni) {
 		$stepLayout =& new SingleContentLayout (TEXT_BLOCK_WIDGET, 2);
 		
 		$text = $this->_parseText();

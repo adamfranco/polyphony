@@ -5,8 +5,8 @@
  * spread over multiple pages.
  * 
  * @package polyphony.resultprinter
- * @version $Id: IteratorResultPrinter.class.php,v 1.4 2004/08/06 21:52:40 adamfranco Exp $
- * @date $Date: 2004/08/06 21:52:40 $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.5 2004/08/26 15:10:51 adamfranco Exp $
+ * @date $Date: 2004/08/26 15:10:51 $
  * @copyright 2004 Middlebury College
  */
 
@@ -55,7 +55,7 @@ class IteratorResultPrinter {
 	 * @access public
 	 * @date 8/5/04
 	 */
-	function & getLayout (& $harmoni) {
+	function &getLayout (& $harmoni) {
 		$startingNumber = ($_REQUEST['starting_number'])?$_REQUEST['starting_number']:1;
 		
 		$layout =& new RowLayout;

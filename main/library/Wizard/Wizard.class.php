@@ -14,7 +14,7 @@ require_once(dirname(__FILE__)."/MultiValuedWizardStep.class.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: Wizard.class.php,v 1.12 2004/08/02 20:46:04 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.13 2004/08/26 15:10:51 adamfranco Exp $
  */
 
 class Wizard {
@@ -73,7 +73,7 @@ class Wizard {
 	 * @parm string $displayName The displayName of this step.
 	 * @return object The new step.
 	 */
-	function & createStep ( $displayName ) {
+	function &createStep ( $displayName ) {
 		$stepNumber = count($this->_steps) + 1;
 		$this->_steps[$stepNumber] =& new WizardStep ( $displayName );
 		return $this->_steps[$stepNumber];
@@ -84,7 +84,7 @@ class Wizard {
 	 * @parm object WizardStepInterface $step The class to add as a step in this wizard.
 	 * @return object The new step.
 	 */
-	function & addStep ( & $step ) {
+	function &addStep ( & $step ) {
 		ArgumentValidator::validate($step, new ExtendsValidatorRule("WizardStepInterface"), true);
 		
 		$stepNumber = count($this->_steps) + 1;
@@ -172,7 +172,7 @@ class Wizard {
 	 * If steps have properties of the same name, there could be conflicts.
 	 * @return array An array of Property objects.
 	 */
-	function & getProperties() {
+	function &getProperties() {
 		$allProperties = array();
 	
 		foreach (array_keys($this->_steps) as $number) {
@@ -269,7 +269,7 @@ class Wizard {
 	 * @param object Harmoni The harmoni object which contains the current context.
 	 * @return object Layout
 	 */
-	function & getLayout (& $harmoni) {
+	function &getLayout (& $harmoni) {
 	
 		// Handle the catching of values from previous form submission and move
 		// to the correct step.

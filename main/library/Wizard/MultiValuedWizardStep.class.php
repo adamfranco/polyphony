@@ -11,7 +11,7 @@ require_once(dirname(__FILE__)."/WizardStep.interface.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: MultiValuedWizardStep.class.php,v 1.5 2004/08/03 21:09:04 adamfranco Exp $
+ * @version $Id: MultiValuedWizardStep.class.php,v 1.6 2004/08/26 15:10:51 adamfranco Exp $
  */
 
 class MultiValuedWizardStep 
@@ -74,7 +74,7 @@ class MultiValuedWizardStep
 	 *		inputs
 	 * @return object WizardProperty
 	 */
-	function & createProperty ( $propertyName, & $validatorRule, $isValueRequired = TRUE ) {
+	function &createProperty ( $propertyName, & $validatorRule, $isValueRequired = TRUE ) {
 		ArgumentValidator::validate($propertyName, new StringValidatorRule, true);
 		ArgumentValidator::validate($validatorRule, new ExtendsValidatorRule("ValidatorRuleInterface"), true);
 		ArgumentValidator::validate($isValueRequired, new BooleanValidatorRule, true);
@@ -198,7 +198,7 @@ class MultiValuedWizardStep
 	 * @parm string $name The name of the requested property.
 	 * @return object WizardProperty
 	 */
-	function & getProperty ( $propertyName ) {
+	function &getProperty ( $propertyName ) {
 		ArgumentValidator::validate($propertyName, new StringValidatorRule, true);
 		if (!$this->_properties[$propertyName])
 			throwError(new Error("Property, ".$propertyName.", does not exist in Wizard.", "Wizard", 1));
@@ -210,7 +210,7 @@ class MultiValuedWizardStep
 	 * Gets an array all Properties indexed by property name.
 	 * @return array 
 	 */
-	function & getProperties () {
+	function &getProperties () {
 		$properties = array();
 		
 		foreach ($this->_propertySets as $index => $propertySet) {
@@ -299,7 +299,7 @@ class MultiValuedWizardStep
 	 * @param object Harmoni The harmoni object which contains the current context.
 	 * @return object Layout
 	 */
-	function & getLayout (& $harmoni) {
+	function &getLayout (& $harmoni) {
 		$stepLayout =& new SingleContentLayout (TEXT_BLOCK_WIDGET, 2);
 		
 		$text = $this->_parseText();
