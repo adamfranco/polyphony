@@ -14,7 +14,7 @@ require_once(dirname(__FILE__)."/MultiValuedWizardStep.class.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: Wizard.class.php,v 1.10 2004/07/30 15:16:56 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.11 2004/08/02 17:40:19 adamfranco Exp $
  */
 
 class Wizard {
@@ -376,13 +376,13 @@ class Wizard {
 			if ($this->hasPrevious())
 				print "\n\t\t\t<input type='submit' name='__previous' value='"._("Previous")."'>";
 			else
-				print "\n\t\t\t<span style='border: 1px solid; padding: 2px;'>"._("Previous")."</span>";
+				print "\n\t\t\t<input type='button' disabled='disabled' value='"._("Previous")."'>";
 			print "\n\t\t</td>";
 			print "\n\t\t<td align='right'>";
 			if ($this->hasNext())
 				print "\n\t\t\t<input type='submit' name='__next' value='"._("Next")."'>";
 			else
-				print "\n\t\t\t<span style='border: 1px solid; padding: 2px;'>"._("Next")."</span>";
+				print "\n\t\t\t<input type='button' disabled='disabled' value='"._("Next")."'>";
 			print "\n\t\t</td>";
 			print "\n\t</tr>";
 		}
@@ -391,13 +391,13 @@ class Wizard {
 		if ($this->_allowCancel)
 			print "\n\t\t\t<input type='submit' name='__cancel' value='"._("Cancel")."'>";
 		else
-			print "\n\t\t\t<span style='border: 1px solid; padding: 2px;'>"._("Cancel")."</span>";
+			print "\n\t\t\t<input type='button' disabled='disabled' value='"._("Cancel")."'>";
 		print "\n\t\t</td>";
 		print "\n\t\t<td align='right'>";
 		if (($this->_allowStepLinks || !$this->hasNext()) && $this->arePropertiesValid())
 			print "\n\t\t\t<input type='submit' name='__save' value='"._("Save")."'>";
 		else
-			print "\n\t\t\t<span style='border: 1px solid; padding: 2px;'>"._("Save")."</span>";
+			print "\n\t\t\t<input type='button' disabled='disabled' value='"._("Save")."'>";
 		print "\n\t\t</td>";
 		print "\n\t</tr>";
 		

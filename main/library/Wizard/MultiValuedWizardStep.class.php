@@ -11,7 +11,7 @@ require_once(dirname(__FILE__)."/WizardStep.interface.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: MultiValuedWizardStep.class.php,v 1.2 2004/07/30 18:59:46 adamfranco Exp $
+ * @version $Id: MultiValuedWizardStep.class.php,v 1.3 2004/08/02 17:40:19 adamfranco Exp $
  */
 
 class MultiValuedWizardStep 
@@ -22,6 +22,13 @@ class MultiValuedWizardStep
 	 * @attribute private string _displayName
 	 */
 	var $_displayName;
+	
+	/**
+	 * The key that will be given to the array of
+	 * 			properties returned by this step.
+	 * @attribute private string _propertyKey
+	 */
+	var $_propertyKey;
 	
 	/**
 	 * The properties handled by the Wizard.
@@ -38,11 +45,15 @@ class MultiValuedWizardStep
 	/**
 	 * Constructor
 	 * @param string $displayName The displayName of this step.
+	 * @param string $propertyKey The key that will be given to the array of
+	 * 			properties returned by this step.
 	 */
-	function MultiValuedWizardStep ( $displayName ) {
+	function MultiValuedWizardStep ( $displayName, $propertyKey ) {
 		ArgumentValidator::validate($displayName, new StringValidatorRule, true);
+		ArgumentValidator::validate($propertyKey, new StringValidatorRule, true);
 		
 		$this->_displayName = $displayName;
+		$this->_propertyKey = $propertyKey;
 		$this->_properties = array();
 		$this->_propertySets = array();
 	}
@@ -203,17 +214,18 @@ class MultiValuedWizardStep
 		$properties = array();
 		
 		foreach ($this->_propertySets as $index => $propertySet) {
+			$properties[$index] = array();
 			foreach ($propertySet as $propertyName => $value) {
-				$properties[$propertyName.".".$index] = new WizardProperty (
+				$properties[$index][$propertyName] = new WizardProperty (
 															$propertyName,
-															$this->_registeredProperties[$propertyName]["rule"],
+															$this->_registeredProperties[$propertyName]["validatorRule"],
 															$this->_registeredProperties[$propertyName]["isValueRequired"]
 															);
-				$properties[$propertyName.".".$index]->setValue($value);
+				$properties[$index][$propertyName]->setValue($value);
 			}
 		}
 		
-		return $properties;
+		return array($this->_propertyKey => $properties);
 	}
 	
 	/**
