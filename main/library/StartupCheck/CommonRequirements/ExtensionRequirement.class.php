@@ -4,7 +4,7 @@
  * This {@link StartupRequirement} checks to make sure PHP has a given extension loaded (or can load it).
  * @package polyphony.startupcheck.requirements
  * @copyright 2004
- * @version $Id: ExtensionRequirement.class.php,v 1.1 2004/07/16 19:25:43 gabeschine Exp $
+ * @version $Id: ExtensionRequirement.class.php,v 1.2 2004/07/22 19:36:49 gabeschine Exp $
  */
 class ExtensionRequirement extends StartupRequirement {
 
@@ -66,10 +66,10 @@ class ExtensionRequirement extends StartupRequirement {
 	 * Tells the requirement class to perform its update/install operation. If user input is required, it is passed in the form of a {@link WizardStep} containing field values.
 	 * @param optional array $properties An array of {@link WizardProperty} objects corresponding to the {@link Wizard} as created by {@link createWizard()}.
 	 * @access public
-	 * @return boolean TRUE if the update succeeds, FALSE otherwise.
+	 * @return int Returns the new status of this requirement after attempting update.
 	 */
 	function doUpdate( $properties = null )
 	{
-		return false;
+		return STARTUP_STATUS_NOT_CHECKED;
 	}
 }

@@ -46,7 +46,7 @@ define("STARTUP_STATUS_NEEDS_INSTALL", 0);
 *
 * @package polyphony.startupcheck
 * @copyright 2004
-* @version $Id: StartupCheck.class.php,v 1.6 2004/07/16 19:25:42 gabeschine Exp $
+* @version $Id: StartupCheck.class.php,v 1.7 2004/07/22 19:36:49 gabeschine Exp $
 */
 class StartupCheck {
 
@@ -140,8 +140,7 @@ class StartupCheck {
 			if ($this->getStatus($key) == STARTUP_STATUS_NEEDS_UPDATE
 			|| $this->getStatus($key) == STARTUP_STATUS_NEEDS_INSTALL) {
 				// do the update
-				if (!$this->_requirements[$key]->doUpdate()) $aOK = false;
-				else $this->_status[$key] = STARTUP_STATUS_OK;
+				if (($this->_status[$key] = $this->_requirements[$key]->doUpdate()) != STARTUP_STATUS_OK) $aOK = false;
 			}
 		}
 
@@ -171,11 +170,9 @@ class StartupCheck {
 	function updateRequirement($name)
 	{
 		if ($this->getStatus($name) == STARTUP_STATUS_NEEDS_UPDATE || $this->getStatus($name) == STARTUP_STATUS_NEEDS_INSTALL) {
-			if ($this->_requirements[$name]->doUpdate()) {
-				$this->_status[$name] = STARTUP_STATUS_OK;
+			if (($this->_status[$name] = $this->_requirements[$name]->doUpdate()) == STARTUP_STATUS_OK) {
 				return true;
 			} else {
-				$this->_status[$name] = STARTUP_STATUS_ERROR;
 				return false;
 			}
 		}
@@ -193,11 +190,9 @@ class StartupCheck {
 	{
 		// we can't use the data until the end user has pressed the "Save" button on the wizard
 		if ($wizard->isSaveRequested()) {
-			if ($this->_requirements[$name]->doUpdate($wizard->getProperties())) {
-				$this->_status[$name] = STARTUP_STATUS_OK;
+			if (($this->_status[$name] = $this->_requirements[$name]->doUpdate($wizard->getProperties())) == STARTUP_STATUS_OK) {
 				return true;
 			} else { // don't change its status.
-//				$this->_status[$name] = STARTUP_STATUS_ERROR;
 				return false;
 			}
 		}

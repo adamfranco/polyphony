@@ -4,7 +4,7 @@
  * This {@link StartupRequirement} checks to make sure we are running a certain version of Harmoni, or newer.
  * @package polyphony.startupcheck.requirements
  * @copyright 2004
- * @version $Id: HarmoniVersionRequirement.class.php,v 1.1 2004/07/14 23:54:09 gabeschine Exp $
+ * @version $Id: HarmoniVersionRequirement.class.php,v 1.2 2004/07/22 19:36:49 gabeschine Exp $
  */
 class HarmoniVersionRequirement extends StartupRequirement {
 
@@ -86,10 +86,10 @@ class HarmoniVersionRequirement extends StartupRequirement {
 	 * Tells the requirement class to perform its update/install operation. If user input is required, it is passed in the form of a {@link WizardStep} containing field values.
 	 * @param optional array $properties An array of {@link WizardProperty} objects corresponding to the {@link Wizard} as created by {@link createWizard()}.
 	 * @access public
-	 * @return boolean TRUE if the update succeeds, FALSE otherwise.
+	 * @return int Returns the new status of this requirement after attempting update.
 	 */
 	function doUpdate( $properties = null )
 	{
-		return false;
+		return STARTUP_STATUS_NOT_CHECKED;
 	}
 }

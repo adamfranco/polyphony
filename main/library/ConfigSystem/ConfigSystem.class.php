@@ -4,7 +4,7 @@
 *
 * @package
 * @copyright 2004
-* @version $Id: ConfigSystem.class.php,v 1.2 2004/07/21 03:01:21 gabeschine Exp $
+* @version $Id: ConfigSystem.class.php,v 1.3 2004/07/22 19:36:49 gabeschine Exp $
 */
 class ConfigSystem {
 
@@ -36,6 +36,11 @@ class ConfigSystem {
 	* @access private
 	**/
 	var $_defaults;
+	/**
+	* @variable array $_defaults An array of descriptions for each property.
+	* @access private
+	**/
+	var $_descriptions;
 
 	/**
 	* The constructor.
@@ -62,23 +67,26 @@ class ConfigSystem {
 		$this->_setup = true;
 		$this->_dataSet = null;
 		$this->_defaults = array();
+		$this->_descriptions = array();
 	}
 
 	/**
 	* Adds a property with the name & type specified. This is used while setting up the config system.
 	* @param ref object $field A {@link FieldDefinition} defining the properties of this field.
+	* @param optional string $description An optional description of this property. 
 	* @param optional object $default The default value for this property. Must be the correct class that is associated
 	* with the $type value, as defined by the DataTypeManager.
 	* @access public
 	* @return void
 	*/
-	function addProperty($field, $default=null)
+	function addProperty($field, $description = "", $default=null)
 	{
 		$typeManager =& Services::getService("DataTypeManager");
 
 		if ($default == null || $typeManager->isObjectOfDataType($default, $field->getType())) {
 			$this->_typeDef->addNewField( $field );
 			if ($default) $this->_defaults[$field->getLabel()] =& $default;
+			$this->_descriptions[$field->getLabel()] = $description;
 		}
 	}
 
@@ -96,7 +104,8 @@ class ConfigSystem {
 		$dataSet =& $this->getDataSet(true);
 		if (!$dataSet->getID()) {
 			foreach (array_keys($this->_defaults) as $key) {
-				$dataSet->setValue($key,$this->_defaults[$key],NEW_VALUE);
+				if ($this->_defaults[$key])
+					$dataSet->setValue($key,$this->_defaults[$key],NEW_VALUE);
 			}
 		}
 
@@ -104,6 +113,17 @@ class ConfigSystem {
 		$this->_setup = false;
 	}
 
+	/**
+	 * Returns the string description of the named property.
+	 * @param string $key The property name.
+	 * @access public
+	 * @return string
+	 */
+	function getDescriptions($key)
+	{
+		return $this->_descriptions[$key];
+	}
+	
 	/**
 	* Saves all the config data to the database.
 	* @access public

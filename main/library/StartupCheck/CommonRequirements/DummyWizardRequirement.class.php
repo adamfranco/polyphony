@@ -4,7 +4,7 @@
  * This is a dummy requirement to test the Wizard functionality.
  * @package polyphony.startupcheck.requirements
  * @copyright 2004
- * @version $Id: DummyWizardRequirement.class.php,v 1.1 2004/07/16 19:25:43 gabeschine Exp $
+ * @version $Id: DummyWizardRequirement.class.php,v 1.2 2004/07/22 19:36:49 gabeschine Exp $
  */
 class DummyWizardRequirement extends StartupRequirement {
 
@@ -112,7 +112,7 @@ END
 	 * Tells the requirement class to perform its update/install operation. If user input is required, it is passed in the form of a {@link WizardStep} containing field values.
 	 * @param optional array $properties An array of {@link WizardProperty} objects corresponding to the {@link Wizard} as created by {@link createWizard()}.
 	 * @access public
-	 * @return boolean TRUE if the update succeeds, FALSE otherwise.
+	 * @return int Returns the new status of this requirement after attempting update.
 	 */
 	function doUpdate( $properties = null )
 	{
@@ -127,9 +127,8 @@ END
 					$properties["color"]->getValue() . ", " .
 					$properties["age"]->getValue() . ", " .
 					$properties["continue"]->getValue(), 7, "StartupCheck");
-			return true;
 		}
 		
-		return false;
+		return $this->_status;
 	}
 }
