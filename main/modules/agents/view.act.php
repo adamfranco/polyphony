@@ -35,6 +35,12 @@ $pageRows->addComponent($introHeader);
 
 $sharedManager =& Services::getService("Shared");
 
+// Build a variable to pass around our search terms when expanding
+if (count($_GET)) {
+		$search = "?";
+		foreach ($_GET as $key => $val)
+			$search .= "&".urlencode($key)."=".urlencode($val);
+}
 
 // $sharedManager->createGroup("Math", new HarmoniType("Groups", "Middlebury College", "Department", "What department the user belongs to at Middlebury College"), "Middlebury College French department.");
 
@@ -60,7 +66,7 @@ $self = $_SERVER['PHP_SELF'];
 $lastCriteria = $_REQUEST['search_criteria'];
 print _("Search For Users").": ";
 print <<<END
-<form action='$self' method='post'>
+<form action='$self' method='get'>
 	<input type='text' name='search_criteria' value='$lastCriteria'>
 	<br /><select name='search_type'>
 END;
@@ -179,12 +185,12 @@ if ($expandAgents) {
 	$newPathInfo = array_merge($environmentInfo, array_diff($expandedNodes,
 															$nodesToRemove)); 
 	print "<a style='text-decoration: none;' href='";
-	print MYURL."/".implode("/", $newPathInfo)."/";
+	print MYURL."/".implode("/", $newPathInfo)."/".$search;
 	print "'>-</a>";
 } else {
 	$newPathInfo = array_merge($environmentInfo, $expandedNodes); 
 	print "<a style='text-decoration: none;' href='";
-	print MYURL."/".implode("/", $newPathInfo)."/allagents/";
+	print MYURL."/".implode("/", $newPathInfo)."/allagents/".$search;
 	print "'>+</a>";
 }
 print "</div>";

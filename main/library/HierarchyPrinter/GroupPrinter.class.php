@@ -4,7 +4,7 @@
  * This class will print an expandable view of Groups.
  * 
  * @package polyphony.groupPrinter
- * @version $Id: GroupPrinter.class.php,v 1.3 2004/11/12 18:46:49 adamfranco Exp $
+ * @version $Id: GroupPrinter.class.php,v 1.4 2004/11/17 21:39:40 adamfranco Exp $
  * @date 11/11/04
  * @copyright 2004 Middlebury College
  */
@@ -29,6 +29,12 @@ class GroupPrinter {
 		// Get a string of our groupIds
 		$groupId =& $group->getId();
 		
+		// Build a variable to pass around our get terms when expanding
+		if (count($_GET)) {
+				$get = "?";
+				foreach ($_GET as $key => $val)
+					$get .= "&".urlencode($key)."=".urlencode($val);
+		}
 		
 		// Break the path info into parts for the enviroment and parts that
 		// designate which groups to expand.
@@ -70,14 +76,14 @@ class GroupPrinter {
 																		$groupsToRemove)); 
 				print "<a style='text-decoration: none;' href='";
 				print MYURL."/".implode("/", $newPathInfo)."/";
-				print "'>-</a>";
+				print $get."'>-</a>";
 			
 			// The group is not already expanded.  Show option to expand.	
 			} else { 
 				$newPathInfo = array_merge($environmentInfo, $expandedGroups); 
 				print "<a style='text-decoration: none;' href='";
 				print MYURL."/".implode("/", $newPathInfo)."/".$groupId->getIdString()."/";
-				print "'>+</a>";
+				print $get."'>+</a>";
 			}
 			print "\n\t\t</div>";
 			

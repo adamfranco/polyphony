@@ -4,8 +4,8 @@
  * This class will print an expandible, view of a hierarchy
  * 
  * @package polyphony.hierarchyPrinter
- * @version $Id: HierarchyPrinter.class.php,v 1.2 2004/11/11 22:27:08 adamfranco Exp $
- * @date $Date: 2004/11/11 22:27:08 $
+ * @version $Id: HierarchyPrinter.class.php,v 1.3 2004/11/17 21:39:44 adamfranco Exp $
+ * @date $Date: 2004/11/17 21:39:44 $
  * @copyright 2004 Middlebury College
  */
 
@@ -33,6 +33,12 @@ class HierarchyPrinter {
 		// Get a string of our nodeIds
 		$nodeId =& $node->getId();
 		
+		// Build a variable to pass around our get terms when expanding
+		if (count($_GET)) {
+				$get = "?";
+				foreach ($_GET as $key => $val)
+					$get .= "&".urlencode($key)."=".urlencode($val);
+		}
 		
 		// Break the path info into parts for the enviroment and parts that
 		// designate which nodes to expand.
