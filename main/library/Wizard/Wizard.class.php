@@ -1,4 +1,4 @@
-<?php
+<?
 /**
  *
  * @package polyphony.library.wizard
@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.class.php,v 1.18 2005/02/04 23:06:15 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.19 2005/03/28 23:25:51 nstamato Exp $
  */
 
 /**
@@ -23,11 +23,11 @@ require_once(dirname(__FILE__)."/MultiValuedWizardStep.class.php");
  * The wizard is designed to be called from within a single action. The values
  * of its state allow its steps to work as "sub-actions". 
  *
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: Wizard.class.php,v 1.18 2005/02/04 23:06:15 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.19 2005/03/28 23:25:51 nstamato Exp $
  */
 
 class Wizard {
@@ -296,11 +296,19 @@ class Wizard {
 		// Make sure we have a valid Wizard
 		if (!count($this->_steps))
 			throwError(new Error("No steps in Wizard.", "Wizard", 1));
-			
-		$wizardLayout =& new RowLayout;
+		
+		$yLayout =& new YLayout();	
+		$layout =& new Container($yLayout, OTHER, 1);
+		$preWizardLayout =& new Container($yLayout, OTHER, 1);
+		$wizardLayout =& new Container($yLayout, OTHER, 1);
+		$postWizardLayout =& new Container($yLayout, OTHER, 1);
+		$layout->add($preWizardLayout, null, null, CENTER, CENTER);
+		$layout->add($wizardLayout, "100%", null, LEFT, TOP);
+		$layout->add($postWizardLayout, null, null, CENTER, CENTER);
+		//$wizardLayout =& new RowLayout;
 		
 		// :: Form tags for around the layout :: 
-		$wizardLayout->setPreSurroundingText("<form action='".MYURL."/".implode("/", $harmoni->pathInfoParts)."' method='post' id='wizardform' enctype='multipart/form-data'>");
+		$preWizardLayout->add(new Block("<form action='".MYURL."/".implode("/", $harmoni->pathInfoParts)."' method='post' id='wizardform' enctype='multipart/form-data'>",2), null, null, CENTER, CENTER);
 		
 		ob_start();
 		print "\n<div style='visibility: none'>";
@@ -309,7 +317,7 @@ class Wizard {
 		print "\n\t<input type='hidden' name='__cancel_link' value='' />";
 		print "\n</div>";
 		print "\n</form>";
-		$wizardLayout->setPostSurroundingText(ob_get_contents());
+		$postWizardLayout->add(new Block(ob_get_contents(),2), null, null, CENTER, CENTER);
 		ob_end_clean();
 		
 		// Add to the page's javascript so we can skip to next pages by
@@ -361,18 +369,21 @@ class Wizard {
 		
 		
 		// :: Heading ::
-		$heading =& new SingleContentLayout(HEADING_WIDGET, 2);
-		$heading->addComponent(new Content($this->_displayName.": ".
+		$heading =& new Heading($this->_displayName.": ".
 					$this->_currentStep.". ".
-					$this->_steps[$this->_currentStep]->getDisplayName()));
-		$wizardLayout->addComponent($heading);
+					$this->_steps[$this->_currentStep]->getDisplayName(), 2);
+		$wizardLayout->add($heading, "100%", null, LEFT, CENTER);
 		
-		$lower =& new ColumnLayout (TEXT_BLOCK_WIDGET, 2);
-		$wizardLayout->addComponent($lower);
+		$xLayout =& new XLayout();
+		$lower =& new Container($xLayout, BLOCK, 3);
+		//$lower =& new ColumnLayout (TEXT_BLOCK_WIDGET, 2);
+		$wizardLayout->add($lower, "100%", null, LEFT, CENTER);
 			
 		// :: Steps Menu ::
-		$menu =& new VerticalMenuLayout(MENU_WIDGET, 2);
-		$lower->addComponent($menu);
+		$menu =& new Menu(new YLayout(), 1);
+		//$space =& new Block("&nbsp",2);
+		//$lower->add($space, null, null, CENTER, CENTER);
+		$lower->add($menu, "27%", null, LEFT, TOP);
 		foreach (array_keys($this->_steps) as $number) {
 			$itemText = $number.". ".$this->_steps[$number]->getDisplayName();
 			if (!$this->_steps[$number]->arePropertiesValid())
@@ -380,46 +391,52 @@ class Wizard {
 			
 			if ($number != $this->_currentStep
 				&& $this->_allowStepLinks) {
-				$menu->addComponent(
-					new LinkMenuItem($itemText,
+				$menu->add(
+					new MenuItemLink($itemText,
 						"Javascript:goToStep('".$number."')",
-						FALSE)
+						FALSE,1),"100%", null, LEFT, CENTER
 				);			
 			} else {
-				$menu->addComponent(
-					new StandardMenuItem($itemText,
-						($number == $this->_currentStep)?TRUE:FALSE)
+					/*
+				$menu->add(
+					new MenuItemHeading($itemText,
+						($number == $this->_currentStep)?TRUE:FALSE,1)
+				);
+				*/
+				$menu->add(
+					new MenuItemHeading($itemText,4),"100%", null, LEFT, CENTER
 				);
 			}
 		}
 		
 		// Save button
 		if (($this->_allowStepLinks || !$this->hasNext()) && $this->arePropertiesValid()) {
-			$menu->addComponent(
-				new LinkMenuItem("<span style='width: 100px'>"._("Save")."</span>",
+			$menu->add(
+				new MenuItemLink("<span style='width: 100px'>"._("Save")."</span>",
 					"Javascript:save()",
-					FALSE)
+					FALSE,1), "100%", null, LEFT, CENTER
 			);
 		} else {
-			$menu->addComponent(new StandardMenuItem(_("Save"), FALSE));
+			$menu->add(new MenuItemHeading(_("Save"), 4), "100%", null, LEFT, CENTER);
 		}
 		
 		// Cancel button
 		if ($this->_allowCancel) {
-			$menu->addComponent(
-				new LinkMenuItem(_("Cancel"),
+			$menu->add(
+				new MenuItemLink(_("Cancel"),
 					"Javascript:cancel()",
-					FALSE)
+					FALSE,1), "100%", null, LEFT, CENTER
 			);
 		} else {
-			$menu->addComponent(new StandardMenuItem(_("Cancel"), FALSE));
+			$menu->add(new MenuItemHeading(_("Cancel"), 4), "100%", null, LEFT, CENTER);
 		}
 		
-		$center = new RowLayout;
-		$lower->addComponent($center);
+		$yLayout =& new YLayout();
+		$center =& new Container($yLayout, OTHER, 1);
+		$lower->add($center, null, null, CENTER, CENTER);
 		
 		// :: Buttons ::
-		$buttons =& new SingleContentLayout (TEXT_BLOCK_WIDGET, 3);
+		
 		ob_start();
 		print "\n<table width='100%'>";
 		if (count($this->_steps) > 1) {
@@ -454,21 +471,21 @@ class Wizard {
 		print "\n\t</tr>";
 		
 		print "\n</table>";
-		$buttons->addComponent(new Content(ob_get_contents()));
+		$buttons =& new Block (ob_get_contents(), 4);
 		ob_end_clean();
-		$center->addComponent($buttons);
+		$center->add($buttons, "100%", null, LEFT, CENTER);
 		
 		// :: The Current Step ::
 		$stepLayout =& $this->_steps[$this->_currentStep]->getLayout($harmoni);
-		$center->addComponent($stepLayout);
+		$center->add($stepLayout, "100%", null, LEFT, CENTER);
 		
 		// :: Buttons Redeuex ::
-		$center->addComponent($buttons);
+		$center->add($buttons, "100%", null, LEFT, CENTER);
 		
 		// go back to the default textdomain
 		textdomain($defaultTextDomain);
 		
-		return $wizardLayout;
+		return $layout;
 	}
 }
 

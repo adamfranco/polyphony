@@ -3,15 +3,15 @@
 /**
  * 
  * @package polyphony.modules.agents
- * 
+ *
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.3 2005/02/28 22:04:54 thebravecowboy Exp $
+ * @version $Id: create_agent.act.php,v 1.4 2005/03/28 23:25:55 nstamato Exp $
  */
- 
+
 // Get the Layout components. See core/modules/moduleStructure.txt
-// for more info. 
+// for more info.
 $harmoni->ActionHandler->execute("window", "screen");
 $mainScreen =& $harmoni->getAttachedData('mainScreen');
 $statusBar =& $harmoni->getAttachedData('statusBar');
@@ -23,9 +23,9 @@ if(!$_REQUEST["username"] || !$_REQUEST["password"]){
 }else{
 	$userName = $_REQUEST["username"];
 	$password = $_REQUEST["password"];
-	
+
 	$properties = array();
-	
+
 	foreach($_REQUEST as $key=>$request){
 		$key_parts = explode("_",$key);
 		if($key_parts[0]=="property"){
@@ -33,7 +33,7 @@ if(!$_REQUEST["username"] || !$_REQUEST["password"]){
 			$properties[$key_name] = $_REQUEST[$key];
 		}
 	}
-		
+
 	$result = makeNewAgent($userName, $password, $properties);
 	if($result){
 		print "User succesfully created.";
@@ -43,23 +43,23 @@ if(!$_REQUEST["username"] || !$_REQUEST["password"]){
 }
 
 // Layout
-$centerPane->addComponent(new Content(ob_get_contents()), TOP, CENTER);
+$centerPane->add(new Block(ob_get_contents(),3), "100%", null, CENTER, TOP);
 ob_end_clean();
 return $mainScreen;
 
 function createAgentForm(){
-	print "<form action='".$_SERVER["PHP_SELF"]."' method='post'>
+	print "<center><form action='".$_SERVER["PHP_SELF"]."' method='post'>
 			Create A New User<br />
 			<table>
 			<tr><td>
-				*Username: 
+				*Username:
 			</td><td>
 				<input type='text' name='username' />
 			</td></tr>
 			<tr><td>
-				*Password: 
+				*Password:
 			</td><td>
-				<input type='password' name='password' />	
+				<input type='password' name='password' />
 			</td></tr>
 			<tr><td>
 				Display Name:
@@ -72,8 +72,8 @@ function createAgentForm(){
 				<input type='text' name='property_department' />
 			</td></tr>
 			</table>	
-			<input type='submit' value='Create New User' />			
-			</form>";
+			<input type='submit' value='Create New User' />
+			</form></center>";
 }
 
 

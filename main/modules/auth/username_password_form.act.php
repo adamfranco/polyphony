@@ -22,25 +22,25 @@ $defaultTextDomain = textdomain();
 textdomain("polyphony");
 ob_start();
 
-// text
-$introText =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 2);
+
 
 $action = MYURL."/".implode("/",array_slice($harmoni->pathInfoParts, 2));
 $usernameText = _("Username");
 $passwordText = _("Password");
 print<<<END
 
-<form name='login' action='$action' method='post'>
+<center><form name='login' action='$action' method='post'>
 	$usernameText: <input type='text' name='username' />
 	<br />$passwordText: <input type='password' name='password' />
 	<br /><input type='submit' />
-</form>
+</form></center>
 
 END;
 
-$introText->addComponent(new Content(ob_get_contents()));
+
+$introText =& new Block(ob_get_contents(), 2);
 ob_end_clean();
-$centerPane->addComponent($introText, TOP, CENTER);
+$centerPane->add($introText, null, null, CENTER, CENTER);
 
 // go back to the default text domain
 textdomain($defaultTextDomain);

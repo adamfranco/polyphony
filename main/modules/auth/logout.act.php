@@ -1,8 +1,7 @@
-<?php
+<?
 /**
  * @package polyphony.modules.authentication
  */
-
 $authN =& Services::getService("AuthN");
 
 // dethenticate. :-)

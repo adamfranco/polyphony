@@ -1,8 +1,7 @@
-<?php
+<?
 /**
  * @package polyphony.modules.authentication
  */
-
 // Get the Layout compontents. See core/modules/moduleStructure.txt
 // for more info. 
 $harmoni->ActionHandler->execute("window", "screen");
@@ -21,15 +20,16 @@ for ($i = 2; $i < count($harmoni->pathInfoParts); $i++) {
 $defaultTextDomain = textdomain();
 textdomain("polyphony");
 
-// text
-$introText =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 2);
+
 $text = "<p>";
 $text .= _("Your are not logged in.");
 $text .= " <a href='".MYURL."/auth/login/".implode("/",$currentPathInfo)."'>";
 $text .= _("Click here to log in.");
 $text .= "</a></p>";
-$introText->addComponent(new Content($text));
-$centerPane->addComponent($introText, TOP, CENTER);
+
+// text
+$introText =& new Block($text, 2);
+$centerPane->addComponent($introText, null, null, CENTER, CENTER);
 
 // go back to the default text domain
 textdomain($defaultTextDomain);

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.1 2005/02/28 22:04:54 thebravecowboy Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.2 2005/03/28 23:25:55 nstamato Exp $
  */
  
 // Get the Layout components. See core/modules/moduleStructure.txt
@@ -35,7 +35,7 @@ if($furtherAction){
 }
 
 // Layout
-$centerPane->addComponent(new Content(ob_get_contents()), TOP, CENTER);
+$centerPane->add(new Block(ob_get_contents(),2),"100%", null, CENTER, TOP);
 ob_end_clean();
 return $mainScreen;
 

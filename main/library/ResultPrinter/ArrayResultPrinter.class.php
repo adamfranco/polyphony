@@ -2,14 +2,13 @@
 /**
  * @package polyphony.library.resultprinter
  */
-
 /**
  * Print out an Array of items in rows and columns of TEXT_BLOCK widgets 
  * spread over multiple pages.
  * 
- * @package polyphony.library.resultprinter
- * @version $Id: ArrayResultPrinter.class.php,v 1.4 2005/02/04 23:06:13 adamfranco Exp $
- * @since $Date: 2005/02/04 23:06:13 $
+ * @package polyphony.resultprinter
+ * @version $Id: ArrayResultPrinter.class.php,v 1.5 2005/03/28 23:24:12 nstamato Exp $
+ * @date $Date: 2005/03/28 23:24:12 $
  * @copyright 2004 Middlebury College
  */
 
@@ -27,7 +26,7 @@ class ArrayResultPrinter {
 	 * @param optional mixed $callbackArgs Any additional arguements will be stored
 	 *			and passed on to the callback function.
 	 * @access public
-	 * @since 8/5/04
+	 * @date 8/5/04
 	 */
 	function ArrayResultPrinter (& $array, $numColumns, 
 									$numResultsPerPage, $callbackFunction) {
@@ -59,17 +58,19 @@ class ArrayResultPrinter {
 	 *		If null, all results are printed.
 	 * @return object Layout A layout containing the results/page links
 	 * @access public
-	 * @since 8/5/04
+	 * @date 8/5/04
 	 */
 	function &getLayout (& $harmoni, $shouldPrintFunction = NULL) {
 		$startingNumber = ($_REQUEST['starting_number'])?$_REQUEST['starting_number']:1;
 		
-		$layout =& new RowLayout;
+		$yLayout =& new YLayout();
+		$xLayout =& new XLayout();
+		$layout =& new Container($yLayout, OTHER, 1);
 		
 		
 		$endingNumber = $startingNumber+$this->_pageSize-1;
 		$numItems = 0;
-		$resultLayout =& new RowLayout();
+		$resultLayout =& new Container($yLayout, OTHER, 1);
 		
 		if (count($this->_array)) {
 		
@@ -98,14 +99,14 @@ class ArrayResultPrinter {
 					
 					// Table Rows subtract 1 since we are counting 1-based
 					if (($pageItems-1) % $this->_numColumns == 0) {
-						$currentRow =& new ColumnLayout;
-						$resultLayout->addComponent($currentRow);
+						$currentRow =& new Container($xLayout, OTHER, 1);
+						$resultLayout->add($currentRow, "100%", null, LEFT, CENTER);
 					}
 					
 					$itemArray = array (& $item);
 					$params = array_merge($itemArray, $this->_callbackParams);
 					$itemLayout =& call_user_func_array($this->_callbackFunction, $params);
-					$currentRow->addComponent($itemLayout);
+					$currentRow->add($itemLayout, null, null, CENTER, CENTER);
 				}
 			}
 			
@@ -123,7 +124,7 @@ class ArrayResultPrinter {
 					$numItems++;
 			}	
 		} else {
-			$resultLayout->addComponent(new Content(_("No <em>Items</em> are availible.")));
+			$resultLayout->add(new Block(_("No <em>Items</em> are availible.")),2);
 		}		
 		
 		// print out links to skip to more items if the number of Items is greater
@@ -144,16 +145,16 @@ class ArrayResultPrinter {
 			}
 			
 			// Add the links to the page
-			$pageLinkBlock =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 2);
-			$pageLinkBlock->addComponent(new Content(ob_get_contents()));
+			//$pageLinkBlock =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 2);
+			$pageLinkBlock =& new Block(ob_get_contents(),2);
 			ob_end_clean();
-			$layout->addComponent($pageLinkBlock, MIDDLE, CENTER);
+			$layout->add($pageLinkBlock, "100%", null, LEFT, CENTER);
 		}
 		
-		$layout->addComponent($resultLayout);
+		$layout->add($resultLayout, "100%", null, LEFT, CENTER);
 		
 		if ($numItems > $this->_pageSize) {
-			$layout->addComponent($pageLinkBlock, MIDDLE, CENTER);
+			$layout->add($pageLinkBlock, null, null, CENTER, CENTER);
 		}
 		
 		return $layout;

@@ -1,13 +1,14 @@
-<?php
+<?
 
 /**
- * edit_authorizations.act.php
- * This file will allow the user to edit authorizations for a given user.
- * The chosen user information will have been passed from choose_agents.act.php via FORM action.
- * 11/11/04 Ryan Richards
- * @copyright 2004 Middlebury College
- * @package polyphony.modules.authorization
- */
+* edit_authorizations.act.php
+* This file will allow the user to edit authorizations for a given user.
+* The chosen user information will have been passed from choose_agents.act.php via FORM action.
+* 11/11/04 Ryan Richards
+* copyright 2004 Middlebury College
+* @copyright 2004 Middlebury College
+* @package polyphony.modules.authorization
+*/
 
 // Check for our authorization function definitions
 if (!defined("AZ_VIEW_AZS"))
@@ -23,23 +24,23 @@ $statusBar =& $harmoni->getAttachedData('statusBar');
 $centerPane =& $harmoni->getAttachedData('centerPane');
 
 // Intro
-$idManager =& Services::getService("Id");
+$sharedManager =& Services::getService("Id");
 $authZManager =& Services::getService("AuthZ");
 $GLOBALS["harmoni"] =& $harmoni;
 
 // Layout
-$actionRows =& new RowLayout();
-$centerPane->addComponent($actionRows, TOP, CENTER);
+$yLayout =& new YLayout();
+$actionRows =& new Container($yLayout, OTHER, 1);
+$centerPane->add($actionRows, null, null, CENTER, CENTER);
 
 
 // Intro message
-$introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
- $introHeader->addComponent(new Content(_("Browse Authorizations")));
+$introHeader =& new Heading("Browse Authorizations", 2);
  											
-$intro =& new Content("&nbsp &nbsp "._("Below is a listing of all of the Users/Groups who are authorized to do various functions in the system. Click on a name to edit the authorizations for that User/Group")."<br /><br />");
+$intro =& new Block("&nbsp &nbsp "._("Below is a listing of all of the Users/Groups who are authorized to do various functions in the system. Click on a name to edit the authorizations for that User/Group")."<br /><br />",2);
 
- $actionRows->addComponent($introHeader);
- $actionRows->addComponent($intro);
+ $actionRows->add($introHeader, "100%", null, LEFT, CENTER);
+ $actionRows->add($intro, null, null, CENTER, CENTER);
  
 // Buttons to go back to edit auths for a different user, or to go home
 ob_start();
@@ -49,8 +50,8 @@ print "</td><td align='right'>";
 print "<a href='".MYURL."/admin/main'><button>"._("Return to the Admin Tools")."</button></a>";
 print "</td></tr></table>";
 
-$nav =& new Content(ob_get_contents());
-$actionRows->addComponent($nav, MIDDLE);
+$nav =& new Block(ob_get_contents(), 2);
+$actionRows->add($nav, "100%", null, RIGHT, CENTER);
 ob_end_clean();
 
 // Get all hierarchies and their root qualifiers
@@ -60,17 +61,17 @@ while ($hierarchyIds->hasNext()) {
 	$hierarchyId =& $hierarchyIds->next();
 	
 	$hierarchy =& $hierarchyManager->getHierarchy($hierarchyId);
-	$header =& new SingleContentLayout(HEADING_WIDGET, 2);
-	$header->addComponent(new Content($hierarchy->getDisplayName()." - <em>".$hierarchy->getDescription()."</em>"));
-	$actionRows->addComponent($header);
+	$header =& new Heading($hierarchy->getDisplayName()." - <em>".$hierarchy->getDescription()."</em>", 2);
+	$actionRows->add($header, "100%", null, LEFT, CENTER);
 
 	// Get the root qualifiers for the Hierarchy
 	$qualifiers =& $authZManager->getRootQualifiers($hierarchyId);
 	while ($qualifiers->hasNext()) {
 		$qualifier =& $qualifiers->next();
-		
+		//print get_class($qualifier);
 		// Create a layout for this qualifier
 		ob_start();
+		
 		HierarchyPrinter::printNode($qualifier, $harmoni,
 										2,
 										"printQualifier",
@@ -78,17 +79,17 @@ while ($hierarchyIds->hasNext()) {
 										"getChildQualifiers",
 										new HTMLColor("#ddd")
 									);
-		$qualifierLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 2);
-		$qualifierLayout->addComponent(new Content(ob_get_contents()));
+									
+		$qualifierLayout =& new Block(ob_get_contents(), 3);
 		ob_end_clean();
-		$actionRows->addComponent($qualifierLayout);
+		$actionRows->add($qualifierLayout, "100%", null, LEFT, CENTER);
 
 
 	}
 }
 
 // Buttons to go back to edit auths for a different user, or to go home
-$actionRows->addComponent($nav, MIDDLE);
+$actionRows->add($nav, "100%", null, RIGHT, CENTER);
 
 return $mainScreen;
 
@@ -115,9 +116,9 @@ function printQualifier(& $qualifier) {
 
 	// Check that the current user is authorized to see the authorizations.
 	$authZ =& Services::getService("AuthZ");
-	$idManager =& Services::getService("Id");
+	$shared =& Services::getService("Id");
 	if ($authZ->isUserAuthorized(
-				$idManager->getId(AZ_VIEW_AZS),
+				$shared->getId(AZ_VIEW_AZS),
 				$id))
 	{
 		print "\n<div style='margin-left: 10px;'>";
@@ -159,6 +160,7 @@ function &getChildQualifiers(& $qualifier) {
 	return $array;
 }
 
+
 /**
  * Callback function for printing a table of all functions.  
  * To be used for each qualifier in the hierarchy.
@@ -172,7 +174,7 @@ function printEditOptions(& $qualifier) {
 	$qualifierId =& $qualifier->getId();
 	$harmoni =& $GLOBALS["harmoni"];
 	$authZManager =& Services::getService("AuthZ");
-	$agentManager =& Services::getService("Agent");
+	$shared =& Services::getService("Agent");
 	
 	$expandedNodes = array_slice($harmoni->pathInfoParts, 2);
 	if (count ($expandedNodes)) 
@@ -220,11 +222,11 @@ function printEditOptions(& $qualifier) {
 				print "?agent=".$agentId->getIdString();
 				print "' title='Edit Authorizations for this User/Group'>";
 				
-				if ($agentManager->isAgent($agentId)) {
-					$agent =& $agentManager->getAgent($agentId);
+				if ($shared->isAgent($agentId)) {
+					$agent =& $shared->getAgent($agentId);
 					print $agent->getDisplayName();
-				} else if ($agentManager->isGroup($agentId)) {
-					$group =& $agentManager->getGroup($agentId);
+				} else if ($shared->isGroup($agentId)) {
+					$group =& $shared->getGroup($agentId);
 					print $group->getDisplayName();
 				} else {
 					print "Agent/Group Id ".$agentId->getIdString()."";
@@ -247,5 +249,15 @@ function printEditOptions(& $qualifier) {
 	print"\n</table>";
 
 }
+
+/** Sort the AZs
+
+*/
+
+
+
+
+
+
 
 ?>

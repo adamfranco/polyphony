@@ -1,4 +1,4 @@
-<?php
+<?
 /**
  * @package polyphony.modules.authorization
  */
@@ -12,13 +12,13 @@ $centerPane =& $harmoni->getAttachedData('centerPane');
  
 
 // Our
-$actionRows =& new RowLayout();
-$centerPane->addComponent($actionRows, TOP, CENTER);
+$yLayout =& new YLayout();
+$actionRows =& new Container($yLayout, OTHER, 1);
+$centerPane->add($actionRows, null, null, CENTER, CENTER);
 
 // Intro
-$introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
-$introHeader->addComponent(new Content(_("View Authorizations")));
-$actionRows->addComponent($introHeader);
+$introHeader =& new Heading("View Authorizations", 2);
+$actionRows->addComponent($introHeader, "100%", null, LEFT, CENTER);
 
 $authZManager =& Services::getService("AuthZ");
 
@@ -39,10 +39,9 @@ while ($hierarchyIds->hasNext()) {
 										"printQualifier", 
 										"hasChildQualifiers", 
 										"getChildQualifiers");
-		$qualifierLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 3);
-		$qualifierLayout->addComponent(new Content(ob_get_contents()));
+		$qualifierLayout =& new Block(ob_get_contents(), 4);
 		ob_end_clean();
-		$actionRows->addComponent($qualifierLayout);
+		$actionRows->add($qualifierLayout, "100%", null, LEFT, CENTER);
 	}
 }
 

@@ -24,12 +24,12 @@ foreach ($_REQUEST as $idString => $type) {
 		$id =& $idManager->getId(strval($idString));
 		$member =& $agentManager->getGroup($id);
 		$destGroup->add($member);
-		
+
 	} else if ($type == "agent") {
 		$id =& $idManager->getId(strval($idString));
 		$member =& $agentManager->getAgent($id);
 		$destGroup->add($member);
-	}	
+	}
 }
 
 // Send us back to where we were

@@ -38,9 +38,9 @@ else {
 		$defaultTextDomain = textdomain();
 		textdomain("polyphony");
 		
-		// text
+		
 		ob_start();
-		$introText =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 2);
+		
 		print "<p>";
 		print _("Log in failed.");
 		print "\n<br /><a href='".MYURL."/".implode("/",$currentPathInfo)."'>";
@@ -50,9 +50,10 @@ else {
 		print "\n<a href='".MYURL."/auth/login_type/".$harmoni->pathInfoParts[2]."/".implode("/",$currentPathInfo)."'>";
 		print _("Try Again.");
 		print "</p>";
-		$introText->addComponent(new Content(ob_get_contents()));
+		
+		$introText =& new Block(ob_get_contents(), 2);
 		ob_end_clean();
-		$centerPane->addComponent($introText, TOP, CENTER);
+		$centerPane->add($introText, null, null, CENTER, CENTER);
 		
 		// go back to the default text domain
 		textdomain($defaultTextDomain);

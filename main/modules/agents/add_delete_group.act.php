@@ -10,26 +10,26 @@
 
 
 // Get the Layout compontents. See core/modules/moduleStructure.txt
-// for more info. 
+// for more info.
 $harmoni->ActionHandler->execute("window", "screen");
 $mainScreen =& $harmoni->getAttachedData('mainScreen');
 $statusBar =& $harmoni->getAttachedData('statusBar');
 $centerPane =& $harmoni->getAttachedData('centerPane');
- 
+
 
 // Our
-$actionRows =& new RowLayout();
+$yLayout =& new YLayout();
+$actionRows =& new Container($yLayout, OTHER, 1);
 
 // In order to preserve proper nesting on the HTML output
 //$actionRows->setPreSurroundingText("<form id='memberform' id='memberform' method='post' action='".MYURL."/agents/delete_group/".implode("/", $harmoni->pathInfoParts)."'>");
 //$actionRows->setPostSurroundingText("</form>");
 
-$centerPane->addComponent($actionRows, TOP, CENTER);
+$centerPane->add($actionRows, null, null, CENTER, CENTER);
 
 // Intro
-$introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
-$introHeader->addComponent(new Content(_("Create/Delete Groups")));
-$actionRows->addComponent($introHeader);
+$introHeader =& new Heading(_("Create/Delete Groups"), 2);
+$actionRows->add($introHeader, "100%", null, LEFT, CENTER);
 
 $agentManager =& Services::getService("Agent");
 
@@ -48,9 +48,8 @@ if (count($_GET)) {
  *********************************************************/
 
  // 'Delete a Group' header
-$deleteHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
-$deleteHeader->addComponent(new Content(_("Delete a Group")));
-$actionRows->addComponent($deleteHeader);
+$deleteHeader =& new Heading(_("Delete a Group"), 2);
+$actionRows->add($deleteHeader, "100%", null, null, LEFT, CENTER);
 
 
 // Loop through all of the Groups and figure out which ones are childen of
@@ -74,18 +73,17 @@ while ($groups->hasNext()) {
 	$groupId =& $group->getId();
 	
 	if (!in_array($groupId->getIdString(), $childGroupIds)) {
-		
+
 		// Create a layout for this group using the GroupPrinter
 		ob_start();
-		
+
 		GroupPrinter::printGroup($group, $harmoni,
 										2,
-										"printGroup", 
+										"printGroup",
 										"printMember");
-		$groupLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 3);
-		$groupLayout->addComponent(new Content(ob_get_contents()));
+		$groupLayout =& new Block(ob_get_contents(), 4);
 		ob_end_clean();
-		$actionRows->addComponent($groupLayout);	
+		$actionRows->add($groupLayout, "100%", null, LEFT, CENTER);
 	}
 }
 
@@ -139,16 +137,16 @@ function printGroup(& $group) {
 			print "\n\t\t".(($i)?", ":"").$key.": ".$properties->getProperty($key);
 			$i++;
 		}
-		
+
 		print "\n\t</a>)";
 	}
 	print "\n</em>";
 
 	// print the children of the groups so that our Javascript function can check ancestory.
 	$idString = $id->getIdString();
-	
+
 	*/
-	
+
 	/**
 	print <<<END
 
@@ -200,13 +198,13 @@ END;
 	print <<<END
 );
 		var i;
-		
+
 		for (i = 0; i < children.length; i++) {
 			if (children[i] == childId) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 	
@@ -227,17 +225,17 @@ END;
 	print <<<END
 );
 		var i;
-		
+
 		for (i = 0; i < children.length; i++) {
 			if (children[i] == childId) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
-//]]> 
+//]]>
 </script>
 
 END;
@@ -273,7 +271,7 @@ function printMember(& $member) {
 			print "\n\t\t".(($i)?", ":"").$key.": ".$properties->getProperty($key);
 			$i++;
 		}
-		
+
 		print "\n\t</a>)";
 	}
 	print "\n</em>";

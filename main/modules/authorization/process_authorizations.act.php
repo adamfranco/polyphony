@@ -1,14 +1,16 @@
-<?php
+<?
+
 /**
- * process_authorizations.act.php
- * This action will create or delete authorizations as specified by edit_authorizations.act.php
- * 11/18/04 Ryan Richards
- * @copyright 2004 Middlebury College
- * @package polyphony.modules.authorization
- */
+* process_authorizations.act.php
+* This action will create or delete authorizations as specified by edit_authorizations.act.php
+* 11/18/04 Ryan Richards
+* copyright 2004 MIddlebury College
+* @copyright 2004 Middlebury College
+* @package polyphony.modules.authorization
+*/
 
 // Get services
-$idManager =& Services::getService("Id");
+$shared =& Services::getService("Shared");
 $authZ =& Services::getService("AuthZ");
 
 // Get info passed to this action via the URL
@@ -18,9 +20,9 @@ $functionIdString = $harmoni->pathInfoParts['4'];
 $qualifierIdString = $harmoni->pathInfoParts['5'];
 
 // Get Ids from these strings
-$agentId =& $idManager->getId($agentIdString);
-$functionId =& $idManager->getId($functionIdString);
-$qualifierId =& $idManager->getId($qualifierIdString);
+$agentId =& $shared->getId($agentIdString);
+$functionId =& $shared->getId($functionIdString);
+$qualifierId =& $shared->getId($qualifierIdString);
 
 
 // Process authorizations

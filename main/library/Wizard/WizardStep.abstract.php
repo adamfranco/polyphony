@@ -1,4 +1,4 @@
-<?php
+<?
 /**
  *
  * @package polyphony.library.wizard
@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStep.abstract.php,v 1.6 2005/02/04 23:06:15 adamfranco Exp $
+ * @version $Id: WizardStep.abstract.php,v 1.7 2005/03/28 23:25:55 nstamato Exp $
  */
 
 /**
@@ -19,11 +19,11 @@ require_once(dirname(__FILE__)."/WizardStep.interface.php");
  * The Wizard class provides a system for registering Wizard properties and 
  * associating those properties with the appropriate form elements.
  *
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: WizardStep.abstract.php,v 1.6 2005/02/04 23:06:15 adamfranco Exp $
+ * @version $Id: WizardStep.abstract.php,v 1.7 2005/03/28 23:25:55 nstamato Exp $
  */
 
 class WizardStepAbstract 
@@ -57,7 +57,7 @@ class WizardStepAbstract
 	
 	/**
 	 * creates a new Property for this step
-	 * @param string $propertyName The property name.
+	 * @parm string $propertyName The property name.
 	 * @param object $validatorRule A ValidatorRule (that exends the 
 	 * 		ValidatorRuleInterface) that will be used to validate the form
 	 *		inputs
@@ -77,7 +77,7 @@ class WizardStepAbstract
 	
 	/**
 	 * Gets a Property
-	 * @param string $name The name of the requested property.
+	 * @parm string $name The name of the requested property.
 	 * @return object WizardProperty
 	 */
 	function &getProperty ( $propertyName ) {
@@ -136,12 +136,10 @@ class WizardStepAbstract
 	 * @return object Layout
 	 */
 	function &getLayout (& $harmoni) {
-		$stepLayout =& new SingleContentLayout (TEXT_BLOCK_WIDGET, 2);
+		
 		
 		$text = $this->_parseText();
-		
-		$stepLayout->addComponent(new Content($text));
-		
+		$stepLayout =& new Block ($text, 3);
 		return $stepLayout;
 	}
 	

@@ -11,14 +11,14 @@ $statusBar =& $harmoni->getAttachedData('statusBar');
 $centerPane =& $harmoni->getAttachedData('centerPane');
  
 
-// Our
-$actionRows =& new RowLayout();
-$centerPane->addComponent($actionRows, TOP, CENTER);
+// Layout
+$yLayout =& new YLayout();
+$actionRows =& new Container($yLayout, OTHER, 1);
+$centerPane->add($actionRows, null, null, CENTER, CENTER);
 
 // Intro
-$introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
-$introHeader->addComponent(new Content(_("View Agents")));
-$actionRows->addComponent($introHeader);
+$introHeader =& new Heading(_("View Agents"), 2);
+$actionRows->add($introHeader, "100%", null, LEFT, CENTER);
 
 $agentManager =& Services::getService("Agent");
 
@@ -44,8 +44,7 @@ while ($agents->hasNext()) {
 	$id =& $agent->getId();
 	print "<strong>".$id->getIdString()." - ";
 	print $agent->getDisplayName()."</strong>";
-	$agentLayout =& new SingleContentLayout(HEADING_WIDGET, 2);
-	$agentLayout->addComponent(new Content(ob_get_contents()));
+	$agentLayout =& new Heading(ob_get_contents(), 2);
 	ob_end_clean();
 	
 	// Also display type information for that agent
@@ -55,21 +54,19 @@ while ($agents->hasNext()) {
 	print "<em>Authority: </em>".$agentType->getAuthority();
 	print "<em><br />Domain: </em>".$agentType->getDomain();
 	print "<em><br />Keyword: </em>".$agentType->getKeyword();
-	$agentInfoLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 2);
-	$agentInfoLayout->addComponent(new Content(ob_get_contents()));
+	$agentInfoLayout =& new Block(ob_get_contents(), 2);
 	ob_end_clean();
 	
 	ob_start();
 	print "<em>Description: </em>".$agentType->getDescription();
-	$agentDescriptionLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 1);
-	$agentDescriptionLayout->addComponent(new Content(ob_get_contents()));
+	$agentDescriptionLayout =& new Block(ob_get_contents(), 2);
 	ob_end_clean();
 		
-	$actionRows->addComponent($agentLayout);
-	$actionRows->addcomponent($agentInfoLayout);
-	$actionRows->addComponent($agentDescriptionLayout);
+	$actionRows->add($agentLayout, "100%", null, LEFT, CENTER);
+	$actionRows->add($agentInfoLayout, "100%", null, LEFT, CENTER);
+	$actionRows->add($agentDescriptionLayout, "100%", null, LEFT, CENTER);
 	
-	$actionRows->addComponent(new Content(" &nbsp; <br /> &nbsp; <br /> &nbsp;"));
+	$actionRows->add(new Block(" &nbsp; <br /> &nbsp; <br /> &nbsp;",2), null, null, CENTER, CENTER);
 	
 /// / 	Now get all the functions of the specified type
 // 	$functions =& $authZManager->getFunctions($functionType);

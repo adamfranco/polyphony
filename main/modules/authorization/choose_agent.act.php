@@ -24,8 +24,11 @@ $idManager = Services::getService("Id");
 $everyoneId =& $idManager->getId("-1");
 
 // Our
-$pageRows =& new RowLayout();
-$actionRows =& new RowLayout();
+$yLayout =& new YLayout();
+$pageRows =& new Container($yLayout, OTHER, 1);
+$preActionRows =& new Container($yLayout, OTHER, 1);
+$actionRows =& new Container($yLayout, OTHER, 1);
+$postActionRows =& new Container($yLayout, OTHER, 1);
 
 // In order to preserve proper nesting on the HTML output put the form
 // around the row layout
@@ -70,16 +73,15 @@ print<<<END
 END;
 print "<form id='chooseform' method='get' action='".MYURL."/authorization/edit_authorizations/'>";
 
-$actionRows->setPreSurroundingText(ob_get_contents());
+$preActionRows->add(new Block(ob_get_contents(),2), null, null, CENTER, CENTER);
 ob_end_clean();
-$actionRows->setPostSurroundingText("</form>");
+$postActionRows->add(new Block("</form>",2),null,null,CENTER, CENTER);
 
-$centerPane->addComponent($pageRows, TOP, CENTER);
+$centerPane->add($pageRows, null, null, CENTER, TOP);
 
 // Intro
-$introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
-$introHeader->addComponent(new Content(_("Edit Authorizations for which User/Group?")));
-$pageRows->addComponent($introHeader);
+$introHeader =& new Heading("Edit Authorizations for which User/Group?", 2);
+$pageRows->add($introHeader, "100%", null, LEFT, CENTER);
 
 ob_start();
 print "<table width='100%'><tr><td align='left'>";
@@ -90,17 +92,16 @@ print " onclick='Javascript:submitAgentChoice()'";
 print " value='"._("Edit Authorizations for the selected User/Group")." --&gt;' />";
 print "</td></tr></table>";
 
-$submit = new Content(ob_get_contents());
+$submit = new Block(ob_get_contents(),2);
 ob_end_clean();
-$pageRows->addComponent($submit, MIDDLE);
+$pageRows->add($submit, "100%", null, LEFT, CENTER);
 
 
 
 
 // Users header
-$agentHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
-$agentHeader->addComponent(new Content(_("Users")));
-$pageRows->addComponent($agentHeader);
+$agentHeader =& new Heading("Users", 2);
+$pageRows->add($agentHeader, "100%", null, LEFT, CENTER);
 
 /*********************************************************
  * the agent search form
@@ -135,12 +136,12 @@ while ($searchTypes->hasNext()) {
 	print "\n\t\t<input type='button' value='"._("Clear")."' />\n\t</a>";
 print "\n</div>\n</form>";
 
-$agentLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 2);
-$agentLayout->addComponent(new Content(ob_get_contents()), BOTTOM);
+$agentLayout =& new Block(ob_get_contents(), 3);
 ob_end_clean();
-$pageRows->addComponent($agentLayout);
-$pageRows->addComponent($actionRows, BOTTOM, CENTER);
-
+$pageRows->add($agentLayout, "100%", null, LEFT, CENTER);
+$pageRows->add($preActionRows, null, null, CENTER, CENTER);
+$pageRows->add($actionRows, "100%", null, LEFT, CENTER);
+$pageRows->add($postActionRows, null, null, CENTER, CENTER);
 /*********************************************************
  * the agent search results
  *********************************************************/
@@ -189,10 +190,9 @@ END;
 	}
 	print "\n</div>";
 	
-	$agentLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 3);
-	$agentLayout->addComponent(new Content(ob_get_contents()));
+	$agentLayout =& new Block(ob_get_contents(), 2);
 	ob_end_clean();
-	$actionRows->addComponent($agentLayout);	
+	$actionRows->add($agentLayout, "100%", null, LEFT, CENTER);	
 }
 
 
@@ -201,9 +201,8 @@ END;
  *********************************************************/
 
 // Users header
-$agentHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
-$agentHeader->addComponent(new Content(_("Groups")));
-$actionRows->addComponent($agentHeader);
+$agentHeader =& new Heading("Groups", 2);
+$actionRows->add($agentHeader, "100%", null, LEFT, CENTER);
 
 // Loop through all of the Groups and figure out which ones are childen of
 // other groups, so that we can just display the root-groups
@@ -235,13 +234,12 @@ while ($groups->hasNext()) {
 										2,
 										"printGroup", 
 										"printMember");
-		$groupLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 3);
-		$groupLayout->addComponent(new Content(ob_get_contents()));
+		$groupLayout =& new Block(ob_get_contents(), 4);
 		ob_end_clean();
-		$actionRows->addComponent($groupLayout);	
+		$actionRows->add($groupLayout, "100%", null, LEFT, CENTER);	
 	}
 }
-$actionRows->addComponent($submit, MIDDLE);
+$actionRows->add($submit, "100%", null, LEFT, CENTER);
 
 
 // Return the main layout.

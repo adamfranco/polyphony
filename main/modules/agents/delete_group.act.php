@@ -27,6 +27,3 @@ header("Location: ".MYURL."/".implode("/",$currentPathInfo));
 
 // Delete the given group
 //$shared->deleteGroup($groupId);
-
-
-

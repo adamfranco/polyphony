@@ -11,14 +11,14 @@ $statusBar =& $harmoni->getAttachedData('statusBar');
 $centerPane =& $harmoni->getAttachedData('centerPane');
  
 
-// Our
-$actionRows =& new RowLayout();
-$centerPane->addComponent($actionRows, TOP, CENTER);
+// Layout
+$yLayout =& new YLayout();
+$actionRows =& new Container($yLayout, OTHER, 1);
+$centerPane->add($actionRows, null, null, CENTER, CENTER);
 
-// Intro
-$introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
-$introHeader->addComponent(new Content(_("View Functions")));
-$actionRows->addComponent($introHeader);
+/// Intro
+$introHeader =& new Heading(_("View Functions"), 2);
+$actionRows->add($introHeader, "100%", null, LEFT, CENTER);
 
 $authZManager =& Services::getService("AuthZ");
 
@@ -44,23 +44,21 @@ while ($functionTypes->hasNext()) {
 	print "<strong>".$functionType->getAuthority()." :: ";
 	print $functionType->getDomain()." :: ";
 	print $functionType->getKeyword()."</strong> ";
-	$typeLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 1);
-	$typeLayout->addComponent(new Content(ob_get_contents()));
+	$typeLayout =& new Block(ob_get_contents(), 2);
 	ob_end_clean();
 	
 	ob_start();
 	print "<em>".$functionType->getDescription()."</em>";
-	$descriptionLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 2);
-	$descriptionLayout->addComponent(new Content(ob_get_contents()));
+	$descriptionLayout =& new Block(ob_get_contents(), 2);
 	ob_end_clean();
 	
-	$actionRows->addComponent($typeLayout);
-	$actionRows->addComponent($descriptionLayout);
+	$actionRows->add($typeLayout, "100%", null, LEFT, CENTER);
+	$actionRows->add($descriptionLayout, "100%", null, LEFT, CENTER);
 	
-	$functionLayout =& new RowLayout(TEXT_BLOCK_WIDGET, 3);
-	$actionRows->addComponent($functionLayout);
+	$functionLayout =& new Container($yLayout, Block, 4);
+	$actionRows->add($functionLayout, "100%", null, LEFT, CENTER);
 	
-	$actionRows->addComponent(new Content(" &nbsp; <br /> &nbsp; <br /> &nbsp;"));
+	$actionRows->add(new Block(" &nbsp; <br /> &nbsp; <br /> &nbsp;",2), "100%", null, LEFT, CENTER);
 	
 // 	Now get all the functions of the specified type
 	$functions =& $authZManager->getFunctions($functionType);
@@ -77,7 +75,7 @@ while ($functionTypes->hasNext()) {
 		print "<strong>".$function->getReferenceName()." - ";
 		print "</strong>".$function->getDescription();
 		
-		$functionLayout->addComponent(new Content(ob_get_contents()));
+		$functionLayout->add(new Block(ob_get_contents(),2), "100%", null, LEFT, CENTER);
 		ob_end_clean();
         
 	}

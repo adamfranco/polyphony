@@ -20,19 +20,21 @@ $centerPane =& $harmoni->getAttachedData('centerPane');
  
 
 // Our
-$pageRows =& new RowLayout();
-$actionRows =& new RowLayout();
+$yLayout =& new YLayout();
+$pageRows =& new Container($yLayout, OTHER, 1);
+$preActionRows =& new Container($yLayout, OTHER, 1);
+$actionRows =& new Container($yLayout, OTHER, 1);
+$postActionRows =& new Container($yLayout, OTHER, 1);
 
 // In order to preserve proper nesting on the HTML output
-$actionRows->setPreSurroundingText("<form id='memberform' method='post' action='".MYURL."/agents/add_to_group/".implode("/", $harmoni->pathInfoParts)."'>");
-$actionRows->setPostSurroundingText("</form>");
+$preActionRows->add(new Block("<form id='memberform' method='post' action='".MYURL."/agents/add_to_group/".implode("/", $harmoni->pathInfoParts)."'>",2), null, null, CENTER, CENTER);
+$postActionRows->add(new Block("</form>",2), null, null, CENTER, CENTER);
 
-$centerPane->addComponent($pageRows, TOP, CENTER);
+$centerPane->add($pageRows, null, null,CENTER, CENTER);
 
 // Intro
-$introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
-$introHeader->addComponent(new Content(_("Users and Groups")));
-$pageRows->addComponent($introHeader);
+$introHeader =& new Heading(_("Users and Groups"), 2);
+$pageRows->add($introHeader, "100%", null, LEFT, CENTER);
 
 $agentManager =& Services::getService("Agent");
 
@@ -55,9 +57,8 @@ if (count($_GET)) {
 // $group->add($member);
 
 // Users header
-$agentHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
-$agentHeader->addComponent(new Content(_("Users")));
-$pageRows->addComponent($agentHeader);
+$agentHeader =& new Heading(_("Users"), 2);
+$pageRows->addComponent($agentHeader, "100%", null, LEFT, CENTER);
 
 
 
@@ -96,12 +97,12 @@ while ($searchTypes->hasNext()) {
 	print "\n</div>";
 print "\n</form>";
 
-$agentLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 2);
-$agentLayout->addComponent(new Content(ob_get_contents()), BOTTOM);
+$agentLayout =& new Block(ob_get_contents(), 2);
 ob_end_clean();
-$pageRows->addComponent($agentLayout);
-$pageRows->addComponent($actionRows, BOTTOM, CENTER);
-
+$pageRows->add($agentLayout, "100%", null, LEFT, CENTER);
+$pageRows->add($preActionRows, null, null,CENTER, CENTER);
+$pageRows->add($actionRows, null, null,CENTER, CENTER);
+$pageRows->add($postActionRows, null, null,CENTER, CENTER);
 
 
 /*********************************************************
@@ -152,10 +153,9 @@ END;
 	}
 	print "\n</div>";
 	
-	$agentLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 3);
-	$agentLayout->addComponent(new Content(ob_get_contents()));
+	$agentLayout =& new Block(ob_get_contents(), 4);
 	ob_end_clean();
-	$actionRows->addComponent($agentLayout);	
+	$actionRows->add($agentLayout, "100%", null, LEFT, CENTER);	
 }
 
 
@@ -233,10 +233,9 @@ END;
 	print "</div>";
 }
 
-$agentLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 3);
-$agentLayout->addComponent(new Content(ob_get_contents()));
+$agentLayout =& new Block(ob_get_contents(), 4);
 ob_end_clean();
-$actionRows->addComponent($agentLayout);
+$actionRows->add($agentLayout, "100%", null, LEFT, CENTER);
 
 
 
@@ -259,9 +258,8 @@ while ($groups->hasNext()) {
 }
 
 // Get all the groups first.
-$groupHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
-$groupHeader->addComponent(new Content(_("Groups")));
-$actionRows->addComponent($groupHeader);
+$groupHeader =& new Heading(_("Groups"), 2);
+$actionRows->add($groupHeader, "100%", null, LEFT, CENTER);
 
 $groups =& $agentManager->getGroups();
 while ($groups->hasNext()) {
@@ -345,10 +343,9 @@ END;
 										2,
 										"printGroup", 
 										"printMember");
-		$groupLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 3);
-		$groupLayout->addComponent(new Content(ob_get_contents()));
+		$groupLayout =& new Block(ob_get_contents(), 4);
 		ob_end_clean();
-		$actionRows->addComponent($groupLayout);	
+		$actionRows->add($groupLayout, "100%", null, LEFT, CENTER);	
 	}
 }
 
