@@ -4,7 +4,7 @@
 *
 * @package
 * @copyright 2004
-* @version $Id: ConfigSystem.class.php,v 1.4 2004/07/29 03:44:03 gabeschine Exp $
+* @version $Id: ConfigSystem.class.php,v 1.5 2004/08/04 02:15:45 gabeschine Exp $
 */
 class ConfigSystem {
 
@@ -55,7 +55,7 @@ class ConfigSystem {
 
 		$this->_schemaType =& new HarmoniType("Polyphony","ConfigSystem",$program);
 		
-		$schema =& $typeManager->newSchema($this->_schemaType);
+		$schema =& new Schema($this->_schemaType);
 
 		$this->_schema =& $schema;
 
@@ -146,7 +146,7 @@ class ConfigSystem {
 				$this->_record->setActiveFlag(true);
 			}
 		} else {
-			$this->_record =& $recordManager->newRecord($this->_schemaType, false);
+			$this->_record =& $recordManager->createRecord($this->_schemaType, false);
 		}
 
 		return $this->_record;

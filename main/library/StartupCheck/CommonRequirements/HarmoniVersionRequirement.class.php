@@ -4,7 +4,7 @@
  * This {@link StartupRequirement} checks to make sure we are running a certain version of Harmoni, or newer.
  * @package polyphony.startupcheck.requirements
  * @copyright 2004
- * @version $Id: HarmoniVersionRequirement.class.php,v 1.2 2004/07/22 19:36:49 gabeschine Exp $
+ * @version $Id: HarmoniVersionRequirement.class.php,v 1.3 2004/08/04 02:15:45 gabeschine Exp $
  */
 class HarmoniVersionRequirement extends StartupRequirement {
 
@@ -15,20 +15,15 @@ class HarmoniVersionRequirement extends StartupRequirement {
 	/**
 	 * Constructor
 	 * @param ref object $harmoni A reference to a {$link Harmoni} object.
-	 * @param int $version The integer-equivalent of the version that is required. The format is XXMMRR, XX = major number, MM = minor number, RR = release number, giving a string like 020512 for version 2.5.12. NOTE: you should leave off leading 0's so PHP doesn't think it's an octal.
+	 * @param string $version The harmoni version string, ie, "1.5.2".
 	 */
 	function HarmoniVersionRequirement(&$harmoni, $version) {
 
 		$this->_harmoni =& $harmoni;
-		$this->_version = $version;
+		$this->_versionStr = $harmoni->getVersionStr($version);
 		
-		// now let's make a pretty string-version of this numerical version number for printing out later.
-		$temp = sprintf("%06d",$version);
-		$major = substr($temp,0,2);
-		$minor = substr($temp,2,2);
-		$release = substr($temp,4,2);
-		
-		$this->_versionStr = sprintf("%d.%d.%d",$major,$minor,$release);
+		// let's convert the string into its numeric counterpart.
+		$this->_version = $harmoni->getVersionNumber($version);
 	}
 	
 	/**
