@@ -21,7 +21,7 @@ $pageRows =& new RowLayout();
 $actionRows =& new RowLayout();
 
 // In order to preserve proper nesting on the HTML output
-$actionRows->setPreSurroundingText("<form name='memberform' method='post' action='".MYURL."/agents/add_to_group/".implode("/", $harmoni->pathInfoParts)."'>");
+$actionRows->setPreSurroundingText("<form name='memberform' id='memberform' method='post' action='".MYURL."/agents/add_to_group/".implode("/", $harmoni->pathInfoParts)."'>");
 $actionRows->setPostSurroundingText("</form>");
 
 $centerPane->addComponent($pageRows, TOP, CENTER);
@@ -81,7 +81,7 @@ $lastCriteria = $_REQUEST['search_criteria'];
 print _("Search For Users").": ";
 print <<<END
 <form action='$self' method='get'>
-	<input type='text' name='search_criteria' value='$lastCriteria'>
+	<input type='text' name='search_criteria' value='$lastCriteria' />
 	<br /><select name='search_type'>
 END;
 
@@ -98,9 +98,9 @@ while ($searchTypes->hasNext()) {
 }
 
 	print "\n\t</select>";
-	print "\n\t<br /><input type='submit' value='"._("Search")."'>";
+	print "\n\t<br /><input type='submit' value='"._("Search")."' />";
 	print "\n\t<a href='".MYURL."/".implode("/", $harmoni->pathInfoParts)."/'>";
-	print "<input type='button' value='"._("Clear")."'></a>";
+	print "<input type='button' value='"._("Clear")."' /></a>";
 print "</form>";
 
 $agentLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 2);
@@ -433,16 +433,16 @@ return $mainScreen;
 	$id =& $group->getId();
 	$groupType =& $group->getType();
 	
-	print "\n<input type='checkbox' name='".$id->getIdString()."' id='".$id->getIdString()."' value='group'>";
+	print "\n<input type='checkbox' name='".$id->getIdString()."' value='group' />";
 	print "\n<a title='".$groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()." - ".$groupType->getDescription()."'>";
-	print "\n<u><strong>".$id->getIdString()." - ".$group->getDisplayName()."</strong></u></a>";
+	print "\n<span style='text-decoration: underline; font-weight: bold;'>".$id->getIdString()." - ".$group->getDisplayName()."</span></a>";
 	
 	print "\n <input type='button' value='"._("Add checked")."'";
 	print " onClick='Javascript:submitCheckedToGroup(\"".$id->getIdString()."\")'";
-	print ">";
+	print " />";
 	print "\n <input type='button' value='"._("Remove checked")."'";
 	print " onClick='Javascript:submitCheckedFromGroup(\"".$id->getIdString()."\")'";
-	print ">";
+	print " />";
 	
 	print "\n - <em>".$group->getDescription()."</em>";
 	
@@ -562,9 +562,9 @@ END;
 function printMember(& $member) {
 	$id =& $member->getId();
 	$memberType =& $member->getType();
-	print "\n<input type='checkbox' name='".$id->getIdString()."' value='agent'>";
+	print "\n<input type='checkbox' name='".$id->getIdString()."' value='agent' />";
 	print "\n<a title='".$memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription()."'>";
-	print "\n<u>".$id->getIdString()." - ".$member->getDisplayName()."</u></a>";
+	print "\n<span style='text-decoration: underline;'>".$id->getIdString()." - ".$member->getDisplayName()."</span></a>";
 	
 	// print out the properties of the Agent
 	print "\n<em>";

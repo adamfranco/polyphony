@@ -97,7 +97,7 @@ $lastCriteria = $_REQUEST['search_criteria'];
 print _("Search For Users").": ";
 print <<<END
 <form action='$self' method='get'>
-	<input type='text' name='search_criteria' value='$lastCriteria'>
+	<input type='text' name='search_criteria' value='$lastCriteria' />
 	<br /><select name='search_type'>
 END;
 
@@ -114,9 +114,9 @@ while ($searchTypes->hasNext()) {
 }
 
 	print "\n\t</select>";
-	print "\n\t<br /><input type='submit' value='"._("Search")."'>";
+	print "\n\t<br /><input type='submit' value='"._("Search")."' />";
 	print "\n\t<a href='".MYURL."/".implode("/", $harmoni->pathInfoParts)."/'>";
-	print "<input type='button' value='"._("Clear")."'></a>";
+	print "<input type='button' value='"._("Clear")."' /></a>";
 print "</form>";
 
 $agentLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 2);
@@ -235,18 +235,18 @@ return $mainScreen;
 function printGroup(& $group) {
 	$id =& $group->getId();
 	$groupType =& $group->getType();
-	print "<input type='radio' name='agent' value='".$id->getIdString()."'>";
+	print "<input type='radio' name='agent' value='".$id->getIdString()."' />";
 	print "<a title='".$groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()."'>";
-	print "<u><strong>".$id->getIdString()." - ".$group->getDisplayName()."</strong></u></a>";	
+	print "<span style='text-decoration: underline; font-weight: bold;'>".$id->getIdString()." - ".$group->getDisplayName()."</span></a>";	
 	print " - <em>".$groupType->getDescription()."</em>";
 }
 
 function printMember(& $member) {
 	$id =& $member->getId();
 	$memberType =& $member->getType();
-	print "<input type='radio' name='agent' value='".$id->getIdString()."'>";
+	print "<input type='radio' name='agent' value='".$id->getIdString()."' />";
 	print "<a title='".$memberType->getAuthority()." :: ".$memberType->getDomain()." :: ".$memberType->getKeyword()."'>";
-	print "<u>".$id->getIdString()." - ".$member->getDisplayName()."</u></a>";
+	print "<span style='text-decoration: underline;'>".$id->getIdString()." - ".$member->getDisplayName()."</span></a>";
 	print " - <em>".$memberType->getDescription()."</em>";
 }
 

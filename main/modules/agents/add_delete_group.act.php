@@ -20,7 +20,7 @@ $centerPane =& $harmoni->getAttachedData('centerPane');
 $actionRows =& new RowLayout();
 
 // In order to preserve proper nesting on the HTML output
-//$actionRows->setPreSurroundingText("<form name='memberform' method='post' action='".MYURL."/agents/delete_group/".implode("/", $harmoni->pathInfoParts)."'>");
+//$actionRows->setPreSurroundingText("<form id='memberform' id='memberform' method='post' action='".MYURL."/agents/delete_group/".implode("/", $harmoni->pathInfoParts)."'>");
 //$actionRows->setPostSurroundingText("</form>");
 
 $centerPane->addComponent($actionRows, TOP, CENTER);
@@ -106,9 +106,9 @@ return $mainScreen;
 	"/".implode("/", $harmoni->pathInfoParts);
 	
 	print "\n<input type='checkbox' name='blah' value='blah' ";
-	print " onClick=\"Javascript:window.location='".$toggleURL."'\">";
+	print " onClick=\"Javascript:window.location='".$toggleURL."'\" />";
 	print "\n<a title='".$groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()." - ".$groupType->getDescription()."'>";
-	print "\n<u><strong>".$id->getIdString()." - ".$group->getDisplayName()."</strong></u></a>";
+	print "\n<span style='text-decoration: underline; font-weight: bold;'>".$id->getIdString()." - ".$group->getDisplayName()."</span></a>";
 
 	// The checkbox is really just for show, the link is where we send
 	// to our processing to toggle the state of the authorization.
@@ -237,7 +237,7 @@ function printMember(& $member) {
 	$id =& $member->getId();
 	$memberType =& $member->getType();
 	print "\n<a title='".$memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription()."'>";
-	print "\n<u>".$id->getIdString()." - ".$member->getDisplayName()."</u></a>";
+	print "\n<span style='text-decoration: underline;'>".$id->getIdString()." - ".$member->getDisplayName()."</span>";
 	
 	// print out the properties of the Agent
 	print "\n<em>";

@@ -10,7 +10,7 @@ require_once(dirname(__FILE__)."/WizardStep.interface.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: WizardStep.abstract.php,v 1.4 2004/09/28 15:45:43 adamfranco Exp $
+ * @version $Id: WizardStep.abstract.php,v 1.5 2004/12/22 17:04:05 adamfranco Exp $
  */
 
 class WizardStepAbstract 
@@ -189,15 +189,15 @@ class WizardStepAbstract
 	 * nessisary for use in the comparison string. In that case single quotes, ',
 	 * should be used. Examples:
 	 *
-	 * 		<input type='text' name='title' value='[[title]]'>
+	 * 		<input type='text' name='title' value='[[title]]' />
 	 *
-	 * 		<input type='text' name='age' value='[[age]]'> [[age < 18|*You are not old enough!*|You are old enough.]]
+	 * 		<input type='text' name='age' value='[[age]]' /> [[age < 18|*You are not old enough!*|You are old enough.]]
 	 * 		
-	 * 		<input type='radio' name='width' value='5' [[width == 5| checked='checked'|]]> Narrow Width
-	 * 		<input type='radio' name='width' value='10' [[width == 10| checked='checked'|]]> Wide Width
+	 * 		<input type='radio' name='width' value='5' [[width == 5| checked='checked'|]] /> Narrow Width
+	 * 		<input type='radio' name='width' value='10' [[width == 10| checked='checked'|]] /> Wide Width
 	 * 		
-	 * 		<input type='radio' name='size' value='S' [['size' == 'S'| checked='checked'|]]> Small
-	 * 		<input type='radio' name='size' value='L' [['size' == 'L'| checked='checked'|]]> Large
+	 * 		<input type='radio' name='size' value='S' [['size' == 'S'| checked='checked'|]] /> Small
+	 * 		<input type='radio' name='size' value='L' [['size' == 'L'| checked='checked'|]] /> Large
 	 * 
 	 * @access private
 	 * @return string

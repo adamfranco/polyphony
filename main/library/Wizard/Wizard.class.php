@@ -14,7 +14,7 @@ require_once(dirname(__FILE__)."/MultiValuedWizardStep.class.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: Wizard.class.php,v 1.15 2004/11/10 17:18:13 rrichards Exp $
+ * @version $Id: Wizard.class.php,v 1.16 2004/12/22 17:04:05 adamfranco Exp $
  */
 
 class Wizard {
@@ -393,30 +393,30 @@ class Wizard {
 			print "\n\t<tr>";
 			print "\n\t\t<td align='left'>";
 			if ($this->hasPrevious())
-				print "\n\t\t\t<input type='submit' name='__previous' value='"._("Previous")."'>";
+				print "\n\t\t\t<input type='submit' name='__previous' value='"._("Previous")."' />";
 			else
-				print "\n\t\t\t<input type='button' disabled='disabled' value='"._("Previous")."'>";
+				print "\n\t\t\t<input type='button' disabled='disabled' value='"._("Previous")."' />";
 			print "\n\t\t</td>";
 			print "\n\t\t<td align='right'>";
 			if ($this->hasNext())
-				print "\n\t\t\t<input type='submit' name='__next' value='"._("Next")."'>";
+				print "\n\t\t\t<input type='submit' name='__next' value='"._("Next")."' />";
 			else
-				print "\n\t\t\t<input type='button' disabled='disabled' value='"._("Next")."'>";
+				print "\n\t\t\t<input type='button' disabled='disabled' value='"._("Next")."' />";
 			print "\n\t\t</td>";
 			print "\n\t</tr>";
 		}
 		print "\n\t<tr>";
 		print "\n\t\t<td align='left'>";
 		if ($this->_allowCancel)
-			print "\n\t\t\t<input type='submit' name='__cancel' value='"._("Cancel")."'>";
+			print "\n\t\t\t<input type='submit' name='__cancel' value='"._("Cancel")."' />";
 		else
-			print "\n\t\t\t<input type='button' disabled='disabled' value='"._("Cancel")."'>";
+			print "\n\t\t\t<input type='button' disabled='disabled' value='"._("Cancel")."' />";
 		print "\n\t\t</td>";
 		print "\n\t\t<td align='right'>";
 		if (($this->_allowStepLinks || !$this->hasNext()) && $this->arePropertiesValid())
-			print "\n\t\t\t<input type='submit' name='__save' value='"._("Save")."'>";
+			print "\n\t\t\t<input type='submit' name='__save' value='"._("Save")."' />";
 		else
-			print "\n\t\t\t<input type='button' disabled='disabled' value='"._("Save")."'>";
+			print "\n\t\t\t<input type='button' disabled='disabled' value='"._("Save")."' />";
 		print "\n\t\t</td>";
 		print "\n\t</tr>";
 		

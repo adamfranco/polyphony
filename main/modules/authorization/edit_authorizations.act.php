@@ -258,7 +258,7 @@ function printEditOptions(& $qualifier) {
 				print "\n\t\t\t\t\t<td><nobr>";
 				print "\n\t\t\t\t\t\t<input type='checkbox' name='blah' value='blah'";
 				print " title='".$title."'";
-				print " checked='checked' disabled='disabled'>";
+				print " checked='checked' disabled='disabled' />";
 				print "\n\t\t\t\t\t\t<a";
 // 				print " id='".$explicitAgentId->getIdString()
 // 						."-".$functionId->getIdString()

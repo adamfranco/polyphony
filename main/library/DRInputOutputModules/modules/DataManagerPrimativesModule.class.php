@@ -10,8 +10,8 @@ require_once(dirname(__FILE__)."/../DRInputOutputModule.interface.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.dr.inputoutput
- * @version $Id: DataManagerPrimativesModule.class.php,v 1.3 2004/10/29 20:22:30 adamfranco Exp $
- * @date $Date: 2004/10/29 20:22:30 $
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.4 2004/12/22 17:02:42 adamfranco Exp $
+ * @date $Date: 2004/12/22 17:02:42 $
  * @copyright 2004 Middlebury College
  */
 
@@ -244,7 +244,7 @@ class DataManagerPrimativesModule
 				print "\n<br /><strong>".$part->getDisplayName()."</strong>:";
 				print " <input type='text'";
 				print " name='".$partId->getIdString()."'";
-				print " value='[[".$partId->getIdString()."]]'> ";
+				print " value='[[".$partId->getIdString()."]]' /> ";
 				print " [[".$partId->getIdString()."|Error]]";
 				if ($part->isRepeatable()) {
 					print "\n<br />[Buttons] <em>"._("Click here to save the value above.")."</em>";
