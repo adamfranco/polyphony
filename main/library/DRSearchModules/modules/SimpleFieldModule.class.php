@@ -5,8 +5,8 @@
  * for various Digital Repository search types.
  * 
  * @package polyphony.dr.search
- * @version $Id: SimpleFieldModule.class.php,v 1.2 2004/12/22 17:04:04 adamfranco Exp $
- * @date $Date: 2004/12/22 17:04:04 $
+ * @version $Id: SimpleFieldModule.class.php,v 1.3 2004/12/22 20:24:10 adamfranco Exp $
+ * @date $Date: 2004/12/22 20:24:10 $
  * @copyright 2004 Middlebury College
  */
 
@@ -37,12 +37,12 @@ class SimpleFieldModule {
 	function createSearchForm ($action ) {
 		ob_start();
 		
-		print "<form action='$action' method='post'>\n";
+		print "<form action='$action' method='post'>\n<div>\n";
 		
 		print "\t<input type='text' name='".$this->_fieldname."' />\n";
 		
 		print "\t<input type='submit' />\n";
-		print "</form>";
+		print "</div>\n</form>";
 		
 		$form = ob_get_contents();
 		ob_end_clean();

@@ -81,6 +81,7 @@ $lastCriteria = $_REQUEST['search_criteria'];
 print _("Search For Users").": ";
 print <<<END
 <form action='$self' method='get'>
+	<div>
 	<input type='text' name='search_criteria' value='$lastCriteria' />
 	<br /><select name='search_type'>
 END;
@@ -101,7 +102,7 @@ while ($searchTypes->hasNext()) {
 	print "\n\t<br /><input type='submit' value='"._("Search")."' />";
 	print "\n\t<a href='".MYURL."/".implode("/", $harmoni->pathInfoParts)."/'>";
 	print "<input type='button' value='"._("Clear")."' /></a>";
-print "</form>";
+print "\n</div>\n</form>";
 
 $agentLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 2);
 $agentLayout->addComponent(new Content(ob_get_contents()), BOTTOM);
