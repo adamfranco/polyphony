@@ -40,9 +40,19 @@ if (count($_GET)) {
 			$search .= "&".urlencode($key)."=".urlencode($val);
 }
 
-// $sharedManager->createGroup("Math", new HarmoniType("Groups", "Middlebury College", "Department", "What department the user belongs to at Middlebury College"), "Middlebury College French department.");
+// $propertiesType = new HarmoniType('Agents', 'Harmoni', 'Auth Properties',
+// 						'Properties known to the Harmoni Authentication System.');
+// $properties =& new HarmoniProperties($propertiesType);
+// $key = "department code";
+// $val = "span";
+// $properties->addProperty($key, $val);
+// $key2 = "department email";
+// $val2 = "spanish_department@middlebury.edu";
+// $properties->addProperty($key2, $val2);
+// 
+// $sharedManager->createGroup("Spanish", new HarmoniType("Groups", "Middlebury College", "Department", "What department the user belongs to at Middlebury College"), "Middlebury College Spanish department.", $properties);
 
-// $id =& $sharedManager->getId("192");
+// $id =& $sharedManager->getId("256");
 // $sharedManager->deleteGroup($id);
 
 // $id =& $sharedManager->getId("205");
