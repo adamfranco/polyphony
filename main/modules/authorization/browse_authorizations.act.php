@@ -22,7 +22,7 @@ $statusBar =& $harmoni->getAttachedData('statusBar');
 $centerPane =& $harmoni->getAttachedData('centerPane');
 
 // Intro
-$sharedManager =& Services::getService("Shared");
+$idManager =& Services::getService("Id");
 $authZManager =& Services::getService("AuthZ");
 $GLOBALS["harmoni"] =& $harmoni;
 
@@ -103,13 +103,13 @@ function printQualifier(& $qualifier) {
 	$title = _("Id: ").$id->getIdString()." ";
 	$title .= _("Type: ").$type->getDomain()."::".$type->getAuthority()."::".$type->getKeyword();
 
-	print "\n<a title='$title'><strong>".$qualifier->getDisplayName()."</strong></a>";
+	print "\n<a title='$title'><strong>".$qualifier->getReferenceName()."</strong></a>";
 
 	// Check that the current user is authorized to see the authorizations.
 	$authZ =& Services::getService("AuthZ");
-	$shared =& Services::getService("Shared");
+	$idManager =& Services::getService("Id");
 	if ($authZ->isUserAuthorized(
-				$shared->getId(AZ_VIEW_AZS),
+				$idManager->getId(AZ_VIEW_AZS),
 				$id))
 	{
 		print "\n<div style='margin-left: 10px;'>";
@@ -140,7 +140,7 @@ function printEditOptions(& $qualifier) {
 	$qualifierId =& $qualifier->getId();
 	$harmoni =& $GLOBALS["harmoni"];
 	$authZManager =& Services::getService("AuthZ");
-	$shared =& Services::getService("Shared");
+	$idService =& Services::getService("Id");
 	
 	$expandedNodes = array_slice($harmoni->pathInfoParts, 2);
 	if (count ($expandedNodes)) 
@@ -188,11 +188,11 @@ function printEditOptions(& $qualifier) {
 				print "?agent=".$agentId->getIdString();
 				print "' title='Edit Authorizations for this User/Group'>";
 				
-				if ($shared->isAgent($agentId)) {
-					$agent =& $shared->getAgent($agentId);
+				if ($idService->isAgent($agentId)) {
+					$agent =& $idService->getAgent($agentId);
 					print $agent->getDisplayName();
-				} else if ($shared->isGroup($agentId)) {
-					$group =& $shared->getGroup($agentId);
+				} else if ($idService->isGroup($agentId)) {
+					$group =& $idService->getGroup($agentId);
 					print $group->getDisplayName();
 				} else {
 					print "Agent/Group Id ".$agentId->getIdString()."";
