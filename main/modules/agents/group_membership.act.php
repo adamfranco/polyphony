@@ -435,6 +435,26 @@ return $mainScreen;
 	print ">";
 	
 	print "\n - <em>".$group->getDescription()."</em>";
+	
+	// print out the properties of the Agent
+	print "\n<em>";
+	$propertiesIterator =& $group->getProperties();
+	while($propertiesIterator->hasNext()) {
+		$properties =& $propertiesIterator->next();
+		$propertiesType =& $properties->getType();
+		print "\n\t(<a title='".$propertiesType->getDomain()." :: ".$propertiesType->getAuthority()." :: ".$propertiesType->getKeyword()." - ".$propertiesType->getDescription()."'>";
+		
+		$keys =& $properties->getKeys();
+		$i = 0;
+		while ($keys->hasNext()) {
+			$key =& $keys->next();			
+			print "\n\t\t".(($i)?", ":"").$key.": ".$properties->getProperty($key);
+			$i++;
+		}
+		
+		print "\n\t</a>)";
+	}
+	print "\n</em>";
 
 	// print the children of the groups so that our Javascript function can check ancestory.
 	$idString = $id->getIdString();
@@ -535,9 +555,9 @@ function printMember(& $member) {
 	print "\n<input type='checkbox' name='".$id->getIdString()."' value='agent'>";
 	print "\n<a title='".$memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription()."'>";
 	print "\n<u>".$id->getIdString()." - ".$member->getDisplayName()."</u></a>";
-	print "\n<em>";
 	
 	// print out the properties of the Agent
+	print "\n<em>";
 	$propertiesIterator =& $member->getProperties();
 	while($propertiesIterator->hasNext()) {
 		$properties =& $propertiesIterator->next();
