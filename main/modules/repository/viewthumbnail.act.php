@@ -4,54 +4,55 @@
  * Display the file in the specified record.
  * 
  * @package polyphony.modules.dr
- * @version $Id: viewthumbnail.act.php,v 1.3 2004/10/25 15:21:57 adamfranco Exp $
- * @date $Date: 2004/10/25 15:21:57 $
+ * @version $Id: viewthumbnail.act.php,v 1.1 2005/01/27 19:37:51 adamfranco Exp $
+ * @date $Date: 2005/01/27 19:37:51 $
  * @copyright 2004 Middlebury College
  */
-$shared =& Services::getService("Shared");
-$drManager =& Services::getService("DR");
 
-$drId =& $shared->getId($harmoni->pathInfoParts[2]);
-$assetId =& $shared->getId($harmoni->pathInfoParts[3]);
-$recordId =& $shared->getId($harmoni->pathInfoParts[4]);
+$idManager =& Services::getService("Id");
+$repositoryManager =& Services::getService("Repository");
+
+$repositoryId =& $idManager->getId($harmoni->pathInfoParts[2]);
+$assetId =& $idManager->getId($harmoni->pathInfoParts[3]);
+$recordId =& $idManager->getId($harmoni->pathInfoParts[4]);
 
 // Get the requested record.
-$dr =& $drManager->getDigitalRepository($drId);
-$asset =& $dr->getAsset($assetId);
-$record =& $asset->getInfoRecord($recordId);
+$repository =& $repositoryManager->getRepository($repositoryId);
+$asset =& $repository->getAsset($assetId);
+$record =& $asset->getRecord($recordId);
 
 // Make sure that the structure is the right one.
-$structure =& $record->getInfoStructure();
-$fileId =& $shared->getId('FILE');
+$structure =& $record->getRecordStructure();
+$fileId =& $idManager->getId('FILE');
 if (!$fileId->isEqual($structure->getId())) {
 	print "The requested record is not of the FILE structure, and therefore cannot be displayed.";
 } else {
 
-	// Get the fields for the record.
-	$fieldIterator =& $record->getInfoFields();
-	$fields = array();
-	while($fieldIterator->hasNext()) {
-		$field =& $fieldIterator->next();
-		$part =& $field->getInfoPart();
-		$partId =& $part->getId();
-		$fields[$partId->getIdString()] =& $field;
+	// Get the parts for the record.
+	$partIterator =& $record->getParts();
+	$parts = array();
+	while($partIterator->hasNext()) {
+		$part =& $partIterator->next();
+		$partStructure =& $part->getPartStructure();
+		$partStructureId =& $partStructure->getId();
+		$parts[$partStructureId->getIdString()] =& $part;
 	}
 	
 	// If we have a thumbnail, print that.
-	if ($fields['THUMBNAIL_MIME_TYPE']->getValue()) {
+	if ($parts['THUMBNAIL_MIME_TYPE']->getValue()) {
 	
-		header("Content-Type: ".$fields['THUMBNAIL_MIME_TYPE']->getValue());
+		header("Content-Type: ".$parts['THUMBNAIL_MIME_TYPE']->getValue());
 	
-		print $fields['THUMBNAIL_DATA']->getValue();
+		print $parts['THUMBNAIL_DATA']->getValue();
 	}
 	// Otherwise, print a stock image for the mime type.
 	else {
 		header("Content-Type: image/png");
 		
-		$mimeType = $fields['MIME_TYPE']->getValue();
+		$mimeType = $parts['MIME_TYPE']->getValue();
 		if (!$mimeType || $mimeType == 'application/octet-stream') {
 			$mime =& Services::getService("MIME");
-			$mimeType = $mime->getMIMETypeForFileName($fields['FILE_NAME']->getValue());
+			$mimeType = $mime->getMIMETypeForFileName($parts['FILE_NAME']->getValue());
 		}
 		
 		// These are mappings to file names in the KDE icon set.
@@ -98,8 +99,8 @@ if (!$fileId->isEqual($structure->getId())) {
 		);
 		
 		if (!$imageName = $subTypeImages[$mimeType]) {
-			$parts = explode("/", $mimeType);
-			$imageName = $typeImages[$parts[0]];
+			$typeParts = explode("/", $mimeType);
+			$imageName = $typeImages[$typeParts[0]];
 		}
 		
 		print file_get_contents(dirname(__FILE__)."/icons/".$imageName);

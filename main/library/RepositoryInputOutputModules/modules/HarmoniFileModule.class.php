@@ -10,8 +10,8 @@ require_once(dirname(__FILE__)."/../RepositoryInputOutputModule.interface.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.repository.inputoutput
- * @version $Id: HarmoniFileModule.class.php,v 1.1 2005/01/26 21:23:10 adamfranco Exp $
- * @date $Date: 2005/01/26 21:23:10 $
+ * @version $Id: HarmoniFileModule.class.php,v 1.2 2005/01/27 19:37:24 adamfranco Exp $
+ * @date $Date: 2005/01/27 19:37:24 $
  * @copyright 2004 Middlebury College
  */
 
@@ -420,7 +420,7 @@ class HarmoniFileModule
 			ob_start();
 			$recordId =& $record->getId();
 			
-			print "\n<a href='".MYURL."/Repository/viewfile/"
+			print "\n<a href='".MYURL."/repository/viewfile/"
 				.$repositoryId->getIdString()."/"
 				.$assetId->getIdString()."/"
 				.$recordId->getIdString()."/"
@@ -434,7 +434,7 @@ class HarmoniFileModule
 				$mime = Services::getService("MIME");
 				$thumbnailName .= ".".$mime->getExtensionForMIMEType($thumbnailMimeType);
 			}
-			print "\n<img src='".MYURL."/Repository/viewthumbnail/"
+			print "\n<img src='".MYURL."/repository/viewthumbnail/"
 			.$repositoryId->getIdString()."/"
 			.$assetId->getIdString()."/"
 			.$recordId->getIdString()."/"
