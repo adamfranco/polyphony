@@ -25,13 +25,13 @@ $sharedManager =& Services::getService("Shared");
 $authZManager =& Services::getService("AuthZ");
 
 // Intro message
-$intro =new Content("&nbsp &nbsp Check or uncheck authorization(s) for the section(s) of your choice.<br />
+$intro =& new Content("&nbsp &nbsp Check or uncheck authorization(s) for the section(s) of your choice.<br />
 			&nbsp &nbsp After each check/uncheck, the changes are saved automatically.<br /><br />");
 
 
 // Get the id and type (group/member) of the selected agent using $_REQUEST
- $selection =& $_REQUEST["selection"];
- $pieces =& explode(":", $selection);
+ $selection = $_REQUEST["selection"];
+ $pieces = explode(":", $selection);
  $groupOrMember = $pieces[0];
  $id = $pieces[1];
  $idObject =& $sharedManager->getId($id);
@@ -59,7 +59,7 @@ ob_start();
 print "<table><tr><td>";
 print "<a href='".MYURL."/authorization/choose_agent'><button>Choose a different Group/Member to edit</button></a></td>";
 print "<td><a href='".MYURL."'><button>Return to Concerto Home</button></a></td></tr></table>";
-$nav = new Content(ob_get_contents());
+$nav =& new Content(ob_get_contents());
 $actionRows->addComponent($nav, MIDDLE, LEFT);
 ob_end_clean();
  
@@ -97,7 +97,7 @@ ob_start();
 print "<table><tr><td>";
 print "<a href='".MYURL."/authorization/choose_agent'><button>Choose a different Group/Member to edit</button></a></td>";
 print "<td><a href='".MYURL."'><button>Return to Concerto Home</button></a></td></tr></table>";
-$nav = new Content(ob_get_contents());
+$nav =& new Content(ob_get_contents());
 $actionRows->addComponent($nav, MIDDLE, LEFT);
 ob_end_clean();
 
@@ -121,7 +121,7 @@ function hasChildQualifiers(& $qualifier) {
 	return $qualifier->isParent();
 }
 
-function getChildQualifiers(& $qualifier) {
+function &getChildQualifiers(& $qualifier) {
 	$array = array();
 	$iterator =& $qualifier->getChildren();
 	while ($iterator->hasNext()) {
@@ -162,7 +162,6 @@ function printEditOptions(& $qualifier) {
 					$implicitAZs[] =& $az;
 				}
 			}
-
 			// Store values for display output
 			if ($authZManager->isAuthorized($agentId, $functionId, $qualifierId))
 				$borderColor = "green";
