@@ -13,7 +13,7 @@ require_once(dirname(__FILE__)."/WizardStep.class.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: Wizard.class.php,v 1.5 2004/06/08 17:43:51 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.6 2004/07/16 19:25:43 gabeschine Exp $
  */
 
 class Wizard {
@@ -210,8 +210,7 @@ class Wizard {
 		$this->update();
 		
 		// make sure we have the right textdomain
-		$defaultTextDomain = textdomain();
-		textdomain("polyphony");
+		$defaultTextDomain = textdomain("polyphony");
 		
 		ArgumentValidator::validate($harmoni, new ExtendsValidatorRule("Harmoni"), true);
 		
@@ -252,7 +251,10 @@ class Wizard {
 			}
 		
 		";
-		$theme =& $harmoni->getTheme();
+		if (!($theme =& $harmoni->getTheme())) {
+			$harmoni->setTheme( new SimpleLinesTheme() );
+			$theme =& $harmoni->getTheme();
+		}
 		$theme->addHeadJavascript($javaScript);
 		
 		

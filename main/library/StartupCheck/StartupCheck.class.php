@@ -46,7 +46,7 @@ define("STARTUP_STATUS_NEEDS_INSTALL", 0);
 *
 * @package polyphony.startupcheck
 * @copyright 2004
-* @version $Id: StartupCheck.class.php,v 1.5 2004/07/14 23:54:08 gabeschine Exp $
+* @version $Id: StartupCheck.class.php,v 1.6 2004/07/16 19:25:42 gabeschine Exp $
 */
 class StartupCheck {
 
@@ -73,6 +73,7 @@ class StartupCheck {
 	* @access private
 	**/
 	var $_currentWizard;
+	
 
 	function StartupCheck() {
 		$this->_requirements = array();
@@ -195,8 +196,8 @@ class StartupCheck {
 			if ($this->_requirements[$name]->doUpdate($wizard->getProperties())) {
 				$this->_status[$name] = STARTUP_STATUS_OK;
 				return true;
-			} else {
-				$this->_status[$name] = STARTUP_STATUS_ERROR;
+			} else { // don't change its status.
+//				$this->_status[$name] = STARTUP_STATUS_ERROR;
 				return false;
 			}
 		}
@@ -230,6 +231,12 @@ class StartupCheck {
 		//		- once the person hits the "Save" button, we will give the wizard to the requirement for handling,
 		// 		  and then get the next requirement that needs user input.
 
+		// if we have nothing to do, we're done.
+		if ($this->areAllOK()) return true;
+		
+		// if we are actively working with a wizard...
+		if (!$this->_useWizard($harmoni)) return false;
+		
 		// ok, let's get all the updates. if everything's ok, we can just return.
 		if ($this->checkAllRequirements()) return true;
 
@@ -247,23 +254,35 @@ class StartupCheck {
 		}
 
 		// if we have something to work with user-input-wise, let's handle it.
+		return $this->_useWizard($harmoni);
+		
+		return false;
+	}
+	
+	/**
+	 * Internally handles input & output from a wizard.
+	 * @param ref object $harmoni A {@link Harmoni} object.
+	 * @access public
+	 * @return void
+	 */
+	function _useWizard(&$harmoni)
+	{
 		if ($req = $this->_currentRequirement) {
 			if ($this->_currentWizard->isSaveRequested()) {
 				$this->updateRequirementWithWizard($req, $this->_currentWizard);
 				$this->_currentRequirement = $this->_currentWizard = null;
-				if ($this->allOK()) return true;
+				if ($this->areAllOK()) return true;
 				else $this->_setupNextRequirementForInput();
 			} 
 			if ($this->_currentWizard) {
 				// output some HTML bizness
-				$layout =& $this->_currentWizard->getLayout();
+				$layout =& $this->_currentWizard->getLayout($harmoni);
 				$theme =& $harmoni->getTheme();
 				$theme->printPage($layout);
 				return false;
 			}
 		}
-
-		return false;
+		return true;
 	}
 
 	/**
@@ -277,7 +296,7 @@ class StartupCheck {
 		$name = $this->getNextRequiringInput();
 		if ($name) {
 			$this->_currentRequirement = $name;
-			$this->_currentWizard =& $this->_requirements[$name]->getWizard();
+			$this->_currentWizard =& $this->_requirements[$name]->createWizard();
 		}
 	}
 
@@ -307,6 +326,7 @@ class StartupCheck {
 	 * This function prints out an error message to tell the user that something went wrong in the startup check process.
 	 * @access private
 	 * @return void
+	 * @abstract
 	 */
 	function error($string)
 	{
