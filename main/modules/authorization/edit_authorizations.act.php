@@ -149,19 +149,44 @@ function printEditOptions(& $qualifier) {
 
 			// IF an authorization exists for the user on this qualifier, 
 			// make checkbox already checked
-			if ($authZManager->isAuthorized($agentId, $functionId, $qualifierId)) {
-				$toggleOperation = "delete";
-				print "<tr><td>";
-				print "<table border='2' bordercolor='green'><tr>";
-				print "<td><input type='checkbox' name='blah' value='blah'";
-				print " checked='checked'";
+			
 
-			} else {
-				$toggleOperation = "create";
-				print "<tr><td>";
-				print "<table border='2' bordercolor='red'><tr>";
-				print "<td><input type='checkbox' name='blah' value='blah'";
+			$hasExplicit = FALSE;
+			$implicitAZs = array();
+			$allAZs = $authZManager->getAllAZs($agentId, $functionId, $qualifierId, FALSE);
+			while ($allAZs->hasNext()) {
+				$az =& $allAZs->next();
+				if ($az->isExplicit()) {
+					$hasExplicit = TRUE;
+				} else {
+					$implicitAZs[] =& $az;
+				}
 			}
+
+			// Store values for display output
+			if ($authZManager->isAuthorized($agentId, $functionId, $qualifierId))
+				$borderColor = "green";
+			else
+				$borderColor = "red";
+
+
+			if ($hasExplicit) {
+				$explicitChecked = "checked";
+				$toggleOperation = "delete";
+			} else {
+				$explicitChecked = "";
+				$toggleOperation = "create";
+			}
+
+			if (count($implicitAZs)>0)
+				$implicitChecked = "checked";
+			else
+				$implicitChecked = "";
+
+			print "<tr><td>";
+			print "<table border='2' bordercolor='".$borderColor."'><tr>";
+			print "<td><input type='checkbox' name='blah' value='blah'";
+			print $explicitChecked;
 
 			// The checkbox is really just for show, the link is where we send
 			// to our processing to toggle the state of the authorization.
@@ -171,20 +196,24 @@ function printEditOptions(& $qualifier) {
 				."/".implode("/", $harmoni->pathInfoParts)
 				."?selection=".$_GET['selection'];
 
-			print "onClick=\"Javascript:window.location='".$toggleURL."'\">";
+			print " onClick=\"Javascript:window.location='".$toggleURL."'\"></td>";
+
+			print "<td><input type='checkbox' name='blah' value='blah'";
+			print $implicitChecked."' disabled='disabled'></td>";
 
 			print "<td>".$function->getReferenceName()."</td></tr></table></td></tr>";
 
 		}
 		print "\n\t</table></td>";
-		
+
 	}
 	print"\n\t</tr></table>";
-	
 
 }
 
+/** Sort the AZs
 
+*/
 
 
 
