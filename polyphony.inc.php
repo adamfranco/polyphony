@@ -3,7 +3,7 @@
 /**
  * This file includes all necessary Polyphony classes
  *
- * @version $Id: polyphony.inc.php,v 1.12 2005/02/04 23:04:50 adamfranco Exp $
+ * @version $Id: polyphony.inc.php,v 1.13 2005/04/04 19:55:47 adamfranco Exp $
  * @copyright 2004 Middlebury College
  * @package polyphony
  * @access public
@@ -37,8 +37,14 @@ if (OKI_VERSION > 1) {
 	require_once(dirname(__FILE__)."/main/library/DRSearchModules/DRSearchModuleManager.class.php");
 	Services::registerService("RepositorySearchModules", "DRSearchModuleManager");
 }
-Services::startService("InOutModules");
-Services::startService("RepositorySearchModules");
+
+require_once(OKI2."osid/OsidContext.php");
+$context =& new OsidContext;
+$context->assignContext('harmoni', $harmoni);
+require_once(HARMONI."oki2/shared/ConfigurationProperties.class.php");
+$configuration =& new ConfigurationProperties;
+Services::startManagerAsService("InOutModules", $context, $configuration);
+Services::startManagerAsService("RepositorySearchModules", $context, $configuration);
 
 require_once(dirname(__FILE__)."/main/library/HierarchyPrinter/GroupPrinter.class.php");
 require_once(dirname(__FILE__)."/main/library/HierarchyPrinter/HierarchyPrinter.class.php");

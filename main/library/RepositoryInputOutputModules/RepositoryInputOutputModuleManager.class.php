@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.3 2005/02/04 23:06:11 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.4 2005/04/04 19:57:37 adamfranco Exp $
  */
 
 /**
@@ -21,8 +21,8 @@ require_once(dirname(__FILE__)."/modules/HarmoniFileModule.class.php");
  * appropriate RepositoryInputOutputModule based on their Schema Formats.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.3 2005/02/04 23:06:11 adamfranco Exp $
- * @since $Date: 2005/02/04 23:06:11 $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.4 2005/04/04 19:57:37 adamfranco Exp $
+ * @since $Date: 2005/04/04 19:57:37 $
  * @copyright 2004 Middlebury College
  */
 
@@ -42,7 +42,57 @@ class RepositoryInputOutputModuleManager {
 // 		$this->_modules['text/plain'] = new PlainTextModule;
 	}
 	
-	
+	/**
+	 * Assign the configuration of this Manager. Valid configuration options are as
+	 * follows:
+	 *	database_index			integer
+	 *	database_name			string
+	 * 
+	 * @param object Properties $configuration (original type: java.util.Properties)
+	 * 
+	 * @throws object OsidException An exception with one of the following
+	 *		   messages defined in org.osid.OsidException:	{@link
+	 *		   org.osid.OsidException#OPERATION_FAILED OPERATION_FAILED},
+	 *		   {@link org.osid.OsidException#PERMISSION_DENIED
+	 *		   PERMISSION_DENIED}, {@link
+	 *		   org.osid.OsidException#CONFIGURATION_ERROR
+	 *		   CONFIGURATION_ERROR}, {@link
+	 *		   org.osid.OsidException#UNIMPLEMENTED UNIMPLEMENTED}, {@link
+	 *		   org.osid.OsidException#NULL_ARGUMENT NULL_ARGUMENT}
+	 * 
+	 * @access public
+	 */
+	function assignConfiguration ( &$configuration ) { 
+		$this->_configuration =& $configuration;
+	}
+
+	/**
+	 * Return context of this OsidManager.
+	 *	
+	 * @return object OsidContext
+	 * 
+	 * @throws object OsidException 
+	 * 
+	 * @access public
+	 */
+	function &getOsidContext () { 
+		return $this->_osidContext;
+	} 
+
+	/**
+	 * Assign the context of this OsidManager.
+	 * 
+	 * @param object OsidContext $context
+	 * 
+	 * @throws object OsidException An exception with one of the following
+	 *		   messages defined in org.osid.OsidException:	{@link
+	 *		   org.osid.OsidException#NULL_ARGUMENT NULL_ARGUMENT}
+	 * 
+	 * @access public
+	 */
+	function assignOsidContext ( &$context ) { 
+		$this->_osidContext =& $context;
+	} 
 		
 	/**
 	 * Create wizard steps for editing the values of the specified Record and
