@@ -26,34 +26,35 @@ $authZManager =& Services::getService("AuthZ");
 
 // Intro message
 $intro =& new Content("&nbsp &nbsp "._("Check or uncheck authorization(s) for the section(s) of your choice.")."<br />
-			&nbsp &nbsp "._("After each check/uncheck, the changes are saved automatically.")."<br /><br />");
+		&nbsp &nbsp "._("After each check/uncheck, the changes are saved automatically.")."<br /><br />");
 
 
 // Get the id of the selected agent using $_REQUEST
- $id = $_REQUEST["agent"];
- $idObject =& $sharedManager->getId($id);
- $GLOBALS["agentId"] =& $idObject;
- $GLOBALS["harmoni"] =& $harmoni;
+$id = $_REQUEST["agent"];
+$idObject =& $sharedManager->getId($id);
+$GLOBALS["agentId"] =& $idObject;
+$GLOBALS["harmoniAuthType"] =& new HarmoniAuthenticationType;
+$GLOBALS["harmoni"] =& $harmoni;
 
 
- if ($sharedManager->isGroup($idObject)) {
- 	$agent =& $sharedManager->getGroup($idObject);
- 	$introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
- 	$introHeader->addComponent(new Content(_("Edit Which Authorizations for Group").": <em> "
- 											.$agent->getDisplayName()."</em>?"));
- } else if ($sharedManager->isAgent($idObject)) {
- 	$agent =& $sharedManager->getAgent($idObject);
- 	$introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
- 	$introHeader->addComponent(new Content(_("Edit Which Authorizations for User").": <em> "
- 											.$agent->getDisplayName()."</em>?"));
- } else {
- 	$introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
- 	$introHeader->addComponent(new Content(_("Edit Which Authorizations for the User/Group Id").": <em> "
- 											.$idObject->getIdString()."</em>?"));
- }
+if ($sharedManager->isGroup($idObject)) {
+$agent =& $sharedManager->getGroup($idObject);
+$introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
+$introHeader->addComponent(new Content(_("Edit Which Authorizations for Group").": <em> "
+										.$agent->getDisplayName()."</em>?"));
+} else if ($sharedManager->isAgent($idObject)) {
+$agent =& $sharedManager->getAgent($idObject);
+$introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
+$introHeader->addComponent(new Content(_("Edit Which Authorizations for User").": <em> "
+										.$agent->getDisplayName()."</em>?"));
+} else {
+$introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
+$introHeader->addComponent(new Content(_("Edit Which Authorizations for the User/Group Id").": <em> "
+										.$idObject->getIdString()."</em>?"));
+}
 
- $actionRows->addComponent($introHeader);
- $actionRows->addComponent($intro);
+$actionRows->addComponent($introHeader);
+$actionRows->addComponent($intro);
  
 // Buttons to go back to edit auths for a different user, or to go home
 ob_start();
@@ -119,9 +120,29 @@ function printQualifier(& $qualifier) {
 	$title .= _("Type: ").$type->getDomain()."::".$type->getAuthority()."::".$type->getKeyword();
 
 	print "\n<a title='$title'><strong>".$qualifier->getDisplayName()."</strong></a>";
-	print "\n<div style='margin-left: 10px;'>";
-	printEditOptions($qualifier);
-	print "\n</div>";
+	
+	// Check that the current user is authorized to see the authorizations.
+	$authZ =& Services::getService("AuthZ");
+	$shared =& Services::getService("Shared");
+	$authN =& Services::getService("AuthN");
+	$agentId =& $GLOBALS["agentId"];
+	$harmoniAuthType =& $GLOBALS["harmoniAuthType"];
+	// They are authorized if they have explicit authorization,
+	// or if they are looking at their own authorizations,
+	// or if they are looking at one of their groups' authorizations.
+	if ($authZ->isUserAuthorized(
+				$shared->getId(AZ_VIEW_AZS),
+				$id)
+		|| $agentId->isEqual($authN->getUserId($harmoniAuthType))
+	) {
+		print "\n<div style='margin-left: 10px;'>";
+		printEditOptions($qualifier);
+		print "\n</div>";
+	}
+	// If they are not authorized to view the AZs, notify
+	else {
+		print " <em>"._("You are not authorized to view authorizations here.")."<em>";
+	}
 }
 
 function hasChildQualifiers(& $qualifier) {
@@ -249,16 +270,29 @@ function printEditOptions(& $qualifier) {
 				
 			print "\n\t\t\t\t\t\t<input type='checkbox' name='blah' value='blah' ";
 			print $explicitChecked;
-
-			// The checkbox is really just for show, the link is where we send
-			// to our processing to toggle the state of the authorization.
-			$toggleURL = MYURL."/authorization/process_authorizations/"
-				.$toggleOperation."/".$agentId->getIdString()."/"
-				.$functionId->getIdString()."/".$qualifierId->getIdString()
-				."/".implode("/", $harmoni->pathInfoParts)
-				."?agent=".$_GET['agent'];
-
-			print " onClick=\"Javascript:window.location='".$toggleURL."'\"></td>";
+			
+			// Check that the current user is authorized to modify the authorizations.
+			$authZ =& Services::getService("AuthZ");
+			$shared =& Services::getService("Shared");
+			if ($authZ->isUserAuthorized(
+						$shared->getId(AZ_MODIFY_AZS),
+						$qualifierId))
+			{
+				// The checkbox is really just for show, the link is where we send
+				// to our processing to toggle the state of the authorization.
+				$toggleURL = MYURL."/authorization/process_authorizations/"
+					.$toggleOperation."/".$agentId->getIdString()."/"
+					.$functionId->getIdString()."/".$qualifierId->getIdString()
+					."/".implode("/", $harmoni->pathInfoParts)
+					."?agent=".$_GET['agent'];
+	
+				print " onClick=\"Javascript:window.location='".$toggleURL."'\"";
+			}
+			// If they are not authorized to view the AZs, disable the checkbox
+			else {
+				print " disabled='disabled'";
+			}
+			print "></td>";
 
 			print "\n\t\t\t\t\t<td><nobr>".$function->getReferenceName()."</nobr></td>";
 			print "\n\t\t\t\t</tr>";

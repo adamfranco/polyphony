@@ -16,14 +16,15 @@ $mainScreen =& $harmoni->getAttachedData('mainScreen');
 $statusBar =& $harmoni->getAttachedData('statusBar');
 $centerPane =& $harmoni->getAttachedData('centerPane');
 
-// Layout
-$actionRows =& new RowLayout();
-$centerPane->addComponent($actionRows, TOP, CENTER);
-
 // Intro
 $sharedManager =& Services::getService("Shared");
 $authZManager =& Services::getService("AuthZ");
 $GLOBALS["harmoni"] =& $harmoni;
+
+// Layout
+$actionRows =& new RowLayout();
+$centerPane->addComponent($actionRows, TOP, CENTER);
+
 
 // Intro message
 $introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
@@ -98,9 +99,22 @@ function printQualifier(& $qualifier) {
 	$title .= _("Type: ").$type->getDomain()."::".$type->getAuthority()."::".$type->getKeyword();
 
 	print "\n<a title='$title'><strong>".$qualifier->getDisplayName()."</strong></a>";
-	print "\n<div style='margin-left: 10px;'>";
-	printEditOptions($qualifier);
-	print "\n</div>";
+
+	// Check that the current user is authorized to see the authorizations.
+	$authZ =& Services::getService("AuthZ");
+	$shared =& Services::getService("Shared");
+	if ($authZ->isUserAuthorized(
+				$shared->getId(AZ_VIEW_AZS),
+				$id))
+	{
+		print "\n<div style='margin-left: 10px;'>";
+		printEditOptions($qualifier);
+		print "\n</div>";
+	}
+	// If they are not authorized to view the AZs, notify
+	else {
+		print " <em>"._("You are not authorized to view authorizations here.")."<em>";
+	}
 }
 
 function hasChildQualifiers(& $qualifier) {
