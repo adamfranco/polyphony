@@ -7,8 +7,8 @@
  * spread over multiple pages.
  * 
  * @package polyphony.resultprinter
- * @version $Id: ArrayResultPrinter.class.php,v 1.5 2005/03/28 23:24:12 nstamato Exp $
- * @date $Date: 2005/03/28 23:24:12 $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.6 2005/03/30 05:30:55 nstamato Exp $
+ * @date $Date: 2005/03/30 05:30:55 $
  * @copyright 2004 Middlebury College
  */
 
@@ -124,7 +124,7 @@ class ArrayResultPrinter {
 					$numItems++;
 			}	
 		} else {
-			$resultLayout->add(new Block(_("No <em>Items</em> are availible.")),2);
+			$resultLayout->add(new Block(_("No <em>Items</em> are available."), 3));
 		}		
 		
 		// print out links to skip to more items if the number of Items is greater

@@ -8,8 +8,8 @@
  * spread over multiple pages.
  * 
  * @package polyphony.resultprinter
- * @version $Id: IteratorResultPrinter.class.php,v 1.8 2005/03/28 23:24:12 nstamato Exp $
- * @date $Date: 2005/03/28 23:24:12 $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.9 2005/03/30 05:30:55 nstamato Exp $
+ * @date $Date: 2005/03/30 05:30:55 $
  * @copyright 2004 Middlebury College
  */
 
@@ -124,7 +124,7 @@ class IteratorResultPrinter {
 					$numItems++;
 			}	
 		} else {
-			$text =& new Block("No <em>Items</em> are availible.", 2);
+			$text =& new Block("No <em>Items</em> are availible.", 3);
 			$resultLayout->add($text, null, null, CENTER, CENTER);
 		}		
 		
