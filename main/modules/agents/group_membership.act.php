@@ -157,7 +157,7 @@ END;
 		printMember($agent);
 		print "<br />";
 	}
-	print "\n</div>\n</form>";
+	print "\n</div>";
 	
 	$agentLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 3);
 	$agentLayout->addComponent(new Content(ob_get_contents()));
@@ -170,80 +170,80 @@ END;
 /*********************************************************
  * All the agents
  *********************************************************/
- 
-$expandAgents = ((in_array("allagents", $harmoni->pathInfoParts))?TRUE:FALSE);
-
-// Create a layout for this group using the GroupPrinter
-ob_start();
-
-print "\n\n<table>\n\t<tr><td valign='top'>";
-
-print <<<END
-<div style='
-	border: 1px solid #000; 
-	width: 15px; 
-	height: 15px;
-	text-align: center;
-	text-decoration: none;
-	font-weight: bold;
-'>
-END;
-
-// Break the path info into parts for the enviroment and parts that
-// designate which nodes to expand.
-$environmentInfo = array();
-$expandedNodes = array();
-
-for ($i=0; $i<count($harmoni->pathInfoParts); $i++) {
-	// If the index equals or is after our starting key
-	// it designates an expanded nodeId.
-	if ($i >= 2)
-		$expandedNodes[] = $harmoni->pathInfoParts[$i];
-	else	
-		$environmentInfo[] = $harmoni->pathInfoParts[$i];
-}
-		
-if ($expandAgents) {
-	$nodesToRemove = array("allagents");
-	$newPathInfo = array_merge($environmentInfo, array_diff($expandedNodes,
-															$nodesToRemove)); 
-	print "<a style='text-decoration: none;' href='";
-	print MYURL."/".implode("/", $newPathInfo)."/".$search;
-	print "'>-</a>";
-} else {
-	$newPathInfo = array_merge($environmentInfo, $expandedNodes); 
-	print "<a style='text-decoration: none;' href='";
-	print MYURL."/".implode("/", $newPathInfo)."/allagents/".$search;
-	print "'>+</a>";
-}
-print "</div>";
-print "\n\t</td><td valign='top'>\n\t\t";
-print _("All Agents");
-print "\n\t</td></tr>\n</table>";
-
-if ($expandAgents) {
-	print <<<END
-<div style='
-	margin-left: 13px; 
-	margin-right: 0px; 
-	margin-top:0px; 
-	padding-left: 10px;
-	border-left: 1px solid #000;
-'>
-END;
-	$agents =& $sharedManager->getAgents();
-	while ($agents->hasNext()) {
-		$agent =& $agents->next();
-		printMember($agent);
-		print "<br />";
-	}
-	print "</div>";
-}
-
-$agentLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 3);
-$agentLayout->addComponent(new Content(ob_get_contents()));
-ob_end_clean();
-$actionRows->addComponent($agentLayout);
+//  
+// $expandAgents = ((in_array("allagents", $harmoni->pathInfoParts))?TRUE:FALSE);
+// 
+// // Create a layout for this group using the GroupPrinter
+// ob_start();
+// 
+// print "\n\n<table>\n\t<tr><td valign='top'>";
+// 
+// print <<<END
+// <div style='
+// 	border: 1px solid #000; 
+// 	width: 15px; 
+// 	height: 15px;
+// 	text-align: center;
+// 	text-decoration: none;
+// 	font-weight: bold;
+// '>
+// END;
+// 
+// // Break the path info into parts for the enviroment and parts that
+// // designate which nodes to expand.
+// $environmentInfo = array();
+// $expandedNodes = array();
+// 
+// for ($i=0; $i<count($harmoni->pathInfoParts); $i++) {
+// 	// If the index equals or is after our starting key
+// 	// it designates an expanded nodeId.
+// 	if ($i >= 2)
+// 		$expandedNodes[] = $harmoni->pathInfoParts[$i];
+// 	else	
+// 		$environmentInfo[] = $harmoni->pathInfoParts[$i];
+// }
+// 		
+// if ($expandAgents) {
+// 	$nodesToRemove = array("allagents");
+// 	$newPathInfo = array_merge($environmentInfo, array_diff($expandedNodes,
+// 															$nodesToRemove)); 
+// 	print "<a style='text-decoration: none;' href='";
+// 	print MYURL."/".implode("/", $newPathInfo)."/".$search;
+// 	print "'>-</a>";
+// } else {
+// 	$newPathInfo = array_merge($environmentInfo, $expandedNodes); 
+// 	print "<a style='text-decoration: none;' href='";
+// 	print MYURL."/".implode("/", $newPathInfo)."/allagents/".$search;
+// 	print "'>+</a>";
+// }
+// print "</div>";
+// print "\n\t</td><td valign='top'>\n\t\t";
+// print _("All Agents");
+// print "\n\t</td></tr>\n</table>";
+// 
+// if ($expandAgents) {
+// 	print <<<END
+// <div style='
+// 	margin-left: 13px; 
+// 	margin-right: 0px; 
+// 	margin-top:0px; 
+// 	padding-left: 10px;
+// 	border-left: 1px solid #000;
+// '>
+// END;
+// 	$agents =& $sharedManager->getAgents();
+// 	while ($agents->hasNext()) {
+// 		$agent =& $agents->next();
+// 		printMember($agent);
+// 		print "<br />";
+// 	}
+// 	print "</div>";
+// }
+// 
+// $agentLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 3);
+// $agentLayout->addComponent(new Content(ob_get_contents()));
+// ob_end_clean();
+// $actionRows->addComponent($agentLayout);
 
 
 
