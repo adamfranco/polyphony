@@ -78,7 +78,4 @@ class PrimitiveIOManager extends ServiceInterface {
 			if ($primitive) $record->setValue($label, $primitive, NEW_VALUE);
 		}
 	}
-	
-	function start() {}
-	function stop() {}
 }
