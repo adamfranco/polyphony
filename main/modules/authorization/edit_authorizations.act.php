@@ -140,7 +140,7 @@ function printEditOptions(& $qualifier) {
 	$functionTypes =& $authZManager->getFunctionTypes();
 	print "\n<table><tr>";
 	while ($functionTypes->hasNext()) {
-		print "\n\t<td><table>";
+		print "\n\t<td valign='top'><table>";
 		$functionType =& $functionTypes->next();
 		$functions =& $authZManager->getFunctions($functionType);
 		while ($functions->hasNext()) {
@@ -171,21 +171,23 @@ function printEditOptions(& $qualifier) {
 
 
 			if ($hasExplicit) {
-				$explicitChecked = "checked";
+				$explicitChecked = "checked='checked'";
 				$toggleOperation = "delete";
 			} else {
 				$explicitChecked = "";
 				$toggleOperation = "create";
 			}
 
-			if (count($implicitAZs)>0)
-				$implicitChecked = "checked";
-			else
-				$implicitChecked = "";
-
-			print "<tr><td>";
-			print "<table border='2' bordercolor='".$borderColor."'><tr>";
-			print "<td><input type='checkbox' name='blah' value='blah'";
+			print "\n\t<tr>\n\t<td>";
+			print "\n\t\t<table style='border: 1px solid ".$borderColor.";'>\n\t\t\t<tr>";
+			
+			// Print out a disabled checkbox for each implicit Auth.
+			for ($i=0; $i < count($implicitAZs); $i++) {
+				print "\n\t\t\t<td><input type='checkbox' name='blah' value='blah'";
+				print "checked='checked' disabled='disabled'></td>";
+			}
+			
+			print "\n\t\t\t<td><input type='checkbox' name='blah' value='blah' ";
 			print $explicitChecked;
 
 			// The checkbox is really just for show, the link is where we send
@@ -198,10 +200,7 @@ function printEditOptions(& $qualifier) {
 
 			print " onClick=\"Javascript:window.location='".$toggleURL."'\"></td>";
 
-			print "<td><input type='checkbox' name='blah' value='blah'";
-			print $implicitChecked."' disabled='disabled'></td>";
-
-			print "<td>".$function->getReferenceName()."</td></tr></table></td></tr>";
+			print "\n\t\t\t<td>".$function->getReferenceName()."</td>\n\t\t\t</tr>\n\t\t</table>\n\t</td>\n\t</tr>";
 
 		}
 		print "\n\t</table></td>";
