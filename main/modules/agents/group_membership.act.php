@@ -89,9 +89,9 @@ END;
 $searchTypes =& $sharedManager->getAgentSearchTypes();
 while ($searchTypes->hasNext()) {
 	$type =& $searchTypes->next();
-	$typeString = $type->getDomain()
+	$typeString = htmlspecialchars($type->getDomain()
 						."::".$type->getAuthority()
-						."::".$type->getKeyword();
+						."::".$type->getKeyword());
 	print "\n\t\t<option value='$typeString'";
 	if ($_REQUEST['search_type'] == $typeString)
 		print " selected='selected'";
@@ -117,7 +117,7 @@ $pageRows->addComponent($actionRows, BOTTOM, CENTER);
  *********************************************************/
  
 if ($_REQUEST['search_criteria'] && $_REQUEST['search_type']) {
-	$typeParts = explode("::", $_REQUEST['search_type']);
+	$typeParts = explode("::", html_entity_decode($_REQUEST['search_type'], ENT_COMPAT, UTF-8));
 	$searchType =& new HarmoniType($typeParts[0], $typeParts[1], $typeParts[2]);
 	$agents =& $sharedManager->getAgentsBySearch($_REQUEST['search_criteria'], $searchType);
 	
@@ -437,8 +437,8 @@ return $mainScreen;
 	$groupType =& $group->getType();
 	
 	print "\n<input type='checkbox' name='".$id->getIdString()."' value='group' />";
-	print "\n<a title='".$groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()." - ".$groupType->getDescription()."'>";
-	print "\n<span style='text-decoration: underline; font-weight: bold;'>".$id->getIdString()." - ".$group->getDisplayName()."</span></a>";
+	print "\n<a title='".htmlspecialchars($groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()." - ".$groupType->getDescription())."'>";
+	print "\n<span style='text-decoration: underline; font-weight: bold;'>".$id->getIdString()." - ".htmlspecialchars($group->getDisplayName())."</span></a>";
 	
 	print "\n <input type='button' value='"._("Add checked")."'";
 	print " onclick='Javascript:submitCheckedToGroup(\"".$id->getIdString()."\")'";
@@ -447,7 +447,7 @@ return $mainScreen;
 	print " onclick='Javascript:submitCheckedFromGroup(\"".$id->getIdString()."\")'";
 	print " />";
 	
-	print "\n - <em>".$group->getDescription()."</em>";
+	print "\n - <em>".htmlspecialchars($group->getDescription())."</em>";
 	
 	// print out the properties of the Agent
 	print "\n<em>";
@@ -455,13 +455,13 @@ return $mainScreen;
 	while($propertiesIterator->hasNext()) {
 		$properties =& $propertiesIterator->next();
 		$propertiesType =& $properties->getType();
-		print "\n\t(<a title='".$propertiesType->getDomain()." :: ".$propertiesType->getAuthority()." :: ".$propertiesType->getKeyword()." - ".$propertiesType->getDescription()."'>";
+		print "\n\t(<a title='".htmlspecialchars($propertiesType->getDomain()." :: ".$propertiesType->getAuthority()." :: ".$propertiesType->getKeyword()." - ".$propertiesType->getDescription())."'>";
 		
 		$keys =& $properties->getKeys();
 		$i = 0;
 		while ($keys->hasNext()) {
 			$key =& $keys->next();			
-			print "\n\t\t".(($i)?", ":"").$key.": ".$properties->getProperty($key);
+			print htmlspecialchars("\n\t\t".(($i)?", ":"").$key.": ".$properties->getProperty($key));
 			$i++;
 		}
 		
@@ -568,8 +568,8 @@ function printMember(& $member) {
 	$id =& $member->getId();
 	$memberType =& $member->getType();
 	print "\n<input type='checkbox' name='".$id->getIdString()."' value='agent' />";
-	print "\n<a title='".$memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription()."'>";
-	print "\n<span style='text-decoration: underline;'>".$id->getIdString()." - ".$member->getDisplayName()."</span></a>";
+	print "\n<a title='".htmlspecialchars($memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription())."'>";
+	print "\n<span style='text-decoration: underline;'>".$id->getIdString()." - ".htmlspecialchars($member->getDisplayName())."</span></a>";
 	
 	// print out the properties of the Agent
 	print "\n<em>";
@@ -577,13 +577,13 @@ function printMember(& $member) {
 	while($propertiesIterator->hasNext()) {
 		$properties =& $propertiesIterator->next();
 		$propertiesType =& $properties->getType();
-		print "\n\t(<a title='".$propertiesType->getDomain()." :: ".$propertiesType->getAuthority()." :: ".$propertiesType->getKeyword()." - ".$propertiesType->getDescription()."'>";
+		print "\n\t(<a title='".htmlspecialchars($propertiesType->getDomain()." :: ".$propertiesType->getAuthority()." :: ".$propertiesType->getKeyword()." - ".$propertiesType->getDescription())."'>";
 		
 		$keys =& $properties->getKeys();
 		$i = 0;
 		while ($keys->hasNext()) {
 			$key =& $keys->next();			
-			print "\n\t\t".(($i)?", ":"").$key.": ".$properties->getProperty($key);
+			print htmlspecialchars("\n\t\t".(($i)?", ":"").$key.": ".$properties->getProperty($key));
 			$i++;
 		}
 		

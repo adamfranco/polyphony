@@ -79,9 +79,9 @@ END;
 $searchTypes =& $sharedManager->getAgentSearchTypes();
 while ($searchTypes->hasNext()) {
 	$type =& $searchTypes->next();
-	$typeString = $type->getDomain()
+	$typeString = htmlspecialchars($type->getDomain()
 						."::".$type->getAuthority()
-						."::".$type->getKeyword();
+						."::".$type->getKeyword());
 	print "\n\t\t<option value='$typeString'";
 	if ($_REQUEST['search_type'] == $typeString)
 		print " selected='selected'";
@@ -108,7 +108,7 @@ $pageRows->addComponent($actionRows, BOTTOM, CENTER);
  *********************************************************/
  
 if ($_REQUEST['search_criteria'] && $_REQUEST['search_type']) {
-	$typeParts = explode("::", $_REQUEST['search_type']);
+	$typeParts = explode("::", html_entity_decode($_REQUEST['search_type'], ENT_COMPAT, UTF-8));
 	$searchType =& new HarmoniType($typeParts[0], $typeParts[1], $typeParts[2]);
 	$agents =& $sharedManager->getAgentsBySearch($_REQUEST['search_criteria'], $searchType);
 	
@@ -358,14 +358,14 @@ return $mainScreen;
 	$groupType =& $group->getType();
 	
 	print "\n<input type='checkbox' name='".$id->getIdString()."' value='group' />";
-	print "\n<a title='".$groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()." - ".$groupType->getDescription()."'>";
-	print "\n<span style='text-decoration: underline; font-weight: bold;'>".$id->getIdString()." - ".$group->getDisplayName()."</span></a>";
+	print "\n<a title='".htmlspecialchars($groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()." - ".$groupType->getDescription())."'>";
+	print "\n<span style='text-decoration: underline; font-weight: bold;'>".$id->getIdString()." - ".htmlspecialchars($group->getDisplayName())."</span></a>";
 	
 	print "\n <input type='button' value='"._("Add checked to this Group")."'";
 	print " onclick='Javascript:submitCheckedToGroup(\"".$id->getIdString()."\")'";
 	print " />";
 	
-	print "\n - <em>".$group->getDescription()."</em>";
+	print "\n - <em>".htmlspecialchars($group->getDescription())."</em>";
 
 	// print the children of the groups so that our Javascript function can check ancestory.
 	$idString = $id->getIdString();
@@ -466,6 +466,6 @@ function printMember(& $member) {
 	$id =& $member->getId();
 	$memberType =& $member->getType();
 	print "<input type='checkbox' name='".$id->getIdString()."' value='agent' />";
-	print "<a title='".$memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription()."'>";
-	print "<span style='text-decoration: underline;'>".$id->getIdString()." - ".$member->getDisplayName()."</span></a>";
+	print "<a title='".htmlspecialchars($memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription())."'>";
+	print "<span style='text-decoration: underline;'>".$id->getIdString()." - ".htmlspecialchars($member->getDisplayName())."</span></a>";
 }
