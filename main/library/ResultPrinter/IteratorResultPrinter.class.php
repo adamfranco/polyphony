@@ -4,8 +4,8 @@
  * Print out an Iterator of items in a table spread over multiple pages.
  * 
  * @package polyphony.resultprinter
- * @version $Id: IteratorResultPrinter.class.php,v 1.1 2004/08/05 21:03:37 adamfranco Exp $
- * @date $Date: 2004/08/05 21:03:37 $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.2 2004/08/05 21:32:08 adamfranco Exp $
+ * @date $Date: 2004/08/05 21:32:08 $
  * @copyright 2004 Middlebury College
  */
 
@@ -53,11 +53,11 @@ class IteratorResultPrinter {
 		
 		$layout =& new RowLayout;
 		
-		ob_start();
+		
 		$endingNumber = $startingNumber+$this->_pageSize-1;
 		$numItems = 0;
-		print "\n<table cellspacing='10px'>";
-		print  "\n<tr>";
+		$resultLayout =& new RowLayout();
+		
 		if ($this->_iterator->hasNext()) {
 			
 			// trash the items before our starting number
@@ -75,17 +75,22 @@ class IteratorResultPrinter {
 				$pageItems++;
 				
 				// Table Rows subtract 1 since we are counting 1-based
-				if ($pageItems > 1 && ($pageItems-1) % $this->_numColumns == 0) 
-					print  "\n</tr>\n<tr>";
-				
-				print "\n<td style='border: 1px solid;  padding: 5px;'>";
+				if (($pageItems-1) % $this->_numColumns == 0) {
+					$currentRow =& new ColumnLayout;
+					$resultLayout->addComponent($currentRow);
+				}
 				
 				$callback = $this->_callbackFunction;
-				$callback($item, $this->_callbackParams);
-				
-				
-				print  "\n</td>";
+				$itemLayout =& $callback($item, $this->_callbackParams);
+				$currentRow->addComponent($itemLayout);
 			}
+			
+			//if we have a partially empty last row, add more empty layouts
+			// to better-align the columns
+// 			while ($pageItems % $this->_numColumns != 0) {
+// 				$currentRow->addComponent(new Content(" &nbsp; "));
+// 				$pageItems++;
+// 			}
 			
 			// find the count of items 
 			while ($this->_iterator->hasNext()) {
@@ -93,15 +98,8 @@ class IteratorResultPrinter {
 				$numItems++;
 			}	
 		} else {
-			print  "\n\t<td>"._("No <em>Items</em> are availible.")."</td>";
-		}
-		print  "\n</tr>";
-		print  "\n</table>";
-		
-		$resultBlock =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 2);
-		$resultBlock->addComponent(new Content(ob_get_contents()));
-		ob_end_clean();
-		
+			$resultLayout->addComponent(new Content(_("No <em>Items</em> are availible.")));
+		}		
 		
 		// print out links to skip to more items if the number of Items is greater
 		// than the number we display on the page
@@ -127,7 +125,7 @@ class IteratorResultPrinter {
 			$layout->addComponent($pageLinkBlock, MIDDLE, CENTER);
 		}
 		
-		$layout->addComponent($resultBlock);
+		$layout->addComponent($resultLayout);
 		
 		if ($numItems > $this->_pageSize) {
 			$layout->addComponent($pageLinkBlock, MIDDLE, CENTER);
