@@ -14,7 +14,7 @@ require_once(dirname(__FILE__)."/MultiValuedWizardStep.class.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: Wizard.class.php,v 1.14 2004/10/20 19:04:52 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.15 2004/11/10 17:18:13 rrichards Exp $
  */
 
 class Wizard {
@@ -70,7 +70,7 @@ class Wizard {
 	
 	/**
 	 * Adds a new Step in the Wizard
-	 * @parm string $displayName The displayName of this step.
+	 * @param string $displayName The displayName of this step.
 	 * @return object The new step.
 	 */
 	function &createStep ( $displayName ) {
@@ -81,7 +81,7 @@ class Wizard {
 	
 	/**
 	 * Adds a class as a new Step in the Wizard
-	 * @parm object WizardStepInterface $step The class to add as a step in this wizard.
+	 * @param object WizardStepInterface $step The class to add as a step in this wizard.
 	 * @return object The new step.
 	 */
 	function &addStep ( & $step ) {
