@@ -97,6 +97,19 @@ ob_start();
 print "<table><tr><td>";
 print "<a href='".MYURL."/authorization/choose_agent'><button>Choose a different Group/Member to edit</button></a></td>";
 print "<td><a href='".MYURL."'><button>Return to Concerto Home</button></a></td></tr></table>";
+
+// Javascript functions for displaying info about implicit AZs
+// print <<<END
+// 
+// <script language='JavaScript1.2'>
+// 
+// function writeAZInfo(elementId, infoText) {
+// }
+// 
+// </script>
+// 
+// END;
+
 $nav =& new Content(ob_get_contents());
 $actionRows->addComponent($nav, MIDDLE, LEFT);
 ob_end_clean();
@@ -136,6 +149,7 @@ function printEditOptions(& $qualifier) {
 	$agentId =& $GLOBALS["agentId"];
 	$harmoni =& $GLOBALS["harmoni"];
 	$authZManager =& Services::getService("AuthZ");
+	$shared =& Services::getService("Shared");
 	
 	$functionTypes =& $authZManager->getFunctionTypes();
 	print "\n<table><tr>";
@@ -182,8 +196,42 @@ function printEditOptions(& $qualifier) {
 			
 			// Print out a disabled checkbox for each implicit Auth.
 			for ($i=0; $i < count($implicitAZs); $i++) {
-				print "\n\t\t\t<td><input type='checkbox' name='blah' value='blah'";
-				print "checked='checked' disabled='disabled'></td>";
+				// Built info about the explicit AZs that cause this implictAZ
+				$implicitAZ =& $implicitAZs[$i];
+ 				$explicitAZs =& $authZManager->getExplicitUserAZsForImplicitAZ($implicitAZ);
+ 				$title = "";
+				while ($explicitAZs->hasNext()) {
+					$explicitAZ =& $explicitAZs->next();
+					$explicitAgentId =& $explicitAZ->getAgentId();
+					$explicitQualifier =& $explicitAZ->getQualifier();
+					$explicitQualifierId =& $explicitQualifier->getId();
+				
+					// get the agent/group for the AZ
+					if ($shared->isAgent($explicitAgentId)) {
+						$explicitAgent =& $shared->getAgent($explicitAgentId);
+						$title = "(Agent: ".$explicitAgent->getDisplayName();
+					} else if ($shared->isGroup($explicitAgentId)) {
+						$explicitGroup =& $shared->getGroup($explicitAgentId);
+						$title = "(Group: ".$explicitGroup->getDisplayName();
+					} else {
+						$title = "(Agent/Group: ".$explicitAgentId->getIdString();
+					}
+					$title .= ", Location: ".$explicitQualifier->getDisplayName().") ";
+				}
+				
+				// print out a checkbox for the implicit AZ
+				print "\n\t\t\t<td>";
+				print "\n\t\t\t\t<div";
+				print " id='".$explicitAgentId->getIdString()
+						."-".$functionId->getIdString()
+						."-".$explicitQualifierId->getIdString()."'";
+				print " title='".$title."'";
+// 				print " onClick=\"Javascript:window.alert('".$title."')\"";
+				print ">";
+				print $title;
+				print "\n\t\t\t\t<input type='checkbox' name='blah' value='blah'";
+				print " checked='checked' disabled='disabled'>";
+				print "\n\t\t\t\t</div>\n\t\t\t</td>";
 			}
 			
 			print "\n\t\t\t<td><input type='checkbox' name='blah' value='blah' ";
