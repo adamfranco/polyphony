@@ -4,8 +4,8 @@
  * Display the file in the specified record.
  * 
  * @package polyphony.modules.dr
- * @version $Id: viewthumbnail.act.php,v 1.1 2004/10/21 22:34:36 adamfranco Exp $
- * @date $Date: 2004/10/21 22:34:36 $
+ * @version $Id: viewthumbnail.act.php,v 1.2 2004/10/22 21:57:51 adamfranco Exp $
+ * @date $Date: 2004/10/22 21:57:51 $
  * @copyright 2004 Middlebury College
  */
 $shared =& Services::getService("Shared");
@@ -49,13 +49,45 @@ if (!$fileId->isEqual($structure->getId())) {
 		header("Content-Type: image/png");
 		
 		$mimeType = $fields['MIME_TYPE']->getValue();
+		if (!$mimeType || $mimeType == 'application/octet-stream') {
+			$mime =& Services::getService("MIME");
+			$mimeType = $mime->getMIMETypeForFileName($fields['FILE_NAME']->getValue());
+		}
 		
+		// These are mappings to file names in the KDE icon set.
 		$subTypeImages = array(
 			"text/plain" => "txt.png",
+			"text/css" => "css.png",
 			"text/html" => "html.png",
-			"application/x-tar" => "tar.png",
-			"application/pdf" => "pdf.png"
+			"text/x-lyx" => "mime_lyx.png",
+			"text/xml" => "xml.png",
 			
+			"audio/midi" => "midi.png",
+			"video/quicktime" => "quicktime.png",
+			"application/vnd.rn-realmedia" => "real.png",
+			"application/x-pn-realaudio" => "real.png",
+			"application/x-pn-realaudio" => "real.png",
+			
+			"application/msword" => "wordprocessing.png",
+			"application/vnd.ms-word" => "wordprocessing.png",
+			"application/vnd.ms-excel" => "spreadsheet.png",
+			"application/msword" => "wordprocessing.png",
+			"application/msword" => "wordprocessing.png",
+			
+			"application/pdf" => "pdf.png",
+			
+			"application/x-tar" => "tar.png",
+			"application/x-gtar" => "gtar.png",
+			"application/x-ustar" => "tar.png",
+			"application/x-gzip" => "tar.png",
+			"application/x-bzip" => "tar.png",
+			"application/x-bzip2" => "tar.png",
+			"application/x-bcpio" => "tar.png",
+			"application/x-cpio" => "tar.png",
+			"application/x-shar" => "tar.png",
+			"application/mac-binhex40" => "tar.png",
+			"application/x-stuffit" => "tar.png",
+			"application/zip" => "tar.png"		
 		);
 		$typeImages = array (
 			"text" => "txt.png",

@@ -10,8 +10,8 @@ require_once(dirname(__FILE__)."/../DRInputOutputModule.interface.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.drinputoutput
- * @version $Id: HarmoniFileModule.class.php,v 1.3 2004/10/21 22:34:20 adamfranco Exp $
- * @date $Date: 2004/10/21 22:34:20 $
+ * @version $Id: HarmoniFileModule.class.php,v 1.4 2004/10/22 21:57:50 adamfranco Exp $
+ * @date $Date: 2004/10/22 21:57:50 $
  * @copyright 2004 Middlebury College
  */
 
@@ -258,7 +258,7 @@ class HarmoniFileModule
 			$partId =& $part->getId();
 			$fields[$partId->getIdString()] =& $field;
 		}
-		printpre($_FILES['file_upload']);
+
 		// if a new File was uploaded, store it.
 		if (is_array($_FILES['file_upload']) 
 			&& $_FILES['file_upload']['name']) 
@@ -266,8 +266,12 @@ class HarmoniFileModule
 			$name = $_FILES['file_upload']['name'];
 			$tmpName = $_FILES['file_upload']['tmp_name'];			
 			$mimeType = $_FILES['file_upload']['type'];
-			if (!$mimeType) {
-//				$mimeType = MIMETypes::getMimeTypeForFileName($uploadedName);
+			// If we weren't passed a mime type or were passed the generic
+			// application/octet-stream type, see if we can figure out the
+			// type.
+			if (!$mimeType || $mimeType == 'application/octet-stream') {
+				$mime =& Services::getService("MIME");
+				$mimeType = $mime->getMimeTypeForFileName($name);
 			}
 			
 			$fields['FILE_DATA']->updateValue(file_get_contents($tmpName));
@@ -282,21 +286,39 @@ class HarmoniFileModule
 			$name = $_FILES['thumbnail_upload']['name'];
 			$tmpName = $_FILES['thumbnail_upload']['tmp_name'];			
 			$mimeType = $_FILES['thumbnail_upload']['type'];
-			if (!$mimeType) {
-//				$mimeType = MIMETypes::getMimeTypeForFileName($uploadedName);
+			
+			// If we weren't passed a mime type or were passed the generic
+			// application/octet-stream type, see if we can figure out the
+			// type.
+			if (!$mimeType || $mimeType == 'application/octet-stream') {
+				$mime =& Services::getService("MIME");
+				$mimeType = $mime->getMimeTypeForFileName($name);
 			}
 			
 			$fields['THUMBNAIL_DATA']->updateValue(file_get_contents($tmpName));
-//			$fields['FILE_NAME']->updateValue($name);
 			$fields['THUMBNAIL_MIME_TYPE']->updateValue($mimeType);
 		}
-		// otherwise, if we've uploaded a new file only, get rid of this one
+		// otherwise, if we've uploaded a new file only, get rid of the
+		// old one and try to create a new one
 		else if (is_array($_FILES['file_upload']) 
 			&& $_FILES['file_upload']['name']) 
 		{
-			$fields['THUMBNAIL_DATA']->updateValue("");
-//			$fields['FILE_NAME']->updateValue($name);
-			$fields['THUMBNAIL_MIME_TYPE']->updateValue("");
+			$imageProcessor =& Services::getService("ImageProcessor");
+			
+			// If our image format is supported by the image processor,
+			// generate a thumbnail.
+			if ($imageProcessor->isFormatSupported($mimeType)) {
+				$fields['THUMBNAIL_DATA']->updateValue(
+					$imageProcessor->generateThumbnailData($mimeType, 
+											file_get_contents($tmpName)));
+				$fields['THUMBNAIL_MIME_TYPE']->updateValue($imageProcessor->getThumbnailFormat());
+			} 
+			// just make our thumbnail values empty. Default icons will display
+			// instead.
+			else {
+				$fields['THUMBNAIL_DATA']->updateValue("");
+				$fields['THUMBNAIL_MIME_TYPE']->updateValue("");
+			}
 		}
 		
 		// if the "Take from new file" box was unchecked store the name.
@@ -406,11 +428,17 @@ class HarmoniFileModule
 			print " target='_blank'>";
 			
 			// If we have a thumbnail with a valid mime type, print a link to that.
+			$thumbnailName = ereg_replace("\.[^\.]+$", "", 
+											$fields['FILE_NAME'][0]->getValue());
+			if ($thumbnailMimeType = $fields['THUMBNAIL_MIME_TYPE'][0]->getValue()) {
+				$mime = Services::getService("MIME");
+				$thumbnailName .= ".".$mime->getExtensionForMIMEType($thumbnailMimeType);
+			}
 			print "\n<img src='".MYURL."/dr/viewthumbnail/"
 			.$drId->getIdString()."/"
 			.$assetId->getIdString()."/"
 			.$recordId->getIdString()."/"
-			.$fields['FILE_NAME'][0]->getValue()."'";
+			.$thumbnailName."'";
 			print " border='0' />";
 		
 			
