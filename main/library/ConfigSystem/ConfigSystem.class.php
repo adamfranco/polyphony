@@ -2,9 +2,9 @@
 
 /**
 *
-* @package
+* @package polyphony.config_system
 * @copyright 2004
-* @version $Id: ConfigSystem.class.php,v 1.5 2004/08/04 02:15:45 gabeschine Exp $
+* @version $Id: ConfigSystem.class.php,v 1.6 2004/10/26 21:05:53 adamfranco Exp $
 */
 class ConfigSystem {
 

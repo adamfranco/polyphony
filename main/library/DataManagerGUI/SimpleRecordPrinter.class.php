@@ -2,9 +2,9 @@
 
 /**
  *
- * @package 
+ * @package polyphony.datamanager_gui
  * @copyright 2004
- * @version $Id: SimpleRecordPrinter.class.php,v 1.1 2004/08/04 02:15:45 gabeschine Exp $
+ * @version $Id: SimpleRecordPrinter.class.php,v 1.2 2004/10/26 21:07:25 adamfranco Exp $
  */
 class SimpleRecordPrinter {
 	
