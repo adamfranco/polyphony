@@ -56,16 +56,17 @@ $intro =& new Content("&nbsp &nbsp "._("Check or uncheck authorization(s) for th
  
 // Buttons to go back to edit auths for a different user, or to go home
 ob_start();
-print "<table><tr><td>";
-print "<a href='".MYURL."/authorization/choose_agent'><button>"._("Choose a different User/Group to edit")."</button></a></td>";
-print "<td><a href='".MYURL."/admin/main/'><button>"._("Return to the Admin Tools")."</button></a></td></tr></table>";
+print "<table width='100%'><tr><td align='left'>";
+print "<a href='".MYURL."/authorization/choose_agent'><button><-- "._("Choose a different User/Group to edit")."</button></a>";
+print "</td><td align='right'>";
+print "<a href='".MYURL."/admin/main'><button>"._("Return to the Admin Tools")."</button></a>";
+print "</td></tr></table>";
+
 $nav =& new Content(ob_get_contents());
-$actionRows->addComponent($nav, MIDDLE, LEFT);
+$actionRows->addComponent($nav, MIDDLE);
 ob_end_clean();
- 
 
 // Get all hierarchies and their root qualifiers
-print "<table>";
 $hierarchyIds =& $authZManager->getQualifierHierarchies();
 while ($hierarchyIds->hasNext()) {
 	$hierarchyId =& $hierarchyIds->next();
@@ -81,8 +82,10 @@ while ($hierarchyIds->hasNext()) {
 										2,
 										"printQualifier",
 										"hasChildQualifiers",
-										"getChildQualifiers");
-		$qualifierLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 3);
+										"getChildQualifiers",
+										new HTMLColor("#ddd")
+									);
+		$qualifierLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 2);
 		$qualifierLayout->addComponent(new Content(ob_get_contents()));
 		ob_end_clean();
 		$actionRows->addComponent($qualifierLayout);
@@ -90,17 +93,9 @@ while ($hierarchyIds->hasNext()) {
 
 	}
 }
-print"</table>";
 
 // Buttons to go back to edit auths for a different user, or to go home
-ob_start();
-print "<table><tr><td>";
-print "<a href='".MYURL."/authorization/choose_agent'><button>"._("Choose a different User/Group to edit")."</button></a></td>";
-print "<td><a href='".MYURL."/admin/main'><button>"._("Return to the Admin Tools")."</button></a></td></tr></table>";
-
-$nav =& new Content(ob_get_contents());
-$actionRows->addComponent($nav, MIDDLE, LEFT);
-ob_end_clean();
+$actionRows->addComponent($nav, MIDDLE);
 
 return $mainScreen;
 
@@ -111,11 +106,10 @@ return $mainScreen;
 // Qualifier printing functions:
 function printQualifier(& $qualifier) {
 
-	print "<table><tr>"; // Each table row will consist of the displayName and a table with edit options
-	print "<td valign='top'><strong>".$qualifier->getDisplayName()."</strong></td>";
-	print "<td>";
+	print "\n<strong>".$qualifier->getDisplayName()."</strong>";
+	print "\n<div style='margin-left: 10px;'>";
 	printEditOptions($qualifier);
-	print "</td></tr></table><br />";
+	print "\n</div>";
 }
 
 function hasChildQualifiers(& $qualifier) {
@@ -140,19 +134,28 @@ function printEditOptions(& $qualifier) {
 	$shared =& Services::getService("Shared");
 	
 	$functionTypes =& $authZManager->getFunctionTypes();
-	print "\n<table><tr>";
+	print "\n<table>";
 	while ($functionTypes->hasNext()) {
-		print "\n\t<td valign='top'><table>";
+		print "\n<tr>";
 		$functionType =& $functionTypes->next();
 		$functions =& $authZManager->getFunctions($functionType);
+		
+		$title = _("Functions for")." ";
+		$title .= $functionType->getKeyword();
+		
+		print "\n\t<th style='margin-bottom: 3px'>";
+		print "\n\t\t<a";
+		print " title='".$title."'";
+		print " href=\"Javascript:window.alert('".$title."')\"";
+		print ">?</a>";
+		print "\n\t</th>";
+		
 		while ($functions->hasNext()) {
 			$function =& $functions->next();
 			$functionId =& $function->getId();
-
+			
 			// IF an authorization exists for the user on this qualifier, 
 			// make checkbox already checked
-			
-
 			$hasExplicit = FALSE;
 			$implicitAZs = array();
 			$allAZs =& $authZManager->getAllAZs($agentId, $functionId, $qualifierId, FALSE);
@@ -178,9 +181,10 @@ function printEditOptions(& $qualifier) {
 				$explicitChecked = "";
 				$toggleOperation = "create";
 			}
-
-			print "\n\t<tr>\n\t<td>";
-			print "\n\t\t<table style='border: 1px solid ".$borderColor.";'>\n\t\t\t<tr>";
+			
+			print "\n\t<td style='border: 1px solid ".$borderColor.";' align='right'>";
+			print "\n\t\t\t\t<table>";
+			print "\n\t\t\t\t<tr>";
 			
 			// Print out a disabled checkbox for each implicit Auth.
 			for ($i=0; $i < count($implicitAZs); $i++) {
@@ -212,24 +216,26 @@ function printEditOptions(& $qualifier) {
 				}
 				
 				// print out a checkbox for the implicit AZ
-				print "\n\t\t\t<td valign='top'>";
-				print "\n\t\t\t\t<input type='checkbox' name='blah' value='blah'";
+				print "\n\t\t\t\t\t<td><nobr>";
+				print "\n\t\t\t\t\t\t<input type='checkbox' name='blah' value='blah'";
 				print " title='".$title."'";
 				print " checked='checked' disabled='disabled'>";
-				print "\n\t\t\t\t<br /><a";
+				print "\n\t\t\t\t\t\t<a";
 // 				print " id='".$explicitAgentId->getIdString()
 // 						."-".$functionId->getIdString()
 // 						."-".$explicitQualifierId->getIdString()."'";
 				print " title='".$title."'";
  				print " href=\"Javascript:window.alert('".$title."')\"";
-				print ">";
-//				print $title;
-				print "\n\t\t\t\tInfo</a>";
-				print "\n\t\t\t\t</div>";
-				print "\n\t\t\t</td>";
+				print ">?</a>";
+				print "\n\t\t\t\t\t</nobr></td>";
 			}
 			
-			print "\n\t\t\t<td valign='top'><input type='checkbox' name='blah' value='blah' ";
+			print "\n\t\t\t\t\t<td>";
+			// print an extra space
+			if (count($implicitAZs))
+				print "&nbsp;";
+				
+			print "\n\t\t\t\t\t\t<input type='checkbox' name='blah' value='blah' ";
 			print $explicitChecked;
 
 			// The checkbox is really just for show, the link is where we send
@@ -242,13 +248,15 @@ function printEditOptions(& $qualifier) {
 
 			print " onClick=\"Javascript:window.location='".$toggleURL."'\"></td>";
 
-			print "\n\t\t\t<td valign='top'>".$function->getReferenceName()."</td>\n\t\t\t</tr>\n\t\t</table>\n\t</td>\n\t</tr>";
+			print "\n\t\t\t\t\t<td><nobr>".$function->getReferenceName()."</nobr></td>";
+			print "\n\t\t\t\t</tr>";
+			print "\n\t\t\t\t</table>";
+			print "\n\t</td>";
 
 		}
-		print "\n\t</table></td>";
-
+		print "\n</tr>";
 	}
-	print"\n\t</tr></table>";
+	print"\n</table>";
 
 }
 

@@ -4,8 +4,8 @@
  * This class will print an expandible, view of a hierarchy
  * 
  * @package polyphony.hierarchyPrinter
- * @version $Id: HierarchyPrinter.class.php,v 1.4 2004/11/18 16:57:28 adamfranco Exp $
- * @date $Date: 2004/11/18 16:57:28 $
+ * @version $Id: HierarchyPrinter.class.php,v 1.5 2004/12/06 23:48:00 adamfranco Exp $
+ * @date $Date: 2004/12/06 23:48:00 $
  * @copyright 2004 Middlebury College
  */
 
@@ -28,8 +28,19 @@ class HierarchyPrinter {
 								$startingPathInfoKey,
 								$printFunction, 
 								$hasChildrenFunction, 
-								$getChildrenFunction ) 
+								$getChildrenFunction, 
+								$color = NULL ) 
 	{
+		
+		print "\n<div";
+		if ($color !== NULL) {
+			print " style='";
+//			print " border: 1px solid #000;";
+			print " padding-top: 5px; padding-left: 5px; padding-bottom: 10px;";
+			print " background-color: ".$color->getHTMLcolor().";'";
+		}
+		print ">";
+		
 		// Get a string of our nodeIds
 		$nodeId =& $node->getId();
 		
@@ -77,6 +88,8 @@ class HierarchyPrinter {
 				print "<a style='text-decoration: none;' href='";
 				print MYURL."/".implode("/", $newPathInfo)."/".$get;
 				print "'>-</a>";
+				
+				$expanded = TRUE;
 			
 			// The node is not already expanded.  Show option to expand.	
 			} else { 
@@ -84,8 +97,23 @@ class HierarchyPrinter {
 				print "<a style='text-decoration: none;' href='";
 				print MYURL."/".implode("/", $newPathInfo)."/".$nodeId->getIdString()."/".$get;
 				print "'>+</a>";
+				
+				$expanded = FALSE;
 			}
 			print "\n\t\t</div>";
+			
+			// Make a vertical line to connect to the line in front of the children
+			if ($expanded) {
+				print <<<END
+		<div style='
+				height: 100%; 
+				border-left: 1px #000 solid;
+				margin-left: 10px; 
+				margin-right: 0px; 
+				margin-top:0px; 
+		'>&nbsp;</div>
+END;
+			}
 			
 		// The node has no children.  Do not show options to expand/collapse.
 		} else 
@@ -99,7 +127,7 @@ class HierarchyPrinter {
 		// Recursively print the children.
 		
 		if (in_array($nodeId->getIdString(), $expandedNodes)) {
-			?>
+			print <<<END
 
 <div style='
 	margin-left: 13px; 
@@ -107,8 +135,16 @@ class HierarchyPrinter {
 	margin-top:0px; 
 	padding-left: 10px;
 	border-left: 1px solid #000;
-'>
-		<?
+END;
+			print "'>";
+			
+			if ($color !== NULL) {
+				$childColor =& $color->clone();
+				$childColor->darken(20);
+			} else {
+				$childColor = NULL;
+			}
+			
 			$children =& $getChildrenFunction($node);
 			foreach (array_keys($children) as $key) {
 				HierarchyPrinter::printNode( $children[$key],
@@ -116,11 +152,14 @@ class HierarchyPrinter {
 															$startingPathInfoKey,
 															$printFunction, 
 															$hasChildrenFunction, 
-															$getChildrenFunction );
+															$getChildrenFunction,
+															$childColor );
 			}
 			
 			print "\n</div>";
 		}
+		
+		print "\n</div>";
 	}
 	
 	

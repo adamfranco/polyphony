@@ -31,9 +31,16 @@ $centerPane->addComponent($actionRows, TOP, CENTER);
 $introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
 $introHeader->addComponent(new Content(_("Edit Authorizations for which Group/User?")));
 $actionRows->addComponent($introHeader);
+ob_start();
+print "<table width='100%'><tr><td align='left'>";
+print "<a href='".MYURL."/admin/main'><button>"._("Return to the Admin Tools")."</button></a>";
+print "</td><td align='right'>";
+print "<input type='submit' value='"._("Edit Authorizations for the selected Group/User")." -->'>";
+print "</td></tr></table>";
 
-$submit = new Content("<input type='submit' value='"._("Edit Authorizations for the selected Group/User")." ---->'>");
-$actionRows->addComponent($submit, MIDDLE, RIGHT);
+$submit = new Content(ob_get_contents());
+ob_end_clean();
+$actionRows->addComponent($submit, MIDDLE);
 
 $sharedManager =& Services::getService("Shared");
 //
@@ -102,7 +109,7 @@ while ($groups->hasNext()) {
 		$actionRows->addComponent($groupLayout);	
 	}
 }
-$actionRows->addComponent($submit, MIDDLE, RIGHT);
+$actionRows->addComponent($submit, MIDDLE);
 
 
 // Return the main layout.
