@@ -3,7 +3,7 @@
 /**
  * This file includes all necessary Polyphony classes
  *
- * @version $Id: polyphony.inc.php,v 1.9 2004/11/11 21:57:48 rrichards Exp $
+ * @version $Id: polyphony.inc.php,v 1.10 2005/01/27 17:12:13 adamfranco Exp $
  * @copyright 2004 Middlebury College
  * @package polyphony
  * @access public
@@ -15,8 +15,14 @@ require_once(dirname(__FILE__)."/main/library/Wizard/Wizard.class.php");
 require_once(dirname(__FILE__)."/main/library/ResultPrinter/IteratorResultPrinter.class.php");
 require_once(dirname(__FILE__)."/main/library/ResultPrinter/ArrayResultPrinter.class.php");
 
-require_once(dirname(__FILE__)."/main/library/DRInputOutputModules/DRInputOutputModuleManager.class.php");
-Services::registerService("InOutModules", "DRInputOutputModuleManager");
+
+if (OKI_VERSION > 1) { 
+	require_once(dirname(__FILE__)."/main/library/RepositoryInputOutputModules/RepositoryInputOutputModuleManager.class.php");
+	Services::registerService("InOutModules", "RepositoryInputOutputModuleManager");
+} else {
+	require_once(dirname(__FILE__)."/main/library/DRInputOutputModules/DRInputOutputModuleManager.class.php");
+	Services::registerService("InOutModules", "DRInputOutputModuleManager");
+}
 Services::startService("InOutModules");
 
 require_once(dirname(__FILE__)."/main/library/DRSearchModules/DRSearchModuleManager.class.php");
