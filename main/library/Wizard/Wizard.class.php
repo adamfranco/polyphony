@@ -14,7 +14,7 @@ require_once(dirname(__FILE__)."/MultiValuedWizardStep.class.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: Wizard.class.php,v 1.9 2004/07/29 22:11:15 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.10 2004/07/30 15:16:56 adamfranco Exp $
  */
 
 class Wizard {
@@ -203,7 +203,27 @@ class Wizard {
 	}
 	
 	/**
-	 * Returns TRUE if one of the "Save" buttons was clicked AND the properties validate successfully.
+	 * Go through all properties of all steps (except the current one) and 
+	 * checks the validity of their stored values. Return false if any of 
+	 * the submitted values are invalid. The current Step is excluded to
+	 * since the user might change them and their future state is unknown.
+	 *
+	 * @access public
+	 * @return boolean True on success. False on invalid Property values.
+	 */
+	function arePropertiesValid () {
+		$valid = TRUE;
+		foreach (array_keys($this->_steps) as $number) {
+			if ($number != $this->_currentStep && !$this->_steps[$number]->arePropertiesValid())
+				$valid = FALSE;
+		}
+		
+		return $valid;
+	}
+	
+	/**
+	 * Returns TRUE if one of the "Save" buttons was clicked AND the properties 
+	 * validate successfully.
 	 * @return boolean
 	 */
 	function isSaveRequested () {
@@ -320,19 +340,27 @@ class Wizard {
 				);
 			}
 		}
-		if ($this->_allowStepLinks || !$this->hasNext()) {
+		
+		// Save button
+		if (($this->_allowStepLinks || !$this->hasNext()) && $this->arePropertiesValid()) {
 			$menu->addComponent(
 				new LinkMenuItem("<div style='width: 100px'>"._("Save")."</div>",
 					"Javascript:save()",
 					FALSE)
 			);
+		} else {
+			$menu->addComponent(new StandardMenuItem(_("Save"), FALSE));
 		}
+		
+		// Cancel button
 		if ($this->_allowCancel) {
 			$menu->addComponent(
 				new LinkMenuItem(_("Cancel"),
 					"Javascript:cancel()",
 					FALSE)
 			);
+		} else {
+			$menu->addComponent(new StandardMenuItem(_("Cancel"), FALSE));
 		}
 		
 		$center = new RowLayout;
@@ -348,13 +376,13 @@ class Wizard {
 			if ($this->hasPrevious())
 				print "\n\t\t\t<input type='submit' name='__previous' value='"._("Previous")."'>";
 			else
-				print "\n\t\t\t &nbsp; ";
+				print "\n\t\t\t<span style='border: 1px solid; padding: 2px;'>"._("Previous")."</span>";
 			print "\n\t\t</td>";
 			print "\n\t\t<td align='right'>";
 			if ($this->hasNext())
 				print "\n\t\t\t<input type='submit' name='__next' value='"._("Next")."'>";
 			else
-				print "\n\t\t\t &nbsp; ";
+				print "\n\t\t\t<span style='border: 1px solid; padding: 2px;'>"._("Next")."</span>";
 			print "\n\t\t</td>";
 			print "\n\t</tr>";
 		}
@@ -362,9 +390,14 @@ class Wizard {
 		print "\n\t\t<td align='left'>";
 		if ($this->_allowCancel)
 			print "\n\t\t\t<input type='submit' name='__cancel' value='"._("Cancel")."'>";
+		else
+			print "\n\t\t\t<span style='border: 1px solid; padding: 2px;'>"._("Cancel")."</span>";
 		print "\n\t\t</td>";
 		print "\n\t\t<td align='right'>";
-		print "\n\t\t\t<input type='submit' name='__save' value='"._("Save")."'>";
+		if (($this->_allowStepLinks || !$this->hasNext()) && $this->arePropertiesValid())
+			print "\n\t\t\t<input type='submit' name='__save' value='"._("Save")."'>";
+		else
+			print "\n\t\t\t<span style='border: 1px solid; padding: 2px;'>"._("Save")."</span>";
 		print "\n\t\t</td>";
 		print "\n\t</tr>";
 		
