@@ -25,8 +25,8 @@ $sharedManager =& Services::getService("Shared");
 $authZManager =& Services::getService("AuthZ");
 
 // Intro message
-$intro =& new Content("&nbsp &nbsp Check or uncheck authorization(s) for the section(s) of your choice.<br />
-			&nbsp &nbsp After each check/uncheck, the changes are saved automatically.<br /><br />");
+$intro =& new Content("&nbsp &nbsp "._("Check or uncheck authorization(s) for the section(s) of your choice.")."<br />
+			&nbsp &nbsp "._("After each check/uncheck, the changes are saved automatically.")."<br /><br />");
 
 
 // Get the id and type (group/member) of the selected agent using $_REQUEST
@@ -42,13 +42,13 @@ $intro =& new Content("&nbsp &nbsp Check or uncheck authorization(s) for the sec
  if ($groupOrMember == "group") {
  	$agent =& $sharedManager->getGroup($idObject);
  	$introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
- 	$introHeader->addComponent(new Content(_("Edit Which Authorizations for Group: <em> "
- 											.$agentId.$agent->getDisplayName()."</em>?")));
+ 	$introHeader->addComponent(new Content(_("Edit Which Authorizations for Group").": <em> "
+ 											.$agentId.$agent->getDisplayName()."</em>?"));
  } else {
  	$agent =& $sharedManager->getAgent($idObject);
  	$introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
- 	$introHeader->addComponent(new Content(_("Edit Which Authorizations for User: <em> "
- 											.$agentId.$agent->getDisplayName()."</em>?")));
+ 	$introHeader->addComponent(new Content(_("Edit Which Authorizations for User").": <em> "
+ 											.$agentId.$agent->getDisplayName()."</em>?"));
  }
 
  $actionRows->addComponent($introHeader);
@@ -57,8 +57,8 @@ $intro =& new Content("&nbsp &nbsp Check or uncheck authorization(s) for the sec
 // Buttons to go back to edit auths for a different user, or to go home
 ob_start();
 print "<table><tr><td>";
-print "<a href='".MYURL."/authorization/choose_agent'><button>Choose a different Group/Member to edit</button></a></td>";
-print "<td><a href='".MYURL."'><button>Return to Concerto Home</button></a></td></tr></table>";
+print "<a href='".MYURL."/authorization/choose_agent'><button>"._("Choose a different User/Group to edit")."</button></a></td>";
+print "<td><a href='".MYURL."/admin/main/'><button>"._("Return to the Admin Tools")."</button></a></td></tr></table>";
 $nav =& new Content(ob_get_contents());
 $actionRows->addComponent($nav, MIDDLE, LEFT);
 ob_end_clean();
@@ -95,20 +95,8 @@ print"</table>";
 // Buttons to go back to edit auths for a different user, or to go home
 ob_start();
 print "<table><tr><td>";
-print "<a href='".MYURL."/authorization/choose_agent'><button>Choose a different Group/Member to edit</button></a></td>";
-print "<td><a href='".MYURL."'><button>Return to Concerto Home</button></a></td></tr></table>";
-
-// Javascript functions for displaying info about implicit AZs
-// print <<<END
-// 
-// <script language='JavaScript1.2'>
-// 
-// function writeAZInfo(elementId, infoText) {
-// }
-// 
-// </script>
-// 
-// END;
+print "<a href='".MYURL."/authorization/choose_agent'><button>"._("Choose a different User/Group to edit")."</button></a></td>";
+print "<td><a href='".MYURL."/admin/main'><button>"._("Return to the Admin Tools")."</button></a></td></tr></table>";
 
 $nav =& new Content(ob_get_contents());
 $actionRows->addComponent($nav, MIDDLE, LEFT);
@@ -210,14 +198,14 @@ function printEditOptions(& $qualifier) {
 					// get the agent/group for the AZ
 					if ($shared->isAgent($explicitAgentId)) {
 						$explicitAgent =& $shared->getAgent($explicitAgentId);
-						$title = "User: ".$explicitAgent->getDisplayName();
+						$title = _("User").": ".$explicitAgent->getDisplayName();
 					} else if ($shared->isGroup($explicitAgentId)) {
 						$explicitGroup =& $shared->getGroup($explicitAgentId);
-						$title = "Group: ".$explicitGroup->getDisplayName();
+						$title = _("Group").": ".$explicitGroup->getDisplayName();
 					} else {
-						$title = "User/Group: ".$explicitAgentId->getIdString();
+						$title = _("User/Group").": ".$explicitAgentId->getIdString();
 					}
-					$title .= ", Location: ".$explicitQualifier->getDisplayName();
+					$title .= ", "._("Location").": ".$explicitQualifier->getDisplayName();
 					if ($k)
 						print "; ";
 					$k++;
