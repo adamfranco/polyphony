@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MultiValuedWizardStep.class.php,v 1.9 2005/02/04 23:06:14 adamfranco Exp $
+ * @version $Id: MultiValuedWizardStep.class.php,v 1.10 2005/03/31 20:52:42 adamfranco Exp $
  */
 
 /**
@@ -24,7 +24,7 @@ require_once(dirname(__FILE__)."/WizardStep.interface.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: MultiValuedWizardStep.class.php,v 1.9 2005/02/04 23:06:14 adamfranco Exp $
+ * @version $Id: MultiValuedWizardStep.class.php,v 1.10 2005/03/31 20:52:42 adamfranco Exp $
  */
 
 class MultiValuedWizardStep 
@@ -323,12 +323,9 @@ class MultiValuedWizardStep
 	 * @return object Layout
 	 */
 	function &getLayout (& $harmoni) {
-		$stepLayout =& new SingleContentLayout (TEXT_BLOCK_WIDGET, 2);
-		
 		$text = $this->_parseText();
 		
-		$stepLayout->addComponent(new Content($text));
-		
+		$stepLayout =& new Block ($text, 3);
 		return $stepLayout;
 	}
 	

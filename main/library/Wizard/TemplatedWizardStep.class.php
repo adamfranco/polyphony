@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TemplatedWizardStep.class.php,v 1.3 2005/02/04 23:06:15 adamfranco Exp $
+ * @version $Id: TemplatedWizardStep.class.php,v 1.4 2005/03/31 20:52:42 adamfranco Exp $
  */
 
 /**
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardStep.abstract.php");
  * This is a {@link WizardStep} that gets its output text from a {@link Template}.
  * @package polyphony.library.wizard
  * @copyright 2004
- * @version $Id: TemplatedWizardStep.class.php,v 1.3 2005/02/04 23:06:15 adamfranco Exp $
+ * @version $Id: TemplatedWizardStep.class.php,v 1.4 2005/03/31 20:52:42 adamfranco Exp $
  */
 class TemplatedWizardStep extends WizardStepAbstract {
 	
@@ -47,13 +47,10 @@ class TemplatedWizardStep extends WizardStepAbstract {
 			$fSet->set($key, $this->_properties[$key]->getValue());
 		}
 		$this->_text = $this->_template->catchOutput($fSet);
-		
-		$stepLayout =& new SingleContentLayout (TEXT_BLOCK_WIDGET, 2);
-		
+				
 		$text = $this->_parseText();
 		
-		$stepLayout->addComponent(new Content($text));
-		
+		$stepLayout =& new Block ($text, 3);
 		return $stepLayout;
 	}
 	
