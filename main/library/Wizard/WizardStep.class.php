@@ -1,7 +1,5 @@
 <?
 
-require_once(dirname(__FILE__)."/RegexWizardProperty.class.php");
-
 /**
  * The Wizard class provides a system for registering Wizard properties and 
  * associating those properties with the appropriate form elements.
@@ -10,7 +8,7 @@ require_once(dirname(__FILE__)."/RegexWizardProperty.class.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: WizardStep.class.php,v 1.2 2004/06/01 20:08:11 adamfranco Exp $
+ * @version $Id: WizardStep.class.php,v 1.3 2004/06/01 21:30:15 adamfranco Exp $
  */
 
 class WizardStep {

@@ -13,7 +13,7 @@ require_once(dirname(__FILE__)."/WizardStep.class.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: Wizard.class.php,v 1.2 2004/05/26 21:44:07 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.3 2004/06/01 21:25:44 adamfranco Exp $
  */
 
 class Wizard {
@@ -159,11 +159,55 @@ class Wizard {
 	}
 	
 	/**
+	 * Update the status of the Wizard from the submitted form values and
+	 * handle movement to other steps in the wizard.
+	 * @access public
+	 * @return void
+	 */
+	function update () {
+		if ($_REQUEST['__next'] && $this->hasNext())
+			$this->next();
+		
+		else if ($_REQUEST['__previous'] && $this->hasPrevious())
+			$this->previous();
+		
+		else if ($_REQUEST['__go_to_step'])
+			$this->goToStep($_REQUEST['__go_to_step']);
+	}
+	
+	/**
+	 * Returns TRUE if one of the "Save" buttons was clicked.
+	 * @return boolean
+	 */
+	function isSaveRequested () {
+		if ($_REQUEST['__save'] || $_REQUEST['__save_link'])
+			return TRUE;
+		else
+			return FALSE;
+	}
+	
+	/**
+	 * Returns TRUE if one of the "Cancel" buttons was clicked.
+	 * @return boolean
+	 */
+	function isCancelRequested () {
+		if ($_REQUEST['__cancel'] || $_REQUEST['__cancel_link'])
+			return TRUE;
+		else
+			return FALSE;
+	}
+	
+	/**
 	 * Returns a layout of content for the current Wizard-state
 	 * @param object Harmoni The harmoni object which contains the current context.
 	 * @return object Layout
 	 */
 	function & getLayout (& $harmoni) {
+	
+		// Handle the catching of values from previous form submission and move
+		// to the correct step.
+		$this->update();
+		
 		// make sure we have the right textdomain
 		$defaultTextDomain = textdomain();
 		textdomain("polyphony");
@@ -178,9 +222,9 @@ class Wizard {
 		
 		// :: Form tags for around the layout :: 
 		$wizardLayout->setPreSurroundingText("<form action='".MYURL."/".implode("/", $harmoni->pathInfoParts)."' method='post' id='wizardform' name='wizardform'>");
-		$postText = "\n<input type='hidden' name='go_to_step' value=''>";
-		$postText .= "\n<input type='hidden' name='save_link' value=''>";
-		$postText .= "\n<input type='hidden' name='cancel_link' value=''>";
+		$postText = "\n<input type='hidden' name='__go_to_step' value=''>";
+		$postText .= "\n<input type='hidden' name='__save_link' value=''>";
+		$postText .= "\n<input type='hidden' name='__cancel_link' value=''>";
 		$postText .= "\n</form>";
 		$wizardLayout->setPostSurroundingText($postText);
 		
@@ -190,19 +234,19 @@ class Wizard {
 			
 			// Set a flag to save the form after it is submited
 			function save() {
-				document.wizardform.save_link.value = 'save';
+				document.wizardform.__save_link.value = 'save';
 				document.wizardform.submit();
 			}
 			
 			// Set a flag to cancel this wizard
 			function cancel() {
-				document.wizardform.cancel_link.value = 'cancel';
+				document.wizardform.__cancel_link.value = 'cancel';
 				document.wizardform.submit();
 			}
 			
 			// Specify which step to go to on submit.
 			function goToStep(step) {
-				document.wizardform.go_to_step.value = step;
+				document.wizardform.__go_to_step.value = step;
 				document.wizardform.submit();
 			}
 		
@@ -264,13 +308,13 @@ class Wizard {
 			$buttonText .= "\n\t<tr>";
 			$buttonText .= "\n\t\t<td align='left'>";
 			if ($this->hasPrevious())
-				$buttonText .= "\n\t\t\t<input type='submit' name='previous' value='"._("Previous")."'>";
+				$buttonText .= "\n\t\t\t<input type='submit' name='__previous' value='"._("Previous")."'>";
 			else
 				$buttonText .= "\n\t\t\t &nbsp; ";
 			$buttonText .= "\n\t\t</td>";
 			$buttonText .= "\n\t\t<td align='right'>";
 			if ($this->hasNext())
-				$buttonText .= "\n\t\t\t<input type='submit' name='next' value='"._("Next")."'>";
+				$buttonText .= "\n\t\t\t<input type='submit' name='__next' value='"._("Next")."'>";
 			else
 				$buttonText .= "\n\t\t\t &nbsp; ";
 			$buttonText .= "\n\t\t</td>";
@@ -278,10 +322,10 @@ class Wizard {
 		}
 		$buttonText .= "\n\t<tr>";
 		$buttonText .= "\n\t\t<td align='left'>";
-		$buttonText .= "\n\t\t\t<input type='submit' name='cancel' value='"._("Cancel")."'>";
+		$buttonText .= "\n\t\t\t<input type='submit' name='__cancel' value='"._("Cancel")."'>";
 		$buttonText .= "\n\t\t</td>";
 		$buttonText .= "\n\t\t<td align='right'>";
-		$buttonText .= "\n\t\t\t<input type='submit' name='save' value='"._("Save")."'>";
+		$buttonText .= "\n\t\t\t<input type='submit' name='__save' value='"._("Save")."'>";
 		$buttonText .= "\n\t\t</td>";
 		$buttonText .= "\n\t</tr>";
 		
