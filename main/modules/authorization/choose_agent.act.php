@@ -16,13 +16,13 @@ $harmoni->ActionHandler->execute("window", "screen");
 $mainScreen =& $harmoni->getAttachedData('mainScreen');
 $statusBar =& $harmoni->getAttachedData('statusBar');
 $centerPane =& $harmoni->getAttachedData('centerPane');
- 
+
 
 // Our
 $actionRows =& new RowLayout();
 
 // In order to preserve proper nesting on the HTML output
-$actionRows->setPreSurroundingText("<form method='post' action='".MYURL."/authorization/edit_authorizations/'>");
+$actionRows->setPreSurroundingText("<form method='get' action='".MYURL."/authorization/edit_authorizations/'>");
 $actionRows->setPostSurroundingText("</form>");
 
 $centerPane->addComponent($actionRows, TOP, CENTER);
@@ -104,6 +104,7 @@ while ($groups->hasNext()) {
 }
 $actionRows->addComponent($submit, MIDDLE, RIGHT);
 
+
 // Return the main layout.
 return $mainScreen;
 
@@ -113,7 +114,7 @@ return $mainScreen;
 function printGroup(& $group) {
 	$id =& $group->getId();
 	$groupType =& $group->getType();
-	print "<input type='radio' name='user' value='".$id->getIdString()."'>";
+	print "<input type='radio' name='selection' value='group:".$id->getIdString()."'>";
 	print "<a title='".$groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()."'>";
 	print "<u><strong>".$id->getIdString()." - ".$group->getDisplayName()."</strong></u></a>";	
 	print " - <em>".$groupType->getDescription()."</em>";
@@ -122,7 +123,7 @@ function printGroup(& $group) {
 function printMember(& $member) {
 	$id =& $member->getId();
 	$memberType =& $member->getType();
-	print "<input type='radio' name='user' value='".$id->getIdString()."'>";
+	print "<input type='radio' name='selection' value='member:".$id->getIdString()."'>";
 	print "<a title='".$memberType->getAuthority()." :: ".$memberType->getDomain()." :: ".$memberType->getKeyword()."'>";
 	print "<u>".$id->getIdString()." - ".$member->getDisplayName()."</u></a>";
 	print " - <em>".$memberType->getDescription()."</em>";
