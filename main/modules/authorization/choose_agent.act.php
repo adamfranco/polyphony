@@ -86,8 +86,6 @@ while ($groups->hasNext()) {
 $groups =& $sharedManager->getGroups();  // Groups ARE agents
 while ($groups->hasNext()) {
 	$group =& $groups->next();
-	
-	$group =& $groups->next();
 	$groupId =& $group->getId();
 	
 	if (!in_array($groupId->getIdString(), $childGroupIds)) {
