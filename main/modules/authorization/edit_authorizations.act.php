@@ -153,7 +153,7 @@ function printEditOptions(& $qualifier) {
 
 			$hasExplicit = FALSE;
 			$implicitAZs = array();
-			$allAZs = $authZManager->getAllAZs($agentId, $functionId, $qualifierId, FALSE);
+			$allAZs =& $authZManager->getAllAZs($agentId, $functionId, $qualifierId, FALSE);
 			while ($allAZs->hasNext()) {
 				$az =& $allAZs->next();
 				if ($az->isExplicit()) {
