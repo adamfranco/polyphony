@@ -19,18 +19,19 @@ $centerPane =& $harmoni->getAttachedData('centerPane');
  
 
 // Our
+$pageRows =& new RowLayout();
 $actionRows =& new RowLayout();
 
 // In order to preserve proper nesting on the HTML output
 $actionRows->setPreSurroundingText("<form method='post' action='".MYURL."/authorization/edit_authorizations/'>");
 $actionRows->setPostSurroundingText("</form>");
 
-$centerPane->addComponent($actionRows, TOP, CENTER);
+$centerPane->addComponent($pageRows, TOP, CENTER);
 
 // Intro
 $introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
 $introHeader->addComponent(new Content(_("Users and Groups")));
-$actionRows->addComponent($introHeader);
+$pageRows->addComponent($introHeader);
 
 $sharedManager =& Services::getService("Shared");
 
@@ -46,52 +47,101 @@ $sharedManager =& Services::getService("Shared");
 // $member =& $sharedManager->getAgent($memberId);
 // $group->add($member);
 
-
-// Loop through all of the Groups and figure out which ones are childen of
-// other groups, so that we can just display the root-groups
-$childGroupIds = array();
-$groups =& $sharedManager->getGroups();
-while ($groups->hasNext()) {
-	$group =& $groups->next();
-	$childGroups =& $group->getGroups(FALSE);
-	while ($childGroups->hasNext()) {
-		$group =& $childGroups->next();
-		$groupId =& $group->getId();
-		$childGroupIds[] =& $groupId->getIdString();
-	}
-}
-
-// Get all the groups first.
-$groupHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
-$groupHeader->addComponent(new Content(_("Groups")));
-$actionRows->addComponent($groupHeader);
-
-$groups =& $sharedManager->getGroups();
-while ($groups->hasNext()) {
-	$group =& $groups->next();
-	$groupId =& $group->getId();
-	
-	if (!in_array($groupId->getIdString(), $childGroupIds)) {
-		
-		// Create a layout for this group using the GroupPrinter
-		ob_start();
-		GroupPrinter::printGroup($group, $harmoni,
-										2,
-										"printGroup", 
-										"printMember");
-		$groupLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 3);
-		$groupLayout->addComponent(new Content(ob_get_contents()));
-		ob_end_clean();
-		$actionRows->addComponent($groupLayout);	
-	}
-}
-
-
-// Agents
+// Users header
 $agentHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
 $agentHeader->addComponent(new Content(_("Users")));
-$actionRows->addComponent($agentHeader);
+$pageRows->addComponent($agentHeader);
 
+
+// the agent search form
+ob_start();
+
+$self = $_SERVER['PHP_SELF'];
+$lastCriteria = $_REQUEST['search_criteria'];
+print _("Search For Users").": ";
+print <<<END
+<form action='$self' method='post'>
+	<input type='text' name='search_criteria' value='$lastCriteria'>
+	<br /><select name='search_type'>
+END;
+
+$searchTypes =& $sharedManager->getAgentSearchTypes();
+while ($searchTypes->hasNext()) {
+	$type =& $searchTypes->next();
+	$typeString = $type->getDomain()
+						."::".$type->getAuthority()
+						."::".$type->getKeyword();
+	print "\n\t\t<option value='$typeString'";
+	if ($_REQUEST['search_type'] == $typeString)
+		print " selected='selected'";
+	print ">$typeString</option>";
+}
+
+print <<<END
+	</select>
+	<br /><input type='submit' value='search'>
+</form>
+
+END;
+
+$agentLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 2);
+$agentLayout->addComponent(new Content(ob_get_contents()), BOTTOM);
+ob_end_clean();
+$pageRows->addComponent($agentLayout);
+$pageRows->addComponent($actionRows, BOTTOM, CENTER);
+
+if ($_REQUEST['search_criteria'] && $_REQUEST['search_type']) {
+	$typeParts = explode("::", $_REQUEST['search_type']);
+	$searchType =& new HarmoniType($typeParts[0], $typeParts[1], $typeParts[2]);
+	$agents =& $sharedManager->getAgentsBySearch($_REQUEST['search_criteria'], $searchType);
+	
+	print <<<END
+
+
+<table>
+	<tr>
+		<td valign='top'>
+			<div style='
+				border: 1px solid #000; 
+				width: 15px; 
+				height: 15px;
+				text-align: center;
+				text-decoration: none;
+				font-weight: bold;
+			'>
+				-
+			</div>
+		</td>
+		<td>
+END;
+	print "\n\t\t\t"._("Search Results");
+	print <<<END
+		</td>
+	</tr>
+</table>
+<div style='
+	margin-left: 13px; 
+	margin-right: 0px; 
+	margin-top:0px; 
+	padding-left: 10px;
+	border-left: 1px solid #000;
+'>
+END;
+	while ($agents->hasNext()) {
+		$agent =& $agents->next();
+		printMember($agent);
+		print "<br />";
+	}
+	print "\n</div>\n</form>";
+	
+	$agentLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 3);
+	$agentLayout->addComponent(new Content(ob_get_contents()));
+	ob_end_clean();
+	$actionRows->addComponent($agentLayout);	
+}
+
+
+// All Agents
 $expandAgents = ((in_array("allagents", $harmoni->pathInfoParts))?TRUE:FALSE);
 
 // Create a layout for this group using the GroupPrinter
@@ -164,7 +214,51 @@ END;
 $agentLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 3);
 $agentLayout->addComponent(new Content(ob_get_contents()));
 ob_end_clean();
-$actionRows->addComponent($agentLayout);	
+$actionRows->addComponent($agentLayout);
+
+
+
+// Groups
+
+// Loop through all of the Groups and figure out which ones are childen of
+// other groups, so that we can just display the root-groups
+$childGroupIds = array();
+$groups =& $sharedManager->getGroups();
+while ($groups->hasNext()) {
+	$group =& $groups->next();
+	$childGroups =& $group->getGroups(FALSE);
+	while ($childGroups->hasNext()) {
+		$group =& $childGroups->next();
+		$groupId =& $group->getId();
+		$childGroupIds[] =& $groupId->getIdString();
+	}
+}
+
+// Get all the groups first.
+$groupHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
+$groupHeader->addComponent(new Content(_("Groups")));
+$actionRows->addComponent($groupHeader);
+
+$groups =& $sharedManager->getGroups();
+while ($groups->hasNext()) {
+	$group =& $groups->next();
+	$groupId =& $group->getId();
+	
+	if (!in_array($groupId->getIdString(), $childGroupIds)) {
+		
+		// Create a layout for this group using the GroupPrinter
+		ob_start();
+		GroupPrinter::printGroup($group, $harmoni,
+										2,
+										"printGroup", 
+										"printMember");
+		$groupLayout =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 3);
+		$groupLayout->addComponent(new Content(ob_get_contents()));
+		ob_end_clean();
+		$actionRows->addComponent($groupLayout);	
+	}
+}
+
 
 // Return the main layout.
 return $mainScreen;
