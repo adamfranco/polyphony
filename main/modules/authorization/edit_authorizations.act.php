@@ -292,7 +292,7 @@ function printEditOptions(& $qualifier) {
 					."/".implode("/", $harmoni->pathInfoParts)
 					."?agent=".$_GET['agent'];
 	
-				print " onClick=\"Javascript:window.location='".$toggleURL."'\"";
+				print " onclick=\"Javascript:window.location='".$toggleURL."'\"";
 			}
 			// If they are not authorized to view the AZs, disable the checkbox
 			else {

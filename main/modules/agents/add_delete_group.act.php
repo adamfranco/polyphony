@@ -106,7 +106,7 @@ return $mainScreen;
 	"/".implode("/", $harmoni->pathInfoParts);
 	
 	print "\n<input type='checkbox' name='blah' value='blah' ";
-	print " onClick=\"Javascript:window.location='".$toggleURL."'\" />";
+	print " onclick=\"Javascript:window.location='".$toggleURL."'\" />";
 	print "\n<a title='".$groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()." - ".$groupType->getDescription()."'>";
 	print "\n<span style='text-decoration: underline; font-weight: bold;'>".$id->getIdString()." - ".$group->getDisplayName()."</span></a>";
 

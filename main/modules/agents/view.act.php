@@ -357,7 +357,7 @@ return $mainScreen;
 	print "\n<span style='text-decoration: underline; font-weight: bold;'>".$id->getIdString()." - ".$group->getDisplayName()."</span></a>";
 	
 	print "\n <input type='button' value='"._("Add checked to this Group")."'";
-	print " onClick='Javascript:submitCheckedToGroup(\"".$id->getIdString()."\")'";
+	print " onclick='Javascript:submitCheckedToGroup(\"".$id->getIdString()."\")'";
 	print " />";
 	
 	print "\n - <em>".$group->getDescription()."</em>";

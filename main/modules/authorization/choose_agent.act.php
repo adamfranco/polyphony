@@ -70,7 +70,7 @@ print "<table width='100%'><tr><td align='left'>";
 print "<a href='".MYURL."/admin/main'><button>"._("Return to the Admin Tools")."</button></a>";
 print "</td><td align='right'>";
 print "<input type='button'";
-print " onClick='Javascript:submitAgentChoice()'";
+print " onclick='Javascript:submitAgentChoice()'";
 print " value='"._("Edit Authorizations for the selected User/Group")." -->'>";
 print "</td></tr></table>";
 
