@@ -10,7 +10,7 @@ require_once(dirname(__FILE__)."/RegexWizardProperty.class.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: WizardStep.class.php,v 1.1 2004/05/26 20:46:19 adamfranco Exp $
+ * @version $Id: WizardStep.class.php,v 1.2 2004/06/01 20:08:11 adamfranco Exp $
  */
 
 class WizardStep {
@@ -49,22 +49,20 @@ class WizardStep {
 	/**
 	 * creates a new Property for this step
 	 * @parm string $propertyName The property name.
-	 * @param string $type The desired type of property.
+	 * @param object $validatorRule A ValidatorRule (that exends the 
+	 * 		ValidatorRuleInterface) that will be used to validate the form
+	 *		inputs
 	 * @return object WizardProperty
 	 */
-	function & createProperty ( $propertyName, $type, $isValueRequired = TRUE ) {
+	function & createProperty ( $propertyName, & $validatorRule, $isValueRequired = TRUE ) {
 		ArgumentValidator::validate($propertyName, new StringValidatorRule, true);
-		ArgumentValidator::validate($type, new StringValidatorRule, true);
+		ArgumentValidator::validate($validatorRule, new ExtendsValidatorRule("ValidatorRuleInterface"), true);
 		ArgumentValidator::validate($isValueRequired, new BooleanValidatorRule, true);
-		$validTypes = array("Regex", "Integer", "Float", "Boolean", "Option");
-		if (!in_array($type, $validTypes))
-			throwError(new Error("Unkown Property type, ".$type.".", "Wizard", 1));
 		
 		if ($this->_properties[$propertyName])
 			throwError(new Error("Property, ".$propertyName.", already exists in Wizard.", "Wizard", 1));
 
-		$className = $type."WizardProperty";
-		$this->_properties[$propertyName] =& new $className( $propertyName, $isValueRequired );
+		$this->_properties[$propertyName] =& new WizardProperty( $propertyName, $validatorRule, $isValueRequired );
 		return $this->_properties[$propertyName];
 	}
 	
@@ -191,7 +189,7 @@ class WizardStep {
 				// if this element is of the [[propertyname]] form,
 				// replace the element with the value of the property.
 				if (preg_match("/\[{2}([^|]*)\]{2}/", $match, $parts)) {
-					$outputText = str_replace($match, $this->_properties[$parts[1]]->getValue(), $outputText);
+					$outputText = str_replace($match, htmlspecialchars($this->_properties[$parts[1]]->getValue(), ENT_QUOTES), $outputText);
 				
 				// if this element is of the 
 				// [['PropertyName' == 'ComparisonVal'|StringIfEquivalent|StringIfNotEquivalent]]
@@ -224,6 +222,18 @@ class WizardStep {
 						$outputText = str_replace($match, $parts[4], $outputText);
 					else
 						$outputText = str_replace($match, $parts[5], $outputText);
+				
+				// if this element is of the [[propertyname|Error]] form,
+				// replace the element with the error string of the property if 
+				//the property's value doesn't validate.
+				} else if (preg_match("/\[{2}([^|]*)\|Error\]{2}/", $match, $parts)) {
+					debug::output(printpre($parts, TRUE));
+					debug::output(printpre($this->_properties[$parts[1]], TRUE));
+					if (!$this->_properties[$parts[1]]->validate())
+						$outputText = str_replace($match, $this->_properties[$parts[1]]->getErrorString(), $outputText);
+					else
+						$outputText = str_replace($match, "", $outputText);
+				
 				} else {
 					throwError(new Error("Unknown String form, ".$match.".", "Wizard", 1));
 				}

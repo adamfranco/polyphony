@@ -8,7 +8,7 @@
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: WizardProperty.class.php,v 1.1 2004/05/26 20:46:19 adamfranco Exp $
+ * @version $Id: WizardProperty.class.php,v 1.2 2004/06/01 20:08:11 adamfranco Exp $
  */
  
 class WizardProperty {
@@ -38,8 +38,15 @@ class WizardProperty {
 	/**
 	 * Constructor: throw error as this is an abstract class.
 	 */
-	function WizardProperty ( $name, $isValueRequired = TRUE ) {
-		throwError(new Error("Instantiate a child class instead.", "Wizard", 1));
+	function WizardProperty ( $name, & $validatorRule, $isValueRequired = TRUE ) {
+		ArgumentValidator::validate($name, new StringValidatorRule, true);
+		ArgumentValidator::validate($validatorRule, new ExtendsValidatorRule("ValidatorRuleInterface"), true);
+		ArgumentValidator::validate($isValueRequired, new BooleanValidatorRule, true);
+
+		$this->_name = $name;
+		$this->_validatorRule  =& $validatorRule;
+		$this->_isValueRequired = $isValueRequired;
+		$this->_errorString = " <span style='color: f00'>* "._("The value specified is not valid.")."</span>";
 	}
 	
 	/**
@@ -65,6 +72,33 @@ class WizardProperty {
 		$this->_defaultValue = $defaultValue;
 	}
 	
+	/**
+	 * Set the error string. This will be returned by getErrorString 
+	 * @param string $errorString The string to return if updating this property
+	 *			fails.
+	 * @access public
+	 * @return void
+	 */
+	function setErrorString ( $errorString ) {
+		ArgumentValidator::validate($errorString, new StringValidatorRule, true);
+		$this->_errorString = $errorString;
+	}
+	
+	/**
+	 * Returns the error string for this property. The error string is to
+	 * be used when validation fails
+	 * @access public
+	 * @return string
+	 */
+	function getErrorString () {
+		return $this->_errorString;
+	}
+	
+	/**
+	 * Update the value of this property from the current environment.
+	 * @access public
+	 * @return boolean True on successful update with valid .
+	 */
 	function update () {
 		// Set the value from the request array.
 		if (isset($_REQUEST[$this->_name]) || !$this->_isValueRequired)
@@ -72,17 +106,16 @@ class WizardProperty {
 		else
 			throwError(new Error("Requested property, ".$this->_name.", does not exist in the _REQUEST array.", "Wizard", 1));
 
-		return $this->_validate($this->_value);			
+		return $this->validate();			
 	}
 	
 	/**
-	 * Validate the given input against our internal checks. Return TRUE if the
-	 * supplied input is valid.
-	 * @param mixed $value The value to check.
-	 * @access protected
+	 * Validates the current value of the property
+	 * @access public
 	 * @return boolean
 	 */
-	function _validate ( $value ) {
-		(throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "Interface", TRUE)) || die ("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class."));
+	function validate () {
+		$value =& $this->getValue();
+		return $this->_validatorRule->check($value);	
 	}
 }
