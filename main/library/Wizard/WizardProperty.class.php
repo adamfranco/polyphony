@@ -8,7 +8,7 @@
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: WizardProperty.class.php,v 1.3 2004/06/08 17:43:51 adamfranco Exp $
+ * @version $Id: WizardProperty.class.php,v 1.4 2004/07/12 18:53:49 adamfranco Exp $
  */
  
 class WizardProperty {
@@ -36,6 +36,11 @@ class WizardProperty {
 	var $_defaultValue;
 	
 	/**
+	 * @attribute boolean _hasBeenSet TRUE if update() has been called.
+	 */
+	var $_hasBeenSet = FALSE;
+	
+	/**
 	 * Constructor: throw error as this is an abstract class.
 	 */
 	function WizardProperty ( $name, & $validatorRule, $isValueRequired = TRUE ) {
@@ -55,7 +60,7 @@ class WizardProperty {
 	 * @return mixed The Value
 	 */
 	function getValue () {
-		if (isset($this->_value))
+ 		if (isset($this->_value) || $this->_hasBeenSet)
 			return $this->_value;
 		else
 			return $this->_defaultValue;
@@ -101,11 +106,12 @@ class WizardProperty {
 	 */
 	function update () {
 		// Set the value from the request array.
-		if (isset($_REQUEST[$this->_name]) || !$this->_isValueRequired)
+		if (isset($_REQUEST[$this->_name]) || !$this->_isValueRequired) {
 			$this->_value = $_REQUEST[$this->_name];
-		else
+			$this->_hasBeenSet = TRUE;
+		} else
 			throwError(new Error("Requested property, ".$this->_name.", does not exist in the _REQUEST array.", "Wizard", 1));
-
+	
 		return $this->validate();			
 	}
 	
