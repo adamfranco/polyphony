@@ -1,11 +1,9 @@
 <?
 
 /**
-* choose_agent.act.php
-* This file will allow the user to choose an agent for which to edit authorizations.
-* The agents will be listed both by group and by agent.
-* The chosen agent information will be submitted to edit_authorizations.act.php via form action.
-* 11/10/04 Ryan Richards
+* group_membership.act.php
+* This action will allow for the modification of group Membership.
+* 11/10/04 Adam Franco
 * copyright 2004 MIddlebury College
 */
 
@@ -30,7 +28,7 @@ $centerPane->addComponent($pageRows, TOP, CENTER);
 
 // Intro
 $introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
-$introHeader->addComponent(new Content(_("Users and Groups")));
+$introHeader->addComponent(new Content(_("Manage Group Membership")));
 $pageRows->addComponent($introHeader);
 
 $sharedManager =& Services::getService("Shared");
@@ -256,25 +254,30 @@ while ($groups->hasNext()) {
 
 // Get all the groups first.
 $groupHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
-$groupHeader->addComponent(new Content(_("Groups")));
-$actionRows->addComponent($groupHeader);
+ob_start();
 
-$groups =& $sharedManager->getGroups();
-while ($groups->hasNext()) {
-	$group =& $groups->next();
-	$groupId =& $group->getId();
-	
-	if (!in_array($groupId->getIdString(), $childGroupIds)) {
-		
-		// Create a layout for this group using the GroupPrinter
-		ob_start();
-		
-		// Print out a Javascript function for submitting our groups choices
-		print <<<END
+print _("Groups");
+
+// Create translated errorstrings
+$cannotAddGroup = _("Cannot add group");
+$toItsself = _("to itself");
+$deselecting = _("Deselecting");
+$toOwnDesc = _("to its own descendent");
+$groupString = _("Group");
+$isAlreadyInGroup = _("is alread in this group");
+$agentString = _("Agent");
+$fromItsself = _("from itself");
+$cannotRemoveGroup = _("Cannot remove group");
+$notInGroup = _("is not in this group");
+$confirmAdd = _("Are you sure that you wish to add the selected Groups and Agents to Group");
+$confirmRemove = _("Are you sure that you wish to remove the selected Groups and Agents from Group");
+
+// Print out a Javascript function for submitting our groups choices
+print <<<END
 
 <script language='JavaScript1.2'>
 
-	// Validate ancestory and submit
+	// Validate ancestory and submit to add checked to the group
 	function submitCheckedToGroup ( destGroupId ) {
 		var elements = document.memberform.elements;
 		var i;
@@ -287,45 +290,98 @@ while ($groups->hasNext()) {
 				if (element.value == 'group') {
 					// Check that the destination is not the new member
 					if ( element.name == destGroupId ) {
-						alert ("Cannot add group " + element.name + " to itself. Deselecting...");
+						alert ("$cannotAddGroup " + element.name + " $toItsself. $deselecting...");
 						element.checked = false;
+						continue;
 					}
 					
 					// Check that the destination is not a child of the new member
 					if ( eval("hasDescendent" + element.name + "('" + destGroupId + "')") ) {
-						alert ("Cannot add group " + element.name + " to its own descendent.  Deselecting...");
+						alert ("$cannotAddGroup " + element.name + " $toOwnDesc.  $deselecting...");
 						element.checked = false;
 					}
 					
 					// Check that the new member is not already a child of the destination
 					if ( eval("hasChildGroup" + destGroupId + "('" + element.name + "')") ) {
-						alert ("Group " + element.name + " is alread in this group.  Deselecting...");
+						alert ("$groupString " + element.name + " $isAlreadyInGroup.  $deselecting...");
 						element.checked = false;
 					}
 				} else {
 					// Check that the new member is not already a child of the destination
 					if ( eval("hasChildMember" + destGroupId + "('" + element.name + "')") ) {
-						alert ("Agent " + element.name + " is alread in this group.  Deselecting...");
+						alert ("$agentString " + element.name + " $isAlreadyInGroup.  $deselecting...");
 						element.checked = false;
 					}
 				}
  			}
 		}
 		
-		if (confirm("Are you sure that you wish to add the selected groups and Agents to Group " + destGroupId + "?")) 
+		if (confirm("$confirmAdd " + destGroupId + "?")) 
 		{
+			document.memberform.destinationgroup.value = (destGroupId);
 			document.memberform.submit();
 		}
 	}
-
-	// Check for proper ancestory
-	function inAncestor( id ) {
+	
+	// Validate that the check are children and submit to remove them from the group
+	function submitCheckedFromGroup ( destGroupId ) {
+		var elements = document.memberform.elements;
+		var i;
+				
+		for (i = 0; i < elements.length; i++) {
+			var element = elements[i];
+			
+			if (element.type == 'checkbox' && element.checked == true) {
+				// Check that the destination is not the new member
+				if ( element.name == destGroupId ) {
+					alert ("$cannotRemoveGroup " + element.name + " $fromItsself. $deselecting...");
+					element.checked = false;
+					continue;
+				}
+				
+				if (element.value == 'group') {					
+					// Check that the new member is not already a child of the destination
+					if ( ! eval("hasChildGroup" + destGroupId + "('" + element.name + "')") ) {
+						alert ("$groupString " + element.name + " $notInGroup.  $deselecting...");
+						element.checked = false;
+					}
+				} else {
+					// Check that the new member is not already a child of the destination
+					if ( ! eval("hasChildMember" + destGroupId + "('" + element.name + "')") ) {
+						alert ("$agentString " + element.name + " $notInGroup.  $deselecting...");
+						element.checked = false;
+					}
+				}
+ 			}
+		}
 		
+		if (confirm("$confirmRemove " + destGroupId + "?")) 
+		{
+			document.memberform.destinationgroup.value = (destGroupId);
+			document.memberform.action = document.memberform.action.replace('add_to_group', 'remove_from_group');
+			document.memberform.submit();
+		}
 	}
 	
 </script>
 
+<input type='hidden' name='destinationgroup' value='25' />
+
 END;
+
+$groupHeader->addComponent(new Content(ob_get_contents()));
+ob_end_clean();
+$actionRows->addComponent($groupHeader);
+
+$groups =& $sharedManager->getGroups();
+while ($groups->hasNext()) {
+	$group =& $groups->next();
+	$groupId =& $group->getId();
+	
+	if (!in_array($groupId->getIdString(), $childGroupIds)) {
+		
+		// Create a layout for this group using the GroupPrinter
+		ob_start();
 		
 		GroupPrinter::printGroup($group, $harmoni,
 										2,
@@ -356,8 +412,11 @@ return $mainScreen;
 	print "\n<a title='".$groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()." - ".$groupType->getDescription()."'>";
 	print "\n<u><strong>".$id->getIdString()." - ".$group->getDisplayName()."</strong></u></a>";
 	
-	print "\n <input type='button' value='"._("Add checked to this Group")."'";
+	print "\n <input type='button' value='"._("Add checked")."'";
 	print " onClick='Javascript:submitCheckedToGroup(\"".$id->getIdString()."\")'";
+	print ">";
+	print "\n <input type='button' value='"._("Remove checked")."'";
+	print " onClick='Javascript:submitCheckedFromGroup(\"".$id->getIdString()."\")'";
 	print ">";
 	
 	print "\n - <em>".$group->getDescription()."</em>";
