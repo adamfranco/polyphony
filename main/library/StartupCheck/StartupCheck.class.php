@@ -1,5 +1,11 @@
 <?
 
+// include our StartupRequirement interface
+require_once POLYPHONY."/main/library/StartupCheck/StartupRequirement.interface.php";
+
+// then include our common requirements
+require_once POLYPHONY."/main/library/StartupCheck/CommonRequirements/include.php";
+
 /**
 * @define STARTUP_STATUS_OK Says requirement is met.
 * @package polyphony.startupcheck
@@ -40,7 +46,7 @@ define("STARTUP_STATUS_NEEDS_INSTALL", 0);
 *
 * @package polyphony.startupcheck
 * @copyright 2004
-* @version $Id: StartupCheck.class.php,v 1.4 2004/07/08 19:42:11 gabeschine Exp $
+* @version $Id: StartupCheck.class.php,v 1.5 2004/07/14 23:54:08 gabeschine Exp $
 */
 class StartupCheck {
 
@@ -107,6 +113,7 @@ class StartupCheck {
 			//					);
 			//			}
 		}
+		return $aOK;
 	}
 
 	/**
@@ -230,8 +237,8 @@ class StartupCheck {
 		$this->updateAllAutonomousRequirements();
 
 		// if the above command took care of everything, let's get out.
-		if ($this->allOK()) return true;
-
+		if ($this->areAllOK()) return true;
+		
 		// otherwise...
 		if (!$this->_currentRequirement) {
 			$this->_setupNextRequirementForInput();
@@ -294,5 +301,25 @@ class StartupCheck {
 		$array = $this->getRequirementsOfStatus(STARTUP_STATUS_NEEDS_USER_INPUT);
 		if (!count($array)) return null;
 		return $array[0];
+	}
+	
+	/**
+	 * This function prints out an error message to tell the user that something went wrong in the startup check process.
+	 * @access private
+	 * @return void
+	 */
+	function error($string)
+	{
+		$f =& new FieldSet;
+		
+		$f->set("pageTitle",_("Startup Error"));
+		$f->set("intro", _("The startup process has encountered a problem"));
+		$f->set("errorString",$string);
+		
+		$tpl =& new Template("error.tpl.php",POLYPHONY."/main/library/StartupCheck/");
+		
+		$tpl->output($f);
+		
+		exit(1); // exit with error
 	}
 }
