@@ -8,8 +8,8 @@ require_once(dirname(__FILE__)."/modules/SimpleFieldModule.class.php");
  * to the appropriate DRSearchModule based on their types.
  * 
  * @package polyphony.dr.search
- * @version $Id: DRSearchModuleManager.class.php,v 1.1 2004/10/29 20:22:30 adamfranco Exp $
- * @date $Date: 2004/10/29 20:22:30 $
+ * @version $Id: DRSearchModuleManager.class.php,v 1.2 2004/11/02 22:24:26 adamfranco Exp $
+ * @date $Date: 2004/11/02 22:24:26 $
  * @copyright 2004 Middlebury College
  */
 
@@ -29,6 +29,7 @@ class DRSearchModuleManager {
 		$this->_modules["DR::Harmoni::DisplayName"] =& new SimpleFieldModule("DisplayName");
 		$this->_modules["DR::Harmoni::Description"] =& new SimpleFieldModule("Description");
 		$this->_modules["DR::Harmoni::Content"] =& new SimpleFieldModule("Content");
+		$this->_modules["DR::Harmoni::AllCustomStructures"] =& new SimpleFieldModule("AllCustomStructures");
 	}
 		
 	/**
