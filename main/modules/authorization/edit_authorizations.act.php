@@ -39,16 +39,20 @@ $intro =& new Content("&nbsp &nbsp "._("Check or uncheck authorization(s) for th
  $GLOBALS["harmoni"] =& $harmoni;
 
 
- if ($groupOrMember == "group") {
+ if ($sharedManager->isGroup($idObject)) {
  	$agent =& $sharedManager->getGroup($idObject);
  	$introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
  	$introHeader->addComponent(new Content(_("Edit Which Authorizations for Group").": <em> "
- 											.$agentId.$agent->getDisplayName()."</em>?"));
- } else {
+ 											.$agent->getDisplayName()."</em>?"));
+ } else if ($sharedManager->isAgent($idObject)) {
  	$agent =& $sharedManager->getAgent($idObject);
  	$introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
  	$introHeader->addComponent(new Content(_("Edit Which Authorizations for User").": <em> "
- 											.$agentId.$agent->getDisplayName()."</em>?"));
+ 											.$agent->getDisplayName()."</em>?"));
+ } else {
+ 	$introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
+ 	$introHeader->addComponent(new Content(_("Edit Which Authorizations for the User/Group Id").": <em> "
+ 											.$idObject->getIdString()."</em>?"));
  }
 
  $actionRows->addComponent($introHeader);
@@ -192,7 +196,6 @@ function printEditOptions(& $qualifier) {
 				$implicitAZ =& $implicitAZs[$i];
  				$explicitAZs =& $authZManager->getExplicitUserAZsForImplicitAZ($implicitAZ);
  				$title = "";
- 				$k = 0;
 				while ($explicitAZs->hasNext()) {
 					$explicitAZ =& $explicitAZs->next();
 					$explicitAgentId =& $explicitAZ->getAgentId();
@@ -210,9 +213,8 @@ function printEditOptions(& $qualifier) {
 						$title = _("User/Group").": ".$explicitAgentId->getIdString();
 					}
 					$title .= ", "._("Location").": ".$explicitQualifier->getDisplayName();
-					if ($k)
-						print "; ";
-					$k++;
+					if ($explicitAZs->hasNext())
+						$title .= "; ";
 				}
 				
 				// print out a checkbox for the implicit AZ
