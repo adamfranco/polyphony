@@ -14,7 +14,7 @@ require_once(dirname(__FILE__)."/MultiValuedWizardStep.class.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: Wizard.class.php,v 1.13 2004/08/26 15:10:51 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.14 2004/10/20 19:04:52 adamfranco Exp $
  */
 
 class Wizard {
@@ -287,7 +287,7 @@ class Wizard {
 		$wizardLayout =& new RowLayout;
 		
 		// :: Form tags for around the layout :: 
-		$wizardLayout->setPreSurroundingText("<form action='".MYURL."/".implode("/", $harmoni->pathInfoParts)."' method='post' id='wizardform' name='wizardform'>");
+		$wizardLayout->setPreSurroundingText("<form action='".MYURL."/".implode("/", $harmoni->pathInfoParts)."' method='post' id='wizardform' name='wizardform'  enctype='multipart/form-data'>");
 		
 		ob_start();
 		print "\n<input type='hidden' name='__go_to_step' value=''>";

@@ -10,8 +10,8 @@ require_once(dirname(__FILE__)."/../DRInputOutputModule.interface.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.drinputoutput
- * @version $Id: DataManagerPrimativesModule.class.php,v 1.1 2004/10/19 22:42:46 adamfranco Exp $
- * @date $Date: 2004/10/19 22:42:46 $
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.2 2004/10/20 19:04:51 adamfranco Exp $
+ * @date $Date: 2004/10/20 19:04:51 $
  * @copyright 2004 Middlebury College
  */
 
@@ -142,17 +142,20 @@ class DataManagerPrimativesModule
 	 * @access public
 	 * @date 10/19/04
 	 */
-	function generateDisplay ( & $record ) {
+	function generateDisplay ( & $drId, & $assetId, & $record ) {
+		ArgumentValidator::validate($drId, new ExtendsValidatorRule("Id"));
+		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("InfoRecord"));
 		
-		// Get all the fields
-		$fieldIterator =& $record->getInfoFields();
-		$fields = array();
-		while($fieldIterator->hasNext()) {
-			$fields[] =& $fieldIterator->next();
+		// Get all the parts
+		$structure =& $record->getInfoStructure();
+		$partIterator =& $structure->getInfoParts();
+		$parts = array();
+		while($partIterator->hasNext()) {
+			$parts[] =& $partIterator->next();
 		}
 		
-		return $this->generateDisplayForFields($record, $fields);
+		return $this->generateDisplayForFields($asset, $record, $parts);
 	}
 
 	/**
@@ -164,21 +167,38 @@ class DataManagerPrimativesModule
 	 * @access public
 	 * @date 10/19/04
 	 */
-	function generateDisplayForFields ( & $record, & $fields ) {
+	function generateDisplayForFields ( &$drId, & $assetId, & $record, & $parts ) {
+		ArgumentValidator::validate($drId, new ExtendsValidatorRule("Id"));
+		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("InfoRecord"));
-		ArgumentValidator::validate($fields, new ArrayValidatorRuleWithRule(new ExtendsValidatorRule("InfoField")));
+		ArgumentValidator::validate($parts, new ArrayValidatorRuleWithRule(new ExtendsValidatorRule("InfoPart")));
+
+		$fieldIterator =& $record->getInfoFields();
+		$fields = array();
+		while($fieldIterator->hasNext()) {
+			$field =& $fieldIterator->next();
+			$part =& $field->getInfoPart();
+			$partId =& $part->getId();
+			if (!is_array($fields[$partId->getIdString()]))
+				$fields[$partId->getIdString()] = array();
+			$fields[$partId->getIdString()][] =& $field;
+		}
 		
 		// print out the fields;
 		ob_start();
 		
-		foreach (array_keys($fields) as $key) {
-			$field =& $fields[$key];
-			$part =& $field->getInfoPart();
-			$value =& $field->getValue();
+		foreach (array_keys($parts) as $key) {
+			$part =& $parts[$key];
+			$partId =& $part->getId();
 			
-			print "\n<strong>".$part->getDisplayName().":</strong> \n";			
-			print $value->toString();
-			print "\n<br />";
+			foreach (array_keys($fields[$partId->getIdString()]) as $key) {
+				$field =& $fields[$partId->getIdString()][$key];
+				$value =& $field->getValue();
+				
+				print "\n<strong>".$part->getDisplayName().":</strong> \n";			
+				print $value->toString();
+				print "\n<br />";
+			}
 		}
 		
 		$html = ob_get_contents();

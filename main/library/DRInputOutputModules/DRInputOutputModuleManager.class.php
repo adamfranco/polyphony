@@ -1,14 +1,15 @@
 <?php
 
 require_once(dirname(__FILE__)."/modules/DataManagerPrimativesModule.class.php");
+require_once(dirname(__FILE__)."/modules/HarmoniFileModule.class.php");
 
 /**
  * The DRInputOutModuleManager is responcible for sending records to the 
  * appropriate DRInputOutputModule based on their Schema Formats.
  * 
  * @package polyphony.drinputoutput
- * @version $Id: DRInputOutputModuleManager.class.php,v 1.1 2004/10/19 22:42:46 adamfranco Exp $
- * @date $Date: 2004/10/19 22:42:46 $
+ * @version $Id: DRInputOutputModuleManager.class.php,v 1.2 2004/10/20 19:03:51 adamfranco Exp $
+ * @date $Date: 2004/10/20 19:03:51 $
  * @copyright 2004 Middlebury College
  */
 
@@ -23,8 +24,8 @@ class DRInputOutputModuleManager {
 	 */
 	function DRInputOutputModuleManager () {
 		$this->_modules = array();
-		$this->_modules["DataManagerPrimatives"] = new DataManagerPrimativesModule;
-// 		$this->_modules['Harmoni File'] = new HarmoniFileModule;
+		$this->_modules["DataManagerPrimatives"] =& new DataManagerPrimativesModule;
+ 		$this->_modules['Harmoni File'] =& new HarmoniFileModule;
 // 		$this->_modules['text/plain'] = new PlainTextModule;
 	}
 	
@@ -107,7 +108,9 @@ class DRInputOutputModuleManager {
 	 * @access public
 	 * @date 10/19/04
 	 */
-	function generateDisplay ( & $record ) {
+	function generateDisplay ( & $drId, & $assetId, & $record ) {
+		ArgumentValidator::validate($drId, new ExtendsValidatorRule("Id"));
+		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("InfoRecord"));
 		
 		$structure =& $record->getInfoStructure();
@@ -116,7 +119,7 @@ class DRInputOutputModuleManager {
 		if (!is_object($this->_modules[$format]))
 			throwError(new Error("Unsupported Format, '$format'", "DRInputOutputModuleManager", true));
 		
-		return $this->_modules[$format]->generateDisplay($record);
+		return $this->_modules[$format]->generateDisplay($drId, $assetId, $record);
 	}
 	
 	/**
@@ -128,9 +131,11 @@ class DRInputOutputModuleManager {
 	 * @access public
 	 * @date 10/19/04
 	 */
-	function generateDisplayForFields ( & $record, & $fields ) {
+	function generateDisplayForFields ( & $drId, & $assetId, & $record, & $parts ) {
+		ArgumentValidator::validate($drId, new ExtendsValidatorRule("Id"));
+		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("InfoRecord"));
-		ArgumentValidator::validate($fields, new ArrayValidatorRuleWithRule(new ExtendsValidatorRule("InfoField")));
+		ArgumentValidator::validate($parts, new ArrayValidatorRuleWithRule(new ExtendsValidatorRule("InfoPart")));
 		
 		$structure =& $record->getInfoStructure();
 		$format = $structure->getFormat();
@@ -138,7 +143,7 @@ class DRInputOutputModuleManager {
 		if (!is_object($this->_modules[$format]))
 			throwError(new Error("Unsupported Format, '$format'", "DRInputOutputModuleManager", true));
 		
-		return $this->_modules[$format]->generateDisplayForFields($record, $fields);
+		return $this->_modules[$format]->generateDisplayForFields($drId, $assetId, $record, $parts);
 	}
 	
 	/**
