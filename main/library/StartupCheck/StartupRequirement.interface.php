@@ -6,7 +6,7 @@
  * or program updates.
  * @package polyphony.startupcheck
  * @copyright 2004
- * @version $Id: StartupRequirement.interface.php,v 1.1 2004/05/31 20:33:34 gabeschine Exp $
+ * @version $Id: StartupRequirement.interface.php,v 1.2 2004/06/01 18:40:39 gabeschine Exp $
  */
 class StartupRequirement {
 
@@ -16,17 +16,6 @@ class StartupRequirement {
 	 * @return integer
 	 */
 	function getStatus()
-	{
-		
-	}
-	
-	/**
-	 * Returns if this requirement class requires end user interaction in order to install/update successfully. If so,
-	 * it will be asked for a {@link WizardStep} object to display to the user for input.
-	 * @access public
-	 * @return boolean
-	 */
-	function requiresUserInput()
 	{
 		
 	}
@@ -42,22 +31,22 @@ class StartupRequirement {
 	}
 	
 	/**
-	 * Returns a {@link WizardStep} object containing fields for user input to complete installation process.
+	 * Returns a {@link Wizard} object containing fields for user input to complete installation process.
 	 * @access public
 	 * @return ref object
 	 */
-	function getWizardStep()
+	function &createWizard()
 	{
 		
 	}
 	
 	/**
 	 * Tells the requirement class to perform its update/install operation. If user input is required, it is passed in the form of a {@link WizardStep} containing field values.
-	 * @param optional object $wizardStep A {@link WizardStep} corresponding to the one recieved from {@link getWizardStep()}.
+	 * @param optional array $properties An array of {@link WizardProperty} objects corresponding to the {@link Wizard} as created by {@link createWizard()}.
 	 * @access public
 	 * @return boolean TRUE if the update succeeds, FALSE otherwise.
 	 */
-	function doUpdate( $wizardStep = null )
+	function doUpdate( $properties = null )
 	{
 		
 	}
