@@ -8,7 +8,7 @@
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: WizardProperty.class.php,v 1.5 2004/07/16 22:14:31 adamfranco Exp $
+ * @version $Id: WizardProperty.class.php,v 1.6 2004/12/01 15:05:35 gabeschine Exp $
  */
  
 class WizardProperty {
@@ -133,7 +133,7 @@ class WizardProperty {
 	 * @return boolean
 	 */
 	function validate () {
-		$value =& $this->getValue();
+		$value = $this->getValue();
 		return $this->_validatorRule->check($value);	
 	}
 }
