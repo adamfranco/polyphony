@@ -4,8 +4,8 @@
  * This class will print an expandible, view of a hierarchy
  * 
  * @package polyphony.hierarchyPrinter
- * @version $Id: HierarchyPrinter.class.php,v 1.1 2004/11/08 23:41:23 adamfranco Exp $
- * @date $Date: 2004/11/08 23:41:23 $
+ * @version $Id: HierarchyPrinter.class.php,v 1.2 2004/11/11 22:27:08 adamfranco Exp $
+ * @date $Date: 2004/11/11 22:27:08 $
  * @copyright 2004 Middlebury College
  */
 
@@ -84,8 +84,6 @@ class HierarchyPrinter {
 		// The node has no children.  Do not show options to expand/collapse.
 		} else 
 			print "\n\t\t<div style='width: 15px;'>&nbsp;</div>";
-		
-		print "";
 		
 		print "\n\t</td><td valign='top'>\n\t\t";
 		$printFunction( $node );
