@@ -21,7 +21,7 @@ $pageRows =& new RowLayout();
 $actionRows =& new RowLayout();
 
 // In order to preserve proper nesting on the HTML output
-$actionRows->setPreSurroundingText("<form name='memberform' id='memberform' method='post' action='".MYURL."/agents/add_to_group/".implode("/", $harmoni->pathInfoParts)."'>");
+$actionRows->setPreSurroundingText("<form id='memberform' method='post' action='".MYURL."/agents/add_to_group/".implode("/", $harmoni->pathInfoParts)."'>");
 $actionRows->setPostSurroundingText("</form>");
 
 $centerPane->addComponent($pageRows, TOP, CENTER);
@@ -294,7 +294,16 @@ print <<<END
 
 	// Validate ancestory and submit to add checked to the group
 	function submitCheckedToGroup ( destGroupId ) {
-		var elements = document.memberform.elements;
+		var f;		
+		for (i = 0; i < document.forms.length; i++) {
+			f = document.forms[i];			
+			if (f.id == 'memberform') {
+				var form = f;
+				break;
+			}
+		}
+		
+		var elements = form.elements;
 		var i;
 		var numToAdd = 0;
 				

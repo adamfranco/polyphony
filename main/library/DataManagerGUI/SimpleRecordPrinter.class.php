@@ -4,7 +4,7 @@
  *
  * @package polyphony.datamanager_gui
  * @copyright 2004
- * @version $Id: SimpleRecordPrinter.class.php,v 1.2 2004/10/26 21:07:25 adamfranco Exp $
+ * @version $Id: SimpleRecordPrinter.class.php,v 1.3 2005/01/03 20:50:07 adamfranco Exp $
  */
 class SimpleRecordPrinter {
 	
@@ -17,7 +17,7 @@ class SimpleRecordPrinter {
 	function printRecord(&$record, $html=true, $return=false)
 	{
 		if ($record->getFetchMode == -1) {
-			print "<b>Record not populated...</b><br>";
+			print "<b>Record not populated...</b><br />";
 			return;
 		}
 		

@@ -4,7 +4,7 @@
  * This is a dummy requirement to test the Wizard functionality.
  * @package polyphony.startupcheck.requirements
  * @copyright 2004
- * @version $Id: DummyWizardRequirement.class.php,v 1.2 2004/07/22 19:36:49 gabeschine Exp $
+ * @version $Id: DummyWizardRequirement.class.php,v 1.3 2005/01/03 20:50:08 adamfranco Exp $
  */
 class DummyWizardRequirement extends StartupRequirement {
 
@@ -68,9 +68,9 @@ Enter your name: <input type=text value="[[name]]" name="name">
 [[color|Error]]
 Pick your favorite color: (not here? tough.)
 <select name="color">
-<option value="blue"[['color' == 'blue'| selected|]]>blue
-<option value="red"[['color' == 'red'| selected|]]>red
-<option value="puse"[['color' == 'puse'| selected|]]>puse
+<option value="blue"[['color' == 'blue'| selected='selected'|]]>blue
+<option value="red"[['color' == 'red'| selected='selected'|]]>red
+<option value="puse"[['color' == 'puse'| selected='selected'|]]>puse
 </select>
 
 END
@@ -78,12 +78,12 @@ END
 		unset($s1,$p1,$p2);
 		
 		$p1 =& $s2->createProperty("age", new IntegerRangeValidatorRule(20,100), true);
-		$p1->setErrorString("<b>You must be between the ages of 20 and 100.</b><br>");
+		$p1->setErrorString("<b>You must be between the ages of 20 and 100.</b><br />");
 		$p1->setDefaultValue(25);
 		
 		$p2 =& $s2->createProperty("continue", new ChoiceValidatorRule("yes","no"), true);
 		$p2->setDefaultValue("no");
-		$p2->setErrorString("<b>You must choose 'yes' to continue</b><br>");
+		$p2->setErrorString("<b>You must choose 'yes' to continue</b><br />");
 		
 		$s2->setText( <<< END
 This is step 2. 
@@ -95,8 +95,8 @@ Enter your age: <input type="text" name="age" value="[[age]]">
 <p>
 
 Do you want to continue?
-<input type="radio" value="yes" name="continue"[['continue' == 'yes'| checked|]]> Yes
-<input type="radio" value="no" name="continue"[['continue' == 'no'| checked|]]> No
+<input type="radio" value="yes" name="continue"[['continue' == 'yes'| checked='checked'|]]> Yes
+<input type="radio" value="no" name="continue"[['continue' == 'no'| checked='checked'|]]> No
 
 <P>
 

@@ -10,8 +10,8 @@ require_once(dirname(__FILE__)."/../DRInputOutputModule.interface.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.dr.inputoutput
- * @version $Id: HarmoniFileModule.class.php,v 1.8 2004/10/29 20:22:30 adamfranco Exp $
- * @date $Date: 2004/10/29 20:22:30 $
+ * @version $Id: HarmoniFileModule.class.php,v 1.9 2005/01/03 20:49:19 adamfranco Exp $
+ * @date $Date: 2005/01/03 20:49:19 $
  * @copyright 2004 Middlebury College
  */
 
@@ -439,7 +439,9 @@ class HarmoniFileModule
 			.$assetId->getIdString()."/"
 			.$recordId->getIdString()."/"
 			.$thumbnailName."'";
-			print " border='0' />";
+			print " style='border: 0px;'";
+			print " alt='Thumbnail image.'";
+			print " />";
 		
 			
 			print "</a> <br />";

@@ -31,8 +31,8 @@ $sharedManager =& Services::getService("Shared");
 $authZManager =& Services::getService("AuthZ");
 
 // Intro message
-$intro =& new Content("&nbsp &nbsp "._("Check or uncheck authorization(s) for the section(s) of your choice.")."<br />
-		&nbsp &nbsp "._("After each check/uncheck, the changes are saved automatically.")."<br /><br />");
+$intro =& new Content("&nbsp; &nbsp; "._("Check or uncheck authorization(s) for the section(s) of your choice.")."<br />
+		&nbsp; &nbsp; "._("After each check/uncheck, the changes are saved automatically.")."<br /><br />");
 
 
 // Get the id of the selected agent using $_REQUEST
@@ -65,7 +65,7 @@ $actionRows->addComponent($intro);
 // Buttons to go back to edit auths for a different user, or to go home
 ob_start();
 print "<table width='100%'><tr><td align='left'>";
-print "<a href='".MYURL."/authorization/choose_agent'><button><-- "._("Choose a different User/Group to edit")."</button></a>";
+print "<a href='".MYURL."/authorization/choose_agent'><button>&lt;-- "._("Choose a different User/Group to edit")."</button></a>";
 print "</td><td align='right'>";
 print "<a href='".MYURL."/admin/main'><button>"._("Return to the Admin Tools")."</button></a>";
 print "</td></tr></table>";
@@ -125,7 +125,7 @@ function printQualifier(& $qualifier) {
 	$title = _("Id: ").$id->getIdString()." ";
 	$title .= _("Type: ").$type->getDomain()."::".$type->getAuthority()."::".$type->getKeyword();
 
-	print "\n<a title='$title'><strong>".$qualifier->getDisplayName()."</strong></a>";
+	print "\n<a title='".htmlentities($title, ENT_QUOTES)."'><strong>".htmlentities($qualifier->getDisplayName(), ENT_QUOTES)."</strong></a>";
 	
 	// Check that the current user is authorized to see the authorizations.
 	$authZ =& Services::getService("AuthZ");
@@ -184,8 +184,8 @@ function printEditOptions(& $qualifier) {
 		
 		print "\n\t<th style='margin-bottom: 3px'>";
 		print "\n\t\t<a";
-		print " title='".$title."'";
-		print " href=\"Javascript:window.alert('".$title."')\"";
+		print " title='".htmlentities($title, ENT_QUOTES)."'";
+		print " href=\"Javascript:window.alert('".htmlentities($title, ENT_QUOTES)."')\"";
 		print ">?</a>";
 		print "\n\t</th>";
 		
@@ -255,18 +255,18 @@ function printEditOptions(& $qualifier) {
 				}
 				
 				// print out a checkbox for the implicit AZ
-				print "\n\t\t\t\t\t<td><nobr>";
+				print "\n\t\t\t\t\t<td><span style='white-space: nowrap'>";
 				print "\n\t\t\t\t\t\t<input type='checkbox' name='blah' value='blah'";
-				print " title='".$title."'";
+				print " title='".htmlentities($title, ENT_QUOTES)."'";
 				print " checked='checked' disabled='disabled' />";
 				print "\n\t\t\t\t\t\t<a";
 // 				print " id='".$explicitAgentId->getIdString()
 // 						."-".$functionId->getIdString()
 // 						."-".$explicitQualifierId->getIdString()."'";
-				print " title='".$title."'";
- 				print " href=\"Javascript:window.alert('".$title."')\"";
+				print " title='".htmlentities($title, ENT_QUOTES)."'";
+ 				print " href=\"Javascript:window.alert('".htmlentities($title, ENT_QUOTES)."')\"";
 				print ">?</a>";
-				print "\n\t\t\t\t\t</nobr></td>";
+				print "\n\t\t\t\t\t</span></td>";
 			}
 			
 			print "\n\t\t\t\t\t<td>";
@@ -292,15 +292,15 @@ function printEditOptions(& $qualifier) {
 					."/".implode("/", $harmoni->pathInfoParts)
 					."?agent=".$_GET['agent'];
 	
-				print " onclick=\"Javascript:window.location='".$toggleURL."'\"";
+				print " onclick=\"Javascript:window.location='".htmlentities($toggleURL, ENT_QUOTES)."'\"";
 			}
 			// If they are not authorized to view the AZs, disable the checkbox
 			else {
 				print " disabled='disabled'";
 			}
-			print "></td>";
+			print " /></td>";
 
-			print "\n\t\t\t\t\t<td><nobr>".$function->getReferenceName()."</nobr></td>";
+			print "\n\t\t\t\t\t<td><span style='white-space: nowrap'>".htmlentities($function->getReferenceName())."</span></td>";
 			print "\n\t\t\t\t</tr>";
 			print "\n\t\t\t\t</table>";
 			print "\n\t</td>";

@@ -172,7 +172,7 @@ function printEditOptions(& $qualifier) {
 			$functionId =& $function->getId();
 			
 			print "\n\t<td style='border: 1px solid #000; border-right: 0px solid #000; font-weight: bold' align='right' valign='top'>";
-			print "\n\t<nobr>".$function->getReferenceName().":</nobr>";
+			print "\n\t<span style='white-space: nowrap'>".$function->getReferenceName().":</span>";
 			print "\n\t</td>";
 			
 			print "\n\t<td style='border: 1px solid #000; border-left: 0px solid #000;' valign='top'>";
@@ -181,7 +181,7 @@ function printEditOptions(& $qualifier) {
 			while ($agentsThatCanDo->hasNext()) {
 				$agentId =& $agentsThatCanDo->next();
 								
-				print "<nobr>";
+				print "<span style='white-space: nowrap'>";
 				
 				print "<a href='".MYURL."/authorization/edit_authorizations/";
 				print $additionalPathInfo;
@@ -201,7 +201,7 @@ function printEditOptions(& $qualifier) {
 				
 				if ($agentsThatCanDo->hasNext())
 					print ", ";
-				print "</nobr>";
+				print "</span>";
 			}
 
 			print "\n\t</td>";

@@ -4,8 +4,8 @@
  * This class will print an expandible, view of a hierarchy
  * 
  * @package polyphony.hierarchyPrinter
- * @version $Id: HierarchyPrinter.class.php,v 1.5 2004/12/06 23:48:00 adamfranco Exp $
- * @date $Date: 2004/12/06 23:48:00 $
+ * @version $Id: HierarchyPrinter.class.php,v 1.6 2005/01/03 20:50:08 adamfranco Exp $
+ * @date $Date: 2005/01/03 20:50:08 $
  * @copyright 2004 Middlebury College
  */
 
@@ -86,7 +86,7 @@ class HierarchyPrinter {
 				$newPathInfo = array_merge($environmentInfo, array_diff($expandedNodes,
 																		$nodesToRemove)); 
 				print "<a style='text-decoration: none;' href='";
-				print MYURL."/".implode("/", $newPathInfo)."/".$get;
+				print htmlentities(MYURL."/".implode("/", $newPathInfo)."/".$get);
 				print "'>-</a>";
 				
 				$expanded = TRUE;
@@ -95,7 +95,7 @@ class HierarchyPrinter {
 			} else { 
 				$newPathInfo = array_merge($environmentInfo, $expandedNodes); 
 				print "<a style='text-decoration: none;' href='";
-				print MYURL."/".implode("/", $newPathInfo)."/".$nodeId->getIdString()."/".$get;
+				print htmlentities(MYURL."/".implode("/", $newPathInfo)."/".$nodeId->getIdString()."/".$get);
 				print "'>+</a>";
 				
 				$expanded = FALSE;

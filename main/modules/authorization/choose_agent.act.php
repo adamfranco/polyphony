@@ -34,7 +34,16 @@ print<<<END
 
 	// Make sure a selection has been made and submit if it has.
 	function submitAgentChoice() {
-		var radioArray = document.chooseform.agent;
+		var f;		
+		for (i = 0; i < document.forms.length; i++) {
+			f = document.forms[i];			
+			if (f.id == 'chooseform') {
+				var form = f;
+				break;
+			}
+		}
+		
+		var radioArray = form.agent;
 		var isChecked = false;
 		
 		for (i=0; i<radioArray.length; i++) {
@@ -44,7 +53,7 @@ print<<<END
 		}
 		
 		if (isChecked) {
-			document.chooseform.submit();
+			form.submit();
 		} else {
 			alert("$errorString");
 		}
@@ -54,7 +63,7 @@ print<<<END
 </script>
 
 END;
-print "<form name='chooseform' id='chooseform' method='get' action='".MYURL."/authorization/edit_authorizations/'>";
+print "<form id='chooseform' method='get' action='".MYURL."/authorization/edit_authorizations/'>";
 
 $actionRows->setPreSurroundingText(ob_get_contents());
 ob_end_clean();
@@ -73,7 +82,7 @@ print "<a href='".MYURL."/admin/main'><button>"._("Return to the Admin Tools")."
 print "</td><td align='right'>";
 print "<input type='button'";
 print " onclick='Javascript:submitAgentChoice()'";
-print " value='"._("Edit Authorizations for the selected User/Group")." -->'>";
+print " value='"._("Edit Authorizations for the selected User/Group")." --&gt;' />";
 print "</td></tr></table>";
 
 $submit = new Content(ob_get_contents());
@@ -110,10 +119,10 @@ while ($searchTypes->hasNext()) {
 	$typeString = $type->getDomain()
 						."::".$type->getAuthority()
 						."::".$type->getKeyword();
-	print "\n\t\t<option value='$typeString'";
+	print "\n\t\t<option value='".htmlentities($typeString, ENT_QUOTES)."'";
 	if ($_REQUEST['search_type'] == $typeString)
 		print " selected='selected'";
-	print ">$typeString</option>";
+	print ">".htmlentities($typeString)."</option>";
 }
 
 	print "\n\t</select>";

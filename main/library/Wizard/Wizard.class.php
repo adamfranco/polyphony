@@ -14,7 +14,7 @@ require_once(dirname(__FILE__)."/MultiValuedWizardStep.class.php");
  * @author Adam Franco
  * @copyright 2004 Middlebury College
  * @access public
- * @version $Id: Wizard.class.php,v 1.16 2004/12/22 17:04:05 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.17 2005/01/03 20:50:08 adamfranco Exp $
  */
 
 class Wizard {
@@ -287,12 +287,14 @@ class Wizard {
 		$wizardLayout =& new RowLayout;
 		
 		// :: Form tags for around the layout :: 
-		$wizardLayout->setPreSurroundingText("<form action='".MYURL."/".implode("/", $harmoni->pathInfoParts)."' method='post' id='wizardform' name='wizardform'  enctype='multipart/form-data'>");
+		$wizardLayout->setPreSurroundingText("<form action='".MYURL."/".implode("/", $harmoni->pathInfoParts)."' method='post' id='wizardform' enctype='multipart/form-data'>");
 		
 		ob_start();
-		print "\n<input type='hidden' name='__go_to_step' value=''>";
-		print "\n<input type='hidden' name='__save_link' value=''>";
-		print "\n<input type='hidden' name='__cancel_link' value=''>";
+		print "\n<div style='visibility: none'>";
+		print "\n\t<input type='hidden' name='__go_to_step' value='' />";
+		print "\n\t<input type='hidden' name='__save_link' value='' />";
+		print "\n\t<input type='hidden' name='__cancel_link' value='' />";
+		print "\n</div>";
 		print "\n</form>";
 		$wizardLayout->setPostSurroundingText(ob_get_contents());
 		ob_end_clean();
@@ -300,23 +302,41 @@ class Wizard {
 		// Add to the page's javascript so we can skip to next pages by
 		// adding values to the hiddenFields above.
 		$javaScript = "
+		
+			// get the form
+			function getForm() {
+				var f;
+				var form;	
+				for (i = 0; i < document.forms.length; i++) {
+					f = document.forms[i];			
+					if (f.id == 'wizardform') {
+						form = f;
+						break;
+					}
+				}
+				
+				return form;
+			}
 			
 			// Set a flag to save the form after it is submited
 			function save() {
-				document.wizardform.__save_link.value = 'save';
-				document.wizardform.submit();
+				var form = getForm();
+				form.__save_link.value = 'save';
+				form.submit();
 			}
 			
 			// Set a flag to cancel this wizard
 			function cancel() {
-				document.wizardform.__cancel_link.value = 'cancel';
-				document.wizardform.submit();
+				var form = getForm();
+				form.__cancel_link.value = 'cancel';
+				form.submit();
 			}
 			
 			// Specify which step to go to on submit.
 			function goToStep(step) {
-				document.wizardform.__go_to_step.value = step;
-				document.wizardform.submit();
+				var form = getForm();
+				form.__go_to_step.value = step;
+				form.submit();
 			}
 		
 		";
@@ -363,7 +383,7 @@ class Wizard {
 		// Save button
 		if (($this->_allowStepLinks || !$this->hasNext()) && $this->arePropertiesValid()) {
 			$menu->addComponent(
-				new LinkMenuItem("<div style='width: 100px'>"._("Save")."</div>",
+				new LinkMenuItem("<span style='width: 100px'>"._("Save")."</span>",
 					"Javascript:save()",
 					FALSE)
 			);
