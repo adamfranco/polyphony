@@ -8,6 +8,11 @@
 * copyright 2004 Middlebury College
 */
 
+// Check for our authorization function definitions
+if (!defined("AZ_VIEW_AZS"))
+	throwError(new Error("You must define an id for AZ_VIEW_AZS", "polyphony.authorizations", true));
+if (!defined("AZ_MODIFY_AZS"))
+	throwError(new Error("You must define an id for AZ_MODIFY_AZS", "polyphony.authorizations", true));
 
 // Get the Layout components. See core/modules/moduleStructure.txt
 // for more info. 
