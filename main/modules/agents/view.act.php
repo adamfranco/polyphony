@@ -22,51 +22,23 @@ $centerPane =& $harmoni->getAttachedData('centerPane');
 $actionRows =& new RowLayout();
 
 // In order to preserve proper nesting on the HTML output
-$actionRows->setPreSurroundingText("<form method='post' action='http://devo/rrichards/concerto/index.php/authorization/edit_authorizations.act.php'>");
+$actionRows->setPreSurroundingText("<form method='post' action='".MYURL."/authorization/edit_authorizations/'>");
 $actionRows->setPostSurroundingText("</form>");
 
 $centerPane->addComponent($actionRows, TOP, CENTER);
 
 // Intro
 $introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
-$introHeader->addComponent(new Content(_("Edit Authorizations for which Group/User?")));
+$introHeader->addComponent(new Content(_("Users and Groups")));
 $actionRows->addComponent($introHeader);
-//
+
 $sharedManager =& Services::getService("Shared");
-//
-//$id =& $sharedManager->getId("181");
-//$agent =& $sharedManager->getAgent($id);
-//$id =& $sharedManager->getId("190");
-//$group =& $sharedManager->getGroup($id);
-//
-//$group->add($agent);
-//exit;
-////
-//$id =& $sharedManager->getId("182");
-//$agent =& $sharedManager->getAgent($id);
-//$id =& $sharedManager->getId("190");
-//$group =& $sharedManager->getGroup($id);
-//
-//$group->add($agent);
-
-
- //$testType1 =& new HarmoniType("Groups", "Middlebury College", "User Status", "Status of the user at Middlebury College");
-// $testType2 =& new HarmoniType("Groups", "Middlebury College", "Department", "What department the user belongs to at Middlebury College");
-// $sharedManager->createGroup("Student", $testType1, "Middlebury College Student");
-// $sharedManager->createGroup("English", $testType2, "Middlebury College English Department");
-
-
-
-// $sharedManager =& Services::getService("Shared");
-// 
-// $qualifierHierarchyId =& $sharedManager->getId("673");
-// $functionId =& $sharedManager->createId();
-// $functionType =& new HarmoniType("Concerto", "Midd", "Use", "Functions for viewing and using shiznat.");
-// $authZManager->createFunction($functionId, "Comment", "Add comments to this thing.", $functionType, $qualifierHierarchyId);
-// exit;
-
 
 // Get all the groups first.
+$groupHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
+$groupHeader->addComponent(new Content(_("Groups")));
+$actionRows->addComponent($groupHeader);
+
 $groups =& $sharedManager->getGroups();  // Groups ARE agents
 while ($groups->hasNext()) {
 	$group =& $groups->next();
@@ -83,6 +55,12 @@ while ($groups->hasNext()) {
 	$actionRows->addComponent($groupLayout);	
 	
 }
+
+
+// Agents
+$agentHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
+$agentHeader->addComponent(new Content(_("Users")));
+$actionRows->addComponent($agentHeader);
 
 
 // Return the main layout.

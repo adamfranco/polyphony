@@ -22,7 +22,7 @@ $centerPane =& $harmoni->getAttachedData('centerPane');
 $actionRows =& new RowLayout();
 
 // In order to preserve proper nesting on the HTML output
-$actionRows->setPreSurroundingText("<form method='post' action='http://devo/rrichards/concerto/index.php/authorization/edit_authorizations.act.php'>");
+$actionRows->setPreSurroundingText("<form method='post' action='".MYURL."/authorization/edit_authorizations/'>");
 $actionRows->setPostSurroundingText("</form>");
 
 $centerPane->addComponent($actionRows, TOP, CENTER);
