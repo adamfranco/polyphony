@@ -20,10 +20,7 @@ while ($authTypes->hasNext()) {
 
 if ($isAuthenticated) {
 	// Send us back to where we were
-	$currentPathInfo = array();
-	for ($i = 2; $i < count($harmoni->pathInfoParts); $i++) {
-		$currentPathInfo[] = $harmoni->pathInfoParts[$i];
-	}
+	$currentPathInfo = array_slice($harmoni->pathInfoParts, 2);
 	
 	header("Location: ".MYURL."/".implode("/",$currentPathInfo));
 }
