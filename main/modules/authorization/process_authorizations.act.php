@@ -12,6 +12,7 @@
 $shared =& Services::getService("Shared");
 
 printpre($_REQUEST);
+printpre($harmoni->pathInfoparts);
 
 // Process authorizations
 
@@ -23,6 +24,6 @@ printpre($_REQUEST);
 
 
 // Send us back to where we were (edit_authorizations.act.php)
-$currentPathInfo = array_slice($harmoni->pathInfoParts, 2);
+$currentPathInfo = array_slice($harmoni->pathInfoParts, 6);
 
-header("Location: ".MYURL."/".implode("/",$currentPathInfo));
+header("Location: ".MYURL."/".implode("/",$currentPathInfo)."?selection=".$_GET['selection']);

@@ -24,10 +24,6 @@ $centerPane->addComponent($actionRows, TOP, CENTER);
 $sharedManager =& Services::getService("Shared");
 $authZManager =& Services::getService("AuthZ");
 
-// In order to preserve proper nesting on the HTML output
-$actionRows->setPreSurroundingText("<form method='post' action='".MYURL."/".implode("/", $harmoni->pathInfoParts)."?selection=".urlencode($_REQUEST["selection"])."'>");
-$actionRows->setPostSurroundingText("</form>");
-
 // Intro message
 $intro =new Content("&nbsp &nbsp Check or uncheck authorization(s) for the section(s) of your choice.<br />
 			&nbsp &nbsp After each check/uncheck, the changes are saved automatically.<br /><br />");
@@ -40,6 +36,7 @@ $intro =new Content("&nbsp &nbsp Check or uncheck authorization(s) for the secti
  $id = $pieces[1];
  $idObject =& $sharedManager->getId($id);
  $GLOBALS["agentId"] =& $idObject;
+ $GLOBALS["harmoni"] =& $harmoni;
 
 
  if ($groupOrMember == "group") {
@@ -137,34 +134,50 @@ function getChildQualifiers(& $qualifier) {
 function printEditOptions(& $qualifier) {
 	$qualifierId =& $qualifier->getId();
 	$agentId =& $GLOBALS["agentId"];
+	$harmoni =& $GLOBALS["harmoni"];
 	$authZManager =& Services::getService("AuthZ");
+	
 	$functionTypes =& $authZManager->getFunctionTypes();
-	print "<table><tr>";
+	print "\n<table><tr>";
 	while ($functionTypes->hasNext()) {
-	  print "<td><table>";
-	  $functionType =& $functionTypes->next();
-	  $functions =& $authZManager->getFunctions($functionType);
-	  while ($functions->hasNext()) {
-	  	$function =& $functions->next();
-	  	$functionId =& $function->getId();
-
-		// IF an authorization exists for the user on this qualifier, make checkbox already checked
-		//  Remember to actually create or remove authorization triplets!!!
-	    print "<tr><td>";
-	    if ($authZManager->isAuthorized($agentId, $functionId, $qualifierId)) {
-	    	print "<input type='checkbox' checked name='authOption' value='".$functionId."'";
-	} else {
-		print "<input type='checkbox' name='authOption' value='".$functionId."'";
+		print "\n\t<td><table>";
+		$functionType =& $functionTypes->next();
+		$functions =& $authZManager->getFunctions($functionType);
+		while ($functions->hasNext()) {
+			$function =& $functions->next();
+			$functionId =& $function->getId();
+			
+			print "\n\t\t<tr><td>";
+			print "\n\t\t\t<input type='checkbox' name='blah' value='blah'";
+			
+			// IF an authorization exists for the user on this qualifier, 
+			// make checkbox already checked
+			if ($authZManager->isAuthorized($agentId, $functionId, $qualifierId)) {
+				print " checked='checked'";
+				$toggleOperation = "delete";
+			} else {
+				$toggleOperation = "create";
+			}
+			
+			
+			// The checkbox is really just for show, the link is where we send
+			// to our processing to toggle the state of the authorization.
+			$toggleURL = MYURL."/authorization/process_authorizations/"
+				.$toggleOperation."/".$agentId->getIdString()."/"
+				.$functionId->getIdString()."/".$qualifierId->getIdString()
+				."/".implode("/", $harmoni->pathInfoParts)
+				."?selection=".$_GET['selection'];
+			
+			print "onClick=\"Javascript:window.location='".$toggleURL."'\">";
+			
+			
+			print $function->getReferenceName()."\n\t\t</td></tr>";
+		}
+		print "\n\t</table></td>";
+		
 	}
-	    print "onClick='Javascript:submit()'>";
-
-	    print $function->getReferenceName()."</td></tr>";
-	  }
-	  print "</table></td>";
-
-	}
- 	print" </tr></table>";
-
+	print"\n\t</tr></table>";
+	
 
 }
 
