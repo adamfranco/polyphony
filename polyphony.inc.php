@@ -3,7 +3,7 @@
 /**
  * This file includes all necessary Polyphony classes
  *
- * @version $Id: polyphony.inc.php,v 1.7 2004/10/29 20:22:29 adamfranco Exp $
+ * @version $Id: polyphony.inc.php,v 1.8 2004/11/08 23:41:22 adamfranco Exp $
  * @copyright 2004 Middlebury College
  * @package polyphony
  * @access public
@@ -23,4 +23,5 @@ require_once(dirname(__FILE__)."/main/library/DRSearchModules/DRSearchModuleMana
 Services::registerService("DRSearchModules", "DRSearchModuleManager");
 Services::startService("DRSearchModules");
 
+require_once(dirname(__FILE__)."/main/library/HierarchyPrinter/HierarchyPrinter.class.php");
 ?>
