@@ -89,7 +89,7 @@ $submit = new Content(ob_get_contents());
 ob_end_clean();
 $pageRows->addComponent($submit, MIDDLE);
 
-$sharedManager =& Services::getService("Shared");
+$agentManager =& Services::getService("Agent");
 
 
 
@@ -113,7 +113,7 @@ print <<<END
 	<br /><select name='search_type'>
 END;
 
-$searchTypes =& $sharedManager->getAgentSearchTypes();
+$searchTypes =& $agentManager->getAgentSearchTypes();
 while ($searchTypes->hasNext()) {
 	$type =& $searchTypes->next();
 	$typeString = $type->getDomain()
@@ -144,7 +144,7 @@ $pageRows->addComponent($actionRows, BOTTOM, CENTER);
 if ($_REQUEST['search_criteria'] && $_REQUEST['search_type']) {
 	$typeParts = explode("::", $_REQUEST['search_type']);
 	$searchType =& new HarmoniType($typeParts[0], $typeParts[1], $typeParts[2]);
-	$agents =& $sharedManager->getAgentsBySearch($_REQUEST['search_criteria'], $searchType);
+	$agents =& $agentManager->getAgentsBySearch($_REQUEST['search_criteria'], $searchType);
 	
 	print <<<END
 
@@ -204,7 +204,7 @@ $actionRows->addComponent($agentHeader);
 // Loop through all of the Groups and figure out which ones are childen of
 // other groups, so that we can just display the root-groups
 $childGroupIds = array();
-$groups =& $sharedManager->getGroups();
+$groups =& $agentManager->getGroups();
 while ($groups->hasNext()) {
 	$group =& $groups->next();
 	$childGroups =& $group->getGroups(FALSE);
@@ -216,7 +216,7 @@ while ($groups->hasNext()) {
 }
 
 // Get all the groups first.
-$groups =& $sharedManager->getGroups();  // Groups ARE agents
+$groups =& $agentManager->getGroups();  // Groups ARE agents
 while ($groups->hasNext()) {
 	$group =& $groups->next();
 	$groupId =& $group->getId();

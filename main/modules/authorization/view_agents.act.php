@@ -17,7 +17,7 @@ $introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
 $introHeader->addComponent(new Content(_("View Agents")));
 $actionRows->addComponent($introHeader);
 
-$sharedManager =& Services::getService("Shared");
+$agentManager =& Services::getService("Agent");
 
 // $testType =& new HarmoniType("AuthorityX", "domainX", "KeywordX", "This is a really great description");
 // $sharedManager->createAgent("That guy in camo", $testType);
@@ -34,7 +34,7 @@ $sharedManager =& Services::getService("Shared");
 
 
 // Get all the agents.
-$agents =& $sharedManager->getAgents();
+$agents =& $agentManager->getAgents();
 while ($agents->hasNext()) {
 	$agent =& $agents->next();
 	ob_start();

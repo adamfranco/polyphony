@@ -8,7 +8,7 @@
 */
 
 // Get services
-$shared =& Services::getService("Shared");
+$idManager =& Services::getService("Id");
 $authZ =& Services::getService("AuthZ");
 
 // Get info passed to this action via the URL
@@ -18,9 +18,9 @@ $functionIdString = $harmoni->pathInfoParts['4'];
 $qualifierIdString = $harmoni->pathInfoParts['5'];
 
 // Get Ids from these strings
-$agentId =& $shared->getId($agentIdString);
-$functionId =& $shared->getId($functionIdString);
-$qualifierId =& $shared->getId($qualifierIdString);
+$agentId =& $idManager->getId($agentIdString);
+$functionId =& $idManager->getId($functionIdString);
+$qualifierId =& $idManager->getId($qualifierIdString);
 
 
 // Process authorizations

@@ -140,7 +140,7 @@ function printEditOptions(& $qualifier) {
 	$qualifierId =& $qualifier->getId();
 	$harmoni =& $GLOBALS["harmoni"];
 	$authZManager =& Services::getService("AuthZ");
-	$idService =& Services::getService("Id");
+	$agentManager =& Services::getService("Agent");
 	
 	$expandedNodes = array_slice($harmoni->pathInfoParts, 2);
 	if (count ($expandedNodes)) 
@@ -188,11 +188,11 @@ function printEditOptions(& $qualifier) {
 				print "?agent=".$agentId->getIdString();
 				print "' title='Edit Authorizations for this User/Group'>";
 				
-				if ($idService->isAgent($agentId)) {
-					$agent =& $idService->getAgent($agentId);
+				if ($agentManager->isAgent($agentId)) {
+					$agent =& $agentManager->getAgent($agentId);
 					print $agent->getDisplayName();
-				} else if ($idService->isGroup($agentId)) {
-					$group =& $idService->getGroup($agentId);
+				} else if ($agentManager->isGroup($agentId)) {
+					$group =& $agentManager->getGroup($agentId);
 					print $group->getDisplayName();
 				} else {
 					print "Agent/Group Id ".$agentId->getIdString()."";
