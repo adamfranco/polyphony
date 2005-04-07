@@ -3,7 +3,7 @@
 Name: Polyphony ChangeLog
 
 
-v. 0.2.0 (The Nebulous Future)
+v. 0.2.0 (2005-04-07)
 ----------------------------------------------------
 		
 	* Change: Reconfigured modules to work with version 2 of the OSIDs. (Adam Franco)

@@ -5,13 +5,13 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.5 2005/04/07 19:55:06 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.6 2005/04/07 20:12:48 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
-	<version number="0.2.0" date="The Nebulous Future">
+	<version number="0.2.0" date="2005-04-07">
 		<change author="adam">
 			Reconfigured modules to work with version 2 of the OSIDs.
 		</change>
