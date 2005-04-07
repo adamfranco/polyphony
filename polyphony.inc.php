@@ -3,10 +3,13 @@
 /**
  * This file includes all necessary Polyphony classes
  *
- * @version $Id: polyphony.inc.php,v 1.13 2005/04/04 19:55:47 adamfranco Exp $
- * @copyright 2004 Middlebury College
+ *
  * @package polyphony
- * @access public
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: polyphony.inc.php,v 1.14 2005/04/07 17:05:26 adamfranco Exp $
  */
 
 /**

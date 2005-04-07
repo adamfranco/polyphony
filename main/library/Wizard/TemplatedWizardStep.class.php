@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TemplatedWizardStep.class.php,v 1.4 2005/03/31 20:52:42 adamfranco Exp $
+ * @version $Id: TemplatedWizardStep.class.php,v 1.5 2005/04/07 17:07:50 adamfranco Exp $
  */
 
 /**
@@ -17,9 +17,13 @@ require_once(POLYPHONY."/main/library/Wizard/WizardStep.abstract.php");
 
 /**
  * This is a {@link WizardStep} that gets its output text from a {@link Template}.
+ *
  * @package polyphony.library.wizard
- * @copyright 2004
- * @version $Id: TemplatedWizardStep.class.php,v 1.4 2005/03/31 20:52:42 adamfranco Exp $
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: TemplatedWizardStep.class.php,v 1.5 2005/04/07 17:07:50 adamfranco Exp $
  */
 class TemplatedWizardStep extends WizardStepAbstract {
 	

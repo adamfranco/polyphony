@@ -1,11 +1,22 @@
 <?php
 /**
  * @package polyphony.library.datamanager_gui
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: PrimitiveIO_blob.class.php,v 1.3 2005/04/07 17:07:42 adamfranco Exp $
  */
 
 /**
  * 
+ *
  * @package polyphony.library.datamanager_gui
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: PrimitiveIO_blob.class.php,v 1.3 2005/04/07 17:07:42 adamfranco Exp $
  */
 class PrimitiveIO_blob extends PrimitiveIO {
 	function mkFormHTML(&$primitive, $label, $index) {

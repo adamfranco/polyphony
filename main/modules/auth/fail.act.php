@@ -1,7 +1,13 @@
 <?
 /**
  * @package polyphony.modules.authentication
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: fail.act.php,v 1.5 2005/04/07 17:07:52 adamfranco Exp $
  */
+ 
 // Get the Layout compontents. See core/modules/moduleStructure.txt
 // for more info. 
 $harmoni->ActionHandler->execute("window", "screen");

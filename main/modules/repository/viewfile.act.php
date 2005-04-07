@@ -2,11 +2,13 @@
 
 /**
  * Display the file in the specified record.
- * 
+ *
  * @package polyphony.modules.repository
- * @version $Id: viewfile.act.php,v 1.2 2005/02/04 23:06:17 adamfranco Exp $
- * @since $Date: 2005/02/04 23:06:17 $
- * @copyright 2004 Middlebury College
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: viewfile.act.php,v 1.3 2005/04/07 17:08:07 adamfranco Exp $
  */
 $idManager =& Services::getService("Id");
 $repositoryManager =& Services::getService("Repository");

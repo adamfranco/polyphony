@@ -1,6 +1,11 @@
 <?
 /**
  * @package polyphony.modules.authentication
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: login.act.php,v 1.7 2005/04/07 17:07:53 adamfranco Exp $
  */
 $isAuthenticated = FALSE;
 $authN =& Services::getService("AuthN");

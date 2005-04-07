@@ -4,8 +4,13 @@
  * delete_group.act.php
  * This action will delete the group as specified by add_delete_group.act.php
  * 11/29/04 Ryan Richards
- * copyright 2004 MIddlebury College
+ *
  * @package polyphony.modules.agents
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: delete_group.act.php,v 1.5 2005/04/07 17:07:51 adamfranco Exp $
  */
 
 // Get services

@@ -1,6 +1,11 @@
 <?php
 /**
  * @package polyphony.modules.language
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: change.act.php,v 1.3 2005/04/07 17:07:55 adamfranco Exp $
  */
 
 // Set the new language

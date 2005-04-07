@@ -5,9 +5,15 @@
  * This file will allow the user to choose an agent for which to edit authorizations.
  * The agents will be listed both by group and by agent.
  * The chosen agent information will be submitted to edit_authorizations.act.php via form action.
- * 11/10/04 Ryan Richards
- * @copyright 2004 MIddlebury College
+ * @since 11/10/04 
+ * @author Ryan Richards
+ *
  * @package polyphony.modules.agents
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: view.act.php,v 1.20 2005/04/07 17:07:51 adamfranco Exp $
  */
 
 

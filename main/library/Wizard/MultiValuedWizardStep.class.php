@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MultiValuedWizardStep.class.php,v 1.10 2005/03/31 20:52:42 adamfranco Exp $
+ * @version $Id: MultiValuedWizardStep.class.php,v 1.11 2005/04/07 17:07:50 adamfranco Exp $
  */
 
 /**
@@ -21,10 +21,12 @@ require_once(dirname(__FILE__)."/WizardStep.interface.php");
  * associating those properties with the appropriate form elements.
  *
  * @package polyphony.library.wizard
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: MultiValuedWizardStep.class.php,v 1.11 2005/04/07 17:07:50 adamfranco Exp $
  * @author Adam Franco
- * @copyright 2004 Middlebury College
- * @access public
- * @version $Id: MultiValuedWizardStep.class.php,v 1.10 2005/03/31 20:52:42 adamfranco Exp $
  */
 
 class MultiValuedWizardStep 

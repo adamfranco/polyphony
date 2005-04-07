@@ -1,13 +1,22 @@
 <?php
 /**
- * @package polyphony.library.startupcheck.requirements
+ * @package polyphony.library.startupcheck
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: ExtensionRequirement.class.php,v 1.4 2005/04/07 17:07:49 adamfranco Exp $
  */
 
 /**
  * This {@link StartupRequirement} checks to make sure PHP has a given extension loaded (or can load it).
- * @package polyphony.library.startupcheck.requirements
- * @copyright 2004
- * @version $Id: ExtensionRequirement.class.php,v 1.3 2005/02/04 23:06:14 adamfranco Exp $
+ *
+ * @package polyphony.library.startupcheck
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: ExtensionRequirement.class.php,v 1.4 2005/04/07 17:07:49 adamfranco Exp $
  */
 class ExtensionRequirement extends StartupRequirement {
 

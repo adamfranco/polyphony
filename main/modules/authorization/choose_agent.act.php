@@ -6,8 +6,13 @@
  * The agents will be listed both by group and by agent.
  * The chosen agent information will be submitted to edit_authorizations.act.php via form action.
  * 11/10/04 Ryan Richards
- * @copyright 2004 MIddlebury College
+ *
  * @package polyphony.modules.authorization
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: choose_agent.act.php,v 1.20 2005/04/07 17:07:53 adamfranco Exp $
  */
 
 

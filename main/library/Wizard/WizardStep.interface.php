@@ -1,6 +1,11 @@
 <?php
 /**
  * @package polyphony.library.wizard
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: WizardStep.interface.php,v 1.5 2005/04/07 17:07:50 adamfranco Exp $
  */
 
 /**
@@ -8,10 +13,12 @@
  * associating those properties with the appropriate form elements.
  *
  * @package polyphony.library.wizard
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: WizardStep.interface.php,v 1.5 2005/04/07 17:07:50 adamfranco Exp $
  * @author Adam Franco
- * @copyright 2004 Middlebury College
- * @access public
- * @version $Id: WizardStep.interface.php,v 1.4 2005/02/04 23:06:15 adamfranco Exp $
  */
 class WizardStepInterface {
 	

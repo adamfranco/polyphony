@@ -1,14 +1,18 @@
 <?
 
 /**
-* edit_authorizations.act.php
-* This file will allow the user to edit authorizations for a given user.
-* The chosen user information will have been passed from choose_agents.act.php via FORM action.
-* 11/11/04 Ryan Richards
-* copyright 2004 Middlebury College
-* @copyright 2004 Middlebury College
-* @package polyphony.modules.authorization
-*/
+ * edit_authorizations.act.php
+ * This file will allow the user to edit authorizations for a given user.
+ * The chosen user information will have been passed from choose_agents.act.php via FORM action.
+ * 11/11/04 Ryan Richards
+ *
+ * @package polyphony.modules.authorization
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: edit_authorizations.act.php,v 1.27 2005/04/07 17:07:53 adamfranco Exp $
+ */
 
 // Check for our authorization function definitions
 if (!defined("AZ_VIEW_AZS"))

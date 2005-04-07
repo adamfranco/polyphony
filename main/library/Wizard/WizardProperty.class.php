@@ -6,12 +6,14 @@
 /**
  * This is an abstract class that provides much of the functionality of the 
  * various WizardProperties. 
- * 
+ *
  * @package polyphony.library.wizard
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: WizardProperty.class.php,v 1.8 2005/04/07 17:07:50 adamfranco Exp $
  * @author Adam Franco
- * @copyright 2004 Middlebury College
- * @access public
- * @version $Id: WizardProperty.class.php,v 1.7 2005/02/04 23:06:15 adamfranco Exp $
  */
  
 class WizardProperty {

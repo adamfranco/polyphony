@@ -1,13 +1,17 @@
 <?
 
 /**
-* process_authorizations.act.php
-* This action will create or delete authorizations as specified by edit_authorizations.act.php
-* 11/18/04 Ryan Richards
-* copyright 2004 MIddlebury College
-* @copyright 2004 Middlebury College
-* @package polyphony.modules.authorization
-*/
+ * process_authorizations.act.php
+ * This action will create or delete authorizations as specified by edit_authorizations.act.php
+ * 11/18/04 Ryan Richards
+ *
+ * @package polyphony.modules.authorization
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: process_authorizations.act.php,v 1.8 2005/04/07 17:07:54 adamfranco Exp $
+ */
 
 // Get services
 $shared =& Services::getService("Shared");

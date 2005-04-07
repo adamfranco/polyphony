@@ -4,8 +4,13 @@
  * group_membership.act.php
  * This action will allow for the creation/deletion of groups
  * 11/29/04 Ryan Richards, some code from Adam Franco
- * @copyright 2004 MIddlebury College
+ *
  * @package polyphony.modules.agents
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: add_delete_group.act.php,v 1.9 2005/04/07 17:07:50 adamfranco Exp $
  */
 
 

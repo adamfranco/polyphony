@@ -1,13 +1,22 @@
 <?php
 /**
  * @package polyphony.library.datamanager_gui
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: SimpleRecordPrinter.class.php,v 1.5 2005/04/07 17:07:40 adamfranco Exp $
  */
 
 /**
  *
+ *
  * @package polyphony.library.datamanager_gui
- * @copyright 2004
- * @version $Id: SimpleRecordPrinter.class.php,v 1.4 2005/02/04 23:06:06 adamfranco Exp $
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: SimpleRecordPrinter.class.php,v 1.5 2005/04/07 17:07:40 adamfranco Exp $
  */
 class SimpleRecordPrinter {
 	

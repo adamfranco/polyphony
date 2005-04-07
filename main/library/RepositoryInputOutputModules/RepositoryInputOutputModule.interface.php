@@ -1,6 +1,11 @@
 <?php
 /**
  * @package polyphony.library.repository.inputoutput
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: RepositoryInputOutputModule.interface.php,v 1.3 2005/04/07 17:07:46 adamfranco Exp $
  */
 
 /**
@@ -9,11 +14,13 @@
  * of the RecordStructure corresponding to that Record. For example, a Structure
  * using the "DataManagerPrimitive" Format would use the DataManagerPrimative
  * InputOutput module for displaying generating forms for editing its data.
- * 
+ *
  * @package polyphony.library.repository.inputoutput
- * @version $Id: RepositoryInputOutputModule.interface.php,v 1.2 2005/02/04 23:06:11 adamfranco Exp $
- * @since $Date: 2005/02/04 23:06:11 $
- * @copyright 2004 Middlebury College
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: RepositoryInputOutputModule.interface.php,v 1.3 2005/04/07 17:07:46 adamfranco Exp $
  */
 
 class RepositoryInputOutputModuleInterface {

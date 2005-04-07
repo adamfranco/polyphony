@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.class.php,v 1.20 2005/04/06 14:16:13 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.21 2005/04/07 17:07:50 adamfranco Exp $
  */
 
 /**
@@ -23,11 +23,13 @@ require_once(dirname(__FILE__)."/MultiValuedWizardStep.class.php");
  * The wizard is designed to be called from within a single action. The values
  * of its state allow its steps to work as "sub-actions". 
  *
- * @package polyphony.wizard
+ * @package polyphony.library.wizard
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: Wizard.class.php,v 1.21 2005/04/07 17:07:50 adamfranco Exp $
  * @author Adam Franco
- * @copyright 2004 Middlebury College
- * @access public
- * @version $Id: Wizard.class.php,v 1.20 2005/04/06 14:16:13 adamfranco Exp $
  */
 
 class Wizard {

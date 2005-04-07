@@ -1,15 +1,22 @@
 <?php
 /**
  * @package polyphony.library.HierarchyPrinter
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: HierarchyPrinter.class.php,v 1.9 2005/04/07 17:07:45 adamfranco Exp $
  */
 
 /**
  * This class will print an expandible, view of a hierarchy
- * 
+ *
  * @package polyphony.library.HierarchyPrinter
- * @version $Id: HierarchyPrinter.class.php,v 1.8 2005/02/14 19:15:52 thebravecowboy Exp $
- * @since $Date: 2005/02/14 19:15:52 $
- * @copyright 2004 Middlebury College
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: HierarchyPrinter.class.php,v 1.9 2005/04/07 17:07:45 adamfranco Exp $
  */
 
 class HierarchyPrinter {

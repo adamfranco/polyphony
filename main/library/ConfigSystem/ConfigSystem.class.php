@@ -1,14 +1,24 @@
 <?php
 /**
  * @package polyphony.library.config_system
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: ConfigSystem.class.php,v 1.8 2005/04/07 17:07:27 adamfranco Exp $
  */
 
 /**
-*
-* @package polyphony.library.config_system
-* @copyright 2004
-* @version $Id: ConfigSystem.class.php,v 1.7 2005/02/04 23:06:04 adamfranco Exp $
-*/
+ *
+ *
+ *
+ * @package polyphony.library.config_system
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: ConfigSystem.class.php,v 1.8 2005/04/07 17:07:27 adamfranco Exp $
+ */
 class ConfigSystem {
 
 	/**

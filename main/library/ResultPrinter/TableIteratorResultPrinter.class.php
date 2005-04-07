@@ -1,15 +1,22 @@
 <?php
 /**
- * @package polyphony.library.resultprinter
+ * @package polyphony.resultprinter
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.7 2005/04/07 17:07:48 adamfranco Exp $
  */
  
 /**
  * Print out an Iterator of items in a table spread over multiple pages.
- * 
+ *
  * @package polyphony.resultprinter
- * @version $Id: TableIteratorResultPrinter.class.php,v 1.6 2005/03/28 23:24:12 nstamato Exp $
- * @date $Date: 2005/03/28 23:24:12 $
- * @copyright 2004 Middlebury College
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.7 2005/04/07 17:07:48 adamfranco Exp $
  */
 
 class TableIteratorResultPrinter {

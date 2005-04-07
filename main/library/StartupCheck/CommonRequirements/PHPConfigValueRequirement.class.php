@@ -1,6 +1,11 @@
 <?php
 /**
- * @package polyphony.library.startupcheck.requirements
+ * @package polyphony.library.startupcheck
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: PHPConfigValueRequirement.class.php,v 1.4 2005/04/07 17:07:49 adamfranco Exp $
  */
 
 /**
@@ -26,9 +31,13 @@ define("PHPINI_GREATER",3);
 
 /**
  * A {@link StartupRequirement} that checks the value of a PHP config option. If the check fails, it will output an error message.
- * @package polyphony.library.startupcheck.requirements
- * @copyright 2004
- * @version $Id: PHPConfigValueRequirement.class.php,v 1.3 2005/02/04 23:06:14 adamfranco Exp $
+ *
+ * @package polyphony.library.startupcheck
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: PHPConfigValueRequirement.class.php,v 1.4 2005/04/07 17:07:49 adamfranco Exp $
  */
 class PHPConfigValueRequirement extends StartupRequirement {
 

@@ -3,9 +3,15 @@
 /**
  * group_membership.act.php
  * This action will allow for the modification of group Membership.
- * 11/10/04 Adam Franco
- * copyright 2004 MIddlebury College
+ * @since 11/10/04 
+ * @author Adam Franco
+ *
  * @package polyphony.modules.agents
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: group_membership.act.php,v 1.20 2005/04/07 17:07:51 adamfranco Exp $
  */
 
 

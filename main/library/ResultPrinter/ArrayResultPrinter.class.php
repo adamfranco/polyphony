@@ -1,15 +1,23 @@
 <?php
 /**
- * @package polyphony.library.resultprinter
+ * @package polyphony.resultprinter
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: ArrayResultPrinter.class.php,v 1.7 2005/04/07 17:07:47 adamfranco Exp $
  */
+
 /**
  * Print out an Array of items in rows and columns of TEXT_BLOCK widgets 
  * spread over multiple pages.
- * 
+ *
  * @package polyphony.resultprinter
- * @version $Id: ArrayResultPrinter.class.php,v 1.6 2005/03/30 05:30:55 nstamato Exp $
- * @date $Date: 2005/03/30 05:30:55 $
- * @copyright 2004 Middlebury College
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: ArrayResultPrinter.class.php,v 1.7 2005/04/07 17:07:47 adamfranco Exp $
  */
 
 class ArrayResultPrinter {

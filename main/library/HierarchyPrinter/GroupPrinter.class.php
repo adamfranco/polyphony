@@ -1,15 +1,24 @@
 <?php
 /**
  * @package polyphony.library.HierarchyPrinter
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: GroupPrinter.class.php,v 1.7 2005/04/07 17:07:45 adamfranco Exp $
  */
 
 /**
  * This class will print an expandable view of Groups.
  * 
+ *
  * @package polyphony.library.HierarchyPrinter
- * @version $Id: GroupPrinter.class.php,v 1.6 2005/02/04 23:06:11 adamfranco Exp $
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: GroupPrinter.class.php,v 1.7 2005/04/07 17:07:45 adamfranco Exp $
  * @since 11/11/04
- * @copyright 2004 Middlebury College
  */
 
 class GroupPrinter {

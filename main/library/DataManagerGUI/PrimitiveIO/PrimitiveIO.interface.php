@@ -1,15 +1,24 @@
 <?php
 /**
  * @package polyphony.library.datamanager_gui
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: PrimitiveIO.interface.php,v 1.3 2005/04/07 17:07:41 adamfranco Exp $
  */
 
 /**
  * Privides an interface for any classes that will allow input or output between a certain DataType (in the DataManager of Harmoni) and the end user through HTML/browser.
- * @access public
- * @package polyphony.library.datamanagergui
+ *
+ * @package polyphony.library.datamanager_gui
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: PrimitiveIO.interface.php,v 1.3 2005/04/07 17:07:41 adamfranco Exp $
  * @author Gabe Schine
  */
-
 class PrimitiveIO {
 	/**
 	 * Creates HTML form code from the value contained in $primitive specific to $index in $label.

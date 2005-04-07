@@ -1,6 +1,11 @@
 <?php
 /**
  * @package polyphony.modules.authentication
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: username_password_form.act.php,v 1.3 2005/04/07 17:07:53 adamfranco Exp $
  */
 
 // Get the Layout compontents. See core/modules/moduleStructure.txt
