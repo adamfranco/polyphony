@@ -1,12 +1,12 @@
 <?php
 /**
  *
- * @packagepolyphony.library.startupcheck
+ * @package polyphony.library.startupcheck
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: include.php,v 1.4 2005/04/07 17:07:49 adamfranco Exp $
+ * @version $Id: include.php,v 1.5 2005/04/07 18:19:44 adamfranco Exp $
  */
 
 /**
