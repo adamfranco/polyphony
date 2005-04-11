@@ -11,9 +11,18 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_membership.act.php,v 1.20 2005/04/07 17:07:51 adamfranco Exp $
+ * @version $Id: group_membership.act.php,v 1.21 2005/04/11 16:51:37 adamfranco Exp $
  */
 
+// Check for our authorization function definitions
+if (!defined("AZ_CREATE_GROUPS"))
+	throwError(new Error("You must define an id for AZ_CREATE_GROUPS", "polyphony.authorizations", true));
+if (!defined("AZ_MODIFY_GROUPS"))
+	throwError(new Error("You must define an id for AZ_MODIFY_GROUPS", "polyphony.authorizations", true));
+if (!defined("AZ_DELETE_GROUPS"))
+	throwError(new Error("You must define an id for AZ_DELETE_GROUPS", "polyphony.authorizations", true));
+if (!defined("AZ_ROOT_NODE"))
+	throwError(new Error("You must define an id for AZ_ROOT_NODE", "polyphony.authorizations", true));
 
 // Get the Layout compontents. See core/modules/moduleStructure.txt
 // for more info. 
@@ -21,7 +30,6 @@ $harmoni->ActionHandler->execute("window", "screen");
 $mainScreen =& $harmoni->getAttachedData('mainScreen');
 $statusBar =& $harmoni->getAttachedData('statusBar');
 $centerPane =& $harmoni->getAttachedData('centerPane');
- 
 
 // Our
 $yLayout =& new YLayout();
@@ -29,7 +37,6 @@ $pageRows =& new Container($yLayout, OTHER, 1);
 $preActionRows =& new Container($yLayout, OTHER, 1);
 $actionRows =& new Container($yLayout, OTHER, 1);
 $postActionRows =& new Container($yLayout, OTHER, 1);
-
 
 // In order to preserve proper nesting on the HTML output
 $preActionRows->add(new Block("<form id='memberform' method='post' action='".MYURL."/agents/add_to_group/".implode("/", $harmoni->pathInfoParts)."'>",2), null, null, CENTER, CENTER);
@@ -40,6 +47,22 @@ $centerPane->add($pageRows, null, null, CENTER , CENTER);
 // Intro
 $introHeader =& new Heading("Manage Group Membership", 2);
 $pageRows->add($introHeader, "100%", null, LEFT, CENTER);
+
+
+// Check for authorization
+$authZManager =& Services::getService("AuthZ");
+$idManager =& Services::getService("IdManager");
+if (!$authZManager->isUserAuthorized(
+			$idManager->getId(AZ_MODIFY_GROUPS),
+			$idManager->getId(AZ_ROOT_NODE)))
+{
+	$errorLayout =& new Block(
+		_("You are not authorized to modify group membership."), 3);
+	$pageRows->add($errorLayout, "100%", null, LEFT, CENTER);
+	
+	return $mainScreen;
+}
+
 
 $agentManager =& Services::getService("Agent");
 $idManager = Services::getService("Id");

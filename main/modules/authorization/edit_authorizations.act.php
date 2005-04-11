@@ -11,7 +11,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.27 2005/04/07 17:07:53 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.28 2005/04/11 16:52:46 adamfranco Exp $
  */
 
 // Check for our authorization function definitions
@@ -141,7 +141,8 @@ function printQualifier(& $qualifier) {
 	
 	// Check that the current user is authorized to see the authorizations.
 	$authZ =& Services::getService("AuthZ");
-	$shared =& Services::getService("Shared");
+	$idManager =& Services::getService("IdManager");
+	$agentManager =& Services::getService("AgentManager");
 	$authN =& Services::getService("AuthN");
 	$agentId =& $GLOBALS["agentId"];
 	$harmoniAuthType =& $GLOBALS["harmoniAuthType"];
@@ -149,7 +150,7 @@ function printQualifier(& $qualifier) {
 	// or if they are looking at their own authorizations,
 	// or if they are looking at one of their groups' authorizations.
 	if ($authZ->isUserAuthorized(
-				$shared->getId(AZ_VIEW_AZS),
+				$idManager->getId(AZ_VIEW_AZS),
 				$id)
 		|| $agentId->isEqual($authN->getUserId($harmoniAuthType))
 	) {
@@ -206,7 +207,8 @@ function printEditOptions(& $qualifier) {
 	$agentId =& $GLOBALS["agentId"];
 	$harmoni =& $GLOBALS["harmoni"];
 	$authZManager =& Services::getService("AuthZ");
-	$shared =& Services::getService("Shared");
+	$idManager =& Services::getService("IdManager");
+	$agentManager =& Services::getService("AgentManager");
 	
 	$functionTypes =& $authZManager->getFunctionTypes();
 	print "\n<table>";
@@ -276,11 +278,11 @@ function printEditOptions(& $qualifier) {
 					$explicitQualifierId =& $explicitQualifier->getId();
 				
 					// get the agent/group for the AZ
-					if ($shared->isAgent($explicitAgentId)) {
-						$explicitAgent =& $shared->getAgent($explicitAgentId);
+					if ($agentManager->isAgent($explicitAgentId)) {
+						$explicitAgent =& $agentManager->getAgent($explicitAgentId);
 						$title = _("User").": ".$explicitAgent->getDisplayName();
-					} else if ($shared->isGroup($explicitAgentId)) {
-						$explicitGroup =& $shared->getGroup($explicitAgentId);
+					} else if ($agentManager->isGroup($explicitAgentId)) {
+						$explicitGroup =& $agentManager->getGroup($explicitAgentId);
 						$title = _("Group").": ".$explicitGroup->getDisplayName();
 					} else {
 						$title = _("User/Group").": ".$explicitAgentId->getIdString();
@@ -315,9 +317,10 @@ function printEditOptions(& $qualifier) {
 			
 			// Check that the current user is authorized to modify the authorizations.
 			$authZ =& Services::getService("AuthZ");
-			$shared =& Services::getService("Shared");
+			$idManager =& Services::getService("IdManager");
+			$agentManager =& Services::getService("AgentManager");
 			if ($authZ->isUserAuthorized(
-						$shared->getId(AZ_MODIFY_AZS),
+						$idManager->getId(AZ_MODIFY_AZS),
 						$qualifierId))
 			{
 				// The checkbox is really just for show, the link is where we send
