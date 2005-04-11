@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view_functions.act.php,v 1.4 2005/04/07 17:07:55 adamfranco Exp $
+ * @version $Id: view_functions.act.php,v 1.5 2005/04/11 20:03:08 adamfranco Exp $
  */
 
 // Get the Layout compontents. See core/modules/moduleStructure.txt
@@ -26,19 +26,6 @@ $introHeader =& new Heading(_("View Functions"), 2);
 $actionRows->add($introHeader, "100%", null, LEFT, CENTER);
 
 $authZManager =& Services::getService("AuthZ");
-
-
-
-
-// $sharedManager =& Services::getService("Shared");
-// 
-// $qualifierHierarchyId =& $sharedManager->getId("673");
-// $functionId =& $sharedManager->createId();
-// $functionType =& new HarmoniType("Concerto", "Midd", "Use", "Functions for viewing and using shiznat.");
-// $authZManager->createFunction($functionId, "Comment", "Add comments to this thing.", $functionType, $qualifierHierarchyId);
-// exit;
-
-
 
 
 // Get the function type and print this info in two headers.

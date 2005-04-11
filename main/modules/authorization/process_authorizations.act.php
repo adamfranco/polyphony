@@ -10,11 +10,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: process_authorizations.act.php,v 1.8 2005/04/07 17:07:54 adamfranco Exp $
+ * @version $Id: process_authorizations.act.php,v 1.9 2005/04/11 20:03:07 adamfranco Exp $
  */
 
 // Get services
-$shared =& Services::getService("Shared");
+$idManager =& Services::getService("Id");
 $authZ =& Services::getService("AuthZ");
 
 // Get info passed to this action via the URL
@@ -24,9 +24,9 @@ $functionIdString = $harmoni->pathInfoParts['4'];
 $qualifierIdString = $harmoni->pathInfoParts['5'];
 
 // Get Ids from these strings
-$agentId =& $shared->getId($agentIdString);
-$functionId =& $shared->getId($functionIdString);
-$qualifierId =& $shared->getId($qualifierIdString);
+$agentId =& $idManager->getId($agentIdString);
+$functionId =& $idManager->getId($functionIdString);
+$qualifierId =& $idManager->getId($qualifierIdString);
 
 
 // Process authorizations

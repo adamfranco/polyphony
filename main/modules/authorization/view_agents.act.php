@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view_agents.act.php,v 1.5 2005/04/07 17:07:55 adamfranco Exp $
+ * @version $Id: view_agents.act.php,v 1.6 2005/04/11 20:03:07 adamfranco Exp $
  */
 
 // Get the Layout compontents. See core/modules/moduleStructure.txt
@@ -26,19 +26,6 @@ $introHeader =& new Heading(_("View Agents"), 2);
 $actionRows->add($introHeader, "100%", null, LEFT, CENTER);
 
 $agentManager =& Services::getService("Agent");
-
-// $testType =& new HarmoniType("AuthorityX", "domainX", "KeywordX", "This is a really great description");
-// $sharedManager->createAgent("That guy in camo", $testType);
-
-
-// $sharedManager =& Services::getService("Shared");
-// 
-// $qualifierHierarchyId =& $sharedManager->getId("673");
-// $functionId =& $sharedManager->createId();
-// $functionType =& new HarmoniType("Concerto", "Midd", "Use", "Functions for viewing and using shiznat.");
-// $authZManager->createFunction($functionId, "Comment", "Add comments to this thing.", $functionType, $qualifierHierarchyId);
-// exit;
-
 
 
 // Get all the agents.

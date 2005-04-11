@@ -13,7 +13,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.20 2005/04/07 17:07:51 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.21 2005/04/11 20:03:06 adamfranco Exp $
  */
 
 
@@ -50,17 +50,6 @@ if (count($_GET)) {
 		foreach ($_GET as $key => $val)
 			$search .= "&".urlencode($key)."=".urlencode($val);
 }
-
-// $sharedManager->createGroup("Math", new HarmoniType("Groups", "Middlebury College", "Department", "What department the user belongs to at Middlebury College"), "Middlebury College French department.");
-
-// $id =& $sharedManager->getId("192");
-// $sharedManager->deleteGroup($id);
-
-// $id =& $sharedManager->getId("205");
-// $group =& $sharedManager->getGroup($id);
-// $memberId =& $sharedManager->getId("198");
-// $member =& $sharedManager->getAgent($memberId);
-// $group->add($member);
 
 // Users header
 $agentHeader =& new Heading(_("Users"), 2);

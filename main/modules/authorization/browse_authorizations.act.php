@@ -12,7 +12,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_authorizations.act.php,v 1.11 2005/04/07 17:07:53 adamfranco Exp $
+ * @version $Id: browse_authorizations.act.php,v 1.12 2005/04/11 20:03:06 adamfranco Exp $
  */
 
 // Check for our authorization function definitions
@@ -29,7 +29,7 @@ $statusBar =& $harmoni->getAttachedData('statusBar');
 $centerPane =& $harmoni->getAttachedData('centerPane');
 
 // Intro
-$sharedManager =& Services::getService("Id");
+$idManager =& Services::getService("Id");
 $authZManager =& Services::getService("AuthZ");
 $GLOBALS["harmoni"] =& $harmoni;
 
@@ -121,9 +121,9 @@ function printQualifier(& $qualifier) {
 
 	// Check that the current user is authorized to see the authorizations.
 	$authZ =& Services::getService("AuthZ");
-	$shared =& Services::getService("Id");
+	$idManager =& Services::getService("Id");
 	if ($authZ->isUserAuthorized(
-				$shared->getId(AZ_VIEW_AZS),
+				$idManager->getId(AZ_VIEW_AZS),
 				$id))
 	{
 		print "\n<div style='margin-left: 10px;'>";
@@ -179,7 +179,7 @@ function printEditOptions(& $qualifier) {
 	$qualifierId =& $qualifier->getId();
 	$harmoni =& $GLOBALS["harmoni"];
 	$authZManager =& Services::getService("AuthZ");
-	$shared =& Services::getService("Agent");
+	$agentManager =& Services::getService("Agent");
 	
 	$expandedNodes = array_slice($harmoni->pathInfoParts, 2);
 	if (count ($expandedNodes)) 
@@ -227,11 +227,11 @@ function printEditOptions(& $qualifier) {
 				print "?agent=".$agentId->getIdString();
 				print "' title='Edit Authorizations for this User/Group'>";
 				
-				if ($shared->isAgent($agentId)) {
-					$agent =& $shared->getAgent($agentId);
+				if ($agentManager->isAgent($agentId)) {
+					$agent =& $agentManager->getAgent($agentId);
 					print $agent->getDisplayName();
-				} else if ($shared->isGroup($agentId)) {
-					$group =& $shared->getGroup($agentId);
+				} else if ($agentManager->isGroup($agentId)) {
+					$group =& $agentManager->getGroup($agentId);
 					print $group->getDisplayName();
 				} else {
 					print "Agent/Group Id ".$agentId->getIdString()."";

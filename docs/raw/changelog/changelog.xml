@@ -5,16 +5,19 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.7 2005/04/11 19:26:17 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.8 2005/04/11 20:01:36 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
-	<version number="0.3.0" date="The Nebulous Future">
+	<version number="0.2.1" date="The Nebulous Future">
 		<change author='adam'>
 			Authentication now plays nicely with GET parameters and maintains them
 			around during the authentication sequence.
+		</change>
+		<change author='adam'>
+			Fixed some references to the non-existant "SharedManager"
 		</change>
 	</version>
 	<version number="0.2.0" date="2005-04-07">

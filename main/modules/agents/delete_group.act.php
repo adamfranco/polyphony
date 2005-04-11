@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: delete_group.act.php,v 1.5 2005/04/07 17:07:51 adamfranco Exp $
+ * @version $Id: delete_group.act.php,v 1.6 2005/04/11 20:02:57 adamfranco Exp $
  */
 
 // Get services
@@ -19,9 +19,6 @@ $authZ =& Services::getService("AuthZ");
 
 // Get info passed to this action via the URL
 $idString = $harmoni->pathInfoParts['2'];
-
-// Get the groupId from the Id string
-//$groupId = $shared->getId($idString);
 
 
 // Send us back to where we were (add_delete_group.php)

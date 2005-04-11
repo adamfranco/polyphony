@@ -11,7 +11,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.29 2005/04/11 18:28:59 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.30 2005/04/11 20:03:07 adamfranco Exp $
  */
 
 // Check for our authorization function definitions
@@ -280,7 +280,7 @@ function printEditOptions(& $qualifier) {
 					} else {
 						$title = _("User/Group").": ".$explicitAgentId->getIdString();
 					}
-					$title .= ", "._("Location").": ".$explicitQualifier->getDisplayName();
+					$title .= ", "._("Location").": ".$explicitQualifier->getReferenceName();
 					if ($explicitAZs->hasNext())
 						$title .= "; ";
 				}
