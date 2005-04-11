@@ -11,7 +11,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.28 2005/04/11 16:52:46 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.29 2005/04/11 18:28:59 adamfranco Exp $
  */
 
 // Check for our authorization function definitions
@@ -34,29 +34,30 @@ $actionRows =& new Container($yLayout, OTHER, 1);
 $centerPane->add($actionRows, null, null, CENTER, CENTER);
 
 // Intro
-$sharedManager =& Services::getService("Shared");
+$idManager =& Services::getService("Id");
+$agentManager =& Services::getService("Agent");
 $authZManager =& Services::getService("AuthZ");
 
 // Intro message
-$intro =& new Content("&nbsp; &nbsp; "._("Check or uncheck authorization(s) for the section(s) of your choice.")."<br />
-		&nbsp; &nbsp; "._("After each check/uncheck, the changes are saved automatically.")."<br /><br />");
+$intro =& new Block("&nbsp; &nbsp; "._("Check or uncheck authorization(s) for the section(s) of your choice.")."<br />
+		&nbsp; &nbsp; "._("After each check/uncheck, the changes are saved automatically.")."<br /><br />", 3);
 
 
 // Get the id of the selected agent using $_REQUEST
 $id = $_REQUEST["agent"];
-$idObject =& $sharedManager->getId($id);
+$idObject =& $idManager->getId($id);
 $GLOBALS["agentId"] =& $idObject;
 $GLOBALS["harmoniAuthType"] =& new HarmoniAuthenticationType;
 $GLOBALS["harmoni"] =& $harmoni;
 
 
-if ($sharedManager->isGroup($idObject)) {
-$agent =& $sharedManager->getGroup($idObject);
+if ($agentManager->isGroup($idObject)) {
+$agent =& $agentManager->getGroup($idObject);
 $introHeader =& new Heading(_("Edit Which Authorizations for Group").": <em> "
 										.$agent->getDisplayName()."</em>?", 2);
 
-} else if ($sharedManager->isAgent($idObject)) {
-$agent =& $sharedManager->getAgent($idObject);
+} else if ($agentManager->isAgent($idObject)) {
+$agent =& $agentManager->getAgent($idObject);
 $introHeader =& new Heading(_("Edit Which Authorizations for User").": <em> "
 										.$agent->getDisplayName()."</em>?", 2);
 
@@ -66,8 +67,8 @@ $introHeader =& new Heading(_("Edit Which Authorizations for the User/Group Id")
 
 }
 
-$actionRows->addComponent($introHeader, "100%", null, LEFT, CENTER);
-$actionRows->addComponent($intro);
+$actionRows->add($introHeader, "100%", null, LEFT, CENTER);
+$actionRows->add($intro);
  
 // Buttons to go back to edit auths for a different user, or to go home
 ob_start();
@@ -107,7 +108,7 @@ while ($hierarchyIds->hasNext()) {
 									);
 		$qualifierLayout =& new Block(ob_get_contents(), 4);
 		ob_end_clean();
-		$actionRows->addComponent($qualifierLayout, "100%", null, LEFT, CENTER);
+		$actionRows->add($qualifierLayout, "100%", null, LEFT, CENTER);
 
 
 	}
@@ -137,23 +138,15 @@ function printQualifier(& $qualifier) {
 	$title = _("Id: ").$id->getIdString()." ";
 	$title .= _("Type: ").$type->getDomain()."::".$type->getAuthority()."::".$type->getKeyword();
 
-	print "\n<a title='".htmlentities($title, ENT_QUOTES)."'><strong>".htmlentities($qualifier->getDisplayName(), ENT_QUOTES)."</strong></a>";
+	print "\n<a title='".htmlentities($title, ENT_QUOTES)."'><strong>".htmlentities($qualifier->getReferenceName(), ENT_QUOTES)."</strong></a>";
 	
 	// Check that the current user is authorized to see the authorizations.
 	$authZ =& Services::getService("AuthZ");
 	$idManager =& Services::getService("IdManager");
-	$agentManager =& Services::getService("AgentManager");
-	$authN =& Services::getService("AuthN");
-	$agentId =& $GLOBALS["agentId"];
-	$harmoniAuthType =& $GLOBALS["harmoniAuthType"];
-	// They are authorized if they have explicit authorization,
-	// or if they are looking at their own authorizations,
-	// or if they are looking at one of their groups' authorizations.
 	if ($authZ->isUserAuthorized(
 				$idManager->getId(AZ_VIEW_AZS),
-				$id)
-		|| $agentId->isEqual($authN->getUserId($harmoniAuthType))
-	) {
+				$id)) 
+	{
 		print "\n<div style='margin-left: 10px;'>";
 		printEditOptions($qualifier);
 		print "\n</div>";

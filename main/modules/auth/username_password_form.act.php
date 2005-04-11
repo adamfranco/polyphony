@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: username_password_form.act.php,v 1.3 2005/04/07 17:07:53 adamfranco Exp $
+ * @version $Id: username_password_form.act.php,v 1.4 2005/04/11 18:27:05 adamfranco Exp $
  */
 
 // Get the Layout compontents. See core/modules/moduleStructure.txt
@@ -30,6 +30,12 @@ ob_start();
 
 
 $action = MYURL."/".implode("/",array_slice($harmoni->pathInfoParts, 2));
+if (count($_GET)) {
+	$action .= "?";
+	foreach ($_GET as $name => $value) {
+		$action .= "&".$name."=".$value;
+	}
+}
 $usernameText = _("Username");
 $passwordText = _("Password");
 print<<<END
