@@ -3,6 +3,13 @@
 Name: Polyphony ChangeLog
 
 
+v. 0.2.1 (2005-04-11)
+----------------------------------------------------
+		
+	* Change: Authentication now plays nicely with GET parameters and maintains them around during the authentication sequence. (Adam Franco)
+		
+	* Change: Fixed some references to the non-existant &quot;SharedManager&quot; (Adam Franco)
+	
 v. 0.2.0 (2005-04-07)
 ----------------------------------------------------
 		
@@ -23,7 +30,7 @@ v. 0.1.0 (2004-10-26)
 		
 	* New feature: StartupCheck and ConfigSystem: These should allow easy creation of browser-based install/configuration options and setup. They are undocumented and untested. (Gabe Schine)
 		
-	* New feature: Languages: Shared actions for generating a "switch language" form, as well as the logic for performing that switch. (Adam Franco)
+	* New feature: Languages: Shared actions for generating a &quot;switch language&quot; form, as well as the logic for performing that switch. (Adam Franco)
 		
 	* New feature: The Wizard library provides a system for the generation of dynamic Multi-step wizards. The Wizard library handles the catching, storing, and validating of form submitions, as well as handle user-progress through the wizard. (Adam Franco)
 		
