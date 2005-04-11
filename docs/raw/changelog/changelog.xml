@@ -5,13 +5,13 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.8 2005/04/11 20:01:36 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.9 2005/04/11 20:54:50 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
-	<version number="0.2.1" date="The Nebulous Future">
+	<version number="0.2.1" date="2005-04-07">
 		<change author='adam'>
 			Authentication now plays nicely with GET parameters and maintains them
 			around during the authentication sequence.
