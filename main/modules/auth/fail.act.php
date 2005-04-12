@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: fail.act.php,v 1.5 2005/04/07 17:07:52 adamfranco Exp $
+ * @version $Id: fail.act.php,v 1.6 2005/04/12 21:18:04 adamfranco Exp $
  */
  
 // Get the Layout compontents. See core/modules/moduleStructure.txt
@@ -23,7 +23,7 @@ for ($i = 2; $i < count($harmoni->pathInfoParts); $i++) {
 } 
 
 // Set our textdomain
-$defaultTextDomain = textdomain();
+$defaultTextDomain = textdomain(NULL);
 textdomain("polyphony");
 
 
