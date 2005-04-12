@@ -5,12 +5,18 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.10 2005/04/11 21:01:05 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.11 2005/04/12 19:46:28 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
+	<version number="0.2.2" date="2005-04-12">
+		<fix author='adam'>
+			clone() is a reserved word in PHP5. All clone methods have been renamed 
+			replicate().
+		</fix>
+	</version>
 	<version number="0.2.1" date="2005-04-11">
 		<change author='adam'>
 			Authentication now plays nicely with GET parameters and maintains them

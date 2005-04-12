@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HierarchyPrinter.class.php,v 1.9 2005/04/07 17:07:45 adamfranco Exp $
+ * @version $Id: HierarchyPrinter.class.php,v 1.10 2005/04/12 19:46:28 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HierarchyPrinter.class.php,v 1.9 2005/04/07 17:07:45 adamfranco Exp $
+ * @version $Id: HierarchyPrinter.class.php,v 1.10 2005/04/12 19:46:28 adamfranco Exp $
  */
 
 class HierarchyPrinter {
@@ -155,7 +155,7 @@ END;
 			print "'>";
 			
 			if ($color !== NULL) {
-				$childColor =& $color->clone();
+				$childColor =& $color->replicate();
 				$childColor->darken(20);
 			} else {
 				$childColor = NULL;
