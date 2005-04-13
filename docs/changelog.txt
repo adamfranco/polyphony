@@ -3,10 +3,16 @@
 Name: Polyphony ChangeLog
 
 
-v. 0.2.2 (2005-04-12)
+v. 0.2.2 (2005-04-13)
 ----------------------------------------------------
 		
 	* Bug Fix: clone() is a reserved word in PHP5. All clone methods have been renamed replicate(). (Adam Franco)
+		
+	* Bug Fix: textdomain() calls now specify NULL instead of no argument to prevent PHP Warnings. (Adam Franco)
+		
+	* Bug Fix: RepositoryInOutModules now don't throw errors. (Adam Franco)
+		
+	**** IMPORTANT *** Change: Polyphony now runs on PHP5 and on Win32 systems in addition to PHP4.3 and POSIX systems. (Adam Franco)
 	
 v. 0.2.1 (2005-04-11)
 ----------------------------------------------------

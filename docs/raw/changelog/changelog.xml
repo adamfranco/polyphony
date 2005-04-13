@@ -5,13 +5,13 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.13 2005/04/12 21:58:53 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.14 2005/04/13 22:20:27 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
-	<version number="0.2.2" date="2005-04-12">
+	<version number="0.2.2" date="2005-04-13">
 		<fix author='adam'>
 			clone() is a reserved word in PHP5. All clone methods have been renamed 
 			replicate().
@@ -23,6 +23,10 @@
 		<fix author='adam'>
 			RepositoryInOutModules now don't throw errors.
 		</fix>
+		<important author='adam'>
+			Polyphony now runs on PHP5 and on Win32 systems in addition to PHP4.3 and
+			POSIX systems.
+		</important>
 	</version>
 	<version number="0.2.1" date="2005-04-11">
 		<change author='adam'>
