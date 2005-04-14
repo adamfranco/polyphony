@@ -3,7 +3,7 @@
 Name: Polyphony ChangeLog
 
 
-v. 0.2.2 (2005-04-13)
+v. 0.2.2 (2005-04-14)
 ----------------------------------------------------
 		
 	* Bug Fix: clone() is a reserved word in PHP5. All clone methods have been renamed replicate(). (Adam Franco)
