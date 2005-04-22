@@ -12,7 +12,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardProperty.class.php,v 1.8 2005/04/07 17:07:50 adamfranco Exp $
+ * @version $Id: WizardProperty.class.php,v 1.8.2.1 2005/04/22 16:01:14 adamfranco Exp $
  * @author Adam Franco
  */
  
@@ -122,14 +122,18 @@ class WizardProperty {
 	 * @return boolean True on successful update with valid .
 	 */
 	function update () {
+		// .'s are converted to _'s in the request array, so we must check for
+		// the correct name in the request array.
+		$name = str_replace(".", "_", $this->_name);
+		
 		// Set the value from the request array.
-		if (isset($_REQUEST[$this->_name]) || !$this->_isValueRequired) {
-			$this->_value = $_REQUEST[$this->_name];
+		if (isset($_REQUEST[$name]) || !$this->_isValueRequired) {
+			$this->_value = $_REQUEST[$name];
 			$this->_hasBeenSet = TRUE;
 		} else
-			throwError(new Error("Requested property, ".$this->_name.", does not exist in the _REQUEST array.", "Wizard", 1));
+			throwError(new Error("Requested property, ".$name.", does not exist in the _REQUEST array.", "Wizard", 1));
 	
-		return $this->validate();			
+		return $this->validate();	
 	}
 	
 	/**
