@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.15.2.1 2005/04/22 15:59:30 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.15.2.2 2005/04/22 17:29:56 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -14,6 +14,9 @@
 	<version number="0.2.3" date="The Nebulous Future">
 		<fix author='adam'>
 			Wizard now can handle field names with .'s in them.
+		</fix>
+		<fix author='adam'>
+			RepositoryInputOutputModules now check for the right record interface.
 		</fix>
 	</version>
 	<version number="0.2.2" date="2005-04-14">
