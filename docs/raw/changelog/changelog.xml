@@ -5,12 +5,17 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.15 2005/04/14 16:07:32 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.16 2005/04/22 16:34:25 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
+	<version number="0.2.3" date="The Nebulous Future">
+		<fix author='adam'>
+			Wizard now can handle field names with .'s in them.
+		</fix>
+	</version>
 	<version number="0.2.2" date="2005-04-14">
 		<fix author='adam'>
 			clone() is a reserved word in PHP5. All clone methods have been renamed 
