@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DataManagerPrimativesModule.class.php,v 1.3 2005/04/12 21:54:09 adamfranco Exp $
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.4 2005/04/22 17:31:35 adamfranco Exp $
  */
 
 /**
@@ -23,8 +23,8 @@ require_once(dirname(__FILE__)."/../RepositoryInputOutputModule.interface.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: DataManagerPrimativesModule.class.php,v 1.3 2005/04/12 21:54:09 adamfranco Exp $
- * @since $Date: 2005/04/12 21:54:09 $
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.4 2005/04/22 17:31:35 adamfranco Exp $
+ * @since $Date: 2005/04/22 17:31:35 $
  * @copyright 2004 Middlebury College
  */
 
@@ -81,7 +81,7 @@ class DataManagerPrimativesModule
 	 * @since 10/19/04
 	 */
 	function createWizardSteps ( & $record, & $wizard ) {
-		ArgumentValidator::validate($record, new ExtendsValidatorRule("Record"));
+		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
 		
 		$recordStructure =& $record->getRecordStructure();
 		$recordStructureId =& $recordStructure->getId();
