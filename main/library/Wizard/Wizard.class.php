@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.class.php,v 1.21 2005/04/07 17:07:50 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.21.2.1 2005/04/28 17:49:00 adamfranco Exp $
  */
 
 /**
@@ -28,7 +28,7 @@ require_once(dirname(__FILE__)."/MultiValuedWizardStep.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.class.php,v 1.21 2005/04/07 17:07:50 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.21.2.1 2005/04/28 17:49:00 adamfranco Exp $
  * @author Adam Franco
  */
 
@@ -372,10 +372,22 @@ class Wizard {
 		$outputHandler->setHead($outputHandler->getHead()."\n".$javaScript);		
 		
 		// :: Heading ::
-		$heading =& new Heading($this->_displayName.": ".
+		$headingText = $this->_displayName.": ".
 					$this->_currentStep.". ".
-					$this->_steps[$this->_currentStep]->getDisplayName(), 2);
+					$this->_steps[$this->_currentStep]->getDisplayName();
+		$heading =& new Heading($headingText, 2);
 		$wizardLayout->add($heading, "100%", null, LEFT, CENTER);
+		
+		preg_match("/<title>([^<]*)<\/title>/", $outputHandler->getHead(), $matches);
+		if ($matches[1])
+			$headingText = trim($matches[1]).": ".$headingText;
+		$outputHandler->setHead(
+			// Remove any existing title tags from the head text
+			preg_replace("/<title>[^<]*<\/title>/", "", $outputHandler->getHead())
+			//Add our new title
+			."\n\t\t<title>"
+			.strip_tags(preg_replace("/<(\/)?(em|i|b|strong)>/", "*", $headingText))
+			."</title>");
 		
 		$xLayout =& new XLayout();
 		$lower =& new Container($xLayout, BLOCK, 3);
