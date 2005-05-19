@@ -12,7 +12,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.20 2005/04/07 17:07:53 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.21 2005/05/19 17:26:53 thebravecowboy Exp $
  */
 
 
@@ -278,11 +278,20 @@ function printGroup(& $group) {
  * @ignore
  */
 function printMember(& $member) {
+			
+	$agentId =& $member->getId();
+	$agentIdString= $agentId->getIdString();
+	
+	$link = MYURL."/agents/edit_agent_details/".$agentIdString."/";
 	$id =& $member->getId();
 	$memberType =& $member->getType();
 	print "<input type='radio' name='agent' value='".$id->getIdString()."' />";
-	print "<a title='".$memberType->getAuthority()." :: ".$memberType->getDomain()." :: ".$memberType->getKeyword()."'>";
+	print "<a title='".$memberType->getAuthority()." :: ".$memberType->getDomain()." :: ".$memberType->getKeyword()."' href='$link'>";
 	print "<span style='text-decoration: underline;'>".$id->getIdString()." - ".$member->getDisplayName()."</span></a>";
 	print " - <em>".$memberType->getDescription()."</em>";
+	if($department){
+		print " Department: $department";
+	}
+	
 }
 

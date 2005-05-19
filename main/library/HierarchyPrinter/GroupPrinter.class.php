@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: GroupPrinter.class.php,v 1.7 2005/04/07 17:07:45 adamfranco Exp $
+ * @version $Id: GroupPrinter.class.php,v 1.8 2005/05/19 17:26:53 thebravecowboy Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: GroupPrinter.class.php,v 1.7 2005/04/07 17:07:45 adamfranco Exp $
+ * @version $Id: GroupPrinter.class.php,v 1.8 2005/05/19 17:26:53 thebravecowboy Exp $
  * @since 11/11/04
  */
 
@@ -142,6 +142,7 @@ class GroupPrinter {
 			
 			while ($childMembers->hasNext()) {
 				$childMember =& $childMembers->next();
+				
 				print "\n\n<table>\n\t<tr><td valign='top'>";
 				print "\n\t\t<div style='width: 15px;'>&nbsp;</div>";
 				print "\n\t</td><td valign='top'>\n\t\t";
