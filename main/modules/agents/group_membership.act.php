@@ -11,7 +11,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_membership.act.php,v 1.21 2005/04/11 16:51:37 adamfranco Exp $
+ * @version $Id: group_membership.act.php,v 1.22 2005/05/19 15:34:24 thebravecowboy Exp $
  */
 
 // Check for our authorization function definitions
@@ -418,6 +418,7 @@ function printGroup(& $group) {
 	// print out the properties of the Agent
 	print "\n<em>";
 	$propertiesIterator =& $group->getProperties();
+	
 	while($propertiesIterator->hasNext()) {
 		$properties =& $propertiesIterator->next();
 		$propertiesType =& $properties->getType();
@@ -425,6 +426,7 @@ function printGroup(& $group) {
 		
 		$keys =& $properties->getKeys();
 		$i = 0;
+		
 		while ($keys->hasNext()) {
 			$key =& $keys->next();			
 			print htmlspecialchars("\n\t\t".(($i)?", ":"").$key.": ".$properties->getProperty($key));
@@ -540,6 +542,7 @@ END;
  */
 function printMember(& $member) {
 	$id =& $member->getId();
+	
 	$memberType =& $member->getType();
 	print "\n<input type='checkbox' name='".$id->getIdString()."' value='agent' />";
 	print "\n<a href='".MYURL."/agents/edit_agent_details/".$id->getIdString()."?callingFrom=group_membership' title='".htmlspecialchars($memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription())."'>";
@@ -547,9 +550,12 @@ function printMember(& $member) {
 	
 	// print out the properties of the Agent
 	print "\n<em>";
+	$propertiesIterator = NULL;
 	$propertiesIterator =& $member->getProperties();
 	while($propertiesIterator->hasNext()) {
+		$properties = NULL;
 		$properties =& $propertiesIterator->next();
+		
 		$propertiesType =& $properties->getType();
 		print "\n\t(<a title='".htmlspecialchars($propertiesType->getDomain()." :: ".$propertiesType->getAuthority()." :: ".$propertiesType->getKeyword()." - ".$propertiesType->getDescription())."'>";
 		
