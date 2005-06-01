@@ -5,15 +5,16 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login_type.act.php,v 1.5 2005/04/12 21:18:04 adamfranco Exp $
+ * @version $Id: login_type.act.php,v 1.6 2005/06/01 19:33:51 gabeschine Exp $
  */
 
 $isAuthenticated = FALSE;
 $authN =& Services::getService("AuthN");
-$typeString = urldecode($harmoni->pathInfoParts[2]);
+$typeString = urldecode($harmoni->request->get("polyphony/type"));
 $typeParts = explode("::", $typeString);
 $authType = new Type ($typeParts[0],$typeParts[1],$typeParts[2]);
 
+/*
 $currentPathInfo = array_slice($harmoni->pathInfoParts, 3);
 $returnURL = MYURL."/".implode("/",$currentPathInfo);
 $getString = "";
@@ -24,9 +25,11 @@ if (count($_GET)) {
 	}
 	$returnURL .= $getString;
 }
+*/
 
 if ($authN->isUserAuthenticated($authType)) {
-	header("Location: ".$returnURL);
+	$harmoni->history->goBack("polyphony/login");
+//	header("Location: ".$returnURL);
 }
 // If we aren't authenticated, try to authenticate.
 else {
@@ -35,7 +38,8 @@ else {
 
 	// If they are authenticated, return.
 	if ($authN->isUserAuthenticated($authType)) {
-		header("Location: ".$returnURL);
+		$harmoni->history->goBack("polyphony/login");
+//		header("Location: ".$returnURL);
 	}
 	
 	// Otherwise, print our our failed-login screen:
@@ -56,11 +60,11 @@ else {
 		
 		print "<p>";
 		print _("Log in failed.");
-		print "\n<br /><a href='".$returnURL."'>";
+		print "\n<br /><a href='".$harmoni->history->getReturnURL("polyphony/login")."'>";
 		print _("Go Back");
 		print "</a> ";
 		print _(" or ");
-		print "\n<a href='".MYURL."/auth/login_type/".$harmoni->pathInfoParts[2]."/".implode("/",$currentPathInfo).$getString."'>";
+		print "\n<a href='".$harmoni->request->quickURL("auth","login_type")."'>";
 		print _("Try Again.");
 		print "</p>";
 		

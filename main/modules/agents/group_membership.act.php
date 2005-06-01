@@ -11,7 +11,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_membership.act.php,v 1.22 2005/05/19 15:34:24 thebravecowboy Exp $
+ * @version $Id: group_membership.act.php,v 1.23 2005/06/01 19:33:35 gabeschine Exp $
  */
 
 // Check for our authorization function definitions
@@ -39,13 +39,13 @@ $actionRows =& new Container($yLayout, OTHER, 1);
 $postActionRows =& new Container($yLayout, OTHER, 1);
 
 // In order to preserve proper nesting on the HTML output
-$preActionRows->add(new Block("<form id='memberform' method='post' action='".MYURL."/agents/add_to_group/".implode("/", $harmoni->pathInfoParts)."'>",2), null, null, CENTER, CENTER);
+$preActionRows->add(new Block("<form id='memberform' method='post' action='".$harmoni->request->quickURL("agents","add_to_group")."'>",2), null, null, CENTER, CENTER);
 $postActionRows->add(new Block("</form>",2), null, null, CENTER, CENTER);
 
 $centerPane->add($pageRows, null, null, CENTER , CENTER);
 
 // Intro
-$introHeader =& new Heading("Manage Group Membership", 2);
+$introHeader =& new Heading(_("Manage Group Membership"), 2);
 $pageRows->add($introHeader, "100%", null, LEFT, CENTER);
 
 
@@ -76,7 +76,7 @@ if (count($_GET)) {
 }
 
 // Users header
-$agentHeader =& new Heading("Users", 2);
+$agentHeader =& new Heading(_("Users"), 2);
 $pageRows->add($agentHeader, "100%", null, LEFT, CENTER);
 
 
@@ -86,14 +86,16 @@ $pageRows->add($agentHeader, "100%", null, LEFT, CENTER);
  *********************************************************/
 ob_start();
 
-$self = $_SERVER['PHP_SELF'];
-$lastCriteria = $_REQUEST['search_criteria'];
+$self = $harmoni->request->quickURL();
+$lastCriteria = $harmoni->request->get("search_criteria");
+$search_criteria_name = _n("search_criteria");
+$search_type_name = _n("search_type");
 print _("Search For Users").": ";
 print <<<END
 <form action='$self' method='get'>
 	<div>
-	<input type='text' name='search_criteria' value='$lastCriteria' />
-	<br /><select name='search_type'>
+	<input type='text' name='$search_criteria_name' value='$lastCriteria' />
+	<br /><select name='$search_type_name'>
 END;
 
 $searchTypes =& $agentManager->getAgentSearchTypes();
@@ -103,7 +105,7 @@ while ($searchTypes->hasNext()) {
 						."::".$type->getAuthority()
 						."::".$type->getKeyword());
 	print "\n\t\t<option value='$typeString'";
-	if ($_REQUEST['search_type'] == $typeString)
+	if ($harmoni->request->get("search_type") == $typeString)
 		print " selected='selected'";
 	print ">$typeString</option>";
 }
@@ -126,10 +128,10 @@ $pageRows->add($postActionRows, null, null,CENTER, CENTER);
  * the agent search results
  *********************************************************/
  
-if ($_REQUEST['search_criteria'] && $_REQUEST['search_type']) {
-	$typeParts = explode("::", html_entity_decode($_REQUEST['search_type'], ENT_COMPAT, UTF-8));
+if (($search_criteria = $harmoni->request->get('search_criteria')) && ($search_type = $harmoni->request('search_type'))) {
+	$typeParts = explode("::", html_entity_decode($search_type, ENT_COMPAT, UTF-8));
 	$searchType =& new HarmoniType($typeParts[0], $typeParts[1], $typeParts[2]);
-	$agents =& $agentManager->getAgentsBySearch($_REQUEST['search_criteria'], $searchType);
+	$agents =& $agentManager->getAgentsBySearch($search_criteria, $searchType);
 	
 	print <<<END
 
@@ -399,7 +401,7 @@ function printGroup(& $group) {
 	if ($id->isEqual($everyoneId))
 		print "\n&nbsp; &nbsp; &nbsp;";
 	else
-		print "\n<input type='checkbox' name='".$id->getIdString()."' value='group' />";
+		print "\n<input type='checkbox' name='"._n($id->getIdString())."' value='group' />";
 	
 	print "\n<a title='".htmlspecialchars($groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()." - ".$groupType->getDescription())."'>";
 	print "\n<span style='text-decoration: underline; font-weight: bold;'>".$id->getIdString()." - ".htmlspecialchars($group->getDisplayName())."</span></a>";
@@ -544,8 +546,12 @@ function printMember(& $member) {
 	$id =& $member->getId();
 	
 	$memberType =& $member->getType();
-	print "\n<input type='checkbox' name='".$id->getIdString()."' value='agent' />";
-	print "\n<a href='".MYURL."/agents/edit_agent_details/".$id->getIdString()."?callingFrom=group_membership' title='".htmlspecialchars($memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription())."'>";
+	print "\n<input type='checkbox' name='"._n($id->getIdString())."' value='agent' />";
+//	print "\n<a href='".MYURL."/agents/edit_agent_details/".$id->getIdString()."?callingFrom=group_membership' title='".htmlspecialchars($memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription())."'>";
+	
+//	$harmoni->history->markReturnURL("polyphony/agents/edit_agent_details");
+	
+	print "\n<a href='".$harmoni->request->quickURL("agents","edit_agent_details", array("agent_id"=>$id->getIdString(), "callingFrom"=>"group_membership"))."' title='".htmlspecialchars($memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription())."'>";
 	print "\n<span style='text-decoration: none;'>".$id->getIdString()." - ".htmlspecialchars($member->getDisplayName())."</span></a>";
 	
 	// print out the properties of the Agent

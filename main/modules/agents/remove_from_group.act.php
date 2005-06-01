@@ -10,21 +10,23 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: remove_from_group.act.php,v 1.6 2005/04/07 17:07:51 adamfranco Exp $
+ * @version $Id: remove_from_group.act.php,v 1.7 2005/06/01 19:33:35 gabeschine Exp $
  */
 
-
+$harmoni->request->startNamespace("polyphony/agents");
 
 $agentManager =& Services::getService("Agent");
 $idManager =& Services::getService("Id");
 
 //printpre($_REQUEST);
 
-$id =& $idManager->getId($_REQUEST['destinationgroup']);
+$id =& $idManager->getId($harmoni->request->get('destinationgroup'));
 $destGroup =& $agentManager->getGroup($id);
 
-foreach ($_REQUEST as $idString => $type) {
-
+foreach ($harmoni->request->getKeys() as $idString) {
+	
+	$type = $harmoni->request->get($idString);
+	
 	if ($type == "group") {
 		$id =& $idManager->getId(strval($idString));
 		$member =& $agentManager->getGroup($id);
@@ -37,7 +39,7 @@ foreach ($_REQUEST as $idString => $type) {
 	}	
 }
 
-// Send us back to where we were
-$currentPathInfo = array_slice($harmoni->pathInfoParts, 2);
+$harmoni->request->endNamespace("polyphony/agents");
 
-header("Location: ".MYURL."/".implode("/",$currentPathInfo));
+// send us back to where we were before we started this operation
+$harmoni->history->goBack("polyphony/agents/remove_from_group");

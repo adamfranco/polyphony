@@ -13,9 +13,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.21 2005/04/11 20:03:06 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.22 2005/06/01 19:33:35 gabeschine Exp $
  */
 
+// start our namespace
+$harmoni->request->startNamespace("polyphony/agents");
 
 // Get the Layout compontents. See core/modules/moduleStructure.txt
 // for more info. 
@@ -33,7 +35,7 @@ $actionRows =& new Container($yLayout, OTHER, 1);
 $postActionRows =& new Container($yLayout, OTHER, 1);
 
 // In order to preserve proper nesting on the HTML output
-$preActionRows->add(new Block("<form id='memberform' method='post' action='".MYURL."/agents/add_to_group/".implode("/", $harmoni->pathInfoParts)."'>",2), null, null, CENTER, CENTER);
+$preActionRows->add(new Block("<form id='memberform' method='post' action='".$harmoni->request->quickURL("agents","add_to_group")."'>",2), null, null, CENTER, CENTER);
 $postActionRows->add(new Block("</form>",2), null, null, CENTER, CENTER);
 
 $centerPane->add($pageRows, null, null,CENTER, CENTER);
@@ -44,12 +46,8 @@ $pageRows->add($introHeader, "100%", null, LEFT, CENTER);
 
 $agentManager =& Services::getService("Agent");
 
-// Build a variable to pass around our search terms when expanding
-if (count($_GET)) {
-		$search = "?";
-		foreach ($_GET as $key => $val)
-			$search .= "&".urlencode($key)."=".urlencode($val);
-}
+// pass around our search terms when expanding
+$harmoni->request->passthrough();
 
 // Users header
 $agentHeader =& new Heading(_("Users"), 2);
@@ -62,15 +60,17 @@ $pageRows->addComponent($agentHeader, "100%", null, LEFT, CENTER);
  *********************************************************/
 ob_start();
 
-$self = $_SERVER['PHP_SELF'];
+$self = $harmoni->request->quickURL();
 $lastCriteria = $_REQUEST['search_criteria'];
 $titleString = _("Search For Users").": ";
+$search_criteria_name = _n("search_criteria");
+$search_type_name = _n("search_type");
 print <<<END
 <form id='usersearch' action='$self' method='get'>
 	<div>
 	$titleString
-	<input type='text' name='search_criteria' value='$lastCriteria' />
-	<br /><select name='search_type'>
+	<input type='text' name='$search_criteria_name' value='$lastCriteria' />
+	<br /><select name='$search_type_name'>
 END;
 
 $searchTypes =& $agentManager->getAgentSearchTypes();
@@ -80,14 +80,14 @@ while ($searchTypes->hasNext()) {
 						."::".$type->getAuthority()
 						."::".$type->getKeyword());
 	print "\n\t\t<option value='$typeString'";
-	if ($_REQUEST['search_type'] == $typeString)
+	if ($harmoni->request->get('search_type') == $typeString)
 		print " selected='selected'";
 	print ">$typeString</option>";
 }
 
 	print "\n\t</select>";
 	print "\n\t<br /><input type='submit' value='"._("Search")."' />";
-	print "\n\t<a href='".MYURL."/".implode("/", $harmoni->pathInfoParts)."/'>";
+	print "\n\t<a href='".$harmoni->request->quickURL()."'>";
 	print "\n<input type='button' value='"._("Clear")."' /></a>";
 	print "\n</div>";
 print "\n</form>";
@@ -104,10 +104,10 @@ $pageRows->add($postActionRows, null, null,CENTER, CENTER);
  * the agent search results
  *********************************************************/
  
-if ($_REQUEST['search_criteria'] && $_REQUEST['search_type']) {
-	$typeParts = explode("::", html_entity_decode($_REQUEST['search_type'], ENT_COMPAT, UTF-8));
+if (($search_critera = $harmoni->request->get("search_criteria") && ($search_type = $harmoni->request->get("search_type")) {
+	$typeParts = explode("::", html_entity_decode($search_type, ENT_COMPAT, UTF-8));
 	$searchType =& new HarmoniType($typeParts[0], $typeParts[1], $typeParts[2]);
-	$agents =& $agentManager->getAgentsBySearch($_REQUEST['search_criteria'], $searchType);
+	$agents =& $agentManager->getAgentsBySearch($search_criteria, $searchType);
 	
 	print <<<END
 
@@ -158,8 +158,11 @@ END;
 /*********************************************************
  * All the agents
  *********************************************************/
- 
-$expandAgents = ((in_array("allagents", $harmoni->pathInfoParts))?TRUE:FALSE);
+
+// extract the info on which nodes to expand
+$expandedNodes = explode(",", $harmoni->request->get("expandedNodes"));
+
+$expandAgents = (in_array("allagents", $expandedNodes)?TRUE:FALSE);
 
 // Create a layout for this group using the GroupPrinter
 ob_start();
@@ -177,8 +180,7 @@ print <<<END
 '>
 END;
 
-// Break the path info into parts for the enviroment and parts that
-// designate which nodes to expand.
+/*
 $environmentInfo = array();
 $expandedNodes = array();
 
@@ -190,18 +192,23 @@ for ($i=0; $i<count($harmoni->pathInfoParts); $i++) {
 	else	
 		$environmentInfo[] = $harmoni->pathInfoParts[$i];
 }
-		
+*/
+	
 if ($expandAgents) {
 	$nodesToRemove = array("allagents");
-	$newPathInfo = array_merge($environmentInfo, array_diff($expandedNodes,
-															$nodesToRemove)); 
+	$newNodes = array_diff($expandedNodes, $nodesToRemove);
+	$url =& $harmoni->request->mkURL();
+	$url->set("expandedNodes", implode(",", $newNodes));
 	print "<a style='text-decoration: none;' href='";
-	print MYURL."/".implode("/", $newPathInfo)."/".$search;
+	print $url->write();
 	print "'>-</a>";
 } else {
-	$newPathInfo = array_merge($environmentInfo, $expandedNodes); 
+	$newNodes = $expandedNodes;
+	$newNodes[] = "allagents";
+	$url =& $harmoni->request->mkURL();
+	$url->set("expandedNodes", implode(",",$newNodes));
 	print "<a style='text-decoration: none;' href='";
-	print MYURL."/".implode("/", $newPathInfo)."/allagents/".$search;
+	print $url->write();
 	print "'>+</a>";
 }
 print "</div>";
@@ -348,6 +355,9 @@ END;
 /*********************************************************
  * Return the main layout.
  *********************************************************/
+
+$harmoni->request->endNamespace("polyphony/agents");
+ 
 return $mainScreen;
 
 
@@ -369,12 +379,12 @@ return $mainScreen;
 	$id =& $group->getId();
 	$groupType =& $group->getType();
 	
-	print "\n<input type='checkbox' name='".$id->getIdString()."' value='group' />";
+	print "\n<input type='checkbox' name='"._n($id->getIdString())."' value='group' />";
 	print "\n<a title='".htmlspecialchars($groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()." - ".$groupType->getDescription())."'>";
 	print "\n<span style='text-decoration: underline; font-weight: bold;'>".$id->getIdString()." - ".htmlspecialchars($group->getDisplayName())."</span></a>";
 	
 	print "\n <input type='button' value='"._("Add checked to this Group")."'";
-	print " onclick='Javascript:submitCheckedToGroup(\"".$id->getIdString()."\")'";
+	print " onclick='Javascript:submitCheckedToGroup(\""._n($id->getIdString())."\")'";
 	print " />";
 	
 	print "\n - <em>".htmlspecialchars($group->getDescription())."</em>";
@@ -397,7 +407,7 @@ END;
 	while($groups->hasNext()) {
 		$child =& $groups->next();
 		$childId =& $child->getId();
-		print (($i)?", ":"")."'".$childId->getIdString()."'";
+		print (($i)?", ":"")."'"._n($childId->getIdString())."'";
 		$i++;
 	}
 
@@ -424,7 +434,7 @@ END;
 	while($groups->hasNext()) {
 		$child =& $groups->next();
 		$childId =& $child->getId();
-		print (($i)?", ":"")."'".$childId->getIdString()."'";
+		print (($i)?", ":"")."'"._n($childId->getIdString())."'";
 		$i++;
 	}
 
@@ -451,7 +461,7 @@ END;
 	while($agents->hasNext()) {
 		$child =& $agents->next();
 		$childId =& $child->getId();
-		print (($i)?", ":"")."'".$childId->getIdString()."'";
+		print (($i)?", ":"")."'"._n($childId->getIdString())."'";
 		$i++;
 	}
 
@@ -485,7 +495,7 @@ END;
 function printMember(& $member) {
 	$id =& $member->getId();
 	$memberType =& $member->getType();
-	print "<input type='checkbox' name='".$id->getIdString()."' value='agent' />";
+	print "<input type='checkbox' name='"._n($id->getIdString())."' value='agent' />";
 	print "<a title='".htmlspecialchars($memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription())."'>";
 	print "<span style='text-decoration: underline;'>".$id->getIdString()." - ".htmlspecialchars($member->getDisplayName())."</span></a>";
 }

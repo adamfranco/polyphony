@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.3 2005/05/19 15:34:24 thebravecowboy Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.4 2005/06/01 19:33:35 gabeschine Exp $
  */
  
 // Get the Layout components. See core/modules/moduleStructure.txt
@@ -38,7 +38,7 @@ print "<div style='margin-left: 15px'>";
 if($furtherAction){
 	$furtherAction($agent, $harmoni->pathInfoParts);
 }else{
-	$_SESSION["callingList"] = $_REQUEST["callingFrom"];
+	$_SESSION["callingList"] = $harmoni->request->get("callingFrom");
 	viewAgentDetails($agent, $harmoni->pathInfoParts);
 	
 }
