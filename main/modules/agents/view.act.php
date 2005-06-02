@@ -13,7 +13,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.23 2005/06/02 18:09:00 gabeschine Exp $
+ * @version $Id: view.act.php,v 1.24 2005/06/02 21:32:02 adamfranco Exp $
  */
 
 // start our namespace
@@ -63,8 +63,8 @@ ob_start();
 $self = $harmoni->request->quickURL();
 $lastCriteria = $_REQUEST['search_criteria'];
 $titleString = _("Search For Users").": ";
-$search_criteria_name = _n("search_criteria");
-$search_type_name = _n("search_type");
+$search_criteria_name = RequestContext::name("search_criteria");
+$search_type_name = RequestContext::name("search_type");
 print <<<END
 <form id='usersearch' action='$self' method='get'>
 	<div>
@@ -379,12 +379,12 @@ return $mainScreen;
 	$id =& $group->getId();
 	$groupType =& $group->getType();
 	
-	print "\n<input type='checkbox' name='"._n($id->getIdString())."' value='group' />";
+	print "\n<input type='checkbox' name='".RequestContext::name($id->getIdString())."' value='group' />";
 	print "\n<a title='".htmlspecialchars($groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()." - ".$groupType->getDescription())."'>";
 	print "\n<span style='text-decoration: underline; font-weight: bold;'>".$id->getIdString()." - ".htmlspecialchars($group->getDisplayName())."</span></a>";
 	
 	print "\n <input type='button' value='"._("Add checked to this Group")."'";
-	print " onclick='Javascript:submitCheckedToGroup(\""._n($id->getIdString())."\")'";
+	print " onclick='Javascript:submitCheckedToGroup(\"".RequestContext::name($id->getIdString())."\")'";
 	print " />";
 	
 	print "\n - <em>".htmlspecialchars($group->getDescription())."</em>";
@@ -407,7 +407,7 @@ END;
 	while($groups->hasNext()) {
 		$child =& $groups->next();
 		$childId =& $child->getId();
-		print (($i)?", ":"")."'"._n($childId->getIdString())."'";
+		print (($i)?", ":"")."'".RequestContext::name($childId->getIdString())."'";
 		$i++;
 	}
 
@@ -434,7 +434,7 @@ END;
 	while($groups->hasNext()) {
 		$child =& $groups->next();
 		$childId =& $child->getId();
-		print (($i)?", ":"")."'"._n($childId->getIdString())."'";
+		print (($i)?", ":"")."'".RequestContext::name($childId->getIdString())."'";
 		$i++;
 	}
 
@@ -461,7 +461,7 @@ END;
 	while($agents->hasNext()) {
 		$child =& $agents->next();
 		$childId =& $child->getId();
-		print (($i)?", ":"")."'"._n($childId->getIdString())."'";
+		print (($i)?", ":"")."'".RequestContext::name($childId->getIdString())."'";
 		$i++;
 	}
 
@@ -495,7 +495,7 @@ END;
 function printMember(& $member) {
 	$id =& $member->getId();
 	$memberType =& $member->getType();
-	print "<input type='checkbox' name='"._n($id->getIdString())."' value='agent' />";
+	print "<input type='checkbox' name='".RequestContext::name($id->getIdString())."' value='agent' />";
 	print "<a title='".htmlspecialchars($memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription())."'>";
 	print "<span style='text-decoration: underline;'>".$id->getIdString()." - ".htmlspecialchars($member->getDisplayName())."</span></a>";
 }

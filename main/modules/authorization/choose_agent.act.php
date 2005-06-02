@@ -12,7 +12,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.23 2005/06/02 20:11:47 gabeschine Exp $
+ * @version $Id: choose_agent.act.php,v 1.24 2005/06/02 21:32:15 adamfranco Exp $
  */
 
 // start our namespace
@@ -118,8 +118,8 @@ ob_start();
 
 $self = $harmoni->request->quickURL();
 $lastCriteria = $harmoni->request->get('search_criteria');
-$search_criteria_name = _n('search_criteria');
-$search_type_name = _n('search_type');
+$search_criteria_name = RequestContext::name('search_criteria');
+$search_type_name = RequestContext::name('search_type');
 print _("Search For Users").": ";
 print <<<END
 <form action='$self' method='post'>
@@ -271,7 +271,7 @@ return $mainScreen;
 function printGroup(& $group) {
 	$id =& $group->getId();
 	$groupType =& $group->getType();
-	print "<input type='radio' name='"._n("agent")."' value='".$id->getIdString()."' />";
+	print "<input type='radio' name='".RequestContext::name("agent")."' value='".$id->getIdString()."' />";
 	print "<a title='".$groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()."'>";
 	print "<span style='text-decoration: underline; font-weight: bold;'>".$id->getIdString()." - ".$group->getDisplayName()."</span></a>";	
 	print " - <em>".$groupType->getDescription()."</em>";
@@ -294,7 +294,7 @@ function printMember(& $member) {
 	$link = $harmoni->request->quickURL("agents","edit_agent_details",array("agentId"=>$agentIdString));
 	$id =& $member->getId();
 	$memberType =& $member->getType();
-	print "<input type='radio' name='"._n("agent")."' value='".$id->getIdString()."' />";
+	print "<input type='radio' name='".RequestContext::name("agent")."' value='".$id->getIdString()."' />";
 	print "<a title='".$memberType->getAuthority()." :: ".$memberType->getDomain()." :: ".$memberType->getKeyword()."' href='$link'>";
 	print "<span style='text-decoration: underline;'>".$id->getIdString()." - ".$member->getDisplayName()."</span></a>";
 	print " - <em>".$memberType->getDescription()."</em>";

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.5 2005/06/02 20:11:47 gabeschine Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.6 2005/06/02 21:32:01 adamfranco Exp $
  */
  
 $harmoni->request->startNamespace("polyphony-agents"); 
@@ -241,7 +241,7 @@ function editAgent(&$agent){
 	print "<tr bgcolor='#FFFFFF'>
 		  	  <form action='".$url->write("furtherAction","updateDisplayName")."' method='post'>
 			  <td>Display name</td>
-			  <td><input type='text' name='"._n("display_name")."' value ='".$agent->getDisplayName()."' /></td>
+			  <td><input type='text' name='".RequestContext::name("display_name")."' value ='".$agent->getDisplayName()."' /></td>
 			  <td>Immutable Reality</td>
 			  <td><input type='submit' value='Change Display Name' /></td>
 			  <td>N/A</td>
@@ -257,11 +257,11 @@ function editAgent(&$agent){
 			
 		print "<tr bgcolor='#FFFFFF'>
 				<form action='".$url->write("furtherAction","updateProperty")."' method='post'>
-				<td><input type='hidden' name='"._n("property_name")."' value='$key' />$key</td>
-				<td><input name='"._n('property_value')."' value='{$property['value']}' /></td>
+				<td><input type='hidden' name='".RequestContext::name("property_name")."' value='$key' />$key</td>
+				<td><input name='".RequestContext::name('property_value')."' value='{$property['value']}' /></td>
 				<td>
 				
-				<input type='hidden' value='{$property['type']}' name='"._n("property_type")."' />{$typeParts[2]}
+				<input type='hidden' value='{$property['type']}' name='".RequestContext::name("property_type")."' />{$typeParts[2]}
 				</td>
 				<td>
 				<input type='submit' value='Update' />
@@ -269,8 +269,8 @@ function editAgent(&$agent){
 				</form>
 				<td>
 				<form action='".$url->write("furtherAction","deleteProperty")."' method='post'><input type='submit' value='Delete Property' >
-				<input type='hidden' name='"._n("property_type")."' value='{$property['type']}' />
-				<input type='hidden' name='"._n("property_name")."' value='$key' />
+				<input type='hidden' name='".RequestContext::name("property_type")."' value='{$property['type']}' />
+				<input type='hidden' name='".RequestContext::name("property_name")."' value='$key' />
 				</form>
 				</td>
 				</tr>";
@@ -283,14 +283,14 @@ function editAgent(&$agent){
 			</td>
 			<tr bgcolor='#FFFFFF'>
 			<td>
-			<input type='text' name='"._n("name")."' />
+			<input type='text' name='".RequestContext::name("name")."' />
 			
 			</td>
 			<td>
-			<input type='text' name='"._n("value")."' />
+			<input type='text' name='".RequestContext::name("value")."' />
 			</td>
 			<td>
-			<input type='hidden' name='"._n("property_type")."' value='".$type->getDomain()."::".$type->getAuthority()."::".$type->getKeyword()."' />
+			<input type='hidden' name='".RequestContext::name("property_type")."' value='".$type->getDomain()."::".$type->getAuthority()."::".$type->getKeyword()."' />
 			Type
 			</td>
 			<td>
@@ -316,11 +316,11 @@ function editAgent(&$agent){
  */
 
 function updateProperty(&$agent){
-	$propertyKey = _v("property_name");
-	$propertyValue = _v("property_value");
+	$propertyKey = RequestContext::value("property_name");
+	$propertyValue = RequestContext::value("property_value");
 	
 	//break the type so we can create an object
-	$propertyTypeArray = explode("::",_v("property_type"));
+	$propertyTypeArray = explode("::",RequestContext::value("property_type"));
 	
 	//create type object
 	$propertyType =& new HarmoniType($propertyTypeArray[0], $propertyTypeArray[1], $propertyTypeArray[2]);
@@ -344,11 +344,11 @@ function updateProperty(&$agent){
  */
  
  function addProperty(&$agent){
- 	$propertyName = _v('name');
- 	$propertyValue = _v('value');
+ 	$propertyName = RequestContext::value('name');
+ 	$propertyValue = RequestContext::value('value');
  	
  	//create the type object
- 	$typeArray = explode("::", _v('property_type'));
+ 	$typeArray = explode("::", RequestContext::value('property_type'));
  	$type =& new HarmoniType($typeArray[0], $typeArray[1], $typeArray[2]);
  	
  	if($agent->addProperty($type, $propertyName, $propertyValue)){
@@ -368,8 +368,8 @@ function updateProperty(&$agent){
  */
  
  function deleteProperty(&$agent){
- 	$propertyName = _v('property_name');
- 	$propertyType = explode("::", _v('property_type'));
+ 	$propertyName = RequestContext::value('property_name');
+ 	$propertyType = explode("::", RequestContext::value('property_type'));
  	
  	$type =& new HarmoniType($propertyType[0], $propertyType[1], $propertyType[2]);
 
@@ -390,13 +390,13 @@ function updateProperty(&$agent){
   */
   
   function updateDisplayName(&$agent){
-  	if(!_v('display_name')){
+  	if(!RequestContext::value('display_name')){
   		print "If you want to update the display name you'll need to enter a new one!";
 		editAgent($agent);
 		return false;
 	}
 		
-  	if($agent->updateDisplayName(_v('display_name'))){
+  	if($agent->updateDisplayName(RequestContext::value('display_name'))){
   		print "Display name changed to ".$agent->getDisplayName();
   	}else{
   		print "Failed to change display name.";

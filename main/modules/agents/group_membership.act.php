@@ -11,7 +11,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_membership.act.php,v 1.23 2005/06/01 19:33:35 gabeschine Exp $
+ * @version $Id: group_membership.act.php,v 1.24 2005/06/02 21:32:01 adamfranco Exp $
  */
 
 // Check for our authorization function definitions
@@ -88,8 +88,8 @@ ob_start();
 
 $self = $harmoni->request->quickURL();
 $lastCriteria = $harmoni->request->get("search_criteria");
-$search_criteria_name = _n("search_criteria");
-$search_type_name = _n("search_type");
+$search_criteria_name = RequestContext::name("search_criteria");
+$search_type_name = RequestContext::name("search_type");
 print _("Search For Users").": ";
 print <<<END
 <form action='$self' method='get'>
@@ -401,7 +401,7 @@ function printGroup(& $group) {
 	if ($id->isEqual($everyoneId))
 		print "\n&nbsp; &nbsp; &nbsp;";
 	else
-		print "\n<input type='checkbox' name='"._n($id->getIdString())."' value='group' />";
+		print "\n<input type='checkbox' name='".RequestContext::name($id->getIdString())."' value='group' />";
 	
 	print "\n<a title='".htmlspecialchars($groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()." - ".$groupType->getDescription())."'>";
 	print "\n<span style='text-decoration: underline; font-weight: bold;'>".$id->getIdString()." - ".htmlspecialchars($group->getDisplayName())."</span></a>";
@@ -546,7 +546,7 @@ function printMember(& $member) {
 	$id =& $member->getId();
 	
 	$memberType =& $member->getType();
-	print "\n<input type='checkbox' name='"._n($id->getIdString())."' value='agent' />";
+	print "\n<input type='checkbox' name='".RequestContext::name($id->getIdString())."' value='agent' />";
 //	print "\n<a href='".MYURL."/agents/edit_agent_details/".$id->getIdString()."?callingFrom=group_membership' title='".htmlspecialchars($memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription())."'>";
 	
 //	$harmoni->history->markReturnURL("polyphony/agents/edit_agent_details");
