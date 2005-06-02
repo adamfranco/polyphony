@@ -12,7 +12,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.22 2005/06/02 18:09:01 gabeschine Exp $
+ * @version $Id: choose_agent.act.php,v 1.23 2005/06/02 20:11:47 gabeschine Exp $
  */
 
 // start our namespace
@@ -290,6 +290,7 @@ function printMember(& $member) {
 	$agentId =& $member->getId();
 	$agentIdString= $agentId->getIdString();
 	
+	$harmoni->history->markReturnURL("polyphony/agents/edit_agent_details");
 	$link = $harmoni->request->quickURL("agents","edit_agent_details",array("agentId"=>$agentIdString));
 	$id =& $member->getId();
 	$memberType =& $member->getType();

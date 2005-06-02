@@ -12,9 +12,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_authorizations.act.php,v 1.12 2005/04/11 20:03:06 adamfranco Exp $
+ * @version $Id: browse_authorizations.act.php,v 1.13 2005/06/02 20:11:47 gabeschine Exp $
  */
 
+$harmoni->request->startNamespace("polyphony-agents");
 // Check for our authorization function definitions
 if (!defined("AZ_VIEW_AZS"))
 	throwError(new Error("You must define an id for AZ_VIEW_AZS", "polyphony.authorizations", true));
@@ -31,7 +32,6 @@ $centerPane =& $harmoni->getAttachedData('centerPane');
 // Intro
 $idManager =& Services::getService("Id");
 $authZManager =& Services::getService("AuthZ");
-$GLOBALS["harmoni"] =& $harmoni;
 
 // Layout
 $yLayout =& new YLayout();
@@ -40,7 +40,7 @@ $centerPane->add($actionRows, null, null, CENTER, CENTER);
 
 
 // Intro message
-$introHeader =& new Heading("Browse Authorizations", 2);
+$introHeader =& new Heading(_("Browse Authorizations"), 2);
  											
 $intro =& new Block("&nbsp &nbsp "._("Below is a listing of all of the Users/Groups who are authorized to do various functions in the system. Click on a name to edit the authorizations for that User/Group")."<br /><br />",2);
 
@@ -52,7 +52,7 @@ ob_start();
 print "<table width='100%'><tr><td align='left'>";
 // print "<a href='".MYURL."/authorization/choose_agent'><button><-- "._("Choose a different User/Group to edit")."</button></a>";
 print "</td><td align='right'>";
-print "<a href='".MYURL."/admin/main'><button>"._("Return to the Admin Tools")."</button></a>";
+print "<a href='".$harmoni->request->quickURL("admin","main")."'><button>"._("Return to the Admin Tools")."</button></a>";
 print "</td></tr></table>";
 
 $nav =& new Block(ob_get_contents(), 2);
@@ -95,6 +95,8 @@ while ($hierarchyIds->hasNext()) {
 
 // Buttons to go back to edit auths for a different user, or to go home
 $actionRows->add($nav, "100%", null, RIGHT, CENTER);
+
+$harmoni->request->endNamespace();
 
 return $mainScreen;
 
@@ -177,15 +179,12 @@ function &getChildQualifiers(& $qualifier) {
  */
 function printEditOptions(& $qualifier) {
 	$qualifierId =& $qualifier->getId();
-	$harmoni =& $GLOBALS["harmoni"];
+	$harmoni =& Harmoni::instance();
 	$authZManager =& Services::getService("AuthZ");
 	$agentManager =& Services::getService("Agent");
 	
-	$expandedNodes = array_slice($harmoni->pathInfoParts, 2);
-	if (count ($expandedNodes)) 
-		$additionalPathInfo = implode("/", $expandedNodes)."/";
-	else
-		$additionalPathInfo = "";
+	$expandedNodes = array();
+	if ($tmp = $harmoni->request->get("expandedNodes")) $expandedNodes = explode(",", $tmp);
 	
 	$functionTypes =& $authZManager->getFunctionTypes();
 	print "\n<table>";
@@ -222,10 +221,12 @@ function printEditOptions(& $qualifier) {
 								
 				print "<span style='white-space: nowrap'>";
 				
-				print "<a href='".MYURL."/authorization/edit_authorizations/";
-				print $additionalPathInfo;
-				print "?agent=".$agentId->getIdString();
-				print "' title='Edit Authorizations for this User/Group'>";
+				print "<a href='"
+					.$harmoni->request->quickURL(
+						"authorization",
+						"edit_authorizations",
+						array("agent"=>$agent->getIdString())).
+				"' title='Edit Authorizations for this User/Group'>";
 				
 				if ($agentManager->isAgent($agentId)) {
 					$agent =& $agentManager->getAgent($agentId);
