@@ -5,58 +5,45 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login_type.act.php,v 1.7 2005/06/02 18:09:00 gabeschine Exp $
+ * @version $Id: login_type.act.php,v 1.8 2005/06/02 20:18:07 adamfranco Exp $
  */
 
 $isAuthenticated = FALSE;
 $authN =& Services::getService("AuthN");
-$harmoni->request->startNamespace("polyphony");
-$typeString = urldecode($harmoni->request->get("type"));
-$harmoni->request->endNamespace();
-$typeParts = explode("::", $typeString);
-$authType = new Type ($typeParts[0],$typeParts[1],$typeParts[2]);
 
-/*
-$currentPathInfo = array_slice($harmoni->pathInfoParts, 3);
-$returnURL = MYURL."/".implode("/",$currentPathInfo);
-$getString = "";
-if (count($_GET)) {
-	$getString .= "?";
-	foreach ($_GET as $name => $value) {
-		$getString .= "&".$name."=".$value;
-	}
-	$returnURL .= $getString;
-}
-*/
+$harmoni->request->startNamespace("polyphony");
+$authType =& HarmoniType::stringToType(urldecode($harmoni->request->get("type")));
+$harmoni->request->endNamespace();
 
 if ($authN->isUserAuthenticated($authType)) {
 	$harmoni->history->goBack("polyphony/login");
-//	header("Location: ".$returnURL);
 }
 // If we aren't authenticated, try to authenticate.
 else {
+	$harmoni->request->startNamespace("polyphony");
+	
+	$currentUrl =& $harmoni->request->mkURL();
+	$currentUrl->setValue("type", $harmoni->request->get("type"));
+	$harmoni->history->markReturnURL("polyphony/authentication", $currentUrl);
+		
+	$harmoni->request->endNamespace();
+	
 	// Try authenticating with this type
 	$authN->authenticateUser($authType);
 
 	// If they are authenticated, return.
 	if ($authN->isUserAuthenticated($authType)) {
 		$harmoni->history->goBack("polyphony/login");
-//		header("Location: ".$returnURL);
 	}
 	
 	// Otherwise, print our our failed-login screen:
 	else {
-		// Get the Layout compontents. See core/modules/moduleStructure.txt
-		// for more info. 
-		$harmoni->ActionHandler->execute("window", "screen");
-		$mainScreen =& $harmoni->getAttachedData('mainScreen');
-		$statusBar =& $harmoni->getAttachedData('statusBar');
-		$centerPane =& $harmoni->getAttachedData('centerPane');
 		
 		// Set our textdomain
 		$defaultTextDomain = textdomain(NULL);
 		textdomain("polyphony");
 		
+		$harmoni->request->startNamespace("polyphony");
 		
 		ob_start();
 		
@@ -66,18 +53,19 @@ else {
 		print _("Go Back");
 		print "</a> ";
 		print _(" or ");
-		print "\n<a href='".$harmoni->request->quickURL("auth","login_type")."'>";
+		print "\n<a href='".$harmoni->history->getReturnURL("polyphony/authentication")."'>";
 		print _("Try Again.");
 		print "</p>";
 		
 		$introText =& new Block(ob_get_contents(), 2);
 		ob_end_clean();
-		$centerPane->add($introText, null, null, CENTER, CENTER);
+		
+		$harmoni->request->endNamespace();
 		
 		// go back to the default text domain
 		textdomain($defaultTextDomain);
 		
 		// return the main layout.
-		return $mainScreen;
+		return $introText;
 	}
 }

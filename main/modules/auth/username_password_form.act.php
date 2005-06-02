@@ -5,44 +5,29 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: username_password_form.act.php,v 1.5 2005/04/12 21:18:05 adamfranco Exp $
+ * @version $Id: username_password_form.act.php,v 1.6 2005/06/02 20:18:08 adamfranco Exp $
  */
 
-// Get the Layout compontents. See core/modules/moduleStructure.txt
-// for more info. 
-$harmoni->ActionHandler->execute("window", "screen");
-$mainScreen =& $harmoni->getAttachedData('mainScreen');
-$statusBar =& $harmoni->getAttachedData('statusBar');
-$centerPane =& $harmoni->getAttachedData('centerPane');
+require_once(HARMONI."GUIManager/Components/Block.class.php");
 
-
-// Get info to send back to where we were on login
-$currentPathInfo = array();
-for ($i = 2; $i < count($harmoni->pathInfoParts); $i++) {
-	$currentPathInfo[] = $harmoni->pathInfoParts[$i];
-} 
 
 // Set our textdomain
 $defaultTextDomain = textdomain(NULL);
 textdomain("polyphony");
 ob_start();
 
+$harmoni->request->startNamespace("harmoni-authentication");
 
-
-$action = MYURL."/".implode("/",array_slice($harmoni->pathInfoParts, 2));
-if (count($_GET)) {
-	$action .= "?";
-	foreach ($_GET as $name => $value) {
-		$action .= "&".$name."=".$value;
-	}
-}
+$action = $harmoni->history->getReturnURL("polyphony/authentication");
+$usernameField = $harmoni->request->getName("username");
+$passwordField = $harmoni->request->getName("password");
 $usernameText = _("Username");
 $passwordText = _("Password");
 print<<<END
 
 <center><form name='login' action='$action' method='post'>
-	$usernameText: <input type='text' name='username' />
-	<br />$passwordText: <input type='password' name='password' />
+	$usernameText: <input type='text' name='$usernameField' />
+	<br />$passwordText: <input type='password' name='$passwordField' />
 	<br /><input type='submit' />
 </form></center>
 
@@ -51,10 +36,11 @@ END;
 
 $introText =& new Block(ob_get_contents(), 2);
 ob_end_clean();
-$centerPane->add($introText, null, null, CENTER, CENTER);
+
+$harmoni->request->endNamespace();
 
 // go back to the default text domain
 textdomain($defaultTextDomain);
 
 // return the main layout.
-return $mainScreen;
+return $introText;
