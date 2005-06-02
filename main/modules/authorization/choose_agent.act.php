@@ -12,9 +12,12 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.21 2005/05/19 17:26:53 thebravecowboy Exp $
+ * @version $Id: choose_agent.act.php,v 1.22 2005/06/02 18:09:01 gabeschine Exp $
  */
 
+// start our namespace
+$harmoni->request->startNamespace("polyphony-agents");
+$harmoni->request->passthrough();
 
 // Get the Layout compontents. See core/modules/moduleStructure.txt
 // for more info. 
@@ -76,7 +79,7 @@ print<<<END
 </script>
 
 END;
-print "<form id='chooseform' method='get' action='".MYURL."/authorization/edit_authorizations/'>";
+print "<form id='chooseform' method='post' action='".$harmoni->request->quickURL("authorization","edit_authorizations")."'>";
 
 $preActionRows->add(new Block(ob_get_contents(),2), null, null, CENTER, CENTER);
 ob_end_clean();
@@ -85,12 +88,12 @@ $postActionRows->add(new Block("</form>",2),null,null,CENTER, CENTER);
 $centerPane->add($pageRows, null, null, CENTER, TOP);
 
 // Intro
-$introHeader =& new Heading("Edit Authorizations for which User/Group?", 2);
+$introHeader =& new Heading(_("Edit Authorizations for which User/Group?"), 2);
 $pageRows->add($introHeader, "100%", null, LEFT, CENTER);
 
 ob_start();
 print "<table width='100%'><tr><td align='left'>";
-print "<a href='".MYURL."/admin/main'><button>"._("Return to the Admin Tools")."</button></a>";
+print "<a href='".$harmoni->request->quickURL("admin","main")."'><button>"._("Return to the Admin Tools")."</button></a>";
 print "</td><td align='right'>";
 print "<input type='button'";
 print " onclick='Javascript:submitAgentChoice()'";
@@ -113,14 +116,16 @@ $pageRows->add($agentHeader, "100%", null, LEFT, CENTER);
  *********************************************************/
 ob_start();
 
-$self = $_SERVER['PHP_SELF'];
-$lastCriteria = $_REQUEST['search_criteria'];
+$self = $harmoni->request->quickURL();
+$lastCriteria = $harmoni->request->get('search_criteria');
+$search_criteria_name = _n('search_criteria');
+$search_type_name = _n('search_type');
 print _("Search For Users").": ";
 print <<<END
-<form action='$self' method='get'>
+<form action='$self' method='post'>
 	<div>
-	<input type='text' name='search_criteria' value='$lastCriteria' />
-	<br /><select name='search_type'>
+	<input type='text' name='$search_criteria_name' value='$lastCriteria' />
+	<br /><select name='$search_type_name'>
 END;
 
 $searchTypes =& $agentManager->getAgentSearchTypes();
@@ -130,14 +135,14 @@ while ($searchTypes->hasNext()) {
 						."::".$type->getAuthority()
 						."::".$type->getKeyword();
 	print "\n\t\t<option value='".htmlentities($typeString, ENT_QUOTES)."'";
-	if ($_REQUEST['search_type'] == $typeString)
+	if ($harmoni->request->get("search_type") == $typeString)
 		print " selected='selected'";
 	print ">".htmlentities($typeString)."</option>";
 }
 
 	print "\n\t</select>";
 	print "\n\t<br /><input type='submit' value='"._("Search")."' />";
-	print "\n\t<a href='".MYURL."/".implode("/", $harmoni->pathInfoParts)."/'>";
+	print "\n\t<a href='".$harmoni->request->quickURL()."'>";
 	print "\n\t\t<input type='button' value='"._("Clear")."' />\n\t</a>";
 print "\n</div>\n</form>";
 
@@ -151,10 +156,12 @@ $pageRows->add($postActionRows, null, null, CENTER, CENTER);
  * the agent search results
  *********************************************************/
  
-if ($_REQUEST['search_criteria'] && $_REQUEST['search_type']) {
-	$typeParts = explode("::", $_REQUEST['search_type']);
+$search_criteria = $harmoni->request->get("search_criteria");
+$search_type = $harmoni->request->get("search_type");
+if ($search_criteria && $search_type) {
+	$typeParts = explode("::", $search_type);
 	$searchType =& new HarmoniType($typeParts[0], $typeParts[1], $typeParts[2]);
-	$agents =& $agentManager->getAgentsBySearch($_REQUEST['search_criteria'], $searchType);
+	$agents =& $agentManager->getAgentsBySearch($search_criteria, $searchType);
 	
 	print <<<END
 
@@ -206,7 +213,7 @@ END;
  *********************************************************/
 
 // Users header
-$agentHeader =& new Heading("Groups", 2);
+$agentHeader =& new Heading(_("Groups"), 2);
 $actionRows->add($agentHeader, "100%", null, LEFT, CENTER);
 
 // Loop through all of the Groups and figure out which ones are childen of
@@ -246,6 +253,7 @@ while ($groups->hasNext()) {
 }
 $actionRows->add($submit, "100%", null, LEFT, CENTER);
 
+$harmoni->request->endNamespace();
 
 // Return the main layout.
 return $mainScreen;
@@ -263,7 +271,7 @@ return $mainScreen;
 function printGroup(& $group) {
 	$id =& $group->getId();
 	$groupType =& $group->getType();
-	print "<input type='radio' name='agent' value='".$id->getIdString()."' />";
+	print "<input type='radio' name='"._n("agent")."' value='".$id->getIdString()."' />";
 	print "<a title='".$groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()."'>";
 	print "<span style='text-decoration: underline; font-weight: bold;'>".$id->getIdString()." - ".$group->getDisplayName()."</span></a>";	
 	print " - <em>".$groupType->getDescription()."</em>";
@@ -278,14 +286,14 @@ function printGroup(& $group) {
  * @ignore
  */
 function printMember(& $member) {
-			
+	$harmoni =& Harmoni::instance();
 	$agentId =& $member->getId();
 	$agentIdString= $agentId->getIdString();
 	
-	$link = MYURL."/agents/edit_agent_details/".$agentIdString."/";
+	$link = $harmoni->request->quickURL("agents","edit_agent_details",array("agentId"=>$agentIdString));
 	$id =& $member->getId();
 	$memberType =& $member->getType();
-	print "<input type='radio' name='agent' value='".$id->getIdString()."' />";
+	print "<input type='radio' name='"._n("agent")."' value='".$id->getIdString()."' />";
 	print "<a title='".$memberType->getAuthority()." :: ".$memberType->getDomain()." :: ".$memberType->getKeyword()."' href='$link'>";
 	print "<span style='text-decoration: underline;'>".$id->getIdString()." - ".$member->getDisplayName()."</span></a>";
 	print " - <em>".$memberType->getDescription()."</em>";

@@ -5,12 +5,14 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login_type.act.php,v 1.6 2005/06/01 19:33:51 gabeschine Exp $
+ * @version $Id: login_type.act.php,v 1.7 2005/06/02 18:09:00 gabeschine Exp $
  */
 
 $isAuthenticated = FALSE;
 $authN =& Services::getService("AuthN");
-$typeString = urldecode($harmoni->request->get("polyphony/type"));
+$harmoni->request->startNamespace("polyphony");
+$typeString = urldecode($harmoni->request->get("type"));
+$harmoni->request->endNamespace();
 $typeParts = explode("::", $typeString);
 $authType = new Type ($typeParts[0],$typeParts[1],$typeParts[2]);
 

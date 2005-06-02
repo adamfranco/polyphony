@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: GroupPrinter.class.php,v 1.8 2005/05/19 17:26:53 thebravecowboy Exp $
+ * @version $Id: GroupPrinter.class.php,v 1.9 2005/06/02 18:09:00 gabeschine Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: GroupPrinter.class.php,v 1.8 2005/05/19 17:26:53 thebravecowboy Exp $
+ * @version $Id: GroupPrinter.class.php,v 1.9 2005/06/02 18:09:00 gabeschine Exp $
  * @since 11/11/04
  */
 
@@ -41,26 +41,11 @@ class GroupPrinter {
 		// Get a string of our groupIds
 		$groupId =& $group->getId();
 		
-		// Build a variable to pass around our get terms when expanding
-		if (count($_GET)) {
-				$get = "?";
-				foreach ($_GET as $key => $val)
-					$get .= "&".urlencode($key)."=".urlencode($val);
-		}
-		
 		// Break the path info into parts for the enviroment and parts that
 		// designate which groups to expand.
 		$environmentInfo = array();
 		$expandedGroups = array();
-		
-		for ($i=0; $i<count($harmoni->pathInfoParts); $i++) {
-			// If the index equals or is after our starting key
-			// it designates an expanded groupId.
-			if ($i >= $startingPathInfoKey)
-				$expandedGroups[] = $harmoni->pathInfoParts[$i];
-			else	
-				$environmentInfo[] = $harmoni->pathInfoParts[$i];
-		}
+		if ($tmp = $harmoni->request->get("expandedGroups")) $expandedGroups = explode(",", $tmp);
 		
 		print "\n\n<table>\n\t<tr><td valign='top'>";
 		
@@ -87,17 +72,25 @@ class GroupPrinter {
 			// Show option to collapse the list.		
 			if (in_array($groupId->getIdString(), $expandedGroups)) {
 				$groupsToRemove = array($groupId->getIdString());
-				$newPathInfo = array_merge($environmentInfo, array_diff($expandedGroups,
-																		$groupsToRemove)); 
+				$newGroups = array_diff($expandedGroups, $groupsToRemove); 
+				$url =& $harmoni->request->mkURL();
+				$url->setValue("expandedGroups", implode(",",$newGroups));
 				print "<a style='text-decoration: none;' href='";
-				print htmlentities(MYURL."/".implode("/", $newPathInfo)."/".$get, ENT_QUOTES);
+//				print htmlentities(MYURL."/".implode("/", $newPathInfo)."/".$get, ENT_QUOTES);
+				print $url->write();
 				print "'>-</a>";
 			
 			// The group is not already expanded.  Show option to expand.	
 			} else { 
-				$newPathInfo = array_merge($environmentInfo, $expandedGroups); 
+				$newGroups = $expandedGroups;
+				$newGroups[] = $groupId->getIdString();
+//				$newPathInfo = array_merge($environmentInfo, $expandedGroups); 
 				print "<a style='text-decoration: none;' href='";
-				print htmlentities(MYURL."/".implode("/", $newPathInfo)."/".$groupId->getIdString()."/".$get, ENT_QUOTES);
+				$url =& $harmoni->request->mkURL();
+				$url->setValue("expandedGroups", implode(",", $newGroups));
+//				print htmlentities(MYURL."/".implode("/", 
+//$newPathInfo)."/".$groupId->getIdString()."/".$get, ENT_QUOTES);
+				print $url->write();
 				print "'>+</a>";
 			}
 			print "\n\t\t</div>";
@@ -152,6 +145,7 @@ class GroupPrinter {
 			print "\n</div>";
 
 		}
+		
 	}
 	
 	

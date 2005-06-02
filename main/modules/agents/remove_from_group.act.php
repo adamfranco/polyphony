@@ -10,10 +10,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: remove_from_group.act.php,v 1.7 2005/06/01 19:33:35 gabeschine Exp $
+ * @version $Id: remove_from_group.act.php,v 1.8 2005/06/02 18:09:00 gabeschine Exp $
  */
 
-$harmoni->request->startNamespace("polyphony/agents");
+$harmoni->request->startNamespace("polyphony-agents");
 
 $agentManager =& Services::getService("Agent");
 $idManager =& Services::getService("Id");
@@ -39,7 +39,7 @@ foreach ($harmoni->request->getKeys() as $idString) {
 	}	
 }
 
-$harmoni->request->endNamespace("polyphony/agents");
+$harmoni->request->endNamespace();
 
 // send us back to where we were before we started this operation
 $harmoni->history->goBack("polyphony/agents/remove_from_group");

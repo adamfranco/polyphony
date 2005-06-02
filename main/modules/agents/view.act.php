@@ -13,11 +13,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.22 2005/06/01 19:33:35 gabeschine Exp $
+ * @version $Id: view.act.php,v 1.23 2005/06/02 18:09:00 gabeschine Exp $
  */
 
 // start our namespace
-$harmoni->request->startNamespace("polyphony/agents");
+$harmoni->request->startNamespace("polyphony-agents");
 
 // Get the Layout compontents. See core/modules/moduleStructure.txt
 // for more info. 
@@ -356,7 +356,7 @@ END;
  * Return the main layout.
  *********************************************************/
 
-$harmoni->request->endNamespace("polyphony/agents");
+$harmoni->request->endNamespace();
  
 return $mainScreen;
 
