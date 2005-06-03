@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleRecordPrinter.class.php,v 1.5 2005/04/07 17:07:40 adamfranco Exp $
+ * @version $Id: SimpleRecordPrinter.class.php,v 1.6 2005/06/03 13:43:08 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleRecordPrinter.class.php,v 1.5 2005/04/07 17:07:40 adamfranco Exp $
+ * @version $Id: SimpleRecordPrinter.class.php,v 1.6 2005/06/03 13:43:08 adamfranco Exp $
  */
 class SimpleRecordPrinter {
 	
@@ -54,7 +54,7 @@ class SimpleRecordPrinter {
 			else $text .= "none";
 			$text .= "; ";
 		}
-		$text .= "type: ".OKITypeToString($record->getType());
+		$text .= "type: ".HarmoniType::typeToString($record->getType());
 		$created =& $record->getCreationDate();
 		$text .= "; created: " . $created->toString(true);
 		$text .= "; ".$fetchModeStrings[$record->getFetchMode()];
