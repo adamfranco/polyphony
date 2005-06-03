@@ -5,8 +5,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login_type.act.php,v 1.8 2005/06/02 20:18:07 adamfranco Exp $
+ * @version $Id: login_type.act.php,v 1.9 2005/06/03 15:09:42 adamfranco Exp $
  */
+
+require_once(HARMONI."GUIManager/Components/Block.class.php");
 
 $isAuthenticated = FALSE;
 $authN =& Services::getService("AuthN");
