@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.class.php,v 1.21 2005/04/07 17:07:50 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.22 2005/06/06 21:18:14 adamfranco Exp $
  */
 
 /**
@@ -28,7 +28,7 @@ require_once(dirname(__FILE__)."/MultiValuedWizardStep.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.class.php,v 1.21 2005/04/07 17:07:50 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.22 2005/06/06 21:18:14 adamfranco Exp $
  * @author Adam Franco
  */
 
@@ -310,7 +310,7 @@ class Wizard {
 		//$wizardLayout =& new RowLayout;
 		
 		// :: Form tags for around the layout :: 
-		$preWizardLayout->add(new Block("<form action='".MYURL."/".implode("/", $harmoni->pathInfoParts)."' method='post' id='wizardform' enctype='multipart/form-data'>",2), null, null, CENTER, CENTER);
+		$preWizardLayout->add(new Block("<form action='".$harmoni->request->quickURL()."' method='post' id='wizardform' enctype='multipart/form-data'>",2), null, null, CENTER, CENTER);
 		
 		ob_start();
 		print "\n<div style='visibility: none'>";
