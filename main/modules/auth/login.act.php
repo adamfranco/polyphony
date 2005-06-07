@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login.act.php,v 1.7 2005/04/07 17:07:53 adamfranco Exp $
+ * @version $Id: login.act.php,v 1.8 2005/06/07 13:41:54 adamfranco Exp $
  */
 $isAuthenticated = FALSE;
 $authN =& Services::getService("AuthN");
@@ -29,7 +29,7 @@ if ($isAuthenticated) {
 	// Send us back to where we were
 	$currentPathInfo = array_slice($harmoni->pathInfoParts, 2);
 	
-	header("Location: ".MYURL."/".implode("/",$currentPathInfo));
+	$harmoni->history->goBack("polyphony/login");
 } else {
 	throwError(new Error("Could not authenticate, but we weren't forwarded to the failed auth action for some reason.","Polyphony::auth::login",true));
 }
