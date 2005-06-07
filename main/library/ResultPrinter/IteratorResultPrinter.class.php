@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.10 2005/04/07 17:07:48 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.11 2005/06/07 21:35:44 adamfranco Exp $
  */
  
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.10 2005/04/07 17:07:48 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.11 2005/06/07 21:35:44 adamfranco Exp $
  */
 
 class IteratorResultPrinter {
@@ -69,7 +69,10 @@ class IteratorResultPrinter {
 	 * @date 8/5/04
 	 */
 	function &getLayout (& $harmoni, $shouldPrintFunction = NULL) {
-		$startingNumber = ($_REQUEST['starting_number'])?$_REQUEST['starting_number']:1;
+		if ($harmoni->request->get('starting_number'))
+			$startingNumber = $harmoni->request->get('starting_number');
+		else
+			$startingNumber = 1;
 		
 		$yLayout =& new YLayout();
 		$layout =& new Container($yLayout,OTHER,1);
@@ -145,8 +148,12 @@ class IteratorResultPrinter {
 				if ($i > 0 && ($i+1) % 10 == 0)
 					print "<br />";
 				print " ";
-				if ($i != $currentPage)
-					print "<a href='".MYURL."/".implode("/", $harmoni->pathInfoParts)."?starting_number=".(($i-1)*$this->_pageSize+1)."'>";
+				if ($i != $currentPage) {
+					print "<a href='";
+					$url =& $harmoni->request->mkURLWithPassthrough();
+					$url->setValue("starting_number", (($i-1)*$this->_pageSize+1));
+					print "'>";
+				}
 				print $i;
 				if ($i != $currentPage)
 					print "</a>";

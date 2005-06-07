@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add_delete_group.act.php,v 1.10 2005/06/07 13:43:27 gabeschine Exp $
+ * @version $Id: add_delete_group.act.php,v 1.11 2005/06/07 21:35:56 adamfranco Exp $
  */
 
 $harmoni->request->startNamespace("polyphony-agents");
@@ -27,10 +27,6 @@ $centerPane =& $harmoni->getAttachedData('centerPane');
 // Our
 $yLayout =& new YLayout();
 $actionRows =& new Container($yLayout, OTHER, 1);
-
-// In order to preserve proper nesting on the HTML output
-//$actionRows->setPreSurroundingText("<form id='memberform' id='memberform' method='post' action='".MYURL."/agents/delete_group/".implode("/", $harmoni->pathInfoParts)."'>");
-//$actionRows->setPostSurroundingText("</form>");
 
 $centerPane->add($actionRows, null, null, CENTER, CENTER);
 
@@ -118,130 +114,6 @@ function printGroup(& $group) {
 	print " onclick=\"Javascript:window.location='".$toggleURL."'\" />";
 	print "\n<a title='".$groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()." - ".$groupType->getDescription()."'>";
 	print "\n<span style='text-decoration: underline; font-weight: bold;'>".$id->getIdString()." - ".$group->getDisplayName()."</span></a>";
-
-	// The checkbox is really just for show, the link is where we send
-	// to our processing to toggle the state of the authorization.
-
-	//print "\n - <em>".$group->getDescription()."</em>";
-	/*
-	// print out the properties of the Agent
-	print "\n<em>";
-	$propertiesIterator =& $group->getProperties();
-	while($propertiesIterator->hasNext()) {
-		$properties =& $propertiesIterator->next();
-		$propertiesType =& $properties->getType();
-		print "\n\t(<a title='".$propertiesType->getDomain()." :: ".$propertiesType->getAuthority()." :: ".$propertiesType->getKeyword()." - ".$propertiesType->getDescription()."'>";
-		
-		$keys =& $properties->getKeys();
-		$i = 0;
-		while ($keys->hasNext()) {
-			$key =& $keys->next();			
-			print "\n\t\t".(($i)?", ":"").$key.": ".$properties->getProperty($key);
-			$i++;
-		}
-
-		print "\n\t</a>)";
-	}
-	print "\n</em>";
-
-	// print the children of the groups so that our Javascript function can check ancestory.
-	$idString = $id->getIdString();
-
-	*/
-
-	/**
-	print <<<END
-
-
-<script type='text/javascript'>
-//<![CDATA[ 
-
-	// Function for deciding if this parent has the specified child
-	function hasDescendent$idString ( childId ) {
-		var children = new Array (
-END;
-
-	$groups =& $group->getGroups(TRUE);
-	$i = 0;
-	while($groups->hasNext()) {
-		$child =& $groups->next();
-		$childId =& $child->getId();
-		print (($i)?", ":"")."'".$childId->getIdString()."'";
-		$i++;
-	}
-
-	print <<<END
-);
-		var i;
-		
-		for (i = 0; i < children.length; i++) {
-			if (children[i] == childId) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	// Function for deciding if this parent has the specified child
-	function hasChildGroup$idString ( childId ) {
-		var children = new Array (
-END;
-
-	$groups =& $group->getGroups(FALSE);
-	$i = 0;
-	while($groups->hasNext()) {
-		$child =& $groups->next();
-		$childId =& $child->getId();
-		print (($i)?", ":"")."'".$childId->getIdString()."'";
-		$i++;
-	}
-
-	print <<<END
-);
-		var i;
-
-		for (i = 0; i < children.length; i++) {
-			if (children[i] == childId) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-	
-	// Function for deciding if this parent has the specified child
-	function hasChildMember$idString ( childId ) {
-		var children = new Array (
-END;
-
-	$agents =& $group->getMembers(FALSE);
-	$i = 0;
-	while($agents->hasNext()) {
-		$child =& $agents->next();
-		$childId =& $child->getId();
-		print (($i)?", ":"")."'".$childId->getIdString()."'";
-		$i++;
-	}
-
-	print <<<END
-);
-		var i;
-
-		for (i = 0; i < children.length; i++) {
-			if (children[i] == childId) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-//]]>
-</script>
-
-END;
-*/
 }
 
 /**

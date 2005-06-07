@@ -8,7 +8,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.4 2005/06/07 13:43:28 gabeschine Exp $
+ * @version $Id: viewfile.act.php,v 1.5 2005/06/07 21:35:56 adamfranco Exp $
  */
 $idManager =& Services::getService("Id");
 $repositoryManager =& Services::getService("Repository");
@@ -22,9 +22,7 @@ $size = RequestContext::value("size");
 $websafe = RequestContext::value("websafe");
 
 // See if we are passed a size
-if (is_numeric($harmoni->pathInfoParts[5]))
-	$size = intval($harmoni->pathInfoParts[5]);
-else if (is_numeric($size))
+if (is_numeric($size))
 	$size = intval($size);
 else
 	$size = FALSE;

@@ -11,7 +11,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.31 2005/06/07 12:29:15 gabeschine Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.32 2005/06/07 21:35:56 adamfranco Exp $
  */
 
 // Check for our authorization function definitions
@@ -332,11 +332,6 @@ function printEditOptions(& $qualifier) {
 									"qualifierId"=>$qualifierId->getIdString(),
 									"operation"=>$toggleOperation
 								));
-//				$toggleURL = MYURL."/authorization/process_authorizations/"
-//					.$toggleOperation."/".$agentId->getIdString()."/"
-//					.$functionId->getIdString()."/".$qualifierId->getIdString()
-//					."/".implode("/", $harmoni->pathInfoParts)
-//					."?agent=".$_GET['agent'];
 	
 				print " onclick=\"Javascript:window.location='".htmlentities($toggleURL, ENT_QUOTES)."'\"";
 			}
