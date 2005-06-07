@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.6 2005/06/02 21:32:01 adamfranco Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.7 2005/06/07 12:28:38 gabeschine Exp $
  */
  
 $harmoni->request->startNamespace("polyphony-agents"); 
@@ -59,6 +59,7 @@ if($furtherAction && in_array($furtherAction, $actionFunctions)){
 }
 
 print "</div>";
+
 // Layout
 $centerPane->add(new Block(ob_get_contents(),2),"100%", null, CENTER, TOP);
 ob_end_clean();
@@ -111,10 +112,11 @@ function viewAgentDetails(&$agent){
 	//actions menu
 	$harmoni =& Harmoni::instance();
 	$url =& $harmoni->request->mkURL();
+	
 	print "<h3>Actions</h3>
 			<ul>
 			<li><a href='".$url->write("furtherAction","editAgent")."'>Edit agent</a></li>
-			<li><a href='".$harmoni->request->quickURL("authorization","edit_authorizations", array("agent"=>$agentIdString))."'>Edit authorizations</a></li>
+			<li><a href='".$harmoni->request->quickURL("authorization","edit_authorizations")."'>Edit authorizations</a></li>
 			<li><a href='".$url->write("furtherAction","confirmClearProperties")."'>Clear properties</a></li>
 			<li><a href='".$url->write("furtherAction","confirmDeleteAgent")."'>Delete agent</a></li>
 			</ul>";
@@ -181,7 +183,7 @@ function deleteAgent(&$agent){
 
 
 /***
- * displays the screen for editting agents
+ * displays the screen for editing agents
  * Type for new property is arbitrarily set as the type of the agent
  * should probably draw from a list of usable types later on.  
  * Some of these attributes are not "properties" per se and don't have types
@@ -209,7 +211,7 @@ function editAgent(&$agent){
 	$url =& $harmoni->request->mkURL();
 	
 	//display name
-	print "<h3>Editting User: ".$agent->getDisplayName()."</h3>";
+	print "<h3>Editing User: ".$agent->getDisplayName()."</h3>";
 	
 	print "<table bgcolor='#AAAAAA' cellspacing='1' cellpadding='3'>";
 			
@@ -229,7 +231,7 @@ function editAgent(&$agent){
 			 <td>N/A</td>
 			 <td>N/A</td>
 			</tr>";
-	//TODO TO DO: Add password editting here. How it's implemented depends strongly on who this interface is for
+	// @todo TO DO: Add password editing here. How it's implemented depends strongly on who this interface is for
 	print "<tr bgcolor='#FFFFFF'>
 			  <td>Password</td>
 			  <td>Stored</td>
@@ -303,6 +305,11 @@ function editAgent(&$agent){
 			
 			</tr>";
 			
+	print "<tr bgcolor='#DDDDDD'>
+			<td colspan='5' align='right'><a href='".$harmoni->request->quickURL()."'><input type='button' value='Go Back'/></a></td>
+			
+			</tr>";
+			
 	print "</table>";
 	print "<br /><span style='color: red'>*</span> The system name may only be altered by creating a new user.";
 			
@@ -357,7 +364,7 @@ function updateProperty(&$agent){
  		print "Failed to add property.";
  	}
  	
- 	//back to the editting form
+ 	//back to the editing form
  	editAgent($agent);
  	
  	return;

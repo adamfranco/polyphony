@@ -7,8 +7,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.6 2005/05/19 15:49:46 thebravecowboy Exp $
+ * @version $Id: create_agent.act.php,v 1.7 2005/06/07 12:28:38 gabeschine Exp $
  */
+
+$harmoni->request->startNamespace("polyphony-agents");
 
 // Get the Layout components. See core/modules/moduleStructure.txt
 // for more info.
@@ -20,25 +22,25 @@ $centerPane =& $harmoni->getAttachedData('centerPane');
 ob_start();
 
 //'form_submitted' is a hidden field in the form, just a switch really
-if($_REQUEST["form_submitted"]){
+if(RequestContext::value("form_submitted")){
 
 	//basic form checking.  If required fields aren't there, rebuild the form
-	if(!$_REQUEST["username"] || !$_REQUEST["password"]){
+	if(!RequestContext::value("username") || !RequestContext::value("password")){
 		print "You must enter a username and password!<br />";
 		print createAgentForm();
 
 	}else{
-		$userName = $_REQUEST["username"];
-		$password = $_REQUEST["password"];
-		$displayName = $_REQUEST["display_name"];
+		$userName = RequestContext::value("username");
+		$password = RequestContext::value("password");
+		$displayName = RequestContext::value("display_name");
 	
 		$properties = array();
 		//creates an array of properties
-		foreach($_REQUEST as $key=>$request){
+		foreach($harmoni->request->getKeys() as $key){
 			$key_parts = explode("_",$key);
 			if($key_parts[0]=="property"){
 				$key_name = $key_parts[1];
-				$properties[$key_name] = $_REQUEST[$key];
+				$properties[$key_name] = RequestContext::value($key);
 			}
 		}
 		
@@ -46,6 +48,7 @@ if($_REQUEST["form_submitted"]){
 
 		if($agent){
 			print "User ".$agent->getDisplayName()." succesfully created.";
+			$harmoni->history->goBack("polyphony/agents/create_agent");
 		}else{
 			print "Create agent failed.";
 			createAgentForm();
@@ -59,6 +62,9 @@ if($_REQUEST["form_submitted"]){
 // Layout
 $centerPane->add(new Block(ob_get_contents(),3), "100%", null, CENTER, TOP);
 ob_end_clean();
+
+$harmoni->request->endNamespace();
+
 return $mainScreen;
 
 /****
@@ -69,11 +75,9 @@ return $mainScreen;
  */
 
 function createAgentForm(){
-	$authNType =& $GLOBALS["NewUserAuthNType"];
+	$harmoni =& Harmoni::instance();
 	
-	$serializedAuthNType = $authNType->getDomain()."::".$authNType->getAuthority()."::".$authNType->getKeyword();
-	
-	print "<center><form action='".$_SERVER["PHP_SELF"]."' method='post'>
+	print "<center><form action='".$harmoni->request->quickURL()."' method='post'>
 			Create A New User<br />
 			<table>";
 	
@@ -82,32 +86,46 @@ function createAgentForm(){
 			print "<tr><td>
 				*Username:
 			</td><td>
-				<input type='text' name='username' />
+				<input type='text' name='".RequestContext::name("username")."' />
 			</td></tr>
 			<tr><td>
 				*Password:
 			</td><td>
-				<input type='password' name='password' />
+				<input type='password' name='".RequestContext::name("password")."' />
 			</td></tr>";
 			
 	//		break;
 	//}
-				
-	print "<input type='hidden' name='authn_type' value='$serializedAuthNType' />";
-			
+	
+	print "<tr><td>
+		*"._("Add to type: ")."
+		</td><td>
+			<select name='".RequestContext::name("authn_type")."'>";
+	$authNManager =& Services::getService("AuthN");
+	$typesIterator =& $authNManager->getAuthenticationTypes();
+	while($typesIterator->hasNext()) {
+		$tempType =& $typesIterator->next();
+		$authNMethods =& Services::getService("AuthNMethods");
+		$tempMethod =& $authNMethods->getAuthNMethodForType($tempType);
+		if (!$tempMethod->supportsTokenAddition()) continue;
+		print "<option value='".HarmoniType::typeToString($tempType)."'>".HarmoniType::typeToString($tempType)."</option>";
+	}
+	print "</select>";
+	print "</td></tr>";
+		
 	print "	<tr><td>
 				Display Name:
 			</td><td>
-				<input type='text' name='display_name' />
+				<input type='text' name='".RequestContext::name("display_name")."' />
 			</td></tr>
 			<tr><td>
 				Department:
 			</td><td>
-				<input type='text' name='property_department' />
+				<input type='text' name='".RequestContext::name("property_department")."' />
 			</td></tr>
 			</table>	
 			<input type='submit' value='Create New User' />
-			<input type='hidden' name='form_submitted' value='true' />
+			<input type='hidden' name='".RequestContext::name("form_submitted")."' value='true' />
 			</form></center>";
 }
 
@@ -122,14 +140,11 @@ function makeNewAgent($userName, $password, $displayName, $propertiesArray){
 	$tokenMappingManager =& Services::getService("AgentTokenMapping");
 	
 	//find the authn type.  This is set in a hidden field in the form at the moment but could easily be changed to a drop down menu	
-	$authNTypeArray = explode("::", urldecode($_REQUEST['authn_type']));
-	
-	//create the type object for the authentication				
-	$authNType =& new HarmoniType($authNTypeArray[0], $authNTypeArray[1], $authNTypeArray[2]);
-	
+	$authNType =& HarmoniType::stringToType(RequestContext::value('authn_type'));
+		
 	//for passing to the token handler
-	$newTokensPassed["username"]=$_REQUEST["username"];
-	$newTokensPassed["password"]=$_REQUEST["password"];
+	$newTokensPassed["username"]=RequestContext::value("username");
+	$newTokensPassed["password"]=RequestContext::value("password");
 	
 	//find what authentication method is associated with this type		
 	$authNMethod=& $authNMethodManager->getAuthNMethodForType($authNType);
@@ -167,9 +182,11 @@ function makeNewAgent($userName, $password, $displayName, $propertiesArray){
 	$id =& $agent->getId();
 	$mapping =& $tokenMappingManager->createMapping($id, $tokens, $authNType);
 	
+	//tell the specific AuthNMethod to add the tokens
+	$authNMethod->addTokens($tokens);
+	
 	return $agent;
 }
-
 
 
 ?>

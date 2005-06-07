@@ -5,15 +5,14 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: username_password_form.act.php,v 1.6 2005/06/02 20:18:08 adamfranco Exp $
+ * @version $Id: username_password_form.act.php,v 1.7 2005/06/07 12:29:15 gabeschine Exp $
  */
 
 require_once(HARMONI."GUIManager/Components/Block.class.php");
 
 
 // Set our textdomain
-$defaultTextDomain = textdomain(NULL);
-textdomain("polyphony");
+$defaultTextDomain = textdomain("polyphony");
 ob_start();
 
 $harmoni->request->startNamespace("harmoni-authentication");

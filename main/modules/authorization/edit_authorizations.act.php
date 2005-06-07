@@ -11,7 +11,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.30 2005/04/11 20:03:07 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.31 2005/06/07 12:29:15 gabeschine Exp $
  */
 
 // Check for our authorization function definitions
@@ -20,6 +20,9 @@ if (!defined("AZ_VIEW_AZS"))
 if (!defined("AZ_MODIFY_AZS"))
 	throwError(new Error("You must define an id for AZ_MODIFY_AZS", "polyphony.authorizations", true));
 
+
+$harmoni->request->startNamespace("polyphony-agents");
+$harmoni->request->passthrough("agentId");
 
 // Get the Layout components. See core/modules/moduleStructure.txt
 // for more info. 
@@ -40,14 +43,14 @@ $authZManager =& Services::getService("AuthZ");
 
 // Intro message
 $intro =& new Block("&nbsp; &nbsp; "._("Check or uncheck authorization(s) for the section(s) of your choice.")."<br />
-		&nbsp; &nbsp; "._("After each check/uncheck, the changes are saved automatically.")."<br /><br />", 3);
+		&nbsp; &nbsp; "._("After each change, the changes are saved automatically.")."<br /><br />", 3);
 
 
 // Get the id of the selected agent using $_REQUEST
-$id = $_REQUEST["agent"];
+$id = RequestContext::value("agentId");
 $idObject =& $idManager->getId($id);
 $GLOBALS["agentId"] =& $idObject;
-$GLOBALS["harmoniAuthType"] =& new HarmoniAuthenticationType;
+$GLOBALS["harmoniAuthType"] =& new HarmoniAuthenticationType();
 $GLOBALS["harmoni"] =& $harmoni;
 
 
@@ -73,9 +76,9 @@ $actionRows->add($intro);
 // Buttons to go back to edit auths for a different user, or to go home
 ob_start();
 print "<table width='100%'><tr><td align='left'>";
-print "<a href='".MYURL."/authorization/choose_agent'><button>&lt;-- "._("Choose a different User/Group to edit")."</button></a>";
+print "<a href='".$harmoni->request->quickURL("authorization","choose_agent")."'><button>&lt;-- "._("Choose a different User/Group to edit")."</button></a>";
 print "</td><td align='right'>";
-print "<a href='".MYURL."/admin/main'><button>"._("Return to the Admin Tools")."</button></a>";
+print "<a href='".$harmoni->request->quickURL("admin","main")."'><button>"._("Return to the Admin Tools")."</button></a>";
 print "</td></tr></table>";
 
 $nav =& new Block(ob_get_contents(),2);
@@ -116,6 +119,8 @@ while ($hierarchyIds->hasNext()) {
 
 // Buttons to go back to edit auths for a different user, or to go home
 $actionRows->add($nav,"100%", null, LEFT,CENTER);
+
+$harmoni->request->endNamespace();
 
 return $mainScreen;
 
@@ -198,7 +203,7 @@ function &getChildQualifiers(& $qualifier) {
 function printEditOptions(& $qualifier) {
 	$qualifierId =& $qualifier->getId();
 	$agentId =& $GLOBALS["agentId"];
-	$harmoni =& $GLOBALS["harmoni"];
+	$harmoni =& Harmoni::instance();
 	$authZManager =& Services::getService("AuthZ");
 	$idManager =& Services::getService("IdManager");
 	$agentManager =& Services::getService("AgentManager");
@@ -318,11 +323,20 @@ function printEditOptions(& $qualifier) {
 			{
 				// The checkbox is really just for show, the link is where we send
 				// to our processing to toggle the state of the authorization.
-				$toggleURL = MYURL."/authorization/process_authorizations/"
-					.$toggleOperation."/".$agentId->getIdString()."/"
-					.$functionId->getIdString()."/".$qualifierId->getIdString()
-					."/".implode("/", $harmoni->pathInfoParts)
-					."?agent=".$_GET['agent'];
+				$harmoni->history->markReturnURL("polyphony/agents/process_authorizations");
+				$toggleURL = $harmoni->request->quickURL(
+								"authorization",
+								"process_authorizations",
+								array(
+									"functionId"=>$functionId->getIdString(),
+									"qualifierId"=>$qualifierId->getIdString(),
+									"operation"=>$toggleOperation
+								));
+//				$toggleURL = MYURL."/authorization/process_authorizations/"
+//					.$toggleOperation."/".$agentId->getIdString()."/"
+//					.$functionId->getIdString()."/".$qualifierId->getIdString()
+//					."/".implode("/", $harmoni->pathInfoParts)
+//					."?agent=".$_GET['agent'];
 	
 				print " onclick=\"Javascript:window.location='".htmlentities($toggleURL, ENT_QUOTES)."'\"";
 			}

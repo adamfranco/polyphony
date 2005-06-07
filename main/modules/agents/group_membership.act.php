@@ -11,7 +11,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_membership.act.php,v 1.24 2005/06/02 21:32:01 adamfranco Exp $
+ * @version $Id: group_membership.act.php,v 1.25 2005/06/07 12:28:38 gabeschine Exp $
  */
 
 // Check for our authorization function definitions
@@ -23,6 +23,13 @@ if (!defined("AZ_DELETE_GROUPS"))
 	throwError(new Error("You must define an id for AZ_DELETE_GROUPS", "polyphony.authorizations", true));
 if (!defined("AZ_ROOT_NODE"))
 	throwError(new Error("You must define an id for AZ_ROOT_NODE", "polyphony.authorizations", true));
+
+$harmoni->request->startNamespace("polyphony-agents");
+$harmoni->request->passthrough();
+
+// register this action as the return-point for the following operations:
+$harmoni->history->markReturnURL("polyphony/agents/add_to_group");
+$harmoni->history->markReturnURL("polyphony/agents/remove_from_group");
 
 // Get the Layout compontents. See core/modules/moduleStructure.txt
 // for more info. 
@@ -69,11 +76,6 @@ $idManager = Services::getService("Id");
 $everyoneId =& $idManager->getId("-1");
 
 // Build a variable to pass around our search terms when expanding
-if (count($_GET)) {
-		$search = "?";
-		foreach ($_GET as $key => $val)
-			$search .= "&".urlencode($key)."=".urlencode($val);
-}
 
 // Users header
 $agentHeader =& new Heading(_("Users"), 2);
@@ -92,7 +94,7 @@ $search_criteria_name = RequestContext::name("search_criteria");
 $search_type_name = RequestContext::name("search_type");
 print _("Search For Users").": ";
 print <<<END
-<form action='$self' method='get'>
+<form action='$self' method='post'>
 	<div>
 	<input type='text' name='$search_criteria_name' value='$lastCriteria' />
 	<br /><select name='$search_type_name'>
@@ -112,7 +114,7 @@ while ($searchTypes->hasNext()) {
 
 	print "\n\t</select>";
 	print "\n\t<br /><input type='submit' value='"._("Search")."' />";
-	print "\n\t<a href='".MYURL."/".implode("/", $harmoni->pathInfoParts)."/'>";
+	print "\n\t<a href='".$harmoni->request->quickURL()."'>";
 	print "<input type='button' value='"._("Clear")."' /></a>";
 print "\n</div>\n</form>";
 
@@ -128,10 +130,11 @@ $pageRows->add($postActionRows, null, null,CENTER, CENTER);
  * the agent search results
  *********************************************************/
  
-if (($search_criteria = $harmoni->request->get('search_criteria')) && ($search_type = $harmoni->request('search_type'))) {
-	$typeParts = explode("::", html_entity_decode($search_type, ENT_COMPAT, UTF-8));
+if (($search_criteria = $harmoni->request->get('search_criteria')) && ($search_type = $harmoni->request->get('search_type'))) {
+	$typeParts = explode("::", @html_entity_decode($search_type, ENT_COMPAT, 'UTF-8'));
 	$searchType =& new HarmoniType($typeParts[0], $typeParts[1], $typeParts[2]);
 	$agents =& $agentManager->getAgentsBySearch($search_criteria, $searchType);
+	print "search: " . $search_criteria;
 	
 	print <<<END
 
@@ -219,6 +222,9 @@ $notInGroup = _("is not in this group");
 $confirmAdd = _("Are you sure that you wish to add the selected Groups and Agents to Group");
 $confirmRemove = _("Are you sure that you wish to remove the selected Groups and Agents from Group");
 
+$destinationgroup_name = RequestContext::name("destinationgroup");
+$operation_name = RequestContext::name("operation");
+
 // Print out a Javascript function for submitting our groups choices
 print <<<END
 
@@ -227,11 +233,12 @@ print <<<END
 
 	// Validate ancestory and submit to add checked to the group
 	function submitCheckedToGroup ( destGroupId ) {
-		var f;		
+		var f;
+		var form;
 		for (i = 0; i < document.forms.length; i++) {
 			f = document.forms[i];			
 			if (f.id == 'memberform') {
-				var form = f;
+				form = f;
 				break;
 			}
 		}
@@ -247,29 +254,29 @@ print <<<END
 				
 				if (element.value == 'group') {
 					// Check that the destination is not the new member
-					if ( element.name == destGroupId ) {
-						alert ("$cannotAddGroup " + element.name + " $toItsself. $deselecting...");
+					if ( element.id == destGroupId ) {
+						alert ("$cannotAddGroup " + element.id + " $toItsself. $deselecting...");
 						element.checked = false;
 						continue;
 					}
 					
 					// Check that the destination is not a child of the new member
-					if ( eval("hasDescendent" + element.name + "('" + destGroupId + "')") ) {
-						alert ("$cannotAddGroup " + element.name + " $toOwnDesc.  $deselecting...");
+					if ( eval("hasDescendent" + element.id.replace("-","_") + "('" + destGroupId + "')") ) {
+						alert ("$cannotAddGroup " + element.id + " $toOwnDesc.  $deselecting...");
 						element.checked = false;
 						continue;
 					}
 					
 					// Check that the new member is not already a child of the destination
-					if ( eval("hasChildGroup" + destGroupId + "('" + element.name + "')") ) {
-						alert ("$groupString " + element.name + " $isAlreadyInGroup.  $deselecting...");
+					if ( eval("hasChildGroup" + destGroupId.replace("-","_") + "('" + element.id + "')") ) {
+						alert ("$groupString " + element.id + " $isAlreadyInGroup.  $deselecting...");
 						element.checked = false;
 						continue;
 					}
 				} else {
 					// Check that the new member is not already a child of the destination
-					if ( eval("hasChildMember" + destGroupId + "('" + element.name + "')") ) {
-						alert ("$agentString " + element.name + " $isAlreadyInGroup.  $deselecting...");
+					if ( eval("hasChildMember" + destGroupId.replace("-","_") + "('" + element.id + "')") ) {
+						alert ("$agentString " + element.id + " $isAlreadyInGroup.  $deselecting...");
 						element.checked = false;
 						continue;
 					}
@@ -282,18 +289,19 @@ print <<<END
 		
 		
 		if (numToAdd && confirm("$confirmAdd " + destGroupId + "?")) {
-			form.destinationgroup.value = (destGroupId);
+			form.destinationgroup.value = destGroupId;
 			form.submit();
 		}
 	}
 	
 	// Validate that the check are children and submit to remove them from the group
 	function submitCheckedFromGroup ( destGroupId ) {
-		var f;		
+		var f;
+		var form;
 		for (i = 0; i < document.forms.length; i++) {
 			f = document.forms[i];			
 			if (f.id == 'memberform') {
-				var form = f;
+				form = f;
 				break;
 			}
 		}		
@@ -309,23 +317,23 @@ print <<<END
 			
 			if (element.type == 'checkbox' && element.checked == true) {
 				// Check that the destination is not the new member
-				if ( element.name == destGroupId ) {
-					alert ("$cannotRemoveGroup " + element.name + " $fromItsself. $deselecting...");
+				if ( element.id == destGroupId ) {
+					alert ("$cannotRemoveGroup " + element.id + " $fromItsself. $deselecting...");
 					element.checked = false;
 					continue;
 				}
 				
 				if (element.value == 'group') {					
 					// Check that the new member is not already a child of the destination
-					if ( ! eval("hasChildGroup" + destGroupId + "('" + element.name + "')") ) {
-						alert ("$groupString " + element.name + " $notInGroup.  $deselecting...");
+					if ( ! eval("hasChildGroup" + destGroupId + "('" + element.id + "')") ) {
+						alert ("$groupString " + element.id + " $notInGroup.  $deselecting...");
 						element.checked = false;
 						continue;
 					}
 				} else {
 					// Check that the new member is not already a child of the destination
-					if ( ! eval("hasChildMember" + destGroupId + "('" + element.name + "')") ) {
-						alert ("$agentString " + element.name + " $notInGroup.  $deselecting...");
+					if ( ! eval("hasChildMember" + destGroupId + "('" + element.id + "')") ) {
+						alert ("$agentString " + element.id + " $notInGroup.  $deselecting...");
 						element.checked = false;
 						continue;
 					}
@@ -337,8 +345,8 @@ print <<<END
 		}
 		
 		if (numToAdd && confirm("$confirmRemove " + destGroupId + "?")) {
-			form.destinationgroup.value = (destGroupId);
-			form.action = form.action.replace('add_to_group', 'remove_from_group');
+			form.destinationgroup.value = destGroupId;
+			form.action = form.action.replace('add_to_group','remove_from_group');
 			form.submit();
 		}
 	}
@@ -346,7 +354,7 @@ print <<<END
 //]]> 
 </script>
 
-<input type='hidden' name='destinationgroup' value='25' />
+<input type='hidden' id='destinationgroup' name='$destinationgroup_name' value=''/>
 
 END;
 $groupHeader =& new Heading(ob_get_contents(), 2);
@@ -401,7 +409,7 @@ function printGroup(& $group) {
 	if ($id->isEqual($everyoneId))
 		print "\n&nbsp; &nbsp; &nbsp;";
 	else
-		print "\n<input type='checkbox' name='".RequestContext::name($id->getIdString())."' value='group' />";
+		print "\n<input type='checkbox' id='".$id->getIdString()."' name='".RequestContext::name($id->getIdString())."' value='group' />";
 	
 	print "\n<a title='".htmlspecialchars($groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()." - ".$groupType->getDescription())."'>";
 	print "\n<span style='text-decoration: underline; font-weight: bold;'>".$id->getIdString()." - ".htmlspecialchars($group->getDisplayName())."</span></a>";
@@ -440,7 +448,7 @@ function printGroup(& $group) {
 	print "\n</em>";
 
 	// print the children of the groups so that our Javascript function can check ancestory.
-	$idString = $id->getIdString();
+	$idString = str_replace("-","_",$id->getIdString());
 	print <<<END
 
 
@@ -543,15 +551,16 @@ END;
  * @ignore
  */
 function printMember(& $member) {
+	$harmoni =& Harmoni::instance();
 	$id =& $member->getId();
 	
 	$memberType =& $member->getType();
-	print "\n<input type='checkbox' name='".RequestContext::name($id->getIdString())."' value='agent' />";
+	print "\n<input type='checkbox' id='".$id->getIdString()."' name='".RequestContext::name($id->getIdString())."' value='agent' />";
 //	print "\n<a href='".MYURL."/agents/edit_agent_details/".$id->getIdString()."?callingFrom=group_membership' title='".htmlspecialchars($memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription())."'>";
 	
-//	$harmoni->history->markReturnURL("polyphony/agents/edit_agent_details");
+	$harmoni->history->markReturnURL("polyphony/agents/edit_agent_details");
 	
-	print "\n<a href='".$harmoni->request->quickURL("agents","edit_agent_details", array("agent_id"=>$id->getIdString(), "callingFrom"=>"group_membership"))."' title='".htmlspecialchars($memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription())."'>";
+	print "\n<a href='".$harmoni->request->quickURL("agents","edit_agent_details", array("agentId"=>$id->getIdString()))."' title='".htmlspecialchars($memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription())."'>";
 	print "\n<span style='text-decoration: none;'>".$id->getIdString()." - ".htmlspecialchars($member->getDisplayName())."</span></a>";
 	
 	// print out the properties of the Agent

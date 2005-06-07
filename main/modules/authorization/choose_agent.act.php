@@ -12,7 +12,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.24 2005/06/02 21:32:15 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.25 2005/06/07 12:29:15 gabeschine Exp $
  */
 
 // start our namespace
@@ -43,6 +43,7 @@ $postActionRows =& new Container($yLayout, OTHER, 1);
 ob_start();
 
 $errorString = _("You must select a User or Group.");
+$agentFieldName = RequestContext::name("agentId");
 print<<<END
 
 <script type='text/javascript'>
@@ -59,7 +60,7 @@ print<<<END
 			}
 		}
 		
-		var radioArray = form.agent;
+		var radioArray = form.agentId;
 		var isChecked = false;
 		
 		for (i=0; i<radioArray.length; i++) {
@@ -271,7 +272,7 @@ return $mainScreen;
 function printGroup(& $group) {
 	$id =& $group->getId();
 	$groupType =& $group->getType();
-	print "<input type='radio' name='".RequestContext::name("agent")."' value='".$id->getIdString()."' />";
+	print "<input type='radio' id='agentId' name='".RequestContext::name("agentId")."' value='".$id->getIdString()."' />";
 	print "<a title='".$groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()."'>";
 	print "<span style='text-decoration: underline; font-weight: bold;'>".$id->getIdString()." - ".$group->getDisplayName()."</span></a>";	
 	print " - <em>".$groupType->getDescription()."</em>";

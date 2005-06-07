@@ -5,8 +5,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login_type.act.php,v 1.9 2005/06/03 15:09:42 adamfranco Exp $
+ * @version $Id: login_type.act.php,v 1.10 2005/06/07 12:29:15 gabeschine Exp $
  */
+ 
+require_once(HARMONI."GUIManager/Components/Block.class.php");
+
 
 require_once(HARMONI."GUIManager/Components/Block.class.php");
 

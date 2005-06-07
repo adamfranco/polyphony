@@ -10,18 +10,20 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: process_authorizations.act.php,v 1.9 2005/04/11 20:03:07 adamfranco Exp $
+ * @version $Id: process_authorizations.act.php,v 1.10 2005/06/07 12:29:15 gabeschine Exp $
  */
 
 // Get services
 $idManager =& Services::getService("Id");
 $authZ =& Services::getService("AuthZ");
 
+$harmoni->request->startNamespace("polyphony-agents");
+
 // Get info passed to this action via the URL
-$createOrDelete = $harmoni->pathInfoParts['2'];
-$agentIdString = $harmoni->pathInfoParts['3'];
-$functionIdString = $harmoni->pathInfoParts['4'];
-$qualifierIdString = $harmoni->pathInfoParts['5'];
+$createOrDelete = RequestContext::value("operation");
+$agentIdString = RequestContext::value("agentId");
+$functionIdString = RequestContext::value("functionId");
+$qualifierIdString = RequestContext::value("qualifierId");
 
 // Get Ids from these strings
 $agentId =& $idManager->getId($agentIdString);
@@ -42,8 +44,8 @@ if ($createOrDelete == 'create') {
 	}
 }
 
+$harmoni->request->endNamespace();
 
-// Send us back to where we were (edit_authorizations.act.php)
-$currentPathInfo = array_slice($harmoni->pathInfoParts, 6);
 
-header("Location: ".MYURL."/".implode("/",$currentPathInfo)."?agent=".$_GET['agent']);
+$harmoni->history->goBack("polyphony/agents/process_authorizations");
+//header("Location: ".MYURL."/".implode("/",$currentPathInfo)."?agent=".$_GET['agent']);

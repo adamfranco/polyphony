@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add_to_group.act.php,v 1.6 2005/04/07 17:07:51 adamfranco Exp $
+ * @version $Id: add_to_group.act.php,v 1.7 2005/06/07 12:28:37 gabeschine Exp $
  */
 
 
@@ -18,12 +18,16 @@
 $idManager =& Services::getService("Id");
 $agentManager =& Services::getService("Agent");
 
+$harmoni->request->startNamespace("polyphony-agents");
+
 //printpre($_REQUEST);
 
-$id =& $idManager->getId($_REQUEST['destinationgroup']);
+$id =& $idManager->getId(RequestContext::value('destinationgroup'));
 $destGroup =& $agentManager->getGroup($id);
 
-foreach ($_REQUEST as $idString => $type) {
+foreach ($harmoni->request->getKeys() as $idString) {
+
+	$type = RequestContext::value($idString);
 
 	if ($type == "group") {
 		$id =& $idManager->getId(strval($idString));
@@ -37,7 +41,8 @@ foreach ($_REQUEST as $idString => $type) {
 	}
 }
 
-// Send us back to where we were
-$currentPathInfo = array_slice($harmoni->pathInfoParts, 2);
+$harmoni->request->endNamespace();
 
-header("Location: ".MYURL."/".implode("/",$currentPathInfo));
+// Send us back to where we were
+$harmoni->history->goBack("polyphony/agents/add_to_group");
+//header("Location: ".MYURL."/".implode("/",$currentPathInfo));
