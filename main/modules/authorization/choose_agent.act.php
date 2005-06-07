@@ -12,7 +12,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.25 2005/06/07 12:29:15 gabeschine Exp $
+ * @version $Id: choose_agent.act.php,v 1.26 2005/06/07 20:32:41 gabeschine Exp $
  */
 
 // start our namespace
@@ -295,7 +295,7 @@ function printMember(& $member) {
 	$link = $harmoni->request->quickURL("agents","edit_agent_details",array("agentId"=>$agentIdString));
 	$id =& $member->getId();
 	$memberType =& $member->getType();
-	print "<input type='radio' name='".RequestContext::name("agent")."' value='".$id->getIdString()."' />";
+	print "<input type='radio' id='agentId' name='".RequestContext::name("agentId")."' value='".$id->getIdString()."' />";
 	print "<a title='".$memberType->getAuthority()." :: ".$memberType->getDomain()." :: ".$memberType->getKeyword()."' href='$link'>";
 	print "<span style='text-decoration: underline;'>".$id->getIdString()." - ".$member->getDisplayName()."</span></a>";
 	print " - <em>".$memberType->getDescription()."</em>";

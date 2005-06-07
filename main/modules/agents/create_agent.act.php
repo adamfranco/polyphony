@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.7 2005/06/07 12:28:38 gabeschine Exp $
+ * @version $Id: create_agent.act.php,v 1.8 2005/06/07 20:32:23 gabeschine Exp $
  */
 
 $harmoni->request->startNamespace("polyphony-agents");
@@ -118,11 +118,11 @@ function createAgentForm(){
 			</td><td>
 				<input type='text' name='".RequestContext::name("display_name")."' />
 			</td></tr>
-			<tr><td>
+<!--			<tr><td>
 				Department:
 			</td><td>
 				<input type='text' name='".RequestContext::name("property_department")."' />
-			</td></tr>
+			</td></tr> -->
 			</table>	
 			<input type='submit' value='Create New User' />
 			<input type='hidden' name='".RequestContext::name("form_submitted")."' value='true' />
