@@ -5,8 +5,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view_agents.act.php,v 1.6 2005/04/11 20:03:07 adamfranco Exp $
+ * @version $Id: view_agents.act.php,v 1.7 2005/06/07 13:43:28 gabeschine Exp $
  */
+ 
+$harmoni->request->startNamespace("polyphony-agents");
 
 // Get the Layout compontents. See core/modules/moduleStructure.txt
 // for more info. 
@@ -81,7 +83,7 @@ while ($agents->hasNext()) {
 // 	}
 }
 
-
+$harmoni->request->endNamespace();
 
 // Return the main layout.
 return $mainScreen;

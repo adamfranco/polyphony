@@ -12,7 +12,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_authorizations.act.php,v 1.13 2005/06/02 20:11:47 gabeschine Exp $
+ * @version $Id: browse_authorizations.act.php,v 1.14 2005/06/07 13:43:28 gabeschine Exp $
  */
 
 $harmoni->request->startNamespace("polyphony-agents");
@@ -225,7 +225,7 @@ function printEditOptions(& $qualifier) {
 					.$harmoni->request->quickURL(
 						"authorization",
 						"edit_authorizations",
-						array("agent"=>$agent->getIdString())).
+						array("agentId"=>$agentId->getIdString())).
 				"' title='Edit Authorizations for this User/Group'>";
 				
 				if ($agentManager->isAgent($agentId)) {

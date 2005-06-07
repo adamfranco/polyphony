@@ -10,9 +10,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add_delete_group.act.php,v 1.9 2005/04/07 17:07:50 adamfranco Exp $
+ * @version $Id: add_delete_group.act.php,v 1.10 2005/06/07 13:43:27 gabeschine Exp $
  */
 
+$harmoni->request->startNamespace("polyphony-agents");
+$harmoni->history->markReturnURL("polyphony/agents/delete_group");
 
 // Get the Layout compontents. See core/modules/moduleStructure.txt
 // for more info.
@@ -38,15 +40,8 @@ $actionRows->add($introHeader, "100%", null, LEFT, CENTER);
 
 $agentManager =& Services::getService("Agent");
 
-// Build a variable to pass around our search terms when expanding
-if (count($_GET)) {
-		$search = "?";
-		foreach ($_GET as $key => $val)
-			$search .= "&".urlencode($key)."=".urlencode($val);
-}
-
-
-
+// pass our search variables through to new URLs
+$harmoni->request->passthrough();
 
 /*********************************************************
  * Deleting a Group
@@ -92,6 +87,7 @@ while ($groups->hasNext()) {
 	}
 }
 
+$harmoni->request->endNamespace();
 
 /*********************************************************
  * Return the main layout.
@@ -114,8 +110,9 @@ function printGroup(& $group) {
 	$id =& $group->getId();
 	$groupType =& $group->getType();
 	
-	$toggleURL = MYURL."/agents/delete_group/".$id->getIdString().
-	"/".implode("/", $harmoni->pathInfoParts);
+	$harmoni =& Harmoni::instance();
+	$toggleURL = $harmoni->request->quickURL("agents","delete_group",
+			array("groupId"=>$id->getIdString()));
 	
 	print "\n<input type='checkbox' name='blah' value='blah' ";
 	print " onclick=\"Javascript:window.location='".$toggleURL."'\" />";
@@ -126,7 +123,7 @@ function printGroup(& $group) {
 	// to our processing to toggle the state of the authorization.
 
 	//print "\n - <em>".$group->getDescription()."</em>";
-	/**
+	/*
 	// print out the properties of the Agent
 	print "\n<em>";
 	$propertiesIterator =& $group->getProperties();

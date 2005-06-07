@@ -5,8 +5,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view_functions.act.php,v 1.5 2005/04/11 20:03:08 adamfranco Exp $
+ * @version $Id: view_functions.act.php,v 1.6 2005/06/07 13:43:28 gabeschine Exp $
  */
+
+$harmoni->request->startNamespace("polyphony-agents");
 
 // Get the Layout compontents. See core/modules/moduleStructure.txt
 // for more info. 
@@ -47,7 +49,7 @@ while ($functionTypes->hasNext()) {
 	$actionRows->add($typeLayout, "100%", null, LEFT, CENTER);
 	$actionRows->add($descriptionLayout, "100%", null, LEFT, CENTER);
 	
-	$functionLayout =& new Container($yLayout, Block, 4);
+	$functionLayout =& new Container($yLayout, BLOCK, 4);
 	$actionRows->add($functionLayout, "100%", null, LEFT, CENTER);
 	
 	$actionRows->add(new Block(" &nbsp; <br /> &nbsp; <br /> &nbsp;",2), "100%", null, LEFT, CENTER);
@@ -73,7 +75,7 @@ while ($functionTypes->hasNext()) {
 	}
 }
 
-
+$harmoni->request->endNamespace();
 
 // Return the main layout.
 return $mainScreen;

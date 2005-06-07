@@ -8,15 +8,17 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.3 2005/04/07 17:08:08 adamfranco Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.4 2005/06/07 13:43:28 gabeschine Exp $
  */
+ 
+$harmoni->request->startNamespace("polyphony-repository");
 
 $idManager =& Services::getService("Id");
 $repositoryManager =& Services::getService("Repository");
 
-$repositoryId =& $idManager->getId($harmoni->pathInfoParts[2]);
-$assetId =& $idManager->getId($harmoni->pathInfoParts[3]);
-$recordId =& $idManager->getId($harmoni->pathInfoParts[4]);
+$repositoryId =& $idManager->getId(RequestContext::value("repositoryId"));
+$assetId =& $idManager->getId(RequestContext::value("assetId"));
+$recordId =& $idManager->getId(RequestContext::value("recordId"));
 
 // Get the requested record.
 $repository =& $repositoryManager->getRepository($repositoryId);
@@ -108,6 +110,8 @@ if (!$fileId->isEqual($structure->getId())) {
 		print file_get_contents(dirname(__FILE__)."/icons/".$imageName);
 	}
 }
+
+$harmoni->request->endNamespace();
 
 exit;
 ?>

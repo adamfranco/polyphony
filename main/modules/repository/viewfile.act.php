@@ -8,26 +8,28 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.3 2005/04/07 17:08:07 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.4 2005/06/07 13:43:28 gabeschine Exp $
  */
 $idManager =& Services::getService("Id");
 $repositoryManager =& Services::getService("Repository");
 
-$repositoryId =& $idManager->getId($harmoni->pathInfoParts[2]);
-$assetId =& $idManager->getId($harmoni->pathInfoParts[3]);
-$recordId =& $idManager->getId($harmoni->pathInfoParts[4]);
+$harmoni->request->startNamespace("polyphony-repository");
+
+$repositoryId =& $idManager->getId(RequestContext::value("repositoryId"));
+$assetId =& $idManager->getId(RequestContext::value("assetId"));
+$recordId =& $idManager->getId(RequestContext::value("recordId"));
+$size = RequestContext::value("size");
+$websafe = RequestContext::value("websafe");
 
 // See if we are passed a size
 if (is_numeric($harmoni->pathInfoParts[5]))
 	$size = intval($harmoni->pathInfoParts[5]);
-else if (is_numeric($_REQUEST["size"]))
-	$size = intval($_REQUEST["size"]);
+else if (is_numeric($size))
+	$size = intval($size);
 else
 	$size = FALSE;
 
-if ($harmoni->pathInfoParts[5] == "websafe" 
-	|| $harmoni->pathInfoParts[6] == "websafe"
-	|| $_REQUEST["websafe"])
+if ($websafe)
 	$websafe = TRUE;
 else
 	$websafe = FALSE;
@@ -88,6 +90,8 @@ if (!$fileId->isEqual($recordStructure->getId())) {
 		print $parts['FILE_DATA']->getValue();
 	}
 }
+
+$harmoni->request->endNamespace();
 
 exit;
 ?>
