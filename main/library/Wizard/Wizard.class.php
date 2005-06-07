@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.class.php,v 1.23 2005/06/07 14:47:51 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.24 2005/06/07 16:01:10 adamfranco Exp $
  */
 
 /**
@@ -28,7 +28,7 @@ require_once(dirname(__FILE__)."/MultiValuedWizardStep.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.class.php,v 1.23 2005/06/07 14:47:51 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.24 2005/06/07 16:01:10 adamfranco Exp $
  * @author Adam Franco
  */
 
@@ -81,6 +81,10 @@ class Wizard {
 		$this->_allowCancel = $allowCancel;
 		$this->_currentStep = 1;
 		$this->_steps = array();
+		
+		$harmoni =& Harmoni::instance();
+		$url =& $harmoni->request->mkURLWithPassthrough();
+		$this->_url =& $url->write();
 	}
 	
 	/**
@@ -310,8 +314,7 @@ class Wizard {
 		//$wizardLayout =& new RowLayout;
 		
 		// :: Form tags for around the layout :: 
-		$myUrl =& $harmoni->request->mkFullURL();
-		$preWizardLayout->add(new Block("<form action='".$myUrl->write()."' method='post' id='wizardform' enctype='multipart/form-data'>",2), null, null, CENTER, CENTER);
+		$preWizardLayout->add(new Block("<form action='".$this->_url."' method='post' id='wizardform' enctype='multipart/form-data'>",2), null, null, CENTER, CENTER);
 		
 		ob_start();
 		print "\n<div style='visibility: none'>";
