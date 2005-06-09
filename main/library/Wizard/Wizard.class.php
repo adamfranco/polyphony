@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.class.php,v 1.24 2005/06/07 16:01:10 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.25 2005/06/09 21:31:32 adamfranco Exp $
  */
 
 /**
@@ -28,7 +28,7 @@ require_once(dirname(__FILE__)."/MultiValuedWizardStep.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.class.php,v 1.24 2005/06/07 16:01:10 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.25 2005/06/09 21:31:32 adamfranco Exp $
  * @author Adam Franco
  */
 
@@ -224,19 +224,19 @@ class Wizard {
 	 */
 	function update () {
 		debug::output(printpre($_REQUEST, TRUE));
-		if ($_REQUEST['__next'] && $this->hasNext())
+		if (RequestContext::value('__next') && $this->hasNext())
 			$this->next();
 		
-		else if ($_REQUEST['__previous'] && $this->hasPrevious())
+		else if (RequestContext::value('__previous') && $this->hasPrevious())
 			$this->previous();
 		
-		else if ($_REQUEST['__go_to_step'])
-			$this->goToStep($_REQUEST['__go_to_step']);
+		else if (RequestContext::value('__go_to_step'))
+			$this->goToStep(RequestContext::value('__go_to_step'));
 		
-		else if ($_REQUEST['__skip_to_step'] && $this->_allowStepLinks)
-			$this->skipToStep($_REQUEST['__skip_to_step']);
+		else if (RequestContext::value('__skip_to_step') && $this->_allowStepLinks)
+			$this->skipToStep(RequestContext::value('__skip_to_step'));
 			
-		else if ($_REQUEST['__update'])
+		else if (RequestContext::value('__update'))
 			$this->updateLastStep();
 	}
 	
@@ -265,7 +265,7 @@ class Wizard {
 	 * @return boolean
 	 */
 	function isSaveRequested () {
-		if ($_REQUEST['__save'] || $_REQUEST['__save_link']) {
+		if (RequestContext::value('__save') || RequestContext::value('__save_link')) {
 			if ($this->updateLastStep()) return true;
 			return false;
 		} else
@@ -277,7 +277,7 @@ class Wizard {
 	 * @return boolean
 	 */
 	function isCancelRequested () {
-		if ($_REQUEST['__cancel'] || $_REQUEST['__cancel_link'])
+		if (RequestContext::value('__cancel') || RequestContext::value('__cancel_link'))
 			return TRUE;
 		else
 			return FALSE;
@@ -318,9 +318,9 @@ class Wizard {
 		
 		ob_start();
 		print "\n<div style='visibility: none'>";
-		print "\n\t<input type='hidden' name='__go_to_step' value='' />";
-		print "\n\t<input type='hidden' name='__save_link' value='' />";
-		print "\n\t<input type='hidden' name='__cancel_link' value='' />";
+		print "\n\t<input type='hidden' name='".RequestContext::name('__go_to_step')."' value='' />";
+		print "\n\t<input type='hidden' name='".RequestContext::name('__save_link')."' value='' />";
+		print "\n\t<input type='hidden' name='".RequestContext::name('__cancel_link')."' value='' />";
 		print "\n</div>";
 		print "\n</form>";
 		$postWizardLayout->add(new Block(ob_get_contents(),2), null, null, CENTER, CENTER);
@@ -450,13 +450,13 @@ class Wizard {
 			print "\n\t<tr>";
 			print "\n\t\t<td align='left'>";
 			if ($this->hasPrevious())
-				print "\n\t\t\t<input type='submit' name='__previous' value='"._("Previous")."' />";
+				print "\n\t\t\t<input type='submit' name='".RequestContext::name('__previous')."' value='"._("Previous")."' />";
 			else
 				print "\n\t\t\t<input type='button' disabled='disabled' value='"._("Previous")."' />";
 			print "\n\t\t</td>";
 			print "\n\t\t<td align='right'>";
 			if ($this->hasNext())
-				print "\n\t\t\t<input type='submit' name='__next' value='"._("Next")."' />";
+				print "\n\t\t\t<input type='submit' name='".RequestContext::name('__next')."' value='"._("Next")."' />";
 			else
 				print "\n\t\t\t<input type='button' disabled='disabled' value='"._("Next")."' />";
 			print "\n\t\t</td>";
@@ -465,13 +465,13 @@ class Wizard {
 		print "\n\t<tr>";
 		print "\n\t\t<td align='left'>";
 		if ($this->_allowCancel)
-			print "\n\t\t\t<input type='submit' name='__cancel' value='"._("Cancel")."' />";
+			print "\n\t\t\t<input type='submit' name='".RequestContext::name('__cancel')."' value='"._("Cancel")."' />";
 		else
 			print "\n\t\t\t<input type='button' disabled='disabled' value='"._("Cancel")."' />";
 		print "\n\t\t</td>";
 		print "\n\t\t<td align='right'>";
 		if (($this->_allowStepLinks || !$this->hasNext()) && $this->arePropertiesValid())
-			print "\n\t\t\t<input type='submit' name='__save' value='"._("Save")."' />";
+			print "\n\t\t\t<input type='submit' name='".RequestContext::name('__save')."' value='"._("Save")."' />";
 		else
 			print "\n\t\t\t<input type='button' disabled='disabled' value='"._("Save")."' />";
 		print "\n\t\t</td>";

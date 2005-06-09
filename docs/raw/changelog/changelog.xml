@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.17 2005/04/22 17:31:35 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.18 2005/06/09 21:31:21 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -17,6 +17,16 @@
 		<fix author='adam'>
 			RepositoryInputOutputModules now check for the right record interface.
 		</fix>
+		<change author='adam'>
+			Updating the Wizard and Login to support the RequestContext
+		</change>
+		<change author='gabe'>
+			Updating much of Polyphony to support the RequestContext
+		</change>
+		<new author='adam'>
+			Added an abstract Action class-hierarchy to enable the easy creation
+			of class-based actions.
+		</new>
 	</version>
 	<version number="0.2.2" date="2005-04-14">
 		<fix author='adam'>

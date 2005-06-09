@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HierarchyPrinter.class.php,v 1.10 2005/04/12 19:46:28 adamfranco Exp $
+ * @version $Id: HierarchyPrinter.class.php,v 1.11 2005/06/09 21:31:32 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HierarchyPrinter.class.php,v 1.10 2005/04/12 19:46:28 adamfranco Exp $
+ * @version $Id: HierarchyPrinter.class.php,v 1.11 2005/06/09 21:31:32 adamfranco Exp $
  */
 
 class HierarchyPrinter {
@@ -54,28 +54,9 @@ class HierarchyPrinter {
 		// Get a string of our nodeIds
 		$nodeId =& $node->getId();
 		
-		// Build a variable to pass around our get terms when expanding
-		if (count($_GET)) {
-				$get = "?";
-				foreach ($_GET as $key => $val){
-					$get .= "&".urlencode($key)."=".urlencode($val);
-				}
-		}
-		
 		// Break the path info into parts for the enviroment and parts that
 		// designate which nodes to expand.
-		$environmentInfo = array();
-		$expandedNodes = array();
-		
-		for ($i=0; $i<count($harmoni->pathInfoParts); $i++) {
-			// If the index equals or is after our starting key
-			// it designates an expanded nodeId.
-			if ($i >= $startingPathInfoKey){
-				$expandedNodes[] = $harmoni->pathInfoParts[$i];
-			}else{	
-				$environmentInfo[] = $harmoni->pathInfoParts[$i];
-			}
-		}
+		$expandedNodes = explode("!", $harmoni->request->get('expanded_nodes'));
 		
 		print "\n\n<table>\n\t<tr><td valign='top'>";
 		// Print The node
@@ -97,24 +78,24 @@ class HierarchyPrinter {
 			// The child nodes are already expanded for this node. 
 			// Show option to collapse the list.		
 			if (in_array($nodeId->getIdString(), $expandedNodes)) {
-				$nodesToRemove = array($nodeId->getIdString());
-				$newPathInfo = array_merge($environmentInfo, array_diff($expandedNodes,
-																		$nodesToRemove)); 
-				print "<a style='text-decoration: none;' href='";
-				print htmlentities(MYURL."/".implode("/", $newPathInfo)."/".$get);
-				print "'>-</a>";
-				
+				$newExpandedNodes = array_diff($expandedNodes, 
+					array($nodeId->getIdString())); 	
+				$symbol = '-';
 				$expanded = TRUE;
 			
 			// The node is not already expanded.  Show option to expand.	
 			} else { 
-				$newPathInfo = array_merge($environmentInfo, $expandedNodes); 
-				print "<a style='text-decoration: none;' href='";
-				print htmlentities(MYURL."/".implode("/", $newPathInfo)."/".$nodeId->getIdString()."/".$get);
-				print "'>+</a>";
-				
+				$newExpandedNodes = array_merge($expandedNodes, 
+					array($nodeId->getIdString())); 
+				$symbol = '+';
 				$expanded = FALSE;
 			}
+			
+			$url =& $harmoni->request->mkURLWithPassthrough();
+			$url->setVaule('expanded_nodes', implode('!', $newExpandedNodes));
+			
+			print "<a style='text-decoration: none;' href='".$url->write()."'>".$symbol."</a>";
+			
 			print "\n\t\t</div>";
 			
 			// Make a vertical line to connect to the line in front of the children

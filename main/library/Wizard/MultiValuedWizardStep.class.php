@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MultiValuedWizardStep.class.php,v 1.11 2005/04/07 17:07:50 adamfranco Exp $
+ * @version $Id: MultiValuedWizardStep.class.php,v 1.12 2005/06/09 21:31:32 adamfranco Exp $
  */
 
 /**
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/WizardStep.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MultiValuedWizardStep.class.php,v 1.11 2005/04/07 17:07:50 adamfranco Exp $
+ * @version $Id: MultiValuedWizardStep.class.php,v 1.12 2005/06/09 21:31:32 adamfranco Exp $
  * @author Adam Franco
  */
 
@@ -266,37 +266,37 @@ class MultiValuedWizardStep
 		//			the form info was for an existing set
 
 		// First, lets save any info requested.
-		if ($_REQUEST['__save_new'] || $_REQUEST['__current_property_set']) {
+		if (RequestContext::value('__save_new') || RequestContext::value('__current_property_set')) {
 			foreach (array_keys($this->_properties) as $name) {
 				if (!$this->_properties[$name]->update())
 					$valid = FALSE;
 			}
 			
-			if ($_REQUEST['__current_property_set']) {
-				$this->saveCurrentPropertiesToSet($_REQUEST['__current_property_set']);
+			if (RequestContext::value('__current_property_set')) {
+				$this->saveCurrentPropertiesToSet(RequestContext::value('__current_property_set'));
 			} else {
 				$this->saveCurrentPropertiesAsNewSet();
 			}
 		}
 		
 		// if we requested a set to delete, delete that set.
-		if ($_REQUEST['__delete_set'] !== NULL) {
-			$this->deleteSet($_REQUEST['__delete_set']);
+		if (RequestContext::value('__delete_set') !== NULL) {
+			$this->deleteSet(RequestContext::value('__delete_set'));
 		}
 		
 		// If we requested a set to edit, load that one as the current set.
-		if ($_REQUEST['__edit_set'] !== NULL) {
-			$this->loadCurrentPropertiesFromSet($_REQUEST['__edit_set']);
+		if (RequestContext::value('__edit_set') !== NULL) {
+			$this->loadCurrentPropertiesFromSet(RequestContext::value('__edit_set'));
 		}
 		
 		// if we requested a set to move, move that set.
-		if ($_REQUEST['__move_set_up'] !== NULL) {
-			$this->moveSetUp($_REQUEST['__move_set_up']);
+		if (RequestContext::value('__move_set_up') !== NULL) {
+			$this->moveSetUp(RequestContext::value('__move_set_up'));
 		}
 		
 		// if we requested a set to move, move that set.
-		if ($_REQUEST['__move_set_down'] !== NULL) {
-			$this->moveSetDown($_REQUEST['__move_set_down']);
+		if (RequestContext::value('__move_set_down') !== NULL) {
+			$this->moveSetDown(RequestContext::value('__move_set_down'));
 		}
 		
 		return $valid;
@@ -345,15 +345,15 @@ class MultiValuedWizardStep
 	 * nessisary for use in the comparison string. In that case single quotes, ',
 	 * should be used. Examples:
 	 *
-	 * 		<input type='text' name='title' value='[[title]]' />
+	 * 		<input type='text' name='".RequestContext::name('title')."' value='[[title]]' />
 	 *
-	 * 		<input type='text' name='age' value='[[age]]' /> [[age < 18|*You are not old enough!*|You are old enough.]]
+	 * 		<input type='text' name='".RequestContext::name('age')."' value='[[age]]' /> [[age < 18|*You are not old enough!*|You are old enough.]]
 	 * 		
-	 * 		<input type='radio' name='width' value='5' [[width == 5| checked='checked'|]] /> Narrow Width
-	 * 		<input type='radio' name='width' value='10' [[width == 10| checked='checked'|]] /> Wide Width
+	 * 		<input type='radio' name='".RequestContext::name('width')."' value='5' [[width == 5| checked='checked'|]] /> Narrow Width
+	 * 		<input type='radio' name='".RequestContext::name('width')."' value='10' [[width == 10| checked='checked'|]] /> Wide Width
 	 * 		
-	 * 		<input type='radio' name='size' value='S' [['size' == 'S'| checked='checked'|]] /> Small
-	 * 		<input type='radio' name='size' value='L' [['size' == 'L'| checked='checked'|]] /> Large
+	 * 		<input type='radio' name='".RequestContext::name('size')."' value='S' [['size' == 'S'| checked='checked'|]] /> Small
+	 * 		<input type='radio' name='".RequestContext::name('size')."' value='L' [['size' == 'L'| checked='checked'|]] /> Large
 	 * 
 	 * @param string $text The HTML text for this step.
 	 * @access public
@@ -376,15 +376,15 @@ class MultiValuedWizardStep
 	 * nessisary for use in the comparison string. In that case single quotes, ',
 	 * should be used. Examples:
 	 *
-	 * 		<input type='text' name='title' value='[[title]]' />
+	 * 		<input type='text' name='".RequestContext::name('title')."' value='[[title]]' />
 	 *
-	 * 		<input type='text' name='age' value='[[age]]' /> [[age < 18|*You are not old enough!*|You are old enough.]]
+	 * 		<input type='text' name='".RequestContext::name('age')."' value='[[age]]' /> [[age < 18|*You are not old enough!*|You are old enough.]]
 	 * 		
-	 * 		<input type='radio' name='width' value='5' [[width == 5| checked='checked'|]] /> Narrow Width
-	 * 		<input type='radio' name='width' value='10' [[width == 10| checked='checked'|]] /> Wide Width
+	 * 		<input type='radio' name='".RequestContext::name('width')."' value='5' [[width == 5| checked='checked'|]] /> Narrow Width
+	 * 		<input type='radio' name='".RequestContext::name('width')."' value='10' [[width == 10| checked='checked'|]] /> Wide Width
 	 * 		
-	 * 		<input type='radio' name='size' value='S' [['size' == 'S'| checked='checked'|]] /> Small
-	 * 		<input type='radio' name='size' value='L' [['size' == 'L'| checked='checked'|]] /> Large
+	 * 		<input type='radio' name='".RequestContext::name('size')."' value='S' [['size' == 'S'| checked='checked'|]] /> Small
+	 * 		<input type='radio' name='".RequestContext::name('size')."' value='L' [['size' == 'L'| checked='checked'|]] /> Large
 	 * 
 	 * @access private
 	 * @return string
@@ -397,10 +397,10 @@ class MultiValuedWizardStep
 		// First, pull out our [Buttons] elements and replace them
 		// with our buttons.
 		ob_start();
-		print "\nSave as <input type='submit' name='__save_new' value='New' />";
-		print "\n<input type='hidden' name='__update' value='Force Update' />";
-		if ($_REQUEST['__edit_set'] !== NULL)
-			print "\n<br />Save as number: <input type='submit' name='__current_property_set' value='".$_REQUEST['__edit_set']."' />";
+		print "\nSave as <input type='submit' name='".RequestContext::name('__save_new')."' value='New' />";
+		print "\n<input type='hidden' name='".RequestContext::name('__update')."' value='Force Update' />";
+		if (RequestContext::value('__edit_set') !== NULL)
+			print "\n<br />Save as number: <input type='submit' name='".RequestContext::name('__current_property_set')."' value='".RequestContext::value('__edit_set')."' />";
 		
 		$outputText = str_replace("[Buttons]", ob_get_contents(), $outputText);
 		ob_end_clean();
@@ -420,15 +420,15 @@ class MultiValuedWizardStep
 					
 					// Edit/delete Buttons
 					ob_start();
-					print "Edit Number: <input type='submit' name='__edit_set' value='".$setIndex."' />";
-					print "\n<br />Delete Number: <input type='submit' name='__delete_set' value='".$setIndex."' />";
+					print "Edit Number: <input type='submit' name='".RequestContext::name('__edit_set')."' value='".$setIndex."' />";
+					print "\n<br />Delete Number: <input type='submit' name='".RequestContext::name('__delete_set')."' value='".$setIndex."' />";
 					$setText = str_replace("[ListButtons]", ob_get_contents(), $setText);
 					ob_end_clean();
 					
 					// Move up/down Buttons
 					ob_start();
 					if ($setIndex != 0)
-						print "Move Up Number: <input type='submit' name='__move_set_up' value='".$setIndex."' />";
+						print "Move Up Number: <input type='submit' name='".RequestContext::name('__move_set_up')."' value='".$setIndex."' />";
 					$setText = str_replace("[ListMoveButtons]", ob_get_contents(), $setText);
 					ob_end_clean();
 				

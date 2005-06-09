@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: process_authorizations.act.php,v 1.10 2005/06/07 12:29:15 gabeschine Exp $
+ * @version $Id: process_authorizations.act.php,v 1.11 2005/06/09 21:31:33 adamfranco Exp $
  */
 
 // Get services
@@ -48,4 +48,3 @@ $harmoni->request->endNamespace();
 
 
 $harmoni->history->goBack("polyphony/agents/process_authorizations");
-//header("Location: ".MYURL."/".implode("/",$currentPathInfo)."?agent=".$_GET['agent']);
