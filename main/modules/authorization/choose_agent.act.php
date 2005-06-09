@@ -12,7 +12,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.26 2005/06/07 20:32:41 gabeschine Exp $
+ * @version $Id: choose_agent.act.php,v 1.27 2005/06/09 17:22:33 gabeschine Exp $
  */
 
 // start our namespace
@@ -30,6 +30,7 @@ $centerPane =& $harmoni->getAttachedData('centerPane');
 $agentManager =& Services::getService("Agent");
 $idManager = Services::getService("Id");
 $everyoneId =& $idManager->getId("-1");
+$usersId =& $idManager->getId("-2");
 
 // Our
 $yLayout =& new YLayout();
@@ -223,7 +224,7 @@ $childGroupIds = array();
 $groups =& $agentManager->getGroups();
 while ($groups->hasNext()) {
 	$group =& $groups->next();
-	if (!$everyoneId->isEqual($group->getId())) {
+	if (!$everyoneId->isEqual($group->getId()) && !$usersId->isEqual($group->getId())) {
 		$childGroups =& $group->getGroups(FALSE);
 		while ($childGroups->hasNext()) {
 			$group =& $childGroups->next();

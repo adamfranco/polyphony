@@ -11,7 +11,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_membership.act.php,v 1.25 2005/06/07 12:28:38 gabeschine Exp $
+ * @version $Id: group_membership.act.php,v 1.26 2005/06/09 17:22:32 gabeschine Exp $
  */
 
 // Check for our authorization function definitions
@@ -74,6 +74,7 @@ if (!$authZManager->isUserAuthorized(
 $agentManager =& Services::getService("Agent");
 $idManager = Services::getService("Id");
 $everyoneId =& $idManager->getId("-1");
+$usersId =& $idManager->getId("-2");
 
 // Build a variable to pass around our search terms when expanding
 
@@ -192,7 +193,7 @@ $childGroupIds = array();
 $groups =& $agentManager->getGroups();
 while ($groups->hasNext()) {
 	$group =& $groups->next();
-	if (!$everyoneId->isEqual($group->getId())) {
+	if (!$everyoneId->isEqual($group->getId()) && !$usersId->isEqual($group->getId())) {
 		$childGroups =& $group->getGroups(FALSE);
 		while ($childGroups->hasNext()) {
 			$group =& $childGroups->next();
@@ -402,11 +403,12 @@ return $mainScreen;
 function printGroup(& $group) {
 	$idManager = Services::getService("Id");
 	$everyoneId =& $idManager->getId("-1");
+	$usersId =& $idManager->getId("-2");
 	
 	$id =& $group->getId();
 	$groupType =& $group->getType();
 	
-	if ($id->isEqual($everyoneId))
+	if ($id->isEqual($everyoneId) || $id->isEqual($usersId))
 		print "\n&nbsp; &nbsp; &nbsp;";
 	else
 		print "\n<input type='checkbox' id='".$id->getIdString()."' name='".RequestContext::name($id->getIdString())."' value='group' />";
@@ -414,7 +416,7 @@ function printGroup(& $group) {
 	print "\n<a title='".htmlspecialchars($groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()." - ".$groupType->getDescription())."'>";
 	print "\n<span style='text-decoration: underline; font-weight: bold;'>".$id->getIdString()." - ".htmlspecialchars($group->getDisplayName())."</span></a>";
 	
-	if (!$id->isEqual($everyoneId)) {
+	if (!$id->isEqual($everyoneId) && !$id->isEqual($usersId)) {
 		print "\n <input type='button' value='"._("Add checked")."'";
 		print " onclick='Javascript:submitCheckedToGroup(\"".$id->getIdString()."\")'";
 		print " />";
