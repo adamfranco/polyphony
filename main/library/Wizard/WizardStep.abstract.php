@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStep.abstract.php,v 1.8 2005/04/07 17:07:50 adamfranco Exp $
+ * @version $Id: WizardStep.abstract.php,v 1.9 2005/06/22 18:20:46 gabeschine Exp $
  */
 
 /**
@@ -24,7 +24,7 @@ require_once(dirname(__FILE__)."/WizardStep.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStep.abstract.php,v 1.8 2005/04/07 17:07:50 adamfranco Exp $
+ * @version $Id: WizardStep.abstract.php,v 1.9 2005/06/22 18:20:46 gabeschine Exp $
  * @author Adam Franco
  * @access public
  */
@@ -42,7 +42,7 @@ class WizardStepAbstract
 	 * The properties handled by the Wizard.
 	 * @var protected array _properties
 	 */
-	var $_properties;
+	var $_properties = array();
 	
 	/**
 	 * The text with un-parsed wizard tags.

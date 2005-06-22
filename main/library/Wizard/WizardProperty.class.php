@@ -12,7 +12,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardProperty.class.php,v 1.9 2005/04/22 16:34:27 adamfranco Exp $
+ * @version $Id: WizardProperty.class.php,v 1.10 2005/06/22 18:20:46 gabeschine Exp $
  * @author Adam Franco
  */
  
@@ -30,7 +30,7 @@ class WizardProperty {
 	
 	/**
 	 * @var string _isValueRequired If false, the existance of a value in
-	 * the $_REQUEST array will not be required. This is needed for checkbox
+	 * the RequestContext will not be required. This is needed for checkbox
 	 * values which are simply not submitted if unchecked.
 	 */
 	var $_isValueRequired;
@@ -127,8 +127,8 @@ class WizardProperty {
 		$name = str_replace(".", "_", $this->_name);
 		
 		// Set the value from the request array.
-		if (isset($_REQUEST[$name]) || !$this->_isValueRequired) {
-			$this->_value = $_REQUEST[$name];
+		if (RequestContext::value($name) || !$this->_isValueRequired) {
+			$this->_value = RequestContext::value($name);
 			$this->_hasBeenSet = TRUE;
 		} else
 			throwError(new Error("Requested property, ".$name.", does not exist in the _REQUEST array.", "Wizard", 1));

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.class.php,v 1.25 2005/06/09 21:31:32 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.26 2005/06/22 18:20:46 gabeschine Exp $
  */
 
 /**
@@ -15,6 +15,13 @@
  */
 require_once(dirname(__FILE__)."/WizardStep.class.php");
 require_once(dirname(__FILE__)."/MultiValuedWizardStep.class.php");
+require_once(HARMONI."/GUIManager/Layouts/YLayout.class.php");
+require_once(HARMONI."/GUIManager/Layouts/XLayout.class.php");
+require_once(HARMONI."/GUIManager/Components/Block.class.php");
+require_once(HARMONI."/GUIManager/Components/Heading.class.php");
+require_once(HARMONI."/GUIManager/Components/Menu.class.php");
+require_once(HARMONI."/GUIManager/Components/MenuItemLink.class.php");
+require_once(HARMONI."/GUIManager/Components/MenuItemHeading.class.php");
 
 /**
  * The Wizard class provides a system for posting, retrieving, and
@@ -28,7 +35,7 @@ require_once(dirname(__FILE__)."/MultiValuedWizardStep.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.class.php,v 1.25 2005/06/09 21:31:32 adamfranco Exp $
+ * @version $Id: Wizard.class.php,v 1.26 2005/06/22 18:20:46 gabeschine Exp $
  * @author Adam Franco
  */
 
@@ -223,7 +230,7 @@ class Wizard {
 	 * @return void
 	 */
 	function update () {
-		debug::output(printpre($_REQUEST, TRUE));
+//		debug::output(printpre($_REQUEST, TRUE));
 		if (RequestContext::value('__next') && $this->hasNext())
 			$this->next();
 		
@@ -318,9 +325,9 @@ class Wizard {
 		
 		ob_start();
 		print "\n<div style='visibility: none'>";
-		print "\n\t<input type='hidden' name='".RequestContext::name('__go_to_step')."' value='' />";
-		print "\n\t<input type='hidden' name='".RequestContext::name('__save_link')."' value='' />";
-		print "\n\t<input type='hidden' name='".RequestContext::name('__cancel_link')."' value='' />";
+		print "\n\t<input type='hidden' id='__go_to_step' name='".RequestContext::name('__go_to_step')."' value='' />";
+		print "\n\t<input type='hidden' id='__save_link' name='".RequestContext::name('__save_link')."' value='' />";
+		print "\n\t<input type='hidden' id='__cancel_link' name='".RequestContext::name('__cancel_link')."' value='' />";
 		print "\n</div>";
 		print "\n</form>";
 		$postWizardLayout->add(new Block(ob_get_contents(),2), null, null, CENTER, CENTER);
