@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardAction.class.php,v 1.1 2005/06/03 15:22:28 adamfranco Exp $
+ * @version $Id: WizardAction.class.php,v 1.2 2005/07/07 21:29:10 adamfranco Exp $
  */ 
  
  require_once(dirname(__FILE__)."/Action.class.php");
@@ -50,7 +50,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardAction.class.php,v 1.1 2005/06/03 15:22:28 adamfranco Exp $
+ * @version $Id: WizardAction.class.php,v 1.2 2005/07/07 21:29:10 adamfranco Exp $
  */
 class WizardAction 
 	extends Action
@@ -183,7 +183,7 @@ class WizardAction
 	 */
 	function &getWizard ( $cacheName ) {
 		// Create the wizard if it doesn't exist.
-		 if (!$_SESSION[$cacheName]) {
+		 if (!isset($_SESSION[$cacheName])) {
 		 	$wizard =& $this->createWizard();
 		 	$_SESSION[$cacheName] =& $wizard;
 		 }
