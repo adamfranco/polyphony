@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MainWindowAction.class.php,v 1.1 2005/06/03 15:22:28 adamfranco Exp $
+ * @version $Id: MainWindowAction.class.php,v 1.2 2005/07/07 18:30:19 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/WizardAction.class.php");
@@ -30,10 +30,25 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MainWindowAction.class.php,v 1.1 2005/06/03 15:22:28 adamfranco Exp $
+ * @version $Id: MainWindowAction.class.php,v 1.2 2005/07/07 18:30:19 adamfranco Exp $
  */
 class MainWindowAction 
 	extends WizardAction {
+
+/*********************************************************
+ * Instance Variables
+ *********************************************************/
+	
+	/**
+	 * @var object $_actionRows; 
+	 * @access private
+	 * @since 7/7/05
+	 */
+	var $_actionRows;
+	
+/*********************************************************
+ * Instance Methods
+ *********************************************************/
 
 	/**
 	 * Build the content for this action.
