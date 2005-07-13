@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HarmoniFileModule.class.php,v 1.4 2005/04/22 17:31:35 adamfranco Exp $
+ * @version $Id: HarmoniFileModule.class.php,v 1.5 2005/07/13 15:47:59 ndhungel Exp $
  */
 
 /**
@@ -23,8 +23,8 @@ require_once(dirname(__FILE__)."/../RepositoryInputOutputModule.interface.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: HarmoniFileModule.class.php,v 1.4 2005/04/22 17:31:35 adamfranco Exp $
- * @since $Date: 2005/04/22 17:31:35 $
+ * @version $Id: HarmoniFileModule.class.php,v 1.5 2005/07/13 15:47:59 ndhungel Exp $
+ * @since $Date: 2005/07/13 15:47:59 $
  * @copyright 2004 Middlebury College
  */
 
@@ -394,7 +394,7 @@ class HarmoniFileModule
 			$part =& $partIterator->next();
 			$partStructure =& $part->getPartStructure();
 			$partStructureId =& $partStructure->getId();
-			if (!is_array($parts[$partStructureId->getIdString()]))
+			if (!isset($parts[$partStructureId->getIdString()]) || !is_array($parts[$partStructureId->getIdString()]))
 				$parts[$partStructureId->getIdString()] = array();
 			$parts[$partStructureId->getIdString()][] =& $part;
 		}
