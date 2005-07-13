@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_time.class.php,v 1.3 2005/04/07 17:07:45 adamfranco Exp $
+ * @version $Id: PrimitiveIO_time.class.php,v 1.4 2005/07/13 17:41:18 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_time.class.php,v 1.3 2005/04/07 17:07:45 adamfranco Exp $
+ * @version $Id: PrimitiveIO_time.class.php,v 1.4 2005/07/13 17:41:18 adamfranco Exp $
  */
 class PrimitiveIO_time extends PrimitiveIO {
 	function mkFormHTML(&$primitive, $label, $index) {
@@ -79,10 +79,7 @@ class PrimitiveIO_time extends PrimitiveIO {
 			$hour = $fieldSet->get("hour-$label-$index");
 			$minute = $fieldSet->get("minute-$label-$index");
 			$second = $fieldSet->get("second-$label-$index");
-			$timestamp = mktime($hour, $minute, $second, $month, $day, $year);
-			$time =& new Time();
-			$time->setDate($timestamp);
-			return $time;
+			return DateAndTime::withYearMonthDayHourMinuteSecond($year, $month, $day, $hour, $minute, $second);
 		}
 		return ($null=null);
 	}
