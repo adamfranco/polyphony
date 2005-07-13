@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.11 2005/06/07 21:35:44 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.12 2005/07/13 17:05:01 ndhungel Exp $
  */
  
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.11 2005/06/07 21:35:44 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.12 2005/07/13 17:05:01 ndhungel Exp $
  */
 
 class IteratorResultPrinter {
@@ -152,6 +152,7 @@ class IteratorResultPrinter {
 					print "<a href='";
 					$url =& $harmoni->request->mkURLWithPassthrough();
 					$url->setValue("starting_number", (($i-1)*$this->_pageSize+1));
+					print $url->write();
 					print "'>";
 				}
 				print $i;
