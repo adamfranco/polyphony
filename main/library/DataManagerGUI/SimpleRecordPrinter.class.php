@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleRecordPrinter.class.php,v 1.6 2005/06/03 13:43:08 adamfranco Exp $
+ * @version $Id: SimpleRecordPrinter.class.php,v 1.7 2005/07/14 17:16:44 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleRecordPrinter.class.php,v 1.6 2005/06/03 13:43:08 adamfranco Exp $
+ * @version $Id: SimpleRecordPrinter.class.php,v 1.7 2005/07/14 17:16:44 adamfranco Exp $
  */
 class SimpleRecordPrinter {
 	
@@ -56,7 +56,7 @@ class SimpleRecordPrinter {
 		}
 		$text .= "type: ".HarmoniType::typeToString($record->getType());
 		$created =& $record->getCreationDate();
-		$text .= "; created: " . $created->toString(true);
+		$text .= "; created: " . $created->asString(true);
 		$text .= "; ".$fetchModeStrings[$record->getFetchMode()];
 //		$text .= print_r($record->getFetchMode(), true);
 		if ($v) $text .= "; vControl";
@@ -123,11 +123,11 @@ class SimpleRecordPrinter {
 	 	$text .= "(".implode("",$flags).") ";
 	 	$text .= "\t";
 	 	$text .= $label."[$i] = ";
-	 	$text .= $primitive->toString();
+	 	$text .= $primitive->asString();
 	 	
 	 	if ($v) {
 	 		$date =& $version->getDate();
-	 		$text .= "\t\t(".$vID." - ".$date->toString(true).")";
+	 		$text .= "\t\t(".$vID." - ".$date->asString(true).")";
 	 	}
 	 	
 	 	return $text;

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DataManagerPrimativesModule.class.php,v 1.5 2005/07/13 15:47:59 ndhungel Exp $
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.6 2005/07/14 17:17:15 adamfranco Exp $
  */
 
 /**
@@ -23,8 +23,8 @@ require_once(dirname(__FILE__)."/../RepositoryInputOutputModule.interface.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: DataManagerPrimativesModule.class.php,v 1.5 2005/07/13 15:47:59 ndhungel Exp $
- * @since $Date: 2005/07/13 15:47:59 $
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.6 2005/07/14 17:17:15 adamfranco Exp $
+ * @since $Date: 2005/07/14 17:17:15 $
  * @copyright 2004 Middlebury College
  */
 
@@ -210,7 +210,7 @@ class DataManagerPrimativesModule
 						$value =& $part->getValue();
 					
 						print "\n<strong>".$partStructure->getDisplayName().":</strong> \n";			
-						print $value->toString();
+						print $value->asString();
 						print "\n<br />";
 					}
 				}
@@ -284,7 +284,7 @@ class DataManagerPrimativesModule
 					
 					if ($partStructureId->isEqual($currentPartStructure->getId())) {
 						$valueObj =& $part->getValue();
-						$property->setValue($valueObj->toString());
+						$property->setValue($valueObj->asString());
 						if ($partStructure->isRepeatable()) {
 							$step->saveCurrentPropertiesAsNewSet();
 						} else {

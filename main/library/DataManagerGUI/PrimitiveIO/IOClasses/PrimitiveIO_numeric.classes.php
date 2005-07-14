@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_numeric.classes.php,v 1.3 2005/04/07 17:07:43 adamfranco Exp $
+ * @version $Id: PrimitiveIO_numeric.classes.php,v 1.4 2005/07/14 17:17:15 adamfranco Exp $
  */
 
 /**
@@ -29,7 +29,7 @@ class PrimitiveIO_integer extends PrimitiveIO_shortstring {
         function mkFormHTML(&$primitive, $label, $index) {
 		$t = "[ update: <input type='checkbox' name='update-$label-$index' value='1'/> ]\n";
 		$t .= "<b>".$label."[".$index."]</b>: \n";
-		$value = $primitive?htmlentities($primitive->toString(), ENT_QUOTES):"";
+		$value = $primitive?htmlentities($primitive->asString(), ENT_QUOTES):"";
 		$t .= "<input type='text' name='value-$label-$index' value='".$value."' size=5/>\n";
 		return $t;
 											        }
