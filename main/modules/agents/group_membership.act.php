@@ -11,16 +11,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_membership.act.php,v 1.26 2005/06/09 17:22:32 gabeschine Exp $
+ * @version $Id: group_membership.act.php,v 1.27 2005/07/14 20:49:42 adamfranco Exp $
  */
 
 // Check for our authorization function definitions
-if (!defined("AZ_CREATE_GROUPS"))
-	throwError(new Error("You must define an id for AZ_CREATE_GROUPS", "polyphony.authorizations", true));
-if (!defined("AZ_MODIFY_GROUPS"))
-	throwError(new Error("You must define an id for AZ_MODIFY_GROUPS", "polyphony.authorizations", true));
-if (!defined("AZ_DELETE_GROUPS"))
-	throwError(new Error("You must define an id for AZ_DELETE_GROUPS", "polyphony.authorizations", true));
 if (!defined("AZ_ROOT_NODE"))
 	throwError(new Error("You must define an id for AZ_ROOT_NODE", "polyphony.authorizations", true));
 
@@ -60,7 +54,7 @@ $pageRows->add($introHeader, "100%", null, LEFT, CENTER);
 $authZManager =& Services::getService("AuthZ");
 $idManager =& Services::getService("IdManager");
 if (!$authZManager->isUserAuthorized(
-			$idManager->getId(AZ_MODIFY_GROUPS),
+			$idManager->getId("edu.middlebury.authorization.modify_groups"),
 			$idManager->getId(AZ_ROOT_NODE)))
 {
 	$errorLayout =& new Block(

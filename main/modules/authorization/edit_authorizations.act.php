@@ -11,15 +11,8 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.32 2005/06/07 21:35:56 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.33 2005/07/14 20:51:41 adamfranco Exp $
  */
-
-// Check for our authorization function definitions
-if (!defined("AZ_VIEW_AZS"))
-	throwError(new Error("You must define an id for AZ_VIEW_AZS", "polyphony.authorizations", true));
-if (!defined("AZ_MODIFY_AZS"))
-	throwError(new Error("You must define an id for AZ_MODIFY_AZS", "polyphony.authorizations", true));
-
 
 $harmoni->request->startNamespace("polyphony-agents");
 $harmoni->request->passthrough("agentId");
@@ -149,7 +142,7 @@ function printQualifier(& $qualifier) {
 	$authZ =& Services::getService("AuthZ");
 	$idManager =& Services::getService("IdManager");
 	if ($authZ->isUserAuthorized(
-				$idManager->getId(AZ_VIEW_AZS),
+				$idManager->getId("edu.middlebury.authorization.view_authorizations"),
 				$id)) 
 	{
 		print "\n<div style='margin-left: 10px;'>";
@@ -318,7 +311,7 @@ function printEditOptions(& $qualifier) {
 			$idManager =& Services::getService("IdManager");
 			$agentManager =& Services::getService("AgentManager");
 			if ($authZ->isUserAuthorized(
-						$idManager->getId(AZ_MODIFY_AZS),
+						$idManager->getId("edu.middlebury.authorization.modify_authorizations"),
 						$qualifierId))
 			{
 				// The checkbox is really just for show, the link is where we send

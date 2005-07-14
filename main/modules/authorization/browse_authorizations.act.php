@@ -12,15 +12,8 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_authorizations.act.php,v 1.14 2005/06/07 13:43:28 gabeschine Exp $
+ * @version $Id: browse_authorizations.act.php,v 1.15 2005/07/14 20:51:41 adamfranco Exp $
  */
-
-$harmoni->request->startNamespace("polyphony-agents");
-// Check for our authorization function definitions
-if (!defined("AZ_VIEW_AZS"))
-	throwError(new Error("You must define an id for AZ_VIEW_AZS", "polyphony.authorizations", true));
-if (!defined("AZ_MODIFY_AZS"))
-	throwError(new Error("You must define an id for AZ_MODIFY_AZS", "polyphony.authorizations", true));
 
 // Get the Layout components. See core/modules/moduleStructure.txt
 // for more info. 
@@ -125,7 +118,7 @@ function printQualifier(& $qualifier) {
 	$authZ =& Services::getService("AuthZ");
 	$idManager =& Services::getService("Id");
 	if ($authZ->isUserAuthorized(
-				$idManager->getId(AZ_VIEW_AZS),
+				$idManager->getId("edu.middlebury.authorization.view_authorizations"),
 				$id))
 	{
 		print "\n<div style='margin-left: 10px;'>";
