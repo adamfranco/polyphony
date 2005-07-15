@@ -11,12 +11,8 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_membership.act.php,v 1.27 2005/07/14 20:49:42 adamfranco Exp $
+ * @version $Id: group_membership.act.php,v 1.28 2005/07/15 13:45:48 adamfranco Exp $
  */
-
-// Check for our authorization function definitions
-if (!defined("AZ_ROOT_NODE"))
-	throwError(new Error("You must define an id for AZ_ROOT_NODE", "polyphony.authorizations", true));
 
 $harmoni->request->startNamespace("polyphony-agents");
 $harmoni->request->passthrough();
@@ -55,7 +51,7 @@ $authZManager =& Services::getService("AuthZ");
 $idManager =& Services::getService("IdManager");
 if (!$authZManager->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify_groups"),
-			$idManager->getId(AZ_ROOT_NODE)))
+			$idManager->getId("edu.middlebury.authorization.root")))
 {
 	$errorLayout =& new Block(
 		_("You are not authorized to modify group membership."), 3);
