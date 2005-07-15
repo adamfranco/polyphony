@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleRecordPrinter.class.php,v 1.7 2005/07/14 17:16:44 adamfranco Exp $
+ * @version $Id: SimpleRecordPrinter.class.php,v 1.8 2005/07/15 22:29:04 gabeschine Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleRecordPrinter.class.php,v 1.7 2005/07/14 17:16:44 adamfranco Exp $
+ * @version $Id: SimpleRecordPrinter.class.php,v 1.8 2005/07/15 22:29:04 gabeschine Exp $
  */
 class SimpleRecordPrinter {
 	
@@ -44,8 +44,6 @@ class SimpleRecordPrinter {
 		$text = "";
 		if ($html) $text .= "<pre>\n";
 		
-		if (!$record->isActive()) $text.="(del) ";
-		
 		if ($record->getID()) {
 			$text .= "ID: ".$record->getID();
 			$ids = $recordManager->getRecordSetIDsContaining($record);
@@ -54,9 +52,9 @@ class SimpleRecordPrinter {
 			else $text .= "none";
 			$text .= "; ";
 		}
-		$text .= "type: ".HarmoniType::typeToString($record->getType());
+		$text .= "type: ".$record->getSchemaID();
 		$created =& $record->getCreationDate();
-		$text .= "; created: " . $created->asString(true);
+		$text .= "; created: " . $created->asString();
 		$text .= "; ".$fetchModeStrings[$record->getFetchMode()];
 //		$text .= print_r($record->getFetchMode(), true);
 		if ($v) $text .= "; vControl";
@@ -67,9 +65,10 @@ class SimpleRecordPrinter {
 		$noValue = array();
 		
 		foreach ($labels as $label) {
-			if ($record->numValues($label)) {
-				foreach ($record->getIndices($label) as $i) {
-					$value =& $record->getRecordFieldValue($label,$i);
+			if ($record->numValues($label, true)) {
+				foreach ($record->getIndices($label, true) as $i) {
+					$fieldID = $schema->getID() . "." . $label;
+					$value =& $record->getRecordFieldValue($fieldID,$i);
 					if ($v) {
 						foreach ($value->getVersionIDs() as $verID) {
 							$version =& $value->getVersion($verID);
@@ -127,7 +126,7 @@ class SimpleRecordPrinter {
 	 	
 	 	if ($v) {
 	 		$date =& $version->getDate();
-	 		$text .= "\t\t(".$vID." - ".$date->asString(true).")";
+	 		$text .= "\t\t(".$vID." - ".$date->asString().")";
 	 	}
 	 	
 	 	return $text;
