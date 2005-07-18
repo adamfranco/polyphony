@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.class.php,v 1.26 2005/06/22 18:20:46 gabeschine Exp $
+ * @version $Id: Wizard.class.php,v 1.27 2005/07/18 21:15:42 adamfranco Exp $
  */
 
 /**
@@ -35,7 +35,7 @@ require_once(HARMONI."/GUIManager/Components/MenuItemHeading.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.class.php,v 1.26 2005/06/22 18:20:46 gabeschine Exp $
+ * @version $Id: Wizard.class.php,v 1.27 2005/07/18 21:15:42 adamfranco Exp $
  * @author Adam Franco
  */
 
@@ -395,7 +395,7 @@ class Wizard {
 			
 		// :: Steps Menu ::
 		$menu =& new Menu(new YLayout(), 1);
-		//$space =& new Block("&nbsp",2);
+		//$space =& new Block("&nbsp;",2);
 		//$lower->add($space, null, null, CENTER, CENTER);
 		$lower->add($menu, "27%", null, LEFT, TOP);
 		foreach (array_keys($this->_steps) as $number) {

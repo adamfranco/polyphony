@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.7 2005/06/07 12:28:38 gabeschine Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.8 2005/07/18 21:15:42 adamfranco Exp $
  */
  
 $harmoni->request->startNamespace("polyphony-agents"); 
@@ -131,7 +131,7 @@ function confirmClearProperties(&$agent){
 	$harmoni =& Harmoni::instance();
 	$url =& $harmoni->request->mkURL();
 	print "Do you really want to clear all properties of ".$agent->getDisplayName()."? (this will not reset system name or password)<br />";
-	print "<form action='".$url->write("furtherAction","clearProperties")."' method='post'><input type='submit' value='Clear' /></form><input type='button' value='Cancel' onClick='history.back()' />";
+	print "<form action='".$url->write("furtherAction","clearProperties")."' method='post'><input type='submit' value='Clear' /></form><input type='button' value='Cancel' onclick='history.back()' />";
 	return;
 }
 
@@ -161,7 +161,7 @@ function confirmDeleteAgent(&$agent){
 	$harmoni =& Harmoni::instance();
 	$url =& $harmoni->request->mkURL();
 	print "Do you really want to delete ".$agent->getDisplayName()."?<br />";
-	print "<form action='".$url->write("furtherAction","deleteAgent")."' method='post'><input type='submit' value='Delete' /></form><input type='button' value='Cancel' onClick='history.back()' />";
+	print "<form action='".$url->write("furtherAction","deleteAgent")."' method='post'><input type='submit' value='Delete' /></form><input type='button' value='Cancel' onclick='history.back()' />";
 	return;
 }
 

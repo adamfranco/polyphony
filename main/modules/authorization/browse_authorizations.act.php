@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_authorizations.act.php,v 1.16 2005/07/18 13:53:46 adamfranco Exp $
+ * @version $Id: browse_authorizations.act.php,v 1.17 2005/07/18 21:15:42 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_authorizations.act.php,v 1.16 2005/07/18 13:53:46 adamfranco Exp $
+ * @version $Id: browse_authorizations.act.php,v 1.17 2005/07/18 21:15:42 adamfranco Exp $
  */
 class browse_authorizationsAction 
 	extends MainWindowAction
@@ -62,7 +62,7 @@ class browse_authorizationsAction
 		$harmoni =& Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-authorizations");
 		
-		$actionRows->add(new Block("&nbsp &nbsp "._("Below is a listing of all of the Users/Groups who are authorized to do various functions in the system. Click on a name to edit the authorizations for that User/Group")."<br /><br />",2));
+		$actionRows->add(new Block("&nbsp; &nbsp; "._("Below is a listing of all of the Users/Groups who are authorized to do various functions in the system. Click on a name to edit the authorizations for that User/Group")."<br /><br />",2));
 		
 		// Buttons to go back to edit auths for a different user, or to go home
 		ob_start();
