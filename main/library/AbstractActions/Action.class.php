@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Action.class.php,v 1.1 2005/06/03 15:22:28 adamfranco Exp $
+ * @version $Id: Action.class.php,v 1.2 2005/07/18 22:03:52 adamfranco Exp $
  */ 
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Action.class.php,v 1.1 2005/06/03 15:22:28 adamfranco Exp $
+ * @version $Id: Action.class.php,v 1.2 2005/07/18 22:03:52 adamfranco Exp $
  * @since 4/28/05
  */
 class Action {
@@ -31,6 +31,30 @@ class Action {
 	 */
 	function isAuthorizedToExecute () {
 		throwError(new Error(__CLASS__."::".__FUNCTION__."() must be overridded in child classes."));
+	}
+	
+	/**
+	 * Answer the message to print when the user is not authorized to execute
+	 * this action
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 7/18/05
+	 */
+	function getUnauthorizedMessage () {
+		
+		// Default implementation. Override as necessary.
+		
+		$harmoni =& Harmoni::instance();
+		$message = _("You are not authorized to ");
+		if ($this->getHeadingText() == '') {
+			$message .= _("execute this action, ");
+			$message .= $harmoni->getCurrentAction();
+		} else {
+			$message .= $this->getHeadingText();
+		}
+		$message .= _(".");
+		return $message;
 	}
 	
 	/**
