@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: GroupPrinter.class.php,v 1.9 2005/06/02 18:09:00 gabeschine Exp $
+ * @version $Id: GroupPrinter.class.php,v 1.10 2005/07/18 13:52:41 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: GroupPrinter.class.php,v 1.9 2005/06/02 18:09:00 gabeschine Exp $
+ * @version $Id: GroupPrinter.class.php,v 1.10 2005/07/18 13:52:41 adamfranco Exp $
  * @since 11/11/04
  */
 
@@ -102,7 +102,7 @@ class GroupPrinter {
 		
 		
 		print "\n\t</td><td valign='top'>\n\t\t";
-		$printGroupFunction($group);
+		eval($printGroupFunction.'($group);');
 		print "\n\t</td></tr>\n</table>";
 		
 		
@@ -139,7 +139,7 @@ class GroupPrinter {
 				print "\n\n<table>\n\t<tr><td valign='top'>";
 				print "\n\t\t<div style='width: 15px;'>&nbsp;</div>";
 				print "\n\t</td><td valign='top'>\n\t\t";
-				$printMemberFunction($childMember);
+				eval($printMemberFunction.'($childMember);');
 				print "\n\t</td></tr>\n</table>";
 			}			
 			print "\n</div>";

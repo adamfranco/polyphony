@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HierarchyPrinter.class.php,v 1.11 2005/06/09 21:31:32 adamfranco Exp $
+ * @version $Id: HierarchyPrinter.class.php,v 1.12 2005/07/18 13:52:41 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HierarchyPrinter.class.php,v 1.11 2005/06/09 21:31:32 adamfranco Exp $
+ * @version $Id: HierarchyPrinter.class.php,v 1.12 2005/07/18 13:52:41 adamfranco Exp $
  */
 
 class HierarchyPrinter {
@@ -60,7 +60,8 @@ class HierarchyPrinter {
 		
 		print "\n\n<table>\n\t<tr><td valign='top'>";
 		// Print The node
-		if ($hasChildrenFunction($node)) {
+		eval('$hasChildren = '.$hasChildrenFunction.'($node);');
+		if ($hasChildren) {
 		?>
 
 <div style='
@@ -92,7 +93,7 @@ class HierarchyPrinter {
 			}
 			
 			$url =& $harmoni->request->mkURLWithPassthrough();
-			$url->setVaule('expanded_nodes', implode('!', $newExpandedNodes));
+			$url->setValue('expanded_nodes', implode('!', $newExpandedNodes));
 			
 			print "<a style='text-decoration: none;' href='".$url->write()."'>".$symbol."</a>";
 			
@@ -117,7 +118,7 @@ END;
 		}
 		
 		print "\n\t</td><td valign='top'>\n\t\t";
-		$printFunction( $node );
+		eval($printFunction.'( $node );');
 		print "\n\t</td></tr>\n</table>";
 		
 		
@@ -142,7 +143,7 @@ END;
 				$childColor = NULL;
 			}
 			
-			$children =& $getChildrenFunction($node);
+			eval('$children =& '.$getChildrenFunction.'($node);');
 			foreach (array_keys($children) as $key) {
 				HierarchyPrinter::printNode( $children[$key],														$harmoni, $startingPathInfoKey, $printFunction, $hasChildrenFunction,	$getChildrenFunction, $childColor );
 			}		
