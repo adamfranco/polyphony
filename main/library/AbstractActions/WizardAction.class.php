@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardAction.class.php,v 1.2 2005/07/07 21:29:10 adamfranco Exp $
+ * @version $Id: WizardAction.class.php,v 1.3 2005/07/19 15:57:45 adamfranco Exp $
  */ 
  
  require_once(dirname(__FILE__)."/Action.class.php");
@@ -50,7 +50,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardAction.class.php,v 1.2 2005/07/07 21:29:10 adamfranco Exp $
+ * @version $Id: WizardAction.class.php,v 1.3 2005/07/19 15:57:45 adamfranco Exp $
  */
 class WizardAction 
 	extends Action
@@ -104,7 +104,7 @@ class WizardAction
 	 */
 	function cancelWizard ( $cacheName ) {
 		$this->closeWizard($cacheName);
-		header("Location: ".$this->getReturnUrl());
+		RequestContext::locationHeader($this->getReturnUrl());
 	}
 	
 	/**

@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add_to_group.act.php,v 1.7 2005/06/07 12:28:37 gabeschine Exp $
+ * @version $Id: add_to_group.act.php,v 1.8 2005/07/19 15:57:51 adamfranco Exp $
  */
 
 
@@ -45,4 +45,3 @@ $harmoni->request->endNamespace();
 
 // Send us back to where we were
 $harmoni->history->goBack("polyphony/agents/add_to_group");
-//header("Location: ".MYURL."/".implode("/",$currentPathInfo));

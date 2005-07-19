@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change.act.php,v 1.5 2005/06/02 18:09:01 gabeschine Exp $
+ * @version $Id: change.act.php,v 1.6 2005/07/19 15:57:51 adamfranco Exp $
  */
 
 // Set the new language
@@ -18,4 +18,3 @@ debug::output("Setting the language to ".$harmoni->request->get("polyphony/langu
 debug::output("SESSION: ".printpre($_SESSION, TRUE));
 
 $harmoni->history->goBack("polyphony/language/change");
-//header("Location: ".urldecode($harmoni->request->get("return")));
