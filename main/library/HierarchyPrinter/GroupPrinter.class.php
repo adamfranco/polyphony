@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: GroupPrinter.class.php,v 1.10 2005/07/18 13:52:41 adamfranco Exp $
+ * @version $Id: GroupPrinter.class.php,v 1.11 2005/07/19 18:09:55 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: GroupPrinter.class.php,v 1.10 2005/07/18 13:52:41 adamfranco Exp $
+ * @version $Id: GroupPrinter.class.php,v 1.11 2005/07/19 18:09:55 adamfranco Exp $
  * @since 11/11/04
  */
 
@@ -76,7 +76,6 @@ class GroupPrinter {
 				$url =& $harmoni->request->mkURL();
 				$url->setValue("expandedGroups", implode(",",$newGroups));
 				print "<a style='text-decoration: none;' href='";
-//				print htmlentities(MYURL."/".implode("/", $newPathInfo)."/".$get, ENT_QUOTES);
 				print $url->write();
 				print "'>-</a>";
 			
@@ -84,12 +83,9 @@ class GroupPrinter {
 			} else { 
 				$newGroups = $expandedGroups;
 				$newGroups[] = $groupId->getIdString();
-//				$newPathInfo = array_merge($environmentInfo, $expandedGroups); 
 				print "<a style='text-decoration: none;' href='";
 				$url =& $harmoni->request->mkURL();
 				$url->setValue("expandedGroups", implode(",", $newGroups));
-//				print htmlentities(MYURL."/".implode("/", 
-//$newPathInfo)."/".$groupId->getIdString()."/".$get, ENT_QUOTES);
 				print $url->write();
 				print "'>+</a>";
 			}

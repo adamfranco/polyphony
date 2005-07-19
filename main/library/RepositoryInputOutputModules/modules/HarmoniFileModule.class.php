@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HarmoniFileModule.class.php,v 1.5 2005/07/13 15:47:59 ndhungel Exp $
+ * @version $Id: HarmoniFileModule.class.php,v 1.6 2005/07/19 18:11:22 adamfranco Exp $
  */
 
 /**
@@ -23,8 +23,8 @@ require_once(dirname(__FILE__)."/../RepositoryInputOutputModule.interface.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: HarmoniFileModule.class.php,v 1.5 2005/07/13 15:47:59 ndhungel Exp $
- * @since $Date: 2005/07/13 15:47:59 $
+ * @version $Id: HarmoniFileModule.class.php,v 1.6 2005/07/19 18:11:22 adamfranco Exp $
+ * @since $Date: 2005/07/19 18:11:22 $
  * @copyright 2004 Middlebury College
  */
 
@@ -433,11 +433,12 @@ class HarmoniFileModule
 			ob_start();
 			$recordId =& $record->getId();
 			
-			print "\n<a href='".MYURL."/repository/viewfile/"
-				.$repositoryId->getIdString()."/"
-				.$assetId->getIdString()."/"
-				.$recordId->getIdString()."/"
-				.$parts['FILE_NAME'][0]->getValue()."'";
+			print "\n<a href='".$harmoni->request->quickURL("repository", "viewfile", 
+				array(
+					"repository_id" => $repositoryId->getIdString(),
+					"asset_id" => $assetId->getIdString(),
+					"record_id" => $recordId->getIdString(),
+					"file_name" => $parts['FILE_NAME'][0]->getValue()))."'";
 			print " target='_blank'>";
 			
 			// If we have a thumbnail with a valid mime type, print a link to that.
@@ -447,11 +448,12 @@ class HarmoniFileModule
 				$mime = Services::getService("MIME");
 				$thumbnailName .= ".".$mime->getExtensionForMIMEType($thumbnailMimeType);
 			}
-			print "\n<img src='".MYURL."/repository/viewthumbnail/"
-			.$repositoryId->getIdString()."/"
-			.$assetId->getIdString()."/"
-			.$recordId->getIdString()."/"
-			.$thumbnailName."'";
+			print "\n<img src='".$harmoni->request->quickURL("repository", "viewthumbnail",
+				array(
+					"repository_id" => $repositoryId->getIdString(),
+					"asset_id" => $assetId->getIdString(),
+					"record_id" => $recordId->getIdString(),
+					"thumbnail_name" => $thumbnailName))."'";
 			print " style='border: 0px;'";
 			print " alt='Thumbnail image.'";
 			print " />";

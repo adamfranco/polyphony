@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_authorizations.act.php,v 1.17 2005/07/18 21:15:42 adamfranco Exp $
+ * @version $Id: browse_authorizations.act.php,v 1.18 2005/07/19 18:11:23 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_authorizations.act.php,v 1.17 2005/07/18 21:15:42 adamfranco Exp $
+ * @version $Id: browse_authorizations.act.php,v 1.18 2005/07/19 18:11:23 adamfranco Exp $
  */
 class browse_authorizationsAction 
 	extends MainWindowAction
@@ -67,7 +67,6 @@ class browse_authorizationsAction
 		// Buttons to go back to edit auths for a different user, or to go home
 		ob_start();
 		print "<table width='100%'><tr><td align='left'>";
-		// print "<a href='".MYURL."/authorization/choose_agent'><button><-- "._("Choose a different User/Group to edit")."</button></a>";
 		print "</td><td align='right'>";
 		print "<a href='".$harmoni->request->quickURL("admin","main")."'><button>"._("Return to the Admin Tools")."</button></a>";
 		print "</td></tr></table>";

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_membership.act.php,v 1.29 2005/07/18 20:45:00 adamfranco Exp $
+ * @version $Id: group_membership.act.php,v 1.30 2005/07/19 18:11:22 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_membership.act.php,v 1.29 2005/07/18 20:45:00 adamfranco Exp $
+ * @version $Id: group_membership.act.php,v 1.30 2005/07/19 18:11:22 adamfranco Exp $
  */
 class group_membershipAction 
 	extends MainWindowAction
@@ -562,7 +562,6 @@ END;
 		
 		$memberType =& $member->getType();
 		print "\n<input type='checkbox' id='".$id->getIdString()."' name='".RequestContext::name($id->getIdString())."' value='agent' />";
-	//	print "\n<a href='".MYURL."/agents/edit_agent_details/".$id->getIdString()."?callingFrom=group_membership' title='".htmlspecialchars($memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription())."'>";
 		
 		$harmoni->history->markReturnURL("polyphony/agents/edit_agent_details");
 		

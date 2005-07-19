@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleFieldModule.class.php,v 1.3 2005/04/07 17:07:47 adamfranco Exp $
+ * @version $Id: SimpleFieldModule.class.php,v 1.4 2005/07/19 18:11:22 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleFieldModule.class.php,v 1.3 2005/04/07 17:07:47 adamfranco Exp $
+ * @version $Id: SimpleFieldModule.class.php,v 1.4 2005/07/19 18:11:22 adamfranco Exp $
  */
 
 class SimpleFieldModule {
@@ -67,7 +67,7 @@ class SimpleFieldModule {
 	 * @since 10/28/04
 	 */
 	function getSearchCriteria () {
-		return $_REQUEST[$this->_fieldname];
+		return RequestContext::value($this->_fieldname);
 	}
 }
 
