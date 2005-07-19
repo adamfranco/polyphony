@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MultiValuedWizardStep.class.php,v 1.12 2005/06/09 21:31:32 adamfranco Exp $
+ * @version $Id: MultiValuedWizardStep.class.php,v 1.13 2005/07/19 17:26:43 ndhungel Exp $
  */
 
 /**
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/WizardStep.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MultiValuedWizardStep.class.php,v 1.12 2005/06/09 21:31:32 adamfranco Exp $
+ * @version $Id: MultiValuedWizardStep.class.php,v 1.13 2005/07/19 17:26:43 ndhungel Exp $
  * @author Adam Franco
  */
 
@@ -94,7 +94,7 @@ class MultiValuedWizardStep
 		ArgumentValidator::validate($validatorRule, new ExtendsValidatorRule("ValidatorRuleInterface"), true);
 		ArgumentValidator::validate($isValueRequired, new BooleanValidatorRule, true);
 		
-		if ($this->_properties[$propertyName])
+		if (isset($this->_properties[$propertyName]))
 			throwError(new Error("Property, ".$propertyName.", already exists in Wizard.", "Wizard", 1));
 
 		$this->_properties[$propertyName] =& new WizardProperty( $propertyName, $validatorRule, $isValueRequired );
