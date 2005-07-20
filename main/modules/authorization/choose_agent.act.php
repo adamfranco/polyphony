@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.28 2005/07/18 13:53:46 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.29 2005/07/20 14:55:08 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.28 2005/07/18 13:53:46 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.29 2005/07/20 14:55:08 adamfranco Exp $
  */
 class choose_agentAction 
 	extends MainWindowAction
@@ -48,7 +48,7 @@ class choose_agentAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		return _("Modify Authorizations for which User/Group?");
+		return dgettext("polyphony", "Modify Authorizations for which User/Group?");
 	}
 	
 	/**
@@ -59,6 +59,8 @@ class choose_agentAction
 	 * @since 4/26/05
 	 */
 	function buildContent () {
+		$defaultTextDomain = textdomain("polyphony");
+		
 		$actionRows =& $this->getActionRows();
 		$pageRows =& new Container(new YLayout(), OTHER, 1);
 		$harmoni =& Harmoni::instance();
@@ -284,6 +286,8 @@ END;
 		$actionRows->add($pageRows);
 		
 		$harmoni->request->endNamespace();
+		
+		textdomain($defaultTextDomain);
 	}
 
 

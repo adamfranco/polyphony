@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.34 2005/07/18 13:53:47 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.35 2005/07/20 14:55:08 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -26,7 +26,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.34 2005/07/18 13:53:47 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.35 2005/07/20 14:55:08 adamfranco Exp $
  */
 class edit_authorizationsAction 
 	extends MainWindowAction
@@ -62,16 +62,16 @@ class edit_authorizationsAction
 		
 		if ($agentManager->isGroup($idObject)) {
 			$agent =& $agentManager->getGroup($idObject);
-			return _("Modify Authorizations for Group").": <em> "
+			return dgettext("polyphony", "Modify Authorizations for Group").": <em> "
 						.$agent->getDisplayName()."</em>";
 		
 		} else if ($agentManager->isAgent($idObject)) {
 			$agent =& $agentManager->getAgent($idObject);
-			return _("Modify Authorizations for User").": <em> "
+			return dgettext("polyphony", "Modify Authorizations for User").": <em> "
 						.$agent->getDisplayName()."</em>";
 		
 		} else {
-			return _("Modify Authorizations for the User/Group Id").": <em> "
+			return dgettext("polyphony", "Modify Authorizations for the User/Group Id").": <em> "
 						.$idObject->getIdString()."</em>";
 		}
 	}
@@ -84,6 +84,8 @@ class edit_authorizationsAction
 	 * @since 4/26/05
 	 */
 	function buildContent () {
+		$defaultTextDomain = textdomain("polyphony");
+		
 		$actionRows =& $this->getActionRows();
 		$harmoni =& Harmoni::instance();
 		
@@ -159,7 +161,8 @@ class edit_authorizationsAction
 		$actionRows->add($nav,"100%", null, LEFT,CENTER);
 		
 		$harmoni->request->endNamespace();
-
+		
+		textdomain($defaultTextDomain);
 	}
 
 

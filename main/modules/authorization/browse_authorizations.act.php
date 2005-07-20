@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_authorizations.act.php,v 1.18 2005/07/19 18:11:23 adamfranco Exp $
+ * @version $Id: browse_authorizations.act.php,v 1.19 2005/07/20 14:55:08 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_authorizations.act.php,v 1.18 2005/07/19 18:11:23 adamfranco Exp $
+ * @version $Id: browse_authorizations.act.php,v 1.19 2005/07/20 14:55:08 adamfranco Exp $
  */
 class browse_authorizationsAction 
 	extends MainWindowAction
@@ -47,7 +47,7 @@ class browse_authorizationsAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		return _("Browse Authorizations");
+		return dgettext("polyphony", "Browse Authorizations");
 	}
 	
 	/**
@@ -58,6 +58,8 @@ class browse_authorizationsAction
 	 * @since 4/26/05
 	 */
 	function buildContent () {
+		$defaultTextDomain = textdomain("polyphony");
+		
 		$actionRows =& $this->getActionRows();
 		$harmoni =& Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-authorizations");
@@ -111,6 +113,8 @@ class browse_authorizationsAction
 		$actionRows->add($nav, "100%", null, LEFT, CENTER);
 		
  		$harmoni->request->endNamespace();
+ 		
+ 		textdomain($defaultTextDomain);
 	}
 
 

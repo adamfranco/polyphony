@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.9 2005/07/19 14:04:03 adamfranco Exp $
+ * @version $Id: create_agent.act.php,v 1.10 2005/07/20 14:54:25 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.9 2005/07/19 14:04:03 adamfranco Exp $
+ * @version $Id: create_agent.act.php,v 1.10 2005/07/20 14:54:25 adamfranco Exp $
  */
 class create_agentAction 
 	extends MainWindowAction
@@ -55,7 +55,7 @@ class create_agentAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		return _("Manage Group Membership");
+		return dgettext("polyphony", "Manage Group Membership");
 	}
 	
 	/**
@@ -66,6 +66,8 @@ class create_agentAction
 	 * @since 4/26/05
 	 */
 	function buildContent () {
+		$defaultTextDomain = textdomain("polyphony");
+		
 		$actionRows =& $this->getActionRows();
 		$pageRows =& new Container(new YLayout(), OTHER, 1);
 		$harmoni =& Harmoni::instance();
@@ -116,7 +118,8 @@ class create_agentAction
 		ob_end_clean();
 		
 		$harmoni->request->endNamespace();
-
+		
+		textdomain($defaultTextDomain);
 	}
 
 	/****

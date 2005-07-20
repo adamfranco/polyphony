@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_browse.act.php,v 1.1 2005/07/19 19:21:44 adamfranco Exp $
+ * @version $Id: group_browse.act.php,v 1.2 2005/07/20 14:54:25 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_browse.act.php,v 1.1 2005/07/19 19:21:44 adamfranco Exp $
+ * @version $Id: group_browse.act.php,v 1.2 2005/07/20 14:54:25 adamfranco Exp $
  */
 class group_browseAction 
 	extends MainWindowAction
@@ -55,7 +55,7 @@ class group_browseAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		return _("Browse Agents and Groups");
+		return dgettext("polyphony", "Browse Agents and Groups");
 	}
 	
 	/**
@@ -66,6 +66,8 @@ class group_browseAction
 	 * @since 4/26/05
 	 */
 	function buildContent () {
+		$defaultTextDomain = textdomain("polyphony");
+		
 		$actionRows =& $this->getActionRows();
 		$pageRows =& new Container(new YLayout(), OTHER, 1);
 		$harmoni =& Harmoni::instance();
@@ -218,7 +220,9 @@ END;
 		
 		// In order to preserve proper nesting on the HTML output, the checkboxes
 		// are all in the pagerows layout instead of actionrows.
- 		$actionRows->add($pageRows, null, null,CENTER, CENTER);		
+ 		$actionRows->add($pageRows, null, null,CENTER, CENTER);	
+ 		
+ 		textdomain($defaultTextDomain);
 	}
 	
 	

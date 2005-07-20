@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: username_password_form.act.php,v 1.8 2005/07/18 13:53:38 adamfranco Exp $
+ * @version $Id: username_password_form.act.php,v 1.9 2005/07/20 14:55:08 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/Components/Block.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: username_password_form.act.php,v 1.8 2005/07/18 13:53:38 adamfranco Exp $
+ * @version $Id: username_password_form.act.php,v 1.9 2005/07/20 14:55:08 adamfranco Exp $
  */
 class username_password_formAction 
 	extends MainWindowAction
@@ -42,7 +42,7 @@ class username_password_formAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		return _("Login");
+		return dgettext("Login");
 	}
 	
 	/**

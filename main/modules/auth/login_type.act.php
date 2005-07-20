@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login_type.act.php,v 1.10 2005/06/07 12:29:15 gabeschine Exp $
+ * @version $Id: login_type.act.php,v 1.11 2005/07/20 14:55:08 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/Block.class.php");
@@ -45,8 +45,7 @@ else {
 	else {
 		
 		// Set our textdomain
-		$defaultTextDomain = textdomain(NULL);
-		textdomain("polyphony");
+		$defaultTextDomain = textdomain("polyphony");
 		
 		$harmoni->request->startNamespace("polyphony");
 		
