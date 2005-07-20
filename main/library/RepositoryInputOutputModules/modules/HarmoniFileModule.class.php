@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HarmoniFileModule.class.php,v 1.6 2005/07/19 18:11:22 adamfranco Exp $
+ * @version $Id: HarmoniFileModule.class.php,v 1.7 2005/07/20 17:58:04 cws-midd Exp $
  */
 
 /**
@@ -23,8 +23,8 @@ require_once(dirname(__FILE__)."/../RepositoryInputOutputModule.interface.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: HarmoniFileModule.class.php,v 1.6 2005/07/19 18:11:22 adamfranco Exp $
- * @since $Date: 2005/07/19 18:11:22 $
+ * @version $Id: HarmoniFileModule.class.php,v 1.7 2005/07/20 17:58:04 cws-midd Exp $
+ * @since $Date: 2005/07/20 17:58:04 $
  * @copyright 2004 Middlebury College
  */
 
@@ -428,6 +428,8 @@ class HarmoniFileModule
 		
 		$html = ob_get_contents();
 		ob_end_clean();
+		
+		$harmoni =& Harmoni::instance();
 		
 		if ($printThumbnail) {
 			ob_start();
