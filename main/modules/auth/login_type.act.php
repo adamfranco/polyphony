@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login_type.act.php,v 1.12 2005/07/21 00:10:45 thebravecowboy Exp $
+ * @version $Id: login_type.act.php,v 1.13 2005/07/21 15:10:29 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/Block.class.php");
@@ -33,7 +33,7 @@ class login_typeAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		return _("Login");
+		return dgettext("polyphony", "Login");
 	}
 	
 	/**
@@ -46,21 +46,18 @@ class login_typeAction
 	function buildContent () {
 		$actionRows =& $this->getActionRows();
 		$harmoni =& Harmoni::instance();
-
-		// Set our textdomain
-		$defaultTextDomain = textdomain("polyphony");
 		
 		//$isAuthenticated = FALSE;
 		$authN =& Services::getService("AuthN");
 
 		$harmoni->request->startNamespace("polyphony");
 		$authType =& HarmoniType::stringToType(urldecode($harmoni->request->get("type")));
-	$harmoni->request->endNamespace();
+		$harmoni->request->endNamespace();
 	
 		if ($authN->isUserAuthenticated($authType)) {
 			$harmoni->history->goBack("polyphony/login");
 		}
-	// If we aren't authenticated, try to authenticate.
+		// If we aren't authenticated, try to authenticate.
 		else {
 			$harmoni->request->startNamespace("polyphony");
 			
@@ -82,8 +79,7 @@ class login_typeAction
 			else {
 				
 				// Set our textdomain
-				$defaultTextDomain = textdomain(NULL);
-				textdomain("polyphony");
+				$defaultTextDomain = textdomain("polyphony");
 				
 				$harmoni->request->startNamespace("polyphony");
 				
@@ -106,9 +102,6 @@ class login_typeAction
 				
 				// go back to the default text domain
 				textdomain($defaultTextDomain);
-				
-				// return the main layout.
-				//return $introText;
 			}
 		}
 	}
