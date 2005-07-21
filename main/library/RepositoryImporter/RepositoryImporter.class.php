@@ -6,8 +6,12 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.1 2005/07/21 13:59:46 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.2 2005/07/21 16:13:09 cws-midd Exp $
  */ 
+
+require_once(POLYPHONY."/main/library/RepositoryImporter/XMLAssetIterator.class.php");
+require_once(POLYPHONY."/main/library/RepositoryImporter/TabAssetIterator.class.php");
+
 
 /**
  * #insertion#
@@ -18,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.1 2005/07/21 13:59:46 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.2 2005/07/21 16:13:09 cws-midd Exp $
  */
 class RepositoryImporter {
 	
@@ -60,14 +64,34 @@ class RepositoryImporter {
 	 * @since 7/20/05
 	 */
 	function parse () {
-		// retain list of assets and info
-		$assetInfo =& $this->getAssetInfo();
+		$assetInfo =& $this->getAllAssetsInfoIterator();
 		while ($assetInfo->hasNext()) {
 			$info =& $assetInfo->next();
-			$this->buildAsset($this->_destinationRepository, $info["assetInfo"], $info["recordList"], $this->_srcDir);
+			$this->buildAsset($info["assetInfo"], $info["recordList"]);
 		}
 	}
-
+	
+	/**
+	 * getAssetInfo
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 7/20/05
+	 */
+	function &getAllAssetsInfoIterator () {
+		$allAssetInfo = array();
+		$iteratorClass = $this->_assetIteratorClass;
+		$assetIterator =& new $iteratorClass($this->_srcDir);
+		
+		while ($assetIterator->hasNext()) {
+			$asset =& $assetIterator->next();
+			$info = array();
+			$info["assetInfo"] =& $this->getSingleAssetInfo($asset);
+			$info["recordList"] =& $this->getSingleAssetRecordList($asset);
+			$allAssetInfo[] =& $info; 
+		}
+		return new HarmoniIterator($allAssetInfo);
+	}
 
 	/**
 	 * tries to match given string to a schema with the same name.
@@ -128,15 +152,16 @@ class RepositoryImporter {
 	 *
 	*/
 
-	function buildAsset($repository, $assetInfo, $recordList, $newPath) {
+	function buildAsset($assetInfo, $recordList) {
 		$idManager = Services::getService("Id");
-		$asset =& $repository->createAsset($assetInfo[0], $assetInfo[1], $assetInfo[2]);
+		$asset =& $this->_destinationRepository->createAsset($assetInfo[0],
+			$assetInfo[1], $assetInfo[2]);
 		foreach($recordList as $entry) {
 			$assetRecord =& $asset->createRecord($entry[0]);													// create record with stored id
 			$j = 0;																								// counter for parallel arrays
 			foreach ($entry[1] as $id) {
-				if($entry[0]->getIdString() != "FILE"){
-					$structure =& $repository->getRecordStructure($entry[0]);
+				if($entry[0]->getIdString() != "FILE") {
+					$structure =& $this->_destinationRepository->getRecordStructure($entry[0]);
 					$partStructure =& $structure->getPartStructure($id);
 					$type = $partStructure->getType();
 					$partObject = RepositoryImporter::getPartObject($type, $entry[2][$j]);
@@ -147,11 +172,13 @@ class RepositoryImporter {
 					$mimeTypes = new MIMETypes();
 					$mime = new MIMETypes();
 					$filename = trim($entry[2][0]);
-					$mimetype = $mime->getMIMETypeForFileName($newPath."/data/".$filename);
-					$assetRecord->createPart($idManager->getId("FILE_DATA"), file_get_contents($newPath."/data/".$filename));
-					$assetRecord->createPart($idManager->getId("FILE_NAME"), $filename);
+					$mimetype = $mime->getMIMETypeForFileName($this->_srcDir."/".$filename);
+					$assetRecord->createPart($idManager->getId("FILE_DATA"),
+						file_get_contents($this->_srcDir."/".$filename));
+					$assetRecord->createPart($idManager->getId("FILE_NAME"), basename($filename));
 					$assetRecord->createPart($idManager->getId("MIME_TYPE"), $mimetype);
-					$assetRecord->createPart($idManager->getId("THUMBNAIL_DATA"), file_get_contents($newPath."/data/".$filename));
+					$assetRecord->createPart($idManager->getId("THUMBNAIL_DATA"),
+						file_get_contents($this->_srcDir."/".$filename));
 				}
 			}
 		}
@@ -161,49 +188,32 @@ class RepositoryImporter {
 		$typeString = $type->getKeyword();
 		switch($typeString) {
 			case "string":
-			return new String($more);
-			break;
+				return String::withValue($more);
+				break;
 			case "integer":
-			return new Integer($more);
-			break;
+				return Integer::withValue($more);
+				break;
 			case "boolean":
-			return new Boolean($more);
-			break;
+				return Boolean::withValue($more);
+				break;
 			case "shortstring":
-			return new ShortString($more);
-			break;
+				return ShortString::withValue($more);
+				break;
 			case "float":
-			return new Float($more);
-			break;
+				return Float::withValue($more);
+				break;
 			case "time":
-			return new Time($more);
-			break;
+				return DateAndTime::fromString($more);
+				break;
+			case "type": 
+				return HarmoniType::stringToType($more);
+				break;
 			default:
-			return new OkiType($more);
+				throwError(new Error("Unsupported PartStructure DataType, ".
+					HarmoniType::typeToString($type), "polyphony.RepositoryImporter", true));
 		}
 	}
-	
-	/**
-	 * getAssetInfo
-	 * 
-	 * @return array
-	 * @access public
-	 * @since 7/20/05
-	 */
-	function &getAssetInfo () {
-		$allAssetInfo = array();
-		$iteratorClass = $this->_iteratorClass;
-		$assetIterator =& new $iteratorClass($this->_srcDir);
-		
-		while ($assetIterator->hasNext()) {
-			$asset =& $assetIterator->next();
-			$info = array();
-			$info["assetInfo"] =& $this->getSingleAssetInfo($asset);
-			$info["recordList"] =& $this->getSingleAssetRecordList($asset);
-			$allAssetInfo[] =& $info; 
-		}
-		return new HarmoniIterator($allAssetInfo);
-	}
+
 	
 }
 
