@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabAssetIterator.class.php,v 1.1 2005/07/21 13:59:46 cws-midd Exp $
+ * @version $Id: TabAssetIterator.class.php,v 1.2 2005/07/21 18:36:22 ndhungel Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabAssetIterator.class.php,v 1.1 2005/07/21 13:59:46 cws-midd Exp $
+ * @version $Id: TabAssetIterator.class.php,v 1.2 2005/07/21 18:36:22 ndhungel Exp $
  */
 class TabAssetIterator 
 extends HarmoniIterator 
@@ -47,7 +47,7 @@ extends HarmoniIterator
 	}
 	
 	/**
-	* 
+	 * checks for existence of next element
 	 * 
 	 * @return boolean
 	 * @access public
@@ -61,7 +61,7 @@ extends HarmoniIterator
 	}
 	
 	/**
-	* returns the next ... element
+	 * returns the next element
 	 * 
 	 * @return object DOMIT_Node
 	 * @access public

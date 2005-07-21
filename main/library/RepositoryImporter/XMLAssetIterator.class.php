@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetIterator.class.php,v 1.1 2005/07/21 13:59:46 cws-midd Exp $
+ * @version $Id: XMLAssetIterator.class.php,v 1.2 2005/07/21 18:36:22 ndhungel Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetIterator.class.php,v 1.1 2005/07/21 13:59:46 cws-midd Exp $
+ * @version $Id: XMLAssetIterator.class.php,v 1.2 2005/07/21 18:36:22 ndhungel Exp $
  */
 class XMLAssetIterator 
 extends HarmoniIterator 
@@ -31,10 +31,10 @@ extends HarmoniIterator
 	 * @since 7/20/05
 	 */
 	function XMLAssetIterator ($srcDir) {		
-		$import =& new DOMIT_Document();																					// instantiate new DOMIT_Document
+		$import =& new DOMIT_Document();
 		
-		if ($import->loadXML($srcDir."/metadata.xml")) {																	// parse the file
-			if (!($import->documentElement->hasChildNodes()))																// check for assets
+		if ($import->loadXML($srcDir."/metadata.xml")) {
+			if (!($import->documentElement->hasChildNodes()))
 				throwError(new Error("There are no assets to import", "polyphony.RepositoryImporter", true));
 		}
 		else
@@ -45,7 +45,7 @@ extends HarmoniIterator
 	}
 	
 	/**
-	* 
+	 * checks if the next element exists
 	 * 
 	 * @return boolean
 	 * @access public
@@ -59,7 +59,7 @@ extends HarmoniIterator
 	}
 	
 	/**
-	* returns the next ... element
+	* returns the next element
 	 * 
 	 * @return object DOMIT_Node
 	 * @access public

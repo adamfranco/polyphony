@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.2 2005/07/21 16:13:09 cws-midd Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.3 2005/07/21 18:36:22 ndhungel Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -20,14 +20,14 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.2 2005/07/21 16:13:09 cws-midd Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.3 2005/07/21 18:36:22 ndhungel Exp $
  */
 class TabRepositoryImporter
-extends RepositoryImporter
+	extends RepositoryImporter
 {
 	
 	/**
-	* Constructor for Tab	
+	* Constructor for Tab-Delimited Importer	
 	 * 
 	 * @param String filename
 	 * @return object
@@ -41,7 +41,7 @@ extends RepositoryImporter
 	
 	
 	/**
-	* Get Single Asset info
+	 * Get parameters for createAsset
 	 * 
 	 * @param mixed input
 	 * @return array
@@ -50,21 +50,21 @@ extends RepositoryImporter
 	 */
 	function &getSingleAssetInfo (&$input) {
 		$assetInfo = array();
-		$assetInfo[0] = $input[0];
-		$assetInfo[1] = $input[1];
+		$assetInfo['displayName'] = $input[0];
+		$assetInfo['description'] = $input[1];
 		if($input[2] == "")
-			$assetInfo[2] = new HarmoniType("Asset Types", "Concerto", "Generic Asset");
+			$assetInfo['type'] = new HarmoniType("Asset Types", "Concerto", "Generic Asset");
 		else
-			$assetInfo[2] = new HarmoniType("Asset Types", "Concerto", $input[2]);
+			$assetInfo['type'] = new HarmoniType("Asset Types", "Concerto", $input[2]);
 
 		return $assetInfo;
 	}
 	
 	
 	/**
-	* Get single asset recordlist
+	 * Get parameters for createRecord
 	 * 	
-	 * @param mixed inpu	
+	 * @param mixed input	
 	 * @return array
 	 * @access public
 	 * @since 7/20/05
@@ -105,16 +105,16 @@ extends RepositoryImporter
 
 		if ($input[3] != "") {
 			$fileElement = array();
-			$fileElement[] =& $this->_fileStructureId;
-			$fileElement[] =& $this->_filenamePartId;
-			$fileElement[] = array($input[3]);
+			$fileElement['structureId'] =& $this->_fileStructureId;
+			$fileElement['partStructureIds'] =& $this->_filenamePartId;
+			$fileElement['parts'] = array($input[3]);
 			$recordList[] =& $fileElement;
 		}
 			
 		$recordListElement = array();
-		$recordListElement[] =& $this->_structureId;
-		$recordListElement[] =& $this->_partStructureIds;
-		$recordListElement[] = array_slice($input, 4);
+		$recordListElement['structureId'] =& $this->_structureId;
+		$recordListElement['partStructureIds'] =& $this->_partStructureIds;
+		$recordListElement['parts'] = array_slice($input, 4);
 		$recordList[] =& $recordListElement;
 		return $recordList;
 	}

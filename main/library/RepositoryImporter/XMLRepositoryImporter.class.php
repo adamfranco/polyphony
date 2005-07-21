@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.2 2005/07/21 16:13:09 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.3 2005/07/21 18:36:22 ndhungel Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.2 2005/07/21 16:13:09 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.3 2005/07/21 18:36:22 ndhungel Exp $
  */
 class XMLRepositoryImporter
 extends RepositoryImporter
@@ -41,7 +41,7 @@ extends RepositoryImporter
 	
 	
 	/**
-	* Get single asset info
+	 * Get parameters for createAsset
 	 * 
 	 * @param mixed input
 	 * @return array
@@ -50,19 +50,19 @@ extends RepositoryImporter
 	 */
 	function &getSingleAssetInfo (& $input) {
 		$assetInfo = array();
-		$assetInfo[0] = $input->childNodes[0]->getText();
-		$assetInfo[1] = $input->childNodes[1]->getText();																// description for asset
-		$assetInfo[2] = $input->childNodes[2]->getText();																	// type for asset, check for empty
-		if ($assetInfo[2] == "")
-			$assetInfo[2] = new HarmoniType("Asset Types", "Concerto", "Generic Asset");
+		$assetInfo['displayName'] = $input->childNodes[0]->getText();
+		$assetInfo['description'] = $input->childNodes[1]->getText();
+		$assetInfo['type'] = $input->childNodes[2]->getText();
+		if ($assetInfo['type'] == "")
+			$assetInfo['type'] = new HarmoniType("Asset Types", "Concerto", "Generic Asset");
 		else
-			$assetInfo[2] = new HarmoniType("Asset Types", "Concerto", $assetInfo[2]);
+			$assetInfo['type'] = new HarmoniType("Asset Types", "Concerto", $assetInfo[2]);
 		
 		return $assetInfo;
 	}
 	
 	/**
-	* get Single Asset Record List
+	 * get parameters for createRecord
 	 * 
 	 * @param mixed input
 	 * @return array
@@ -81,7 +81,7 @@ extends RepositoryImporter
 				if(!$structureId)
 					throwError(new Error("the schema does not exist", "polyphony.RepositoryImporter", true));
 				
-				$recordListElement[] = $structureId;
+				$recordListElement['structureId'] = $structureId;
 				$partArray = array();
 				$parts = array();
 				foreach ($record->childNodes as $field) {
@@ -95,8 +95,8 @@ extends RepositoryImporter
 				if(!$partStructureIds)
 					throwError(new Error("One or more of the Parts specified in the xml file are not valid.", "polyphony.RepositoryImporter", true));
 				
-				$recordListElement[] = $partStructureIds;
-				$recordListElement[] = $parts;
+				$recordListElement['partStructureIds'] = $partStructureIds;
+				$recordListElement['parts'] = $parts;
 				$recordList[]=$recordListElement;
 			}
 		}

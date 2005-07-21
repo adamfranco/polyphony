@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.2 2005/07/21 16:13:09 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.3 2005/07/21 18:36:22 ndhungel Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/RepositoryImporter/XMLAssetIterator.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/TabAssetIterator.class.
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.2 2005/07/21 16:13:09 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.3 2005/07/21 18:36:22 ndhungel Exp $
  */
 class RepositoryImporter {
 	
@@ -31,6 +31,7 @@ class RepositoryImporter {
 	 * Constructor
 	 * 
 	 * @param String filename
+	 * @param object Id $repositoryId
 	 * @return object
 	 * @access public
 	 * @since 7/20/05
@@ -42,6 +43,7 @@ class RepositoryImporter {
 	 * Constructor
 	 * 
 	 * @param String filename
+	 * @param object Id repositoryId
 	 * @return obj
 	 * @access public
 	 * @since 7/20/05
@@ -72,7 +74,7 @@ class RepositoryImporter {
 	}
 	
 	/**
-	 * getAssetInfo
+	 * Iterates through the assets and gathers all required information for creating assets
 	 * 
 	 * @return array
 	 * @access public
@@ -107,7 +109,7 @@ class RepositoryImporter {
 		while($structures->hasNext()) {
 			$testStructure = $structures->next();
 			if($testStructure->getDisplayName() == $schema) {
-				$structureId = $testStructure->getId();														// retain structureId
+				$structureId = $testStructure->getId();
 				return $structureId;
 			}
 		}
@@ -132,7 +134,7 @@ class RepositoryImporter {
 			$partStructures =& $schema->getPartStructures();
 			while ($partStructures->hasNext()) {
 				$partStructure = $partStructures->next();
-				if ($part == $partStructure->getDisplayName()) {										// find the corresponding partStructure
+				if ($part == $partStructure->getDisplayName()) {
 					$partStructureIds[] = $partStructure->getId();
 					$stop = false;
 					break;
@@ -147,6 +149,8 @@ class RepositoryImporter {
 	/**
 	 * builds asset in repository from assetinfo and records from recordlist
 	 *
+	 * @param array assetInfo
+	 * @param array recordList
 	 * @access public
 	 * @since 7/18/05
 	 *
@@ -154,24 +158,24 @@ class RepositoryImporter {
 
 	function buildAsset($assetInfo, $recordList) {
 		$idManager = Services::getService("Id");
-		$asset =& $this->_destinationRepository->createAsset($assetInfo[0],
-			$assetInfo[1], $assetInfo[2]);
+		$asset =& $this->_destinationRepository->createAsset($assetInfo['displayName'],
+			$assetInfo['description'], $assetInfo['type']);
 		foreach($recordList as $entry) {
-			$assetRecord =& $asset->createRecord($entry[0]);													// create record with stored id
-			$j = 0;																								// counter for parallel arrays
-			foreach ($entry[1] as $id) {
-				if($entry[0]->getIdString() != "FILE") {
-					$structure =& $this->_destinationRepository->getRecordStructure($entry[0]);
+			$assetRecord =& $asset->createRecord($entry['structureId']);
+			$j = 0;
+			foreach ($entry['partStructureIds'] as $id) {
+				if($entry['structureId']->getIdString() != "FILE") {
+					$structure =& $this->_destinationRepository->getRecordStructure($entry['structureId']);
 					$partStructure =& $structure->getPartStructure($id);
 					$type = $partStructure->getType();
-					$partObject = RepositoryImporter::getPartObject($type, $entry[2][$j]);
-					$assetRecord->createPart($id, $partObject);										// access parallel arrays to create parts
-					$j++;																			// increment
+					$partObject = RepositoryImporter::getPartObject($type, $entry['parts'][$j]);
+					$assetRecord->createPart($id, $partObject);
+					$j++;
 				}
-				else if ($entry[0]->getIdString() == "FILE") {
+				else if ($entry['structureId']->getIdString() == "FILE") {
 					$mimeTypes = new MIMETypes();
 					$mime = new MIMETypes();
-					$filename = trim($entry[2][0]);
+					$filename = trim($entry['parts'][0]);
 					$mimetype = $mime->getMIMETypeForFileName($this->_srcDir."/".$filename);
 					$assetRecord->createPart($idManager->getId("FILE_DATA"),
 						file_get_contents($this->_srcDir."/".$filename));
@@ -183,7 +187,16 @@ class RepositoryImporter {
 			}
 		}
 	}
-
+	
+	/**
+	 * creates appropriate object from given primitive for part creation
+	 * 
+	 * @param object Harmonitype $type
+	 * @param mixed more
+	 * @return object mixed
+	 * @access public
+	 * @since 7/21/05
+	 */
 	function getPartObject($type, $more) {
 		$typeString = $type->getKeyword();
 		switch($typeString) {
