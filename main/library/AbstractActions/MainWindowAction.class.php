@@ -5,13 +5,14 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MainWindowAction.class.php,v 1.2 2005/07/07 18:30:19 adamfranco Exp $
+ * @version $Id: MainWindowAction.class.php,v 1.3 2005/07/22 19:29:43 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/WizardAction.class.php");
 require_once(HARMONI."GUIManager/Container.class.php");
 require_once(HARMONI."GUIManager/Layouts/XLayout.class.php");
 require_once(HARMONI."GUIManager/Layouts/YLayout.class.php");
+require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
 require_once(HARMONI."GUIManager/Components/Block.class.php");
 require_once(HARMONI."GUIManager/Components/Menu.class.php");
 require_once(HARMONI."GUIManager/Components/MenuItemHeading.class.php");
@@ -30,7 +31,7 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MainWindowAction.class.php,v 1.2 2005/07/07 18:30:19 adamfranco Exp $
+ * @version $Id: MainWindowAction.class.php,v 1.3 2005/07/22 19:29:43 adamfranco Exp $
  */
 class MainWindowAction 
 	extends WizardAction {

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.12 2005/07/13 17:05:01 ndhungel Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.13 2005/07/22 19:29:43 adamfranco Exp $
  */
  
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.12 2005/07/13 17:05:01 ndhungel Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.13 2005/07/22 19:29:43 adamfranco Exp $
  */
 
 class IteratorResultPrinter {
@@ -80,7 +80,7 @@ class IteratorResultPrinter {
 		
 		$endingNumber = $startingNumber+$this->_pageSize-1;
 		$numItems = 0;
-		$resultLayout =& new Container($yLayout,OTHER,1);
+		$resultLayout =& new Container(new TableLayout($this->_numColumns), OTHER, 1);
 		
 		if ($this->_iterator->hasNext()) {
 			
@@ -103,18 +103,12 @@ class IteratorResultPrinter {
 				if (!$shouldPrintFunction || $shouldPrintFunction($item)) {
 					$numItems++;
 					$pageItems++;
-				
-					// Table Rows subtract 1 since we are counting 1-based
-					if (($pageItems-1) % $this->_numColumns == 0) {
-						$xLayout = new XLayout();
-						$currentRow =& new Container($xLayout , OTHER, 1);
-						$resultLayout->add($currentRow, "100%", null, LEFT, CENTER);
-					}
 					
 					$itemArray = array (& $item);
 					$params = array_merge($itemArray, $this->_callbackParams);
-					$itemLayout =& call_user_func_array($this->_callbackFunction, $params);
-					$currentRow->add($itemLayout, null, null, CENTER, CENTER);
+					$itemLayout =& call_user_func_array(
+						$this->_callbackFunction, $params);
+					$resultLayout->add($itemLayout, null, null, CENTER, TOP);
 				}
 			}
 			
