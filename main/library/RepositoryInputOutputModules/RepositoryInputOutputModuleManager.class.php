@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.5 2005/04/12 21:54:08 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.6 2005/07/22 17:06:48 adamfranco Exp $
  */
 
 /**
@@ -21,8 +21,8 @@ require_once(dirname(__FILE__)."/modules/HarmoniFileModule.class.php");
  * appropriate RepositoryInputOutputModule based on their Schema Formats.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.5 2005/04/12 21:54:08 adamfranco Exp $
- * @since $Date: 2005/04/12 21:54:08 $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.6 2005/07/22 17:06:48 adamfranco Exp $
+ * @since $Date: 2005/07/22 17:06:48 $
  * @copyright 2004 Middlebury College
  */
 
@@ -194,7 +194,9 @@ class RepositoryInputOutputModuleManager {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function generateDisplayForPartStructures ( & $repositoryId, & $assetId, & $record, & $partStructures ) {
+	function generateDisplayForPartStructures ( &$repositoryId, &$assetId, 
+		&$record, &$partStructures ) 
+	{
 		ArgumentValidator::validate($repositoryId, new ExtendsValidatorRule("Id"));
 		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
@@ -209,26 +211,83 @@ class RepositoryInputOutputModuleManager {
 		return $this->_modules[$format]->generateDisplayForPartStructures($repositoryId, $assetId, $record, $partStructures);
 	}
 	
-	/**
-	 * Start the service
-	 * 
-	 * @return void
-	 * @access public
-	 * @since 6/28/04
-	 */
-	function start () {
-		
-	}
 	
 	/**
-	 * Stop the service
+	 * Return the URL of a thumbnail image for a given Asset.
 	 * 
-	 * @return void
+	 * @param object Id $repositoryId
+	 * @param object Id $assetId
+	 * @return string The URL of the thumbnail
 	 * @access public
-	 * @since 6/28/04
+	 * @since 7/22/05
 	 */
-	function stop () {
+	function getThumbnailUrlForAsset (&$assetId ) {
+		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
 		
+		$repositoryManager =& Services::getService("RepositoryManager");
+		$idManager =& Services::getService("IdManager");
+		$asset =& $repositoryManager->getAsset($assetId);
+		$repository =& $asset->getRepository();
+		$repositoryId =& $repository->getId();
+		
+		$imageProcessor =& Services::getService("ImageProcessor");
+		$fileRecords =& $asset->getRecordsByRecordStructure($idManager->getId("FILE"));
+		while ($fileRecords->hasNextRecord()) {
+			$record =& $fileRecords->nextRecord();
+			if (!isset($thumbnailRecord)) {
+				$thumbnailRecord =& $record;
+			}
+			
+			$mimeTypeParts =& $record->getPartsByPartStructure(
+				$idManager->getId("MIME_TYPE"));
+			$mimeTypePart =& $mimeTypeParts->next();
+			$mimeType =& $mimeTypePart->getValue();
+			
+			// If this record is supported by the image processor, then use it
+			// to generate a thumbnail instead of the default icons.
+			if ($imageProcessor->isFormatSupported($mimeType)) {
+				$thumbnailRecord =& $record;
+				break;	
+			}
+		}
+		
+		if (!isset($thumbnailRecord)) {
+			return NULL;
+		}
+		
+		$thumbnailRecordId =& $thumbnailRecord->getId();
+		
+		$filenameParts =& $record->getPartsByPartStructure(
+			$idManager->getId("FILE_NAME"));
+		$filenamePart =& $filenameParts->next();
+		$filename =& $filenamePart->getValue();
+		
+		$thumbnailMimeTypeParts =& $record->getPartsByPartStructure(
+			$idManager->getId("THUMBNAIL_MIME_TYPE"));
+		$thumbnailMimeTypePart =& $thumbnailMimeTypeParts->next();
+		$thumbnailMimeType =& $thumbnailMimeTypePart->getValue();
+		
+		$harmoni =& Harmoni::instance();
+		$harmoni->request->startNamespace("polyphony-repository");
+		
+		
+		// If we have a thumbnail with a valid mime type, print a link to that.
+		$thumbnailName = ereg_replace("\.[^\.]+$", "", $filename);
+		if (!is_null($thumbnailMimeType)) {
+			$mime = Services::getService("MIME");
+			$thumbnailName .= ".".$mime->getExtensionForMIMEType($thumbnailMimeType);
+		}
+		$url = $harmoni->request->quickURL("repository", "viewthumbnail",
+			array(
+				"repository_id" => $repositoryId->getIdString(),
+				"asset_id" => $assetId->getIdString(),
+				"record_id" => $thumbnailRecordId->getIdString(),
+				"thumbnail_name" => $thumbnailName));
+		
+		
+		$harmoni->request->endNamespace();
+		
+		return $url;
 	}
 }
 
