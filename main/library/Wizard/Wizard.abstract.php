@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.1 2005/07/22 15:42:19 gabeschine Exp $
+ * @version $Id: Wizard.abstract.php,v 1.2 2005/07/22 16:57:27 gabeschine Exp $
  */
 
 /*
@@ -30,13 +30,14 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.1 2005/07/22 15:42:19 gabeschine Exp $
+ * @version $Id: Wizard.abstract.php,v 1.2 2005/07/22 16:57:27 gabeschine Exp $
  * @author Gabe Schine
  * @abstract
  */
 
 class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 	var $_formName = 'wizard';
+	var $_id = 'w';
 	
 	/**
 	 * Tells this wizard to update itself and run any events that have happened.
@@ -84,6 +85,26 @@ class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 	}
 	
 	/**
+	 * Sets this Wizard's ID string. It is optional but must be used to allow multiple Wizards
+	 * to be displayed on one page to differentiate fields and save/cancel requests.
+	 * @param string $id must be alpha-numeric with _ or -. 
+	 * @access public
+	 * @return void
+	 */
+	function setIdString ($id) {
+		$this->_id = $id;
+	}
+	
+	/**
+	 * Returns the ID string.
+	 * @access public
+	 * @return string
+	 */
+	function getIdString () {
+		return $this->_id;
+	}
+	
+	/**
 	 * Returns a layout of content for the current Wizard-state
 	 * @return ref object Layout
 	 */
@@ -110,17 +131,7 @@ class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 	 * @return string
 	 */
 	function getWizardFormName () {
-		return $this->_formName;
-	}
-	
-	/**
-	 * Sets the name (id) of the form in which this wizard is contained.
-	 * @param string $name
-	 * @access public
-	 * @return void
-	 */
-	function setWizardFormName ($name) {
-		$this->_formName = $name;
+		return $this->_id . "_form";
 	}
 	
 	var $_eventsLater = array();
