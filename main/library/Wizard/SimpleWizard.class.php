@@ -7,8 +7,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleWizard.class.php,v 1.1 2005/07/22 15:42:16 gabeschine Exp $
+ * @version $Id: SimpleWizard.class.php,v 1.2 2005/07/22 16:24:37 gabeschine Exp $
  */ 
+
+require_once(POLYPHONY."/main/library/Wizard/Wizard.abstract.php");
 
 /**
  * The SimpleWizard is a {@link WizardClass} which contains children and a block of formatting text in which to include those children.
@@ -19,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleWizard.class.php,v 1.1 2005/07/22 15:42:16 gabeschine Exp $
+ * @version $Id: SimpleWizard.class.php,v 1.2 2005/07/22 16:24:37 gabeschine Exp $
  */
 class SimpleWizard extends Wizard {
 	var $_text;
