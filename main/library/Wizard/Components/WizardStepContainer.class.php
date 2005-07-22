@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.1 2005/07/22 15:42:34 gabeschine Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.2 2005/07/22 20:26:43 gabeschine Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.1 2005/07/22 15:42:34 gabeschine Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.2 2005/07/22 20:26:43 gabeschine Exp $
  */
 class WizardStepContainer extends WizardComponent {
 	var $_currStep;
@@ -61,6 +61,19 @@ class WizardStepContainer extends WizardComponent {
 	 */
 	function getCurrentStep () {
 		return $this->_currStep;
+	}
+	
+	/**
+	 * Sets the step to the one given by $name.
+	 * @param string $name
+	 * @access public
+	 * @return void
+	 */
+	function setStep ($name) {
+		$ind = array_search($name, array_keys($this->_steps));
+		if ($ind !== false) {
+			$this->_currStep = $ind;
+		}
 	}
 	
 	/**
@@ -170,7 +183,7 @@ class WizardStepContainer extends WizardComponent {
 	 */
 	function update ($fieldName) {
 		for($i = 0; $i < count($this->_steps); $i++) {
-			$this->_steps[$i]->update($this->_stepNames[$i]);
+			$this->_steps[$i]->update($fieldName."_".$this->_stepNames[$i]);
 		}
 	}
 	
@@ -201,7 +214,7 @@ class WizardStepContainer extends WizardComponent {
 		if (count($this->_steps)) {
 			$theStep =& $this->_steps[$this->_currStep];
 			$theName = $this->_stepNames[$this->_currStep];
-			$markup = $theStep->getMarkup($theName);
+			$markup = $theStep->getMarkup($fieldName."_".$theName);
 			return $markup;
 		}
 		$error = dgettext("polyphony", "WIZARD ERROR: no steps were added to this WizardStepContainer!");

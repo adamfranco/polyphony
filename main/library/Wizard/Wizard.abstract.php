@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.2 2005/07/22 16:57:27 gabeschine Exp $
+ * @version $Id: Wizard.abstract.php,v 1.3 2005/07/22 20:26:43 gabeschine Exp $
  */
 
 /*
@@ -30,7 +30,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.2 2005/07/22 16:57:27 gabeschine Exp $
+ * @version $Id: Wizard.abstract.php,v 1.3 2005/07/22 20:26:43 gabeschine Exp $
  * @author Gabe Schine
  * @abstract
  */
@@ -45,7 +45,7 @@ class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 	 * @access public
 	 */
 	function go() {
-		$this->update("top");
+		$this->update($this->_id);
 	}
 	
 	/**
@@ -62,7 +62,7 @@ class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 		$children =& $this->getChildren();
 		$ok = true;
 		foreach (array_keys($children) as $key) {
-			if (!$children[$key]->update($key)) {
+			if (!$children[$key]->update($fieldName."_".$key)) {
 				$ok = false;
 			}
 		}

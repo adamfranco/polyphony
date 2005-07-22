@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.16 2005/07/22 16:49:33 gabeschine Exp $
+ * @version $Id: polyphony.inc.php,v 1.17 2005/07/22 20:25:56 gabeschine Exp $
  */
 
 /**
@@ -24,7 +24,8 @@ define("POLYPHONY", dirname(__FILE__));
  */
 require_once(dirname(__FILE__)."/main/library/Wizard/SimpleStepWizard.class.php");
 // components:
-require_once(dirname(__FILE__)."/main/library/Wizard/Components/WTextArea.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/Components/WizardStep.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/Components/WTextField.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WCheckBox.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WFileUploadField.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WHorizontalRadioList.class.php");
@@ -34,6 +35,7 @@ require_once(dirname(__FILE__)."/main/library/Wizard/Components/WPasswordField.c
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSelectList.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WTextArea.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WVerticalRadioList.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSaveCancelListener.class.php");
 
 require_once(dirname(__FILE__)."/main/library/ResultPrinter/IteratorResultPrinter.class.php");
 require_once(dirname(__FILE__)."/main/library/ResultPrinter/ArrayResultPrinter.class.php");

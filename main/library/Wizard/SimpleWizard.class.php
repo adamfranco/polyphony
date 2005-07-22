@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleWizard.class.php,v 1.2 2005/07/22 16:24:37 gabeschine Exp $
+ * @version $Id: SimpleWizard.class.php,v 1.3 2005/07/22 20:26:43 gabeschine Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Wizard.abstract.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Wizard/Wizard.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleWizard.class.php,v 1.2 2005/07/22 16:24:37 gabeschine Exp $
+ * @version $Id: SimpleWizard.class.php,v 1.3 2005/07/22 20:26:43 gabeschine Exp $
  */
 class SimpleWizard extends Wizard {
 	var $_text;
@@ -56,7 +56,7 @@ class SimpleWizard extends Wizard {
 		$pre = "<form action='$url' method='post' name='$formName' id='$formName' enctype='multipart/form-data'>\n";
 		$post = "\n</form>\n";
 		// ignore the field name
-		return $pre.Wizard::parseText($this->_text, $this->getChildren()).$post;
+		return $pre.Wizard::parseText($this->_text, $this->getChildren(), $this->getIdString()."_").$post;
 	}
 }
 

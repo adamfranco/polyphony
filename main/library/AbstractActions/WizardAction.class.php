@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardAction.class.php,v 1.3 2005/07/19 15:57:45 adamfranco Exp $
+ * @version $Id: WizardAction.class.php,v 1.4 2005/07/22 20:26:43 gabeschine Exp $
  */ 
  
  require_once(dirname(__FILE__)."/Action.class.php");
@@ -50,7 +50,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardAction.class.php,v 1.3 2005/07/19 15:57:45 adamfranco Exp $
+ * @version $Id: WizardAction.class.php,v 1.4 2005/07/22 20:26:43 gabeschine Exp $
  */
 class WizardAction 
 	extends Action
@@ -161,15 +161,20 @@ class WizardAction
 		$wizard =& $this->getWizard($cacheName);
 		$harmoni =& Harmoni::instance();
 		
-		if ($wizard->isSaveRequested()) {		
+		// tell the wizard to GO
+		$wizard->go();
+		
+		$listener =& $wizard->getChild("_savecancel_");
+		
+		if ($listener->isSaveRequested()) {
 			if ($this->saveWizard($cacheName))
 				$this->cancelWizard($cacheName);
 		} 
-		else if ($wizard->isCancelRequested()) {
+		else if ($listener->isCancelRequested()) {
 			$this->cancelWizard($cacheName);	
 		}
 		
-		$container->add($wizard->getLayout($harmoni), null, null, CENTER, CENTER);
+		if (isset($_SESSION[$cacheName])) $container->add($wizard->getLayout($harmoni), null, null, CENTER, CENTER);
 	}
 	
 	/**
@@ -185,11 +190,13 @@ class WizardAction
 		// Create the wizard if it doesn't exist.
 		 if (!isset($_SESSION[$cacheName])) {
 		 	$wizard =& $this->createWizard();
+		 	$wizard->addComponent("_savecancel_", new WSaveCancelListener());
+		 	$wizard->setIdString($cacheName);
 		 	$_SESSION[$cacheName] =& $wizard;
 		 }
 		 
 		 return $_SESSION[$cacheName];
-	}	
+	}
 }
 
 ?>

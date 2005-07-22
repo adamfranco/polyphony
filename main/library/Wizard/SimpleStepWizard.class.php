@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleStepWizard.class.php,v 1.1 2005/07/22 15:42:16 gabeschine Exp $
+ * @version $Id: SimpleStepWizard.class.php,v 1.2 2005/07/22 20:26:42 gabeschine Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/SimpleWizard.class.php");
@@ -27,7 +27,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WCancelButton.class.php"
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleStepWizard.class.php,v 1.1 2005/07/22 15:42:16 gabeschine Exp $
+ * @version $Id: SimpleStepWizard.class.php,v 1.2 2005/07/22 20:26:42 gabeschine Exp $
  */
 class SimpleStepWizard extends SimpleWizard {
 	var $_stepContainer;
@@ -67,6 +67,16 @@ class SimpleStepWizard extends SimpleWizard {
 	}
 	
 	/**
+	 * Sets the step to the named step.
+	 * @param string $name
+	 * @access public
+	 * @return void
+	 */
+	function setStep ($name) {
+		$this->_stepContainer->setStep($name);
+	}
+	
+	/**
 	 * Returns a new SimpleStepWizard with the layout defined as passed. The layout
 	 * may include any of the following tags:
 	 * 
@@ -85,14 +95,24 @@ class SimpleStepWizard extends SimpleWizard {
 	}
 	
 	/**
+	 * Returns a new SimpleStepWizard with the default layout and a title.
+	 * @param string $title
+	 * @access public
+	 * @return ref object
+	 */
+	function &withTitleAndDefaultLayout ($title) {
+		return SimpleStepWizard::withDefaultLayout("<h2>$title</h2>\n");
+	}
+	
+	/**
 	 * Returns a new SimpleStepWizard with the default layout including all the buttons.
-	 * 
+	 * @param optional string $pre Some text to put before the layout text.
 	 * @access public
 	 * @return ref object
 	 * @static
 	 */
-	function &withDefaultLayout () {
-		return parent::withText(
+	function &withDefaultLayout ($pre = '') {
+		return parent::withText($pre . 
 				"<div>\n" .
 				"<table width='100%' border='0' cellpadding='0' cellspacing='2'>\n" .
 				"<tr>\n" .
