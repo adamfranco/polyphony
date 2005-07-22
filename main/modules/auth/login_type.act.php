@@ -1,19 +1,31 @@
 <?php
 /**
+ * @since 7/21/05
  * @package polyphony.modules.authentication
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login_type.act.php,v 1.13 2005/07/21 15:10:29 adamfranco Exp $
- */
- 
-require_once(HARMONI."GUIManager/Components/Block.class.php");
-require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
+ * @version $Id: login_type.act.php,v 1.14 2005/07/22 15:35:16 adamfranco Exp $
+ */ 
 
+require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
+
+/**
+ * Change the language to the one specified by the user
+ * 
+ * @since 7/21/05
+ * @package polyphony.modules.language
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: login_type.act.php,v 1.14 2005/07/22 15:35:16 adamfranco Exp $
+ */
 class login_typeAction
-	extends MainWindowAction
+	extends Action
 {
+		
 	/**
 	 * Check Authorizations
 	 * 
@@ -26,25 +38,14 @@ class login_typeAction
 	}
 	
 	/**
-	 * Return the heading text for this action, or an empty string.
+	 * Execute this action.
 	 * 
-	 * @return string
+	 * @param object Harmoni $harmoni
+	 * @return mixed
 	 * @access public
-	 * @since 4/26/05
+	 * @since 4/25/05
 	 */
-	function getHeadingText () {
-		return dgettext("polyphony", "Login");
-	}
-	
-	/**
-	 * Build the content for this action
-	 * 
-	 * @return void
-	 * @access public
-	 * @since 4/26/05
-	 */
-	function buildContent () {
-		$actionRows =& $this->getActionRows();
+	function execute ( &$harmoni ) {
 		$harmoni =& Harmoni::instance();
 		
 		//$isAuthenticated = FALSE;
@@ -95,13 +96,15 @@ class login_typeAction
 				print _("Try Again.");
 				print "</p>";
 				
-				$introText =& new Block(ob_get_contents(), 2);
+				$introText =& new Block(ob_get_contents(), 3);
 				ob_end_clean();
 				
 				$harmoni->request->endNamespace();
 				
 				// go back to the default text domain
 				textdomain($defaultTextDomain);
+				
+				return $introText;
 			}
 		}
 	}

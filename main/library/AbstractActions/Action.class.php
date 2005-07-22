@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Action.class.php,v 1.2 2005/07/18 22:03:52 adamfranco Exp $
+ * @version $Id: Action.class.php,v 1.3 2005/07/22 15:33:32 adamfranco Exp $
  */ 
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Action.class.php,v 1.2 2005/07/18 22:03:52 adamfranco Exp $
+ * @version $Id: Action.class.php,v 1.3 2005/07/22 15:33:32 adamfranco Exp $
  * @since 4/28/05
  */
 class Action {
@@ -66,6 +66,18 @@ class Action {
 	 */
 	function getHeadingText () {
 		return '';
+	}
+	
+	/**
+	 * Execute this action.
+	 * 
+	 * @param object Harmoni $harmoni
+	 * @return mixed
+	 * @access public
+	 * @since 4/25/05
+	 */
+	function execute ( &$harmoni ) {
+		throwError(new Error(__CLASS__."::".__FUNCTION__."() must be overridded in child classes."));
 	}
 	
 	/**
