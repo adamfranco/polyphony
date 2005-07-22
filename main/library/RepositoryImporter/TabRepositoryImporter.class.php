@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.3 2005/07/21 18:36:22 ndhungel Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.4 2005/07/22 13:07:33 cws-midd Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -20,25 +20,38 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.3 2005/07/21 18:36:22 ndhungel Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.4 2005/07/22 13:07:33 cws-midd Exp $
  */
 class TabRepositoryImporter
 	extends RepositoryImporter
 {
 	
 	/**
-	* Constructor for Tab-Delimited Importer	
-	 * 
+   	 * Constructor for Tab-Delimited Importer	
+ 	 * 
 	 * @param String filename
 	 * @return object
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function TabRepositoryImporter ($filename, $repositoryId) {
+	function TabRepositoryImporter ($filepath, $repositoryId) {
 		$this->_assetIteratorClass = "TabAssetIterator";
-		$this->import($filename, $repositoryId);
+		parent::RepositoryImporter($filepath, $repositoryId);
 	}
 	
+	/**
+	 * 
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 7/20/05
+	 */
+	function isDataValid() {
+		return true;
+		$this->decompress();
+		die("Method ".__FUNCTION__." declared in class '".__CLASS__."' was not overidden by a child class.");
+	}
+
 	
 	/**
 	 * Get parameters for createAsset
@@ -78,9 +91,7 @@ class TabRepositoryImporter
 			
 			$this->_fileStructureId = RepositoryImporter::matchSchema(
 				"File", $this->_destinationRepository);
-			
-			//$filenamePartArray = array("File Name");
-			
+						
 			$this->_filenamePartId = RepositoryImporter::matchPartStructures(
 				$this->_destinationRepository->getRecordStructure($this->_fileStructureId),
 				array("File Name"));

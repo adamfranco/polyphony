@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.3 2005/07/21 18:36:22 ndhungel Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.4 2005/07/22 13:07:33 cws-midd Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -20,26 +20,38 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.3 2005/07/21 18:36:22 ndhungel Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.4 2005/07/22 13:07:33 cws-midd Exp $
  */
 class XMLRepositoryImporter
-extends RepositoryImporter
+	extends RepositoryImporter
 {
 	
 	/**
-	* Constructor for XML	
+	 * Constructor for XML	
 	 * 
 	 * @param String filename
 	 * @return object
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function XMLRepositoryImporter ($filename, $repositoryId) {
+	function XMLRepositoryImporter ($filepath, $repositoryId) {
 		$this->_assetIteratorClass = "XMLAssetIterator";
-		$this->import($filename, $repositoryId);
+		parent::RepositoryImporter($filepath, $repositoryId);
 	}
 	
-	
+	/**
+	 * 
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 7/20/05
+	 */
+	function isDataValid() {
+		return true;
+		$this->decompress();
+		die("Method ".__FUNCTION__." declared in class '".__CLASS__."' was not overidden by a child class.");
+	}
+
 	/**
 	 * Get parameters for createAsset
 	 * 
@@ -56,8 +68,8 @@ extends RepositoryImporter
 		if ($assetInfo['type'] == "")
 			$assetInfo['type'] = new HarmoniType("Asset Types", "Concerto", "Generic Asset");
 		else
-			$assetInfo['type'] = new HarmoniType("Asset Types", "Concerto", $assetInfo[2]);
-		
+			$assetInfo['type'] = new HarmoniType("Asset Types", "Concerto", $assetInfo['type']);
+
 		return $assetInfo;
 	}
 	
@@ -99,6 +111,7 @@ extends RepositoryImporter
 				$recordListElement['parts'] = $parts;
 				$recordList[]=$recordListElement;
 			}
+			
 		}
 		return $recordList;
 	}

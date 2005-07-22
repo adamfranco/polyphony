@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.3 2005/07/21 18:36:22 ndhungel Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.4 2005/07/22 13:07:33 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/RepositoryImporter/XMLAssetIterator.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/TabAssetIterator.class.
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.3 2005/07/21 18:36:22 ndhungel Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.4 2005/07/22 13:07:33 cws-midd Exp $
  */
 class RepositoryImporter {
 	
@@ -36,11 +36,14 @@ class RepositoryImporter {
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function RepositoryImporter ($filename, $repositoryId) {
-		die("override the constructor in a child class");
+	function RepositoryImporter ($filepath, $repositoryId) {
+		$this->_filepath = $filepath;
+		$this->_repositoryId =& $repositoryId;
+		$this->_decompressed = FALSE;
 	}
+	
 	/**
-	 * Constructor
+	 * 
 	 * 
 	 * @param String filename
 	 * @param object Id repositoryId
@@ -48,14 +51,41 @@ class RepositoryImporter {
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function import ($filename, $repositoryId) {
+	function import () {
 		$drManager =& Services::getService("RepositoryManager");
-		$this->_destinationRepository =& $drManager->getRepository($repositoryId);
-		$this->_srcDir = dirname($filename);
+		$this->_destinationRepository =& $drManager->getRepository($this->_repositoryId);
+		$this->_srcDir = dirname($this->_filepath);
 		
-		$dearchiver =& new Dearchiver();
-		$dearchiver->uncompressFile($filename, dirname($filename));
+		$this->decompress();
 		$this->parse();
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 7/20/05
+	 */
+	function decompress () {
+		if (!$this->_decompressed) {
+			$dearchiver =& new Dearchiver();
+			$dearchiver->uncompressFile($this->_filepath, dirname($this->_filepath));
+			$this->_decompressed = TRUE;
+		}
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 7/20/05
+	 */
+	function isDataValid() {
+		return true;
+		$this->decompress();
+		die("Method ".__FUNCTION__." declared in class '".__CLASS__."' was not overidden by a child class.");
 	}
 	
 	/**
@@ -154,8 +184,7 @@ class RepositoryImporter {
 	 * @access public
 	 * @since 7/18/05
 	 *
-	*/
-
+	 */
 	function buildAsset($assetInfo, $recordList) {
 		$idManager = Services::getService("Id");
 		$asset =& $this->_destinationRepository->createAsset($assetInfo['displayName'],
