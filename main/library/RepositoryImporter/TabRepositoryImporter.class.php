@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.5 2005/07/22 15:40:05 ndhungel Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.6 2005/07/22 21:14:40 cws-midd Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.5 2005/07/22 15:40:05 ndhungel Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.6 2005/07/22 21:14:40 cws-midd Exp $
  */
 class TabRepositoryImporter
 	extends RepositoryImporter
@@ -135,7 +135,18 @@ class TabRepositoryImporter
 		$recordList[] =& $recordListElement;
 		return $recordList;
 	}
-	
+
+	/**
+	 * get asset list for child assets
+	 * 
+	 * @param mixed input
+	 * @return null
+	 * @access public
+	 * @since 7/20/05
+	 */
+	function &getChildAssetList (&$input) {
+		return null;
+	}
 }
 
 ?>

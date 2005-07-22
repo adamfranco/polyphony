@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.5 2005/07/22 15:40:07 ndhungel Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.6 2005/07/22 21:14:40 cws-midd Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.5 2005/07/22 15:40:07 ndhungel Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.6 2005/07/22 21:14:40 cws-midd Exp $
  */
 class XMLRepositoryImporter
 	extends RepositoryImporter
@@ -115,6 +115,25 @@ class XMLRepositoryImporter
 			
 		}
 		return $recordList;
+	}
+
+	/**
+	 * get asset list for child assets
+	 * 
+	 * @param mixed input
+	 * @return array
+	 * @access public
+	 * @since 7/20/05
+	 */
+	function &getChildAssetList (&$input) {
+		$iChildAssetList =& $input->childNodes;
+		$childAssetList = array();
+		foreach ($iChildAssetList as $asset) {
+			if ($asset->nodeName == "asset") {
+				$childAssetList[] =& $asset;
+			}
+		}
+		return $childAssetList;
 	}
 }
 

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.5 2005/07/22 15:40:05 ndhungel Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.6 2005/07/22 21:14:40 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/RepositoryImporter/XMLAssetIterator.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/TabAssetIterator.class.
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.5 2005/07/22 15:40:05 ndhungel Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.6 2005/07/22 21:14:40 cws-midd Exp $
  */
 class RepositoryImporter {
 	
@@ -89,38 +89,53 @@ class RepositoryImporter {
 	}
 	
 	/**
-	 * 
+	 * Parses the archive file according to its type i.e. properly
 	 * 
 	 * @return void
 	 * @access public
 	 * @since 7/20/05
 	 */
 	function parse () {
-		$assetInfo =& $this->getAllAssetsInfoIterator();
-		while ($assetInfo->hasNext()) {
-			$info =& $assetInfo->next();
-			$this->buildAsset($info["assetInfo"], $info["recordList"]);
+		$iteratorClass = $this->_assetIteratorClass;
+		$assetIterator =& new $iteratorClass($this->_srcDir);
+		$null = null;
+		$this->assetBuildingIteration($assetIterator, $null);
+	}
+
+	/**
+	 * Iterates through the building of the assets
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 7/20/05
+	 */
+	function assetBuildingIteration (&$assetIterator, &$parent) {
+		$assetInfoIterator =& $this->getAllAssetsInfoIterator($assetIterator);
+
+		while ($assetInfoIterator->hasNext()) {
+			$info =& $assetInfoIterator->next();
+			$child =& $this->buildAsset($info["assetInfo"], $info["recordList"], $info["childAssetList"]);
+			if (!is_null($parent))
+				$parent->addAsset($child);
 		}
 	}
 	
 	/**
 	 * Iterates through the assets and gathers all required information for creating assets
 	 * 
-	 * @return array
+	 * @return iterator
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function &getAllAssetsInfoIterator () {
+	function &getAllAssetsInfoIterator (&$assetIterator) {
 		$allAssetInfo = array();
-		$iteratorClass = $this->_assetIteratorClass;
-		$assetIterator =& new $iteratorClass($this->_srcDir);
-		
 		while ($assetIterator->hasNext()) {
 			$asset =& $assetIterator->next();
 			$info = array();
 			$info["assetInfo"] =& $this->getSingleAssetInfo($asset);
 			$info["recordList"] =& $this->getSingleAssetRecordList($asset);
-			$allAssetInfo[] =& $info; 
+			$info["childAssetList"] =& $this->getChildAssetList($asset);
+			$allAssetInfo[] =& $info;
 		}
 		return new HarmoniIterator($allAssetInfo);
 	}
@@ -133,7 +148,7 @@ class RepositoryImporter {
 	 * @since 7/18/05
 	 */
 
-	function matchSchema ($schema, $repository) {
+	function matchSchema ($schema, &$repository) {
 		$structures =& $repository->getRecordStructures();
 		$stop = true;
 		while($structures->hasNext()) {
@@ -146,9 +161,6 @@ class RepositoryImporter {
 		return false;
 	}
 
-
-
-
 	/**
   	 * tries to match the given array with partstructure in the given structure
  	 * 
@@ -157,7 +169,7 @@ class RepositoryImporter {
  	 * @since 7/18/05
  	 */
 
-	function matchPartStructures ($schema, $partArray) {
+	function matchPartStructures ($schema, &$partArray) {
 		$partStructureIds = array();
 		foreach ($partArray as $part) {
 			$stop = true;
@@ -181,11 +193,12 @@ class RepositoryImporter {
 	 *
 	 * @param array assetInfo
 	 * @param array recordList
+	 * @return asset 
 	 * @access public
 	 * @since 7/18/05
 	 *
 	 */
-	function buildAsset($assetInfo, $recordList) {
+	function &buildAsset($assetInfo, $recordList, $childAssetList) {
 		$idManager = Services::getService("Id");
 		$asset =& $this->_destinationRepository->createAsset($assetInfo['displayName'],
 			$assetInfo['description'], $assetInfo['type']);
@@ -227,6 +240,10 @@ class RepositoryImporter {
 				}
 			}
 		}
+		if (is_null($childAssetList))
+			$this->assetBuildingIteration(new HarmoniIterator($childAssetList), $asset);
+		
+		return $asset;
 	}
 	
 	/**
