@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.4 2005/07/22 13:07:33 cws-midd Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.5 2005/07/22 15:40:05 ndhungel Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.4 2005/07/22 13:07:33 cws-midd Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.5 2005/07/22 15:40:05 ndhungel Exp $
  */
 class TabRepositoryImporter
 	extends RepositoryImporter
@@ -94,7 +94,7 @@ class TabRepositoryImporter
 						
 			$this->_filenamePartId = RepositoryImporter::matchPartStructures(
 				$this->_destinationRepository->getRecordStructure($this->_fileStructureId),
-				array("File Name"));
+				array("File Name", "Thumbnail Data"));
 			
 			$this->_structureId = RepositoryImporter::matchSchema(
 				$schema, $this->_destinationRepository);
@@ -104,7 +104,7 @@ class TabRepositoryImporter
 					"</emph> does not exist in the collection", "polyphony.RepositoryImporter", true));
 		
 			$titles = explode ("\t", $titleline);
-			$partArray = array_slice($titles, 4);
+			$partArray = array_slice($titles, 5);
 			$this->_partStructureIds = RepositoryImporter::matchPartStructures(
 				$this->_destinationRepository->getRecordStructure($this->_structureId), $partArray);
 			
@@ -118,14 +118,20 @@ class TabRepositoryImporter
 			$fileElement = array();
 			$fileElement['structureId'] =& $this->_fileStructureId;
 			$fileElement['partStructureIds'] =& $this->_filenamePartId;
-			$fileElement['parts'] = array($input[3]);
+			$interestingArray[] = $input[3];
+			//$fileElement['parts'] = array($input[3]);
+						
+			if ($input[4] != "") {
+				$interestingArray[] = array($input[4]);
+			}
+			$fileElement['parts'] = $interestingArray;
 			$recordList[] =& $fileElement;
 		}
-			
+		
 		$recordListElement = array();
 		$recordListElement['structureId'] =& $this->_structureId;
 		$recordListElement['partStructureIds'] =& $this->_partStructureIds;
-		$recordListElement['parts'] = array_slice($input, 4);
+		$recordListElement['parts'] = array_slice($input, 5);
 		$recordList[] =& $recordListElement;
 		return $recordList;
 	}

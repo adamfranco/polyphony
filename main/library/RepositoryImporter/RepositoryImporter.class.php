@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.4 2005/07/22 13:07:33 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.5 2005/07/22 15:40:05 ndhungel Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/RepositoryImporter/XMLAssetIterator.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/TabAssetIterator.class.
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.4 2005/07/22 13:07:33 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.5 2005/07/22 15:40:05 ndhungel Exp $
  */
 class RepositoryImporter {
 	
@@ -210,8 +210,20 @@ class RepositoryImporter {
 						file_get_contents($this->_srcDir."/".$filename));
 					$assetRecord->createPart($idManager->getId("FILE_NAME"), basename($filename));
 					$assetRecord->createPart($idManager->getId("MIME_TYPE"), $mimetype);
-					$assetRecord->createPart($idManager->getId("THUMBNAIL_DATA"),
-						file_get_contents($this->_srcDir."/".$filename));
+					$imageProcessor =& Services::getService("ImageProcessor");
+					if(isset($entry['parts'][1])) {
+						$assetRecord->createPart($idManager->getId("THUMBNAIL_DATA"),
+							file_get_contents($this->_srcDir."/".$entry['parts'][1]));
+					} 
+					// If our image format is supported by the image processor,
+					// generate a thumbnail.
+					else if ($imageProcessor->isFormatSupported($mimetype)) {
+							$assetRecord->createPart($idManager->getId("THUMBNAIL_DATA"), 
+								$imageProcessor->generateThumbnailData($mimetype, 
+								file_get_contents($this->_srcDir."/".$filename)));
+							$assetRecord->createPart($idManager->getId("THUMBNAIL_MIME_TYPE"),
+								$imageProcessor->getThumbnailFormat());
+					}
 				}
 			}
 		}

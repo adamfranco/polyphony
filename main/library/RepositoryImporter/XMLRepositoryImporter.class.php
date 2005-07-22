@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.4 2005/07/22 13:07:33 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.5 2005/07/22 15:40:07 ndhungel Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.4 2005/07/22 13:07:33 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.5 2005/07/22 15:40:07 ndhungel Exp $
  */
 class XMLRepositoryImporter
 	extends RepositoryImporter
@@ -68,6 +68,7 @@ class XMLRepositoryImporter
 		if ($assetInfo['type'] == "")
 			$assetInfo['type'] = new HarmoniType("Asset Types", "Concerto", "Generic Asset");
 		else
+		
 			$assetInfo['type'] = new HarmoniType("Asset Types", "Concerto", $assetInfo['type']);
 
 		return $assetInfo;
