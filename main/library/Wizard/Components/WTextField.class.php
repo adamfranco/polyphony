@@ -6,10 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.1 2005/07/22 15:42:34 gabeschine Exp $
+ * @version $Id: WTextField.class.php,v 1.2 2005/07/23 01:55:28 gabeschine Exp $
  */ 
 
-require_once(POLYPHONY."/main/library/Wizard/WizardComponent.interface.php");
+require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingWizardComponent.abstract.php");
 
 /**
  * This adds an input type='text' field to a {@link Wizard}.
@@ -20,9 +20,9 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponent.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.1 2005/07/22 15:42:34 gabeschine Exp $
+ * @version $Id: WTextField.class.php,v 1.2 2005/07/23 01:55:28 gabeschine Exp $
  */
-class WTextField extends WizardComponent {
+class WTextField extends ErrorCheckingWizardComponent {
 	var $_parent;
 	var $_size = 30;
 	var $_maxlength = 255;
@@ -134,7 +134,7 @@ class WTextField extends WizardComponent {
 	 */
 	function getMarkup ($fieldName) {
 		$name = RequestContext::name($fieldName);
-		$m = "<input type='text' name='$name' size='".$this->_size."' maxlength='".$this->_maxlength."'";
+		$m = "<input type='text' name='$name' id='$fieldName' size='".$this->_size."' maxlength='".$this->_maxlength."'";
 		if ($this->_value != null && $this->_value != $this->_startingDisplay) {
 			$m .= " value='".htmlentities($this->_value, ENT_QUOTES)."'";
 		} else if ($this->_startingDisplay) {
@@ -145,6 +145,15 @@ class WTextField extends WizardComponent {
 			$m .= " style=\"".addslashes($this->_style)."\"";
 		}
 		$m .= " />";
+		
+		$errText = $this->getErrorText();
+		$errRegex = $this->getErrorRegex();
+		$errStyle = $this->getErrorStyle();
+		
+		if ($errText) {
+			$m .= "<span id='".$fieldName."_error' style=\"padding-left: 10px; $errStyle\">&laquo; $errText</span>";	
+			$m .= Wizard::getValidationJavascript($fieldName, $errRegex, $fieldName."_error");
+		}
 		
 		return $m;
 	}

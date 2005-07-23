@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.4 2005/07/22 21:19:06 gabeschine Exp $
+ * @version $Id: Wizard.abstract.php,v 1.5 2005/07/23 01:56:15 gabeschine Exp $
  */
 
 /*
@@ -30,7 +30,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.4 2005/07/22 21:19:06 gabeschine Exp $
+ * @version $Id: Wizard.abstract.php,v 1.5 2005/07/23 01:56:15 gabeschine Exp $
  * @author Gabe Schine
  * @abstract
  */
@@ -151,6 +151,77 @@ class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 		$this->_eventsLater[] =& $newArray;
 	}
 	
+	/**
+	 * Returns a block of XHTML-valid code that contains markup for this specific
+	 * component. 
+	 * @param string $fieldName The field name to use when outputting form data or
+	 * similar parameters/information.
+	 * @access public
+	 * @return string
+	 */
+	function getMarkup ($fieldName) {
+		$done = isset($GLOBALS["__wizardJSDone"]);
+		if ($done) return '';
+		// we are going to output a bunch of javascript to handle wizard
+		// validation, etc. 
+		$javascript = <<< END
+
+function addWizardRule(elementID, regex, errorID) {
+	var element = getWizardElement(elementID);
+	element._ruleRegex = regex;
+	element._ruleErrorID = errorID;
+	
+	var errEl = getWizardElement(errorID);
+//	errEl.style.position = "absolute";
+	errEl.style.visibility = "hidden";
+}
+
+function getWizardElement(id) {
+	if (document.layers) return document.layers[id];
+	if (document.all) return document.all[id];
+	return document.getElementById(id);
+}
+
+function validateWizard(form) {
+//	alert('checking...');
+	if (form._ignoreValidation) return true;
+	var elements = form.elements;
+	var ok = true;
+	for(var i = 0; i < form.length; i++) {
+		var el = elements[i];
+		if (el._ruleRegex) {
+			var regex = el._ruleRegex;
+			var errID = el._ruleErrorID;
+			var re = new RegExp(regex);
+			var errDiv = getWizardElement(errID);
+			if (!el.value.match(re)) {
+				ok = false;
+				// show the error div
+				errDiv.style.visibility = "visible";
+			} else {
+				errDiv.style.visibility = "hidden";
+			}
+		}
+	}
+	return ok;
+}
+
+function ignoreValidation(form) {
+	form._ignoreValidation = true;
+}
+	
+
+END;
+
+		$m = "<script lang='javascript'>\n";
+		$m .= "/*<![CDATA[*/\n" . $javascript . "\n/*]]>*/\n</script>\n";
+		
+		$GLOBALS["__wizardJSDone"] = true;
+		
+		return $m;
+		
+	}
+	
 	// ------------------------------
 	// Utility static methods
 	// ---------------------------------
@@ -191,6 +262,26 @@ class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 		return $workingText;
 	 }
 	
+	/**
+	 * Returns a block of javascript that will add a validation command to the form when submitting.
+	 * @param string $elementID The ID of the form element.
+	 * @param string $regex A JavaScript-compatible regular expression to try matching.
+	 * @param string $errDivID The ID of a div tag that will be displayed if the element doesn't validate.
+	 * @access public
+	 * @return string
+	 * @static
+	 */
+	function getValidationJavascript ($elementID, $regex, $errDivID) {
+		$elementID = str_replace("'", "\\'", $elementID);
+		$errDivID = str_replace("'", "\\'", $errDivID);
+		$regex = addslashes($regex);
+		$m = "<script lang='javascript'>\n" .
+				"/*<![CDATA[*/\n" .
+				"addWizardRule('$elementID', \"$regex\", '$errDivID');" .
+				"/*]]>*/\n" .
+				"</script>\n";
+		return $m;
+	}
 	
 	//-----------------------------------
 	// EventTrigger methods

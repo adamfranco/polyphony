@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleStepWizard.class.php,v 1.2 2005/07/22 20:26:42 gabeschine Exp $
+ * @version $Id: SimpleStepWizard.class.php,v 1.3 2005/07/23 01:56:15 gabeschine Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/SimpleWizard.class.php");
@@ -27,7 +27,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WCancelButton.class.php"
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleStepWizard.class.php,v 1.2 2005/07/22 20:26:42 gabeschine Exp $
+ * @version $Id: SimpleStepWizard.class.php,v 1.3 2005/07/23 01:56:15 gabeschine Exp $
  */
 class SimpleStepWizard extends SimpleWizard {
 	var $_stepContainer;
@@ -116,11 +116,11 @@ class SimpleStepWizard extends SimpleWizard {
 				"<div>\n" .
 				"<table width='100%' border='0' cellpadding='0' cellspacing='2'>\n" .
 				"<tr>\n" .
-				"<td align='left'>\n" .
+				"<td align='left' width='50%'>\n" .
 				"[[_cancel]]<br/>\n" .
 				"[[_prev]]" .
 				"</td>\n" .
-				"<td align='right'>\n" .
+				"<td align='right' width='50%'>\n" .
 				"[[_save]]<br/>\n" .
 				"[[_next]]" .
 				"</td></tr></table>" .
