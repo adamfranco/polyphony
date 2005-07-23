@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ErrorCheckingWizardComponent.abstract.php,v 1.1 2005/07/23 01:56:15 gabeschine Exp $
+ * @version $Id: ErrorCheckingWizardComponent.abstract.php,v 1.2 2005/07/23 20:13:24 gabeschine Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/Wizard/WizardComponent.interface.php");
@@ -20,11 +20,11 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponent.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ErrorCheckingWizardComponent.abstract.php,v 1.1 2005/07/23 01:56:15 gabeschine Exp $
+ * @version $Id: ErrorCheckingWizardComponent.abstract.php,v 1.2 2005/07/23 20:13:24 gabeschine Exp $
  * @abstract
  */
 class ErrorCheckingWizardComponent extends WizardComponent {
-	var $_errorRegex = ".*";
+	var $_errorRule = null;
 	var $_errorMessage = null;
 	var $_errorStyle = "color: red;";
 	
@@ -34,8 +34,8 @@ class ErrorCheckingWizardComponent extends WizardComponent {
 	 * @access public
 	 * @return void
 	 */
-	function setErrorRegex ($regex) {
-		$this->_errorRegex = $regex;
+	function setErrorRule (&$rule) {
+		$this->_errorRule =& $rule;
 	}
 	
 	/**
@@ -59,12 +59,12 @@ class ErrorCheckingWizardComponent extends WizardComponent {
 	}
 	
 	/**
-	 * Returns the error regular expression.
+	 * Returns the error {@link WECRule}.
 	 * @access public
-	 * @return string
+	 * @return ref object
 	 */
-	function getErrorRegex () {
-		return $this->_errorRegex;
+	function &getErrorRule () {
+		return $this->_errorRule;
 	}
 	
 	/**

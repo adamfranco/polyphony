@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.2 2005/07/23 01:55:28 gabeschine Exp $
+ * @version $Id: WTextField.class.php,v 1.3 2005/07/23 20:13:22 gabeschine Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingWizardComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingWizardComponent.abstra
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.2 2005/07/23 01:55:28 gabeschine Exp $
+ * @version $Id: WTextField.class.php,v 1.3 2005/07/23 20:13:22 gabeschine Exp $
  */
 class WTextField extends ErrorCheckingWizardComponent {
 	var $_parent;
@@ -147,12 +147,12 @@ class WTextField extends ErrorCheckingWizardComponent {
 		$m .= " />";
 		
 		$errText = $this->getErrorText();
-		$errRegex = $this->getErrorRegex();
+		$errRule =& $this->getErrorRule();
 		$errStyle = $this->getErrorStyle();
 		
-		if ($errText) {
+		if ($errText && $errRule) {
 			$m .= "<span id='".$fieldName."_error' style=\"padding-left: 10px; $errStyle\">&laquo; $errText</span>";	
-			$m .= Wizard::getValidationJavascript($fieldName, $errRegex, $fieldName."_error");
+			$m .= Wizard::getValidationJavascript($fieldName, $errRule, $fieldName."_error");
 		}
 		
 		return $m;

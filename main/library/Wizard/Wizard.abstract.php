@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.5 2005/07/23 01:56:15 gabeschine Exp $
+ * @version $Id: Wizard.abstract.php,v 1.6 2005/07/23 20:13:24 gabeschine Exp $
  */
 
 /*
@@ -30,7 +30,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.5 2005/07/23 01:56:15 gabeschine Exp $
+ * @version $Id: Wizard.abstract.php,v 1.6 2005/07/23 20:13:24 gabeschine Exp $
  * @author Gabe Schine
  * @abstract
  */
@@ -166,9 +166,9 @@ class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 		// validation, etc. 
 		$javascript = <<< END
 
-function addWizardRule(elementID, regex, errorID) {
+function addWizardRule(elementID, rule, errorID) {
 	var element = getWizardElement(elementID);
-	element._ruleRegex = regex;
+	element._ruleCheck = rule;
 	element._ruleErrorID = errorID;
 	
 	var errEl = getWizardElement(errorID);
@@ -189,12 +189,10 @@ function validateWizard(form) {
 	var ok = true;
 	for(var i = 0; i < form.length; i++) {
 		var el = elements[i];
-		if (el._ruleRegex) {
-			var regex = el._ruleRegex;
+		if (el._ruleCheck) {
 			var errID = el._ruleErrorID;
-			var re = new RegExp(regex);
 			var errDiv = getWizardElement(errID);
-			if (!el.value.match(re)) {
+			if (!el._ruleCheck(el)) {
 				ok = false;
 				// show the error div
 				errDiv.style.visibility = "visible";
@@ -213,7 +211,7 @@ function ignoreValidation(form) {
 
 END;
 
-		$m = "<script lang='javascript'>\n";
+		$m = "<script language='javascript'>\n";
 		$m .= "/*<![CDATA[*/\n" . $javascript . "\n/*]]>*/\n</script>\n";
 		
 		$GLOBALS["__wizardJSDone"] = true;
@@ -265,19 +263,19 @@ END;
 	/**
 	 * Returns a block of javascript that will add a validation command to the form when submitting.
 	 * @param string $elementID The ID of the form element.
-	 * @param string $regex A JavaScript-compatible regular expression to try matching.
+	 * @param ref object $rule A {@link WECRule} for error checking.
 	 * @param string $errDivID The ID of a div tag that will be displayed if the element doesn't validate.
 	 * @access public
 	 * @return string
 	 * @static
 	 */
-	function getValidationJavascript ($elementID, $regex, $errDivID) {
+	function getValidationJavascript ($elementID, &$rule, $errDivID) {
 		$elementID = str_replace("'", "\\'", $elementID);
 		$errDivID = str_replace("'", "\\'", $errDivID);
-		$regex = addslashes($regex);
-		$m = "<script lang='javascript'>\n" .
+		$checkFunc = $rule->generateJavaScript();
+		$m = "<script language='javascript'>\n" .
 				"/*<![CDATA[*/\n" .
-				"addWizardRule('$elementID', \"$regex\", '$errDivID');" .
+				"addWizardRule('$elementID', $checkFunc, '$errDivID');" .
 				"/*]]>*/\n" .
 				"</script>\n";
 		return $m;

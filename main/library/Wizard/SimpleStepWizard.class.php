@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleStepWizard.class.php,v 1.3 2005/07/23 01:56:15 gabeschine Exp $
+ * @version $Id: SimpleStepWizard.class.php,v 1.4 2005/07/23 20:13:23 gabeschine Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/SimpleWizard.class.php");
@@ -16,6 +16,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WNextStepButton.class.ph
 require_once(POLYPHONY."/main/library/Wizard/Components/WPreviousStepButton.class.php");
 require_once(POLYPHONY."/main/library/Wizard/Components/WSaveButton.class.php");
 require_once(POLYPHONY."/main/library/Wizard/Components/WCancelButton.class.php");
+require_once(POLYPHONY."/main/library/Wizard/Components/WStepDisplayBar.class.php");
 //require_once(POLYPHONY."/main/library/Wizard/Components/WizardStepContainer.class.php");
 
 /**
@@ -27,7 +28,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WCancelButton.class.php"
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleStepWizard.class.php,v 1.3 2005/07/23 01:56:15 gabeschine Exp $
+ * @version $Id: SimpleStepWizard.class.php,v 1.4 2005/07/23 20:13:23 gabeschine Exp $
  */
 class SimpleStepWizard extends SimpleWizard {
 	var $_stepContainer;
@@ -53,6 +54,7 @@ class SimpleStepWizard extends SimpleWizard {
 		$this->addComponent("_cancel", $this->_cancelButton);
 		$this->addComponent("_next", $this->_nextButton);
 		$this->addComponent("_prev", $this->_prevButton);
+		$this->addComponent("_stepsBar", new WStepDisplayBar($this->_stepContainer));
 	}
 	
 	/**
@@ -114,6 +116,7 @@ class SimpleStepWizard extends SimpleWizard {
 	function &withDefaultLayout ($pre = '') {
 		return parent::withText($pre . 
 				"<div>\n" .
+				"[[_stepsBar]]" .
 				"<table width='100%' border='0' cellpadding='0' cellspacing='2'>\n" .
 				"<tr>\n" .
 				"<td align='left' width='50%'>\n" .

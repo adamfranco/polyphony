@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.2 2005/07/22 20:26:43 gabeschine Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.3 2005/07/23 20:13:23 gabeschine Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.2 2005/07/22 20:26:43 gabeschine Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.3 2005/07/23 20:13:23 gabeschine Exp $
  */
 class WizardStepContainer extends WizardComponent {
 	var $_currStep;
@@ -61,6 +61,16 @@ class WizardStepContainer extends WizardComponent {
 	 */
 	function getCurrentStep () {
 		return $this->_currStep;
+	}
+	
+	/**
+	 * Gets the short-name associated with the current step.
+	 * @access public
+	 * @return string
+	 */
+	function getCurrentStepName () {
+		if (!count($this->_steps)) return null;
+		return $this->_stepNames[$this->_currStep];
 	}
 	
 	/**
