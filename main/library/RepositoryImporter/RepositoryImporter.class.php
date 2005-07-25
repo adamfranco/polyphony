@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.6 2005/07/22 21:14:40 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.7 2005/07/25 15:32:04 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/RepositoryImporter/XMLAssetIterator.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/TabAssetIterator.class.
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.6 2005/07/22 21:14:40 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.7 2005/07/25 15:32:04 cws-midd Exp $
  */
 class RepositoryImporter {
 	
@@ -111,12 +111,11 @@ class RepositoryImporter {
 	 */
 	function assetBuildingIteration (&$assetIterator, &$parent) {
 		$assetInfoIterator =& $this->getAllAssetsInfoIterator($assetIterator);
-
 		while ($assetInfoIterator->hasNext()) {
 			$info =& $assetInfoIterator->next();
 			$child =& $this->buildAsset($info["assetInfo"], $info["recordList"], $info["childAssetList"]);
 			if (!is_null($parent))
-				$parent->addAsset($child);
+				$parent->addAsset($child->getId());
 		}
 	}
 	
@@ -240,7 +239,7 @@ class RepositoryImporter {
 				}
 			}
 		}
-		if (is_null($childAssetList))
+		if (!is_null($childAssetList))
 			$this->assetBuildingIteration(new HarmoniIterator($childAssetList), $asset);
 		
 		return $asset;
