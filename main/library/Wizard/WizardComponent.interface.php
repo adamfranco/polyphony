@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponent.interface.php,v 1.1 2005/07/22 15:42:20 gabeschine Exp $
+ * @version $Id: WizardComponent.interface.php,v 1.2 2005/07/25 18:33:57 gabeschine Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponent.interface.php,v 1.1 2005/07/22 15:42:20 gabeschine Exp $
+ * @version $Id: WizardComponent.interface.php,v 1.2 2005/07/25 18:33:57 gabeschine Exp $
  */
 class WizardComponent {
 	/**
@@ -40,6 +40,17 @@ class WizardComponent {
 	 */
 	function &getWizard () {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class ".get_class($this).".");
+	}
+	
+	/**
+	 * Returns true if this component (and all child components if applicable) have valid values.
+	 * By default, this will just return TRUE. Validate should be called usually before a save event
+	 * is handled, to make sure everything went smoothly. 
+	 * @access public
+	 * @return boolean
+	 */
+	function validate () {
+		return true;
 	}
 	
 	/**

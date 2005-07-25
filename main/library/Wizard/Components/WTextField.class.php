@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.3 2005/07/23 20:13:22 gabeschine Exp $
+ * @version $Id: WTextField.class.php,v 1.4 2005/07/25 18:33:19 gabeschine Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingWizardComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingWizardComponent.abstra
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.3 2005/07/23 20:13:22 gabeschine Exp $
+ * @version $Id: WTextField.class.php,v 1.4 2005/07/25 18:33:19 gabeschine Exp $
  */
 class WTextField extends ErrorCheckingWizardComponent {
 	var $_parent;
@@ -29,6 +29,8 @@ class WTextField extends ErrorCheckingWizardComponent {
 	var $_style = null;
 	var $_value = null;
 	var $_startingDisplay = null;
+	
+	var $_showError = false;
 	
 	/**
 	 * Sets the size of this text field.
@@ -115,6 +117,20 @@ class WTextField extends ErrorCheckingWizardComponent {
 	}
 	
 	/**
+	 * Returns true if this component (and all child components if applicable) have valid values.
+	 * By default, this will just return TRUE.
+	 * @access public
+	 * @return boolean
+	 */
+	function validate () {
+		$rule =& $this->getErrorRule();
+		
+		$err = $rule->checkValue($this);
+		if (!$err) $this->_showError = true;
+		return $err;
+	}
+	
+	/**
 	 * Returns the values of wizard-components. Should return an array if children are involved,
 	 * otherwise a whatever type of object is expected.
 	 * @access public
@@ -152,7 +168,8 @@ class WTextField extends ErrorCheckingWizardComponent {
 		
 		if ($errText && $errRule) {
 			$m .= "<span id='".$fieldName."_error' style=\"padding-left: 10px; $errStyle\">&laquo; $errText</span>";	
-			$m .= Wizard::getValidationJavascript($fieldName, $errRule, $fieldName."_error");
+			$m .= Wizard::getValidationJavascript($fieldName, $errRule, $fieldName."_error", $this->_showError);
+			$this->_showError = false;
 		}
 		
 		return $m;

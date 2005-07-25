@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WECRegex.class.php,v 1.1 2005/07/23 20:13:24 gabeschine Exp $
+ * @version $Id: WECRegex.class.php,v 1.2 2005/07/25 18:33:57 gabeschine Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingRules/WECRule.interface.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingRules/WECRule.interfac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WECRegex.class.php,v 1.1 2005/07/23 20:13:24 gabeschine Exp $
+ * @version $Id: WECRegex.class.php,v 1.2 2005/07/25 18:33:57 gabeschine Exp $
  */
 class WECRegex extends WECRule {
 	var $_regex;
@@ -49,6 +49,21 @@ class WECRegex extends WECRule {
 				"var re = new RegExp(\"$re\");\n" .
 				"return el.value.match(re);\n" .
 				"}";
+	}
+	
+	
+	/**
+	 * Returns true if the passed {@link WizardComponent} validates against this rule.
+	 * @param ref object $component
+	 * @access public
+	 * @return boolean
+	 */
+	function checkValue (&$component) {
+		$value = $component->getAllValues();
+		if (!strval($value)) return false;
+		
+		if (preg_match("/".$this->_regex."/", $value)) return true;
+		return false;
 	}
 }
 

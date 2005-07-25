@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.6 2005/07/23 20:13:24 gabeschine Exp $
+ * @version $Id: Wizard.abstract.php,v 1.7 2005/07/25 18:33:57 gabeschine Exp $
  */
 
 /*
@@ -30,7 +30,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.6 2005/07/23 20:13:24 gabeschine Exp $
+ * @version $Id: Wizard.abstract.php,v 1.7 2005/07/25 18:33:57 gabeschine Exp $
  * @author Gabe Schine
  * @abstract
  */
@@ -166,14 +166,14 @@ class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 		// validation, etc. 
 		$javascript = <<< END
 
-function addWizardRule(elementID, rule, errorID) {
+function addWizardRule(elementID, rule, errorID, displayError) {
 	var element = getWizardElement(elementID);
 	element._ruleCheck = rule;
 	element._ruleErrorID = errorID;
 	
 	var errEl = getWizardElement(errorID);
 //	errEl.style.position = "absolute";
-	errEl.style.visibility = "hidden";
+	errEl.style.visibility = (displayError?"visible":"hidden");
 }
 
 function getWizardElement(id) {
@@ -265,17 +265,19 @@ END;
 	 * @param string $elementID The ID of the form element.
 	 * @param ref object $rule A {@link WECRule} for error checking.
 	 * @param string $errDivID The ID of a div tag that will be displayed if the element doesn't validate.
+	 * @param optional boolean $displayError Defaults to FALSE, but allows you to display the error on
+	 * pageload, if we need to notify the user immediately of an error. 
 	 * @access public
 	 * @return string
 	 * @static
 	 */
-	function getValidationJavascript ($elementID, &$rule, $errDivID) {
+	function getValidationJavascript ($elementID, &$rule, $errDivID, $displayError = false) {
 		$elementID = str_replace("'", "\\'", $elementID);
 		$errDivID = str_replace("'", "\\'", $errDivID);
 		$checkFunc = $rule->generateJavaScript();
 		$m = "<script language='javascript'>\n" .
 				"/*<![CDATA[*/\n" .
-				"addWizardRule('$elementID', $checkFunc, '$errDivID');" .
+				"addWizardRule('$elementID', $checkFunc, '$errDivID', ".($displayError?"true":"false").");" .
 				"/*]]>*/\n" .
 				"</script>\n";
 		return $m;

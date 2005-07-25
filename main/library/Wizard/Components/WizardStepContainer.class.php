@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.3 2005/07/23 20:13:23 gabeschine Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.4 2005/07/25 18:33:19 gabeschine Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.3 2005/07/23 20:13:23 gabeschine Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.4 2005/07/25 18:33:19 gabeschine Exp $
  */
 class WizardStepContainer extends WizardComponent {
 	var $_currStep;
@@ -157,7 +157,26 @@ class WizardStepContainer extends WizardComponent {
 		return $this->_currStep != 0;
 	}
 	
-	
+	/**
+	 * Returns true if this component (and all child components if applicable) have valid values.
+	 * By default, this will just return TRUE.
+	 * 
+	 * In this implementation, we will go through our steps and validate each one in turn. The first
+	 * one that doesn't validate, we will move to that step so that the person can enter the information
+	 * that is required.
+	 * @access public
+	 * @return boolean
+	 */
+	function validate () {
+		$children =& $this->getSteps();
+		foreach (array_keys($children) as $step) {
+			if (!$children[$step]->validate()) {
+				$this->setStep($step);
+				return false;
+			}
+		}
+		return true;
+	}
 	
 	
 	

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponentWithChildren.abstract.php,v 1.1 2005/07/22 15:42:20 gabeschine Exp $
+ * @version $Id: WizardComponentWithChildren.abstract.php,v 1.2 2005/07/25 18:33:57 gabeschine Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/WizardComponent.interface.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponent.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponentWithChildren.abstract.php,v 1.1 2005/07/22 15:42:20 gabeschine Exp $
+ * @version $Id: WizardComponentWithChildren.abstract.php,v 1.2 2005/07/25 18:33:57 gabeschine Exp $
  * @abstract
  */
 class WizardComponentWithChildren extends WizardComponent {
@@ -88,6 +88,21 @@ class WizardComponentWithChildren extends WizardComponent {
 	 */
 	function removeChild ($name) {
 		unset($this->_children[$name]);
+	}
+	
+	/**
+	 * Returns true if this component (and all child components if applicable) have valid values.
+	 * By default, this will just return TRUE.
+	 * @access public
+	 * @return boolean
+	 */
+	function validate () {
+		$children =& $this->getChildren();
+		$ok = true;
+		foreach (array_keys($children) as $key) {
+			if (!$children[$key]->validate()) $ok = false;
+		}
+		return $ok;
 	}
 	
 	/**
