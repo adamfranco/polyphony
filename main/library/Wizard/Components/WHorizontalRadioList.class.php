@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WHorizontalRadioList.class.php,v 1.1 2005/07/22 15:42:32 gabeschine Exp $
+ * @version $Id: WHorizontalRadioList.class.php,v 1.2 2005/07/26 20:30:39 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WRadioList.class.php");
@@ -20,13 +20,13 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WRadioList.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WHorizontalRadioList.class.php,v 1.1 2005/07/22 15:42:32 gabeschine Exp $
+ * @version $Id: WHorizontalRadioList.class.php,v 1.2 2005/07/26 20:30:39 adamfranco Exp $
  */
 class WHorizontalRadioList extends WRadioList {
 	function WHorizontalRadioList() {
 		parent::WRadioList();
 		
-		$this->_glue = "\n";
+		$this->_eachPost = "\n";
 	}
 }
 

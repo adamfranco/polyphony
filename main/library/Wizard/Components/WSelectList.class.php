@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.1 2005/07/22 15:42:34 gabeschine Exp $
+ * @version $Id: WSelectList.class.php,v 1.2 2005/07/26 20:30:39 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.interface.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.interface.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.1 2005/07/22 15:42:34 gabeschine Exp $
+ * @version $Id: WSelectList.class.php,v 1.2 2005/07/26 20:30:39 adamfranco Exp $
  */
 class WSelectList extends WizardComponent {
 	var $_parent;
@@ -32,7 +32,7 @@ class WSelectList extends WizardComponent {
 	/**
 	 * Constructor
 	 * @access public
-	 * @return WRadioList
+	 * @return WSelectList
 	 */
 	function WSelectList () {
 		// do nothing

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRadioList.class.php,v 1.1 2005/07/22 15:42:33 gabeschine Exp $
+ * @version $Id: WRadioList.class.php,v 1.2 2005/07/26 20:30:39 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.interface.php');
@@ -20,10 +20,11 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.interface.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRadioList.class.php,v 1.1 2005/07/22 15:42:33 gabeschine Exp $
+ * @version $Id: WRadioList.class.php,v 1.2 2005/07/26 20:30:39 adamfranco Exp $
  */
 class WRadioList extends WizardComponent {
-	var $_glue;
+	var $_eachPre;
+	var $_eachPost;
 	var $_pre;
 	var $_post;
 	var $_parent;
@@ -35,17 +36,21 @@ class WRadioList extends WizardComponent {
 	/**
 	 * Virtual constructor - creates this object with the specified layout.
 	 * @param string $pre A string to prepend onto the markup block (ex, "<ul>")
-	 * @param string $glue A string to put between each of the elements (ex, "<li/>")
+	 * @param string $eachPre A string to put at the beginning of each of the 
+	 *		elements (ex, "<li>")
+	 * @param string $eachPost A string to put at the end of each of the 
+	 *		elements (ex, "</li>")
 	 * @param string $post A string to tack onto the end of the block (ex, "</ul>")
 	 * @access public
 	 * @return ref object
 	 * @static
 	 */
-	function &withLayout ($pre, $glue, $post, $class='WRadioList') {
+	function &withLayout ($pre, $eachPre, $eachPost, $post, $class='WRadioList') {
 		$obj =& new $class();
 		$obj->_pre = $pre;
 		$obj->_post = $post;
-		$obj->_glue = $glue;
+		$obj->_eachPre = $eachPre;
+		$obj->_eachPost = $eachPost;
 		return $obj;
 	}
 	
@@ -56,7 +61,7 @@ class WRadioList extends WizardComponent {
 	 */
 	function WRadioList () {
 		$this->_pre = $this->_post = '';
-		$this->_glue = "\n<br/>";
+		$this->_eachPost = "\n<br/>";
 	}
 	
 	/**
@@ -172,7 +177,9 @@ class WRadioList extends WizardComponent {
 			$s[] = "<label onmousedown=\"$javascript\" style='cursor: pointer;'$style><input type='radio' name='$name' id='$id' value='$val'$checked /> $disp</label>";
 		}
 		
-		$m .= implode($this->_glue, $s);
+		$m .= $this->_eachPre;
+		$m .= implode($this->_eachPost.$this->_eachPre, $s);
+		$m .= $this->_eachPost;
 		
 		$m .= $this->_post;
 				
