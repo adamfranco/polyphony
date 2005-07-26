@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabAssetIterator.class.php,v 1.3 2005/07/26 15:24:40 ndhungel Exp $
+ * @version $Id: ExifAssetIterator.class.php,v 1.1 2005/07/26 15:24:39 ndhungel Exp $
  */ 
 
 /**
@@ -18,32 +18,31 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabAssetIterator.class.php,v 1.3 2005/07/26 15:24:40 ndhungel Exp $
+ * @version $Id: ExifAssetIterator.class.php,v 1.1 2005/07/26 15:24:39 ndhungel Exp $
  */
-class TabAssetIterator 
-extends HarmoniIterator 
+
+class ExifAssetIterator
+	extends HarmoniIterator
 {
+
 	/**
-	* Constructor
+	 * Constructor
 	 * 
 	 * @return object
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function TabAssetIterator ($srcDir) {		
-		$meta = fopen($srcDir."/metadata.txt", "r");
-		fgets($meta);
-		fgets($meta);
+	function ExifAssetIterator ($srcDir) {		
+		$dir = opendir($srcDir);
 		
-		while ($line = ereg_replace("[\n\r]*$","",fgets($meta))) {
-			$metadata = explode("\t", $line);
-			$this->_assetList[] = $metadata;
+		while($file = readdir($dir)) {
+			if($file != "schema.txt" && $file != "." && $file != "..")
+				$this->_assetList[] = $srcDir."/".$file;
 		}
-		
-		fclose($meta);
-		
+		closedir($dir);		
 		$this->_current = 0;
 	}
+	
 	
 	/**
 	 * checks for existence of next element

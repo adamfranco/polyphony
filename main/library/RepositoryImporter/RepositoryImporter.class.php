@@ -6,12 +6,12 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.7 2005/07/25 15:32:04 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.8 2005/07/26 15:24:40 ndhungel Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/RepositoryImporter/XMLAssetIterator.class.php");
 require_once(POLYPHONY."/main/library/RepositoryImporter/TabAssetIterator.class.php");
-
+require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class.php");
 
 /**
  * #insertion#
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/TabAssetIterator.class.
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.7 2005/07/25 15:32:04 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.8 2005/07/26 15:24:40 ndhungel Exp $
  */
 class RepositoryImporter {
 	
@@ -223,7 +223,7 @@ class RepositoryImporter {
 					$assetRecord->createPart($idManager->getId("FILE_NAME"), basename($filename));
 					$assetRecord->createPart($idManager->getId("MIME_TYPE"), $mimetype);
 					$imageProcessor =& Services::getService("ImageProcessor");
-					if(isset($entry['parts'][1])) {
+					if(isset($entry['parts'][1]) && $entry['parts'][1] != "") {
 						$assetRecord->createPart($idManager->getId("THUMBNAIL_DATA"),
 							file_get_contents($this->_srcDir."/".$entry['parts'][1]));
 					} 
