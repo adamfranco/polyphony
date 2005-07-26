@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.8 2005/07/26 15:24:40 ndhungel Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.9 2005/07/26 21:31:22 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/RepositoryImporter/XMLAssetIterator.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.8 2005/07/26 15:24:40 ndhungel Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.9 2005/07/26 21:31:22 cws-midd Exp $
  */
 class RepositoryImporter {
 	
@@ -36,10 +36,12 @@ class RepositoryImporter {
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function RepositoryImporter ($filepath, $repositoryId) {
+	function RepositoryImporter ($filepath, $repositoryId, $dieOnError = false) {
 		$this->_filepath = $filepath;
 		$this->_repositoryId =& $repositoryId;
-		$this->_decompressed = FALSE;
+		$this->_dieOnError = $dieOnError;
+		$this->_errors = array();
+		$this->_goodAssetIds = array();
 	}
 	
 	/**
@@ -57,6 +59,8 @@ class RepositoryImporter {
 		$this->_srcDir = dirname($this->_filepath);
 		
 		$this->decompress();
+		if ($this->hasErrors())
+			return;
 		$this->parse();
 	}
 	
@@ -68,26 +72,12 @@ class RepositoryImporter {
 	 * @since 7/20/05
 	 */
 	function decompress () {
-		if (!$this->_decompressed) {
-			$dearchiver =& new Dearchiver();
-			$dearchiver->uncompressFile($this->_filepath, dirname($this->_filepath));
-			$this->_decompressed = TRUE;
-		}
+		$dearchiver =& new Dearchiver();
+		$worked = $dearchiver->uncompressFile($this->_filepath, dirname($this->_filepath));
+		if ($worked == false)
+			$this->addError("Failed to decompress file: ".$this->_filepath.".  Unsupported archive extension.");
 	}
-	
-	/**
-	 * 
-	 * 
-	 * @return boolean
-	 * @access public
-	 * @since 7/20/05
-	 */
-	function isDataValid() {
-		return true;
-		$this->decompress();
-		die("Method ".__FUNCTION__." declared in class '".__CLASS__."' was not overidden by a child class.");
-	}
-	
+		
 	/**
 	 * Parses the archive file according to its type i.e. properly
 	 * 
@@ -97,7 +87,9 @@ class RepositoryImporter {
 	 */
 	function parse () {
 		$iteratorClass = $this->_assetIteratorClass;
-		$assetIterator =& new $iteratorClass($this->_srcDir);
+		$assetIterator =& new $iteratorClass($this->_srcDir, $this);
+		if ($this->hasErrors())
+			return;
 		$null = null;
 		$this->assetBuildingIteration($assetIterator, $null);
 	}
@@ -105,24 +97,30 @@ class RepositoryImporter {
 	/**
 	 * Iterates through the building of the assets
 	 * 
-	 * @return void
+	 * @return boolean
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function assetBuildingIteration (&$assetIterator, &$parent) {
+	function &assetBuildingIteration (&$assetIterator, &$parent) {
 		$assetInfoIterator =& $this->getAllAssetsInfoIterator($assetIterator);
+		if (!$assetInfoIterator)
+			return $assetInfoIterator; // false
 		while ($assetInfoIterator->hasNext()) {
 			$info =& $assetInfoIterator->next();
 			$child =& $this->buildAsset($info["assetInfo"], $info["recordList"], $info["childAssetList"]);
+			if (!$child)
+				return $child; // false
 			if (!is_null($parent))
 				$parent->addAsset($child->getId());
 		}
+		$true = true;
+		return $true;
 	}
 	
 	/**
 	 * Iterates through the assets and gathers all required information for creating assets
 	 * 
-	 * @return iterator
+	 * @return iterator or false on fatal error
 	 * @access public
 	 * @since 7/20/05
 	 */
@@ -134,7 +132,10 @@ class RepositoryImporter {
 			$info["assetInfo"] =& $this->getSingleAssetInfo($asset);
 			$info["recordList"] =& $this->getSingleAssetRecordList($asset);
 			$info["childAssetList"] =& $this->getChildAssetList($asset);
-			$allAssetInfo[] =& $info;
+			if ($info["recordList"] != false)
+				$allAssetInfo[] =& $info;
+			else if ($this->_dieOnError)
+				return $info["recordList"]; // false
 		}
 		return new HarmoniIterator($allAssetInfo);
 	}
@@ -192,7 +193,7 @@ class RepositoryImporter {
 	 *
 	 * @param array assetInfo
 	 * @param array recordList
-	 * @return asset 
+	 * @return asset or false on fatal error
 	 * @access public
 	 * @since 7/18/05
 	 *
@@ -201,6 +202,7 @@ class RepositoryImporter {
 		$idManager = Services::getService("Id");
 		$asset =& $this->_destinationRepository->createAsset($assetInfo['displayName'],
 			$assetInfo['description'], $assetInfo['type']);
+		$this->addGoodAssetId($asset->getId());
 		foreach($recordList as $entry) {
 			$assetRecord =& $asset->createRecord($entry['structureId']);
 			$j = 0;
@@ -239,9 +241,11 @@ class RepositoryImporter {
 				}
 			}
 		}
-		if (!is_null($childAssetList))
-			$this->assetBuildingIteration(new HarmoniIterator($childAssetList), $asset);
-		
+		if (!is_null($childAssetList)) {
+			$stop =& $this->assetBuildingIteration(new HarmoniIterator($childAssetList), $asset);		
+			if (!$stop)
+				return $stop; // false
+		}	
 		return $asset;
 	}
 	
@@ -284,7 +288,59 @@ class RepositoryImporter {
 		}
 	}
 
+	/**
+	 * gets error array
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 7/26/05
+	 */
+	function getErrors() {
+		return $this->_errors;
+	}
 	
-}
+	/**
+	 * checks for errors
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 7/26/05
+	 */
+	function hasErrors() {
+		return (count($this->_errors) > 0);
+	}
 
+	/**
+	 * adds an error to the  error array
+	 * 
+	 * @param String $error
+	 * @access public
+	 * @since 7/26/05
+	 */
+	function addError($error) {
+		$this->_errors[] = $error;
+	}
+
+	/**
+	 * gets created assset ids array
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 7/26/05
+	 */
+	function getGoodAssetIds() {
+		return $this->_goodAssetIds;
+	}
+
+	/**
+	 * adds an error to the  error array
+	 * 
+	 * @param String $error
+	 * @access public
+	 * @since 7/26/05
+	 */
+	function addGoodAssetId($goodAssetId) {
+		$this->_goodAssetIds[] = $goodAssetId;
+	}
+}
 ?>

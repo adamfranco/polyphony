@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetIterator.class.php,v 1.2 2005/07/21 18:36:22 ndhungel Exp $
+ * @version $Id: XMLAssetIterator.class.php,v 1.3 2005/07/26 21:31:22 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetIterator.class.php,v 1.2 2005/07/21 18:36:22 ndhungel Exp $
+ * @version $Id: XMLAssetIterator.class.php,v 1.3 2005/07/26 21:31:22 cws-midd Exp $
  */
 class XMLAssetIterator 
 extends HarmoniIterator 
@@ -26,22 +26,24 @@ extends HarmoniIterator
 	/**
 	* Constructor
 	 * 
+	 * @param String $sourceDirectory
+	 * @param object $parentRepositoryImporter
 	 * @return object
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function XMLAssetIterator ($srcDir) {		
+	function XMLAssetIterator ($srcDir, &$parentRepositoryImporter) {		
 		$import =& new DOMIT_Document();
 		
 		if ($import->loadXML($srcDir."/metadata.xml")) {
 			if (!($import->documentElement->hasChildNodes()))
-				throwError(new Error("There are no assets to import", "polyphony.RepositoryImporter", true));
+				$parentRepositoryImporter->addError("There are no assets to import in: ".$srcDir."/metadata.xml.");
+
+			$this->_assetList =& $import->documentElement->childNodes;
+			$this->_current = 0;
 		}
 		else
-			throwError(new Error("XML parse failed", "polyphony.RepositoryImporter", true));
-		
-		$this->_assetList =& $import->documentElement->childNodes;
-		$this->_current = 0;
+			$parentRepositoryImporter->addError("XML parse failed: ".$srcDir."/metadata.xml does not exist or contains poorly formed XML.");
 	}
 	
 	/**

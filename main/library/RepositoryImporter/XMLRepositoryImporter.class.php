@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.7 2005/07/26 15:24:40 ndhungel Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.8 2005/07/26 21:31:22 cws-midd Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.7 2005/07/26 15:24:40 ndhungel Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.8 2005/07/26 21:31:22 cws-midd Exp $
  */
 class XMLRepositoryImporter
 	extends RepositoryImporter
@@ -34,24 +34,11 @@ class XMLRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function XMLRepositoryImporter ($filepath, $repositoryId) {
+	function XMLRepositoryImporter ($filepath, $repositoryId, $dieOnError = false) {
 		$this->_assetIteratorClass = "XMLAssetIterator";
-		parent::RepositoryImporter($filepath, $repositoryId);
+		parent::RepositoryImporter($filepath, $repositoryId, $dieOnError);
 	}
 	
-	/**
-	 * 
-	 * 
-	 * @return boolean
-	 * @access public
-	 * @since 7/20/05
-	 */
-	function isDataValid() {
-		return true;
-		$this->decompress();
-		die("Method ".__FUNCTION__." declared in class '".__CLASS__."' was not overidden by a child class.");
-	}
-
 	/**
 	 * Get parameters for createAsset
 	 * 
@@ -77,7 +64,7 @@ class XMLRepositoryImporter
 	 * get parameters for createRecord
 	 * 
 	 * @param mixed input
-	 * @return array
+	 * @return array or false on fatal error
 	 * @access public
 	 * @since 7/20/05
 	 */
@@ -90,9 +77,10 @@ class XMLRepositoryImporter
 				$structureId = RepositoryImporter::matchSchema(
 					$record->getAttribute("schema"), $this->_destinationRepository);
 			
-				if(!$structureId)
-					throwError(new Error("the schema does not exist", "polyphony.RepositoryImporter", true));
-				
+				if(!$structureId) {
+					$this->addError("The Schema: ".$record->getAttribute("schema")." does not exist in Repository: ".$this->_repositoryId);
+					return $structureId;
+				}
 				$recordListElement['structureId'] = $structureId;
 				$partArray = array();
 				$parts = array();
@@ -104,9 +92,10 @@ class XMLRepositoryImporter
 				$partStructureIds = RepositoryImporter::matchPartStructures(
 					$this->_destinationRepository->getRecordStructure($structureId), $partArray);
 				
-				if(!$partStructureIds)
-					throwError(new Error("One or more of the Parts specified in the xml file are not valid.", "polyphony.RepositoryImporter", true));
-				
+				if(!$partStructureIds) {
+					$this->addError("One or more of the Parts specified in the xml file for Schema: ".$record->getAttribute("schema")." are not valid.");
+					return $partStructureIds;
+				}
 				$recordListElement['partStructureIds'] = $partStructureIds;
 				$recordListElement['parts'] = $parts;
 				$recordList[]=$recordListElement;

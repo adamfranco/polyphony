@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.6 2005/07/22 21:14:40 cws-midd Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.7 2005/07/26 21:31:22 cws-midd Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.6 2005/07/22 21:14:40 cws-midd Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.7 2005/07/26 21:31:22 cws-midd Exp $
  */
 class TabRepositoryImporter
 	extends RepositoryImporter
@@ -34,24 +34,10 @@ class TabRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function TabRepositoryImporter ($filepath, $repositoryId) {
+	function TabRepositoryImporter ($filepath, $repositoryId, $dieOnError = false) {
 		$this->_assetIteratorClass = "TabAssetIterator";
-		parent::RepositoryImporter($filepath, $repositoryId);
+		parent::RepositoryImporter($filepath, $repositoryId, $dieOnError);
 	}
-	
-	/**
-	 * 
-	 * 
-	 * @return boolean
-	 * @access public
-	 * @since 7/20/05
-	 */
-	function isDataValid() {
-		return true;
-		$this->decompress();
-		die("Method ".__FUNCTION__." declared in class '".__CLASS__."' was not overidden by a child class.");
-	}
-
 	
 	/**
 	 * Get parameters for createAsset
@@ -78,7 +64,7 @@ class TabRepositoryImporter
 	 * Get parameters for createRecord
 	 * 	
 	 * @param mixed input	
-	 * @return array
+	 * @return array or false on fatal error
 	 * @access public
 	 * @since 7/20/05
 	 */
@@ -99,17 +85,20 @@ class TabRepositoryImporter
 			$this->_structureId = RepositoryImporter::matchSchema(
 				$schema, $this->_destinationRepository);
 		
-			if ($this->_structureId == false)
-				throwError(new Error("Schema <emph>".$schema.
-					"</emph> does not exist in the collection", "polyphony.RepositoryImporter", true));
-		
+			if (!$this->_structureId) {
+				$this->addError("The schema: ".$record->getAttribute("schema")." does not exist in repository: ".$this->_repositoryId);
+				return $this->_structureId;
+			}
+
 			$titles = explode ("\t", $titleline);
 			$partArray = array_slice($titles, 5);
 			$this->_partStructureIds = RepositoryImporter::matchPartStructures(
 				$this->_destinationRepository->getRecordStructure($this->_structureId), $partArray);
 			
-			if (!$this->_partStructureIds)
-				throwError(new Error("Schema part does not exist", "polyphony.RepositoryImporter", true));
+			if (!$this->_partStructureIds) {
+				$this->addError("One or more of the Parts specified in the xml file for Schema: ".$record->getAttribute("schema")." are not valid.");
+				return $this->_partStructureIds;
+			}
 		}
 
 		$recordList = array();
