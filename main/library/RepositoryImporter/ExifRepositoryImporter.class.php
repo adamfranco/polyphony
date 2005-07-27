@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.1 2005/07/26 15:24:40 ndhungel Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.2 2005/07/27 21:21:24 cws-midd Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -21,7 +21,7 @@ require_once("/home/afranco/public_html/PHP_JPEG_Metadata_Toolkit_1.11/EXIF.php"
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.1 2005/07/26 15:24:40 ndhungel Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.2 2005/07/27 21:21:24 cws-midd Exp $
  */
 class ExifRepositoryImporter
 	extends RepositoryImporter
@@ -35,22 +35,9 @@ class ExifRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function ExifRepositoryImporter ($filepath, $repositoryId) {
+	function ExifRepositoryImporter ($filepath, $repositoryId, $dieOnError=false) {
 		$this->_assetIteratorClass = "ExifAssetIterator";
-		parent::RepositoryImporter($filepath, $repositoryId);
-	}
-	
-	/**
-	 * 
-	 * 
-	 * @return boolean
-	 * @access public
-	 * @since 7/20/05
-	 */
-	function isDataValid() {
-		return true;
-		$this->decompress();
-		die("Method ".__FUNCTION__." declared in class '".__CLASS__."' was not overidden by a child class.");
+		parent::RepositoryImporter($filepath, $repositoryId, $dieOnError);
 	}
 
 	/**
@@ -79,9 +66,11 @@ class ExifRepositoryImporter
 
 		$assetInfo['type'] = "";
 		if ($assetInfo['type'] == "")
-			$assetInfo['type'] = new HarmoniType("Asset Types", "Concerto", "Generic Asset");
+			$assetInfo['type'] = new HarmoniType("Asset Types", "Concerto",
+				"Generic Asset");
 		else
-			$assetInfo['type'] = new HarmoniType("Asset Types", "Concerto", $assetInfo['type']);
+			$assetInfo['type'] = new HarmoniType("Asset Types", "Concerto",
+				$assetInfo['type']);
 
 		return $assetInfo;
 	}
@@ -90,7 +79,7 @@ class ExifRepositoryImporter
 	 * get parameters for createRecord
 	 * 
 	 * @param mixed input
-	 * @return array
+	 * @return array or false on fatal error
 	 * @access public
 	 * @since 7/20/05
 	 */
@@ -107,24 +96,30 @@ class ExifRepositoryImporter
 			}
 			fclose($meta);
 		
-			$this->_fileStructureId = RepositoryImporter::matchSchema(
+			$this->_fileStructureId = $this->matchSchema(
 				"File", $this->_destinationRepository);
-			$fleparts = array("File Name", "Thumbnail Data");
-			$this->_fileNamePartIds = RepositoryImporter::matchPartStructures(
-				$this->_destinationRepository->getRecordStructure($this->_fileStructureId),
-				$fleparts);
+			$fileparts = array("File Name", "Thumbnail Data");
+			$this->_fileNamePartIds = $this->matchPartStructures(
+				$this->_destinationRepository->getRecordStructure(
+				$this->_fileStructureId), $fileparts);
 				
-			$this->_structureId = RepositoryImporter::matchSchema(
+			$this->_structureId = $this->matchSchema(
 				$schema, $this->_destinationRepository);
 			
-			if ($this->_structureId == false)
-				throwError(new Error("Schema <emph>".$schema.
-					"</emph> does not exist in the collection", "polyphony.RepositoryImporter", true));
+			if (!$this->_structureId) {
+				$this->addError("The schema: ".$schema.
+					" does not exist in repository: ".$this->_repositoryId);
+				return $this->_structureId;
+			}
 					
-			$this->_partStructureIds = RepositoryImporter::matchPartStructures(
-				$this->_destinationRepository->getRecordStructure($this->_structureId), $this->_partArray);
-			if (!$this->_partStructureIds)
-				throwError(new Error("Schema part does not exist", "polyphony.RepositoryImporter", true));
+			$this->_partStructureIds = $this->matchPartStructures(
+				$this->_destinationRepository->getRecordStructure(
+				$this->_structureId), $this->_partArray);
+			if (!$this->_partStructureIds) {
+				$this->addError("One or more of the Parts specified in the Exif file for Schema: ".
+					$schema." are not valid.");
+				return $this->_partStructureIds;
+			}
 		}
 		
 		$recordList = array();
@@ -132,22 +127,33 @@ class ExifRepositoryImporter
 		
 		$headerData = get_jpeg_header_data($input);
 		
-		$fileMetaData1 =& ExifRepositoryImporter::extractPhotoshopMetaData($this->_tagNameArray);
+		$fileMetaData1 =& $this->extractPhotoshopMetaData($this->_tagNameArray);
 		printpre($fileMetaData1);
-		$fileMetaData2 =& ExifRepositoryImporter::extractExifMetaData($input, $this->_tagNameArray);
+		$fileMetaData2 =& $this->extractExifMetaData($input,
+			$this->_tagNameArray);
 		$fileMetaData = array_merge($fileMetaData1, $fileMetaData2);
 		$parts = array();
 		foreach($this->_tagNameArray as $tag)
 			if(isset($fileMetaData[$tag]))
 				$parts[] = $fileMetaData[$tag];
 			else $parts[] = "";
+
+		$partObjects = array();
+		for ($i = 0; $i < count($this->_partStructureIds); $i++) {
+			$partObject = $this->getPartObject($this->_structureId,
+				$this->_partStructureIds[$i], $parts[$i]);
+			if (!$partObject)
+				return $partObject; // false
+			$partObjects[] = $partObject;
+		}
+
 		$recordListElement['structureId'] =& $this->_fileStructureId;
 		$recordListElement['partStructureIds'] =& $this->_fileNamePartIds;
 		$recordListElement['parts'] = array(basename($input), "");
 		$recordList[] = $recordListElement;
 		$recordListElement['structureId'] =& $this->_structureId;
 		$recordListElement['partStructureIds'] =& $this->_partStructureIds;
-		$recordListElement['parts'] = $parts;
+		$recordListElement['parts'] = $partObjects;
 		$recordList[] =& $recordListElement;
 		return $recordList;
 
@@ -187,6 +193,16 @@ class ExifRepositoryImporter
 		}
 		return $results;
 	}
+
+
+	/**
+	 * get asset list for child assets
+	 * 
+	 * @param mixed input
+	 * @return null
+	 * @access public
+	 * @since 7/20/05
+	 */
 	function &getChildAssetList (&$input) {
 		return null;
 	}

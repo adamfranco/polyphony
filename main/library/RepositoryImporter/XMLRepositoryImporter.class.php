@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.8 2005/07/26 21:31:22 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.9 2005/07/27 21:21:24 cws-midd Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.8 2005/07/26 21:31:22 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.9 2005/07/27 21:21:24 cws-midd Exp $
  */
 class XMLRepositoryImporter
 	extends RepositoryImporter
@@ -34,7 +34,7 @@ class XMLRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function XMLRepositoryImporter ($filepath, $repositoryId, $dieOnError = false) {
+	function XMLRepositoryImporter ($filepath, $repositoryId, $dieOnError=false) {
 		$this->_assetIteratorClass = "XMLAssetIterator";
 		parent::RepositoryImporter($filepath, $repositoryId, $dieOnError);
 	}
@@ -53,9 +53,11 @@ class XMLRepositoryImporter
 		$assetInfo['description'] = $input->childNodes[1]->getText();
 		$assetInfo['type'] = $input->childNodes[2]->getText();
 		if ($assetInfo['type'] == "")
-			$assetInfo['type'] = new HarmoniType("Asset Types", "Concerto", "Generic Asset");
+			$assetInfo['type'] = new HarmoniType("Asset Types", "Concerto",
+				"Generic Asset");
 		else
-			$assetInfo['type'] = new HarmoniType("Asset Types", "Concerto", $assetInfo['type']);
+			$assetInfo['type'] = new HarmoniType("Asset Types", "Concerto",
+				$assetInfo['type']);
 
 		return $assetInfo;
 	}
@@ -74,31 +76,60 @@ class XMLRepositoryImporter
 		foreach ($iRecordList as $record) {
 			$recordListElement = array();
 			if ($record->nodeName == "record") {
-				$structureId = RepositoryImporter::matchSchema(
-					$record->getAttribute("schema"), $this->_destinationRepository);
-			
+				$structureId = $this->matchSchema(
+					$record->getAttribute("schema"),
+					$this->_destinationRepository);
 				if(!$structureId) {
-					$this->addError("The Schema: ".$record->getAttribute("schema")." does not exist in Repository: ".$this->_repositoryId);
+					$this->addError("The Schema: ".
+						$record->getAttribute("schema").
+						" does not exist in Repository: ".$this->_repositoryId);
 					return $structureId;
 				}
 				$recordListElement['structureId'] = $structureId;
+
 				$partArray = array();
 				$parts = array();
 				foreach ($record->childNodes as $field) {
 					$partArray[] = $field->getAttribute("name");
 					$parts[] = $field->getText();
 				}
-				
-				$partStructureIds = RepositoryImporter::matchPartStructures(
-					$this->_destinationRepository->getRecordStructure($structureId), $partArray);
-				
+
+				$partStructureIds = $this->matchPartStructures(
+					$this->_destinationRepository->getRecordStructure(
+					$structureId), $partArray);
 				if(!$partStructureIds) {
-					$this->addError("One or more of the Parts specified in the xml file for Schema: ".$record->getAttribute("schema")." are not valid.");
-					return $partStructureIds;
+					$this->addError("One or more of the Parts specified in the xml file for Schema: ".
+						$record->getAttribute("schema")." are not valid.");
+					return $partStructureIds; //false
+				}
+				
+				if ("File" == $record->getAttribute("schema")) {
+					for ($i = 0; $i < count($partArray); $i++) {
+						if (("File Name" == $partArray[$i]) &&
+							!(is_file($this->_srcDir."/".
+							trim($parts[$i])))) {
+							$this->addError("File: ".$this->srcDir."/".
+								trim($parts[$i]).
+								" does not exist for import.");
+							$false = false;
+							return $false;
+						}
+					}
+					$recordListElement['parts'] = $parts;
+				}
+				else {
+					$partObjects = array();
+					for ($i = 0; $i < count($partStructureIds); $i++) {
+						$partObject = $this->getPartObject($structureId,
+							$partStructureIds[$i], $parts[$i]);
+						if (!$partObject)
+							return $partObject; // false
+						$partObjects[] = $partObject;
+					}
+					$recordListElement['parts'] = $partObjects;
 				}
 				$recordListElement['partStructureIds'] = $partStructureIds;
-				$recordListElement['parts'] = $parts;
-				$recordList[]=$recordListElement;
+				$recordList[] = $recordListElement;
 			}
 			
 		}

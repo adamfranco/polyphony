@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.7 2005/07/26 21:31:22 cws-midd Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.8 2005/07/27 21:21:24 cws-midd Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.7 2005/07/26 21:31:22 cws-midd Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.8 2005/07/27 21:21:24 cws-midd Exp $
  */
 class TabRepositoryImporter
 	extends RepositoryImporter
@@ -34,7 +34,7 @@ class TabRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function TabRepositoryImporter ($filepath, $repositoryId, $dieOnError = false) {
+	function TabRepositoryImporter ($filepath, $repositoryId, $dieOnError=false) {
 		$this->_assetIteratorClass = "TabAssetIterator";
 		parent::RepositoryImporter($filepath, $repositoryId, $dieOnError);
 	}
@@ -52,9 +52,11 @@ class TabRepositoryImporter
 		$assetInfo['displayName'] = $input[0];
 		$assetInfo['description'] = $input[1];
 		if($input[2] == "")
-			$assetInfo['type'] = new HarmoniType("Asset Types", "Concerto", "Generic Asset");
+			$assetInfo['type'] = new HarmoniType("Asset Types", "Concerto",
+				"Generic Asset");
 		else
-			$assetInfo['type'] = new HarmoniType("Asset Types", "Concerto", $input[2]);
+			$assetInfo['type'] = new HarmoniType("Asset Types", "Concerto",
+				$input[2]);
 
 		return $assetInfo;
 	}
@@ -75,52 +77,73 @@ class TabRepositoryImporter
 			$titleline = ereg_replace("[\n\r]*$", "", fgets($meta));
 			fclose($meta);
 			
-			$this->_fileStructureId = RepositoryImporter::matchSchema(
-				"File", $this->_destinationRepository);
-						
-			$this->_filenamePartId = RepositoryImporter::matchPartStructures(
-				$this->_destinationRepository->getRecordStructure($this->_fileStructureId),
-				array("File Name", "Thumbnail Data"));
+			$this->_fileStructureId = $this->matchSchema("File",
+				$this->_destinationRepository);
 			
-			$this->_structureId = RepositoryImporter::matchSchema(
-				$schema, $this->_destinationRepository);
+			$checkPartsArray = array("File Name","Thumbnail Data");
+			$this->_filePartIds = $this->matchPartStructures(
+				$this->_destinationRepository->getRecordStructure(
+				$this->_fileStructureId), $checkPartsArray);			
+
+			$this->_structureId = $this->matchSchema($schema,
+				$this->_destinationRepository);
 		
 			if (!$this->_structureId) {
-				$this->addError("The schema: ".$record->getAttribute("schema")." does not exist in repository: ".$this->_repositoryId);
-				return $this->_structureId;
+				$this->addError("The schema: ".$schema.
+					" does not exist in repository: ".$this->_repositoryId);
+				return $this->_structureId; // false
 			}
 
 			$titles = explode ("\t", $titleline);
 			$partArray = array_slice($titles, 5);
-			$this->_partStructureIds = RepositoryImporter::matchPartStructures(
-				$this->_destinationRepository->getRecordStructure($this->_structureId), $partArray);
+			$this->_partStructureIds = $this->matchPartStructures(
+				$this->_destinationRepository->getRecordStructure(
+				$this->_structureId), $partArray);
 			
 			if (!$this->_partStructureIds) {
-				$this->addError("One or more of the Parts specified in the xml file for Schema: ".$record->getAttribute("schema")." are not valid.");
-				return $this->_partStructureIds;
+				$this->addError("One or more of the Parts in the Tab-Delimited file for Schema: ".
+					$schema." are not valid.");
+				return $this->_partStructureIds; // false
 			}
 		}
 
 		$recordList = array();
 
 		if ($input[3] != "") {
-			$fileElement = array();
-			$fileElement['structureId'] =& $this->_fileStructureId;
-			$fileElement['partStructureIds'] =& $this->_filenamePartId;
-			$interestingArray[] = $input[3];
-			//$fileElement['parts'] = array($input[3]);
-						
-			if ($input[4] != "") {
-				$interestingArray[] = array($input[4]);
+			if (is_file($this->_srcDir."/".$input[3])) {
+				$fileElement = array();
+				
+				$fileElement['structureId'] =& $this->_fileStructureId;
+				$fileElement['partStructureIds'] =& $this->_filePartIds;
+				$fileElementParts[] = $input[3];
+							
+				if ($input[4] != "") {
+					$fileElementParts[] = $input[4];
+				}
+				$fileElement['parts'] = $fileElementParts;
+				$recordList[] =& $fileElement;
 			}
-			$fileElement['parts'] = $interestingArray;
-			$recordList[] =& $fileElement;
+			else {
+				$this->_addError("File: ".$this->srcDir."/".$input[3].
+					" does not exist for import.");
+				$false = false;
+				return $false;
+			}
 		}
-		
+
+		$partObjects = array();
+		for ($i = 0; $i < count($this->_partStructureIds); $i++) {
+			$partObject = $this->getPartObject($this->_structureId,
+				$this->_partStructureIds[$i], $input[$i + 5]);
+			if (!$partObject)
+				return $partObject; // false
+			$partObjects[] = $partObject;
+		}
+			
 		$recordListElement = array();
 		$recordListElement['structureId'] =& $this->_structureId;
 		$recordListElement['partStructureIds'] =& $this->_partStructureIds;
-		$recordListElement['parts'] = array_slice($input, 5);
+		$recordListElement['parts'] = $partObjects;
 		$recordList[] =& $recordListElement;
 		return $recordList;
 	}

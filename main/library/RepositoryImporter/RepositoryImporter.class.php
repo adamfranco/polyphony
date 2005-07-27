@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.9 2005/07/26 21:31:22 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.10 2005/07/27 21:21:24 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/RepositoryImporter/XMLAssetIterator.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.9 2005/07/26 21:31:22 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.10 2005/07/27 21:21:24 cws-midd Exp $
  */
 class RepositoryImporter {
 	
@@ -55,9 +55,9 @@ class RepositoryImporter {
 	 */
 	function import () {
 		$drManager =& Services::getService("RepositoryManager");
-		$this->_destinationRepository =& $drManager->getRepository($this->_repositoryId);
+		$this->_destinationRepository =& $drManager->getRepository(
+			$this->_repositoryId);
 		$this->_srcDir = dirname($this->_filepath);
-		
 		$this->decompress();
 		if ($this->hasErrors())
 			return;
@@ -73,9 +73,11 @@ class RepositoryImporter {
 	 */
 	function decompress () {
 		$dearchiver =& new Dearchiver();
-		$worked = $dearchiver->uncompressFile($this->_filepath, dirname($this->_filepath));
+		$worked = $dearchiver->uncompressFile($this->_filepath,
+			dirname($this->_filepath));
 		if ($worked == false)
-			$this->addError("Failed to decompress file: ".$this->_filepath.".  Unsupported archive extension.");
+			$this->addError("Failed to decompress file: ".$this->_filepath.
+				".  Unsupported archive extension.");
 	}
 		
 	/**
@@ -107,7 +109,8 @@ class RepositoryImporter {
 			return $assetInfoIterator; // false
 		while ($assetInfoIterator->hasNext()) {
 			$info =& $assetInfoIterator->next();
-			$child =& $this->buildAsset($info["assetInfo"], $info["recordList"], $info["childAssetList"]);
+			$child =& $this->buildAsset($info["assetInfo"], $info["recordList"],
+				$info["childAssetList"]);
 			if (!$child)
 				return $child; // false
 			if (!is_null($parent))
@@ -118,7 +121,8 @@ class RepositoryImporter {
 	}
 	
 	/**
-	 * Iterates through the assets and gathers all required information for creating assets
+	 * Iterates through the assets and gathers all required information for 
+	 * creating assets
 	 * 
 	 * @return iterator or false on fatal error
 	 * @access public
@@ -200,49 +204,51 @@ class RepositoryImporter {
 	 */
 	function &buildAsset($assetInfo, $recordList, $childAssetList) {
 		$idManager = Services::getService("Id");
-		$asset =& $this->_destinationRepository->createAsset($assetInfo['displayName'],
-			$assetInfo['description'], $assetInfo['type']);
+		$asset =& $this->_destinationRepository->createAsset(
+			$assetInfo['displayName'], $assetInfo['description'],
+			$assetInfo['type']);
 		$this->addGoodAssetId($asset->getId());
 		foreach($recordList as $entry) {
 			$assetRecord =& $asset->createRecord($entry['structureId']);
 			$j = 0;
 			foreach ($entry['partStructureIds'] as $id) {
 				if($entry['structureId']->getIdString() != "FILE") {
-					$structure =& $this->_destinationRepository->getRecordStructure($entry['structureId']);
-					$partStructure =& $structure->getPartStructure($id);
-					$type = $partStructure->getType();
-					$partObject = RepositoryImporter::getPartObject($type, $entry['parts'][$j]);
-					$assetRecord->createPart($id, $partObject);
+					$assetRecord->createPart($id, $entry['parts'][$j]);
 					$j++;
 				}
 				else if ($entry['structureId']->getIdString() == "FILE") {
-					$mimeTypes = new MIMETypes();
 					$mime = new MIMETypes();
 					$filename = trim($entry['parts'][0]);
-					$mimetype = $mime->getMIMETypeForFileName($this->_srcDir."/".$filename);
+					$mimetype = $mime->getMIMETypeForFileName($this->_srcDir.
+						"/".$filename);
 					$assetRecord->createPart($idManager->getId("FILE_DATA"),
 						file_get_contents($this->_srcDir."/".$filename));
-					$assetRecord->createPart($idManager->getId("FILE_NAME"), basename($filename));
-					$assetRecord->createPart($idManager->getId("MIME_TYPE"), $mimetype);
+					$assetRecord->createPart($idManager->getId("FILE_NAME"),
+						basename($filename));
+					$assetRecord->createPart($idManager->getId("MIME_TYPE"),
+						$mimetype);
 					$imageProcessor =& Services::getService("ImageProcessor");
 					if(isset($entry['parts'][1]) && $entry['parts'][1] != "") {
-						$assetRecord->createPart($idManager->getId("THUMBNAIL_DATA"),
-							file_get_contents($this->_srcDir."/".$entry['parts'][1]));
-					} 
-					// If our image format is supported by the image processor,
-					// generate a thumbnail.
+						$assetRecord->createPart(
+							$idManager->getId("THUMBNAIL_DATA"),
+							file_get_contents($this->_srcDir."/".
+							$entry['parts'][1]));
+					}
 					else if ($imageProcessor->isFormatSupported($mimetype)) {
-							$assetRecord->createPart($idManager->getId("THUMBNAIL_DATA"), 
-								$imageProcessor->generateThumbnailData($mimetype, 
-								file_get_contents($this->_srcDir."/".$filename)));
-							$assetRecord->createPart($idManager->getId("THUMBNAIL_MIME_TYPE"),
-								$imageProcessor->getThumbnailFormat());
+						$assetRecord->createPart(
+							$idManager->getId("THUMBNAIL_DATA"),
+							$imageProcessor->generateThumbnailData($mimetype,
+							file_get_contents($this->_srcDir."/".$filename)));
+						$assetRecord->createPart(
+							$idManager->getId("THUMBNAIL_MIME_TYPE"),
+							$imageProcessor->getThumbnailFormat());
 					}
 				}
 			}
 		}
 		if (!is_null($childAssetList)) {
-			$stop =& $this->assetBuildingIteration(new HarmoniIterator($childAssetList), $asset);		
+			$stop =& $this->assetBuildingIteration(new HarmoniIterator(
+				$childAssetList), $asset);	
 			if (!$stop)
 				return $stop; // false
 		}	
@@ -250,41 +256,48 @@ class RepositoryImporter {
 	}
 	
 	/**
-	 * creates appropriate object from given primitive for part creation
+	 * creates appropriate object from given ids
 	 * 
-	 * @param object Harmonitype $type
-	 * @param mixed more
+	 * @param Id $structureId
+	 * @param Id $partStructureId
+	 * @param String $part
 	 * @return object mixed
 	 * @access public
 	 * @since 7/21/05
 	 */
-	function getPartObject($type, $more) {
+	function getPartObject(&$structureId, &$partStructureId, $part) {
+		$structure =& $this->_destinationRepository->getRecordStructure(
+			$structureId);
+		$partStructure =& $structure->getPartStructure($partStructureId);
+		$type = $partStructure->getType();
 		$typeString = $type->getKeyword();
 		switch($typeString) {
 			case "string":
-				return String::withValue($more);
+				return String::withValue($part);
 				break;
 			case "integer":
-				return Integer::withValue($more);
+				return Integer::withValue($part);
 				break;
 			case "boolean":
-				return Boolean::withValue($more);
+				return Boolean::withValue($part);
 				break;
 			case "shortstring":
-				return ShortString::withValue($more);
+				return ShortString::withValue($part);
 				break;
 			case "float":
-				return Float::withValue($more);
+				return Float::withValue($part);
 				break;
 			case "time":
-				return DateAndTime::fromString($more);
+				return DateAndTime::fromString($part);
 				break;
 			case "type": 
-				return HarmoniType::stringToType($more);
+				return HarmoniType::stringToType($part);
 				break;
 			default:
-				throwError(new Error("Unsupported PartStructure DataType, ".
-					HarmoniType::typeToString($type), "polyphony.RepositoryImporter", true));
+				$this->addError("Unsupported PartStructure DataType: ".
+					HarmoniType::typeToString($type).".");
+				$false = false;
+				return $false;
 		}
 	}
 
