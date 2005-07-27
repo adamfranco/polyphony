@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.abstract.php,v 1.1 2005/07/22 15:42:32 gabeschine Exp $
+ * @version $Id: WEventButton.abstract.php,v 1.2 2005/07/27 20:11:47 ndhungel Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.abstract.php,v 1.1 2005/07/22 15:42:32 gabeschine Exp $
+ * @version $Id: WEventButton.abstract.php,v 1.2 2005/07/27 20:11:47 ndhungel Exp $
  * @abstract
  */
 class WEventButton extends WizardComponent {
@@ -40,6 +40,17 @@ class WEventButton extends WizardComponent {
 		$this->_event = $event;
 	}
 	
+	/**
+	 * Sets the label for the button.
+	 * @param string $label
+	 * @param optional string $textDomain the gettext() text domain to use for the label.
+	 * @access public
+	 * @return void
+	 */
+	function setLabel ($label) {
+		$this->_label = $label;
+	}
+		
 	/**
 	 * Sets this component's parent (some kind of {@link WizardComponentWithChildren} so that it can
 	 * have access to its information, if needed.

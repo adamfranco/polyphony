@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.7 2005/07/25 18:33:57 gabeschine Exp $
+ * @version $Id: Wizard.abstract.php,v 1.8 2005/07/27 20:11:04 ndhungel Exp $
  */
 
 /*
@@ -30,7 +30,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.7 2005/07/25 18:33:57 gabeschine Exp $
+ * @version $Id: Wizard.abstract.php,v 1.8 2005/07/27 20:11:04 ndhungel Exp $
  * @author Gabe Schine
  * @abstract
  */
@@ -211,7 +211,7 @@ function ignoreValidation(form) {
 
 END;
 
-		$m = "<script language='javascript'>\n";
+		$m = "<script type='text/javascript'>\n";
 		$m .= "/*<![CDATA[*/\n" . $javascript . "\n/*]]>*/\n</script>\n";
 		
 		$GLOBALS["__wizardJSDone"] = true;
@@ -275,7 +275,7 @@ END;
 		$elementID = str_replace("'", "\\'", $elementID);
 		$errDivID = str_replace("'", "\\'", $errDivID);
 		$checkFunc = $rule->generateJavaScript();
-		$m = "<script language='javascript'>\n" .
+		$m = "<script type='text/javascript'>\n" .
 				"/*<![CDATA[*/\n" .
 				"addWizardRule('$elementID', $checkFunc, '$errDivID', ".($displayError?"true":"false").");" .
 				"/*]]>*/\n" .

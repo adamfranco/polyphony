@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WMultiSelectList.class.php,v 1.2 2005/07/26 20:30:39 adamfranco Exp $
+ * @version $Id: WMultiSelectList.class.php,v 1.3 2005/07/27 20:11:47 ndhungel Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.interface.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.interface.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WMultiSelectList.class.php,v 1.2 2005/07/26 20:30:39 adamfranco Exp $
+ * @version $Id: WMultiSelectList.class.php,v 1.3 2005/07/27 20:11:47 ndhungel Exp $
  */
 class WMultiSelectList extends WizardComponent {
 	var $_parent;
@@ -144,7 +144,7 @@ class WMultiSelectList extends WizardComponent {
 		
 		foreach (array_keys($this->_items) as $key) {
 			$disp = $this->_items[$key];
-			$selected = in_array($key, $this->_value)?" selected":"";
+			$selected = in_array($key, $this->_value)?" selected='selected'":"";
 			$val = htmlentities($key, ENT_QUOTES);
 						
 			$m .= "<option value='$val'$selected>".htmlentities($disp)."</option>\n";
