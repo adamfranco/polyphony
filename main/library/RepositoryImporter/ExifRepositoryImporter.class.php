@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.3 2005/07/28 17:49:50 cws-midd Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.4 2005/07/28 18:22:23 ndhungel Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -21,7 +21,7 @@ require_once("/home/afranco/public_html/PHP_JPEG_Metadata_Toolkit_1.11/EXIF.php"
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.3 2005/07/28 17:49:50 cws-midd Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.4 2005/07/28 18:22:23 ndhungel Exp $
  */
 class ExifRepositoryImporter
 	extends RepositoryImporter
@@ -159,6 +159,15 @@ class ExifRepositoryImporter
 
 	}
 	
+	/**
+	 * matches the given array with exif data in the file
+	 * 
+	 * @param array tagNameArray
+	 * @return array
+	 * @access public
+	 * @since 7/28/05
+	 */
+	
 	function extractPhotoshopMetaData($tagNameArray){
 		$results = array();
 		
@@ -171,6 +180,16 @@ class ExifRepositoryImporter
 		printpre($results);
 		return $results;
 	}
+	
+	/**
+	 * match given array with exifdata from file
+	 * 
+	 * @param string imageFileName
+	 * @param array tagnameArray
+	 * @return array
+	 * @access public
+	 * @since 7/28/05
+	 */
 	
 	function extractExifMetadata ($imageFileName, &$tagNameArray) {
 		$metadataArrrays = array();
