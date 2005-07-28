@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.4 2005/07/28 18:22:23 ndhungel Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.5 2005/07/28 18:24:07 ndhungel Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -21,7 +21,7 @@ require_once("/home/afranco/public_html/PHP_JPEG_Metadata_Toolkit_1.11/EXIF.php"
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.4 2005/07/28 18:22:23 ndhungel Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.5 2005/07/28 18:24:07 ndhungel Exp $
  */
 class ExifRepositoryImporter
 	extends RepositoryImporter
@@ -192,14 +192,14 @@ class ExifRepositoryImporter
 	 */
 	
 	function extractExifMetadata ($imageFileName, &$tagNameArray) {
-		$metadataArrrays = array();
-		$metadataArrrays[] = get_EXIF_JPEG($imageFileName);
-		$metadataArrrays[] = get_Meta_JPEG($imageFileName);
-		$metadataArrrays[] = get_EXIF_TIFF($imageFileName);
+		$metadataArrays = array();
+		$metadataArrays[] = get_EXIF_JPEG($imageFileName);
+		$metadataArrays[] = get_Meta_JPEG($imageFileName);
+		$metadataArrays[] = get_EXIF_TIFF($imageFileName);
 
 		$results = array();
 	
-		foreach ($metadataArrrays as $metadataArray) {
+		foreach ($metadataArrays as $metadataArray) {
 			if (is_array($metadataArray)) {
 				$exifArray = $metadataArray[0]['34665']['Data'][0];
 				if (is_array($exifArray)) {
