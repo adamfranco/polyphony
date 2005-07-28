@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.10 2005/07/27 21:21:24 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.11 2005/07/28 17:49:50 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/RepositoryImporter/XMLAssetIterator.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.10 2005/07/27 21:21:24 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.11 2005/07/28 17:49:50 cws-midd Exp $
  */
 class RepositoryImporter {
 	
@@ -344,6 +344,18 @@ class RepositoryImporter {
 	function getGoodAssetIds() {
 		return $this->_goodAssetIds;
 	}
+
+	/**
+	 * checks for built Assets
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 7/26/05
+	 */
+	function hasAssets() {
+		return (count($this->_goodAssetIds) > 0);
+	}
+
 
 	/**
 	 * adds an error to the  error array

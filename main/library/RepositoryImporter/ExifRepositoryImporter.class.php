@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.2 2005/07/27 21:21:24 cws-midd Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.3 2005/07/28 17:49:50 cws-midd Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -21,7 +21,7 @@ require_once("/home/afranco/public_html/PHP_JPEG_Metadata_Toolkit_1.11/EXIF.php"
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.2 2005/07/27 21:21:24 cws-midd Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.3 2005/07/28 17:49:50 cws-midd Exp $
  */
 class ExifRepositoryImporter
 	extends RepositoryImporter
@@ -108,7 +108,7 @@ class ExifRepositoryImporter
 			
 			if (!$this->_structureId) {
 				$this->addError("The schema: ".$schema.
-					" does not exist in repository: ".$this->_repositoryId);
+					" does not exist in repository: ".$this->_repositoryId->getIdString());
 				return $this->_structureId;
 			}
 					

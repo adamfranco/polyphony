@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.8 2005/07/27 21:21:24 cws-midd Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.9 2005/07/28 17:49:50 cws-midd Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.8 2005/07/27 21:21:24 cws-midd Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.9 2005/07/28 17:49:50 cws-midd Exp $
  */
 class TabRepositoryImporter
 	extends RepositoryImporter
@@ -90,7 +90,7 @@ class TabRepositoryImporter
 		
 			if (!$this->_structureId) {
 				$this->addError("The schema: ".$schema.
-					" does not exist in repository: ".$this->_repositoryId);
+					" does not exist in repository: ".$this->_repositoryId->getIdString());
 				return $this->_structureId; // false
 			}
 
