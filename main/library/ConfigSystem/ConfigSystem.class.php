@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ConfigSystem.class.php,v 1.8 2005/04/07 17:07:27 adamfranco Exp $
+ * @version $Id: ConfigSystem.class.php,v 1.9 2005/08/01 20:06:54 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ConfigSystem.class.php,v 1.8 2005/04/07 17:07:27 adamfranco Exp $
+ * @version $Id: ConfigSystem.class.php,v 1.9 2005/08/01 20:06:54 adamfranco Exp $
  */
 class ConfigSystem {
 
@@ -66,7 +66,7 @@ class ConfigSystem {
 
 		$typeManager =& Services::getService("SchemaManager");
 
-		$this->_schemaType =& new HarmoniType("Polyphony","ConfigSystem",$program);
+		$this->_schemaType =& new HarmoniType("config_system","edu.middlebury.harmoni",$program);
 		
 		$schema =& new Schema($this->_schemaType);
 

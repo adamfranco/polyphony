@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.10 2005/07/20 14:54:25 adamfranco Exp $
+ * @version $Id: create_agent.act.php,v 1.11 2005/08/01 20:06:54 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.10 2005/07/20 14:54:25 adamfranco Exp $
+ * @version $Id: create_agent.act.php,v 1.11 2005/08/01 20:06:54 adamfranco Exp $
  */
 class create_agentAction 
 	extends MainWindowAction
@@ -220,7 +220,7 @@ class create_agentAction
 		}		
 		
 		//the type for the user
-		$userType =& new HarmoniType("Polyphony", "Users", "TypeForUsers");
+		$userType =& new HarmoniType("Agents", "edu.middlebury.harmoni", "User");
 		
 		//property manager is used for storing properties to the database
 		$propertyManager =& Services::getService("Property");

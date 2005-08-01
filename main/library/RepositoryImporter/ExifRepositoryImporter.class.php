@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.6 2005/08/01 17:30:40 ndhungel Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.7 2005/08/01 20:06:54 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -21,7 +21,7 @@ require_once("/home/afranco/public_html/PHP_JPEG_Metadata_Toolkit_1.11/EXIF.php"
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.6 2005/08/01 17:30:40 ndhungel Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.7 2005/08/01 20:06:54 adamfranco Exp $
  */
 class ExifRepositoryImporter
 	extends RepositoryImporter
@@ -66,10 +66,10 @@ class ExifRepositoryImporter
 
 		$assetInfo['type'] = "";
 		if ($assetInfo['type'] == "")
-			$assetInfo['type'] = new HarmoniType("Asset Types", "Concerto",
+			$assetInfo['type'] = new HarmoniType("Asset Types", "edu.middlebury.concerto",
 				"Generic Asset");
 		else
-			$assetInfo['type'] = new HarmoniType("Asset Types", "Concerto",
+			$assetInfo['type'] = new HarmoniType("Asset Types", "edu.middlebury.concerto",
 				$assetInfo['type']);
 
 		return $assetInfo;
