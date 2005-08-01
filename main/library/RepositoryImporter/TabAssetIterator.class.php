@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabAssetIterator.class.php,v 1.4 2005/07/26 21:31:22 cws-midd Exp $
+ * @version $Id: TabAssetIterator.class.php,v 1.5 2005/08/01 17:29:26 cws-midd Exp $
  */ 
 
 /**
@@ -18,20 +18,36 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabAssetIterator.class.php,v 1.4 2005/07/26 21:31:22 cws-midd Exp $
+ * @version $Id: TabAssetIterator.class.php,v 1.5 2005/08/01 17:29:26 cws-midd Exp $
  */
 class TabAssetIterator 
 extends HarmoniIterator 
 {
 	/**
-	* Constructor
+	 * Index for iterator
+	 *
+	 * @var integer $_current
+	 */
+	 
+	var $_current;
+	/**
+	 * Array for Iterator
+	 *
+	 * @var array $_assetList
+	 */
+	var $_assetList;
+	
+	/**
+	 * Constructor
 	 * 
 	 * @return object
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function TabAssetIterator ($srcDir, $parentRepositoryImporter) {		
-		if ($meta = fopen($srcDir."/metadata.txt", "r")) {
+	function TabAssetIterator ($srcDir, &$parentRepositoryImporter) {		
+		if (file_exists($srcDir."/metadata.txt") && 
+			$meta = fopen($srcDir."/metadata.txt", "r")) 
+		{
 			fgets($meta);
 			fgets($meta);
 			
@@ -44,7 +60,7 @@ extends HarmoniIterator
 				$parentRepositoryImporter->addError("There are no assets to import in: ".$srcDir."/metadata.txt.");
 
 			fclose($meta);
-		$this->_current = 0;
+				$this->_current = 0;
 		}
 		else
 			$parentRepositoryImporter->addError("Tab-Delimited parse failed: ".$srcDir."/metadata.txt does not exist or is unreadable.");
