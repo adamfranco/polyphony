@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.5 2005/07/28 18:24:07 ndhungel Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.6 2005/08/01 17:30:40 ndhungel Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -21,7 +21,7 @@ require_once("/home/afranco/public_html/PHP_JPEG_Metadata_Toolkit_1.11/EXIF.php"
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.5 2005/07/28 18:24:07 ndhungel Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.6 2005/08/01 17:30:40 ndhungel Exp $
  */
 class ExifRepositoryImporter
 	extends RepositoryImporter
@@ -174,10 +174,11 @@ class ExifRepositoryImporter
 		if($this->_photoshopIPTC) {
 			foreach ($this->_photoshopIPTC as $array) {
 				if(in_array($array['RecName'], $tagNameArray))
-					$results[$array['RecName']] = $array['RecData'];
+					if(isset($results[$array['RecName']]))
+						$results[$array['RecName']] = $results[$array['RecName']].", ".$array['RecData'];
+					else $results[$array['RecName']] = $array['RecData'];
 			}
 		}
-		printpre($results);
 		return $results;
 	}
 	
