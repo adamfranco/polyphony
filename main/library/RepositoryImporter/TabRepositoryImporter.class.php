@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.10 2005/08/01 20:06:54 adamfranco Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.11 2005/08/02 15:37:08 cws-midd Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.10 2005/08/01 20:06:54 adamfranco Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.11 2005/08/02 15:37:08 cws-midd Exp $
  */
 class TabRepositoryImporter
 	extends RepositoryImporter
@@ -52,10 +52,12 @@ class TabRepositoryImporter
 		$assetInfo['displayName'] = $input[0];
 		$assetInfo['description'] = $input[1];
 		if($input[2] == "")
-			$assetInfo['type'] = new HarmoniType("Asset Types", "edu.middlebury.concerto",
+			$assetInfo['type'] = new HarmoniType("Asset Types", 
+				"edu.middlebury.concerto",
 				"Generic Asset");
 		else
-			$assetInfo['type'] = new HarmoniType("Asset Types", "edu.middlebury.concerto",
+			$assetInfo['type'] = new HarmoniType("Asset Types",
+				"edu.middlebury.concerto",
 				$input[2]);
 
 		return $assetInfo;
@@ -139,7 +141,7 @@ class TabRepositoryImporter
 				return $partObject; // false
 			$partObjects[] = $partObject;
 		}
-			
+		
 		$recordListElement = array();
 		$recordListElement['structureId'] =& $this->_structureId;
 		$recordListElement['partStructureIds'] =& $this->_partStructureIds;

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.8 2005/06/07 21:35:44 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.9 2005/08/02 15:38:09 cws-midd Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.8 2005/06/07 21:35:44 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.9 2005/08/02 15:38:09 cws-midd Exp $
  */
 
 class ArrayResultPrinter {
@@ -75,21 +75,18 @@ class ArrayResultPrinter {
 			$startingNumber = 1;
 		
 		$yLayout =& new YLayout();
-		$xLayout =& new XLayout();
-		$layout =& new Container($yLayout, OTHER, 1);
+		$layout =& new Container($yLayout,OTHER,1);
 		
 		
 		$endingNumber = $startingNumber+$this->_pageSize-1;
 		$numItems = 0;
-		$resultLayout =& new Container($yLayout, OTHER, 1);
-		
+		$resultLayout =& new Container(new TableLayout($this->_numColumns), OTHER, 1);		
 		if (count($this->_array)) {
 		
 			reset($this->_array);
 			
 			// trash the items before our starting number
 			while ($numItems+1 < $startingNumber && $numItems < count($this->_array)) {
-				print "Skipping.";
 				next($this->_array);
 				
 				// Ignore this if it should be filtered.
@@ -108,16 +105,11 @@ class ArrayResultPrinter {
 					$numItems++;
 					$pageItems++;
 					
-					// Table Rows subtract 1 since we are counting 1-based
-					if (($pageItems-1) % $this->_numColumns == 0) {
-						$currentRow =& new Container($xLayout, OTHER, 1);
-						$resultLayout->add($currentRow, "100%", null, LEFT, CENTER);
-					}
-					
 					$itemArray = array (& $item);
 					$params = array_merge($itemArray, $this->_callbackParams);
-					$itemLayout =& call_user_func_array($this->_callbackFunction, $params);
-					$currentRow->add($itemLayout, null, null, CENTER, CENTER);
+					$itemLayout =& call_user_func_array(
+						$this->_callbackFunction, $params);
+					$resultLayout->add($itemLayout, null, null, CENTER, TOP);
 				}
 			}
 			
@@ -135,7 +127,8 @@ class ArrayResultPrinter {
 					$numItems++;
 			}	
 		} else {
-			$resultLayout->add(new Block(_("No <em>Items</em> are available."), 3));
+			$text =& new Block("No <em>Items</em> are availible.", 3);
+			$resultLayout->add($text, null, null, CENTER, CENTER);
 		}		
 		
 		// print out links to skip to more items if the number of Items is greater
@@ -152,6 +145,7 @@ class ArrayResultPrinter {
 					print "<a href='";
 					$url =& $harmoni->request->mkURLWithPassthrough();
 					$url->setValue("starting_number", (($i-1)*$this->_pageSize+1));
+					print $url->write();
 					print "'>";
 				}
 				print $i;
@@ -160,8 +154,7 @@ class ArrayResultPrinter {
 			}
 			
 			// Add the links to the page
-			//$pageLinkBlock =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 2);
-			$pageLinkBlock =& new Block(ob_get_contents(),2);
+			$pageLinkBlock =& new Block(ob_get_contents(), 2);
 			ob_end_clean();
 			$layout->add($pageLinkBlock, "100%", null, LEFT, CENTER);
 		}
