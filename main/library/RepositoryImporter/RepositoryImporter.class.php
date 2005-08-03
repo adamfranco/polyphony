@@ -6,9 +6,9 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.11 2005/07/28 17:49:50 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.12 2005/08/03 13:18:45 cws-midd Exp $
  */ 
-
+require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(POLYPHONY."/main/library/RepositoryImporter/XMLAssetIterator.class.php");
 require_once(POLYPHONY."/main/library/RepositoryImporter/TabAssetIterator.class.php");
 require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.11 2005/07/28 17:49:50 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.12 2005/08/03 13:18:45 cws-midd Exp $
  */
 class RepositoryImporter {
 	
