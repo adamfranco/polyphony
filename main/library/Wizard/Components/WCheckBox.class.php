@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCheckBox.class.php,v 1.3 2005/07/27 20:11:47 ndhungel Exp $
+ * @version $Id: WCheckBox.class.php,v 1.4 2005/08/03 22:21:33 gabeschine Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.interface.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.interface.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCheckBox.class.php,v 1.3 2005/07/27 20:11:47 ndhungel Exp $
+ * @version $Id: WCheckBox.class.php,v 1.4 2005/08/03 22:21:33 gabeschine Exp $
  */
 class WCheckBox extends WizardComponent {
 	var $_parent;
@@ -149,8 +149,11 @@ class WCheckBox extends WizardComponent {
 		
 		$javascript1 = "document.getElementById('$dummyName').checked = (document.getElementById('$dummyName').checked? false : true); ";
 		$javascript2 = "document.getElementById('$name').value = (document.getElementById('$dummyName').checked? '1' : '0'); ";
+//		$javascript3 = "document.getElementById('$name').value = (document.getElementById('$dummyName').checked? '0' : '1'); ";
+//		$tempJS = "alert('changed $name to ' + document.getElementById('$name').value); ";
+		$tempJS = '';
 		
-		$m = "<input type='hidden' name='$name' id='$name' value='$val' /><input type='checkbox' onmouseup=\"$javascript2\" id='$dummyName'$checked /> <label$style onmousedown=\"$javascript1$javascript2\" for='$dummyName'>".$this->_label."</label>";
+		$m = "<input type='hidden' name='$name' id='$name' value='$val' /><input type='checkbox' onclick=\"$javascript2$tempJS\" id='$dummyName'$checked /> <label$style onclick=\"$javascript1$javascript2$tempJS\">".$this->_label."</label>";
 		
 		return $m;
 	}
