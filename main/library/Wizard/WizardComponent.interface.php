@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponent.interface.php,v 1.2 2005/07/25 18:33:57 gabeschine Exp $
+ * @version $Id: WizardComponent.interface.php,v 1.3 2005/08/03 17:36:38 gabeschine Exp $
  */ 
 
 /**
@@ -19,9 +19,9 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponent.interface.php,v 1.2 2005/07/25 18:33:57 gabeschine Exp $
+ * @version $Id: WizardComponent.interface.php,v 1.3 2005/08/03 17:36:38 gabeschine Exp $
  */
-class WizardComponent {
+class WizardComponent extends SObject {
 	/**
 	 * Sets this component's parent (some kind of {@link WizardComponentWithChildren} so that it can
 	 * have access to its information, if needed.

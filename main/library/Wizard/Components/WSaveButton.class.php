@@ -6,10 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveButton.class.php,v 1.2 2005/07/27 20:11:47 ndhungel Exp $
+ * @version $Id: WSaveButton.class.php,v 1.3 2005/08/03 17:38:42 gabeschine Exp $
  */ 
  
-require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.abstract.php");
+require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php");
 
 /**
  * This adds a save button to a wizard. It will automatically trigger the Wizard's save
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.abstract.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveButton.class.php,v 1.2 2005/07/27 20:11:47 ndhungel Exp $
+ * @version $Id: WSaveButton.class.php,v 1.3 2005/08/03 17:38:42 gabeschine Exp $
  */
 class WSaveButton extends WEventButton {
 	function WSaveButton() {

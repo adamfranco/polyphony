@@ -6,10 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCancelButton.class.php,v 1.2 2005/07/23 01:55:29 gabeschine Exp $
+ * @version $Id: WCancelButton.class.php,v 1.3 2005/08/03 17:38:43 gabeschine Exp $
  */ 
 
-require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.abstract.php");
+require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php");
 
 /**
  * This adds a cancel button to a wizard. It will automatically trigger the Wizard's cancel
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.abstract.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCancelButton.class.php,v 1.2 2005/07/23 01:55:29 gabeschine Exp $
+ * @version $Id: WCancelButton.class.php,v 1.3 2005/08/03 17:38:43 gabeschine Exp $
  */
 class WCancelButton extends WEventButton {
 	function WCancelButton() {

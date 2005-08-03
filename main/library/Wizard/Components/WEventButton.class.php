@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.abstract.php,v 1.2 2005/07/27 20:11:47 ndhungel Exp $
+ * @version $Id: WEventButton.class.php,v 1.1 2005/08/03 17:38:43 gabeschine Exp $
  */ 
 
 /**
@@ -19,13 +19,42 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.abstract.php,v 1.2 2005/07/27 20:11:47 ndhungel Exp $
- * @abstract
+ * @version $Id: WEventButton.class.php,v 1.1 2005/08/03 17:38:43 gabeschine Exp $
  */
 class WEventButton extends WizardComponent {
 	var $_event = "nop";
 	var $_label = "NO LABEL";
 	var $_parent;
+	var $_pressed = false;
+	var $_enabled = true;
+	var $_onclick = null;
+	
+	/**
+	 * virtual constructor
+	 * @param string $event
+	 * @param string $label
+	 * @access public
+	 * @return ref object
+	 * @static
+	 */
+	function &withEventAndLabel ($event, $label) {
+		$obj =& new WEventButton();
+		$obj->setEventAndLabel($event, $label);
+		
+		return $obj;
+	}
+	
+	/**
+	 * virtual constructor - creates the button with a "nop" event
+	 * @param string $label
+	 * @access public
+	 * @return ref object
+	 */
+	function &withLabel ($label) {
+		$obj =& new WEventButton();
+		$obj->_label = $label;
+		return $obj;
+	}
 	
 	/**
 	 * Sets the event type and label for the button.
@@ -63,6 +92,26 @@ class WEventButton extends WizardComponent {
 	}
 	
 	/**
+	 * Sets if this component will be enabled or disabled.
+	 * @param boolean $enabled
+	 * @access public
+	 * @return void
+	 */
+	function setEnabled ($enabled) {
+		$this->_enabled = $enabled;
+	}
+	
+	/**
+	 * Sets the on-click javascript to be called.
+	 * @param string $javascript
+	 * @access public
+	 * @return void
+	 */
+	function setOnClick ($javascript) {
+		$this->_onclick = $javascript;
+	}
+	
+	/**
 	 * Returns the top-level {@link Wizard} in which this component resides.
 	 * @access public
 	 * @return ref object
@@ -87,6 +136,7 @@ class WEventButton extends WizardComponent {
 			// trigger the save event on the wizard
 			$wizard =& $this->getWizard();
 			$wizard->triggerLater($this->_event, $wizard);
+			$this->_pressed = true;
 		}
 	}
 	
@@ -97,7 +147,9 @@ class WEventButton extends WizardComponent {
 	 * @return mixed
 	 */
 	function getAllValues () {
-		return null;
+		$val = $this->_pressed;
+		$this->_pressed = false;
+		return $val;
 	}
 	
 	/**
@@ -111,7 +163,9 @@ class WEventButton extends WizardComponent {
 	function getMarkup ($fieldName) {
 		$name = RequestContext::name($fieldName);
 		$label = htmlentities($this->_label, ENT_QUOTES);
-		return "<input type='submit' name='$name' value='$label' />";
+		$onclick = '';
+		if ($this->_onclick) $onclick = " onclick='".addslashes($this->_onclick)."'";
+		return "<input type='submit' name='$name' value='$label'$onclick".($this->_enabled?"":" disabled")." />";
 	}
 }
 
