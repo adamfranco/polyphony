@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.12 2005/08/03 13:18:45 cws-midd Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.13 2005/08/04 19:30:57 ndhungel Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.12 2005/08/03 13:18:45 cws-midd Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.13 2005/08/04 19:30:57 ndhungel Exp $
  */
 class TabRepositoryImporter
 	extends RepositoryImporter
@@ -34,8 +34,9 @@ class TabRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function TabRepositoryImporter ($filepath, $repositoryId, $dieOnError=false) {
+	function TabRepositoryImporter ($filepath, $repositoryId, $dieOnError=false, $dataDir = NULL) {
 		$this->_assetIteratorClass = "TabAssetIterator";
+		$this->_dataDir = $dataDir;
 		parent::RepositoryImporter($filepath, $repositoryId, $dieOnError);
 	}
 	
@@ -47,7 +48,7 @@ class TabRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function &getSingleAssetInfo (&$input) {
+	function &getSingleAssetInfo ($input) {
 		$assetInfo = array();
 		$assetInfo['displayName'] = $input[0];
 		$assetInfo['description'] = $input[1];
@@ -72,9 +73,11 @@ class TabRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function &getSingleAssetRecordList (&$input) {
+	function &getSingleAssetRecordList ($input) {
 		if (!isset($this->_structureId)) {
-			$meta = fopen($this->_srcDir."/metadata.txt", "r");
+			$meta = fopen($this->_srcDir."metadata.txt", "r");
+			if(!is_null($this->_dataDir))
+				$this->_srcDir = $this->_dataDir;
 			$schema = ereg_replace("[\n\r]*$","",fgets($meta));
 			$titleline = ereg_replace("[\n\r]*$", "", fgets($meta));
 			fclose($meta);
@@ -113,7 +116,8 @@ class TabRepositoryImporter
 			$recordList = array();
 	
 			if ($input[3] != "") {
-				if (is_file($this->_srcDir."/".$input[3])) {
+				if ($fileHandle = fopen($this->_srcDir.$input[3], "r")) {
+					fclose($fileHandle);
 					$fileElement = array();
 					
 					$fileElement['structureId'] =& $this->_fileStructureId;
@@ -124,10 +128,10 @@ class TabRepositoryImporter
 						$fileElementParts[] = $input[4];
 					}
 					$fileElement['parts'] = $fileElementParts;
-					$recordList[] =& $fileElement;
+					$recordList[] = $fileElement;
 				}
 				else {
-					$this->_addError("File: ".$this->srcDir."/".$input[3].
+					$this->addError("File: ".$this->_srcDir.$input[3].
 						" does not exist for import.");
 					$false = false;
 					return $false;

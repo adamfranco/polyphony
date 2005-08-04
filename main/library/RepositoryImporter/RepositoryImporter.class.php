@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.12 2005/08/03 13:18:45 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.13 2005/08/04 19:30:57 ndhungel Exp $
  */ 
 require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(POLYPHONY."/main/library/RepositoryImporter/XMLAssetIterator.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.12 2005/08/03 13:18:45 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.13 2005/08/04 19:30:57 ndhungel Exp $
  */
 class RepositoryImporter {
 	
@@ -57,7 +57,7 @@ class RepositoryImporter {
 		$drManager =& Services::getService("RepositoryManager");
 		$this->_destinationRepository =& $drManager->getRepository(
 			$this->_repositoryId);
-		$this->_srcDir = dirname($this->_filepath);
+		$this->_srcDir = dirname($this->_filepath)."/";
 		$this->decompress();
 		if ($this->hasErrors())
 			return;
@@ -107,14 +107,16 @@ class RepositoryImporter {
 		$assetInfoIterator =& $this->getAllAssetsInfoIterator($assetIterator);
 		if (!$assetInfoIterator)
 			return $assetInfoIterator; // false
-		while ($assetInfoIterator->hasNext()) {
-			$info =& $assetInfoIterator->next();
+			$i=1;
+		while ($assetInfoIterator->hasNext() && $i<5) {
+			$info = $assetInfoIterator->next();
 			$child =& $this->buildAsset($info["assetInfo"], $info["recordList"],
 				$info["childAssetList"]);
 			if (!$child)
 				return $child; // false
 			if (!is_null($parent))
 				$parent->addAsset($child->getId());
+		$i++;
 		}
 		$true = true;
 		return $true;
@@ -137,7 +139,7 @@ class RepositoryImporter {
 			$info["recordList"] =& $this->getSingleAssetRecordList($asset);
 			$info["childAssetList"] =& $this->getChildAssetList($asset);
 			if ($info["recordList"] != false)
-				$allAssetInfo[] =& $info;
+				$allAssetInfo[] = $info;
 			else if ($this->_dieOnError)
 				return $info["recordList"]; // false
 		}
@@ -220,9 +222,9 @@ class RepositoryImporter {
 					$mime = new MIMETypes();
 					$filename = trim($entry['parts'][0]);
 					$mimetype = $mime->getMIMETypeForFileName($this->_srcDir.
-						"/".$filename);
+						$filename);
 					$assetRecord->createPart($idManager->getId("FILE_DATA"),
-						file_get_contents($this->_srcDir."/".$filename));
+						file_get_contents($this->_srcDir.$filename));
 					$assetRecord->createPart($idManager->getId("FILE_NAME"),
 						basename($filename));
 					$assetRecord->createPart($idManager->getId("MIME_TYPE"),
@@ -231,14 +233,13 @@ class RepositoryImporter {
 					if(isset($entry['parts'][1]) && $entry['parts'][1] != "") {
 						$assetRecord->createPart(
 							$idManager->getId("THUMBNAIL_DATA"),
-							file_get_contents($this->_srcDir."/".
-							$entry['parts'][1]));
+							file_get_contents($this->_srcDir.$entry['parts'][1]));
 					}
 					else if ($imageProcessor->isFormatSupported($mimetype)) {
 						$assetRecord->createPart(
 							$idManager->getId("THUMBNAIL_DATA"),
 							$imageProcessor->generateThumbnailData($mimetype,
-							file_get_contents($this->_srcDir."/".$filename)));
+							file_get_contents($this->_srcDir.$filename)));
 						$assetRecord->createPart(
 							$idManager->getId("THUMBNAIL_MIME_TYPE"),
 							$imageProcessor->getThumbnailFormat());

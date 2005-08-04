@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.11 2005/08/01 20:06:54 adamfranco Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.12 2005/08/04 19:30:57 ndhungel Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.11 2005/08/01 20:06:54 adamfranco Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.12 2005/08/04 19:30:57 ndhungel Exp $
  */
 class XMLRepositoryImporter
 	extends RepositoryImporter
@@ -106,9 +106,9 @@ class XMLRepositoryImporter
 				if ("File" == $record->getAttribute("schema")) {
 					for ($i = 0; $i < count($partArray); $i++) {
 						if (("File Name" == $partArray[$i]) &&
-							!(is_file($this->_srcDir."/".
+							!(is_file($this->_srcDir.
 							trim($parts[$i])))) {
-							$this->addError("File: ".$this->srcDir."/".
+							$this->addError("File: ".$this->srcDir.
 								trim($parts[$i]).
 								" does not exist for import.");
 							$false = false;
