@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.13 2005/07/22 19:29:43 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.14 2005/08/04 19:39:31 adamfranco Exp $
  */
  
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.13 2005/07/22 19:29:43 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.14 2005/08/04 19:39:31 adamfranco Exp $
  */
 
 class IteratorResultPrinter {
@@ -69,6 +69,8 @@ class IteratorResultPrinter {
 	 * @date 8/5/04
 	 */
 	function &getLayout (& $harmoni, $shouldPrintFunction = NULL) {
+		$defaultTextDomain = textdomain("polyphony");
+		
 		if ($harmoni->request->get('starting_number'))
 			$startingNumber = $harmoni->request->get('starting_number');
 		else
@@ -128,7 +130,7 @@ class IteratorResultPrinter {
 					$numItems++;
 			}	
 		} else {
-			$text =& new Block("No <em>Items</em> are availible.", 3);
+			$text =& new Block("<ul><li>"._("No items are availible.")."</li></ul>", 3);
 			$resultLayout->add($text, null, null, CENTER, CENTER);
 		}		
 		
@@ -166,6 +168,8 @@ class IteratorResultPrinter {
 			$layout->add($pageLinkBlock, null, null, CENTER, CENTER);
 		}
 		
+		
+		textdomain($defaultTextDomain);
 		return $layout;
 	}	
 }
