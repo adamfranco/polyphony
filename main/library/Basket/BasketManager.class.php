@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BasketPrinter.class.php,v 1.1 2005/08/05 18:33:36 adamfranco Exp $
+ * @version $Id: BasketManager.class.php,v 1.1 2005/08/05 19:33:30 adamfranco Exp $
  */ 
 
 /**
@@ -19,9 +19,9 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BasketPrinter.class.php,v 1.1 2005/08/05 18:33:36 adamfranco Exp $
+ * @version $Id: BasketManager.class.php,v 1.1 2005/08/05 19:33:30 adamfranco Exp $
  */
-class BasketPrinter {
+class BasketManager {
 		
 /*********************************************************
  * Class Methods - Instance-Creation/Singlton
@@ -39,12 +39,12 @@ class BasketPrinter {
 	 * @static
 	 */
 	function &instance () {
-		if (!defined("BASKETPRINTER_INSTANTIATED")) {
-			$GLOBALS['BASKETPRINTER'] =& new BasketPrinter();
-			define("BASKETPRINTER_INSTANTIATED", true);
+		if (!defined("BASKETMANAGER_INSTANTIATED")) {
+			$GLOBALS['BASKETMANAGER'] =& new BasketManager();
+			define("BASKETMANAGER_INSTANTIATED", true);
 		}
 		
-		return $GLOBALS['BASKETPRINTER'];
+		return $GLOBALS['BASKETMANAGER_INSTANTIATED'];
 	}
 
 /*********************************************************
@@ -56,12 +56,12 @@ class BasketPrinter {
 	 * @access public
 	 * @return void
 	 **/
-	function BasketPrinter() {
+	function BasketManager() {
 		// Verify that there is only one instance of Harmoni.
 		$backtrace = debug_backtrace();
-		if (false && $GLOBALS['BASKETPRINTER'] 
+		if (false && $GLOBALS['BASKETMANAGER_INSTANTIATED'] 
 			|| !(
-				$backtrace[1]['class'] == 'BasketPrinter'
+				$backtrace[1]['class'] == 'BasketManager'
 				&& $backtrace[1]['function'] == 'instance'
 				&& $backtrace[1]['type'] == '::'
 			))
@@ -69,8 +69,21 @@ class BasketPrinter {
 			die("<br/><strong>Invalid BasketPrinter instantiation at...</strong>"
 			."<br/> File: ".$backtrace[0]['file']
 			."<br/> Line: ".$backtrace[0]['line']
-			."<br/><strong>Access BasketPrinter with <em>BasketPrinter::instance()</em></strong>");
+			."<br/><strong>Access BasketManager with <em>BasketManager::instance()</em></strong>");
 		}
+	}
+	
+	/**
+	 * Answer the Basket
+	 * 
+	 * @return object OrderedSet
+	 * @access public
+	 * @since 8/5/05
+	 */
+	function &getBasket () {
+		$setManager =& Services::getService("Sets");
+		$idManager =& Services::getService("Id");
+		return $setManager->getTemporarySet($idManager->getId("__basket"));
 	}
 	
 	/**
@@ -93,7 +106,10 @@ class BasketPrinter {
 		print "<a href='";
 		print $harmoni->request->quickURL("basket", "view");
 		print "'>";
-		print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/basket.png' height='25px' border='0' />";
+		print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/basket.png' height='25px' border='0' /></a>";
+		print "<a href='";
+		print $harmoni->request->quickURL("basket", "view");
+		print "'>";
 		print "(".$basket->count()." "._("items").")";
 		print "</a>";
 		
