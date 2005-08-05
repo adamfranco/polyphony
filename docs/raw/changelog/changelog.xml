@@ -4,13 +4,19 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.18 2005/06/09 21:31:21 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.19 2005/08/05 18:32:22 gabeschine Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
 	<version number="0.2.3" date="The Nebulous Future">
+		<change author='gabe'>
+			Changed the StartupCheck classes to use the new Wizard.
+		</change>
+		<change author='gabe'>
+			Changed actions to use Everyone and Users group IDs of "edu.middlebury.agents.everyone" and "edu.middlebury.agents.users".
+		</change>
 		<fix author='adam'>
 			Wizard now can handle field names with .'s in them.
 		</fix>
