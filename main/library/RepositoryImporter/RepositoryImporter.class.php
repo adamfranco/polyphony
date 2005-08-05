@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.13 2005/08/04 19:30:57 ndhungel Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.14 2005/08/05 18:01:16 ndhungel Exp $
  */ 
 require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(POLYPHONY."/main/library/RepositoryImporter/XMLAssetIterator.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.13 2005/08/04 19:30:57 ndhungel Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.14 2005/08/05 18:01:16 ndhungel Exp $
  */
 class RepositoryImporter {
 	
@@ -107,8 +107,7 @@ class RepositoryImporter {
 		$assetInfoIterator =& $this->getAllAssetsInfoIterator($assetIterator);
 		if (!$assetInfoIterator)
 			return $assetInfoIterator; // false
-			$i=1;
-		while ($assetInfoIterator->hasNext() && $i<5) {
+		while ($assetInfoIterator->hasNext()) {
 			$info = $assetInfoIterator->next();
 			$child =& $this->buildAsset($info["assetInfo"], $info["recordList"],
 				$info["childAssetList"]);
@@ -116,7 +115,6 @@ class RepositoryImporter {
 				return $child; // false
 			if (!is_null($parent))
 				$parent->addAsset($child->getId());
-		$i++;
 		}
 		$true = true;
 		return $true;

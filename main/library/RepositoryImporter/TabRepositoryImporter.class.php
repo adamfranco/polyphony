@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.13 2005/08/04 19:30:57 ndhungel Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.14 2005/08/05 18:01:16 ndhungel Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.13 2005/08/04 19:30:57 ndhungel Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.14 2005/08/05 18:01:16 ndhungel Exp $
  */
 class TabRepositoryImporter
 	extends RepositoryImporter
@@ -34,7 +34,7 @@ class TabRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function TabRepositoryImporter ($filepath, $repositoryId, $dieOnError=false, $dataDir = NULL) {
+	function TabRepositoryImporter ($filepath, $repositoryId, $dieOnError=false, $dataDir=NULL) {
 		$this->_assetIteratorClass = "TabAssetIterator";
 		$this->_dataDir = $dataDir;
 		parent::RepositoryImporter($filepath, $repositoryId, $dieOnError);
@@ -76,8 +76,9 @@ class TabRepositoryImporter
 	function &getSingleAssetRecordList ($input) {
 		if (!isset($this->_structureId)) {
 			$meta = fopen($this->_srcDir."metadata.txt", "r");
-			if(!is_null($this->_dataDir))
+			if($this->_dataDir !== NULL){
 				$this->_srcDir = $this->_dataDir;
+			}
 			$schema = ereg_replace("[\n\r]*$","",fgets($meta));
 			$titleline = ereg_replace("[\n\r]*$", "", fgets($meta));
 			fclose($meta);
