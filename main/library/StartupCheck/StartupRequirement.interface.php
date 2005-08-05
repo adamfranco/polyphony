@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: StartupRequirement.interface.php,v 1.5 2005/04/07 17:07:48 adamfranco Exp $
+ * @version $Id: StartupRequirement.interface.php,v 1.6 2005/08/05 18:31:35 gabeschine Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: StartupRequirement.interface.php,v 1.5 2005/04/07 17:07:48 adamfranco Exp $
+ * @version $Id: StartupRequirement.interface.php,v 1.6 2005/08/05 18:31:35 gabeschine Exp $
  */
 class StartupRequirement {
 
@@ -54,7 +54,7 @@ class StartupRequirement {
 	
 	/**
 	 * Tells the requirement class to perform its update/install operation. If user input is required, it is passed in the form of a {@link WizardStep} containing field values.
-	 * @param optional array $properties An array of {@link WizardProperty} objects corresponding to the {@link Wizard} as created by {@link createWizard()}.
+	 * @param optional array $properties An array of values gotten from the {@link Wizard} as created by {@link StartupRequirement::createWizard()}.
 	 * @access public
 	 * @return int Returns the new status of this requirement after attempting update.
 	 */

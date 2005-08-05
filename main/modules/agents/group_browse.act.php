@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_browse.act.php,v 1.3 2005/07/21 00:09:08 thebravecowboy Exp $
+ * @version $Id: group_browse.act.php,v 1.4 2005/08/05 18:31:36 gabeschine Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_browse.act.php,v 1.3 2005/07/21 00:09:08 thebravecowboy Exp $
+ * @version $Id: group_browse.act.php,v 1.4 2005/08/05 18:31:36 gabeschine Exp $
  */
 class group_browseAction 
 	extends MainWindowAction
@@ -78,8 +78,8 @@ class group_browseAction
 
 		$agentManager =& Services::getService("Agent");
 		$idManager = Services::getService("Id");
-		$everyoneId =& $idManager->getId("-1");
-		$usersId =& $idManager->getId("-2");
+		$everyoneId =& $idManager->getId("edu.middlebury.agents.everyone");
+		$usersId =& $idManager->getId("edu.middlebury.agents.users");
 		
 		
 		/*********************************************************
@@ -242,8 +242,8 @@ END;
 	 */
 	function printGroup(& $group) {
 		$idManager = Services::getService("Id");
-		$everyoneId =& $idManager->getId("-1");
-		$usersId =& $idManager->getId("-2");
+		$everyoneId =& $idManager->getId("edu.middlebury.agents.everyone");
+		$usersId =& $idManager->getId("edu.middlebury.agents.users");
 		
 		$id =& $group->getId();
 		$groupType =& $group->getType();

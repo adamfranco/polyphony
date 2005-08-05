@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.29 2005/07/20 14:55:08 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.30 2005/08/05 18:31:36 gabeschine Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.29 2005/07/20 14:55:08 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.30 2005/08/05 18:31:36 gabeschine Exp $
  */
 class choose_agentAction 
 	extends MainWindowAction
@@ -71,8 +71,8 @@ class choose_agentAction
 		
 		$agentManager =& Services::getService("Agent");
 		$idManager = Services::getService("Id");
-		$everyoneId =& $idManager->getId("-1");
-		$usersId =& $idManager->getId("-2");		
+		$everyoneId =& $idManager->getId("edu.middlebury.agents.everyone");
+		$usersId =& $idManager->getId("edu.middlebury.agents.users");
 		
 		/*********************************************************
 		 * Buttons

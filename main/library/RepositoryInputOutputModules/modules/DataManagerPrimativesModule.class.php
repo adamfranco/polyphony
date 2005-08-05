@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DataManagerPrimativesModule.class.php,v 1.6 2005/07/14 17:17:15 adamfranco Exp $
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.7 2005/08/05 18:31:34 gabeschine Exp $
  */
 
 /**
@@ -23,8 +23,8 @@ require_once(dirname(__FILE__)."/../RepositoryInputOutputModule.interface.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: DataManagerPrimativesModule.class.php,v 1.6 2005/07/14 17:17:15 adamfranco Exp $
- * @since $Date: 2005/07/14 17:17:15 $
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.7 2005/08/05 18:31:34 gabeschine Exp $
+ * @since $Date: 2005/08/05 18:31:34 $
  * @copyright 2004 Middlebury College
  */
 
@@ -109,7 +109,7 @@ class DataManagerPrimativesModule
 		$recordStructure =& $record->getRecordStructure();
 		$recordStructureId =& $recordStructure->getId();
 		
-		$properties =& $wizard->getProperties();
+		$properties =& $wizard->getAllValues();
 		
 		// Delete the old parts
 		$parts =& $record->getParts();

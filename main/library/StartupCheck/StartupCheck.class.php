@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: StartupCheck.class.php,v 1.8 2005/02/04 23:06:13 adamfranco Exp $
+ * @version $Id: StartupCheck.class.php,v 1.9 2005/08/05 18:31:35 gabeschine Exp $
  */
 
 /**
@@ -64,7 +64,7 @@ define("STARTUP_STATUS_NEEDS_INSTALL", 0);
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: StartupCheck.class.php,v 1.8 2005/02/04 23:06:13 adamfranco Exp $
+ * @version $Id: StartupCheck.class.php,v 1.9 2005/08/05 18:31:35 gabeschine Exp $
  */
 class StartupCheck {
 
@@ -207,8 +207,9 @@ class StartupCheck {
 	function updateRequirementWithWizard($name, &$wizard)
 	{
 		// we can't use the data until the end user has pressed the "Save" button on the wizard
-		if ($wizard->isSaveRequested()) {
-			if (($this->_status[$name] = $this->_requirements[$name]->doUpdate($wizard->getProperties())) == STARTUP_STATUS_OK) {
+		$listener =& $wizard->getChild("_savecancel");
+		if ($listener->isSaveRequested()) {
+			if (($this->_status[$name] = $this->_requirements[$name]->doUpdate($wizard->getAllValues())) == STARTUP_STATUS_OK) {
 				return true;
 			} else { // don't change its status.
 				return false;
@@ -231,10 +232,9 @@ class StartupCheck {
 	* Handles the update process with user input, if necessary. Uses the {@link Harmoni} object to output HTML to the end user.
 	* In order for this to work, we must be session_registered and called every page-load.
 	* @access public
-	* @param ref object $harmoni The {@link Harmoni} object.
 	* @return boolean TRUE if program execution can continue as normal, FALSE if updating is still required.
 	*/
-	function handleAllUpdates(&$harmoni)
+	function handleAllUpdates()
 	{
 		// this method does the following:
 		// - checks all requirements, updates those that are autonomous automatically.
@@ -243,6 +243,8 @@ class StartupCheck {
 		//		  skip everything else and just output the wizard
 		//		- once the person hits the "Save" button, we will give the wizard to the requirement for handling,
 		// 		  and then get the next requirement that needs user input.
+
+		$harmoni =& Harmoni::instance();
 
 		// if we have nothing to do, we're done.
 		if ($this->areAllOK()) return true;
@@ -281,7 +283,9 @@ class StartupCheck {
 	function _useWizard(&$harmoni)
 	{
 		if ($req = $this->_currentRequirement) {
-			if ($this->_currentWizard->isSaveRequested()) {
+			$this->_currentWizard->go();
+			$listener =& $this->_currentWizard->getChild("_savecancel");
+			if ($listener->isSaveRequested()) {
 				$this->updateRequirementWithWizard($req, $this->_currentWizard);
 				$this->_currentRequirement = $this->_currentWizard = null;
 				if ($this->areAllOK()) return true;
@@ -289,9 +293,9 @@ class StartupCheck {
 			} 
 			if ($this->_currentWizard) {
 				// output some HTML bizness
-				$layout =& $this->_currentWizard->getLayout($harmoni);
-				$theme =& $harmoni->getTheme();
-				$theme->printPage($layout);
+				$layout =& $this->_currentWizard->getLayout();
+				$output =& $harmoni->getOutputHandler();
+				$output->output($layout,'');
 				return false;
 			}
 		}
@@ -310,6 +314,8 @@ class StartupCheck {
 		if ($name) {
 			$this->_currentRequirement = $name;
 			$this->_currentWizard =& $this->_requirements[$name]->createWizard();
+			// add a listener so we know when the save buttons are pressed. 
+			$this->_currentWizard->addComponent("_savecancel", new WSaveCancelListener());
 		}
 	}
 
@@ -320,7 +326,7 @@ class StartupCheck {
 	*/
 	function areAllOK()
 	{
-		return ($this->getRequirementCount() == $this->getRequirementsOfStatus(STARTUP_STATUS_OK))?true:false;
+		return ($this->getRequirementCount() == $this->getRequirementsOfStatus(STARTUP_STATUS_OK));
 	}
 
 	/**
