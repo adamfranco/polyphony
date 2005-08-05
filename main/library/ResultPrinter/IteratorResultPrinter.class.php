@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.14 2005/08/04 19:39:31 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.15 2005/08/05 21:26:35 adamfranco Exp $
  */
  
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.14 2005/08/04 19:39:31 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.15 2005/08/05 21:26:35 adamfranco Exp $
  */
 
 class IteratorResultPrinter {
@@ -102,7 +102,8 @@ class IteratorResultPrinter {
 				$item =& $this->_iterator->next();
 				
 				// Only Act if this item isn't to be filtered.
-				if (!$shouldPrintFunction || $shouldPrintFunction($item)) {
+				eval('$shouldPrint = (!$shouldPrintFunction || '.$shouldPrintFunction.'($item));');
+				if ($shouldPrint) {
 					$numItems++;
 					$pageItems++;
 					
@@ -126,7 +127,8 @@ class IteratorResultPrinter {
 				$item =& $this->_iterator->next();
 				
 				// Ignore this if it should be filtered.
-				if (!$shouldPrintFunction || $shouldPrintFunction($item))
+				eval('$shouldPrint = (!$shouldPrintFunction || '.$shouldPrintFunction.'($item));');
+				if ($shouldPrint)
 					$numItems++;
 			}	
 		} else {

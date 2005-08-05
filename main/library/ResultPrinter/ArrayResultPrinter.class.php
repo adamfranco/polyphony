@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.10 2005/08/04 19:39:31 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.11 2005/08/05 21:26:35 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.10 2005/08/04 19:39:31 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.11 2005/08/05 21:26:35 adamfranco Exp $
  */
 
 class ArrayResultPrinter {
@@ -89,6 +89,7 @@ class ArrayResultPrinter {
 			
 			// trash the items before our starting number
 			while ($numItems+1 < $startingNumber && $numItems < count($this->_array)) {
+				$item =& current($this->_array);
 				next($this->_array);
 				
 				// Ignore this if it should be filtered.
