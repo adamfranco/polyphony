@@ -4,13 +4,17 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.19 2005/08/05 18:32:22 gabeschine Exp $
+ @version $Id: changelog.xml,v 1.20 2005/08/08 18:32:36 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
 	<version number="0.2.3" date="The Nebulous Future">
+		<new author='adam'>
+			New "Basket" system for collecting [Asset] Ids during the session.
+			The Basket allows for easy user-selection of a large number of items.
+		</new>
 		<change author='gabe'>
 			Changed the StartupCheck classes to use the new Wizard.
 		</change>
