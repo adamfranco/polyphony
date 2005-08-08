@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifAssetIterator.class.php,v 1.1 2005/07/26 15:24:39 ndhungel Exp $
+ * @version $Id: ExifAssetIterator.class.php,v 1.2 2005/08/08 16:06:18 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifAssetIterator.class.php,v 1.1 2005/07/26 15:24:39 ndhungel Exp $
+ * @version $Id: ExifAssetIterator.class.php,v 1.2 2005/08/08 16:06:18 cws-midd Exp $
  */
 
 class ExifAssetIterator
@@ -37,7 +37,7 @@ class ExifAssetIterator
 		
 		while($file = readdir($dir)) {
 			if($file != "schema.txt" && $file != "." && $file != "..")
-				$this->_assetList[] = $srcDir."/".$file;
+				$this->_assetList[] = $srcDir.$file;
 		}
 		closedir($dir);		
 		$this->_current = 0;

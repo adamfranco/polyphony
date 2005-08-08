@@ -6,8 +6,9 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.12 2005/08/04 19:30:57 ndhungel Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.13 2005/08/08 16:06:19 cws-midd Exp $
  */ 
+require_once("/home/cshubert/public_html/importer/domit/xml_domit_include.php");
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
 
@@ -20,7 +21,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.12 2005/08/04 19:30:57 ndhungel Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.13 2005/08/08 16:06:19 cws-midd Exp $
  */
 class XMLRepositoryImporter
 	extends RepositoryImporter

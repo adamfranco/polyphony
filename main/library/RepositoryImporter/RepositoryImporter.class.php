@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.14 2005/08/05 18:01:16 ndhungel Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.15 2005/08/08 16:06:18 cws-midd Exp $
  */ 
 require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(POLYPHONY."/main/library/RepositoryImporter/XMLAssetIterator.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.14 2005/08/05 18:01:16 ndhungel Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.15 2005/08/08 16:06:18 cws-midd Exp $
  */
 class RepositoryImporter {
 	
@@ -136,7 +136,7 @@ class RepositoryImporter {
 			$info["assetInfo"] =& $this->getSingleAssetInfo($asset);
 			$info["recordList"] =& $this->getSingleAssetRecordList($asset);
 			$info["childAssetList"] =& $this->getChildAssetList($asset);
-			if ($info["recordList"] != false)
+			if ($info["recordList"] !== false)
 				$allAssetInfo[] = $info;
 			else if ($this->_dieOnError)
 				return $info["recordList"]; // false
