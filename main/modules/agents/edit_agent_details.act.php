@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.10 2005/07/20 14:54:25 adamfranco Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.11 2005/08/10 21:20:17 gabeschine Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.10 2005/07/20 14:54:25 adamfranco Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.11 2005/08/10 21:20:17 gabeschine Exp $
  */
 class edit_agent_detailsAction 
 	extends MainWindowAction
@@ -272,6 +272,8 @@ class edit_agent_detailsAction
 			$tokens =& $mapping->getTokens();
 			$userName=$tokens->getUsername();
 		}
+		
+		if (!isset($userName)) { $userName = '&laquo; undefined &raquo;';}
 		
 		$harmoni =& Harmoni::instance();
 		$url =& $harmoni->request->mkURL();

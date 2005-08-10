@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: delete_group.act.php,v 1.7 2005/06/07 13:43:27 gabeschine Exp $
+ * @version $Id: delete_group.act.php,v 1.8 2005/08/10 21:20:17 gabeschine Exp $
  */
 
 $harmoni->request->startNamespace("polyphony-agents");
@@ -19,9 +19,15 @@ $harmoni->request->passthrough("expandedGroups");
 // Get services
 $agentManager =& Services::getService("Agent");
 $authZ =& Services::getService("AuthZ");
+$ids =& Services::getService("Id");
 
 // Get info passed to this action via the URL
 $idString = $harmoni->request->get("groupId");
+
+// check our authorization
+if ($authZ->isUserAuthorized($ids->getId("edu.middlebury.authorization.delete_groups"), $ids->getId("edu.middlebury.authorization.root"))) {
+	$agentManager->deleteGroup($ids->getId($idString));
+}
 
 // Send us back to where we were (add_delete_group.php)
 

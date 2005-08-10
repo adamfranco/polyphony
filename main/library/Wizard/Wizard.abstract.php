@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.8 2005/07/27 20:11:04 ndhungel Exp $
+ * @version $Id: Wizard.abstract.php,v 1.9 2005/08/10 21:20:15 gabeschine Exp $
  */
 
 /*
@@ -30,7 +30,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.8 2005/07/27 20:11:04 ndhungel Exp $
+ * @version $Id: Wizard.abstract.php,v 1.9 2005/08/10 21:20:15 gabeschine Exp $
  * @author Gabe Schine
  * @abstract
  */
@@ -206,6 +206,10 @@ function validateWizard(form) {
 
 function ignoreValidation(form) {
 	form._ignoreValidation = true;
+}
+
+function submitWizard(form) {
+	if (validateWizard(form)) form.submit();
 }
 	
 

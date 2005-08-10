@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_browse.act.php,v 1.4 2005/08/05 18:31:36 gabeschine Exp $
+ * @version $Id: group_browse.act.php,v 1.5 2005/08/10 21:20:17 gabeschine Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_browse.act.php,v 1.4 2005/08/05 18:31:36 gabeschine Exp $
+ * @version $Id: group_browse.act.php,v 1.5 2005/08/10 21:20:17 gabeschine Exp $
  */
 class group_browseAction 
 	extends MainWindowAction
@@ -39,7 +39,7 @@ class group_browseAction
  		$authZManager =& Services::getService("AuthZ");
  		$idManager =& Services::getService("IdManager");
  		if ($authZManager->isUserAuthorized(
- 					$idManager->getId("edu.middlebury.authorization.view_groups"),
+ 					$idManager->getId("edu.middlebury.authorization.view"),
  					$idManager->getId("edu.middlebury.authorization.root")))
  		{
 			return TRUE;
