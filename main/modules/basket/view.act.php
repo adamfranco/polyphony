@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.2 2005/08/05 21:56:34 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.3 2005/08/10 14:24:38 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/BasketManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.2 2005/08/05 21:56:34 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.3 2005/08/10 14:24:38 adamfranco Exp $
  */
 class viewAction 
 	extends MainWindowAction
@@ -129,19 +129,19 @@ function printAssetShort(&$assetId) {
 	print "\n<a href='";
 	print $harmoni->request->quickURL("basket", "remove", array('asset_id' => $assetId->getIdString()));
 	print "' title='". _('remove')."'>";
-	print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/basketminus.png' width='40px' border='0' />";
+	print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/basketminus.png' width='40px' border='0' alt='"._("Remove from Basket")."' />";
 	print "</a>";
 	
 	print "\n<br/><a href='";
 	print $harmoni->request->quickURL("basket", "up", array('asset_id' => $assetId->getIdString()));
 	print "' title='". _('move up')."'>";
-	print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/arrowleft.png' width='25px' border='0' />";
+	print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/arrowleft.png' width='25px' border='0' alt='"._("Move Up")."' />";
 	print "</a>";
 	
 	print "\n<br/><a href='";
 	print $harmoni->request->quickURL("basket", "down", array('asset_id' => $assetId->getIdString()));
 	print "' title='". _('move down')."'>";
-	print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/arrowright.png' width='25px' border='0' />";
+	print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/arrowright.png' width='25px' border='0'  alt='"._("Move Down")."'  />";
 	print "</a>";
 	
 	$functionsBlock =& new Block(ob_get_contents(), 3);

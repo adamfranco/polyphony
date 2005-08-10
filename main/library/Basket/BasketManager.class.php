@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BasketManager.class.php,v 1.1 2005/08/05 19:33:30 adamfranco Exp $
+ * @version $Id: BasketManager.class.php,v 1.2 2005/08/10 14:24:38 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BasketManager.class.php,v 1.1 2005/08/05 19:33:30 adamfranco Exp $
+ * @version $Id: BasketManager.class.php,v 1.2 2005/08/10 14:24:38 adamfranco Exp $
  */
 class BasketManager {
 		
@@ -106,7 +106,7 @@ class BasketManager {
 		print "<a href='";
 		print $harmoni->request->quickURL("basket", "view");
 		print "'>";
-		print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/basket.png' height='25px' border='0' /></a>";
+		print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/basket.png' height='25px' border='0' alt='"._("Basket")."' /></a>";
 		print "<a href='";
 		print $harmoni->request->quickURL("basket", "view");
 		print "'>";
