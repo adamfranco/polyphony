@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.5 2005/08/10 13:27:04 gabeschine Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.6 2005/08/10 17:52:05 adamfranco Exp $
  */ 
 
 /**
@@ -19,15 +19,13 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.5 2005/08/10 13:27:04 gabeschine Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.6 2005/08/10 17:52:05 adamfranco Exp $
  */
 class WizardStepContainer extends WizardComponent {
 	var $_currStep;
 	var $_steps;
 	var $_stepNames;
-	
-	var $_parent;
-	
+		
 	/**
 	 * Constructor
 	 * @access public
@@ -176,29 +174,6 @@ class WizardStepContainer extends WizardComponent {
 			}
 		}
 		return true;
-	}
-	
-	
-	
-	
-	/**
-	 * Sets this component's parent (some kind of {@link WizardComponentWithChildren} so that it can
-	 * have access to its information, if needed.
-	 * @param ref object $parent
-	 * @access public
-	 * @return void
-	 */
-	function setParent (&$parent) {
-		$this->_parent =& $parent;
-	}
-	
-	/**
-	 * Returns the top-level {@link Wizard} in which this component resides.
-	 * @access public
-	 * @return ref object
-	 */
-	function &getWizard () {
-		return $this->_parent->getWizard();
 	}
 	
 	/**

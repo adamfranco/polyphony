@@ -6,10 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ErrorCheckingWizardComponent.abstract.php,v 1.2 2005/07/23 20:13:24 gabeschine Exp $
+ * @version $Id: ErrorCheckingWizardComponent.abstract.php,v 1.3 2005/08/10 17:52:05 adamfranco Exp $
  */ 
  
-require_once(POLYPHONY."/main/library/Wizard/WizardComponent.interface.php");
+require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
  
 /**
  * Defines a component that makes use of the Wizard's javascript error checking abilities.
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponent.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ErrorCheckingWizardComponent.abstract.php,v 1.2 2005/07/23 20:13:24 gabeschine Exp $
+ * @version $Id: ErrorCheckingWizardComponent.abstract.php,v 1.3 2005/08/10 17:52:05 adamfranco Exp $
  * @abstract
  */
 class ErrorCheckingWizardComponent extends WizardComponent {

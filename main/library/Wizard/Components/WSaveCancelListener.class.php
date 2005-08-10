@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveCancelListener.class.php,v 1.1 2005/07/22 20:26:43 gabeschine Exp $
+ * @version $Id: WSaveCancelListener.class.php,v 1.2 2005/08/10 17:52:05 adamfranco Exp $
  */ 
 
 /**
@@ -20,10 +20,12 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveCancelListener.class.php,v 1.1 2005/07/22 20:26:43 gabeschine Exp $
+ * @version $Id: WSaveCancelListener.class.php,v 1.2 2005/08/10 17:52:05 adamfranco Exp $
  */
-class WSaveCancelListener extends WizardComponent /* implements EventListener */ {
-	var $_parent;
+class WSaveCancelListener 
+	extends WizardComponent 
+	/* implements EventListener */ 
+{
 	var $_save = false;
 	var $_cancel = false;
 	
@@ -55,15 +57,6 @@ class WSaveCancelListener extends WizardComponent /* implements EventListener */
 			$wz->addEventListener($this);
 			$this->_added = true;
 		}
-	}
-	
-	/**
-	 * Returns the top-level {@link Wizard} in which this component resides.
-	 * @access public
-	 * @return ref object
-	 */
-	function &getWizard () {
-		return $this->_parent->getWizard();
 	}
 	
 	/**

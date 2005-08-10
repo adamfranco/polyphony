@@ -6,10 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStepDisplayBar.class.php,v 1.1 2005/07/23 20:13:23 gabeschine Exp $
+ * @version $Id: WStepDisplayBar.class.php,v 1.2 2005/08/10 17:52:05 adamfranco Exp $
  */ 
  
-require_once(POLYPHONY."/main/library/Wizard/WizardComponent.interface.php");
+require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
 
 /**
  * This adds a "Next" button to the wizard and throws the appropriate event.
@@ -20,31 +20,12 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponent.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStepDisplayBar.class.php,v 1.1 2005/07/23 20:13:23 gabeschine Exp $
+ * @version $Id: WStepDisplayBar.class.php,v 1.2 2005/08/10 17:52:05 adamfranco Exp $
  */
-class WStepDisplayBar extends WizardComponent {
+class WStepDisplayBar 
+	extends WizardComponent 
+{
 	var $_stepContainer;
-	var $_parent;
-	
-	/**
-	 * Sets this component's parent (some kind of {@link WizardComponentWithChildren} so that it can
-	 * have access to its information, if needed.
-	 * @param ref object $parent
-	 * @access public
-	 * @return void
-	 */
-	function setParent (&$parent) {
-		$this->_parent =& $parent;
-	}
-	
-	/**
-	 * Returns the top-level {@link Wizard} in which this component resides.
-	 * @access public
-	 * @return ref object
-	 */
-	function &getWizard () {
-		return $this->_parent->getWizard();
-	}
 	
 	/**
 	 * Constructor

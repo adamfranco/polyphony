@@ -6,10 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextArea.class.php,v 1.2 2005/07/26 20:30:39 adamfranco Exp $
+ * @version $Id: WTextArea.class.php,v 1.3 2005/08/10 17:52:05 adamfranco Exp $
  */ 
 
-require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.interface.php');
+require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
 
 /**
  * This class allows for the creation of a textarea element
@@ -20,10 +20,12 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.interface.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextArea.class.php,v 1.2 2005/07/26 20:30:39 adamfranco Exp $
+ * @version $Id: WTextArea.class.php,v 1.3 2005/08/10 17:52:05 adamfranco Exp $
  */
-class WTextArea extends WizardComponent {
-	var $_parent;
+class WTextArea 
+	extends WizardComponent 
+{
+
 	var $_value;
 	
 	var $_style = null;
@@ -94,26 +96,6 @@ class WTextArea extends WizardComponent {
 	 */
 	function setStyle ($style) {
 		$this->_style = $style;
-	}
-	
-	/**
-	 * Sets this component's parent (some kind of {@link WizardComponentWithChildren} so that it can
-	 * have access to its information, if needed.
-	 * @param ref object $parent
-	 * @access public
-	 * @return void
-	 */
-	function setParent (&$parent) {
-		$this->_parent =& $parent;
-	}
-	
-	/**
-	 * Returns the top-level {@link Wizard} in which this component resides.
-	 * @access public
-	 * @return ref object
-	 */
-	function &getWizard () {
-		return $this->_parent->getParent();
 	}
 	
 	/**

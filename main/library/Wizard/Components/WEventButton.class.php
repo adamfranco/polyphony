@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.class.php,v 1.2 2005/08/10 13:27:04 gabeschine Exp $
+ * @version $Id: WEventButton.class.php,v 1.3 2005/08/10 17:52:05 adamfranco Exp $
  */ 
 
 /**
@@ -19,12 +19,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.class.php,v 1.2 2005/08/10 13:27:04 gabeschine Exp $
+ * @version $Id: WEventButton.class.php,v 1.3 2005/08/10 17:52:05 adamfranco Exp $
  */
 class WEventButton extends WizardComponent {
 	var $_event = "nop";
 	var $_label = "NO LABEL";
-	var $_parent;
 	var $_pressed = false;
 	var $_enabled = true;
 	var $_onclick = null;
@@ -79,17 +78,6 @@ class WEventButton extends WizardComponent {
 	function setLabel ($label) {
 		$this->_label = $label;
 	}
-		
-	/**
-	 * Sets this component's parent (some kind of {@link WizardComponentWithChildren} so that it can
-	 * have access to its information, if needed.
-	 * @param ref object $parent
-	 * @access public
-	 * @return void
-	 */
-	function setParent (&$parent) {
-		$this->_parent =& $parent;
-	}
 	
 	/**
 	 * Sets if this component will be enabled or disabled.
@@ -109,17 +97,7 @@ class WEventButton extends WizardComponent {
 	 */
 	function setOnClick ($javascript) {
 		$this->_onclick = $javascript;
-	}
-	
-	/**
-	 * Returns the top-level {@link Wizard} in which this component resides.
-	 * @access public
-	 * @return ref object
-	 */
-	function &getWizard () {
-		return $this->_parent->getWizard();
-	}
-	
+	}	
 	
 	/**
 	 * Tells the wizard component to update itself - this may include getting

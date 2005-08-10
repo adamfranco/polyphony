@@ -6,10 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponentWithChildren.abstract.php,v 1.2 2005/07/25 18:33:57 gabeschine Exp $
+ * @version $Id: WizardComponentWithChildren.abstract.php,v 1.3 2005/08/10 17:52:05 adamfranco Exp $
  */ 
 
-require_once(POLYPHONY."/main/library/Wizard/WizardComponent.interface.php");
+require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
 
 /**
  * This is an abstract class that defines a {@link WizardComponent} that can have children.
@@ -20,33 +20,14 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponent.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponentWithChildren.abstract.php,v 1.2 2005/07/25 18:33:57 gabeschine Exp $
+ * @version $Id: WizardComponentWithChildren.abstract.php,v 1.3 2005/08/10 17:52:05 adamfranco Exp $
  * @abstract
  */
-class WizardComponentWithChildren extends WizardComponent {
-	var $_children = array();
-	
-	var $_parent;
-	
-	/**
-	 * Sets this component's parent (some kind of {@link WizardComponentWithChildren} so that it can
-	 * have access to its information, if needed.
-	 * @param ref object $parent
-	 * @access public
-	 * @return void
-	 */
-	function setParent (&$parent) {
-		$this->_parent =& $parent;
-	}
-	
-	/**
-	 * Returns the top-level {@link Wizard} in which this component resides.
-	 * @access public
-	 * @return ref object
-	 */
-	function &getWizard () {
-		return $this->_parent->getWizard();
-	}
+class WizardComponentWithChildren 
+	extends WizardComponent 
+{
+
+	var $_children = array();	
 	
 	/**
 	 * Adds a {@link WizardComponent} to this component. It will return the newly added component.

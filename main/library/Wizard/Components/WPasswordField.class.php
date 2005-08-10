@@ -6,10 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WPasswordField.class.php,v 1.1 2005/07/22 15:42:33 gabeschine Exp $
+ * @version $Id: WPasswordField.class.php,v 1.2 2005/08/10 17:52:05 adamfranco Exp $
  */ 
 
-require_once(POLYPHONY."/main/library/Wizard/WizardComponent.interface.php");
+require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
 
 /**
  * This adds an input type='password' field to a {@link Wizard}.
@@ -20,10 +20,12 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponent.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WPasswordField.class.php,v 1.1 2005/07/22 15:42:33 gabeschine Exp $
+ * @version $Id: WPasswordField.class.php,v 1.2 2005/08/10 17:52:05 adamfranco Exp $
  */
-class WPasswordField extends WizardComponent {
-	var $_parent;
+class WPasswordField 
+	extends WizardComponent 
+{
+
 	var $_size = 30;
 	var $_maxlength = 255;
 	var $_style = null;
@@ -57,26 +59,6 @@ class WPasswordField extends WizardComponent {
 	 */
 	function setStyle ($style) {
 		$this->_style = $style;
-	}
-
-	/**
-	 * Sets this component's parent (some kind of {@link WizardComponentWithChildren} so that it can
-	 * have access to its information, if needed.
-	 * @param ref object $parent
-	 * @access public
-	 * @return void
-	 */
-	function setParent (&$parent) {
-		$this->_parent =& $parent;
-	}
-	
-	/**
-	 * Returns the top-level {@link Wizard} in which this component resides.
-	 * @access public
-	 * @return ref object
-	 */
-	function &getWizard () {
-		return $this->_parent->getParent();
 	}
 	
 	/**

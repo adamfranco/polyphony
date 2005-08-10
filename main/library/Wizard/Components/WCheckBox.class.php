@@ -6,10 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCheckBox.class.php,v 1.4 2005/08/03 22:21:33 gabeschine Exp $
+ * @version $Id: WCheckBox.class.php,v 1.5 2005/08/10 17:52:05 adamfranco Exp $
  */ 
 
-require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.interface.php');
+require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
 
 /**
  * This class allows for the creation of a input type='checkbox' element.
@@ -20,10 +20,12 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.interface.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCheckBox.class.php,v 1.4 2005/08/03 22:21:33 gabeschine Exp $
+ * @version $Id: WCheckBox.class.php,v 1.5 2005/08/10 17:52:05 adamfranco Exp $
  */
-class WCheckBox extends WizardComponent {
-	var $_parent;
+class WCheckBox 
+	extends WizardComponent 
+{
+
 	var $_value;
 	
 	var $_style = null;
@@ -80,26 +82,6 @@ class WCheckBox extends WizardComponent {
 	 */
 	function setLabel ($label) {
 		$this->_label = $label;
-	}
-	
-	/**
-	 * Sets this component's parent (some kind of {@link WizardComponentWithChildren} so that it can
-	 * have access to its information, if needed.
-	 * @param ref object $parent
-	 * @access public
-	 * @return void
-	 */
-	function setParent (&$parent) {
-		$this->_parent =& $parent;
-	}
-	
-	/**
-	 * Returns the top-level {@link Wizard} in which this component resides.
-	 * @access public
-	 * @return ref object
-	 */
-	function &getWizard () {
-		return $this->_parent->getParent();
 	}
 	
 	/**

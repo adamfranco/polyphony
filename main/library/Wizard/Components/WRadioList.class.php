@@ -6,10 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRadioList.class.php,v 1.2 2005/07/26 20:30:39 adamfranco Exp $
+ * @version $Id: WRadioList.class.php,v 1.3 2005/08/10 17:52:05 adamfranco Exp $
  */ 
 
-require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.interface.php');
+require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
 
 /**
  * This class allows for the creation of lists of input type='radio' items of a specific group.
@@ -20,14 +20,16 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.interface.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRadioList.class.php,v 1.2 2005/07/26 20:30:39 adamfranco Exp $
+ * @version $Id: WRadioList.class.php,v 1.3 2005/08/10 17:52:05 adamfranco Exp $
  */
-class WRadioList extends WizardComponent {
+class WRadioList 
+	extends WizardComponent 
+{
+
 	var $_eachPre;
 	var $_eachPost;
 	var $_pre;
 	var $_post;
-	var $_parent;
 	var $_value;
 	var $_style = null;
 	
@@ -93,26 +95,6 @@ class WRadioList extends WizardComponent {
 	 */
 	function addOption ($value, $displayText) {
 		$this->_items[$value] = $displayText;
-	}
-	
-	/**
-	 * Sets this component's parent (some kind of {@link WizardComponentWithChildren} so that it can
-	 * have access to its information, if needed.
-	 * @param ref object $parent
-	 * @access public
-	 * @return void
-	 */
-	function setParent (&$parent) {
-		$this->_parent =& $parent;
-	}
-	
-	/**
-	 * Returns the top-level {@link Wizard} in which this component resides.
-	 * @access public
-	 * @return ref object
-	 */
-	function &getWizard () {
-		return $this->_parent->getParent();
 	}
 	
 	/**

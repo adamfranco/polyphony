@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_blob.class.php,v 1.5 2005/08/10 13:27:04 gabeschine Exp $
+ * @version $Id: PrimitiveIO_blob.class.php,v 1.6 2005/08/10 17:52:04 adamfranco Exp $
  */
 
 /**
@@ -16,10 +16,12 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_blob.class.php,v 1.5 2005/08/10 13:27:04 gabeschine Exp $
+ * @version $Id: PrimitiveIO_blob.class.php,v 1.6 2005/08/10 17:52:04 adamfranco Exp $
  */
-class PrimitiveIO_blob extends PrimitiveIO {
-	var $_parent;
+class PrimitiveIO_blob 
+	extends PrimitiveIO 
+{
+
 	var $_blob;
 	
 	function PrimitiveIO_blob () {
@@ -35,26 +37,6 @@ class PrimitiveIO_blob extends PrimitiveIO {
 	function setValueFromSObject(&$value)
 	{
 		$this->_blob =& $value;
-	}
-	
-	/**
-	 * Sets this component's parent (some kind of {@link WizardComponentWithChildren} so that it can
-	 * have access to its information, if needed.
-	 * @param ref object $parent
-	 * @access public
-	 * @return void
-	 */
-	function setParent (&$parent) {
-		$this->_parent =& $parent;
-	}
-
-	/**
-	 * Returns the top-level {@link Wizard} in which this component resides.
-	 * @access public
-	 * @return ref object
-	 */
-	function &getWizard () {
-		return $this->_parent->getWizard();
 	}
 
 	/**

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.5 2005/08/10 13:27:04 gabeschine Exp $
+ * @version $Id: WTextField.class.php,v 1.6 2005/08/10 17:52:05 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingWizardComponent.abstract.php");
@@ -20,10 +20,12 @@ require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingWizardComponent.abstra
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.5 2005/08/10 13:27:04 gabeschine Exp $
+ * @version $Id: WTextField.class.php,v 1.6 2005/08/10 17:52:05 adamfranco Exp $
  */
-class WTextField extends ErrorCheckingWizardComponent {
-	var $_parent;
+class WTextField 
+	extends ErrorCheckingWizardComponent 
+{
+
 	var $_size = 30;
 	var $_maxlength = 255;
 	var $_style = null;
@@ -80,26 +82,6 @@ class WTextField extends ErrorCheckingWizardComponent {
 	 */
 	function setValue ($value) {
 		$this->_value = $value;
-	}
-	
-	/**
-	 * Sets this component's parent (some kind of {@link WizardComponentWithChildren} so that it can
-	 * have access to its information, if needed.
-	 * @param ref object $parent
-	 * @access public
-	 * @return void
-	 */
-	function setParent (&$parent) {
-		$this->_parent =& $parent;
-	}
-	
-	/**
-	 * Returns the top-level {@link Wizard} in which this component resides.
-	 * @access public
-	 * @return ref object
-	 */
-	function &getWizard () {
-		return $this->_parent->getParent();
 	}
 	
 	/**
