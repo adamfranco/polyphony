@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_blob.class.php,v 1.4 2005/07/14 17:17:15 adamfranco Exp $
+ * @version $Id: PrimitiveIO_blob.class.php,v 1.5 2005/08/10 13:27:04 gabeschine Exp $
  */
 
 /**
@@ -16,21 +16,90 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_blob.class.php,v 1.4 2005/07/14 17:17:15 adamfranco Exp $
+ * @version $Id: PrimitiveIO_blob.class.php,v 1.5 2005/08/10 13:27:04 gabeschine Exp $
  */
 class PrimitiveIO_blob extends PrimitiveIO {
-	function mkFormHTML(&$primitive, $label, $index) {
-		$t = "[ update: <input type='checkbox' name='update-$label-$index' value='1'/> ]\n";
-		$t .= "<b>".$label."[".$index."]</b>: \n";
-		$value = $primitive?htmlentities($primitive->asString(), ENT_QUOTES):"";
-		$t .= "<br/><textarea rows='3' cols='60' scrolling='virtual' name='value-$label-$index'>".$value."</textarea>\n";
-		return $t;
+	var $_parent;
+	var $_blob;
+	
+	function PrimitiveIO_blob () {
+		// do nothing.
 	}
-	function &mkPrimitiveFromFormInput(&$fieldSet, $label, $index) {
-		if ($fieldSet->get("update-$label-$index")) {
-			$value = $fieldSet->get("value-$label-$index");
-			return new Blob($value);
-		}
-		return ($null=null);
+
+	/**
+	 * Sets the value of this Component to the {@link SObject} passed.
+	 * @param ref object $value The {@link SObject} value to use.
+	 *
+	 * @return void
+	 **/
+	function setValueFromSObject(&$value)
+	{
+		$this->_blob =& $value;
+	}
+	
+	/**
+	 * Sets this component's parent (some kind of {@link WizardComponentWithChildren} so that it can
+	 * have access to its information, if needed.
+	 * @param ref object $parent
+	 * @access public
+	 * @return void
+	 */
+	function setParent (&$parent) {
+		$this->_parent =& $parent;
+	}
+
+	/**
+	 * Returns the top-level {@link Wizard} in which this component resides.
+	 * @access public
+	 * @return ref object
+	 */
+	function &getWizard () {
+		return $this->_parent->getWizard();
+	}
+
+	/**
+	 * Returns true if this component (and all child components if applicable) have valid values.
+	 * By default, this will just return TRUE. Validate should be called usually before a save event
+	 * is handled, to make sure everything went smoothly. 
+	 * @access public
+	 * @return boolean
+	 */
+	function validate () {
+		return true;
+	}
+
+	/**
+	 * Tells the wizard component to update itself - this may include getting
+	 * form post data or validation - whatever this particular component wants to
+	 * do every pageload. 
+	 * @param string $fieldName The field name to use when outputting form data or
+	 * similar parameters/information.
+	 * @access public
+	 * @return boolean - TRUE if everything is OK
+	 */
+	function update ($fieldName) {
+		// do nothing.
+	}
+
+	/**
+	 * Returns the values of wizard-components. Should return an array if children are involved,
+	 * otherwise a whatever type of object is expected.
+	 * @access public
+	 * @return mixed
+	 */
+	function getAllValues () {
+		return $this->_blob?$this->_blob->value():"";
+	}
+
+	/**
+	 * Returns a block of XHTML-valid code that contains markup for this specific
+	 * component. 
+	 * @param string $fieldName The field name to use when outputting form data or
+	 * similar parameters/information.
+	 * @access public
+	 * @return string
+	 */
+	function getMarkup ($fieldName) {
+		return dgettext("polyphony", "Blob data") . ": " . strlen($this->_blob?$this->_blob->value():"") . " " . dgettext("polyphony", "bytes");
 	}
 }

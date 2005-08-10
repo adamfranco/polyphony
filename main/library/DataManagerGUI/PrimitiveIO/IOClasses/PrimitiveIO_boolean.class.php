@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_boolean.class.php,v 1.4 2005/07/14 17:17:15 adamfranco Exp $
+ * @version $Id: PrimitiveIO_boolean.class.php,v 1.5 2005/08/10 13:27:04 gabeschine Exp $
  */
 
 /**
@@ -16,22 +16,37 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_boolean.class.php,v 1.4 2005/07/14 17:17:15 adamfranco Exp $
+ * @version $Id: PrimitiveIO_boolean.class.php,v 1.5 2005/08/10 13:27:04 gabeschine Exp $
  */
-class PrimitiveIO_boolean extends PrimitiveIO {
-	function mkFormHTML(&$primitive, $label, $index) {
-		$t = "[ update: <input type='checkbox' name='update-$label-$index' value='1'/> ]\n";
-		$t .= "<b>".$label."[".$index."]</b>: \n";
-		$bool = $primitive?null:$primitive->value();
-		$t .= "<input type='radio' name='value-$label-$index' value='true'".(($bool===true)?" checked":"")."> true\n";
-		$t .= "<input type='radio' name='value-$label-$index' value='false'".(($bool===false)?" checked":"")."> false\n";
-		return $t;
+class PrimitiveIO_boolean extends WRadioList /* implements PrimitiveIO */ {
+	
+	function PrimitiveIO_boolean () {
+		$this->_eachPost = '';
+		
+		$this->addOption("1", "true");
+		$this->addOption("0", "false");
+		$this->setValue("0");
 	}
-	function &mkPrimitiveFromFormInput(&$fieldSet, $label, $index) {
-		if ($fieldSet->get("update-$label-$index")) {
-			$value = $fieldSet->get("value-$label-$index")=="true"?true:false;
-			return new Boolean($value);
-		}
-		return ($null=null);
+	
+	/**
+	 * Sets the value of this Component to the {@link SObject} passed.
+	 * @param ref object $value The {@link SObject} value to use.
+	 *
+	 * @return void
+	 **/
+	function setValueFromSObject(&$value)
+	{
+		$this->setValue($value->value()?"1":"0");
 	}
+	
+	/**
+	 * Returns the values of wizard-components. Should return an array if children are involved,
+	 * otherwise a whatever type of object is expected.
+	 * @access public
+	 * @return mixed
+	 */
+	function getAllValues () {
+		return new Boolean($this->_value=="1"?true:false);
+	}
+
 }

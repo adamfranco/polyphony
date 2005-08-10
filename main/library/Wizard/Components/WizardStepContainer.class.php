@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.4 2005/07/25 18:33:19 gabeschine Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.5 2005/08/10 13:27:04 gabeschine Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.4 2005/07/25 18:33:19 gabeschine Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.5 2005/08/10 13:27:04 gabeschine Exp $
  */
 class WizardStepContainer extends WizardComponent {
 	var $_currStep;
@@ -80,7 +80,7 @@ class WizardStepContainer extends WizardComponent {
 	 * @return void
 	 */
 	function setStep ($name) {
-		$ind = array_search($name, array_keys($this->_steps));
+		$ind = array_search($name, $this->_stepNames);
 		if ($ind !== false) {
 			$this->_currStep = $ind;
 		}
@@ -213,6 +213,11 @@ class WizardStepContainer extends WizardComponent {
 	function update ($fieldName) {
 		for($i = 0; $i < count($this->_steps); $i++) {
 			$this->_steps[$i]->update($fieldName."_".$this->_stepNames[$i]);
+		}
+		
+		// set the current step if necessary
+		if ($step = RequestContext::value("wizardSkipToStep")) {
+			$this->setStep($step);
 		}
 	}
 	

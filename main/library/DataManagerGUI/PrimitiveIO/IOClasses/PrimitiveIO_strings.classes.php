@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_strings.classes.php,v 1.4 2005/07/14 17:17:15 adamfranco Exp $
+ * @version $Id: PrimitiveIO_strings.classes.php,v 1.5 2005/08/10 13:27:04 gabeschine Exp $
  */
 
 /**
@@ -16,35 +16,62 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_strings.classes.php,v 1.4 2005/07/14 17:17:15 adamfranco Exp $
+ * @version $Id: PrimitiveIO_strings.classes.php,v 1.5 2005/08/10 13:27:04 gabeschine Exp $
  */
-class PrimitiveIO_shortstring extends PrimitiveIO {
-	function mkFormHTML(&$primitive, $label, $index) {
-		$t = "[ update: <input type='checkbox' name='update-$label-$index' value='1'/> ]\n";
-		$t .= "<b>".$label."[".$index."]</b>: \n";
-		$value = $primitive?htmlentities($primitive->asString(), ENT_QUOTES):"";
-		$t .= "<input type='text' name='value-$label-$index' value='".$value."' size=30/>\n";
-		return $t;
+class PrimitiveIO_shortstring extends WTextField {
+
+	/**
+	 * Sets the value of this Component to the {@link SObject} passed.
+	 * @param ref object $value The {@link SObject} value to use.
+	 *
+	 * @return void
+	 **/
+	function setValueFromSObject(&$value)
+	{
+		$this->setValue($value->asString());
 	}
-	function &mkPrimitiveFromFormInput(&$fieldSet, $label, $index) {
-		if ($fieldSet->get("update-$label-$index")) {
-			$value = $fieldSet->get("value-$label-$index");
-			return new String($value);
-		}
-		return ($null=null);
+
+	/**
+	 * Returns the values of wizard-components. Should return an array if children are involved,
+	 * otherwise a whatever type of object is expected.
+	 * @access public
+	 * @return mixed
+	 */
+	function getAllValues () {
+		return new String($this->_value?$this->_value:"");
 	}
+	
 }
 
 /**
  * 
  * @package polyphony.library.datamanager_gui
  */
-class PrimitiveIO_string extends PrimitiveIO_shortstring {
-	function mkFormHTML(&$primitive, $label, $index) {
-		$t = "[ update: <input type='checkbox' name='update-$label-$index' value='1'/> ]\n";
-		$t .= "<b>".$label."[".$index."]</b>: \n";
-		$value = $primitive?htmlentities($primitive->asString(), ENT_QUOTES):"";
-		$t .= "<br/><textarea rows='3' cols='60' scrolling='virtual' name='value-$label-$index'>".$value."</textarea>\n";
-		return $t;
+class PrimitiveIO_string extends WTextArea {
+	
+	function PrimitiveIO_string () {
+		$this->setRows(5);
+		$this->setColumns(70);
+	}
+	
+	/**
+	 * Sets the value of this Component to the {@link SObject} passed.
+	 * @param ref object $value The {@link SObject} value to use.
+	 *
+	 * @return void
+	 **/
+	function setValueFromSObject(&$value)
+	{
+		$this->setValue($value->asString());
+	}
+
+	/**
+	 * Returns the values of wizard-components. Should return an array if children are involved,
+	 * otherwise a whatever type of object is expected.
+	 * @access public
+	 * @return mixed
+	 */
+	function getAllValues () {
+		return new String($this->_value?$this->_value:"");
 	}
 }

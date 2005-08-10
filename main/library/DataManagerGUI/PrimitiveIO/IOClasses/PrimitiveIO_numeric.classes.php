@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_numeric.classes.php,v 1.4 2005/07/14 17:17:15 adamfranco Exp $
+ * @version $Id: PrimitiveIO_numeric.classes.php,v 1.5 2005/08/10 13:27:04 gabeschine Exp $
  */
 
 /**
@@ -19,20 +19,45 @@ require_once(POLYPHONY."/main/library/DataManagerGUI/PrimitiveIO/IOClasses/Primi
  * @package polyphony.library.datamanager_gui
  */
 class PrimitiveIO_integer extends PrimitiveIO_shortstring {
-	function &mkPrimitiveFromFormInput(&$fieldSet, $label, $index) {
-		if ($fieldSet->get("update-$label-$index")) {
-			$value = $fieldSet->get("value-$label-$index");
-			return new Integer($value);
-		}
-		return ($null=null);
+
+	function PrimitiveIO_integer() {
+		$this->setErrorText(dgettext("polyphony", "Enter a valid integer (no commas)."));
+		$this->setErrorRule(new WECRegex("^[0-9]+\$"));
 	}
-        function mkFormHTML(&$primitive, $label, $index) {
-		$t = "[ update: <input type='checkbox' name='update-$label-$index' value='1'/> ]\n";
-		$t .= "<b>".$label."[".$index."]</b>: \n";
-		$value = $primitive?htmlentities($primitive->asString(), ENT_QUOTES):"";
-		$t .= "<input type='text' name='value-$label-$index' value='".$value."' size=5/>\n";
-		return $t;
-											        }
+
+	/**
+	 * Sets the value of this Component to the {@link SObject} passed.
+	 * @param ref object $value The {@link SObject} value to use.
+	 *
+	 * @return void
+	 **/
+	function setValueFromSObject(&$value)
+	{
+		$this->setValue($value->asString());
+	}
+
+	/**
+	 * Returns the values of wizard-components. Should return an array if children are involved,
+	 * otherwise a whatever type of object is expected.
+	 * @access public
+	 * @return mixed
+	 */
+	function getAllValues () {
+		return Integer::withValue($this->_value?intval($this->_value):0);
+	}
+	
+	/**
+	 * Returns true if this component (and all child components if applicable) have valid values.
+	 * By default, this will just return TRUE. Validate should be called usually before a save event
+	 * is handled, to make sure everything went smoothly. 
+	 * @access public
+	 * @return boolean
+	 */
+	function validate () {
+		$val = ereg("^[0-9]+\$", $this->_value);
+		if (!$val) $this->_showError = true;
+		return $val;
+	}
 }
 
 /**
@@ -40,11 +65,43 @@ class PrimitiveIO_integer extends PrimitiveIO_shortstring {
  * @package polyphony.library.datamanager_gui
  */
 class PrimitiveIO_float extends PrimitiveIO_integer {
-	function &mkPrimitiveFromFormInput(&$fieldSet, $label, $index) {
-		if ($fieldSet->get("update-$label-$index")) {
-			$value = $fieldSet->get("value-$label-$index");
-			return new Float($value);
-		}
-		return ($null=null);
+
+	function PrimitiveIO_float() {
+		$this->setErrorText(dgettext("polyphony", "Enter a valid integer (no commas)."));
+		$this->setErrorRule(new WECRegex("^[0-9\\.]+\$"));
+	}
+
+	/**
+	 * Sets the value of this Component to the {@link SObject} passed.
+	 * @param ref object $value The {@link SObject} value to use.
+	 *
+	 * @return void
+	 **/
+	function setValueFromSObject(&$value)
+	{
+		$this->setValue($value->asString());
+	}
+
+	/**
+	 * Returns the values of wizard-components. Should return an array if children are involved,
+	 * otherwise a whatever type of object is expected.
+	 * @access public
+	 * @return mixed
+	 */
+	function getAllValues () {
+		return Float::withValue($this->_value?floatval($this->_value):0);
+	}
+	
+	/**
+	 * Returns true if this component (and all child components if applicable) have valid values.
+	 * By default, this will just return TRUE. Validate should be called usually before a save event
+	 * is handled, to make sure everything went smoothly. 
+	 * @access public
+	 * @return boolean
+	 */
+	function validate () {
+		$val = ereg("^[0-9\\.]+\$", $this->_value);
+		if (!$val) $this->_showError = true;
+		return $val;
 	}
 }

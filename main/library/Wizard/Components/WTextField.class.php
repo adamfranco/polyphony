@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.4 2005/07/25 18:33:19 gabeschine Exp $
+ * @version $Id: WTextField.class.php,v 1.5 2005/08/10 13:27:04 gabeschine Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingWizardComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingWizardComponent.abstra
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.4 2005/07/25 18:33:19 gabeschine Exp $
+ * @version $Id: WTextField.class.php,v 1.5 2005/08/10 13:27:04 gabeschine Exp $
  */
 class WTextField extends ErrorCheckingWizardComponent {
 	var $_parent;
@@ -124,6 +124,7 @@ class WTextField extends ErrorCheckingWizardComponent {
 	 */
 	function validate () {
 		$rule =& $this->getErrorRule();
+		if (!$rule) return true;
 		
 		$err = $rule->checkValue($this);
 		if (!$err) $this->_showError = true;

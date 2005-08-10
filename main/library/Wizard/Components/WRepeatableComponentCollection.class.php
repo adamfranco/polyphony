@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.1 2005/08/03 17:38:43 gabeschine Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.2 2005/08/10 13:27:04 gabeschine Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.1 2005/08/03 17:38:43 gabeschine Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.2 2005/08/10 13:27:04 gabeschine Exp $
  */
 
 class WRepeatableComponentCollection extends WizardComponentWithChildren {
@@ -83,11 +83,13 @@ class WRepeatableComponentCollection extends WizardComponentWithChildren {
 	 * @access public
 	 * @return void
 	 */
-	function addCollection (&$collection) {
+	function addValueCollection (&$collection) {
 		// @todo - make sure that the correct fields/classes are represented
-		$collection["_remove"] =& WEventButton::withLabel(dgettext("polyphony", "Remove"));
-		$collection["_remove"]->setParent($this);
-		$collection["_remove"]->setOnClick("ignoreValidation(this.form);");
+		if (!isset($collection["_remove"])) {
+			$collection["_remove"] =& WEventButton::withLabel(dgettext("polyphony", "Remove"));
+			$collection["_remove"]->setParent($this);
+			$collection["_remove"]->setOnClick("ignoreValidation(this.form);");
+		}
 		$this->_collections[] =& $collection;
 		$this->_num++;
 	}
@@ -101,19 +103,28 @@ class WRepeatableComponentCollection extends WizardComponentWithChildren {
 		if ($this->_max != -1 && $this->_num == $this->_max - 1) return;
 //		printDebugBacktrace();
 		// clone our base set (the getChildren() array)
+		$newArray =& $this->createValueCollection();
+		$this->_collections[] =& $newArray;
+		$this->_num++;
+	}
+	
+	/**
+	 * Returns a new array of {@link WizardComponent}s cloned from the base set for this repeatable collection.
+	 *
+	 * @return ref array
+	 **/
+	function &createValueCollection()
+	{
 		$newArray = array();
 		$base =& $this->getChildren();
 		foreach (array_keys($base) as $key) {
 			$newArray[$key] =& $base[$key]->copy();
 			$newArray[$key]->setParent($this);
 		}
-		
 		$newArray["_remove"] =& WEventButton::withLabel(dgettext("polyphony", "Remove"));
 		$newArray["_remove"]->setParent($this);
 		$newArray["_remove"]->setOnClick("ignoreValidation(this.form);");
-		
-		$this->_collections[] =& $newArray;
-		$this->_num++;
+		return $newArray;
 	}
 	
 	/**

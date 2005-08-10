@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.class.php,v 1.1 2005/08/03 17:38:43 gabeschine Exp $
+ * @version $Id: WEventButton.class.php,v 1.2 2005/08/10 13:27:04 gabeschine Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.class.php,v 1.1 2005/08/03 17:38:43 gabeschine Exp $
+ * @version $Id: WEventButton.class.php,v 1.2 2005/08/10 13:27:04 gabeschine Exp $
  */
 class WEventButton extends WizardComponent {
 	var $_event = "nop";
@@ -164,8 +164,10 @@ class WEventButton extends WizardComponent {
 		$name = RequestContext::name($fieldName);
 		$label = htmlentities($this->_label, ENT_QUOTES);
 		$onclick = '';
-		if ($this->_onclick) $onclick = " onclick='".addslashes($this->_onclick)."'";
-		return "<input type='submit' name='$name' value='$label'$onclick".($this->_enabled?"":" disabled")." />";
+		if ($this->_onclick) $onclick = addslashes($this->_onclick) . ";";
+		$m = "<input type='hidden' name='$name' id='$name' value='0' />\n";
+		$m .= "<input type='button' value='$label' onclick='$onclick getWizardElement(\"$name\").value=\"1\"; this.form.submit();'".($this->_enabled?"":" disabled")." />";
+		return $m;
 	}
 }
 
