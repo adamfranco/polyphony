@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.1 2005/08/10 14:11:55 adamfranco Exp $
+ * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.2 2005/08/11 16:38:07 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.1 2005/08/10 14:11:55 adamfranco Exp $
+ * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.2 2005/08/11 16:38:07 adamfranco Exp $
  */
 
 class WOrderedRepeatableComponentCollection 
@@ -63,7 +63,7 @@ class WOrderedRepeatableComponentCollection
 	 * @access private
 	 * @return void
 	 */
-	function _addElement () {
+	function &_addElement () {
 		if ($this->_max != -1 && $this->_num == $this->_max - 1) return;
 //		printDebugBacktrace();
 		// clone our base set (the getChildren() array)
@@ -83,10 +83,13 @@ class WOrderedRepeatableComponentCollection
 		$newArray["_movedown"]->setParent($this);
 		
 		$this->_collections[$this->_nextId] =& $newArray;
+		$newElement =& $this->_collections[$this->_nextId];
 		$idManager =& Services::getService("Id");
 		$this->_orderedSet->addItem($idManager->getId(strval($this->_nextId)));
 		$this->_nextId++;
 		$this->_num++;
+		
+		return $newElement;
 	}
 	
 	/**

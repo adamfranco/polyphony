@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.20 2005/08/10 14:11:54 adamfranco Exp $
+ * @version $Id: polyphony.inc.php,v 1.21 2005/08/11 16:38:06 adamfranco Exp $
  */
 
 /**
@@ -44,6 +44,8 @@ require_once(dirname(__FILE__)."/main/library/Wizard/ErrorCheckingRules/WECRegex
 
 require_once(dirname(__FILE__)."/main/library/ResultPrinter/IteratorResultPrinter.class.php");
 require_once(dirname(__FILE__)."/main/library/ResultPrinter/ArrayResultPrinter.class.php");
+
+require_once(dirname(__FILE__)."/main/library/Basket/BasketManager.class.php");
 
 
 if (OKI_VERSION > 1) { 
