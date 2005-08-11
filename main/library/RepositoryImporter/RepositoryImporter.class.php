@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.15 2005/08/08 16:06:18 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.16 2005/08/11 15:37:36 adamfranco Exp $
  */ 
 require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(POLYPHONY."/main/library/RepositoryImporter/XMLAssetIterator.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.15 2005/08/08 16:06:18 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.16 2005/08/11 15:37:36 adamfranco Exp $
  */
 class RepositoryImporter {
 	
@@ -286,7 +286,7 @@ class RepositoryImporter {
 			case "float":
 				return Float::withValue($part);
 				break;
-			case "time":
+			case "datetime":
 				return DateAndTime::fromString($part);
 				break;
 			case "type": 
