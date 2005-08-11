@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.16 2005/08/11 15:37:36 adamfranco Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.17 2005/08/11 18:05:42 cws-midd Exp $
  */ 
 require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(POLYPHONY."/main/library/RepositoryImporter/XMLAssetIterator.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.16 2005/08/11 15:37:36 adamfranco Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.17 2005/08/11 18:05:42 cws-midd Exp $
  */
 class RepositoryImporter {
 	
@@ -78,6 +78,7 @@ class RepositoryImporter {
 		if ($worked == false)
 			$this->addError("Failed to decompress file: ".$this->_filepath.
 				".  Unsupported archive extension.");
+	 unset($dearchiver);	
 	}
 		
 	/**
@@ -94,6 +95,7 @@ class RepositoryImporter {
 			return;
 		$null = null;
 		$this->assetBuildingIteration($assetIterator, $null);
+		unset($assetIterator);
 	}
 
 	/**
@@ -108,7 +110,7 @@ class RepositoryImporter {
 		if (!$assetInfoIterator)
 			return $assetInfoIterator; // false
 		while ($assetInfoIterator->hasNext()) {
-			$info = $assetInfoIterator->next();
+			$info =& $assetInfoIterator->next();
 			$child =& $this->buildAsset($info["assetInfo"], $info["recordList"],
 				$info["childAssetList"]);
 			if (!$child)
@@ -116,6 +118,7 @@ class RepositoryImporter {
 			if (!is_null($parent))
 				$parent->addAsset($child->getId());
 		}
+		unset($assetInfoIterator);
 		$true = true;
 		return $true;
 	}
@@ -202,44 +205,53 @@ class RepositoryImporter {
 	 * @since 7/18/05
 	 *
 	 */
-	function &buildAsset($assetInfo, $recordList, $childAssetList) {
+	function &buildAsset(&$assetInfo, &$recordList, &$childAssetList) {
 		$idManager = Services::getService("Id");
+		$mime =& Services::getService("MIME");
+		$FILE_ID =& $idManager->getId("FILE");
+		$FILE_DATA_ID =& $idManager->getId("FILE_DATA");
+		$FILE_NAME_ID =& $idManager->getId("FILE_NAME");
+		$MIME_TYPE_ID =& $idManager->getId("MIME_TYPE");
+		$THUMBNAIL_DATA_ID =& $idManager->getId("THUMBNAIL_DATA");
+		$THUMBNAIL_MIME_TYPE_ID =& $idManager->getId("THUMBNAIL_MIME_TYPE");
+		
 		$asset =& $this->_destinationRepository->createAsset(
 			$assetInfo['displayName'], $assetInfo['description'],
 			$assetInfo['type']);
 		$this->addGoodAssetId($asset->getId());
+		RecordManager::setCacheMode(false);
 		foreach($recordList as $entry) {
 			$assetRecord =& $asset->createRecord($entry['structureId']);
 			$j = 0;
 			foreach ($entry['partStructureIds'] as $id) {
-				if($entry['structureId']->getIdString() != "FILE") {
+				if(!($entry['structureId']->isEqual($FILE_ID))) {
 					$assetRecord->createPart($id, $entry['parts'][$j]);
 					$j++;
 				}
-				else if ($entry['structureId']->getIdString() == "FILE") {
-					$mime = new MIMETypes();
+				else if ($entry['structureId']->isEqual($FILE_ID)) {
 					$filename = trim($entry['parts'][0]);
 					$mimetype = $mime->getMIMETypeForFileName($this->_srcDir.
 						$filename);
-					$assetRecord->createPart($idManager->getId("FILE_DATA"),
+					$assetRecord->createPart($FILE_DATA_ID,
 						file_get_contents($this->_srcDir.$filename));
-					$assetRecord->createPart($idManager->getId("FILE_NAME"),
+					$assetRecord->createPart($FILE_NAME_ID,
 						basename($filename));
-					$assetRecord->createPart($idManager->getId("MIME_TYPE"),
+					$assetRecord->createPart($MIME_TYPE_ID,
 						$mimetype);
 					$imageProcessor =& Services::getService("ImageProcessor");
 					if(isset($entry['parts'][1]) && $entry['parts'][1] != "") {
 						$assetRecord->createPart(
-							$idManager->getId("THUMBNAIL_DATA"),
-							file_get_contents($this->_srcDir.$entry['parts'][1]));
+							$THUMBNAIL_DATA_ID,
+							file_get_contents($this->_srcDir.
+								$entry['parts'][1]));
 					}
 					else if ($imageProcessor->isFormatSupported($mimetype)) {
 						$assetRecord->createPart(
-							$idManager->getId("THUMBNAIL_DATA"),
+							$THUMBNAIL_DATA_ID,
 							$imageProcessor->generateThumbnailData($mimetype,
 							file_get_contents($this->_srcDir.$filename)));
 						$assetRecord->createPart(
-							$idManager->getId("THUMBNAIL_MIME_TYPE"),
+							$THUMBNAIL_MIME_TYPE_ID,
 							$imageProcessor->getThumbnailFormat());
 					}
 				}
@@ -250,7 +262,7 @@ class RepositoryImporter {
 				$childAssetList), $asset);	
 			if (!$stop)
 				return $stop; // false
-		}	
+		}
 		return $asset;
 	}
 	
@@ -299,6 +311,31 @@ class RepositoryImporter {
 				return $false;
 		}
 	}
+
+	/**
+	 * Print the AssetIds for Assets created properly by the importer
+	 *
+	 * @param array $goodAssetIds
+	 * @since 7/29/05
+	 */
+	 function printErrorMessages() {
+	 	foreach ($this->_errors as $errorString) {
+	 		print("Error: ".$errorString."<br />");
+	 	}
+	 }
+
+	
+	/**
+	 * Print the AssetIds for Assets created properly by the importer
+	 *
+	 * @param array $goodAssetIds
+	 * @since 7/29/05
+	 */
+	 function printGoodAssetIds() {
+	 	foreach ($this->_goodAssetIds as $id) {
+	 		print("Asset: ".$id->getIdString()."<br />");
+	 	}
+	 }
 
 	/**
 	 * gets error array

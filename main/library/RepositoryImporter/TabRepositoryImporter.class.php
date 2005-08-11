@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.14 2005/08/05 18:01:16 ndhungel Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.15 2005/08/11 18:05:42 cws-midd Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.14 2005/08/05 18:01:16 ndhungel Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.15 2005/08/11 18:05:42 cws-midd Exp $
  */
 class TabRepositoryImporter
 	extends RepositoryImporter
@@ -165,7 +165,7 @@ class TabRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function &getChildAssetList (&$input) {
+	function &getChildAssetList ($input) {
 		return null;
 	}
 }

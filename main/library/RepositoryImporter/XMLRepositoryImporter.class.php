@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.13 2005/08/08 16:06:19 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.14 2005/08/11 18:05:42 cws-midd Exp $
  */ 
 require_once("/home/cshubert/public_html/importer/domit/xml_domit_include.php");
 
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.13 2005/08/08 16:06:19 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.14 2005/08/11 18:05:42 cws-midd Exp $
  */
 class XMLRepositoryImporter
 	extends RepositoryImporter
@@ -48,7 +48,7 @@ class XMLRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function &getSingleAssetInfo (& $input) {
+	function &getSingleAssetInfo (&$input) {
 		$assetInfo = array();
 		$assetInfo['displayName'] = $input->childNodes[0]->getText();
 		$assetInfo['description'] = $input->childNodes[1]->getText();
@@ -116,7 +116,7 @@ class XMLRepositoryImporter
 							return $false;
 						}
 					}
-					$recordListElement['parts'] = $parts;
+					$recordListElement['parts'] =& $parts;
 				}
 				else {
 					$partObjects = array();
@@ -127,10 +127,11 @@ class XMLRepositoryImporter
 							return $partObject; // false
 						$partObjects[] = $partObject;
 					}
-					$recordListElement['parts'] = $partObjects;
+					$recordListElement['parts'] =& $partObjects;
 				}
 				$recordListElement['partStructureIds'] = $partStructureIds;
 				$recordList[] = $recordListElement;
+				unset($recordListElement);
 			}
 			
 		}
@@ -150,7 +151,7 @@ class XMLRepositoryImporter
 		$childAssetList = array();
 		foreach ($iChildAssetList as $asset) {
 			if ($asset->nodeName == "asset") {
-				$childAssetList[] =& $asset;
+				$childAssetList[] = $asset;
 			}
 		}
 		return $childAssetList;
