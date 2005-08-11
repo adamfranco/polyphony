@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.8 2005/08/11 18:27:20 ndhungel Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.9 2005/08/11 19:18:53 ndhungel Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -21,7 +21,7 @@ require_once("/home/cshubert/public_html/importer/domit/xml_domit_include.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.8 2005/08/11 18:27:20 ndhungel Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.9 2005/08/11 19:18:53 ndhungel Exp $
  */
 class ExifRepositoryImporter
 extends RepositoryImporter
@@ -187,6 +187,16 @@ extends RepositoryImporter
 		return $recordList;
 	}
 
+	/**
+	 * get part id from the specified structure by name
+	 * 
+	 * @param string $partName
+	 * @param object $structureId
+	 * @return mixed partId
+	 * @access public
+	 * @since 8/11/05
+	 */
+	
 	function getPartIdByName($partName, $structureId){
 		$dr =& $this->_destinationRepository;
 		$structure =& $dr->getRecordStructure($structureId);
