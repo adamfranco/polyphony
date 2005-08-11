@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositorySearchModuleManager.class.php,v 1.3 2005/04/04 19:57:40 adamfranco Exp $
+ * @version $Id: RepositorySearchModuleManager.class.php,v 1.4 2005/08/11 18:27:21 ndhungel Exp $
  */
 
 /**
@@ -21,8 +21,8 @@ require_once(dirname(__FILE__)."/modules/SimpleFieldModule.class.php");
  * to the appropriate RepositorySearchModule based on their types.
  * 
  * @package polyphony.library.repository.search
- * @version $Id: RepositorySearchModuleManager.class.php,v 1.3 2005/04/04 19:57:40 adamfranco Exp $
- * @since $Date: 2005/04/04 19:57:40 $
+ * @version $Id: RepositorySearchModuleManager.class.php,v 1.4 2005/08/11 18:27:21 ndhungel Exp $
+ * @since $Date: 2005/08/11 18:27:21 $
  * @copyright 2004 Middlebury College
  */
 
@@ -37,12 +37,12 @@ class RepositorySearchModuleManager {
 	 */
 	function RepositorySearchModuleManager () {
 		$this->_modules = array();
-		$this->_modules["Repository::Harmoni::AssetType"] =& new SimpleFieldModule("AssetType");
-		$this->_modules["Repository::Harmoni::RootAssets"] =& new SimpleFieldModule("RootAssets");
-		$this->_modules["Repository::Harmoni::DisplayName"] =& new SimpleFieldModule("DisplayName");
-		$this->_modules["Repository::Harmoni::Description"] =& new SimpleFieldModule("Description");
-		$this->_modules["Repository::Harmoni::Content"] =& new SimpleFieldModule("Content");
-		$this->_modules["Repository::Harmoni::AllCustomStructures"] =& new SimpleFieldModule("AllCustomStructures");
+		$this->_modules["Repository::edu.middlebury.harmoni::AssetType"] =& new SimpleFieldModule("AssetType");
+		$this->_modules["Repository::edu.middlebury.harmoni::RootAssets"] =& new SimpleFieldModule("RootAssets");
+		$this->_modules["Repository::edu.middlebury.harmoni::DisplayName"] =& new SimpleFieldModule("DisplayName");
+		$this->_modules["Repository::edu.middlebury.harmoni::Description"] =& new SimpleFieldModule("Description");
+		$this->_modules["Repository::edu.middlebury.harmoni::Content"] =& new SimpleFieldModule("Content");
+		$this->_modules["Repository::edu.middlebury.harmoni::AllCustomStructures"] =& new SimpleFieldModule("AllCustomStructures");
 	}
 		
 	/**

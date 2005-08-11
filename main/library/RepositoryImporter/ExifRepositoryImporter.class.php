@@ -6,12 +6,12 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.7 2005/08/01 20:06:54 adamfranco Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.8 2005/08/11 18:27:20 ndhungel Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
 require_once("/home/afranco/public_html/PHP_JPEG_Metadata_Toolkit_1.11/EXIF.php");
-
+require_once("/home/cshubert/public_html/importer/domit/xml_domit_include.php");
 /**
 * <##>
  * 
@@ -21,12 +21,12 @@ require_once("/home/afranco/public_html/PHP_JPEG_Metadata_Toolkit_1.11/EXIF.php"
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.7 2005/08/01 20:06:54 adamfranco Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.8 2005/08/11 18:27:20 ndhungel Exp $
  */
 class ExifRepositoryImporter
-	extends RepositoryImporter
+extends RepositoryImporter
 {
-	
+
 	/**
 	 * Constructor for ExifImpoerter	
 	 * 
@@ -50,31 +50,31 @@ class ExifRepositoryImporter
 	 */
 	function &getSingleAssetInfo (& $input) {
 		$assetInfo = array();
-		
+
 		$headerData = get_jpeg_header_data($input);
 		$photoshopIRB = get_Photoshop_IRB($headerData);
 		$this->_photoshopIPTC = get_Photoshop_IPTC($photoshopIRB);
-		
+
 		foreach ($this->_photoshopIPTC as $array) {
 			if($array['RecName'] == "description")
-				$assetInfo['description'] = $array['RecData'];
+			$assetInfo['description'] = $array['RecData'];
 			else $assetInfo['description'] = "";
 			if($array['RecName'] == "Object Name (Title)")
-				$assetInfo['displayName'] = $array['RecData'];
+			$assetInfo['displayName'] = $array['RecData'];
 			else $assetInfo['displayName'] = "";
 		}
 
 		$assetInfo['type'] = "";
 		if ($assetInfo['type'] == "")
-			$assetInfo['type'] = new HarmoniType("Asset Types", "edu.middlebury.concerto",
-				"Generic Asset");
+		$assetInfo['type'] = new HarmoniType("Asset Types", "edu.middlebury.concerto",
+		"Generic Asset");
 		else
-			$assetInfo['type'] = new HarmoniType("Asset Types", "edu.middlebury.concerto",
-				$assetInfo['type']);
+		$assetInfo['type'] = new HarmoniType("Asset Types", "edu.middlebury.concerto",
+		$assetInfo['type']);
 
 		return $assetInfo;
 	}
-	
+
 	/**
 	 * get parameters for createRecord
 	 * 
@@ -84,79 +84,119 @@ class ExifRepositoryImporter
 	 * @since 7/20/05
 	 */
 	function &getSingleAssetRecordList (&$input) {
-		if (!isset($this->_structureId)) {
-			$meta = fopen($this->_srcDir."/schema.txt", "r");
-			$schema = ereg_replace("[\n\r]*$","",fgets($meta));
-			$this->_partArray = array();
-			$this->_tagNameArray = array();
-			while($titleline = ereg_replace("[\n\r]*$", "", fgets($meta))){
-				$titlelineParts = explode("\t", $titleline);
-				$this->_partArray[] = $titlelineParts[0];
-				$this->_tagNameArray[] = $titlelineParts[1];
-			}
-			fclose($meta);
-		
-			$this->_fileStructureId = $this->matchSchema(
-				"File", $this->_destinationRepository);
-			$fileparts = array("File Name", "Thumbnail Data");
+		$idManager =& Services::getService("Id");
+		$this->_fileStructureId =& $idManager->getId("FILE");
+		$fileparts = array("File Name", "Thumbnail Data");
 			$this->_fileNamePartIds = $this->matchPartStructures(
-				$this->_destinationRepository->getRecordStructure(
-				$this->_fileStructureId), $fileparts);
-				
-			$this->_structureId = $this->matchSchema(
-				$schema, $this->_destinationRepository);
-			
-			if (!$this->_structureId) {
-				$this->addError("The schema: ".$schema.
-					" does not exist in repository: ".$this->_repositoryId->getIdString());
-				return $this->_structureId;
+			$this->_destinationRepository->getRecordStructure(
+			$this->_fileStructureId), $fileparts);
+		if (!isset($this->_structureId)) {
+			$import =& new DOMIT_Document();
+			if ($import->loadXML($this->_srcDir."schema.xml")) {
+				if (!($import->documentElement->hasChildNodes()))
+					$this->addError("There are no schemas defined in : ".$this->_srcDir."schema.xml.");
 			}
+			else
+				$this->addError("XML parse failed: ".$this->_srcDir."metadata.xml does not exist or contains poorly formed XML.");
+			$istructuresList =& $import->documentElement->childNodes;
+			$this->_structureId = array();
+			$partsFinal = array();
+			$valuesFinal = array();
+			foreach($istructuresList as $istructure) {
+				$valuesPreFinal = array();
+				$partStructuresArray = array();
+				if($istructure->nodeName == "recordStructure") {
+					//match the structure
+					$ipartStructures =& $istructure->childNodes;
+					if($ipartStructures[0]->getText() != ""){
+						$matchedSchema = $idManager->getId($ipartStructures[0]->getText());
+					} else
+						$matchedSchema = $this->matchSchema($ipartStructures[1]->getText(), $this->_destinationRepository);
+					$this->_structureId[] = $matchedSchema;
+					//match the partstructures
+					foreach($ipartStructures as $ipartStructure) {
+						if($ipartStructure->nodeName == "partStructure") {
+							
+							$ivaluesArray =& $ipartStructure->childNodes;
+							if($ivaluesArray[0]->getText() != ""){
+								$matchedId = $idManager->getId($ivaluesArray[0]->getText());
+							}else
+								$matchedId = $this->getPartIdByName($ivaluesArray[1]->getText(), $matchedSchema);
+							if($matchedId == false)
+								$this->addError("Part ".$ivaluesArray[1]." does not exist.");
+							$partStructuresArray[] = $matchedId;
+							$valueArray = array();
+							foreach($ivaluesArray as $ivalueField){
+								if($ivalueField->nodeName == "value"){
+									$ivaluesChildren = $ivalueField->childNodes;
+									foreach($ivaluesChildren as $ivalue) {
+										if($ivalue->nodeName == "exifElement")
+										$valueArray[]="exif::".$ivalue->getText();
+										if($ivalue->nodeName == "text")
+										$valueArray[]="text::".$ivalue->getText();
+									}
+								}
+								
+							}							
+						if($matchedId != false)
+							$valuesPreFinal[$matchedId->getIdString()] = $valueArray;
+						}
+						$valuesFinal[$matchedSchema->getIdString()] = $valuesPreFinal;
+					}
 					
-			$this->_partStructureIds = $this->matchPartStructures(
-				$this->_destinationRepository->getRecordStructure(
-				$this->_structureId), $this->_partArray);
-			if (!$this->_partStructureIds) {
-				$this->addError("One or more of the Parts specified in the Exif file for Schema: ".
-					$schema." are not valid.");
-				return $this->_partStructureIds;
+					$partsFinal[$matchedSchema->getIdString()] = $partStructuresArray;
+				}
 			}
 		}
-		
 		$recordList = array();
 		$recordListElement = array();
-		
+
 		$headerData = get_jpeg_header_data($input);
-		
-		$fileMetaData1 =& $this->extractPhotoshopMetaData($this->_tagNameArray);
-		printpre($fileMetaData1);
-		$fileMetaData2 =& $this->extractExifMetaData($input,
-			$this->_tagNameArray);
+
+		$fileMetaData1 =& $this->extractPhotoshopMetaData();
+		$fileMetaData2 =& $this->extractExifMetaData($input);
 		$fileMetaData = array_merge($fileMetaData1, $fileMetaData2);
-		$parts = array();
-		foreach($this->_tagNameArray as $tag)
-			if(isset($fileMetaData[$tag]))
-				$parts[] = $fileMetaData[$tag];
-			else $parts[] = "";
-
-		$partObjects = array();
-		for ($i = 0; $i < count($this->_partStructureIds); $i++) {
-			$partObject = $this->getPartObject($this->_structureId,
-				$this->_partStructureIds[$i], $parts[$i]);
-			if (!$partObject)
-				return $partObject; // false
-			$partObjects[] = $partObject;
-		}
-
 		$recordListElement['structureId'] =& $this->_fileStructureId;
 		$recordListElement['partStructureIds'] =& $this->_fileNamePartIds;
 		$recordListElement['parts'] = array(basename($input), "");
 		$recordList[] = $recordListElement;
-		$recordListElement['structureId'] =& $this->_structureId;
-		$recordListElement['partStructureIds'] =& $this->_partStructureIds;
-		$recordListElement['parts'] = $partObjects;
-		$recordList[] =& $recordListElement;
+		$recordListElement = array();
+		foreach($this->_structureId as $structureId) {
+			$parts = array();
+			$recordListElement['structureId'] = $structureId;
+			$recordListElement['partStructureIds'] = $partsFinal[$structureId->getIdString()];
+			$partValuesArray =& $valuesFinal[$structureId->getIdString()];
+			foreach($partValuesArray as $key=>$partsArray){
+				$data = "";
+				foreach($partsArray as $part){
+					$checkExifField = explode("::", $part);
+					if($checkExifField[0] == "exif"){
+						if(isset($fileMetaData[$checkExifField[1]]))
+							$data .= $fileMetaData[$checkExifField[1]];
+					}
+					else 
+						$data .= $checkExifField[1];
+				}
+				$parts[] = $this->getPartObject($structureId, $idManager->getId($key), $data);
+			
+			}
+			$recordListElement['parts'] = $parts;
+			$recordList[] = $recordListElement;
+		}
+		//printpre($recordList);
 		return $recordList;
+	}
 
+	function getPartIdByName($partName, $structureId){
+		$dr =& $this->_destinationRepository;
+		$structure =& $dr->getRecordStructure($structureId);
+		$parts = $structure->getPartStructures();
+		while($parts->hasNext()){
+			$part =& $parts->next();
+			if($part->getDisplayName() == $partName)
+				return $part->getId();
+		}
+		return false;
 	}
 	
 	/**
@@ -167,21 +207,20 @@ class ExifRepositoryImporter
 	 * @access public
 	 * @since 7/28/05
 	 */
-	
-	function extractPhotoshopMetaData($tagNameArray){
+
+	function extractPhotoshopMetaData(){
 		$results = array();
-		
+
 		if($this->_photoshopIPTC) {
 			foreach ($this->_photoshopIPTC as $array) {
-				if(in_array($array['RecName'], $tagNameArray))
-					if(isset($results[$array['RecName']]))
-						$results[$array['RecName']] = $results[$array['RecName']].", ".$array['RecData'];
-					else $results[$array['RecName']] = $array['RecData'];
+				if(isset($results[$array['RecName']]))
+					$results[$array['RecName']] = $results[$array['RecName']].", ".$array['RecData'];
+				else $results[$array['RecName']] = $array['RecData'];
 			}
 		}
 		return $results;
 	}
-	
+
 	/**
 	 * match given array with exifdata from file
 	 * 
@@ -191,22 +230,21 @@ class ExifRepositoryImporter
 	 * @access public
 	 * @since 7/28/05
 	 */
-	
-	function extractExifMetadata ($imageFileName, &$tagNameArray) {
+
+	function extractExifMetadata ($imageFileName) {
 		$metadataArrays = array();
 		$metadataArrays[] = get_EXIF_JPEG($imageFileName);
 		$metadataArrays[] = get_Meta_JPEG($imageFileName);
 		$metadataArrays[] = get_EXIF_TIFF($imageFileName);
 
 		$results = array();
-	
+
 		foreach ($metadataArrays as $metadataArray) {
 			if (is_array($metadataArray)) {
 				$exifArray = $metadataArray[0]['34665']['Data'][0];
 				if (is_array($exifArray)) {
-					foreach ($exifArray as $array) {		
-						if(in_array($array['Tag Name'], $tagNameArray))
-							$results[$array['Tag name']] = $array['Text Value'];
+					foreach ($exifArray as $array) {
+						$results[$array['Tag Name']] = $array['Text Value'];
 					}
 				}
 			}
