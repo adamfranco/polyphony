@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.17 2005/08/11 18:05:42 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.18 2005/08/17 15:41:53 cws-midd Exp $
  */ 
 require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(POLYPHONY."/main/library/RepositoryImporter/XMLAssetIterator.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.17 2005/08/11 18:05:42 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.18 2005/08/17 15:41:53 cws-midd Exp $
  */
 class RepositoryImporter {
 	
@@ -94,7 +94,8 @@ class RepositoryImporter {
 		if ($this->hasErrors())
 			return;
 		$null = null;
-		$this->assetBuildingIteration($assetIterator, $null);
+		$false = false;
+		$this->assetBuildingIteration($assetIterator, $null, $false);
 		unset($assetIterator);
 	}
 
@@ -105,18 +106,22 @@ class RepositoryImporter {
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function &assetBuildingIteration (&$assetIterator, &$parent) {
+	function &assetBuildingIteration (&$assetIterator, &$parent, &$buildOrderedSet) {
+		$setManager =& Services::getService("Sets");
 		$assetInfoIterator =& $this->getAllAssetsInfoIterator($assetIterator);
 		if (!$assetInfoIterator)
 			return $assetInfoIterator; // false
+		if ($buildOrderedSet)
+			$set =& $setManager->getPersistentSet($parent->getId());		
 		while ($assetInfoIterator->hasNext()) {
 			$info =& $assetInfoIterator->next();
-			$child =& $this->buildAsset($info["assetInfo"], $info["recordList"],
-				$info["childAssetList"]);
+			$child =& $this->buildAsset($info);
 			if (!$child)
 				return $child; // false
 			if (!is_null($parent))
 				$parent->addAsset($child->getId());
+			if ($buildOrderedSet)
+				$set->addItem($child->getId());
 		}
 		unset($assetInfoIterator);
 		$true = true;
@@ -139,6 +144,7 @@ class RepositoryImporter {
 			$info["assetInfo"] =& $this->getSingleAssetInfo($asset);
 			$info["recordList"] =& $this->getSingleAssetRecordList($asset);
 			$info["childAssetList"] =& $this->getChildAssetList($asset);
+			$info["buildOrderedSet"] =& $this->getBuildOrderedSet($asset);
 			if ($info["recordList"] !== false)
 				$allAssetInfo[] = $info;
 			else if ($this->_dieOnError)
@@ -205,7 +211,11 @@ class RepositoryImporter {
 	 * @since 7/18/05
 	 *
 	 */
-	function &buildAsset(&$assetInfo, &$recordList, &$childAssetList) {
+	function &buildAsset(&$info) {
+		$assetInfo =& $info['assetInfo'];
+		$recordList =& $info['recordList'];
+		$childAssetList =& $info['childAssetList'];
+		$buildOrderedSet =& $info['buildOrderedSet'];
 		$idManager = Services::getService("Id");
 		$mime =& Services::getService("MIME");
 		$FILE_ID =& $idManager->getId("FILE");
@@ -259,7 +269,7 @@ class RepositoryImporter {
 		}
 		if (!is_null($childAssetList)) {
 			$stop =& $this->assetBuildingIteration(new HarmoniIterator(
-				$childAssetList), $asset);	
+				$childAssetList), $asset, $buildOrderedSet);	
 			if (!$stop)
 				return $stop; // false
 		}
@@ -311,6 +321,20 @@ class RepositoryImporter {
 				return $false;
 		}
 	}
+
+	/**
+	 * Gets whether or not to build an ordered list
+	 *
+	 * Should be overridden in subclasses that allow child assets
+	 *
+	 * @param obj $asset
+	 * @return bool
+	 * @since 8/16/05
+	 */
+	 function &getBuildOrderedSet (&$asset) {
+	 	$false = false;
+	 	return $false;
+	 }
 
 	/**
 	 * Print the AssetIds for Assets created properly by the importer

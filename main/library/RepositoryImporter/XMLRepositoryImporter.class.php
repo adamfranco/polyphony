@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.14 2005/08/11 18:05:42 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.15 2005/08/17 15:41:53 cws-midd Exp $
  */ 
 require_once("/home/cshubert/public_html/importer/domit/xml_domit_include.php");
 
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.14 2005/08/11 18:05:42 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.15 2005/08/17 15:41:53 cws-midd Exp $
  */
 class XMLRepositoryImporter
 	extends RepositoryImporter
@@ -54,11 +54,11 @@ class XMLRepositoryImporter
 		$assetInfo['description'] = $input->childNodes[1]->getText();
 		$assetInfo['type'] = $input->childNodes[2]->getText();
 		if ($assetInfo['type'] == "")
-			$assetInfo['type'] = new HarmoniType("Asset Types", "edu.middlebury.concerto",
-				"Generic Asset");
+			$assetInfo['type'] = new HarmoniType("Asset Types",
+				"edu.middlebury.concerto", "Generic Asset");
 		else
-			$assetInfo['type'] = new HarmoniType("Asset Types", "edu.middlebury.concerto",
-				$assetInfo['type']);
+			$assetInfo['type'] = new HarmoniType("Asset Types",
+				"edu.middlebury.concerto", $assetInfo['type']);
 
 		return $assetInfo;
 	}
@@ -83,7 +83,8 @@ class XMLRepositoryImporter
 				if(!$structureId) {
 					$this->addError("The Schema: ".
 						$record->getAttribute("schema").
-						" does not exist in Repository: ".$this->_repositoryId->getIdString());
+						" does not exist in Repository: ".
+						$this->_repositoryId->getIdString());
 					return $structureId;
 				}
 				$recordListElement['structureId'] = $structureId;
@@ -133,7 +134,6 @@ class XMLRepositoryImporter
 				$recordList[] = $recordListElement;
 				unset($recordListElement);
 			}
-			
 		}
 		return $recordList;
 	}
@@ -155,6 +155,20 @@ class XMLRepositoryImporter
 			}
 		}
 		return $childAssetList;
+	}
+
+	/**
+	 * get whether or not to build ordered set from children
+	 * 
+	 * @param mixed input
+	 * @return array
+	 * @access public
+	 * @since 7/20/05
+	 */
+	function &getBuildOrderedSet (&$input) {
+		$buildOrderedSet = $input->getAttribute("buildOrderedSet");
+
+		return $buildOrderedSet;
 	}
 }
 
