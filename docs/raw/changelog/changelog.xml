@@ -4,13 +4,21 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.20 2005/08/08 18:32:36 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.21 2005/08/18 20:03:36 cws-midd Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
 	<version number="0.2.3" date="The Nebulous Future">
+		<new author='niraj'>
+			Importers: Abstract, XML, Tab-Delimited, and EXIF fully functioning.
+			Batch importing of assets now available.
+		</new>
+		<new author='whitey'>
+			Importers: Abstract, XML, Tab-Delimited, and EXIF fully functioning.
+			Batch importing of assets now available.
+		</new>
 		<new author='adam'>
 			New "Basket" system for collecting [Asset] Ids during the session.
 			The Basket allows for easy user-selection of a large number of items.
@@ -114,6 +122,7 @@
 		<name short="nik">Nikitas Stamatopoulos</name>
 		<name short="niraj">Niraj Dhungel</name>
 		<name short="alex">Alex Chapin</name>
+		<name short='whitey'>Christopher W. Shubert</name>
 	</authors>
 	<groupid>82873</groupid>
 	<reftypes>
