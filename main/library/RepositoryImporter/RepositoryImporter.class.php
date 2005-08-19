@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.18 2005/08/17 15:41:53 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.19 2005/08/19 17:34:47 ndhungel Exp $
  */ 
 require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(POLYPHONY."/main/library/RepositoryImporter/XMLAssetIterator.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.18 2005/08/17 15:41:53 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.19 2005/08/19 17:34:47 ndhungel Exp $
  */
 class RepositoryImporter {
 	
@@ -62,6 +62,7 @@ class RepositoryImporter {
 		if ($this->hasErrors())
 			return;
 		$this->parse();
+		$t->end();
 	}
 	
 	/**
@@ -107,6 +108,8 @@ class RepositoryImporter {
 	 * @since 7/20/05
 	 */
 	function &assetBuildingIteration (&$assetIterator, &$parent, &$buildOrderedSet) {
+		$this->_timefile = fopen("/home/ndhungel/public_html/EXIF_files/reptest.txt", "wt");
+		$this->_timer = new Timer();
 		$setManager =& Services::getService("Sets");
 		$assetInfoIterator =& $this->getAllAssetsInfoIterator($assetIterator);
 		if (!$assetInfoIterator)
@@ -115,7 +118,10 @@ class RepositoryImporter {
 			$set =& $setManager->getPersistentSet($parent->getId());		
 		while ($assetInfoIterator->hasNext()) {
 			$info =& $assetInfoIterator->next();
+			$this->_timer->start();
 			$child =& $this->buildAsset($info);
+			$this->_timer->end();
+			fwrite($this->_timefile, $this->_timer->printTime()."\n");
 			if (!$child)
 				return $child; // false
 			if (!is_null($parent))
@@ -233,6 +239,7 @@ class RepositoryImporter {
 		foreach($recordList as $entry) {
 			$assetRecord =& $asset->createRecord($entry['structureId']);
 			$j = 0;
+
 			foreach ($entry['partStructureIds'] as $id) {
 				if(!($entry['structureId']->isEqual($FILE_ID))) {
 					$assetRecord->createPart($id, $entry['parts'][$j]);
@@ -264,6 +271,7 @@ class RepositoryImporter {
 							$THUMBNAIL_MIME_TYPE_ID,
 							$imageProcessor->getThumbnailFormat());
 					}
+					break;
 				}
 			}
 		}
