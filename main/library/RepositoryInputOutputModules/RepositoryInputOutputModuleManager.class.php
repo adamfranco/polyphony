@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.6 2005/07/22 17:06:48 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.7 2005/08/19 18:06:38 adamfranco Exp $
  */
 
 /**
@@ -21,8 +21,8 @@ require_once(dirname(__FILE__)."/modules/HarmoniFileModule.class.php");
  * appropriate RepositoryInputOutputModule based on their Schema Formats.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.6 2005/07/22 17:06:48 adamfranco Exp $
- * @since $Date: 2005/07/22 17:06:48 $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.7 2005/08/19 18:06:38 adamfranco Exp $
+ * @since $Date: 2005/08/19 18:06:38 $
  * @copyright 2004 Middlebury College
  */
 
@@ -215,7 +215,6 @@ class RepositoryInputOutputModuleManager {
 	/**
 	 * Return the URL of a thumbnail image for a given Asset.
 	 * 
-	 * @param object Id $repositoryId
 	 * @param object Id $assetId
 	 * @return string The URL of the thumbnail
 	 * @access public
@@ -257,7 +256,7 @@ class RepositoryInputOutputModuleManager {
 		
 		$thumbnailRecordId =& $thumbnailRecord->getId();
 		
-		$filenameParts =& $record->getPartsByPartStructure(
+		$filenameParts =& $thumbnailRecord->getPartsByPartStructure(
 			$idManager->getId("FILE_NAME"));
 		$filenamePart =& $filenameParts->next();
 		$filename =& $filenamePart->getValue();
@@ -283,6 +282,79 @@ class RepositoryInputOutputModuleManager {
 				"asset_id" => $assetId->getIdString(),
 				"record_id" => $thumbnailRecordId->getIdString(),
 				"thumbnail_name" => $thumbnailName));
+		
+		
+		$harmoni->request->endNamespace();
+		
+		return $url;
+	}
+	
+	/**
+	 * Return the URL of a file for a given Asset. If the Asset has multiple
+	 * files, only one will be returned.
+	 * 
+	 * @param object Id $assetId
+	 * @return string The URL of the thumbnail
+	 * @access public
+	 * @since 7/22/05
+	 */
+	function getFileUrlForAsset (&$assetId ) {
+		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
+		
+		$repositoryManager =& Services::getService("RepositoryManager");
+		$idManager =& Services::getService("IdManager");
+		$asset =& $repositoryManager->getAsset($assetId);
+		$repository =& $asset->getRepository();
+		$repositoryId =& $repository->getId();
+		
+		$imageProcessor =& Services::getService("ImageProcessor");
+		$fileRecords =& $asset->getRecordsByRecordStructure($idManager->getId("FILE"));
+		while ($fileRecords->hasNextRecord()) {
+			$record =& $fileRecords->nextRecord();
+			if (!isset($fileRecord)) {
+				$fileRecord =& $record;
+			}
+			
+			$mimeTypeParts =& $record->getPartsByPartStructure(
+				$idManager->getId("MIME_TYPE"));
+			$mimeTypePart =& $mimeTypeParts->next();
+			$mimeType =& $mimeTypePart->getValue();
+			
+			// If this record is supported by the image processor, then use it
+			// to generate a thumbnail instead of the default icons.
+			if ($imageProcessor->isFormatSupported($mimeType)) {
+				$fileRecord =& $record;
+				break;	
+			}
+		}
+		
+		if (!isset($fileRecord)) {
+			return NULL;
+		}
+		
+		$fileRecordId =& $fileRecord->getId();
+		
+		$filenameParts =& $fileRecord->getPartsByPartStructure(
+			$idManager->getId("FILE_NAME"));
+		$filenamePart =& $filenameParts->next();
+		$filename =& $filenamePart->getValue();
+		
+		$harmoni =& Harmoni::instance();
+		$harmoni->request->startNamespace("polyphony-repository");
+		
+		
+		// If we have a thumbnail with a valid mime type, print a link to that.
+		$filename = ereg_replace("\.[^\.]+$", "", $filename);
+		if (!is_null($mimeType)) {
+			$mime = Services::getService("MIME");
+			$filename .= ".".$mime->getExtensionForMIMEType($mimeType);
+		}
+		$url = $harmoni->request->quickURL("repository", "viewfile", 
+				array(
+					"repository_id" => $repositoryId->getIdString(),
+					"asset_id" => $assetId->getIdString(),
+					"record_id" => $fileRecordId->getIdString(),
+					"file_name" => $filename));
 		
 		
 		$harmoni->request->endNamespace();
