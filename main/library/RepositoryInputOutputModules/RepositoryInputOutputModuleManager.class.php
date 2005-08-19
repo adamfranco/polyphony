@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.7 2005/08/19 18:06:38 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.8 2005/08/19 20:14:46 adamfranco Exp $
  */
 
 /**
@@ -21,8 +21,8 @@ require_once(dirname(__FILE__)."/modules/HarmoniFileModule.class.php");
  * appropriate RepositoryInputOutputModule based on their Schema Formats.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.7 2005/08/19 18:06:38 adamfranco Exp $
- * @since $Date: 2005/08/19 18:06:38 $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.8 2005/08/19 20:14:46 adamfranco Exp $
+ * @since $Date: 2005/08/19 20:14:46 $
  * @copyright 2004 Middlebury College
  */
 
@@ -229,59 +229,37 @@ class RepositoryInputOutputModuleManager {
 		$repository =& $asset->getRepository();
 		$repositoryId =& $repository->getId();
 		
-		$imageProcessor =& Services::getService("ImageProcessor");
-		$fileRecords =& $asset->getRecordsByRecordStructure($idManager->getId("FILE"));
-		while ($fileRecords->hasNextRecord()) {
-			$record =& $fileRecords->nextRecord();
-			if (!isset($thumbnailRecord)) {
-				$thumbnailRecord =& $record;
-			}
-			
-			$mimeTypeParts =& $record->getPartsByPartStructure(
-				$idManager->getId("MIME_TYPE"));
-			$mimeTypePart =& $mimeTypeParts->next();
-			$mimeType =& $mimeTypePart->getValue();
-			
-			// If this record is supported by the image processor, then use it
-			// to generate a thumbnail instead of the default icons.
-			if ($imageProcessor->isFormatSupported($mimeType)) {
-				$thumbnailRecord =& $record;
-				break;	
-			}
-		}
+		$fileRecord =& RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset(
+							$assetId);		
+		$fileRecordId =& $fileRecord->getId();
 		
-		if (!isset($thumbnailRecord)) {
-			return NULL;
-		}
-		
-		$thumbnailRecordId =& $thumbnailRecord->getId();
-		
-		$filenameParts =& $thumbnailRecord->getPartsByPartStructure(
+		$filenameParts =& $fileRecord->getPartsByPartStructure(
 			$idManager->getId("FILE_NAME"));
 		$filenamePart =& $filenameParts->next();
 		$filename =& $filenamePart->getValue();
 		
-		$thumbnailMimeTypeParts =& $record->getPartsByPartStructure(
-			$idManager->getId("THUMBNAIL_MIME_TYPE"));
-		$thumbnailMimeTypePart =& $thumbnailMimeTypeParts->next();
-		$thumbnailMimeType =& $thumbnailMimeTypePart->getValue();
+		$mimeTypeParts =& $fileRecord->getPartsByPartStructure(
+				$idManager->getId("THUMBNAIL_MIME_TYPE"));
+		$mimeTypePart =& $mimeTypeParts->next();
+		$mimeType =& $mimeTypePart->getValue();
+		
+		// If we have a thumbnail with a valid mime type, print a link to that.
+		$filename = ereg_replace("\.[^\.]+$", "", $filename);
+		if (!is_null($mimeType)) {
+			$mime =& Services::getService("MIME");
+			$filename .= ".".$mime->getExtensionForMIMEType($mimeType);
+		}
+		
 		
 		$harmoni =& Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-repository");
 		
-		
-		// If we have a thumbnail with a valid mime type, print a link to that.
-		$thumbnailName = ereg_replace("\.[^\.]+$", "", $filename);
-		if (!is_null($thumbnailMimeType)) {
-			$mime = Services::getService("MIME");
-			$thumbnailName .= ".".$mime->getExtensionForMIMEType($thumbnailMimeType);
-		}
 		$url = $harmoni->request->quickURL("repository", "viewthumbnail",
 			array(
 				"repository_id" => $repositoryId->getIdString(),
 				"asset_id" => $assetId->getIdString(),
-				"record_id" => $thumbnailRecordId->getIdString(),
-				"thumbnail_name" => $thumbnailName));
+				"record_id" => $fileRecordId->getIdString(),
+				"thumbnail_name" => $filename));
 		
 		
 		$harmoni->request->endNamespace();
@@ -307,6 +285,49 @@ class RepositoryInputOutputModuleManager {
 		$repository =& $asset->getRepository();
 		$repositoryId =& $repository->getId();
 		
+		$fileRecord =& RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset(
+							$assetId);
+		$fileRecordId =& $fileRecord->getId();
+		
+		
+		$filenameParts =& $fileRecord->getPartsByPartStructure(
+			$idManager->getId("FILE_NAME"));
+		$filenamePart =& $filenameParts->next();
+		$filename =& $filenamePart->getValue();		
+		
+		
+		$harmoni =& Harmoni::instance();
+		$harmoni->request->startNamespace("polyphony-repository");
+		
+		$url = $harmoni->request->quickURL("repository", "viewfile", 
+				array(
+					"repository_id" => $repositoryId->getIdString(),
+					"asset_id" => $assetId->getIdString(),
+					"record_id" => $fileRecordId->getIdString(),
+					"file_name" => $filename));
+		
+		
+		$harmoni->request->endNamespace();
+		
+		return $url;
+	}
+	
+	/**
+	 * Answer the first image Record of the Asset, if none is availible, answer
+	 * the first file of any time. If none are availible, answer FALSE.
+	 * 
+	 * @param object Id $assetId
+	 * @return mixed
+	 * @access public
+	 * @since 8/19/05
+	 */
+	function &getFirstImageOrFileRecordForAsset ( &$assetId ) {
+		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
+		
+		$repositoryManager =& Services::getService("RepositoryManager");
+		$idManager =& Services::getService("IdManager");
+		$asset =& $repositoryManager->getAsset($assetId);
+		
 		$imageProcessor =& Services::getService("ImageProcessor");
 		$fileRecords =& $asset->getRecordsByRecordStructure($idManager->getId("FILE"));
 		while ($fileRecords->hasNextRecord()) {
@@ -329,37 +350,11 @@ class RepositoryInputOutputModuleManager {
 		}
 		
 		if (!isset($fileRecord)) {
-			return NULL;
+			$false = FALSE;
+			return $false;
 		}
 		
-		$fileRecordId =& $fileRecord->getId();
-		
-		$filenameParts =& $fileRecord->getPartsByPartStructure(
-			$idManager->getId("FILE_NAME"));
-		$filenamePart =& $filenameParts->next();
-		$filename =& $filenamePart->getValue();
-		
-		$harmoni =& Harmoni::instance();
-		$harmoni->request->startNamespace("polyphony-repository");
-		
-		
-		// If we have a thumbnail with a valid mime type, print a link to that.
-		$filename = ereg_replace("\.[^\.]+$", "", $filename);
-		if (!is_null($mimeType)) {
-			$mime = Services::getService("MIME");
-			$filename .= ".".$mime->getExtensionForMIMEType($mimeType);
-		}
-		$url = $harmoni->request->quickURL("repository", "viewfile", 
-				array(
-					"repository_id" => $repositoryId->getIdString(),
-					"asset_id" => $assetId->getIdString(),
-					"record_id" => $fileRecordId->getIdString(),
-					"file_name" => $filename));
-		
-		
-		$harmoni->request->endNamespace();
-		
-		return $url;
+		return $fileRecord;
 	}
 }
 
