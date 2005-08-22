@@ -4,13 +4,17 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.21 2005/08/18 20:03:36 cws-midd Exp $
+ @version $Id: changelog.xml,v 1.22 2005/08/22 13:29:34 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
 	<version number="0.2.3" date="The Nebulous Future">
+		<new author='adam'>
+			Repository OutputModules now support accessing the first image
+			record of an asset as well as a thumbnail.
+		</new>
 		<new author='niraj'>
 			Importers: Abstract, XML, Tab-Delimited, and EXIF fully functioning.
 			Batch importing of assets now available.
@@ -35,8 +39,9 @@
 		<fix author='adam'>
 			RepositoryInputOutputModules now check for the right record interface.
 		</fix>
-		<change author='adam'>
-			Updating the Wizard and Login to support the RequestContext
+		<change author='gabe'>
+			New Wizard system based on nested components. Much more extensible and
+			easy-to-use than the old system.
 		</change>
 		<change author='gabe'>
 			Updating much of Polyphony to support the RequestContext

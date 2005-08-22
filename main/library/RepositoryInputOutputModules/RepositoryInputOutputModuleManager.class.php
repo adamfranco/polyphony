@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.8 2005/08/19 20:14:46 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.9 2005/08/22 13:29:35 adamfranco Exp $
  */
 
 /**
@@ -21,8 +21,8 @@ require_once(dirname(__FILE__)."/modules/HarmoniFileModule.class.php");
  * appropriate RepositoryInputOutputModule based on their Schema Formats.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.8 2005/08/19 20:14:46 adamfranco Exp $
- * @since $Date: 2005/08/19 20:14:46 $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.9 2005/08/22 13:29:35 adamfranco Exp $
+ * @since $Date: 2005/08/22 13:29:35 $
  * @copyright 2004 Middlebury College
  */
 
@@ -231,6 +231,10 @@ class RepositoryInputOutputModuleManager {
 		
 		$fileRecord =& RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset(
 							$assetId);		
+		
+		if ($fileRecord === FALSE)
+			return FALSE;
+		
 		$fileRecordId =& $fileRecord->getId();
 		
 		$filenameParts =& $fileRecord->getPartsByPartStructure(
@@ -287,6 +291,9 @@ class RepositoryInputOutputModuleManager {
 		
 		$fileRecord =& RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset(
 							$assetId);
+		if ($fileRecord === FALSE)
+			return FALSE;
+		
 		$fileRecordId =& $fileRecord->getId();
 		
 		
