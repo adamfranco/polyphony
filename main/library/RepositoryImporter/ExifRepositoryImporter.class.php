@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.9 2005/08/11 19:18:53 ndhungel Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.10 2005/08/22 16:13:47 ndhungel Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -21,7 +21,7 @@ require_once("/home/cshubert/public_html/importer/domit/xml_domit_include.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.9 2005/08/11 19:18:53 ndhungel Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.10 2005/08/22 16:13:47 ndhungel Exp $
  */
 class ExifRepositoryImporter
 extends RepositoryImporter
@@ -112,7 +112,10 @@ extends RepositoryImporter
 						$matchedSchema = $idManager->getId($ipartStructures[0]->getText());
 					} else
 						$matchedSchema = $this->matchSchema($ipartStructures[1]->getText(), $this->_destinationRepository);
-					$this->_structureId[] = $matchedSchema;
+					if($matchedSchema == false) 
+						$this->addError("Schema: ".$ipartStructures[1]->getText()." does not exist");
+					else
+						$this->_structureId[] = $matchedSchema;
 					//match the partstructures
 					foreach($ipartStructures as $ipartStructure) {
 						if($ipartStructure->nodeName == "partStructure") {

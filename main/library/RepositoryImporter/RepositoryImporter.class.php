@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.20 2005/08/19 17:36:42 ndhungel Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.21 2005/08/22 16:13:47 ndhungel Exp $
  */ 
 require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(POLYPHONY."/main/library/RepositoryImporter/XMLAssetIterator.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.20 2005/08/19 17:36:42 ndhungel Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.21 2005/08/22 16:13:47 ndhungel Exp $
  */
 class RepositoryImporter {
 	
@@ -62,7 +62,6 @@ class RepositoryImporter {
 		if ($this->hasErrors())
 			return;
 		$this->parse();
-		$t->end();
 	}
 	
 	/**
@@ -108,8 +107,6 @@ class RepositoryImporter {
 	 * @since 7/20/05
 	 */
 	function &assetBuildingIteration (&$assetIterator, &$parent, &$buildOrderedSet) {
-		$this->_timefile = fopen("/home/ndhungel/public_html/EXIF_files/reptest.txt", "wt");
-		$this->_timer = new Timer();
 		$setManager =& Services::getService("Sets");
 		$assetInfoIterator =& $this->getAllAssetsInfoIterator($assetIterator);
 		if (!$assetInfoIterator)
