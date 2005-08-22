@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.21 2005/08/11 16:38:06 adamfranco Exp $
+ * @version $Id: polyphony.inc.php,v 1.22 2005/08/22 15:05:14 adamfranco Exp $
  */
 
 /**
@@ -48,19 +48,11 @@ require_once(dirname(__FILE__)."/main/library/ResultPrinter/ArrayResultPrinter.c
 require_once(dirname(__FILE__)."/main/library/Basket/BasketManager.class.php");
 
 
-if (OKI_VERSION > 1) { 
-	require_once(dirname(__FILE__)."/main/library/RepositoryInputOutputModules/RepositoryInputOutputModuleManager.class.php");
-	Services::registerService("InOutModules", "RepositoryInputOutputModuleManager");
-	
-	require_once(dirname(__FILE__)."/main/library/RepositorySearchModules/RepositorySearchModuleManager.class.php");
-	Services::registerService("RepositorySearchModules", "RepositorySearchModuleManager");
-} else {
-	require_once(dirname(__FILE__)."/main/library/DRInputOutputModules/DRInputOutputModuleManager.class.php");
-	Services::registerService("InOutModules", "DRInputOutputModuleManager");
-	
-	require_once(dirname(__FILE__)."/main/library/DRSearchModules/DRSearchModuleManager.class.php");
-	Services::registerService("RepositorySearchModules", "DRSearchModuleManager");
-}
+require_once(dirname(__FILE__)."/main/library/RepositoryInputOutputModules/RepositoryInputOutputModuleManager.class.php");
+Services::registerService("InOutModules", "RepositoryInputOutputModuleManager");
+
+require_once(dirname(__FILE__)."/main/library/RepositorySearchModules/RepositorySearchModuleManager.class.php");
+Services::registerService("RepositorySearchModules", "RepositorySearchModuleManager");
 
 require_once(OKI2."osid/OsidContext.php");
 $context =& new OsidContext;
