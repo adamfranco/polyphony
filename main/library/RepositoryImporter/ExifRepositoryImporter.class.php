@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.12 2005/08/22 18:46:06 ndhungel Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.13 2005/08/22 19:00:36 ndhungel Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -21,7 +21,7 @@ require_once("/home/cshubert/public_html/importer/domit/xml_domit_include.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.12 2005/08/22 18:46:06 ndhungel Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.13 2005/08/22 19:00:36 ndhungel Exp $
  */
 class ExifRepositoryImporter
 extends RepositoryImporter
@@ -104,8 +104,8 @@ extends RepositoryImporter
 			}
 			$istructuresList =& $import->documentElement->childNodes;
 			$this->_structureId = array();
-			$partsFinal = array();
-			$valuesFinal = array();
+			$this->_partsFinal = array();
+			$this->_valuesFinal = array();
 			foreach($istructuresList as $istructure) {
 				$valuesPreFinal = array();
 				$partStructuresArray = array();
@@ -151,9 +151,9 @@ extends RepositoryImporter
 							}							
 							$valuesPreFinal[$matchedId->getIdString()] = $valueArray;
 						}
-						$valuesFinal[$matchedSchema->getIdString()] = $valuesPreFinal;
+						$this->_valuesFinal[$matchedSchema->getIdString()] = $valuesPreFinal;
 					}
-					$partsFinal[$matchedSchema->getIdString()] = $partStructuresArray;
+					$this->_partsFinal[$matchedSchema->getIdString()] = $partStructuresArray;
 				}
 			}
 		}
@@ -173,8 +173,8 @@ extends RepositoryImporter
 		foreach($this->_structureId as $structureId) {
 			$parts = array();
 			$recordListElement['structureId'] = $structureId;
-			$recordListElement['partStructureIds'] = $partsFinal[$structureId->getIdString()];
-			$partValuesArray =& $valuesFinal[$structureId->getIdString()];
+			$recordListElement['partStructureIds'] = $this->_partsFinal[$structureId->getIdString()];
+			$partValuesArray =& $this->_valuesFinal[$structureId->getIdString()];
 			foreach($partValuesArray as $key=>$partsArray){
 				$data = "";
 				foreach($partsArray as $part){
