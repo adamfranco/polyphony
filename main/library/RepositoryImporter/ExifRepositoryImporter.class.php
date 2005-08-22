@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.11 2005/08/22 16:21:05 ndhungel Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.12 2005/08/22 18:46:06 ndhungel Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -21,7 +21,7 @@ require_once("/home/cshubert/public_html/importer/domit/xml_domit_include.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.11 2005/08/22 16:21:05 ndhungel Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.12 2005/08/22 18:46:06 ndhungel Exp $
  */
 class ExifRepositoryImporter
 extends RepositoryImporter
@@ -93,11 +93,15 @@ extends RepositoryImporter
 		if (!isset($this->_structureId)) {
 			$import =& new DOMIT_Document();
 			if ($import->loadXML($this->_srcDir."schema.xml")) {
-				if (!($import->documentElement->hasChildNodes()))
+				if (!($import->documentElement->hasChildNodes())){
 					$this->addError("There are no schemas defined in : ".$this->_srcDir."schema.xml.");
+					return false;
+				}
 			}
-			else
+			else {
 				$this->addError("XML parse failed: ".$this->_srcDir."metadata.xml does not exist or contains poorly formed XML.");
+				return false;
+			}
 			$istructuresList =& $import->documentElement->childNodes;
 			$this->_structureId = array();
 			$partsFinal = array();
@@ -145,14 +149,11 @@ extends RepositoryImporter
 								}
 								
 							}							
-							if($matchedId != false)
-								$valuesPreFinal[$matchedId->getIdString()] = $valueArray;
+							$valuesPreFinal[$matchedId->getIdString()] = $valueArray;
 						}
-						if($matchedSchema != false)
-							$valuesFinal[$matchedSchema->getIdString()] = $valuesPreFinal;
+						$valuesFinal[$matchedSchema->getIdString()] = $valuesPreFinal;
 					}
-					if($matchedSchema != false)
-						$partsFinal[$matchedSchema->getIdString()] = $partStructuresArray;
+					$partsFinal[$matchedSchema->getIdString()] = $partStructuresArray;
 				}
 			}
 		}
