@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.10 2005/08/22 16:13:47 ndhungel Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.11 2005/08/22 16:21:05 ndhungel Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -21,7 +21,7 @@ require_once("/home/cshubert/public_html/importer/domit/xml_domit_include.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.10 2005/08/22 16:13:47 ndhungel Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.11 2005/08/22 16:21:05 ndhungel Exp $
  */
 class ExifRepositoryImporter
 extends RepositoryImporter
@@ -112,8 +112,10 @@ extends RepositoryImporter
 						$matchedSchema = $idManager->getId($ipartStructures[0]->getText());
 					} else
 						$matchedSchema = $this->matchSchema($ipartStructures[1]->getText(), $this->_destinationRepository);
-					if($matchedSchema == false) 
+					if($matchedSchema == false) {
 						$this->addError("Schema: ".$ipartStructures[1]->getText()." does not exist");
+						return false;	
+					}
 					else
 						$this->_structureId[] = $matchedSchema;
 					//match the partstructures
@@ -125,8 +127,10 @@ extends RepositoryImporter
 								$matchedId = $idManager->getId($ivaluesArray[0]->getText());
 							}else
 								$matchedId = $this->getPartIdByName($ivaluesArray[1]->getText(), $matchedSchema);
-							if($matchedId == false)
+							if($matchedId == false) {
 								$this->addError("Part ".$ivaluesArray[1]." does not exist.");
+								return false;
+							}
 							$partStructuresArray[] = $matchedId;
 							$valueArray = array();
 							foreach($ivaluesArray as $ivalueField){
@@ -141,13 +145,14 @@ extends RepositoryImporter
 								}
 								
 							}							
-						if($matchedId != false)
-							$valuesPreFinal[$matchedId->getIdString()] = $valueArray;
+							if($matchedId != false)
+								$valuesPreFinal[$matchedId->getIdString()] = $valueArray;
 						}
-						$valuesFinal[$matchedSchema->getIdString()] = $valuesPreFinal;
+						if($matchedSchema != false)
+							$valuesFinal[$matchedSchema->getIdString()] = $valuesPreFinal;
 					}
-					
-					$partsFinal[$matchedSchema->getIdString()] = $partStructuresArray;
+					if($matchedSchema != false)
+						$partsFinal[$matchedSchema->getIdString()] = $partStructuresArray;
 				}
 			}
 		}
