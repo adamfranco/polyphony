@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_okitype.class.php,v 1.4 2005/08/10 13:27:04 gabeschine Exp $
+ * @version $Id: PrimitiveIO_okitype.class.php,v 1.5 2005/08/24 14:34:42 cws-midd Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_okitype.class.php,v 1.4 2005/08/10 13:27:04 gabeschine Exp $
+ * @version $Id: PrimitiveIO_okitype.class.php,v 1.5 2005/08/24 14:34:42 cws-midd Exp $
  */
 class PrimitiveIO_okitype extends WizardComponentWithChildren {
 	var $_domain;
@@ -48,11 +48,20 @@ class PrimitiveIO_okitype extends WizardComponentWithChildren {
 	 *
 	 * @return void
 	 **/
-	function setValueFromSObject(&$value)
-	{
+	function setValue(&$value) {
 		$this->_domain->setValue($value->getDomain());
 		$this->_authority->setValue($value->getAuthority());
 		$this->_keyword->setValue($value->getKeyword());
+	}
+
+	/**
+	 * Sets the value of this Component to the {@link SObject} passed.
+	 * @param ref object $value The {@link SObject} value to use.
+	 *
+	 * @return void
+	 **/
+	function setValueFromSObject(&$value) {
+		$this->setValue($value);
 	}
 
 	/**

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_numeric.classes.php,v 1.5 2005/08/10 13:27:04 gabeschine Exp $
+ * @version $Id: PrimitiveIO_numeric.classes.php,v 1.6 2005/08/24 14:34:42 cws-midd Exp $
  */
 
 /**
@@ -31,9 +31,20 @@ class PrimitiveIO_integer extends PrimitiveIO_shortstring {
 	 *
 	 * @return void
 	 **/
+	function setValue(&$value)
+	{
+		parent::setValue($value->asString());
+	}
+
+	/**
+	 * Sets the value of this Component to the {@link SObject} passed.
+	 * @param ref object $value The {@link SObject} value to use.
+	 *
+	 * @return void
+	 **/
 	function setValueFromSObject(&$value)
 	{
-		$this->setValue($value->asString());
+		$this->setValue($value);
 	}
 
 	/**
@@ -77,9 +88,20 @@ class PrimitiveIO_float extends PrimitiveIO_integer {
 	 *
 	 * @return void
 	 **/
+	function setValue(&$value)
+	{
+		parent::setValue($value->asString());
+	}
+
+	/**
+	 * Sets the value of this Component to the {@link SObject} passed.
+	 * @param ref object $value The {@link SObject} value to use.
+	 *
+	 * @return void
+	 **/
 	function setValueFromSObject(&$value)
 	{
-		$this->setValue($value->asString());
+		$this->setValue($value);
 	}
 
 	/**

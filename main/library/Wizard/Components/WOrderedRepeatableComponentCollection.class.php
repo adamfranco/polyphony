@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.2 2005/08/11 16:38:07 adamfranco Exp $
+ * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.3 2005/08/24 14:34:42 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.2 2005/08/11 16:38:07 adamfranco Exp $
+ * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.3 2005/08/24 14:34:42 cws-midd Exp $
  */
 
 class WOrderedRepeatableComponentCollection 
@@ -34,30 +34,7 @@ class WOrderedRepeatableComponentCollection
     	$this->_orderedSet =& new OrderedSet($idManager->getId("unimportant"));
     	$this->_nextId = 0;
     }
-    
-	/**
-	 * Adds a collection of {@link WizardComponent}s indexed by field name to the list of collections.
-	 * This is useful when pre-populating the list with old/previous values.
-	 * @param ref array $collection Indexed by field name.
-	 * @access public
-	 * @return void
-	 */
-	function addCollection (&$collection) {
-		// @todo - make sure that the correct fields/classes are represented
-		$collection["_remove"] =& WEventButton::withLabel(dgettext("polyphony", "Remove"));
-		$collection["_remove"]->setParent($this);
-		$collection["_remove"]->setOnClick("ignoreValidation(this.form);");
-		$collection["_moveup"] =& WEventButton::withLabel(dgettext("polyphony", "Move Up"));
-		$collection["_moveup"]->setParent($this);
-		$collection["_movedown"] =& WEventButton::withLabel(dgettext("polyphony", "Move Down"));
-		$collection["_movedown"]->setParent($this);
-		$this->_collections[$this->_nextId] =& $collection;
-		$idManager =& Services::getService("Id");
-		$this->_orderedSet->addItem($idManager->getId(strval($this->_nextId)));
-		$this->_nextId++;
-		$this->_num++;
-	}
-	
+    	
 	/**
 	 * Adds a new element to the end of the list.
 	 * @access private
@@ -73,23 +50,25 @@ class WOrderedRepeatableComponentCollection
 			$newArray[$key] =& $base[$key]->copy();
 			$newArray[$key]->setParent($this);
 		}
-		
-		$newArray["_remove"] =& WEventButton::withLabel(dgettext("polyphony", "Remove"));
+		$newArray["_remove"] =& WEventButton::withLabel(
+			dgettext("polyphony", "Remove"));
 		$newArray["_remove"]->setParent($this);
 		$newArray["_remove"]->setOnClick("ignoreValidation(this.form);");
-		$newArray["_moveup"] =& WEventButton::withLabel(dgettext("polyphony", "Move Up"));
+
+		$newArray["_moveup"] =& WEventButton::withLabel(
+			dgettext("polyphony", "Move Up"));
 		$newArray["_moveup"]->setParent($this);
-		$newArray["_movedown"] =& WEventButton::withLabel(dgettext("polyphony", "Move Down"));
+		$newArray["_movedown"] =& WEventButton::withLabel(
+			dgettext("polyphony", "Move Down"));
 		$newArray["_movedown"]->setParent($this);
 		
 		$this->_collections[$this->_nextId] =& $newArray;
-		$newElement =& $this->_collections[$this->_nextId];
 		$idManager =& Services::getService("Id");
 		$this->_orderedSet->addItem($idManager->getId(strval($this->_nextId)));
 		$this->_nextId++;
 		$this->_num++;
 		
-		return $newElement;
+		return $newArray;
 	}
 	
 	/**
@@ -126,10 +105,13 @@ class WOrderedRepeatableComponentCollection
 		foreach(array_keys($this->_collections) as $key) {
 			foreach(array_keys($this->_collections[$key]) as $name) {
 // 				print "$name in $key is a ".gettype($this->_collections[$key][$name])."<br/>";
-				if (!is_object($this->_collections[$key][$name])) continue;
-				if (!$this->_collections[$key][$name]->update($fieldName."_".$key."_".$name)) $ok = false;
+				$rule =& ExtendsValidatorRule::getRule("WizardComponent");
+				if (!$rule->check($this->_collections[$key][$name])) continue;
+				if (!$this->_collections[$key][$name]->update($fieldName."_".$key."_".$name)) 
+					$ok = false;
 			}
-			if ($this->_collections[$key]["_remove"]->getAllValues()) $toRemove[] = $key;
+			if ($this->_collections[$key]["_remove"]->getAllValues())
+				$toRemove[] = $key;
 			if ($this->_collections[$key]["_moveup"]->getAllValues()) 
 				$this->_orderedSet->moveUp($idManager->getId(strval($key)));
 			if ($this->_collections[$key]["_movedown"]->getAllValues()) 

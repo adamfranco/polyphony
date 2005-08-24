@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_boolean.class.php,v 1.5 2005/08/10 13:27:04 gabeschine Exp $
+ * @version $Id: PrimitiveIO_boolean.class.php,v 1.6 2005/08/24 14:34:42 cws-midd Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_boolean.class.php,v 1.5 2005/08/10 13:27:04 gabeschine Exp $
+ * @version $Id: PrimitiveIO_boolean.class.php,v 1.6 2005/08/24 14:34:42 cws-midd Exp $
  */
 class PrimitiveIO_boolean extends WRadioList /* implements PrimitiveIO */ {
 	
@@ -34,9 +34,20 @@ class PrimitiveIO_boolean extends WRadioList /* implements PrimitiveIO */ {
 	 *
 	 * @return void
 	 **/
+	function setValue(&$value)
+	{
+		parent::setValue($value->value()?"1":"0");
+	}
+	
+	/**
+	 * Sets the value of this Component to the {@link SObject} passed.
+	 * @param ref object $value The {@link SObject} value to use.
+	 *
+	 * @return void
+	 **/
 	function setValueFromSObject(&$value)
 	{
-		$this->setValue($value->value()?"1":"0");
+		$this->setValue($value);
 	}
 	
 	/**

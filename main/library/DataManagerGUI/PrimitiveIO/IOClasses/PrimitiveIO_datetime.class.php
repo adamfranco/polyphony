@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_datetime.class.php,v 1.1 2005/08/10 13:27:04 gabeschine Exp $
+ * @version $Id: PrimitiveIO_datetime.class.php,v 1.2 2005/08/24 14:34:42 cws-midd Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_datetime.class.php,v 1.1 2005/08/10 13:27:04 gabeschine Exp $
+ * @version $Id: PrimitiveIO_datetime.class.php,v 1.2 2005/08/24 14:34:42 cws-midd Exp $
  */
 class PrimitiveIO_datetime extends WTextField /* implements PrimitiveIO */ {
 
@@ -47,9 +47,20 @@ class PrimitiveIO_datetime extends WTextField /* implements PrimitiveIO */ {
 	 *
 	 * @return void
 	 **/
+	function setValue(&$value)
+	{
+		parent::setValue($value->asString());
+	}
+
+	/**
+	 * Sets the value of this Component to the {@link SObject} passed.
+	 * @param ref object $value The {@link SObject} value to use.
+	 *
+	 * @return void
+	 **/
 	function setValueFromSObject(&$value)
 	{
-		$this->setValue($value->asString());
+		$this->setValue($value);
 	}
 
 	/**

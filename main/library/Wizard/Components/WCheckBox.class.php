@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCheckBox.class.php,v 1.5 2005/08/10 17:52:05 adamfranco Exp $
+ * @version $Id: WCheckBox.class.php,v 1.6 2005/08/24 14:34:42 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCheckBox.class.php,v 1.5 2005/08/10 17:52:05 adamfranco Exp $
+ * @version $Id: WCheckBox.class.php,v 1.6 2005/08/24 14:34:42 cws-midd Exp $
  */
 class WCheckBox 
 	extends WizardComponent 
@@ -70,8 +70,18 @@ class WCheckBox
 	 * @access public
 	 * @return void
 	 */
-	function setChecked ($checked) {
+	function setValue ($checked) {
 		$this->_value = $checked;
+	}
+
+	/**
+	 * Sets if this checkbox should be checked or not as a default value.
+	 * @param boolean $checked
+	 * @access public
+	 * @return void
+	 */
+	function setChecked ($checked) {
+		$this->setValue($checked);
 	}
 	
 	/**

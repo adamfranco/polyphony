@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_blob.class.php,v 1.6 2005/08/10 17:52:04 adamfranco Exp $
+ * @version $Id: PrimitiveIO_blob.class.php,v 1.7 2005/08/24 14:34:42 cws-midd Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_blob.class.php,v 1.6 2005/08/10 17:52:04 adamfranco Exp $
+ * @version $Id: PrimitiveIO_blob.class.php,v 1.7 2005/08/24 14:34:42 cws-midd Exp $
  */
 class PrimitiveIO_blob 
 	extends PrimitiveIO 
@@ -34,9 +34,20 @@ class PrimitiveIO_blob
 	 *
 	 * @return void
 	 **/
-	function setValueFromSObject(&$value)
+	function setValue(&$value)
 	{
 		$this->_blob =& $value;
+	}
+
+	/**
+	 * Sets the value of this Component to the {@link SObject} passed.
+	 * @param ref object $value The {@link SObject} value to use.
+	 *
+	 * @return void
+	 **/
+	function setValueFromSObject(&$value)
+	{
+		$this->setValue($value);
 	}
 
 	/**

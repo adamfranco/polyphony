@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.9 2005/08/10 21:20:15 gabeschine Exp $
+ * @version $Id: Wizard.abstract.php,v 1.10 2005/08/24 14:34:42 cws-midd Exp $
  */
 
 /*
@@ -30,7 +30,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.9 2005/08/10 21:20:15 gabeschine Exp $
+ * @version $Id: Wizard.abstract.php,v 1.10 2005/08/24 14:34:42 cws-midd Exp $
  * @author Gabe Schine
  * @abstract
  */
@@ -249,7 +249,7 @@ END;
 	 		if (preg_match("/\[{2}([^|]*)\]{2}/", $match, $parts)) {
 	 			$propName = $parts[1];
 	 			if (isset($components[$propName])) {
-	 				$markup = $components[$propName]->getMarkup($prepend.$propName);
+					$markup = $components[$propName]->getMarkup($prepend.$propName);
 	 			} else {
 	 				$msg = sprintf(dgettext("polyphony", "WIZARD ERROR: could not find a component to match with <i>%s</i>!"), $propName);
 	 				$markup = "<span style='color: red; font-weight: 900;'>$msg</span>";

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DataManagerPrimativesModule.class.php,v 1.8 2005/08/10 13:27:04 gabeschine Exp $
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.9 2005/08/24 14:34:42 cws-midd Exp $
  */
 
 /**
@@ -24,8 +24,8 @@ require_once(POLYPHONY."/main/library/DataManagerGUI/PrimitiveIO/inc.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: DataManagerPrimativesModule.class.php,v 1.8 2005/08/10 13:27:04 gabeschine Exp $
- * @since $Date: 2005/08/10 13:27:04 $
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.9 2005/08/24 14:34:42 cws-midd Exp $
+ * @since $Date: 2005/08/24 14:34:42 $
  * @copyright 2004 Middlebury College
  */
 
@@ -278,10 +278,10 @@ class DataManagerPrimativesModule
 			// set our values
 			while($parts->hasNext()) {
 				$part =& $parts->next();
-				$value =& $part->getValue();
-				$collection =& $component->createValueCollection();
-				$collection["value"]->setValueFromSObject($value);
+				$collection = array();
+				$collection['value'] =& $part->getValue();
 				$component->addValueCollection($collection);
+				unset($collection);
 			}
 		} else {
 			$m = "<b>$name</b>: [[$id]]";
@@ -290,7 +290,7 @@ class DataManagerPrimativesModule
 			if ($parts->hasNext()) {
 				$part =& $parts->next();
 				$value =& $part->getValue();
-				$component->setValueFromSObject($value);
+				$component->setValue($value);
 			}
 		}
 			
