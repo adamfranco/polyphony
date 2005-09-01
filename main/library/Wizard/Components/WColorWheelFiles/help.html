@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+        "http://www.w3.org/TR/1998/REC-html40-19980424/loose.dtd">
+<html lang="cs">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-2">
+	<title>Color Schemes 2 - Info and Help</title>
+
+<style type="text/css">
+<!--
+	body { font:100%/1.33 Verdana,sans-serif; background:white; }
+
+.small { font-size:90%; }
+.imgl { float:left; margin:0 1em 1em 0; }
+-->
+</style>
+
+</head>
+<body>
+
+<h1>Color Schemes 2 - Info and Help</h1>
+<ul>
+	<li><a href="#base">Selecting the base color</a>
+	<li><a href="#vars">Variations</a>
+	<li><a href="#schemes">Color schemes</a>
+	<li><a href="#other">Other functions</a>
+	<li><a href="#license">Licensing</a>
+</ul>
+
+<h3>Using the Color scheme</h3>
+
+<p>
+While designing web pages, computer applications, or house interiors, we need to find good color scheme - set of colors producing the best impression. For every tint there are colors which it can coexist with, and which it can't. Some combinations are uncomfortable, or disturbing - while others are pleasant.
+</p>
+
+<p>
+Experienced designers choose colors intuitively, many people can smell which colors go together well and which don't. However, finding the good combination of colors may be sometimes long and gruelling work. The color theory makes the work easier. This tool will find set of colors you can start with, and it may facilitate your looking for the optimal color palette.
+</p>
+
+<p>This application generates color schemes of several types. Every scheme is based on one (base) color, which is supplemented with additional colors making together the best optical imperssion - using one of the authentic algorithms.</p>
+
+
+<hr>
+<a name="base"></a>
+
+<h3>Selecting the base color</h3>
+
+<p>
+The base color can be set in several ways. The application works primarily with the color wheel, and with colors defined by it - <strong>hue</strong> (the angle determining position of the color on the wheel). Warm colors (purple to yellow) and cold colors (yellow-green to violet) are marked here as well.
+</p>
+
+<p>
+We can choose one of the elemetary colors on the wheel by clicking on its color strip. Primary colors (red, yellow, blue) correspond to angles 0&deg;, 120&deg;, and 240&deg;, secondary colors (orange, green, violet) to angles 60&deg;, 180&deg;, and 300&deg;, tertiary colors are between them. Smaller circles (multiples of 15&deg;) are standing for transitional colors. Clicking on any of these colors, you'll set it as the base color.
+</p>
+
+<p>
+There is a scale 0-360&deg; inside the color wheel, containing a small pointer corresponding to the angle of actual color. Clicking on this scale you can change the hue without changing brightness and/or saturation (you have to click, you cannot drag the pointer). There is a difference with this selection type: when selection the angle frrom the inner circle, all color <a href="#vars">variations</a> are kept, but when you click the elementary color on the outer ring, all variations are set to the deafult values.
+</p>
+
+<p>
+<strong>Important note:</strong> This tool <strong>doesn't use the standard HSV or HSB model</strong> (the same HSV/HSB values ie. in Photoshop describe different colors!). The color wheel used here differs from the RGB spectre used on computer screens, it's more in accordance with the classical color theory. This is also why some colors (especially shades of blue) make less bright shades than the basic colors of the RGB-model. In plus, the RGB-model uses red-green-blue as primary colors, but the red-yellow-blue combination is used here. This deformation also causes incompatibility in color conversions from RGB-values. Therefore, <strong>the RGB input</strong> (eg. the HTML hex values like #F854A9) <strong>is not exact</strong>, the conversion is rough and sometimes may produce slightly different color.
+</p>
+
+<hr>
+<a name="vars"></a>
+
+<h3>Setting color variations</h3>
+
+<p>Each of colors in displayed scheme has four variations. These are colors of the same hue, but they differ in the saturation and brightness. You can click the small square of the variantion and choose another variation. The very first variation (the bigger square) is the base variation, which determines the look of the scheme. The other three variations are just additional. Iff the scheme is made by less than four colors, the unused place is used to display variations (or the complement) of the base color.
+</p>
+
+<p>There are several typical color variation sets prepared under the swatch area (pastel, contrast etc.) Click any of these buttons to use this variation set in all colors in the scheme at once.
+</p>
+
+<hr>
+<a name="schemes"></a>
+
+<h3>Color schemes</h3>
+
+<p>
+The resulting color set is made by installing the base color into one of the color schemes. You can select the scheme by clicking on the scheme cards bellow the color wheel. Several schemes allow additional settings, which are displayed bellow the cards. You can choose one of following schemes:
+</p>
+
+<h4>Monochromatic</h4>
+<p><img class="imgl" src="prev_mono-on.gif" alt="">
+Monochormatic scheme is based on only one color tint, and uses only variations made by changing its saturation and brightness. Black and white colors are always added. The result is comfortable for eyes, even when using aggressive color. However, it's harder to find accents and highlights.</p>
+<p>
+The application makes only several monochromatic variants of each color. You'll be able to make others - more or less saturated, lighter or darker. Monochromatic variations are made for each color in other schemes, too. They are displayed as smaller (clickable) squares next to each color.</p>
+
+<h4>Contrast</h4>
+<p><img class="imgl" src="prev_compl-on.gif" alt="">
+Base color is supplemented with its complement (color on the opposite side of the wheel). One warm and one cold color is always created - we have to consider, which one will be dominant, and if the result should look warm, or cold. Suitable monochromatic variations of this two colors may be added to the scheme.</p>
+
+
+<h4>"Soft" contrast / Triade</h4>
+<p><img class="imgl" src="prev_triad-on.gif" alt="">
+Base color is supplemented with two colors, placed identically on both sides of its complement. Unlike the "sharp" contrast, this scheme is often more comfortable for the eyes, it's softer, and has more space for balancing warm and cold colors.</p>
+<p>
+Clicking the scale (will be displayed bellow the scheme card) you can set the distance of these colors from the base color complement. The less the value is, the closer the colors are to the contrast color, and are more similar. The best value is between the first quarter and the half of the scale. Higher values aren't too suitable - except the shift by 60&deg;, which makes another color scheme, <em>the triade:</em></p>
+
+<h4>The triade</h4>
+<p>
+The triade is made by three colors evenly distributed on the thirds of the color wheel (by 120 degrees). The triade-schemes are vibrating, full of energy, and have large space to make contrasts, accents and to balance warm and cold colors. You can make the triade in the "soft contrast" scheme setting the distance to the maximal value (clear to the right).</p>
+
+<h4>"Double-contrast" / Tetrade</h4>
+<p><img class="imgl" src="prev_tetrad-on.gif" alt="">
+This scheme is made by a pair of colors and their complements. It's based on <em>the tetrade</em> - the foursome of colors evenly distributed on the fourths of the color wheel (by 90 degreees). The tetrade is very aggressive color scheme, requiring very good planning and very sensitive approach to relations of these colors.</p>
+<p>
+Less distance between two base colors causes less tension in the result. However, this scheme is always more "nervous" and "action" than other schemes. While working with it, we have to take care especially of relations between one color and the complement of its adjacent color - in case of the tetrade (maximum distance 90&deg;, clear to the right), good feeling and very sensitive approach are necessary.</p>
+
+<h4>Analogic colors</h4>
+<p><img class="imgl" src="prev_analog-on.gif" alt="">
+
+This scheme is made by base color and its adjacent colors - two colors identically on both sides. It always looks very elegantly and clear, the result has less tension and it's uniformly warm, or cold. If a color on the warm-cold border is chosen, the color with opposite "temperature" may be used for accenting the other two colors.</p>
+<p>
+You can set the distance of adjacent colors clicking the scale (will be displayed bellow the scheme cards). Values between 15-30&deg; (between the fourth and the half of the scale) are optimal. You can also add the contrast color, the scheme is then supplemented with the complement of the base color. It must be treated only as a complement - it adds tension to the palette, and it's too aggressive when overused. However, used in details and as accent of main colors, it can be very effective and elegant.</p>
+
+<h4>Contradictory colors</h4>
+<p>
+There is no scheme named "contradictory" here - on the contrary, it's a color scheme, which can't fit into any rule described above. This scheme may not be useless - there may be situations, when we have to create shocking, really gaudy, jazzy work. Even in this case this tool may be usefull - if your scheme differs from all described models, you've got it: nervous, loud, aggressive set of colors. Of course, it cannot be suitable for applications requiring not so intensive emotions.</p>
+
+
+<hr>
+<a name="other"></a>
+<h3>Other functions</h3>
+<p>You can activate the "safe" colors conversion by clicking on the checkbox above the color swatch. All colors in the scheme will be transformed to the 216-colors color space (WebColors). Even if this reduction has not much sense today, someone make find it useful. This transformation changes color tints and the balanced scheme may be deformed. If you want to use this function, you'd rather prefer colors which aren't very different after the WebColors tranformation.</p>
+
+<p>At the bottom right, a select box provides switching between color blind simulation. Several types of color blindness. If you select one of these simulations, displayed colors in the swatch are changed to show how people having selected malfunction may see them. This function has just accessibility verification purpose, generated color codes are not affected by it..</p>
+
+<p>
+Actual codes of displayed colors are in the table on the right side. The color blindness simulation doesn't change them, but the WebColors transformation does. Each color has its base color and three variations are displayed bellow it. You can rotate these variations by clicking the arrow on the right (e.g. make any of variations to be the base color and check how it looks on a larger area).
+</p>
+
+<p>
+The final color palette is just a base for designer's work. You must not use all generated colors. To keep the intention of the color scheme, you shouldn't overuse the color variations; mostly only black and white are recommended. Anyway, if you really need the variations, just select only several ones of the base color, and one or two variations of one of the contrast colors. Anther possibility is to use the same variation of all main colors in the scheme, to create the same motive in lighter/paler/darker shades. Generally, one application (one web page, or one web site) should use no more than six color (including the variants), plus black and white. This tool can help you make them go well together.
+</p>
+
+<hr>
+
+<p>
+<strong>Note:</strong> The "This scheme URL" link keeps the URL of actually displayed color palette and all settings in every moment. Thus, you may bookmark the color scheme you've just create, create your own list of color sets with names and descriptions, or just send someone the color scheme by e-mail to be considered...
+</p>
+
+<hr>
+
+<a name="license"></a>
+<h3>Licensing</h3>
+<p>
+This product is distributed under the <a href="http://creativecommons.org/licenses/by-nc-sa/2.0/">BY-NC-SA licence</a>. License for commercial use is not possible.
+</p>
+
+<hr>
+
+<p>
+	<a href="http://www.wellstyled.com">Wellstyled.com</a> &rarr;
+	<strong>Info &amp; Help</strong>
+	<br>
+	Copyright <a href="http://www.pixy.cz">pixy</a> (c) 2002, 2004
+</p>
+
+
+</body>
+</html>
