@@ -228,6 +228,7 @@ function createScheme(setDefaults) {
 	if (setDefaults) {
 		for (var i=0; i<4; i++) col[i].setVariantPreset('default');
 		}
+		//alert(col[0].H);
 	drawSample();
 	}
 
@@ -392,10 +393,8 @@ var offsetArray;
 
 
 var eX,eY;
+var selectedh=60;
 
-/**** info about the state of the colorwheel******/
-var selectedh;
-/*************************************************/
 
 var url = 'http://slug.middlebury.edu/~nstamato/polyphony/main/library/Wizard/Components/WColorWheelFiles/'
 function getEvent(e) {
@@ -532,10 +531,6 @@ function switchBlindlessMode() {
 	drawSample();
 	}
 	
-function setBlindlessMode(colorMode){
-	colorBlindMode = colorMode;
-	drawSample();
-} 
 
 function searchRGB() {
 	var hex = prompt('Six-digit hexadecial code of wanted color (without #) - i. e. FF99CC',RGBinput);
@@ -626,10 +621,11 @@ function displayValues(){
 			buff+='#' + col[i].getHex(webSnap,0,j) + ';';
 		}
 	}
-	buff+=selectedh + ';';
+	buff+=col[0].H + ';';
 	buff+=usedPreset + ';';
 	buff+=sliderVal + ';';
-	buff+=webSnap + ';';
+	//buff+=webSnap + ';';
+	buff+=objGet('websnapper').checked+';';
 	buff+=usedScheme + ';';
 	var hiddenForm = getWizardElement('wizardColorWheelColors');
 	hiddenForm.value = buff;
@@ -665,12 +661,16 @@ function Init() {
 	//alert(sstr);
 	//if (sstr!='') {
 	if(initvalue!=''){
+	//alert(initvalue);
 	var data = initvalue.split(';');
 	//col[0].setBaseColor(parseInt(data[0]));
 	setMainColor(parseInt(data[data.length-6]));
 	switchPreset(data[data.length-5]);
 	setSlider(parseFloat(data[data.length-4]));
-	objGet('websnapper').checked = (parseInt(data[data.length-3])!=0);
+	if(data[data.length-3]=='false')
+		objGet('websnapper').checked = 0;
+	else
+		objGet('websnapper').checked = 1;
 	selectScheme(data[data.length-2]);
 	/*
 		sstr = sstr.substr(1);
@@ -694,7 +694,7 @@ function Init() {
 		drawSample();
 	}
 	else {
-		setMainColor(60);
+		setMainColor(col[0].H);
 		selectScheme('mono');
 		switchPreset('default');
 	}

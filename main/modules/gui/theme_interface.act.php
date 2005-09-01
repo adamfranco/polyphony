@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: theme_interface.act.php,v 1.1 2005/09/01 18:44:45 nstamato Exp $
+ * @version $Id: theme_interface.act.php,v 1.2 2005/09/01 21:45:20 nstamato Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: theme_interface.act.php,v 1.1 2005/09/01 18:44:45 nstamato Exp $
+ * @version $Id: theme_interface.act.php,v 1.2 2005/09/01 21:45:20 nstamato Exp $
  */
 class theme_interfaceAction 
 	extends MainWindowAction
@@ -188,8 +188,9 @@ class theme_interfaceAction
 				<td> [[themeid]]
 				</td></tr>
 				</table>";
-				//<td><input type='text' name='".RequestContext::name("theme_id")."' />
-		//print "\n<div style='width: 400px'> &nbsp; </div>";
+		$colorWheel =& $step->addComponent("colorwheel", new WColorWheel());
+		
+		print "[[colorwheel]]";
 		$step->setContent(ob_get_contents());
 		ob_end_clean();
 		}
@@ -209,8 +210,8 @@ class theme_interfaceAction
 	function saveWizard ( $cacheName ) {
 		$wizard =& $this->getWizard($cacheName);
 		$properties =& $wizard->getAllValues();
-		//printpre($properties);
-		//exit();
+		printpre($properties);
+		exit();
 			
 		$guimanager =& Services::getService('GUIManager');
 		$currenttheme =& $guimanager->getTheme();
