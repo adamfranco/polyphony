@@ -154,7 +154,11 @@ var colWheel = new Array(12);
 	colWheel['315'] = new Array(153,0,153,	315, 100, 60);
 	colWheel['330'] = new Array(204,0,153,	330, 100, 80);
 	colWheel['345'] = new Array(229,0,102,	345, 100, 90);
-
+/*
+* Javascript file used by the ColorWheel Wizard Component
+* For more information see http://www.wellstyled.com/
+*
+*/
 
 var usedColors = 1;
 var schemeNames = new Array('mono','compl','triad','tetrad','analog');

@@ -1,4 +1,8 @@
-
+/*
+* CSS file used by the ColorWheel Wizard Component
+* For more information see http://www.wellstyled.com/
+*
+*/
 .lineup { padding-top:1ex; border-top:1px solid silver; }
 .center { text-align:center; }
 .right { text-align:right; }

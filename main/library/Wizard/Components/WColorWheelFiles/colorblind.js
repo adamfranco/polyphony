@@ -1,3 +1,9 @@
+/*
+* Javascript file used by the ColorWheel Wizard Component
+* For more information see http://www.wellstyled.com/
+*
+*/
+
 // 0 = normal
 // 1 = protanopie - 1%
 // 2 = deuteranopie - 1%
