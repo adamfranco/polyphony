@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.22 2005/08/22 15:05:14 adamfranco Exp $
+ * @version $Id: polyphony.inc.php,v 1.23 2005/09/01 18:44:44 nstamato Exp $
  */
 
 /**
@@ -38,7 +38,7 @@ require_once(dirname(__FILE__)."/main/library/Wizard/Components/WVerticalRadioLi
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSaveCancelListener.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WRepeatableComponentCollection.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WOrderedRepeatableComponentCollection.class.php");
-
+require_once(dirname(__FILE__)."/main/library/Wizard/Components/WColorWheel.class.php");
 // error checking
 require_once(dirname(__FILE__)."/main/library/Wizard/ErrorCheckingRules/WECRegex.class.php");
 
