@@ -391,6 +391,8 @@ var offsetArray;
 
 var eX,eY;
 var selectedh=60;
+var shift = new Array(4);
+
 
 
 var url = 'http://slug.middlebury.edu/~nstamato/polyphony/main/library/Wizard/Components/WColorWheelFiles/'
@@ -484,6 +486,7 @@ function setSlider(x) {
 	}
 
 function shiftVar(n) {
+	shift[n]=((shift[n]+1)%4);
 	var S = col[n].S[0];
 	var V = col[n].V[0];
 	for (var i=0;i<3;i++) {
@@ -610,7 +613,7 @@ function endDrag() { dragging = false }
 
 function displayValues(){
 	var i,j;
-	var buff='';
+	var buff=usedColors+';';
 	var div = getElementFromDocument('display');
 
 	for(i=0;i<usedColors;i++){
@@ -618,12 +621,19 @@ function displayValues(){
 			buff+='#' + col[i].getHex(webSnap,0,j) + ';';
 		}
 	}
+	
+	var hiddenForm = getWizardElement('wizardColorWheelColors');
+	hiddenForm.value = buff;
+	buff='';
 	buff+=col[0].H + ';';
 	buff+=usedPreset + ';';
 	buff+=sliderVal + ';';
 	buff+=objGet('websnapper').checked+';';
+	for(i=0;i<4;i++){
+		buff+=shift[i]+';';	
+	}
 	buff+=usedScheme + ';';
-	var hiddenForm = getWizardElement('wizardColorWheelColors');
+	hiddenForm = getWizardElement('settingsdata');
 	hiddenForm.value = buff;
 	
 	
@@ -634,14 +644,10 @@ function displayValues(){
 
 window.onload = Init;
 function Init() {
-/*
-	objGet('wheelarea').onclick = moveHue;
-	objGet('wheelarea').onmousemove = showHueInfo;
-	objGet('scheme-slider').onclick = moveSlider;
-	objGet('scheme-slider').onmousemove = showSliderInfo;
-*/
-	
-	
+	for(var i=0;i<4;i++){
+		shift[i]=0;
+	}
+
 	objGet('wheelarea').onmousedown = beginDragWheel;
 	objGet('wheelarea').onmousemove = dragWheel;
 	objGet('wheelarea').onmouseup = endDrag;
@@ -650,20 +656,25 @@ function Init() {
 	objGet('scheme-slider').onmousemove = dragSlider;
 	objGet('scheme-slider').onmouseup = endDrag;
 	
-	var hiddenForm = getWizardElement('wizardColorWheelColors');
-	var initvalue = hiddenForm.value
-	
+	var hiddenForm = getWizardElement('settingsdata');
+	var initvalue = hiddenForm.value;
 	var i,j;
 	if(initvalue!=''){
 	var data = initvalue.split(';');
-	setMainColor(parseInt(data[data.length-6]));
-	switchPreset(data[data.length-5]);
-	setSlider(parseFloat(data[data.length-4]));
-	if(data[data.length-3]=='false')
+	setMainColor(parseInt(data[0]));
+	switchPreset(data[1]);
+	setSlider(parseFloat(data[2]));
+	if(data[3]=='false')
 		objGet('websnapper').checked = 0;
 	else
 		objGet('websnapper').checked = 1;
-	selectScheme(data[data.length-2]);
+	
+	for(j=0;j<4;j++){
+		for(i=0;i<parseInt(data[4+j]);i++){
+			shiftVar(j);
+		}
+	}
+	selectScheme(data[8]);
 	drawSample();
 	}
 	else {

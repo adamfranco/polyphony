@@ -7,7 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  * @license This is distributed under the BY-NC-SA licence(http://creativecommons.org/licenses/by-nc-sa/2.0/). License for commercial use is not possible
  *
- * @version $Id: WColorWheel.class.php,v 1.1 2005/09/01 18:44:44 nstamato Exp $
+ * @version $Id: WColorWheel.class.php,v 1.2 2005/09/02 19:09:20 nstamato Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -22,13 +22,14 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *  @license This is distributed under the BY-NC-SA licence(http://creativecommons.org/licenses/by-nc-sa/2.0/). License for commercial use is not possible
  *
- * @version $Id: WColorWheel.class.php,v 1.1 2005/09/01 18:44:44 nstamato Exp $
+ * @version $Id: WColorWheel.class.php,v 1.2 2005/09/02 19:09:20 nstamato Exp $
  */
 class WColorWheel 
 	extends WizardComponent 
 {
 
 	var $_value;
+	var $_settings='';
 	var $_style = null;
 	
 	
@@ -53,20 +54,18 @@ class WColorWheel
 	
 	/**
 	 * Sets the value of this ColorWheel object.
-	 * It is a string with the hex representation
-	 * of colors separated with semicolons, as
-	 * given by the ColorWheel. After the colors, follow 
-	 * values of settings of the ColorWheel. The last setting
-	 * gives you the scheme which determines how many colors 
-	 * are passed to the user by the ColorWheel (multiple of 4). 
-	 * So if the last value of the string is 'mono' you get 4
-	 * colors, if it's 'compl' you get 8, if it's 'triad' or
-	 * 'analog' you get 12. Finally, if it's 'tetrad' there are
-	 * 16 colors. In order to get the colors, one has to determine
-	 * how many colors are passed by the ColorWheel and then read
-	 * that number of colors from the beginning of the string 
-	 * A typical value could be:
-	 * #FF9900;#B36B00;#FFE6BF;#FFCC80;60;default;0.5;false;mono;
+	 * The value is a string containing the hex 
+	 * representation of the selected colors.
+	 * Colors come in groups of 4:first is the base
+	 * color and then follow three variations. Some 
+	 * schemata give more than one group of colors.
+	 * Thus, the string starts with the number of 
+	 * color groups returned by the ColorWheel and
+	 * then follow the colors themselves(in hex) all
+	 * separated by a semicolon. So an example could
+	 * be:
+	 * 1;#007D48;#BFFFE4;#80FFC9;#00B366;
+	 * where you are given 1 group of 4 colors.
 	 * 
 	 * @param string $value
 	 * @access public
@@ -78,6 +77,19 @@ class WColorWheel
 	
 	
 	/**
+	 * Gets the current Settings of the ColorWheel
+	 * object. The settings are returned as a string
+	 * with the attributes separated by semicolons.
+	 * The order is:
+	 * mainColor;preset;slider-value;safecolor;shift1;shift2;shift3;shift4;schema;
+	 * @access public
+	 * @return string settings
+	 */
+	function getSettings(){
+		return $this->_settings;
+	}
+	
+	/**
 	 * Tells the wizard component to update itself - this may include getting
 	 * form post data or validation - whatever this particular component wants to
 	 * do every pageload. 
@@ -87,8 +99,10 @@ class WColorWheel
 	 * @return boolean - TRUE if everything is OK
 	 */
 	function update ($fieldName) {
-		$val = RequestContext::value($fieldName);
+		$val = RequestContext::value($fieldName.'_colors');
 		if ($val) $this->_value = $val;
+		$settings = RequestContext::value($fieldName.'_settings');
+		if($settings) $this->_settings = $settings;
 	}
 	
 	/**
@@ -113,6 +127,7 @@ class WColorWheel
 		$guimanager =& Services::getService("GUIManager");
 		$name = RequestContext::name($fieldName);
 		$value = $this->_value;
+		$settings = $this->_settings;
 		$colorwheelurl = "http://slug.middlebury.edu/~nstamato/polyphony/main/library/Wizard/Components/WColorWheelFiles/";
 
 
@@ -243,8 +258,10 @@ class WColorWheel
 		</p></div>";
 		
 		$m.="<div id=\"display\">
-		<input type='hidden' name='$name' id='wizardColorWheelColors' value='$value' /></div>";
+		<input type='hidden' name='".$name."_colors' id='wizardColorWheelColors' value='$value' /></div>";
 		
+		$m.="<div id=\"settings\">
+		<input type='hidden' name='".$name."_settings' id='settingsdata' value='$settings' /></div>";
 
 		return $m;
 	
