@@ -228,7 +228,6 @@ function createScheme(setDefaults) {
 	if (setDefaults) {
 		for (var i=0; i<4; i++) col[i].setVariantPreset('default');
 		}
-		//alert(col[0].H);
 	drawSample();
 	}
 
@@ -245,7 +244,6 @@ function drawSample() {
 			c = '#' + col[i].getHex(webSnap,colorblindMode,0);
 			objSetStyle('color'+i,'background', c);
 			c = '#' + col[i].getHex(webSnap,0,0);
-			//alert(c);
 			buff += '<img class="coltbl-image" src="http://slug.middlebury.edu/~nstamato/polyphony/main/library/Wizard/Components/WColorWheelFiles/uarr.gif" alt="" onclick="shiftVar('+i+')">';
 			
 			buff += '<p class="coltbl-item" style="border-color:' + c + ';">' + c + '<'+'/p>';
@@ -259,7 +257,6 @@ function drawSample() {
 			objGet('color'+i+'-'+j).className = 'col-'+j;
 			if (used) {
 				c = '#' + col[i].getHex(webSnap,colorblindMode,j);
-				//alert(c);
 				objSetStyle('color'+i+'-'+j,'background',c);
 				if (j>0) {
 					c = '#' + col[i].getHex(webSnap,0,j);
@@ -624,7 +621,6 @@ function displayValues(){
 	buff+=col[0].H + ';';
 	buff+=usedPreset + ';';
 	buff+=sliderVal + ';';
-	//buff+=webSnap + ';';
 	buff+=objGet('websnapper').checked+';';
 	buff+=usedScheme + ';';
 	var hiddenForm = getWizardElement('wizardColorWheelColors');
@@ -658,12 +654,8 @@ function Init() {
 	var initvalue = hiddenForm.value
 	
 	var i,j;
-	//alert(sstr);
-	//if (sstr!='') {
 	if(initvalue!=''){
-	//alert(initvalue);
 	var data = initvalue.split(';');
-	//col[0].setBaseColor(parseInt(data[0]));
 	setMainColor(parseInt(data[data.length-6]));
 	switchPreset(data[data.length-5]);
 	setSlider(parseFloat(data[data.length-4]));
@@ -672,26 +664,7 @@ function Init() {
 	else
 		objGet('websnapper').checked = 1;
 	selectScheme(data[data.length-2]);
-	/*
-		sstr = sstr.substr(1);
-		var data = sstr.split(';');
-		
-		setSlider(parseInt(data[1])/100);
-		objGet('analogCompl').checked = (data[2]!=0);
-		col[0].setBaseColor(parseInt(data[3]));
-		selectScheme(data[0]);
-		var n = 4;
-		for (i=0; i<4; i++) {
-			for (j=0; j<4; j++) {
-				col[i].S[j] = parseFloat(data[n]);
-				n++;
-				col[i].V[j] = parseFloat(data[n]);
-				n++;
-			}
-		}
-		objGet('websnapper').checked = (data[36]!=0);
-		*/
-		drawSample();
+	drawSample();
 	}
 	else {
 		setMainColor(col[0].H);
