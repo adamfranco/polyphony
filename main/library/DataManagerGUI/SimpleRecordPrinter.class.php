@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleRecordPrinter.class.php,v 1.8 2005/07/15 22:29:04 gabeschine Exp $
+ * @version $Id: SimpleRecordPrinter.class.php,v 1.9 2005/09/06 20:19:59 cws-midd Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleRecordPrinter.class.php,v 1.8 2005/07/15 22:29:04 gabeschine Exp $
+ * @version $Id: SimpleRecordPrinter.class.php,v 1.9 2005/09/06 20:19:59 cws-midd Exp $
  */
 class SimpleRecordPrinter {
 	
@@ -28,7 +28,7 @@ class SimpleRecordPrinter {
 	 */
 	function printRecord(&$record, $html=true, $return=false)
 	{
-		if ($record->getFetchMode == -1) {
+		if ($record->getFetchMode() == -1) {
 			print "<b>Record not populated...</b><br />";
 			return;
 		}

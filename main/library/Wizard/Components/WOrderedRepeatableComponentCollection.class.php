@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.3 2005/08/24 14:34:42 cws-midd Exp $
+ * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.4 2005/09/06 20:20:00 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.3 2005/08/24 14:34:42 cws-midd Exp $
+ * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.4 2005/09/06 20:20:00 cws-midd Exp $
  */
 
 class WOrderedRepeatableComponentCollection 
@@ -175,13 +175,18 @@ class WOrderedRepeatableComponentCollection
 			
 			$this->_collections[$key]["_remove"]->setEnabled($includeRemove);
 			$m .= "<tr><td valign='top' style='border-bottom: 1px solid #555;'>";
-			$m .= $this->_collections[$key]["_remove"]->getMarkup($fieldName."_".$key."__remove");
+			$m .= $this->_collections[$key]["_remove"]->getMarkup(
+				$fieldName."_".$key."__remove");
 			if ($this->_orderedSet->getPosition($collectionId) > 0)
-				$m .= "\n<br/>".$this->_collections[$key]["_moveup"]->getMarkup($fieldName."_".$key."__moveup");
+				$m .= "\n<br/>".$this->_collections[$key]["_moveup"]->getMarkup(
+					$fieldName."_".$key."__moveup");
 			if ($this->_orderedSet->hasNext())
-				$m .= "\n<br/>".$this->_collections[$key]["_movedown"]->getMarkup($fieldName."_".$key."__movedown");
+				$m .= "\n<br/>".
+					$this->_collections[$key]["_movedown"]->getMarkup(
+					$fieldName."_".$key."__movedown");
 			$m .= "</td><td style='border-bottom: 1px solid #555;'>";
-			$m .= Wizard::parseText($this->_text, $this->_collections[$key], $fieldName."_".$key."_");
+			$m .= Wizard::parseText($this->_text, $this->_collections[$key],
+				$fieldName."_".$key."_");
 			$m .= "</td></tr>\n";
 		}
 		
