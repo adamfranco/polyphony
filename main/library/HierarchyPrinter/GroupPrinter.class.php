@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: GroupPrinter.class.php,v 1.11 2005/07/19 18:09:55 adamfranco Exp $
+ * @version $Id: GroupPrinter.class.php,v 1.12 2005/09/07 21:18:25 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: GroupPrinter.class.php,v 1.11 2005/07/19 18:09:55 adamfranco Exp $
+ * @version $Id: GroupPrinter.class.php,v 1.12 2005/09/07 21:18:25 adamfranco Exp $
  * @since 11/11/04
  */
 
@@ -45,7 +45,9 @@ class GroupPrinter {
 		// designate which groups to expand.
 		$environmentInfo = array();
 		$expandedGroups = array();
-		if ($tmp = $harmoni->request->get("expandedGroups")) $expandedGroups = explode(",", $tmp);
+		if ($tmp = $harmoni->request->get("expandedGroups")) {
+			$expandedGroups = explode(",", $tmp);
+		}
 		
 		print "\n\n<table>\n\t<tr><td valign='top'>";
 		
@@ -53,8 +55,9 @@ class GroupPrinter {
 		// First check to see whether or not it has any children
 		$childGroups =& $group->getGroups(false);
 		$childMembers =& $group->getMembers(false);
+		
 		if ($childGroups->hasNext() || $childMembers->hasNext()) {
-		?>
+			print <<<END
 
 <div style='
 	border: 1px solid #000; 
@@ -64,10 +67,9 @@ class GroupPrinter {
 	text-decoration: none;
 	font-weight: bold;
 '>
-		<?php
-/**
- * @package polyphony.library.
- */		
+
+END;
+
 			// The child groups are already expanded for this group. 
 			// Show option to collapse the list.		
 			if (in_array($groupId->getIdString(), $expandedGroups)) {
@@ -105,7 +107,7 @@ class GroupPrinter {
 		// If the group was expanded, we need to recursively print its children.
 		
 		if (in_array($groupId->getIdString(), $expandedGroups)) {
-			?>
+			print <<<END
 
 <div style='
 	margin-left: 13px; 
@@ -114,10 +116,9 @@ class GroupPrinter {
 	padding-left: 10px;
 	border-left: 1px solid #000;
 '>
-		<?php
-/**
- * @package polyphony.library.
- */
+
+END;
+			
 			while ($childGroups->hasNext()) {
 				$childGroup =& $childGroups->next();
 				GroupPrinter::printGroup( $childGroup,

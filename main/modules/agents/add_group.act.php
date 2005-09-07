@@ -4,7 +4,7 @@
  * @package polyphony.modules.agents
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- * @version $Id: add_group.act.php,v 1.1 2005/08/10 21:20:17 gabeschine Exp $
+ * @version $Id: add_group.act.php,v 1.2 2005/09/07 21:18:25 adamfranco Exp $
  **/
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -16,7 +16,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @author Gabriel Schine
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- * @version $Id: add_group.act.php,v 1.1 2005/08/10 21:20:17 gabeschine Exp $
+ * @version $Id: add_group.act.php,v 1.2 2005/09/07 21:18:25 adamfranco Exp $
  */
 class add_groupAction extends MainWindowAction
 {
@@ -33,8 +33,8 @@ class add_groupAction extends MainWindowAction
 			$idManager =& Services::getService("Id");
 
 			return $authZ->isUserAuthorized(
-				$idManager->getId("edu.middlebury.authorization.create_groups"),
-				$idManager->getId("edu.middlebury.authorization.root"));
+				$idManager->getId("edu.middlebury.authorization.add_children"),
+				$idManager->getId("edu.middlebury.agents.all_groups"));
 		}
 
 		/**

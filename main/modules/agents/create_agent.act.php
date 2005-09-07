@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.11 2005/08/01 20:06:54 adamfranco Exp $
+ * @version $Id: create_agent.act.php,v 1.12 2005/09/07 21:18:25 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.11 2005/08/01 20:06:54 adamfranco Exp $
+ * @version $Id: create_agent.act.php,v 1.12 2005/09/07 21:18:25 adamfranco Exp $
  */
 class create_agentAction 
 	extends MainWindowAction
@@ -39,8 +39,8 @@ class create_agentAction
 		$authZManager =& Services::getService("AuthZ");
 		$idManager =& Services::getService("IdManager");
 		if ($authZManager->isUserAuthorized(
-					$idManager->getId("edu.middlebury.authorization.create_agents"),
-					$idManager->getId("edu.middlebury.authorization.root")))
+					$idManager->getId("edu.middlebury.authorization.add_children"),
+					$idManager->getId("edu.middlebury.agents.all_agents")))
 		{
 			return TRUE;
 		} else

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.11 2005/08/10 21:20:17 gabeschine Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.12 2005/09/07 21:18:25 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.11 2005/08/10 21:20:17 gabeschine Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.12 2005/09/07 21:18:25 adamfranco Exp $
  */
 class edit_agent_detailsAction 
 	extends MainWindowAction
@@ -38,9 +38,15 @@ class edit_agent_detailsAction
 		// Check for authorization
 		$authZManager =& Services::getService("AuthZ");
 		$idManager =& Services::getService("IdManager");
+		$harmoni =& Harmoni::instance();
+		
+		$harmoni->request->startNamespace("polyphony-agents");
+		$agentIdString = $harmoni->request->get("agentId");
+		$harmoni->request->endNamespace();
+		
 		if ($authZManager->isUserAuthorized(
-					$idManager->getId("edu.middlebury.authorization.create_agents"),
-					$idManager->getId("edu.middlebury.authorization.root")))
+					$idManager->getId("edu.middlebury.authorization.modify"),
+					$idManager->getId($agentIdString)))
 		{
 			return TRUE;
 		} else

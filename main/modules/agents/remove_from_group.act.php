@@ -1,7 +1,15 @@
 <?php
+/**
+ * @package polyphony.modules.agents
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: remove_from_group.act.php,v 1.9 2005/09/07 21:18:25 adamfranco Exp $
+ */ 
 
 /**
- * remove_from_group.act.php
+ * add_to_group.act.php
  * This action will add the agent and group ids passed to it to the specified group.
  * 11/10/04 Adam Franco
  *
@@ -10,36 +18,93 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: remove_from_group.act.php,v 1.8 2005/06/02 18:09:00 gabeschine Exp $
+ * @version $Id: remove_from_group.act.php,v 1.9 2005/09/07 21:18:25 adamfranco Exp $
  */
+ 
+require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
 
-$harmoni->request->startNamespace("polyphony-agents");
-
-$agentManager =& Services::getService("Agent");
-$idManager =& Services::getService("Id");
-
-//printpre($_REQUEST);
-
-$id =& $idManager->getId($harmoni->request->get('destinationgroup'));
-$destGroup =& $agentManager->getGroup($id);
-
-foreach ($harmoni->request->getKeys() as $idString) {
-	
-	$type = $harmoni->request->get($idString);
-	
-	if ($type == "group") {
-		$id =& $idManager->getId(strval($idString));
-		$member =& $agentManager->getGroup($id);
-		$destGroup->remove($member);
+/**
+ * This action will allow for the modification of group Membership.
+ *
+ * @since 11/10/04 
+ * 
+ * @package polyphony.modules.agents
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: remove_from_group.act.php,v 1.9 2005/09/07 21:18:25 adamfranco Exp $
+ */
+class remove_from_groupAction 
+	extends MainWindowAction
+{
+	/**
+	 * Check Authorizations
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 4/26/05
+	 */
+	function isAuthorizedToExecute () {
+		$idManager =& Services::getService("Id");
+		$agentManager =& Services::getService("Agent");
+		$harmoni =& Harmoni::instance();
 		
-	} else if ($type == "agent") {
-		$id =& $idManager->getId(strval($idString));
-		$member =& $agentManager->getAgent($id);
-		$destGroup->remove($member);
-	}	
+		$harmoni->request->startNamespace("polyphony-agents");
+		$destinationId =& $idManager->getId(RequestContext::value('destinationgroup'));
+		$harmoni->request->endNamespace();
+
+		// Check for authorization
+		$authZManager =& Services::getService("AuthZ");
+		$idManager =& Services::getService("IdManager");
+		if ($authZManager->isUserAuthorized(
+					$idManager->getId("edu.middlebury.authorization.remove_children"),
+					$destinationId))
+		{
+			return TRUE;
+		} else
+			return FALSE;
+	}
+	
+	/**
+	 * Build the content for this action
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 4/26/05
+	 */
+	function buildContent () {
+
+		$idManager =& Services::getService("Id");
+		$agentManager =& Services::getService("Agent");
+		$harmoni =& Harmoni::instance();
+		
+		$harmoni->request->startNamespace("polyphony-agents");
+				
+		$id =& $idManager->getId(RequestContext::value('destinationgroup'));
+		$destGroup =& $agentManager->getGroup($id);
+		
+		foreach ($harmoni->request->getKeys() as $idString) {
+		
+			$type = RequestContext::value($idString);
+			
+			if ($type == "group" || $type == "agent") {
+				$id =& $idManager->getId(strval($idString));
+				
+				if ($type == "group") {
+					$member =& $agentManager->getGroup($id);
+				} else {
+					$member =& $agentManager->getAgent($id);
+				}
+					$destGroup->remove($member);
+			}
+			
+			
+		}
+		
+		$harmoni->request->endNamespace();
+		
+		// Send us back to where we were
+		$harmoni->history->goBack("polyphony/agents/add_to_group");
+	}
 }
-
-$harmoni->request->endNamespace();
-
-// send us back to where we were before we started this operation
-$harmoni->history->goBack("polyphony/agents/remove_from_group");

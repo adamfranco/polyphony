@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_membership.act.php,v 1.32 2005/08/05 18:31:36 gabeschine Exp $
+ * @version $Id: group_membership.act.php,v 1.33 2005/09/07 21:18:25 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_membership.act.php,v 1.32 2005/08/05 18:31:36 gabeschine Exp $
+ * @version $Id: group_membership.act.php,v 1.33 2005/09/07 21:18:25 adamfranco Exp $
  */
 class group_membershipAction 
 	extends MainWindowAction
@@ -39,8 +39,8 @@ class group_membershipAction
 		$authZManager =& Services::getService("AuthZ");
 		$idManager =& Services::getService("IdManager");
 		if ($authZManager->isUserAuthorized(
-					$idManager->getId("edu.middlebury.authorization.modify_groups"),
-					$idManager->getId("edu.middlebury.authorization.root")))
+					$idManager->getId("edu.middlebury.authorization.modify"),
+					$idManager->getId("edu.middlebury.agents.all_groups")))
 		{
 			return TRUE;
 		} else
@@ -83,6 +83,7 @@ class group_membershipAction
 		$idManager = Services::getService("Id");
 		$everyoneId =& $idManager->getId("edu.middlebury.agents.everyone");
 		$usersId =& $idManager->getId("edu.middlebury.agents.users");
+		$allGroupsId =& $idManager->getId("edu.middlebury.agents.all_groups");
 		
 		
 		/*********************************************************
@@ -198,7 +199,10 @@ END;
 		$groups =& $agentManager->getGroups();
 		while ($groups->hasNext()) {
 			$group =& $groups->next();
-			if (!$everyoneId->isEqual($group->getId()) && !$usersId->isEqual($group->getId())) {
+			if (!$everyoneId->isEqual($group->getId()) 
+				&& !$usersId->isEqual($group->getId())
+				&& !$allGroupsId->isEqual($group->getId())) 
+			{
 				$childGroups =& $group->getGroups(FALSE);
 				while ($childGroups->hasNext()) {
 					$group =& $childGroups->next();
@@ -439,6 +443,7 @@ END;
 		$idManager = Services::getService("Id");
 		$everyoneId =& $idManager->getId("edu.middlebury.agents.everyone");
 		$usersId =& $idManager->getId("edu.middlebury.agents.users");
+		$allGroupsId =& $idManager->getId("edu.middlebury.agents.all_groups");
 		
 		$id =& $group->getId();
 		$groupType =& $group->getType();
