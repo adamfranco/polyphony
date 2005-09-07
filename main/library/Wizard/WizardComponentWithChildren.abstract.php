@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponentWithChildren.abstract.php,v 1.3 2005/08/10 17:52:05 adamfranco Exp $
+ * @version $Id: WizardComponentWithChildren.abstract.php,v 1.4 2005/09/07 21:41:21 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponentWithChildren.abstract.php,v 1.3 2005/08/10 17:52:05 adamfranco Exp $
+ * @version $Id: WizardComponentWithChildren.abstract.php,v 1.4 2005/09/07 21:41:21 adamfranco Exp $
  * @abstract
  */
 class WizardComponentWithChildren 
@@ -36,7 +36,7 @@ class WizardComponentWithChildren
 	 * @access public
 	 * @return ref object
 	 */
-	function & addComponent ($name, &$component) {
+	function &addComponent ($name, &$component) {
 		$this->_children[$name] =& $component;
 		$component->setParent($this);
 		return $component;
