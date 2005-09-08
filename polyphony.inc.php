@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.23 2005/09/01 18:44:44 nstamato Exp $
+ * @version $Id: polyphony.inc.php,v 1.24 2005/09/08 20:48:52 gabeschine Exp $
  */
 
 /**
@@ -38,12 +38,18 @@ require_once(dirname(__FILE__)."/main/library/Wizard/Components/WVerticalRadioLi
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSaveCancelListener.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WRepeatableComponentCollection.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WOrderedRepeatableComponentCollection.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/Components/WHiddenField.class.php");
+
+require_once(dirname(__FILE__)."/main/library/Wizard/Components/WAgentBrowser.class.php");
+
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WColorWheel.class.php");
+
 // error checking
 require_once(dirname(__FILE__)."/main/library/Wizard/ErrorCheckingRules/WECRegex.class.php");
 
 require_once(dirname(__FILE__)."/main/library/ResultPrinter/IteratorResultPrinter.class.php");
 require_once(dirname(__FILE__)."/main/library/ResultPrinter/ArrayResultPrinter.class.php");
+require_once(dirname(__FILE__)."/main/library/ResultPrinter/EmbeddedArrayResultPrinter.class.php");
 
 require_once(dirname(__FILE__)."/main/library/Basket/BasketManager.class.php");
 

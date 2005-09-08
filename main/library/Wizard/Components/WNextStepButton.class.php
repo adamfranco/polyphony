@@ -6,10 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WNextStepButton.class.php,v 1.2 2005/08/10 17:52:05 adamfranco Exp $
+ * @version $Id: WNextStepButton.class.php,v 1.3 2005/09/08 20:48:53 gabeschine Exp $
  */ 
- 
-require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
+
+require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php");
 
 /**
  * This adds a "Next" button to the wizard and throws the appropriate event.
@@ -20,10 +20,10 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WNextStepButton.class.php,v 1.2 2005/08/10 17:52:05 adamfranco Exp $
+ * @version $Id: WNextStepButton.class.php,v 1.3 2005/09/08 20:48:53 gabeschine Exp $
  */
 class WNextStepButton 
-	extends WizardComponent 
+	extends WEventButton 
 {
 
 	var $_stepContainer;
@@ -35,6 +35,7 @@ class WNextStepButton
 	 * @return void
 	 */
 	function WNextStepButton (&$stepContainer) {
+		$this->setLabel(dgettext("polyphony", "Next"));
 		$this->_stepContainer =& $stepContainer;
 	}
 	
@@ -48,39 +49,14 @@ class WNextStepButton
 	 * @return boolean - TRUE if everything is OK
 	 */
 	function update ($fieldName) {
-		$wizard =& $this->getWizard();
-		$wizard->_test = $fieldName;
-		$val = RequestContext::value($fieldName);
-		if ($val) {
+		parent::update($fieldName);
+		if ($this->getAllValues()) {
 			// advance the step!
 			$this->_stepContainer->nextStep();
 		}
+		$this->setEnabled($this->_stepContainer->hasNext());
 	}
-	
-	/**
-	 * Returns the values of wizard-components. Should return an array if children are involved,
-	 * otherwise a whatever type of object is expected.
-	 * @access public
-	 * @return mixed
-	 */
-	function getAllValues () {
-		return null;
-	}
-	
-	/**
-	 * Returns a block of XHTML-valid code that contains markup for this specific
-	 * component. 
-	 * @param string $fieldName The field name to use when outputting form data or
-	 * similar parameters/information.
-	 * @access public
-	 * @return string
-	 */
-	function getMarkup ($fieldName) {
-		$name = RequestContext::name($fieldName);
-		$disabled = $this->_stepContainer->hasNext()?"":" disabled";
-		$label = dgettext("polyphony","Next");
-		return "<input type='submit' name='$name' value='$label'$disabled />";
-	}
+
 }
 
 ?>

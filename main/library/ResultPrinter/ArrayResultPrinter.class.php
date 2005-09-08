@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.11 2005/08/05 21:26:35 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.12 2005/09/08 20:48:53 gabeschine Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.11 2005/08/05 21:26:35 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.12 2005/09/08 20:48:53 gabeschine Exp $
  */
 
 class ArrayResultPrinter {
@@ -38,10 +38,10 @@ class ArrayResultPrinter {
 	 */
 	function ArrayResultPrinter (& $array, $numColumns, 
 									$numResultsPerPage, $callbackFunction) {
-		ArgumentValidator::validate($array, new ArrayValidatorRule);
-		ArgumentValidator::validate($numColumns, new IntegerValidatorRule);
-		ArgumentValidator::validate($numResultsPerPage, new IntegerValidatorRule);
-		ArgumentValidator::validate($callbackFunction, new StringValidatorRule);
+		ArgumentValidator::validate($array, ArrayValidatorRule::getRule());
+		ArgumentValidator::validate($numColumns, IntegerValidatorRule::getRule());
+		ArgumentValidator::validate($numResultsPerPage, IntegerValidatorRule::getRule());
+//		ArgumentValidator::validate($callbackFunction, StringValidatorRule::getRule());
 		
 		$this->_array =& $array;
 		$this->_numColumns =& $numColumns;
@@ -54,7 +54,6 @@ class ArrayResultPrinter {
 			$this->_callbackParams[] =& $args[$i];
 		}
 	}
-	
 	
 	
 	/**
@@ -83,6 +82,7 @@ class ArrayResultPrinter {
 		$endingNumber = $startingNumber+$this->_pageSize-1;
 		$numItems = 0;
 		$resultLayout =& new Container(new TableLayout($this->_numColumns), OTHER, 1);		
+		$shouldPrintEval = $shouldPrintFunction?"\$shouldPrint = ".$shouldPrintFunction."(\$item);":"\$shouldPrint = true;";
 		if (count($this->_array)) {
 		
 			reset($this->_array);
@@ -93,7 +93,8 @@ class ArrayResultPrinter {
 				next($this->_array);
 				
 				// Ignore this if it should be filtered.
-				if (!$shouldPrintFunction || $shouldPrintFunction($item))
+				eval($shouldPrintEval);
+				if ($shouldPrint)
 					$numItems++;
 			}
 			
@@ -104,7 +105,9 @@ class ArrayResultPrinter {
 				next($this->_array);
 				
 				// Only Act if this item isn't to be filtered.
-				if (!$shouldPrintFunction || $shouldPrintFunction($item)) {
+				
+				eval($shouldPrintEval);
+				if ($shouldPrint) {
 					$numItems++;
 					$pageItems++;
 					
@@ -124,9 +127,13 @@ class ArrayResultPrinter {
 // 			}
 			
 			// find the count of items 
-			while (next($this->_array)) {
+			while (true) {
+				$item =& current($this->_array);
+				if (!$item) break;
+				next($this->_array);
 				// Ignore this if it should be filtered.
-				if (!$shouldPrintFunction || $shouldPrintFunction($item))
+				eval($shouldPrintEval);
+				if ($shouldPrint)
 					$numItems++;
 			}	
 		} else {
@@ -136,8 +143,8 @@ class ArrayResultPrinter {
 		
 		// print out links to skip to more items if the number of Items is greater
 		// than the number we display on the page
-		ob_start();
 		if ($numItems > $this->_pageSize) {
+			ob_start();
 			$numPages = ceil($numItems/$this->_pageSize);
 			$currentPage = floor($startingNumber/$this->_pageSize)+1; // add one for 1-based counting
 			for ($i=1; $i<=$numPages; $i++) {

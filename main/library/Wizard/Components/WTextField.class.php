@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.6 2005/08/10 17:52:05 adamfranco Exp $
+ * @version $Id: WTextField.class.php,v 1.7 2005/09/08 20:48:53 gabeschine Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingWizardComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingWizardComponent.abstra
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.6 2005/08/10 17:52:05 adamfranco Exp $
+ * @version $Id: WTextField.class.php,v 1.7 2005/09/08 20:48:53 gabeschine Exp $
  */
 class WTextField 
 	extends ErrorCheckingWizardComponent 
@@ -31,6 +31,7 @@ class WTextField
 	var $_style = null;
 	var $_value = null;
 	var $_startingDisplay = null;
+	var $_readonly = false;
 	
 	var $_showError = false;
 	
@@ -124,6 +125,17 @@ class WTextField
 	}
 	
 	/**
+	 * Sets the readonly flag for this element.
+	 * @param boolean $bool
+	 *
+	 * @return void
+	 **/
+	function setReadOnly($bool)
+	{
+		$this->_readonly = $bool;
+	}
+	
+	/**
 	 * Returns a block of XHTML-valid code that contains markup for this specific
 	 * component. 
 	 * @param string $fieldName The field name to use when outputting form data or
@@ -133,7 +145,7 @@ class WTextField
 	 */
 	function getMarkup ($fieldName) {
 		$name = RequestContext::name($fieldName);
-		$m = "<input type='text' name='$name' id='$fieldName' size='".$this->_size."' maxlength='".$this->_maxlength."'";
+		$m = "<input type='text' name='$name' id='$fieldName' size='".$this->_size."' maxlength='".$this->_maxlength."'".($this->_readonly?" readonly='readonly'":"");
 		if ($this->_value != null && $this->_value != $this->_startingDisplay) {
 			$m .= " value='".htmlentities($this->_value, ENT_QUOTES)."'";
 		} else if ($this->_startingDisplay) {

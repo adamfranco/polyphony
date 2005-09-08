@@ -6,10 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WPreviousStepButton.class.php,v 1.2 2005/08/10 17:52:05 adamfranco Exp $
+ * @version $Id: WPreviousStepButton.class.php,v 1.3 2005/09/08 20:48:53 gabeschine Exp $
  */ 
- 
-require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
+
+require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php");
 
 /**
  * This adds a "Next" button to the wizard and throws the appropriate event.
@@ -20,11 +20,11 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WPreviousStepButton.class.php,v 1.2 2005/08/10 17:52:05 adamfranco Exp $
+ * @version $Id: WPreviousStepButton.class.php,v 1.3 2005/09/08 20:48:53 gabeschine Exp $
  */
-class WPreviousStepButton extends WizardComponent {
+class WPreviousStepButton extends WEventButton {
 	var $_stepContainer;
-	
+
 	/**
 	 * Constructor
 	 * @param ref object $stepContainer A {@link WizardStepContainer} object.
@@ -32,9 +32,10 @@ class WPreviousStepButton extends WizardComponent {
 	 * @return void
 	 */
 	function WPreviousStepButton (&$stepContainer) {
+		$this->setLabel(dgettext("polyphony", "Previous"));
 		$this->_stepContainer =& $stepContainer;
 	}
-	
+
 	/**
 	 * Tells the wizard component to update itself - this may include getting
 	 * form post data or validation - whatever this particular component wants to
@@ -45,37 +46,14 @@ class WPreviousStepButton extends WizardComponent {
 	 * @return boolean - TRUE if everything is OK
 	 */
 	function update ($fieldName) {
-		$val = RequestContext::value($fieldName);
-		if ($val) {
+		parent::update($fieldName);
+		if ($this->getAllValues()) {
 			// advance the step!
 			$this->_stepContainer->previousStep();
 		}
+		$this->setEnabled($this->_stepContainer->hasPrevious());
 	}
-	
-	/**
-	 * Returns the values of wizard-components. Should return an array if children are involved,
-	 * otherwise a whatever type of object is expected.
-	 * @access public
-	 * @return mixed
-	 */
-	function getAllValues () {
-		return null;
-	}
-	
-	/**
-	 * Returns a block of XHTML-valid code that contains markup for this specific
-	 * component. 
-	 * @param string $fieldName The field name to use when outputting form data or
-	 * similar parameters/information.
-	 * @access public
-	 * @return string
-	 */
-	function getMarkup ($fieldName) {
-		$name = RequestContext::name($fieldName);
-		$disabled = $this->_stepContainer->hasPrevious()?"":" disabled";
-		$label = dgettext("polyphony","Previous");
-		return "<input type='submit' name='$name' value='$label'$disabled />";
-	}
+
 }
 
 ?>

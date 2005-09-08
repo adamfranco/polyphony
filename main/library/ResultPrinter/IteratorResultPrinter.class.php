@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.15 2005/08/05 21:26:35 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.16 2005/09/08 20:48:53 gabeschine Exp $
  */
  
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.15 2005/08/05 21:26:35 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.16 2005/09/08 20:48:53 gabeschine Exp $
  */
 
 class IteratorResultPrinter {
@@ -138,8 +138,8 @@ class IteratorResultPrinter {
 		
 		// print out links to skip to more items if the number of Items is greater
 		// than the number we display on the page
-		ob_start();
 		if ($numItems > $this->_pageSize) {
+			ob_start();
 			$numPages = ceil($numItems/$this->_pageSize);
 			$currentPage = floor($startingNumber/$this->_pageSize)+1; // add one for 1-based counting
 			for ($i=1; $i<=$numPages; $i++) {

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.3 2005/08/24 14:34:42 cws-midd Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.4 2005/09/08 20:48:53 gabeschine Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.3 2005/08/24 14:34:42 cws-midd Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.4 2005/09/08 20:48:53 gabeschine Exp $
  */
 
 class WRepeatableComponentCollection extends WizardComponentWithChildren {
@@ -81,14 +81,16 @@ class WRepeatableComponentCollection extends WizardComponentWithChildren {
 	 * This is useful when pre-populating the list with old/previous values.
 	 * @param ref array $collection Indexed by field name.
 	 * @access public
-	 * @return void
+	 * @return ref array An array of the components created with the values passed.
 	 */
-	function addValueCollection (&$collection) {
+	function &addValueCollection (&$collection) {
 		// @todo - make sure that the correct fields/classes are represented
 		$newCollection =& $this->_addElement();
-		foreach (array_keys($collection) as $key) {
+		foreach (array_keys($newCollection) as $key) {
 			$newCollection[$key]->setValue($collection[$key]);
 		}
+		
+		return $newCollection;
 	}
 	
 	/**

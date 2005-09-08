@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.35 2005/07/20 14:55:08 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.36 2005/09/08 20:48:53 gabeschine Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -26,7 +26,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.35 2005/07/20 14:55:08 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.36 2005/09/08 20:48:53 gabeschine Exp $
  */
 class edit_authorizationsAction 
 	extends MainWindowAction
@@ -56,11 +56,16 @@ class edit_authorizationsAction
 			
 		// Get the id of the selected agent using $_REQUEST
 		$harmoni->request->startNamespace("polyphony-authorizations");
-		$idObject =& $idManager->getId(RequestContext::value("agentId"));
+		$mult = RequestContext::value("mult");
+		$agents = RequestContext::value("agents");
+		$idObject = $mult?null:$idManager->getId(RequestContext::value("agentId"));
+//		$idObject =& $idManager->getId(RequestContext::value("agentId"));
+		$GLOBALS["agentId"] =& $idObject;
 		$harmoni->request->endNamespace();
 		
-		
-		if ($agentManager->isGroup($idObject)) {
+		if ($mult) {
+			return dgettext("polyphony", "Modify Authorizations for Multiple Agents");
+		} else if ($agentManager->isGroup($idObject)) {
 			$agent =& $agentManager->getGroup($idObject);
 			return dgettext("polyphony", "Modify Authorizations for Group").": <em> "
 						.$agent->getDisplayName()."</em>";
@@ -93,6 +98,9 @@ class edit_authorizationsAction
 		$harmoni->request->startNamespace("polyphony-authorizations");
 		$harmoni->request->passthrough();
 
+		// set the return URL
+		$harmoni->history->markReturnURL("polyphony/agents/process_authorizations");
+
 		// Intro
 		$idManager =& Services::getService("Id");
 		$agentManager =& Services::getService("Agent");
@@ -103,25 +111,22 @@ class edit_authorizationsAction
 				&nbsp; &nbsp; "._("After each change, the changes are saved automatically.")."<br /><br />", 3);
 		
 		
-		// Get the id of the selected agent using $_REQUEST
+		// Get the id of the selected agent using $_REQUEST <-- !!! do we need this???
+		$mult = RequestContext::value("mult");
+		$agents = RequestContext::value("agents");
 		$id = RequestContext::value("agentId");
-		$idObject =& $idManager->getId($id);
-		$GLOBALS["agentId"] =& $idObject;
-		$GLOBALS["harmoniAuthType"] =& new HarmoniAuthenticationType();		
-		
-
 		
 		$actionRows->add($intro);
 		 
 		// Buttons to go back to edit auths for a different user, or to go home
 		ob_start();
 		print "<table width='100%'><tr><td align='left'>";
-		print "<a href='".$harmoni->request->quickURL("authorization","choose_agent")."'><button>&lt;-- "._("Choose a different User/Group to edit")."</button></a>";
+		print "<a href='".$harmoni->history->getReturnURL("polyphony/authorization/edit_authorizations")."'><button>&lt;&lt; "._("Go back")."</button></a>";
 		print "</td><td align='right'>";
 		print "<a href='".$harmoni->request->quickURL("admin","main")."'><button>"._("Return to the Admin Tools")."</button></a>";
 		print "</td></tr></table>";
 		
-		$nav =& new Block(ob_get_contents(),2);
+		$nav =& new Block(ob_get_contents(),3);
 		$actionRows->add($nav, "100%", null, LEFT, CENTER);
 		ob_end_clean();
 		
@@ -153,9 +158,10 @@ class edit_authorizationsAction
 				ob_end_clean();
 				$actionRows->add($qualifierLayout, "100%", null, LEFT, CENTER);
 		
-		
 			}
 		}
+		
+		$actionRows->add(new Block(_("Key: Im = Implicit authorization (an authorzation inherited further up the hierarchy or by group membership - must be changed where it was made Explicit)<br/>Ex = Explicit authorization (can be changed)"),3), "100%", null, TOP, LEFT);
 		
 		// Buttons to go back to edit auths for a different user, or to go home
 		$actionRows->add($nav,"100%", null, LEFT,CENTER);
@@ -244,11 +250,25 @@ class edit_authorizationsAction
 	 */
 	function printEditOptions(& $qualifier) {
 		$qualifierId =& $qualifier->getId();
-		$agentId =& $GLOBALS["agentId"];
 		$harmoni =& Harmoni::instance();
+		$idManager =& Services::getService("Id");
 		$authZManager =& Services::getService("AuthZ");
 		$idManager =& Services::getService("IdManager");
 		$agentManager =& Services::getService("AgentManager");
+		
+		// get a list of agents we are editing
+		if ($harmoni->request->get("mult")) {
+			$agentIds = unserialize($harmoni->request->get("agents"));
+		} else {
+			$agentIds = array($harmoni->request->get("agentId"));
+		}
+		
+		$totalAgents = count($agentIds);
+		
+		$agentIdObjects = array();
+		foreach ($agentIds as $idString) {
+			$agentIdObjects[] =& $idManager->getId($idString);
+		}
 		
 		$functionTypes =& $authZManager->getFunctionTypes();
 		print "\n<table>";
@@ -275,25 +295,38 @@ class edit_authorizationsAction
 				
 				// IF an authorization exists for the user on this qualifier, 
 				// make checkbox already checked
-				$hasExplicit = FALSE;
+				$numExplicit = 0;
+				$numImplicit = 0;
+				$authorized = 0;
 				$implicitAZs = array();
-				$allAZs =& $authZManager->getAllAZs($agentId, $functionId, $qualifierId, FALSE);
-				while ($allAZs->hasNext()) {
-					$az =& $allAZs->next();
-					if ($az->isExplicit()) {
-						$hasExplicit = TRUE;
-					} else {
-						$implicitAZs[] =& $az;
+				$implicitAZOwners = array();
+				foreach (array_keys($agentIdObjects) as $key) {
+					$allAZs =& $authZManager->getAllAZs($agentIdObjects[$key], $functionId, $qualifierId, FALSE);
+					$hasExplicit = $hasImplicit = false;
+					while ($allAZs->hasNext()) {
+						$az =& $allAZs->next();
+						if ($az->isExplicit()) {
+							$hasExplicit = true;
+						} else {
+							$hasImplicit = true;
+							$implicitAZs[] =& $az;
+							$implicitAZOwners[] =& $agentIdObjects[$key];
+						}
 					}
+					if ($hasExplicit) $numExplicit++;
+					if ($hasImplicit) $numImplicit++;
+					if ($hasExplicit || $hasImplicit) $authorized++;
 				}
+				
 				// Store values for display output
-				if ($authZManager->isAuthorized($agentId, $functionId, $qualifierId))
+				if ($authorized == $totalAgents)
 					$borderColor = "green";
-				else
+				else if ($authorized == 0)
 					$borderColor = "red";
+				else $borderColor = "yellow"; // partial authorizations
 	
 	
-				if ($hasExplicit) {
+				if ($numExplicit > 0) {
 					$explicitChecked = "checked='checked'";
 					$toggleOperation = "delete";
 				} else {
@@ -306,12 +339,25 @@ class edit_authorizationsAction
 				print "\n\t\t\t\t<tr>";
 				
 				// Print out a disabled checkbox for each implicit Auth.
+				$title = "";
 				for ($i=0; $i < count($implicitAZs); $i++) {
 					// Built info about the explicit AZs that cause this implictAZ
 					$implicitAZ =& $implicitAZs[$i];
+					$AZOwnerId =& $implicitAZOwners[$i];
+					$displayName = "";
+					if ($agentManager->isAgent($AZOwnerId)) {
+						$agent =& $agentManager->getAgent($AZOwnerId);
+						$displayName = $agent->getDisplayName();
+						unset($agent);
+					} else if ($agentManager->isGroup($AZOwnerId)) {
+						$group =& $agentManager->getGroup($AZOwnerId);
+						$displayName = $group->getDisplayName();
+						unset($group);
+					}
 					$explicitAZs =& $authZManager->getExplicitUserAZsForImplicitAZ($implicitAZ);
-					$title = "";
+
 					while ($explicitAZs->hasNext()) {
+						$title .= "$displayName - ";
 						$explicitAZ =& $explicitAZs->next();
 						$explicitAgentId =& $explicitAZ->getAgentId();
 						$explicitQualifier =& $explicitAZ->getQualifier();
@@ -320,70 +366,106 @@ class edit_authorizationsAction
 						// get the agent/group for the AZ
 						if ($agentManager->isAgent($explicitAgentId)) {
 							$explicitAgent =& $agentManager->getAgent($explicitAgentId);
-							$title = _("User").": ".$explicitAgent->getDisplayName();
+							$title .= _("User").": ".$explicitAgent->getDisplayName();
 						} else if ($agentManager->isGroup($explicitAgentId)) {
 							$explicitGroup =& $agentManager->getGroup($explicitAgentId);
-							$title = _("Group").": ".$explicitGroup->getDisplayName();
+							$title .= _("Group").": ".$explicitGroup->getDisplayName();
 						} else {
-							$title = _("User/Group").": ".$explicitAgentId->getIdString();
+							$title .= _("User/Group").": ".$explicitAgentId->getIdString();
 						}
 						$title .= ", "._("Location").": ".$explicitQualifier->getReferenceName();
-						if ($explicitAZs->hasNext())
-							$title .= "; ";
+					//	if ($explicitAZs->hasNext())
+							$title .= "; \n";
 					}
 					
-					// print out a checkbox for the implicit AZ
-					print "\n\t\t\t\t\t<td><span style='white-space: nowrap'>";
-					print "\n\t\t\t\t\t\t<input type='checkbox' name='blah' value='blah'";
-					print " title='".htmlentities($title, ENT_QUOTES)."'";
-					print " checked='checked' disabled='disabled' />";
-					print "\n\t\t\t\t\t\t<a";
-	// 				print " id='".$explicitAgentId->getIdString()
-	// 						."-".$functionId->getIdString()
-	// 						."-".$explicitQualifierId->getIdString()."'";
-					print " title='".htmlentities($title, ENT_QUOTES)."'";
-					print " href=\"Javascript:window.alert('".htmlentities($title, ENT_QUOTES)."')\"";
-					print ">?</a>";
-					print "\n\t\t\t\t\t</span></td>";
+
 				}
 				
 				print "\n\t\t\t\t\t<td>";
+				
+				if ($numImplicit > 0) {
+				// print out a checkbox	 for the implicit AZ
+					$safeTitle = str_replace("\n","\\n",htmlentities($title, ENT_QUOTES));
+					print "\n\t\t\t\t\t<span style='white-space: nowrap'>";
+					print "\n\t\t\t\t\t\t<input type='checkbox' name='blah' value='blah'";
+					print " title='".$safeTitle."'";
+					print " checked='checked' disabled='disabled' />";
+					if ($totalAgents > 1) {
+						print "Im: <b>". $numImplicit . "/" . $totalAgents . "</b> ";
+					}
+					print "\n\t\t\t\t\t\t<a";
+	// 			print " id='".$explicitAgentId->getIdString()
+	// 						."-".$functionId->getIdString()
+	// 						."-".$explicitQualifierId->getIdString()."'";
+					print " title='".$safeTitle."'";
+					print " href=\"Javascript:window.alert('".$safeTitle."')\"";
+					print ">?</a>";
+						
+					print "\n\t\t\t\t\t</span>";
+				}
+				
 				// print an extra space
 				if (count($implicitAZs))
 					print "&nbsp;";
-					
-				print "\n\t\t\t\t\t\t<input type='checkbox' name='blah' value='blah' ";
-				print $explicitChecked;
 				
-				// Check that the current user is authorized to modify the authorizations.
 				$authZ =& Services::getService("AuthZ");
 				$idManager =& Services::getService("IdManager");
-				$agentManager =& Services::getService("AgentManager");
-				if ($authZ->isUserAuthorized(
-							$idManager->getId("edu.middlebury.authorization.modify_authorizations"),
-							$qualifierId))
-				{
-					// The checkbox is really just for show, the link is where we send
-					// to our processing to toggle the state of the authorization.
-					$harmoni->history->markReturnURL("polyphony/agents/process_authorizations");
-					$toggleURL = $harmoni->request->quickURL(
-									"authorization",
-									"process_authorizations",
-									array(
-										"functionId"=>$functionId->getIdString(),
-										"qualifierId"=>$qualifierId->getIdString(),
-										"operation"=>$toggleOperation
-									));
+				$canEdit = $authZ->isUserAuthorized(
+										$idManager->getId("edu.middlebury.authorization.modify_authorizations"),
+										$qualifierId);
+
+
+				if ($totalAgents > 1) {
+					$grantURL = $harmoni->request->quickURL("authorization","process_authorizations",
+										array(
+											"functionId"=>$functionId->getIdString(),
+											"qualifierId"=>$qualifierId->getIdString(),
+											"operation"=>"create"
+											));
+					$revokeURL = $harmoni->request->quickURL("authorization","process_authorizations",
+										array(
+											"functionId"=>$functionId->getIdString(),
+											"qualifierId"=>$qualifierId->getIdString(),
+											"operation"=>"delete"
+											));
+					print "\n\t\t\t\t\t\t";
+					print "Ex: <b>".$numExplicit . "/" . $totalAgents . "</b>:\n";
+					print "<select name='blah'".($canEdit?"":" disabled='disabled'")." onclick='if (this.value != \"nop\") window.location=this.value;'>\n";
+					print "<option value='nop'>"._("action")."...</option>\n";
+					print "<option value='$grantURL'>"._("Grant to All")."</option>\n";
+					print "<option value='$revokeURL'>"._("Revoke Explicit")."</option>\n";
+					print "</select><br/>\n";
+				} else {
+					print "\n\t\t\t\t\t\t<input type='checkbox' name='blah' value='blah' ";
+					print $explicitChecked;
+				
+					// Check that the current user is authorized to modify the authorizations.
+					$agentManager =& Services::getService("AgentManager");
+					if ($canEdit)
+					{
+						// The checkbox is really just for show, the link is where we send
+						// to our processing to toggle the state of the authorization.
+						$toggleURL = $harmoni->request->quickURL(
+										"authorization",
+										"process_authorizations",
+										array(
+											"functionId"=>$functionId->getIdString(),
+											"qualifierId"=>$qualifierId->getIdString(),
+											"operation"=>$toggleOperation
+										));
 		
-					print " onclick=\"Javascript:window.location='".htmlentities($toggleURL, ENT_QUOTES)."'\"";
+						print " onclick=\"Javascript:window.location='".htmlentities($toggleURL, ENT_QUOTES)."'\"";
+					}
+					// If they are not authorized to view the AZs, disable the checkbox
+					else {
+						print " disabled='disabled'";
+					}
+					print " />";
 				}
-				// If they are not authorized to view the AZs, disable the checkbox
-				else {
-					print " disabled='disabled'";
-				}
-				print " /></td>";
-	
-				print "\n\t\t\t\t\t<td><span style='white-space: nowrap'>".htmlentities($function->getReferenceName())."</span></td>";
+//				print "</td>";
+		
+//				print "\n\t\t\t\t\t<td>";
+				print "<span style='white-space: nowrap'>".htmlentities($function->getReferenceName())."</span></td>";
 				print "\n\t\t\t\t</tr>";
 				print "\n\t\t\t\t</table>";
 				print "\n\t</td>";

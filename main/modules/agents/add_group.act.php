@@ -4,7 +4,7 @@
  * @package polyphony.modules.agents
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- * @version $Id: add_group.act.php,v 1.2 2005/09/07 21:18:25 adamfranco Exp $
+ * @version $Id: add_group.act.php,v 1.3 2005/09/08 20:48:53 gabeschine Exp $
  **/
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -16,7 +16,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @author Gabriel Schine
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- * @version $Id: add_group.act.php,v 1.2 2005/09/07 21:18:25 adamfranco Exp $
+ * @version $Id: add_group.act.php,v 1.3 2005/09/08 20:48:53 gabeschine Exp $
  */
 class add_groupAction extends MainWindowAction
 {
@@ -57,7 +57,7 @@ class add_groupAction extends MainWindowAction
 		 */
 		function buildContent () {
 			$harmoni =& Harmoni::instance();
-
+			
 			$centerPane =& $this->getActionRows();
 			$cacheName = 'create_group_wizard';
 			
@@ -87,6 +87,27 @@ class add_groupAction extends MainWindowAction
 			print "<b>"._("Type keyword")."</b>: [[type_keyword]]<br/>";
 			print "<b>"._("Type description")."</b>:<br/> [[type_description]]<br/>";
 			print "<div align='right'>[[_cancel]]\n[[_save]]</div>";
+			print "[[members]]";
+
+			if (RequestContext::value("agents") && count(($list=unserialize(RequestContext::value("agents")))) > 0) {
+				// print out a list of agents
+				print "<div>"._("The group will be created with the following members:")."<ul>\n";
+				$agentManager =& Services::getService("Agent");
+				$idManager =& Services::getService("Id");
+				foreach ($list as $idString) {
+					$id =& $idManager->getId($idString);
+					if ($agentManager->isGroup($id)) {
+						$agent =& $agentManager->getGroup($id);
+						$name = _("Group").": ".$agent->getDisplayName();
+					} else if ($agentManager->isAgent($id)) {
+						$agent =& $agentManager->getAgent($id);
+						$name = _("Agent").": ".$agent->getDisplayName();
+					}
+					
+					print "<li>$name</li>\n";
+				}
+				print "</ul></div>";
+			}
 			$wizard =& SimpleWizard::withText(ob_get_contents());
 			ob_end_clean();
 
@@ -121,6 +142,12 @@ class add_groupAction extends MainWindowAction
 			
 			$wizard->addComponent("_save", WSaveButton::withLabel(_("Create Group")));
 			$wizard->addComponent("_cancel", new WCancelButton());
+			
+			$members =& $wizard->addComponent("members", new WHiddenField());
+			if (RequestContext::value("agents")) {
+				// the members of the group to be created. an array of agent ids
+				$members->setValue(RequestContext::value("agents"));
+			}
 
 			return $wizard;
 		}
@@ -163,8 +190,23 @@ class add_groupAction extends MainWindowAction
 			$propObj =& new HarmoniProperties(new Type("Properties", "edu.middlebury.polyphony", "Generic"));
 			
 			$agents =& Services::getService("Agent");
-			$agents->createGroup($properties["display_name"], $theType, $properties["description"], $propObj);
-
+			$group =& $agents->createGroup($properties["display_name"], $theType, $properties["description"], $propObj);
+			
+			if ($properties["members"] && count(($list=unserialize($properties["members"]))) > 0) {
+				$ids =& Services::getService("Id");
+				$agents =& Services::getService("Agent");
+				foreach ($list as $agentId) {
+					$id =& $ids->getId($agentId);
+					if ($agents->isGroup($id)) {
+						$agent =& $agents->getGroup($id);
+					} else if ($agents->isAgent($id)) {
+						$agent =& $agents->getAgent($id);
+					}
+					
+					$group->add($agent);
+				}
+			}
+			
 			return true;
 		}
 
