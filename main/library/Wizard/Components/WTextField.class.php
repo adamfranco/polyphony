@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.7 2005/09/08 20:48:53 gabeschine Exp $
+ * @version $Id: WTextField.class.php,v 1.8 2005/09/09 19:59:26 gabeschine Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingWizardComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingWizardComponent.abstra
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.7 2005/09/08 20:48:53 gabeschine Exp $
+ * @version $Id: WTextField.class.php,v 1.8 2005/09/09 19:59:26 gabeschine Exp $
  */
 class WTextField 
 	extends ErrorCheckingWizardComponent 
@@ -32,6 +32,7 @@ class WTextField
 	var $_value = null;
 	var $_startingDisplay = null;
 	var $_readonly = false;
+	var $_onchange = null;
 	
 	var $_showError = false;
 	
@@ -136,6 +137,16 @@ class WTextField
 	}
 	
 	/**
+	 * Sets the javascript onchange attribute.
+	 * @param string $commands
+	 * @access public
+	 * @return void
+	 */
+	function setOnChange($commands) {
+		$this->_onchange = $commands;
+	}
+	
+	/**
 	 * Returns a block of XHTML-valid code that contains markup for this specific
 	 * component. 
 	 * @param string $fieldName The field name to use when outputting form data or
@@ -153,7 +164,10 @@ class WTextField
 			$m .= " value='$v' onfocus='if (this.value == \"$v\") { this.value=\"\"; }'";
 		}
 		if ($this->_style) {
-			$m .= " style=\"".addslashes($this->_style)."\"";
+			$m .= " style=\"".str_replace("\"", "\\\"", $this->_style)."\"";
+		}
+		if ($this->_onchange) {
+			$m .= " onchange=\"".str_replace("\"", "\\\"", $this->_onchange)."\"";
 		}
 		$m .= " />";
 		

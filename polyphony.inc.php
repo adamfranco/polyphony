@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.24 2005/09/08 20:48:52 gabeschine Exp $
+ * @version $Id: polyphony.inc.php,v 1.25 2005/09/09 19:59:25 gabeschine Exp $
  */
 
 /**
@@ -39,6 +39,7 @@ require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSaveCancelListe
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WRepeatableComponentCollection.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WOrderedRepeatableComponentCollection.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WHiddenField.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/Components/WText.class.php");
 
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WAgentBrowser.class.php");
 

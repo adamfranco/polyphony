@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCheckBox.class.php,v 1.6 2005/08/24 14:34:42 cws-midd Exp $
+ * @version $Id: WCheckBox.class.php,v 1.7 2005/09/09 19:59:26 gabeschine Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCheckBox.class.php,v 1.6 2005/08/24 14:34:42 cws-midd Exp $
+ * @version $Id: WCheckBox.class.php,v 1.7 2005/09/09 19:59:26 gabeschine Exp $
  */
 class WCheckBox 
 	extends WizardComponent 
@@ -131,21 +131,21 @@ class WCheckBox
 	 */
 	function getMarkup ($fieldName) {
 		$name = RequestContext::name($fieldName);
-		$dummyName = $name . "_dummy";
+		$dummyName = $fieldName . "_dummy";
 		
 		$val = $this->_value?"1":"0";
 		$checked = $this->_value?" checked='checked'":"";
 		
 		$style = " style='cursor: pointer;'";
-		if ($this->_style) $style = " style=\"cursor: pointer; ".addslashes($this->_style)."\"";
+		if ($this->_style) $style = " style=\"cursor: pointer; ".htmlentities($this->_style)."\"";
 		
 		$javascript1 = "document.getElementById('$dummyName').checked = (document.getElementById('$dummyName').checked? false : true); ";
-		$javascript2 = "document.getElementById('$name').value = (document.getElementById('$dummyName').checked? '1' : '0'); ";
+		$javascript2 = "document.getElementById('$fieldName').value = (document.getElementById('$dummyName').checked? '1' : '0'); ";
 //		$javascript3 = "document.getElementById('$name').value = (document.getElementById('$dummyName').checked? '0' : '1'); ";
 //		$tempJS = "alert('changed $name to ' + document.getElementById('$name').value); ";
 		$tempJS = '';
 		
-		$m = "<input type='hidden' name='$name' id='$name' value='$val' /><input type='checkbox' onclick=\"$javascript2$tempJS\" id='$dummyName'$checked /> <label$style onclick=\"$javascript1$javascript2$tempJS\">".$this->_label."</label>";
+		$m = "<input type='hidden' name='$name' id='$fieldName' value='$val' /><input type='checkbox' onclick=\"$javascript2$tempJS\" id='$dummyName'$checked /> <label$style onclick=\"$javascript1$javascript2$tempJS\">".$this->_label."</label>";
 		
 		return $m;
 	}

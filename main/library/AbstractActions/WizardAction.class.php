@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardAction.class.php,v 1.4 2005/07/22 20:26:43 gabeschine Exp $
+ * @version $Id: WizardAction.class.php,v 1.5 2005/09/09 19:59:26 gabeschine Exp $
  */ 
  
  require_once(dirname(__FILE__)."/Action.class.php");
@@ -50,7 +50,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardAction.class.php,v 1.4 2005/07/22 20:26:43 gabeschine Exp $
+ * @version $Id: WizardAction.class.php,v 1.5 2005/09/09 19:59:26 gabeschine Exp $
  */
 class WizardAction 
 	extends Action
@@ -160,7 +160,6 @@ class WizardAction
 	function runWizard ( $cacheName, &$container) {
 		$wizard =& $this->getWizard($cacheName);
 		$harmoni =& Harmoni::instance();
-		
 		// tell the wizard to GO
 		$wizard->go();
 		

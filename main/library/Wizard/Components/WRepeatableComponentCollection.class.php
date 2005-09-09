@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.4 2005/09/08 20:48:53 gabeschine Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.5 2005/09/09 19:59:26 gabeschine Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.4 2005/09/08 20:48:53 gabeschine Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.5 2005/09/09 19:59:26 gabeschine Exp $
  */
 
 class WRepeatableComponentCollection extends WizardComponentWithChildren {
@@ -87,7 +87,7 @@ class WRepeatableComponentCollection extends WizardComponentWithChildren {
 		// @todo - make sure that the correct fields/classes are represented
 		$newCollection =& $this->_addElement();
 		foreach (array_keys($newCollection) as $key) {
-			$newCollection[$key]->setValue($collection[$key]);
+			if (isset($collection[$key])) $newCollection[$key]->setValue($collection[$key]);
 		}
 		
 		return $newCollection;
