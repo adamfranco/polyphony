@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WAgentBrowser.class.php,v 1.1 2005/09/08 20:48:53 gabeschine Exp $
+ * @version $Id: WAgentBrowser.class.php,v 1.2 2005/09/09 21:29:38 gabeschine Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/ResultPrinter/EmbeddedArrayResultPrinter.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/ResultPrinter/EmbeddedArrayResultPrinter.c
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WAgentBrowser.class.php,v 1.1 2005/09/08 20:48:53 gabeschine Exp $
+ * @version $Id: WAgentBrowser.class.php,v 1.2 2005/09/09 21:29:38 gabeschine Exp $
  */
 class WAgentBrowser
 	extends WizardComponent 
@@ -101,6 +101,9 @@ class WAgentBrowser
 		// check if we have any new checked agents to add to our list. 
 		$values = RequestContext::value($fieldName."_checked");
 		if (is_array($values)) {
+			// remove the dummy '' value.
+			$key = array_search('', $values);
+			if ($key !== false) unset($values[$key]);
 			$this->_agentsSelected = array_unique($values);
 		}
 		
@@ -166,6 +169,8 @@ class WAgentBrowser
 		$m .= $this->_searchField->getMarkup($srchFieldName);
 		if (!$this->_oneType) $m .= $this->_searchTypeSelector->getMarkup($fieldName."_type");
 		$m .= $this->_searchButton->getMarkup($fieldName."_go");
+		$name = RequestContext::name($fieldName."_checked[]");
+		$m .= "<input type='hidden' name='$name' value=''/>";
 		$m .= "<br/>\n";
 		
 		if (count($this->_searchResults) || count($this->_agentsSelected)) {
@@ -200,7 +205,7 @@ class WAgentBrowser
  * @copyright Copyright &copy; 2005, Middlebury College
  * @author Gabriel Schine
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- * @version $Id: WAgentBrowser.class.php,v 1.1 2005/09/08 20:48:53 gabeschine Exp $
+ * @version $Id: WAgentBrowser.class.php,v 1.2 2005/09/09 21:29:38 gabeschine Exp $
  */
 class AgentBrowserResultPrinter
 	extends EmbeddedArrayResultPrinter

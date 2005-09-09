@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_properties.act.php,v 1.1 2005/09/09 19:59:26 gabeschine Exp $
+ * @version $Id: edit_properties.act.php,v 1.2 2005/09/09 21:29:39 gabeschine Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_properties.act.php,v 1.1 2005/09/09 19:59:26 gabeschine Exp $
+ * @version $Id: edit_properties.act.php,v 1.2 2005/09/09 21:29:39 gabeschine Exp $
  */
 class edit_propertiesAction 
 	extends MainWindowAction
@@ -267,9 +267,9 @@ END;
 			if (count($list) == 1) $agent->deleteAllProperties();
 			
 			foreach($props as $values) {
-				$valuesHandled[$values['type']][$values['key']] = true;
+				$type = $values['type']?Type::stringToType($values['type']):$agent->getType();
+				$valuesHandled[Type::typeToString($type)][$values['key']] = true;
 				if (count($list) == 1 || $values['value_update']) {
-					$type = $values['type']?Type::stringToType($values['type']):$agent->getType();
 					$key = $values['key'];
 					$value = $values['value'];
 					
@@ -299,7 +299,7 @@ END;
 				}
 			}
 		}
-		
+//		exit(0);
 		return true;
 	}
 	
