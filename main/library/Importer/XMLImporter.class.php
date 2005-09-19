@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.1 2005/09/19 19:28:31 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.2 2005/09/19 20:47:08 cws-midd Exp $
  *
  * @author Christopher W. Shubert
  */ 
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLRepositoryImporter.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.1 2005/09/19 19:28:31 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.2 2005/09/19 20:47:08 cws-midd Exp $
  */
 class XMLImporter {
 		
@@ -122,8 +122,7 @@ class XMLImporter {
 				$type['authority'], $type['keyword']);
 	}
 	
-	/**
-	 * Helper function for XML elements
+	/* Helper function for XML elements
 	 * 
 	 * @param object DOMIT_Node
 	 * @access public

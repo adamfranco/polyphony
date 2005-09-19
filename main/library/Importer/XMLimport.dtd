@@ -28,7 +28,7 @@
 	isRepeatable CDATA "FALSE"
 	isPopulated CDATA "FALSE">
 
-<!ELEMENT asset (name, description, type, (record|asset)*)>
+<!ELEMENT asset (name, description, type, effectivedate?, expirationdate?, (record|asset)*)>
 <!ATTLIST asset
 	id CDATA #IMPLIED>
 

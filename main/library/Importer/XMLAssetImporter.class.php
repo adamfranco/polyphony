@@ -6,12 +6,13 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.1 2005/09/19 19:28:31 cws-midd Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.2 2005/09/19 20:47:08 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporter.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLRecordImporter.class.php");
 require_once(HARMONI."/oki2/repository/HarmoniRepository.class.php");
+require_once(HARMONI."/oki2/Primitives/Chronology/DateAndTime.class.php");
 
 /**
  * XMLAssetImporter imports an asset into a repository
@@ -22,7 +23,7 @@ require_once(HARMONI."/oki2/repository/HarmoniRepository.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.1 2005/09/19 19:28:31 cws-midd Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.2 2005/09/19 20:47:08 cws-midd Exp $
  */
 class XMLAssetImporter extends XMLImporter {
 		
@@ -78,6 +79,12 @@ class XMLAssetImporter extends XMLImporter {
 				$this->_info['type']);
 			if (isset($this->_parent))
 				$this->_parent->addAsset($this->_asset->getId());
+			if (isset($this->_info['effectivedate']))
+				$this->_asset->updateEffectiveDate(DateAndTime::fromString(
+					$this->_info['effectivedate']));
+			if (isset($this->_info['expirationdate']))
+				$this->_asset->updateExpirationDate(DateAndTime::fromString(
+					$this->_info['expirationdate']));
 		}
 		else {
 			$idString = $this->_node->getAttribute("id");
@@ -110,6 +117,11 @@ class XMLAssetImporter extends XMLImporter {
 	 * @since 9/12/05
 	 */
 	function relegateChildren () {
+		if ($this->_node->hasAttribute("maintainOrder") &&
+			($this->_node->getAttribute("maintainOrder") == TRUE)) {
+			$setManager =& Services::getService("Sets");
+			$this->_set =& $setManager->getPersistentSet(
+				$this->_asset->getId());
 		foreach ($this->_node->childNodes as $element)
 			foreach ($this->_childImporterList as $importer) {
 				eval('$result = '.$importer.'::isImportable($element);');
@@ -120,6 +132,8 @@ class XMLAssetImporter extends XMLImporter {
 					else 
 						$imp =& new $importer($element, $this->_asset);
 					$imp->import($this->_type);
+					if (isset($this->_set))
+						$this->_set->addItem($imp->getId());
 				}
 			}
 	}
@@ -135,7 +149,25 @@ class XMLAssetImporter extends XMLImporter {
 			$this->_asset->updateDisplayName($this->_info['name']);
 		if ($this->_info['description'] != $this->_asset->getDescription())
 			$this->_asset->updateDescription($this->_info['description']);
-		// DATES GO HERE
+		if (DateAndTime::fromString($this->_info['effectivedate']) != 
+			$this->_asset->getEffectiveDate())
+			$this->_asset->updateEffectiveDate(DateAndTime::fromString(
+				$this->_info['effectivedate']));
+		if (DateAndTime::fromString($this->_info['expirationdate']) !=
+			$this->_asset->getExpirationDate())
+			$this->_asset->updateExpirationDate(DateAndTime::fromString(
+				$this->_info['expirationdate']));
+	}
+	
+	/**
+	 * Returns the id obj of the object imported by this importer
+	 * 
+	 * @return object Id
+	 * @access public
+	 * @since 9/19/05
+	 */
+	function &getId () {
+		return $this->_asset->getId();
 	}
 }
 
