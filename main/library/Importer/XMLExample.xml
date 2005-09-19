@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<import type="update">
+	<repository id="edu.middlebury.concerto.exhibition_repository">
+		<name>No Exhibitions</name>
+		<description>This is a Repository that has been updated!</description>
+		<type>
+			<domain>System Repositories</domain>
+			<authority>edu.middlebury.concerto</authority>
+			<keyword>Exhibitions</keyword>
+			<description>A Repository for holding Exhibitions, their Slide-Shows and Slides</description>
+		</type>
+		<recordstructure id="edu.middlebury.concerto.slide_record_structure" xml:id="slidestructure">
+			<name>Slide Schema</name>
+			<description>This is the schema used for exhibition slides.</description>
+			<format>text/plain</format>
+			<partstructure id="edu.middlebury.concerto.slide_record_structure.target_id" xml:id="target id" isMandatory="FALSE" isRepeatable="FALSE" isPopulated="FALSE">
+				<name>target id</name>
+				<description>The id of the asset that this slide is referencing.</description>
+				<type>
+					<domain>Repository</domain>
+					<authority>edu.middlebury.harmoni</authority>
+					<keyword>string</keyword>
+				</type>
+			</partstructure>
+			<partstructure id="edu.middlebury.concerto.slide_record_structure.text_position" xml:id="text position" isMandatory="FALSE" isRepeatable="FALSE" isPopulated="FALSE">
+				<name>text position</name>
+				<description>The location of any text presented in the slide. (bottom, top, left, right)</description>
+				<type>
+					<domain>Repository</domain>
+					<authority>edu.middlebury.harmoni</authority>
+					<keyword>string</keyword>
+				</type>
+			</partstructure>
+			<partstructure id="edu.middlebury.concerto.slide_record_structure.display_metadata" xml:id="display metadata" isMandatory="FALSE" isRepeatable="FALSE" isPopulated="FALSE">
+				<name>display metadata</name>
+				<description>Whether or not to display the metadata of the associated asset referenced by target id.</description>
+				<type>
+					<domain>Repository</domain>
+					<authority>edu.middlebury.harmoni</authority>
+					<keyword>boolean</keyword>
+				</type>
+			</partstructure>
+		</recordstructure>
+		<asset>
+			<name>New Exhibition</name>
+			<description>This is the first imported exhibition</description>
+			<type>
+				<domain>Asset Types</domain>
+				<authority>edu.middlebury.concerto</authority>
+				<keyword>Exhibition</keyword>
+			</type>
+			<asset>
+				<name>New Slideshow</name>
+				<description>This is the first imported slideshow</description>
+				<type>
+					<domain>Asset Types</domain>
+					<authority>edu.middlebury.concerto</authority>
+					<keyword>Slideshow</keyword>
+				</type>
+				<asset>
+					<name>New Slide</name>
+					<description>This is the first imported slide</description>
+					<type>
+						<domain>Asset Types</domain>
+						<authority>edu.middlebury.concerto</authority>
+						<keyword>Slide</keyword>
+					</type>
+					<record xml:id="slidestructure">
+						<part xml:id="text position">bottom</part>
+						<part xml:id="display metadata">TRUE</part>
+					</record>
+				</asset>
+			</asset>
+		</asset>
+	</repository>
+</import>
