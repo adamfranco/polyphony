@@ -6,8 +6,9 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFilepathPartImporter.class.php,v 1.1 2005/09/22 13:51:55 cws-midd Exp $
+ * @version $Id: XMLFilepathPartImporter.class.php,v 1.2 2005/09/22 17:33:36 cws-midd Exp $
  */ 
+require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
 /**
  * imports the filename, filedata, and mimetype of a file
@@ -18,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFilepathPartImporter.class.php,v 1.1 2005/09/22 13:51:55 cws-midd Exp $
+ * @version $Id: XMLFilepathPartImporter.class.php,v 1.2 2005/09/22 17:33:36 cws-midd Exp $
  */
 class XMLFilepathPartImporter extends XMLImporter {
 		

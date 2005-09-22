@@ -6,13 +6,13 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.1 2005/09/22 13:51:55 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.2 2005/09/22 17:33:36 cws-midd Exp $
  *
  * @author Christopher W. Shubert
  */ 
 
 require_once("/home/cshubert/public_html/importer/domit/xml_domit_include.php");
-require_once(POLYPHONY."/main/library/Importer/XMLRepositoryImporter.class.php");
+require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryImporter.class.php");
 
 /**
  * This class provides the ability to import objects into a Harmoni Package
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLRepositoryImporter.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.1 2005/09/22 13:51:55 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.2 2005/09/22 17:33:36 cws-midd Exp $
  */
 class XMLImporter {
 		
