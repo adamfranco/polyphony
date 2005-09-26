@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLThumbDataPartImporter.class.php,v 1.2 2005/09/22 17:33:36 cws-midd Exp $
+ * @version $Id: XMLThumbDataPartImporter.class.php,v 1.3 2005/09/26 17:56:22 cws-midd Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -19,9 +19,9 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLThumbDataPartImporter.class.php,v 1.2 2005/09/22 17:33:36 cws-midd Exp $
+ * @version $Id: XMLThumbDataPartImporter.class.php,v 1.3 2005/09/26 17:56:22 cws-midd Exp $
  */
-class XMLThumbDataImporter extends XMLImporter {
+class XMLThumbDataPartImporter extends XMLImporter {
 		
 	/**
 	 * Constructor

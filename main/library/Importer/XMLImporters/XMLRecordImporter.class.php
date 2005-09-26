@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordImporter.class.php,v 1.2 2005/09/22 17:33:36 cws-midd Exp $
+ * @version $Id: XMLRecordImporter.class.php,v 1.3 2005/09/26 17:56:22 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLPartImporter.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordImporter.class.php,v 1.2 2005/09/22 17:33:36 cws-midd Exp $
+ * @version $Id: XMLRecordImporter.class.php,v 1.3 2005/09/26 17:56:22 cws-midd Exp $
  */
 class XMLRecordImporter extends XMLImporter {
 		
@@ -33,11 +33,12 @@ class XMLRecordImporter extends XMLImporter {
 	 * @access public
 	 * @since 9/12/05
 	 */
-	function XMLRecordImporter (&$element, &$asset) {
+	function XMLRecordImporter (&$element, $tableName, &$asset) {
 		$this->_node =& $element;
 		$this->_childImporterList = array("XMLPartImporter");
 		$this->_childElementLIst = array("part");
 		$this->_asset =& $asset;
+		$this->_tableName = $tableName;
 	}
 	
 	/**
@@ -93,7 +94,7 @@ class XMLRecordImporter extends XMLImporter {
 		$dbIndexConcerto =& $dbHandler->addDatabase(new 
 			MySQLDatabase("localhost", "whitey_concerto", "test", "test"));
 		$query =& new SelectQuery;
-		$query->addTable("temp_xml_matrix");
+		$query->addTable($this->_tableName);
 		$query->addColumn("conc_id");
 		$query->addColumn("xml_id");
 		$id =& $this->_node->getAttribute("xml:id");
@@ -127,8 +128,8 @@ class XMLRecordImporter extends XMLImporter {
 			foreach ($this->_childImporterList as $importer) {
 				eval('$result = '.$importer.'::isImportable($element);');
 				if ($result) {
-					$imp =& new $importer($element, $this->_record, 
-						$this->_asset);
+					$imp =& new $importer($element, $this->_tableName, 
+						$this->_record, $this->_asset);
 					$imp->import($this->_type);
 					unset($imp);
 				}

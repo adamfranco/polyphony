@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.2 2005/09/22 17:33:36 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.3 2005/09/26 17:56:22 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRecordStructureIm
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.2 2005/09/22 17:33:36 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.3 2005/09/26 17:56:22 cws-midd Exp $
  */
 class XMLRepositoryImporter extends XMLImporter {
 		
@@ -33,11 +33,12 @@ class XMLRepositoryImporter extends XMLImporter {
 	 * @access public
 	 * @since 9/9/05
 	 */
-	function XMLRepositoryImporter (&$element) {
+	function XMLRepositoryImporter (&$element, $tableName) {
 		$this->_node =& $element;
 		$this->_childImporterList = array("XMLRecordStructureImporter",
 			"XMLAssetImporter");
 		$this->_childElementList = array("asset", "recordstructure");
+		$this->_tableName = $tableName;
 	}
 
 	/**
@@ -86,12 +87,16 @@ class XMLRepositoryImporter extends XMLImporter {
 			MySQLDatabase("localhost", "whitey_concerto", "test", "test"));
 		$createTableQuery =& new GenericSQLQuery;
 		$createTableQuery->addSQLQuery("Create table if not exists
-			temp_xml_matrix ( xml_id varchar(50)
+			".$this->_tableName." ( xml_id varchar(50)
 			not null , conc_id varchar(75) not null)");
 		
 		$dbHandler->connect($dbIndexConcerto);
 		$dbHandler->query($createTableQuery, $dbIndexConcerto);
 		$dbHandler->disconnect($dbIndexConcerto);
+		
+		$sets =& Services::getService("Sets");
+		$set =& $sets->getPersistentSet($this->_repository->getId());
+		$set->addItem($idManager->getId("FILE"));
 	}
 	
 	/**
@@ -122,11 +127,12 @@ class XMLRepositoryImporter extends XMLImporter {
 				if ($result) {
 					if ($importer == "XMLAssetImporter") {
 						$null = null;
-						$imp =& new $importer($element, $this->_repository, 
-							$null);
+						$imp =& new $importer($element, $this->_tableName,
+							$this->_repository, $null);
 					}
 					else
-						$imp =& new $importer($element, $this->_repository);
+						$imp =& new $importer($element, $this->_tableName,
+							$this->_repository);
 					$imp->import($this->_type);
 					unset($imp);
 				}
@@ -136,7 +142,7 @@ class XMLRepositoryImporter extends XMLImporter {
 			MySQLDatabase("localhost", "whitey_concerto", "test", "test"));
 		$createTableQuery =& new GenericSQLQuery;
 		$createTableQuery->addSQLQuery("Drop table if exists
-			temp_xml_matrix");
+			".$this->_tableName);
 		
 		$dbHandler->connect($dbIndexConcerto);
 		$dbHandler->query($createTableQuery, $dbIndexConcerto);

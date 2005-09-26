@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.2 2005/09/22 17:33:36 cws-midd Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.3 2005/09/26 17:56:22 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLPartStructureImpo
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.2 2005/09/22 17:33:36 cws-midd Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.3 2005/09/26 17:56:22 cws-midd Exp $
  */
 class XMLRecordStructureImporter extends XMLImporter {
 		
@@ -33,11 +33,12 @@ class XMLRecordStructureImporter extends XMLImporter {
 	 * @access public
 	 * @since 9/9/05
 	 */
-	function XMLRecordStructureImporter (&$element, &$repository) {
+	function XMLRecordStructureImporter (&$element, $tableName, &$repository) {
 		$this->_node =& $element;
 		$this->_childImporterList = array("XMLPartStructureImporter");
 		$this->_childElementList = array("partstructure");
 		$this->_repository =& $repository;
+		$this->_tableName = $tableName;
 	}
 
 	/**
@@ -85,7 +86,7 @@ class XMLRecordStructureImporter extends XMLImporter {
 		$dbIndexConcerto =& $dbHandler->addDatabase(new 
 			MySQLDatabase("localhost", "whitey_concerto", "test", "test"));
 		$query =& new InsertQuery;
-		$query->setTable("temp_xml_matrix");
+		$query->setTable($this->_tableName);
 		$query->setColumns(array("xml_id", "conc_id"));
 		$xmlid = $this->_node->getAttribute("xml:id");
 		$id =& $this->_recordStructure->getId();
@@ -95,6 +96,11 @@ class XMLRecordStructureImporter extends XMLImporter {
 		$dbHandler->connect($dbIndexConcerto);
 		$dbHandler->query($query, $dbIndexConcerto);
 		$dbHandler->disconnect($dbIndexConcerto);
+		
+		$sets =& Services::getService("Sets");		
+		$set =& $sets->getPersistentSet($repId);
+		if (!$set->isInSet($this->_recordStructure->getId()))
+			$set->addItem($this->_recordStructure->getId());
 	}
 	
 	/**
@@ -123,8 +129,8 @@ class XMLRecordStructureImporter extends XMLImporter {
 			foreach ($this->_childImporterList as $importer) {
 				eval('$result = '.$importer.'::isImportable($element);');
 				if ($result) {
-					$imp =& new $importer($element, $this->_recordStructure, 
-						$this->_repository);
+					$imp =& new $importer($element, $this->_tableName,
+						$this->_recordStructure, $this->_repository);
 					$imp->import($this->_type);
 					unset($imp);
 				}

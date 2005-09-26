@@ -6,11 +6,12 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.2 2005/09/22 17:33:36 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.3 2005/09/26 17:56:22 cws-midd Exp $
  *
  * @author Christopher W. Shubert
  */ 
 
+require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once("/home/cshubert/public_html/importer/domit/xml_domit_include.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryImporter.class.php");
 
@@ -23,7 +24,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryImporte
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.2 2005/09/22 17:33:36 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.3 2005/09/26 17:56:22 cws-midd Exp $
  */
 class XMLImporter {
 		
@@ -40,6 +41,7 @@ class XMLImporter {
 		$this->_childElementList = array("repository", "set", "hierarchy", "group",
 			"agent");
 		$this->_info = array();
+		$this->_tableName = basename(dirname($filepath));
 	}
 	
 	/**
@@ -96,7 +98,7 @@ class XMLImporter {
 			foreach ($this->_childImporterList as $importer) {
 				eval('$result = '.$importer.'::isImportable($element);');
 				if ($result) {
-					$imp =& new $importer($element);
+					$imp =& new $importer($element, $this->_tableName);
 					$imp->import($this->_type);
 					unset($imp);
 				}
@@ -176,6 +178,119 @@ class XMLImporter {
 	function buildExpirationdate (&$element) {
 		$this->_info['expirationdate'] = $element->getText();
 	}
+	
+		/**
+	 * Print the AssetIds for Assets created properly by the importer
+	 *
+	 * @param array $goodAssetIds
+	 * @since 7/29/05
+	 */
+	 function printErrorMessages() {
+	 	foreach ($this->_errors as $errorString) {
+	 		print("Error: ".$errorString."<br />");
+	 	}
+	 }
+
+	
+	/**
+	 * Print the AssetIds for Assets created properly by the importer
+	 *
+	 * @param array $goodAssetIds
+	 * @since 7/29/05
+	 */
+	 function printGoodAssetIds() {
+	 	foreach ($this->_goodAssetIds as $id) {
+	 		print("Asset: ".$id->getIdString()."<br />");
+	 	}
+	 }
+
+	/**
+	 * gets error array
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 7/26/05
+	 */
+	function getErrors() {
+		return $this->_errors;
+	}
+	
+	/**
+	 * checks for errors
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 7/26/05
+	 */
+	function hasErrors() {
+		return (count($this->_errors) > 0);
+	}
+
+	/**
+	 * adds an error to the  error array
+	 * 
+	 * @param String $error
+	 * @access public
+	 * @since 7/26/05
+	 */
+	function addError($error) {
+		if (!isset($this->_errors))
+			$this->_errors = array();
+		$this->_errors[] = $error;
+	}
+
+	/**
+	 * gets created assset ids array
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 7/26/05
+	 */
+	function getGoodAssetIds() {
+		return $this->_goodAssetIds;
+	}
+
+	/**
+	 * checks for built Assets
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 7/26/05
+	 */
+	function hasAssets() {
+		return (count($this->_goodAssetIds) > 0);
+	}
+
+	/**
+	 * adds an error to the  error array
+	 * 
+	 * @param String $error
+	 * @access public
+	 * @since 7/26/05
+	 */
+	function addGoodAssetId($goodAssetId) {
+		if (!isset($this->_errors))
+			$this->_errors = array();
+		$this->_goodAssetIds[] = $goodAssetId;
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 7/20/05
+	 */
+	function decompress ($filepath) {
+		$dearchiver =& new Dearchiver();
+		$worked = $dearchiver->uncompressFile($filepath,
+			dirname($filepath));
+		if ($worked == false)
+			$this->addError("Failed to decompress file: ".$filepath.
+				".  Unsupported archive extension.");
+	 unset($dearchiver);	
+	}
+	
 }
 
 ?>

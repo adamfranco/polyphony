@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFilepathPartImporter.class.php,v 1.2 2005/09/22 17:33:36 cws-midd Exp $
+ * @version $Id: XMLFilepathPartImporter.class.php,v 1.3 2005/09/26 17:56:22 cws-midd Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFilepathPartImporter.class.php,v 1.2 2005/09/22 17:33:36 cws-midd Exp $
+ * @version $Id: XMLFilepathPartImporter.class.php,v 1.3 2005/09/26 17:56:22 cws-midd Exp $
  */
 class XMLFilepathPartImporter extends XMLImporter {
 		
@@ -63,6 +63,7 @@ class XMLFilepathPartImporter extends XMLImporter {
 	 */
 	function importNode () {
 		$idManager =& Services::getService("Id");
+		$mime =& Services::getService("MIME");
 		
 		$FILE_DATA_ID =& $idManager->getId("FILE_DATA");
 		$FILE_NAME_ID =& $idManager->getId("FILE_NAME");

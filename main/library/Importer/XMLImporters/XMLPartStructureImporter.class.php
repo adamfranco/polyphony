@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureImporter.class.php,v 1.2 2005/09/22 17:33:36 cws-midd Exp $
+ * @version $Id: XMLPartStructureImporter.class.php,v 1.3 2005/09/26 17:56:22 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureImporter.class.php,v 1.2 2005/09/22 17:33:36 cws-midd Exp $
+ * @version $Id: XMLPartStructureImporter.class.php,v 1.3 2005/09/26 17:56:22 cws-midd Exp $
  */
 class XMLPartStructureImporter extends XMLImporter {
 		
@@ -32,12 +32,13 @@ class XMLPartStructureImporter extends XMLImporter {
 	 * @access public
 	 * @since 9/13/05
 	 */
-	function XMLPartStructureImporter (&$element, &$recordStructure, &$repository) {
+	function XMLPartStructureImporter (&$element, $tableName, &$recordStructure, &$repository) {
 		$this->_node =& $element;
 		$this->_childImporterList = NULL;
 		$this->_chlidElementList = NULL;
 		$this->_recordStructure =& $recordStructure;
 		$this->_repository =& $repository;
+		$this->_tableName = $tableName;
 	}
 
 	/**
@@ -71,8 +72,8 @@ class XMLPartStructureImporter extends XMLImporter {
 			$this->_partStructure =&
 				$this->_recordStructure->createPartStructure(
 				$this->_info['name'], $this->_info['description'],
-				$this->_info['isMandatory'], $this->_info['isRepeatable'],
-				$this->_info['isPopulated']);
+				$this->_info['type'], $this->_info['isMandatory'],
+				$this->_info['isRepeatable'], $this->_info['isPopulated']);
 		else {
 			$idString = $this->_node->getAttribute("id");
 			$id =& $idManager->getId($idString);
@@ -87,7 +88,7 @@ class XMLPartStructureImporter extends XMLImporter {
 		$dbIndexConcerto =& $dbHandler->addDatabase(new 
 			MySQLDatabase("localhost", "whitey_concerto", "test", "test"));
 		$query =& new InsertQuery;
-		$query->setTable("temp_xml_matrix");
+		$query->setTable($this->_tableName);
 		$query->setColumns(array("xml_id", "conc_id"));
 		$xmlid = $this->_node->getAttribute("xml:id");
 		$id =& $this->_partStructure->getId();
@@ -110,12 +111,18 @@ class XMLPartStructureImporter extends XMLImporter {
 			$helper = "build".ucfirst($element->nodeName);
 			$this->$helper($element);
 		}
-		$this->_info['isMandatory'] = $this->_node->getAttribute(
-			"isMandatory");
-		$this->_info['isRepeatable'] = $this->_node->getAttribute(
-			"isRepeatable");
-		$this->_info['isPopulated'] = $this->_node->getAttribute(
-			"isPopulated");
+		if ($this->_node->hasAttribute("isMandatory"))
+			$this->_info['isMandatory'] = $this->_node->getAttribute(
+				"isMandatory");
+		else $this->_info['isMandatory'] = FALSE;
+		if ($this->_node->hasAttribute("isRepeatable"))
+			$this->_info['isRepeatable'] = $this->_node->getAttribute(
+				"isRepeatable");
+		else $this->_info['isRepeatable'] = FALSE;
+		if ($this->_node->hasAttribute("isPopulated"))
+			$this->_info['isPopulated'] = $this->_node->getAttribute(
+				"isPopulated");
+		else $this->_info['isPopulated'] = FALSE;
 	}
 
 	/**

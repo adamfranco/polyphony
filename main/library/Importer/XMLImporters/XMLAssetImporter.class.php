@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.2 2005/09/22 17:33:36 cws-midd Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.3 2005/09/26 17:56:21 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -24,7 +24,7 @@ require_once(HARMONI."Primitives/Chronology/DateAndTime.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.2 2005/09/22 17:33:36 cws-midd Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.3 2005/09/26 17:56:21 cws-midd Exp $
  */
 class XMLAssetImporter extends XMLImporter {
 		
@@ -36,12 +36,13 @@ class XMLAssetImporter extends XMLImporter {
 	 * @access public
 	 * @since 9/12/05
 	 */
-	function XMLAssetImporter (&$element, &$repository, &$parent) {
+	function XMLAssetImporter (&$element, $tableName, &$repository, &$parent) {
 		$this->_node =& $element;
 		$this->_childImporterList = array("XMLAssetImporter", 
 			"XMLRecordImporter", "XMLFileRecordImporter");
 		$this->_childElementList = array("asset", "record", "filerecord");
 		$this->_repository =& $repository;
+		$this->_tableName = $tableName;
 		Services::getService("Id");
 		if (!is_null($parent))
 			$this->_parent =& $parent;
@@ -128,14 +129,18 @@ class XMLAssetImporter extends XMLImporter {
 			foreach ($this->_childImporterList as $importer) {
 				eval('$result = '.$importer.'::isImportable($element);');
 				if ($result) {
-					if (strtolower($importer) == get_class($this))
-						$imp =& new $importer($element, $this->_repository,
+					if (strtolower($importer) == get_class($this)) {
+						$imp =& new $importer($element, $this->_tableName,
+							$this->_repository, $this->_asset);
+						$imp->import($this->_type);
+						if (isset($this->_set))
+							$this->_set->addItem($imp->getAssetId());
+					}	
+					else {
+						$imp =& new $importer($element, $this->_tableName, 
 							$this->_asset);
-					else 
-						$imp =& new $importer($element, $this->_asset);
-					$imp->import($this->_type);
-					if (isset($this->_set))
-						$this->_set->addItem($imp->getId());
+						$imp->import($this->_type);
+					}
 					unset($imp);
 				}
 			}

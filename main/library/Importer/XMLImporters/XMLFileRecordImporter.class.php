@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordImporter.class.php,v 1.2 2005/09/22 17:33:36 cws-midd Exp $
+ * @version $Id: XMLFileRecordImporter.class.php,v 1.3 2005/09/26 17:56:22 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -15,8 +15,8 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLFileDataPartImpor
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLMIMEPartImporter.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLThumbDataPartImporter.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLThumbMIMEPartImporter.class.php");
-require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLThumbpathImporter.class.php");
-require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLFilepathImporter.class.php");
+require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLThumbpathPartImporter.class.php");
+require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLFilepathPartImporter.class.php");
 
 /**
  * Imports a File Record
@@ -27,7 +27,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLFilepathImporter.
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordImporter.class.php,v 1.2 2005/09/22 17:33:36 cws-midd Exp $
+ * @version $Id: XMLFileRecordImporter.class.php,v 1.3 2005/09/26 17:56:22 cws-midd Exp $
  */
 class XMLFileRecordImporter extends XMLImporter {
 		
@@ -39,7 +39,7 @@ class XMLFileRecordImporter extends XMLImporter {
 	 * @access public
 	 * @since 9/12/05
 	 */
-	function XMLRecordImporter (&$element, &$asset) {
+	function XMLFileRecordImporter (&$element, $tableName, &$asset) {
 		$this->_node =& $element;
 		$this->_childImporterList = array ("XMLFileNamePartImporter",
 			"XMLFileDataPartImporter", "XMLMIMEPartImporter", 
@@ -124,7 +124,7 @@ class XMLFileRecordImporter extends XMLImporter {
 		if ($iterator->count() == 0) {
 			$elements =& $this->_node->getElementsByTagName("filepath");
 			$element =& $elements[0];
-			$imp =& new XMLThumbpathImporter($element);
+			$imp =& new XMLThumbpathPartImporter($element);
 			$imp->import($this->_type);
 		}
 	}
