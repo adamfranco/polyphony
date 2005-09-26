@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordImporter.class.php,v 1.3 2005/09/26 17:56:22 cws-midd Exp $
+ * @version $Id: XMLFileRecordImporter.class.php,v 1.4 2005/09/26 19:11:38 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -27,7 +27,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLFilepathPartImpor
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordImporter.class.php,v 1.3 2005/09/26 17:56:22 cws-midd Exp $
+ * @version $Id: XMLFileRecordImporter.class.php,v 1.4 2005/09/26 19:11:38 cws-midd Exp $
  */
 class XMLFileRecordImporter extends XMLImporter {
 		
@@ -120,11 +120,12 @@ class XMLFileRecordImporter extends XMLImporter {
 		// if there is no separate thumbpath 
 		$idManager =& Services::getService("Id");
 		$THUMB_ID =& $idManager->getId("THUMBNAIL_DATA");
-		$iterator =& $this->_record->getPartsByPartStructure($THUMB_ID);
-		if ($iterator->count() == 0) {
-			$elements =& $this->_node->getElementsByTagName("filepath");
-			$element =& $elements[0];
-			$imp =& new XMLThumbpathPartImporter($element);
+		if ((count($this->_node->getElementsByTagName("filepathpart") != 0)) &&
+			(count($this->_node->getElementsByTagName("thumbpathpart") == 0))) {
+			$elements =& $this->_node->getElementsByTagName("filepathpart");
+			$element =& $elements->item(0);
+			$imp =& new XMLThumbpathPartImporter($element, $this->_record,
+				$this->_asset);
 			$imp->import($this->_type);
 		}
 	}
