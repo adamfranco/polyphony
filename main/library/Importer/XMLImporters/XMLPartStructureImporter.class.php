@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureImporter.class.php,v 1.3 2005/09/26 17:56:22 cws-midd Exp $
+ * @version $Id: XMLPartStructureImporter.class.php,v 1.4 2005/09/27 19:35:48 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureImporter.class.php,v 1.3 2005/09/26 17:56:22 cws-midd Exp $
+ * @version $Id: XMLPartStructureImporter.class.php,v 1.4 2005/09/27 19:35:48 adamfranco Exp $
  */
 class XMLPartStructureImporter extends XMLImporter {
 		
@@ -72,8 +72,10 @@ class XMLPartStructureImporter extends XMLImporter {
 			$this->_partStructure =&
 				$this->_recordStructure->createPartStructure(
 				$this->_info['name'], $this->_info['description'],
-				$this->_info['type'], $this->_info['isMandatory'],
-				$this->_info['isRepeatable'], $this->_info['isPopulated']);
+				$this->_info['type'], 
+				(($this->_info['isMandatory'] == "TRUE")?true:false),
+				(($this->_info['isRepeatable'] == "TRUE")?true:false), 
+				(($this->_info['isPopulated'] == "TRUE")?true:false));
 		else {
 			$idString = $this->_node->getAttribute("id");
 			$id =& $idManager->getId($idString);
