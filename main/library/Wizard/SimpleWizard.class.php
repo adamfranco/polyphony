@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleWizard.class.php,v 1.4 2005/07/23 01:56:15 gabeschine Exp $
+ * @version $Id: SimpleWizard.class.php,v 1.5 2005/09/28 20:50:28 gabeschine Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Wizard.abstract.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Wizard/Wizard.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleWizard.class.php,v 1.4 2005/07/23 01:56:15 gabeschine Exp $
+ * @version $Id: SimpleWizard.class.php,v 1.5 2005/09/28 20:50:28 gabeschine Exp $
  */
 class SimpleWizard extends Wizard {
 	var $_text;
@@ -54,7 +54,7 @@ class SimpleWizard extends Wizard {
 		$urlObj =& $harmoni->request->mkURL();
 		$url = $urlObj->write();
 		$formName = $this->getWizardFormName();
-		$pre = "<form action='$url' method='post' name='$formName' id='$formName' onsubmit='return validateWizard(this)' enctype='multipart/form-data'>\n";
+		$pre = "<form action='$url' method='post' name='$formName' id='$formName' enctype='multipart/form-data'>\n";
 		$post = "\n</form>\n";
 		// ignore the field name
 		return $fromParent . $pre.Wizard::parseText($this->_text, $this->getChildren(), $this->getIdString()."_").$post;

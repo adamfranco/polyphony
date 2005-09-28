@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: StartupCheck.class.php,v 1.9 2005/08/05 18:31:35 gabeschine Exp $
+ * @version $Id: StartupCheck.class.php,v 1.10 2005/09/28 20:50:27 gabeschine Exp $
  */
 
 /**
@@ -64,7 +64,7 @@ define("STARTUP_STATUS_NEEDS_INSTALL", 0);
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: StartupCheck.class.php,v 1.9 2005/08/05 18:31:35 gabeschine Exp $
+ * @version $Id: StartupCheck.class.php,v 1.10 2005/09/28 20:50:27 gabeschine Exp $
  */
 class StartupCheck {
 
@@ -345,7 +345,7 @@ class StartupCheck {
 	 * This function prints out an error message to tell the user that something went wrong in the startup check process.
 	 * @access private
 	 * @return void
-	 * @abstract
+	 * @static
 	 */
 	function error($string)
 	{

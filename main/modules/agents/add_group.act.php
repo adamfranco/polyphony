@@ -4,7 +4,7 @@
  * @package polyphony.modules.agents
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- * @version $Id: add_group.act.php,v 1.3 2005/09/08 20:48:53 gabeschine Exp $
+ * @version $Id: add_group.act.php,v 1.4 2005/09/28 20:50:28 gabeschine Exp $
  **/
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -16,7 +16,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @author Gabriel Schine
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- * @version $Id: add_group.act.php,v 1.3 2005/09/08 20:48:53 gabeschine Exp $
+ * @version $Id: add_group.act.php,v 1.4 2005/09/28 20:50:28 gabeschine Exp $
  */
 class add_groupAction extends MainWindowAction
 {
@@ -88,8 +88,8 @@ class add_groupAction extends MainWindowAction
 			print "<b>"._("Type description")."</b>:<br/> [[type_description]]<br/>";
 			print "<div align='right'>[[_cancel]]\n[[_save]]</div>";
 			print "[[members]]";
-
-			if (RequestContext::value("agents") && count(($list=unserialize(RequestContext::value("agents")))) > 0) {
+			
+			if (RequestContext::value("agents") && count(($list=unserialize(RequestContext::value("agents")))) > 0 && is_array($list)) {
 				// print out a list of agents
 				print "<div>"._("The group will be created with the following members:")."<ul>\n";
 				$agentManager =& Services::getService("Agent");

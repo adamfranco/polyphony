@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.class.php,v 1.4 2005/08/10 21:20:16 gabeschine Exp $
+ * @version $Id: WEventButton.class.php,v 1.5 2005/09/28 20:50:28 gabeschine Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.class.php,v 1.4 2005/08/10 21:20:16 gabeschine Exp $
+ * @version $Id: WEventButton.class.php,v 1.5 2005/09/28 20:50:28 gabeschine Exp $
  */
 class WEventButton extends WizardComponent {
 	var $_event = "nop";
@@ -144,7 +144,7 @@ class WEventButton extends WizardComponent {
 		$onclick = '';
 		if ($this->_onclick) $onclick = addslashes($this->_onclick) . ";";
 		$m = "<input type='hidden' name='$name' id='$name' value='0' />\n";
-		$m .= "<input type='button' value='$label' onclick='$onclick if (validateWizard(this.form)) { getWizardElement(\"$name\").value=\"1\"; this.form.submit(); }'".($this->_enabled?"":" disabled")." />";
+		$m .= "<button onclick='$onclick if (validateWizard(this.form)) { getWizardElement(\"$name\").value=\"1\"; this.form.submit(); }'".($this->_enabled?"":" disabled='disabled'").">$label</button>";
 		return $m;
 	}
 }

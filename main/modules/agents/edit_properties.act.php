@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_properties.act.php,v 1.2 2005/09/09 21:29:39 gabeschine Exp $
+ * @version $Id: edit_properties.act.php,v 1.3 2005/09/28 20:50:28 gabeschine Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_properties.act.php,v 1.2 2005/09/09 21:29:39 gabeschine Exp $
+ * @version $Id: edit_properties.act.php,v 1.3 2005/09/28 20:50:28 gabeschine Exp $
  */
 class edit_propertiesAction 
 	extends MainWindowAction
@@ -197,7 +197,7 @@ END;
 		
 		$collection =& $wizard->addComponent("properties", new WRepeatableComponentCollection());
 		$collection->setStartingNumber(0);
-		$keyComponent =& $collection->addComponent("key", new WTextField());
+						$keyComponent =& $collection->addComponent("key", new WTextField());
 		$keyComponent->setSize(20);
 		$collection->addComponent("type", new WHiddenField());
 		$typeText =& $collection->addComponent("type_text", new WText());

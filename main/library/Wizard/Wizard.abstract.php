@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.10 2005/08/24 14:34:42 cws-midd Exp $
+ * @version $Id: Wizard.abstract.php,v 1.11 2005/09/28 20:50:28 gabeschine Exp $
  */
 
 /*
@@ -30,7 +30,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.10 2005/08/24 14:34:42 cws-midd Exp $
+ * @version $Id: Wizard.abstract.php,v 1.11 2005/09/28 20:50:28 gabeschine Exp $
  * @author Gabe Schine
  * @abstract
  */
@@ -166,51 +166,53 @@ class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 		// validation, etc. 
 		$javascript = <<< END
 
-function addWizardRule(elementID, rule, errorID, displayError) {
-	var element = getWizardElement(elementID);
-	element._ruleCheck = rule;
-	element._ruleErrorID = errorID;
-	
-	var errEl = getWizardElement(errorID);
-//	errEl.style.position = "absolute";
-	errEl.style.visibility = (displayError?"visible":"hidden");
-}
+		function addWizardRule(elementID, rule, errorID, displayError) {
+			var element = getWizardElement(elementID);
+			element._ruleCheck = rule;
+			element._ruleErrorID = errorID;
 
-function getWizardElement(id) {
-	if (document.layers) return document.layers[id];
-	if (document.all) return document.all[id];
-	return document.getElementById(id);
-}
-
-function validateWizard(form) {
-//	alert('checking...');
-	if (form._ignoreValidation) return true;
-	var elements = form.elements;
-	var ok = true;
-	for(var i = 0; i < form.length; i++) {
-		var el = elements[i];
-		if (el._ruleCheck) {
-			var errID = el._ruleErrorID;
-			var errDiv = getWizardElement(errID);
-			if (!el._ruleCheck(el)) {
-				ok = false;
-				// show the error div
-				errDiv.style.visibility = "visible";
-			} else {
-				errDiv.style.visibility = "hidden";
-			}
+			var errEl = getWizardElement(errorID);
+		//	errEl.style.position = "absolute";
+			errEl.style.visibility = (displayError?"visible":"hidden");
 		}
-	}
-	return ok;
-}
 
-function ignoreValidation(form) {
-	form._ignoreValidation = true;
-}
+		function getWizardElement(id) {
+			if (document.layers) return document.layers[id];
+			if (document.all) return document.all[id];
+			return document.getElementById(id);
+		}
 
-function submitWizard(form) {
-	if (validateWizard(form)) form.submit();
-}
+		function validateWizard(form) {
+//			alert('checking...');
+			if (form._ignoreValidation) return true;
+			var elements = form.elements;
+			var ok = true;
+			for(var i = 0; i < form.length; i++) {
+				var el = elements[i];
+				if (el._ruleCheck) {
+					var errID = el._ruleErrorID;
+					var errDiv = getWizardElement(errID);
+					if (!el._ruleCheck(el)) {
+						ok = false;
+						// show the error div
+						errDiv.style.visibility = "visible";
+					} else {
+						errDiv.style.visibility = "hidden";
+					}
+				}
+			}
+			return ok;
+		}
+
+		function ignoreValidation(form) {
+//			alert("ignoring...");
+			form._ignoreValidation = true;
+		}
+
+		function submitWizard(form) {
+//			alert("Submit!");
+			if (validateWizard(form)) form.submit();
+		}
 	
 
 END;
