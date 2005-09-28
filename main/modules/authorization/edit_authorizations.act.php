@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.36 2005/09/08 20:48:53 gabeschine Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.37 2005/09/28 22:14:16 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -26,7 +26,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.36 2005/09/08 20:48:53 gabeschine Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.37 2005/09/28 22:14:16 adamfranco Exp $
  */
 class edit_authorizationsAction 
 	extends MainWindowAction
@@ -454,7 +454,7 @@ class edit_authorizationsAction
 											"operation"=>$toggleOperation
 										));
 		
-						print " onclick=\"Javascript:window.location='".htmlentities($toggleURL, ENT_QUOTES)."'\"";
+						print " onclick=\"Javascript:window.location='".$toggleURL."'\"";
 					}
 					// If they are not authorized to view the AZs, disable the checkbox
 					else {
