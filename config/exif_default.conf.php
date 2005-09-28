@@ -10,8 +10,8 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: exif_default.conf.php,v 1.1 2005/09/28 19:15:04 cws-midd Exp $
+ * @version $Id: exif_default.conf.php,v 1.2 2005/09/28 20:01:15 cws-midd Exp $
  */
  
 if (!defined("EXIF"))
-	define("EXIF", POLYPHONY."../PHP_JPEG_Metadata_Toolkit_1.11/EXIF.php");
+	define("EXIF", POLYPHONY."/../PHP_JPEG_Metadata_Toolkit_1.11/EXIF.php");

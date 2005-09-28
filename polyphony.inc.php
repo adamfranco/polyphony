@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.27 2005/09/28 19:57:19 cws-midd Exp $
+ * @version $Id: polyphony.inc.php,v 1.28 2005/09/28 19:58:47 cws-midd Exp $
  */
 
 /**
@@ -79,9 +79,9 @@ if (file_exists(dirname(__FILE__)."/config/domit.conf.php"))
 else
 	require_once(dirname(__FILE__)."/config/domit_default.conf.php");
 
-if (file_exists(dirname(__FILE__)."/config/exif.conf.php")
+if (file_exists(dirname(__FILE__)."/config/exif.conf.php"))
 	require_once(dirname(__FILE__)."/config/exif.conf.php");
 else
-	require_once(dirname(__FILE__)."config/exif_default.conf.php");
+	require_once(dirname(__FILE__)."/config/exif_default.conf.php");
 
 ?>
