@@ -6,10 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetIterator.class.php,v 1.4 2005/08/08 16:06:19 cws-midd Exp $
+ * @version $Id: XMLAssetIterator.class.php,v 1.5 2005/09/28 19:13:24 cws-midd Exp $
  */ 
 
-require_once("/home/cshubert/public_html/importer/domit/xml_domit_include.php");
+require_once(DOMIT);
 
 /**
 * <##>
@@ -20,7 +20,7 @@ require_once("/home/cshubert/public_html/importer/domit/xml_domit_include.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetIterator.class.php,v 1.4 2005/08/08 16:06:19 cws-midd Exp $
+ * @version $Id: XMLAssetIterator.class.php,v 1.5 2005/09/28 19:13:24 cws-midd Exp $
  */
 class XMLAssetIterator 
 extends HarmoniIterator 

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.3 2005/09/26 17:56:22 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.4 2005/09/28 19:13:24 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRecordStructureIm
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.3 2005/09/26 17:56:22 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.4 2005/09/28 19:13:24 cws-midd Exp $
  */
 class XMLRepositoryImporter extends XMLImporter {
 		
@@ -109,7 +109,10 @@ class XMLRepositoryImporter extends XMLImporter {
 		foreach ($this->_node->childNodes as $element) {
 			if (!in_array($element->nodeName, $this->_childElementList)) {
 				$helper = "build".ucfirst($element->nodeName);
-				$this->$helper($element);
+				if (method_exists($this, $helper))
+					$this->$helper($element);
+				else
+					print $helper." does not exist";
 			}
 		}
 	}

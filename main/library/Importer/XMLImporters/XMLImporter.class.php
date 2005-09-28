@@ -6,13 +6,13 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.3 2005/09/26 17:56:22 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.4 2005/09/28 19:13:24 cws-midd Exp $
  *
  * @author Christopher W. Shubert
  */ 
 
 require_once(HARMONI."/utilities/Dearchiver.class.php");
-require_once("/home/cshubert/public_html/importer/domit/xml_domit_include.php");
+require_once(DOMIT);
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryImporter.class.php");
 
 /**
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryImporte
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.3 2005/09/26 17:56:22 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.4 2005/09/28 19:13:24 cws-midd Exp $
  */
 class XMLImporter {
 		
@@ -52,15 +52,19 @@ class XMLImporter {
 	 */
 	function parse () {
 		$this->_import =& new DOMIT_Document();
-		
 		if ($this->_import->loadXML($this->_xmlFile)) {
 			if (!($this->_import->documentElement->hasChildNodes()))
 				throwError(new Error("There are no Importables in this file",
-					"Importer", FALSE));
+					"Importer", TRUE));
 			else {
 				$this->_node =& $this->_import->documentElement;
 				$this->import($this->_node->getAttribute("type"));
 			}
+		}
+		else {
+			print "error: ".$this->_import->getErrorCode()."<br/>";
+			print "meaning: ".$this->_import->getErrorString()."<br/>";
+			throwError(new Error("did not parse", "Importer", TRUE));
 		}
 	}
 	

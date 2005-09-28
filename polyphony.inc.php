@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.25 2005/09/09 19:59:25 gabeschine Exp $
+ * @version $Id: polyphony.inc.php,v 1.26 2005/09/28 19:13:23 cws-midd Exp $
  */
 
 /**
@@ -71,4 +71,17 @@ Services::startManagerAsService("RepositorySearchModules", $context, $configurat
 
 require_once(dirname(__FILE__)."/main/library/HierarchyPrinter/GroupPrinter.class.php");
 require_once(dirname(__FILE__)."/main/library/HierarchyPrinter/HierarchyPrinter.class.php");
+
+// NEW CONFIGS AFTER HERE!!!:
+
+if (file_exists(dirname(__FILE__)."/config/domit.conf.php"))
+	require_once(dirname(__FILE__)."/config/domit.conf.php"));
+else
+	require_once(dirname(__FILE__)."/config/domit_default.conf.php");
+
+if (file_exists(dirname(__FILE__)."/config/exif.conf.php")
+	require_once(dirname(__FILE__)."/config/exif.conf.php");
+else
+	require_once(dirname(__FILE__)."config/exif_default.conf.php");
+
 ?>
