@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: colorwheel_test.act.php,v 1.1 2005/09/01 18:44:45 nstamato Exp $
+ * @version $Id: colorwheel_test.act.php,v 1.2 2005/09/29 17:34:56 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: colorwheel_test.act.php,v 1.1 2005/09/01 18:44:45 nstamato Exp $
+ * @version $Id: colorwheel_test.act.php,v 1.2 2005/09/29 17:34:56 cws-midd Exp $
  */
 class colorwheel_testAction 
 	extends MainWindowAction
@@ -101,7 +101,7 @@ class colorwheel_testAction
 		
 		
 		// Instantiate the wizard, then add our steps.
-		$wizard =& SimpleStepWizard::withTitleAndDefaultLayout(_("Test the ColorWheel"));
+		$wizard =& SimpleStepWizard::withDefaultLayout();
 		
 		$step =& $wizard->addStep("themesettings", new WizardStep());
 		$step->setDisplayName(_("Test"));

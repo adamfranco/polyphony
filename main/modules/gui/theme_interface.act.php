@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: theme_interface.act.php,v 1.2 2005/09/01 21:45:20 nstamato Exp $
+ * @version $Id: theme_interface.act.php,v 1.3 2005/09/29 17:34:56 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: theme_interface.act.php,v 1.2 2005/09/01 21:45:20 nstamato Exp $
+ * @version $Id: theme_interface.act.php,v 1.3 2005/09/29 17:34:56 cws-midd Exp $
  */
 class theme_interfaceAction 
 	extends MainWindowAction
@@ -62,7 +62,7 @@ class theme_interfaceAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		return _("Theme Interface");
+		return _("Theme Management");
 	}
 	
 	/**
@@ -99,7 +99,7 @@ class theme_interfaceAction
 		
 		
 		// Instantiate the wizard, then add our steps.
-		$wizard =& SimpleStepWizard::withTitleAndDefaultLayout(_("Theme Management"));
+		$wizard =& SimpleStepWizard::withDefaultLayout();
 		$step =& $wizard->addStep("themesettings", new WizardStep());
 		$step->setDisplayName(_("Current Theme Settings"));
 		$guimanager =& Services::getService('GUIManager');
@@ -128,10 +128,6 @@ class theme_interfaceAction
 				print $output;
 				print "<p>";
 			}
-			
-			
-			
-			
 		}
 		else{
 			print "<b><em>This Theme has no Modifiable Properties.</em></b><p></p>";

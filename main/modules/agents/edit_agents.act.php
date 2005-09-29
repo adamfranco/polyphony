@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agents.act.php,v 1.1 2005/09/08 20:48:53 gabeschine Exp $
+ * @version $Id: edit_agents.act.php,v 1.2 2005/09/29 17:34:56 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agents.act.php,v 1.1 2005/09/08 20:48:53 gabeschine Exp $
+ * @version $Id: edit_agents.act.php,v 1.2 2005/09/29 17:34:56 cws-midd Exp $
  */
 class edit_agentsAction 
 	extends MainWindowAction
@@ -140,6 +140,17 @@ class edit_agentsAction
 	}
 
 	/**
+	 * Return the heading text for this action, or an empty string.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 4/26/05
+	 */
+	function getHeadingText () {
+		return _("Browse Agents");
+	}
+
+	/**
 	 * Create a new Wizard for this action. Caching of this Wizard is handled by
 	 * {@link getWizard()} and does not need to be implemented here.
 	 * 
@@ -150,7 +161,7 @@ class edit_agentsAction
 	function &createWizard () {
 
 		// Instantiate the wizard, then add our steps.
-		$wizard =& SimpleStepWizard::withTitleAndDefaultLayout(_("Browse Agents"));
+		$wizard =& SimpleStepWizard::withDefaultLayout();
 
 		// :: Name and Description ::
 		$step =& $wizard->addStep("namedescstep", new WizardStep());
