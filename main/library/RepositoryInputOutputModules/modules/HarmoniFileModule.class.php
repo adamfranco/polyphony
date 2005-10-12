@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HarmoniFileModule.class.php,v 1.9 2005/10/12 12:23:34 adamfranco Exp $
+ * @version $Id: HarmoniFileModule.class.php,v 1.10 2005/10/12 12:45:21 adamfranco Exp $
  */
 
 /**
@@ -24,8 +24,8 @@ require_once(HARMONI."Primitives/Numbers/ByteSize.class.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: HarmoniFileModule.class.php,v 1.9 2005/10/12 12:23:34 adamfranco Exp $
- * @since $Date: 2005/10/12 12:23:34 $
+ * @version $Id: HarmoniFileModule.class.php,v 1.10 2005/10/12 12:45:21 adamfranco Exp $
+ * @since $Date: 2005/10/12 12:45:21 $
  * @copyright 2004 Middlebury College
  */
 
@@ -138,7 +138,7 @@ class HarmoniFileModule
 		$component =& $step->addComponent("thumbnail_mime_type", new WTextField());
 		$component->setValue($parts['THUMBNAIL_MIME_TYPE']->getValue());
 		
-		$component =& $step->addComponent("thumbnail_type_from_file", new WCheckBox());
+		$component =& $step->addComponent("use_custom_thumbnail_type", new WCheckBox());
 		$component->setValue(false);
 		
 		
@@ -213,7 +213,7 @@ class HarmoniFileModule
 		print "\n\t\t"._("Thumbnail Mime Type")."";
 		print "\n\t</td>";
 		print "\n\t<td align='center'>";
-		print "\n\t\t[[thumbnail_type_from_file]]";
+		print "\n\t\t[[use_custom_thumbnail_type]]";
 		print "\n\t</td>";
 		print "\n\t<td>";
 		print "\n\t\t[[thumbnail_mime_type]]";
