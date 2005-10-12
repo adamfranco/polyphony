@@ -3,7 +3,49 @@
 	h1, h2 {color: #005;}
 	h1 {font-size: 18pt;}
 	li {padding-bottom: 3px;}
-	</style><div style="font-family: Verdana; font-size: 12px;"><h1>Polyphony ChangeLog</h1><h2>Version 0.2.2</h2><h3>2005-04-14</h3><ul>
+	</style><div style="font-family: Verdana; font-size: 12px;"><h1>Polyphony ChangeLog</h1><h2>Version 0.3.0</h2><h3>2005-10-12</h3><ul>
+		<li/> New feature:  
+			Repository OutputModules now support accessing the first image
+			record of an asset as well as a thumbnail.
+		 (<i>Adam Franco</i>)
+		<li/> New feature:  
+			Importers: Abstract, XML, Tab-Delimited, and EXIF fully functioning.
+			Batch importing of assets now available.
+		 (<i>Niraj Dhungel</i>)
+		<li/> New feature:  
+			Importers: Abstract, XML, Tab-Delimited, and EXIF fully functioning.
+			Batch importing of assets now available.
+		 (<i>Christopher W. Shubert</i>)
+		<li/> New feature:  
+			New "Basket" system for collecting [Asset] Ids during the session.
+			The Basket allows for easy user-selection of a large number of items.
+		 (<i>Adam Franco</i>)
+		<li/> Change:  
+			Changed the StartupCheck classes to use the new Wizard.
+		 (<i>Gabe Schine</i>)
+		<li/> Change:  
+			Changed actions to use Everyone and Users group IDs of "edu.middlebury.agents.everyone" and "edu.middlebury.agents.users".
+		 (<i>Gabe Schine</i>)
+		<li/> Bug Fix:
+	 
+			Wizard now can handle field names with .'s in them.
+		 (<i>Adam Franco</i>)
+		<li/> Bug Fix:
+	 
+			RepositoryInputOutputModules now check for the right record interface.
+		 (<i>Adam Franco</i>)
+		<li/> Change:  
+			New Wizard system based on nested components. Much more extensible and
+			easy-to-use than the old system.
+		 (<i>Gabe Schine</i>)
+		<li/> Change:  
+			Updating much of Polyphony to support the RequestContext
+		 (<i>Gabe Schine</i>)
+		<li/> New feature:  
+			Added an abstract Action class-hierarchy to enable the easy creation
+			of class-based actions.
+		 (<i>Adam Franco</i>)
+	</ul><br/><h2>Version 0.2.2</h2><h3>2005-04-14</h3><ul>
 		<li/> Bug Fix:
 	 
 			clone() is a reserved word in PHP5. All clone methods have been renamed 
@@ -28,7 +70,7 @@
 			around during the authentication sequence.
 		 (<i>Adam Franco</i>)
 		<li/> Change:  
-			Fixed some references to the non-existant &quot;SharedManager&quot;
+			Fixed some references to the non-existant "SharedManager"
 		 (<i>Adam Franco</i>)
 	</ul><br/><h2>Version 0.2.0</h2><h3>2005-04-07</h3><ul>
 		<li/> Change:  
@@ -59,7 +101,7 @@
 			undocumented and untested.
 		 (<i>Gabe Schine</i>)
 		<li/> New feature:  
-			Languages: Shared actions for generating a &quot;switch language&quot; form,
+			Languages: Shared actions for generating a "switch language" form,
 			as well as the logic for performing that switch.
 		 (<i>Adam Franco</i>)
 		<li/> New feature:  

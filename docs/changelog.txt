@@ -3,6 +3,31 @@
 Name: Polyphony ChangeLog
 
 
+v. 0.3.0 (2005-10-12)
+----------------------------------------------------
+		
+	* New feature: Repository OutputModules now support accessing the first image record of an asset as well as a thumbnail. (Adam Franco)
+		
+	* New feature: Importers: Abstract, XML, Tab-Delimited, and EXIF fully functioning. Batch importing of assets now available. (Niraj Dhungel)
+		
+	* New feature: Importers: Abstract, XML, Tab-Delimited, and EXIF fully functioning. Batch importing of assets now available. (Christopher W. Shubert)
+		
+	* New feature: New "Basket" system for collecting [Asset] Ids during the session. The Basket allows for easy user-selection of a large number of items. (Adam Franco)
+		
+	* Change: Changed the StartupCheck classes to use the new Wizard. (Gabe Schine)
+		
+	* Change: Changed actions to use Everyone and Users group IDs of "edu.middlebury.agents.everyone" and "edu.middlebury.agents.users". (Gabe Schine)
+		
+	* Bug Fix: Wizard now can handle field names with .'s in them. (Adam Franco)
+		
+	* Bug Fix: RepositoryInputOutputModules now check for the right record interface. (Adam Franco)
+		
+	* Change: New Wizard system based on nested components. Much more extensible and easy-to-use than the old system. (Gabe Schine)
+		
+	* Change: Updating much of Polyphony to support the RequestContext (Gabe Schine)
+		
+	* New feature: Added an abstract Action class-hierarchy to enable the easy creation of class-based actions. (Adam Franco)
+	
 v. 0.2.2 (2005-04-14)
 ----------------------------------------------------
 		
@@ -19,7 +44,7 @@ v. 0.2.1 (2005-04-11)
 		
 	* Change: Authentication now plays nicely with GET parameters and maintains them around during the authentication sequence. (Adam Franco)
 		
-	* Change: Fixed some references to the non-existant &quot;SharedManager&quot; (Adam Franco)
+	* Change: Fixed some references to the non-existant "SharedManager" (Adam Franco)
 	
 v. 0.2.0 (2005-04-07)
 ----------------------------------------------------
@@ -41,7 +66,7 @@ v. 0.1.0 (2004-10-26)
 		
 	* New feature: StartupCheck and ConfigSystem: These should allow easy creation of browser-based install/configuration options and setup. They are undocumented and untested. (Gabe Schine)
 		
-	* New feature: Languages: Shared actions for generating a &quot;switch language&quot; form, as well as the logic for performing that switch. (Adam Franco)
+	* New feature: Languages: Shared actions for generating a "switch language" form, as well as the logic for performing that switch. (Adam Franco)
 		
 	* New feature: The Wizard library provides a system for the generation of dynamic Multi-step wizards. The Wizard library handles the catching, storing, and validating of form submitions, as well as handle user-progress through the wizard. (Adam Franco)
 		
