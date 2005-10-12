@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HarmoniFileModule.class.php,v 1.8 2005/07/21 15:44:21 adamfranco Exp $
+ * @version $Id: HarmoniFileModule.class.php,v 1.9 2005/10/12 12:23:34 adamfranco Exp $
  */
 
 /**
@@ -14,6 +14,7 @@
  * 
  */
 require_once(dirname(__FILE__)."/../RepositoryInputOutputModule.interface.php");
+require_once(HARMONI."Primitives/Numbers/ByteSize.class.php");
 
 /**
  * InputOutput modules are classes which generate HTML for the display or editing
@@ -23,8 +24,8 @@ require_once(dirname(__FILE__)."/../RepositoryInputOutputModule.interface.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: HarmoniFileModule.class.php,v 1.8 2005/07/21 15:44:21 adamfranco Exp $
- * @since $Date: 2005/07/21 15:44:21 $
+ * @version $Id: HarmoniFileModule.class.php,v 1.9 2005/10/12 12:23:34 adamfranco Exp $
+ * @since $Date: 2005/10/12 12:23:34 $
  * @copyright 2004 Middlebury College
  */
 
@@ -89,61 +90,58 @@ class HarmoniFileModule
 			$parts[$partStructureId->getIdString()] =& $part;
 		}
 		
-		$step =& $wizard->createStep($recordStructure->getDisplayName());
-		
-		$step->createProperty("file_upload",
-									new AlwaysTrueValidatorRule,
-									FALSE);
-									
-		$property =& $step->createProperty("file_name",
-									new AlwaysTrueValidatorRule,
-									FALSE);
-		$property->setDefaultValue($parts['FILE_NAME']->getValue());
-		
-		$property =& $step->createProperty("name_from_file",
-									new AlwaysTrueValidatorRule,
-									FALSE);
-		$property->setDefaultValue("TRUE");
-		
-		$property =& $step->createProperty("file_size",
-									new AlwaysTrueValidatorRule,
-									FALSE);
-		$property->setDefaultValue($parts['FILE_SIZE']->getValue());
-		
-		$property =& $step->createProperty("size_from_file",
-									new AlwaysTrueValidatorRule,
-									FALSE);
-		$property->setDefaultValue("TRUE");
-		
-		$property =& $step->createProperty("mime_type",
-									new AlwaysTrueValidatorRule,
-									FALSE);
-		$property->setDefaultValue($parts['MIME_TYPE']->getValue());
-		
-		$property =& $step->createProperty("type_from_file",
-									new AlwaysTrueValidatorRule,
-									FALSE);
-		$property->setDefaultValue("TRUE");
-		
-		$step->createProperty("thumbnail_upload",
-									new AlwaysTrueValidatorRule,
-									FALSE);
-		
-		$property =& $step->createProperty("thumbnail_mime_type",
-									new AlwaysTrueValidatorRule,
-									FALSE);
-		$property->setDefaultValue($parts['THUMBNAIL_MIME_TYPE']->getValue());
-		
-		$property =& $step->createProperty("thumbnail_type_from_file",
-									new AlwaysTrueValidatorRule,
-									FALSE);
-		$property->setDefaultValue("TRUE");
+		$step =& $wizard->addStep("record", new WizardStep());
+		$step->setDisplayName($recordStructure->getDisplayName());
 		
 		ob_start();
-		print "\n<em>"._("Upload a new file or change file properties.")."</em>\n<hr />";
-		print "\n<br /><strong>"._("New file").":</strong>";
 		
-		print "\n<input type='file' name='file_upload' />";
+		$component =& $step->addComponent("file_upload", new WFileUploadField());
+		
+		print "\n<em>"._("Upload a new file or change file properties.")."</em>\n<hr />";
+		print "\n<br /><strong>";
+		if ($parts['FILE_NAME']->getValue()) {
+			print _("New file (optional)");
+		} else {
+			print _("File");
+		}
+		print ":</strong>";
+		
+		print "\n[[file_upload]]";
+		
+		
+		$component =& $step->addComponent("file_name", new WTextField());
+		$component->setValue($parts['FILE_NAME']->getValue());
+		
+		$component =& $step->addComponent("use_custom_filename", new WCheckBox());
+		$component->setValue(false);
+		
+		
+		$component =& $step->addComponent("file_size", new WTextField());
+		$size =& ByteSize::withValue($parts['FILE_SIZE']->getValue());
+		$component->setValue($size->asString());
+		$component->setReadOnly(TRUE);
+// 		
+// 		$component =& $step->addComponent("size_from_file", new WCheckBox());
+// 		$component->setValue(false);
+		
+		
+		$component =& $step->addComponent("mime_type", new WTextField());
+		$component->setValue($parts['MIME_TYPE']->getValue());
+		
+		$component =& $step->addComponent("use_custom_type", new WCheckBox());
+		$component->setValue(false);
+		
+		
+		$component =& $step->addComponent("thumbnail_upload", new WFileUploadField());
+		
+		
+		$component =& $step->addComponent("thumbnail_mime_type", new WTextField());
+		$component->setValue($parts['THUMBNAIL_MIME_TYPE']->getValue());
+		
+		$component =& $step->addComponent("thumbnail_type_from_file", new WCheckBox());
+		$component->setValue(false);
+		
+		
 		
 		print "\n<p>"._("Change properties of the uploaded file to custom values:");
 		
@@ -154,7 +152,7 @@ class HarmoniFileModule
 		print "\n\t\t"._("Property")."";
 		print "\n\t</th>";
 		print "\n\t<th>";
-		print "\n\t\t"._("Take Value <br />From New File")."";
+		print "\n\t\t"._("Use Custom Value")."";
 		print "\n\t</th>";
 		print "\n\t<th>";
 		print "\n\t\t"._("Custom Value")."";
@@ -166,14 +164,10 @@ class HarmoniFileModule
 		print "\n\t\t"._("File Name")."";
 		print "\n\t</td>";
 		print "\n\t<td align='center'>";
-		print "\n\t\t<input type='checkbox' name='name_from_file' value='TRUE'";
-		print " [['name_from_file'=='TRUE'|checked='checked'|]] />";
+		print "\n\t\t[[use_custom_filename]]";
 		print "\n\t</td>";
 		print "\n\t<td>";
-		print "\n\t\t<input type='text'";
-		print " name='file_name'";
-		print " value='[[file_name]]' /> ";
-		print " [[file_name|Error]]";
+		print "\n\t\t[[file_name]]";
 		print "\n\t</td>";
 		print "\n</tr>";
 		
@@ -182,14 +176,10 @@ class HarmoniFileModule
 		print "\n\t\t"._("File Size")."";
 		print "\n\t</td>";
 		print "\n\t<td align='center'>";
-		print "\n\t\t<input type='checkbox' name='size_from_file' value='TRUE'";
-		print " [['size_from_file'=='TRUE'|checked='checked'|]] disabled='disabled' />";
+// 		print "\n\t\t[[size_from_file]]";
 		print "\n\t</td>";
 		print "\n\t<td>";
-		print "\n\t\t<input type='text'";
-		print " name='file_size'";
-		print " value='[[file_size]]' disabled='disabled' /> ";
-		print " [[file_size|Error]]";
+		print "\n\t\t[[file_size]]";
 		print "\n\t</td>";
 		print "\n</tr>";
 		
@@ -199,14 +189,10 @@ class HarmoniFileModule
 		print "\n\t\t"._("Mime Type")."";
 		print "\n\t</td>";
 		print "\n\t<td align='center'>";
-		print "\n\t\t<input type='checkbox' name='type_from_file' value='TRUE'";
-		print " [['type_from_file'=='TRUE'|checked='checked'|]] />";
+		print "\n\t\t[[use_custom_type]]";
 		print "\n\t</td>";
 		print "\n\t<td>";
-		print "\n\t\t<input type='text'";
-		print " name='mime_type'";
-		print " value='[[mime_type]]' /> ";
-		print " [[mime_type|Error]]";
+		print "\n\t\t[[mime_type]]";
 		print "\n\t</td>";
 		print "\n</tr>";
 		
@@ -218,7 +204,7 @@ class HarmoniFileModule
 		print "\n\t\t &nbsp; ";
 		print "\n\t</td>";
 		print "\n\t<td>";
-		print "\n<input type='file' name='thumbnail_upload'  />";
+		print "\n[[thumbnail_upload]]";
 		print "\n\t</td>";
 		print "\n</tr>";
 		
@@ -227,14 +213,10 @@ class HarmoniFileModule
 		print "\n\t\t"._("Thumbnail Mime Type")."";
 		print "\n\t</td>";
 		print "\n\t<td align='center'>";
-		print "\n\t\t<input type='checkbox' name='thumbnail_type_from_file' value='TRUE'";
-		print " [['thumbnail_type_from_file'=='TRUE'|checked='checked'|]] />";
+		print "\n\t\t[[thumbnail_type_from_file]]";
 		print "\n\t</td>";
 		print "\n\t<td>";
-		print "\n\t\t<input type='text'";
-		print " name='thumbnail_mime_type'";
-		print " value='[[thumbnail_mime_type]]' /> ";
-		print " [[thumbnail_mime_type|Error]]";
+		print "\n\t\t[[thumbnail_mime_type]]";
 		print "\n\t</td>";
 		print "\n</tr>";
 		
@@ -242,7 +224,7 @@ class HarmoniFileModule
 		
 		print "\n</p>";
 		
-		$step->setText(ob_get_contents());
+		$step->setContent(ob_get_contents());
 		ob_end_clean();
 		
 	}
@@ -260,7 +242,9 @@ class HarmoniFileModule
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
 		ArgumentValidator::validate($wizard, new ExtendsValidatorRule("Wizard"));
 		
-		$properties =& $wizard->getProperties();
+		$properties =& $wizard->getAllValues();
+		$values =& $properties["record"];
+		printpre($properties);
 		
 		// Get all the parts
 		$partIterator =& $record->getParts();
@@ -273,12 +257,12 @@ class HarmoniFileModule
 		}
 
 		// if a new File was uploaded, store it.
-		if (is_array($_FILES['file_upload']) 
-			&& $_FILES['file_upload']['name']) 
+		if ($values['file_upload']['tmp_name'] 
+			&& $values['file_upload']['name']) 
 		{
-			$name = $_FILES['file_upload']['name'];
-			$tmpName = $_FILES['file_upload']['tmp_name'];			
-			$mimeType = $_FILES['file_upload']['type'];
+			$name = $values['file_upload']['name'];
+			$tmpName = $values['file_upload']['tmp_name'];			
+			$mimeType = $values['file_upload']['type'];
 			// If we weren't passed a mime type or were passed the generic
 			// application/octet-stream type, see if we can figure out the
 			// type.
@@ -293,12 +277,12 @@ class HarmoniFileModule
 		}
 		
 		// If we've uploaded a thumbnail, safe it.
-		if (is_array($_FILES['thumbnail_upload']) 
-			&& $_FILES['thumbnail_upload']['name']) 
+		if ($values['thumbnail_upload']['tmp_name'] 
+			&& $values['thumbnail_upload']['name']) 
 		{
-			$name = $_FILES['thumbnail_upload']['name'];
-			$tmpName = $_FILES['thumbnail_upload']['tmp_name'];			
-			$mimeType = $_FILES['thumbnail_upload']['type'];
+			$name = $values['thumbnail_upload']['name'];
+			$tmpName = $values['thumbnail_upload']['tmp_name'];			
+			$mimeType = $values['thumbnail_upload']['type'];
 						
 			// If we weren't passed a mime type or were passed the generic
 			// application/octet-stream type, see if we can figure out the
@@ -313,8 +297,8 @@ class HarmoniFileModule
 		}
 		// otherwise, if we've uploaded a new file only, get rid of the
 		// old one and try to create a new one
-		else if (is_array($_FILES['file_upload']) 
-			&& $_FILES['file_upload']['name']) 
+		else if ($values['file_upload']['tmp_name'] 
+			&& $values['file_upload']['name']) 
 		{
 			$imageProcessor =& Services::getService("ImageProcessor");
 			
@@ -335,18 +319,13 @@ class HarmoniFileModule
 		}
 		
 		// if the "Take from new file" box was unchecked store the name.
-		if ($properties['name_from_file']->getValue() != 'TRUE') {
-			$parts['FILE_NAME']->updateValue($properties['file_name']->getValue());
+		if ($values['use_custom_filename']) {
+			$parts['FILE_NAME']->updateValue($values['file_name']);
 		}
 		
-		// if the "Take from new file" box was unchecked store the size.
-// 		if ($properties['size_from_file']->getValue() != 'TRUE') {
-// 			$parts['FILE_SIZE']->updateValue($properties['file_size']->getValue());
-// 		}
-		
 		// if the "Take from new file" box was unchecked store the mime type.
-		if ($properties['type_from_file']->getValue() != 'TRUE') {
-			$parts['MIME_TYPE']->updateValue($properties['mime_type']->getValue());
+		if ($values['use_custom_type']) {
+			$parts['MIME_TYPE']->updateValue($values['mime_type']);
 		}
 	}
 
@@ -413,9 +392,10 @@ class HarmoniFileModule
 			
 			if(!in_array($partStructureId->getIdString(), $partStructuresToSkip)){
 				print "\n<strong>".$partStructure->getDisplayName().":</strong> \n";
-				if ($partStructureId->getIdString() == 'FILE_SIZE')
-					print StringFunctions::getSizeString($parts[$partStructureId->getIdString()][0]->getValue());
-				else
+				if ($partStructureId->getIdString() == 'FILE_SIZE') {
+					$size =& ByteSize::withValue($parts[$partStructureId->getIdString()][0]->getValue());
+					print $size->asString();
+				}else
 					print $parts[$partStructureId->getIdString()][0]->getValue();
 				print "\n<br />";
 			}
