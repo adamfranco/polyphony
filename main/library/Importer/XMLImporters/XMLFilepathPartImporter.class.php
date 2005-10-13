@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFilepathPartImporter.class.php,v 1.5 2005/10/13 12:52:13 cws-midd Exp $
+ * @version $Id: XMLFilepathPartImporter.class.php,v 1.6 2005/10/13 17:36:51 cws-midd Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -19,15 +19,13 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFilepathPartImporter.class.php,v 1.5 2005/10/13 12:52:13 cws-midd Exp $
+ * @version $Id: XMLFilepathPartImporter.class.php,v 1.6 2005/10/13 17:36:51 cws-midd Exp $
  */
 class XMLFilepathPartImporter extends XMLImporter {
 		
 	/**
 	 * 	Constructor
 	 * 
-	 * The object is the object on which the import is acting (repository, etc.) 
-	 * and should only be missing if the import is at the application level.
 	 * 
 	 * @return object XMLFilepathImporterImporter
 	 * @access public

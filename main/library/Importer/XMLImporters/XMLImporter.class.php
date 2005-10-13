@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.6 2005/10/13 12:52:13 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.7 2005/10/13 17:36:51 cws-midd Exp $
  *
  * @author Christopher W. Shubert
  */ 
@@ -24,15 +24,13 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryImporte
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.6 2005/10/13 12:52:13 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.7 2005/10/13 17:36:51 cws-midd Exp $
  */
 class XMLImporter {
 		
  	/**
  	 * 	Constructor
  	 * 
- 	 * The object is the object on which the import is acting (repository, etc.) 
- 	 * and should only be missing if the import is at the application level.
  	 * 
  	 * @return object XMLImporter
  	 * @access public

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordImporter.class.php,v 1.5 2005/10/13 12:52:13 cws-midd Exp $
+ * @version $Id: XMLRecordImporter.class.php,v 1.6 2005/10/13 17:36:51 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -21,15 +21,13 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLPartImporter.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordImporter.class.php,v 1.5 2005/10/13 12:52:13 cws-midd Exp $
+ * @version $Id: XMLRecordImporter.class.php,v 1.6 2005/10/13 17:36:51 cws-midd Exp $
  */
 class XMLRecordImporter extends XMLImporter {
 		
 	/**
 	 * 	Constructor; parses XML if passed file
 	 * 
-	 * The object is the object on which the import is acting (repository, etc.) 
-	 * and should only be missing if the import is at the application level.
 	 * 
 	 * @return object XMLRecordImporter
 	 * @access public
@@ -78,7 +76,12 @@ class XMLRecordImporter extends XMLImporter {
 		
 		$this->getNodeInfo();
 		
-		if (($this->_type == "insert") || (!$this->_node->hasAttribute("id"))) {
+		if ($this->_node->hasAttribute("isExisting") && 		
+			($this->_node->getAttribute("isExisting") == TRUE)) {
+			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
+			$this->_object =& $this->_parent->getRecord($this->_myId);
+		} else if (($this->_type == "insert") || 
+			(!$this->_node->hasAttribute("id"))) {
 			$this->_object =& $this->_parent->createRecord(
 				$this->_info['recordStructureId']);
 			$this->_myId =& $this->_object->getId();

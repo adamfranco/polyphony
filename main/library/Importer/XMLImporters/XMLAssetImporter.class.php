@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.6 2005/10/13 12:52:13 cws-midd Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.7 2005/10/13 17:36:51 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -23,15 +23,13 @@ require_once(HARMONI."Primitives/Chronology/DateAndTime.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.6 2005/10/13 12:52:13 cws-midd Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.7 2005/10/13 17:36:51 cws-midd Exp $
  */
 class XMLAssetImporter extends XMLImporter {
 		
 	/**
 	 * 	Constructor; parses XML if passed file
 	 * 
-	 * The object is the object on which the import is acting (repository, etc.) 
-	 * and should only be missing if the import is at the application level.
 	 * 
 	 * @return object XMLAssetImporter
 	 * @access public
@@ -115,7 +113,12 @@ class XMLAssetImporter extends XMLImporter {
 		
 		$this->getNodeInfo();
 		
-		if (($this->_type == "insert") || (!$this->_node->hasAttribute("id"))) {
+		if ($this->_node->hasAttribute("isExisting") && 		
+			($this->_node->getAttribute("isExisting") == TRUE)) {
+			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
+			$this->_object =& $this->_parent->getAsset($this->_myId);
+		} else if (($this->_type == "insert") || 
+			(!$this->_node->hasAttribute("id"))) {
 			$this->_object =& $this->_parent->createAsset(
 				$this->_info['name'], $this->_info['description'], 
 				$this->_info['type']);
@@ -184,12 +187,14 @@ class XMLAssetImporter extends XMLImporter {
 			$this->_object->updateDisplayName($this->_info['name']);
 		if ($this->_info['description'] != $this->_object->getDescription())
 			$this->_object->updateDescription($this->_info['description']);
-		if (DateAndTime::fromString($this->_info['effectivedate']) != 
-			$this->_object->getEffectiveDate())
+		if (isset($this->_info['effectivedate']) && 
+			(DateAndTime::fromString($this->_info['effectivedate']) != 
+			$this->_object->getEffectiveDate()))
 			$this->_object->updateEffectiveDate(DateAndTime::fromString(
 				$this->_info['effectivedate']));
-		if (DateAndTime::fromString($this->_info['expirationdate']) !=
-			$this->_object->getExpirationDate())
+		if (isset($this->_info['effectivedate']) && 
+			(DateAndTime::fromString($this->_info['expirationdate']) !=
+			$this->_object->getExpirationDate()))
 			$this->_object->updateExpirationDate(DateAndTime::fromString(
 				$this->_info['expirationdate']));
 	}
