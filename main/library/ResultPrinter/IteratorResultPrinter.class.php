@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.16 2005/09/08 20:48:53 gabeschine Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.17 2005/10/14 21:54:42 adamfranco Exp $
  */
  
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.16 2005/09/08 20:48:53 gabeschine Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.17 2005/10/14 21:54:42 adamfranco Exp $
  */
 
 class IteratorResultPrinter {
@@ -109,6 +109,10 @@ class IteratorResultPrinter {
 					
 					$itemArray = array (& $item);
 					$params = array_merge($itemArray, $this->_callbackParams);
+					
+					// Add in our starting number to the end so that that it is accessible.
+					$params[] = $numItems;
+					
 					$itemLayout =& call_user_func_array(
 						$this->_callbackFunction, $params);
 					$resultLayout->add($itemLayout, null, null, CENTER, TOP);
