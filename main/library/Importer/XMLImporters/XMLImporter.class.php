@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.9 2005/10/14 20:40:39 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.10 2005/10/17 18:48:47 cws-midd Exp $
  *
  * @author Christopher W. Shubert
  */ 
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryImporte
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.9 2005/10/14 20:40:39 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.10 2005/10/17 18:48:47 cws-midd Exp $
  */
 class XMLImporter {
 		
@@ -296,7 +296,7 @@ class XMLImporter {
 		$dim = array();
 		foreach ($pieces as $piece)
 			$dim[$piece->nodeName] = $piece->getText();
-		$this->_info['value'] = array($dim['height'], $dim['width']);
+		$this->_info['value'] = array($dim['width'], $dim['height']);
 	}	
 	
 	/* Helper function for XML elements
