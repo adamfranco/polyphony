@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.3 2005/08/10 14:24:38 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.4 2005/10/17 18:21:30 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/BasketManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.3 2005/08/10 14:24:38 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.4 2005/10/17 18:21:30 adamfranco Exp $
  */
 class viewAction 
 	extends MainWindowAction
@@ -112,7 +112,7 @@ function printAssetShort(&$assetId) {
 // 	ExhibitionPrinter::printFunctionLinks($asset);
 	
 	$thumbnailURL = RepositoryInputOutputModuleManager::getThumbnailUrlForAsset($assetId);
-	if (!is_null($thumbnailURL)) {
+	if ($thumbnailURL !== FALSE) {
 		
 		print "\n\t<br /><a href='".$assetViewUrl."'>";
 		print "\n\t\t<img src='$thumbnailURL' alt='Thumbnail Image' border='0' />";
