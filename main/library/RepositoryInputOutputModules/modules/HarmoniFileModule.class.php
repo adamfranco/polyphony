@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HarmoniFileModule.class.php,v 1.10 2005/10/12 12:45:21 adamfranco Exp $
+ * @version $Id: HarmoniFileModule.class.php,v 1.11 2005/10/17 18:45:16 adamfranco Exp $
  */
 
 /**
@@ -24,8 +24,8 @@ require_once(HARMONI."Primitives/Numbers/ByteSize.class.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: HarmoniFileModule.class.php,v 1.10 2005/10/12 12:45:21 adamfranco Exp $
- * @since $Date: 2005/10/12 12:45:21 $
+ * @version $Id: HarmoniFileModule.class.php,v 1.11 2005/10/17 18:45:16 adamfranco Exp $
+ * @since $Date: 2005/10/17 18:45:16 $
  * @copyright 2004 Middlebury College
  */
 
@@ -381,7 +381,8 @@ class HarmoniFileModule
 		// print out the parts;
 		ob_start();
 		
-		$partStructuresToSkip = array ('FILE_DATA', 'THUMBNAIL_DATA', 'THUMBNAIL_MIME_TYPE');
+		$partStructuresToSkip = array ('FILE_DATA', 'THUMBNAIL_DATA', 
+									'THUMBNAIL_MIME_TYPE', 'THUMBNAIL_DIMENSIONS');
 		$printThumbnail = FALSE;
 		
 		
@@ -392,11 +393,19 @@ class HarmoniFileModule
 			
 			if(!in_array($partStructureId->getIdString(), $partStructuresToSkip)){
 				print "\n<strong>".$partStructure->getDisplayName().":</strong> \n";
-				if ($partStructureId->getIdString() == 'FILE_SIZE') {
-					$size =& ByteSize::withValue($parts[$partStructureId->getIdString()][0]->getValue());
-					print $size->asString();
-				}else
-					print $parts[$partStructureId->getIdString()][0]->getValue();
+				switch ($partStructureId->getIdString()) {
+					case 'FILE_SIZE':
+						$size =& ByteSize::withValue($parts[$partStructureId->getIdString()][0]->getValue());
+						print $size->asString();
+						break;
+					case 'DIMENSIONS':
+						$dimensionArray = $parts[$partStructureId->getIdString()][0]->getValue();
+						print "<em>"._('width: ')."</em>".$dimensionArray[0].'px<em>;</em> ';
+						print "<em>"._('height: ')."</em>".$dimensionArray[1].'px';
+						break;
+					default:
+						print $parts[$partStructureId->getIdString()][0]->getValue();
+				}
 				print "\n<br />";
 			}
 			// If we've specified that we want the data, or part of the thumb, 
