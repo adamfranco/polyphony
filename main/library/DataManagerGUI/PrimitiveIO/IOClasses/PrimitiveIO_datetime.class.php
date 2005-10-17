@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_datetime.class.php,v 1.2 2005/08/24 14:34:42 cws-midd Exp $
+ * @version $Id: PrimitiveIO_datetime.class.php,v 1.3 2005/10/17 20:43:53 adamfranco Exp $
  */
 
 /**
@@ -16,13 +16,13 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_datetime.class.php,v 1.2 2005/08/24 14:34:42 cws-midd Exp $
+ * @version $Id: PrimitiveIO_datetime.class.php,v 1.3 2005/10/17 20:43:53 adamfranco Exp $
  */
 class PrimitiveIO_datetime extends WTextField /* implements PrimitiveIO */ {
 
 	function PrimitiveIO_datetime() {
 		$this->setErrorText(dgettext("polyphony", "Enter a date/time string. (example: YYYY-MM-DD HH:MM:SS)"));
-		$this->setErrorRule(new WECRegex("[\\w]+"));
+		$this->setErrorRule(new WECNonZeroRegex("[\\w]+"));
 	}
 	
 	/**

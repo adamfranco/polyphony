@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: theme_interface.act.php,v 1.3 2005/09/29 17:34:56 cws-midd Exp $
+ * @version $Id: theme_interface.act.php,v 1.4 2005/10/17 20:43:53 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: theme_interface.act.php,v 1.3 2005/09/29 17:34:56 cws-midd Exp $
+ * @version $Id: theme_interface.act.php,v 1.4 2005/10/17 20:43:53 adamfranco Exp $
  */
 class theme_interfaceAction 
 	extends MainWindowAction
@@ -166,7 +166,7 @@ class theme_interfaceAction
 					$textfield =& $step->addComponent(str_replace(" ", "_",$sp->getDisplayName()."_".$sc->getDisplayName()), new WTextField());
 					$textfield->setValue($sc->getValue());
 					$textfield->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-					$textfield->setErrorRule(new WECRegex("[\\w]+"));
+					$textfield->setErrorRule(new WECNonZeroRegex("[\\w]+"));
 					print "[[".str_replace(" ", "_",$sp->getDisplayName()."_".$sc->getDisplayName())."]]";
 					"</td></tr>";
 					
@@ -178,7 +178,7 @@ class theme_interfaceAction
 		//print "</table>";
 		$textfield =& $step->addComponent("themeid", new WTextField());
 		$textfield->setErrorText("<nobr>"._("You need to specify an id to save the theme.")."</nobr>");
-		$textfield->setErrorRule(new WECRegex("[\\w]+"));
+		$textfield->setErrorRule(new WECNonZeroRegex("[\\w]+"));
 		print "<tr><td><em>Save with id:</em></td><td>
 				Theme Id:</td>
 				<td> [[themeid]]

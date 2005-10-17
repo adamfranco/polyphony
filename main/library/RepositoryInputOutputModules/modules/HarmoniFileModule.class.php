@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HarmoniFileModule.class.php,v 1.11 2005/10/17 18:45:16 adamfranco Exp $
+ * @version $Id: HarmoniFileModule.class.php,v 1.12 2005/10/17 20:43:53 adamfranco Exp $
  */
 
 /**
@@ -24,8 +24,8 @@ require_once(HARMONI."Primitives/Numbers/ByteSize.class.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: HarmoniFileModule.class.php,v 1.11 2005/10/17 18:45:16 adamfranco Exp $
- * @since $Date: 2005/10/17 18:45:16 $
+ * @version $Id: HarmoniFileModule.class.php,v 1.12 2005/10/17 20:43:53 adamfranco Exp $
+ * @since $Date: 2005/10/17 20:43:53 $
  * @copyright 2004 Middlebury College
  */
 
@@ -132,6 +132,32 @@ class HarmoniFileModule
 		$component->setValue(false);
 		
 		
+		// Dimensions 
+		$dimensionComponent =& new WTextField();
+		$dimensionComponent->setSize(8);
+		$dimensionComponent->setStyle("text-align: right");
+		$dimensionComponent->setErrorRule(new WECRegex("^([0-9]+px)?$"));
+		$dimensionComponent->setErrorText(_("Must be a positive integer followed by 'px'."));
+		$dimensionComponent->setOnChange("validateWizard(this.form);");
+		
+		$dim = $parts['DIMENSIONS']->getValue();
+		$component =& $step->addComponent("height", $dimensionComponent->shallowCopy());
+		if ($dim[1])
+			$component->setValue($dim[1].'px');
+
+		$component =& $step->addComponent("use_custom_height", new WCheckBox());
+		$component->setValue(false);
+		
+		$component =& $step->addComponent("width", $dimensionComponent->shallowCopy());
+		if ($dim[0])
+			$component->setValue($dim[0].'px');
+		
+		
+		$component =& $step->addComponent("use_custom_width", new WCheckBox());
+		$component->setValue(false);
+		
+		
+		// Thumnail Upload
 		$component =& $step->addComponent("thumbnail_upload", new WFileUploadField());
 		
 		
@@ -139,6 +165,23 @@ class HarmoniFileModule
 		$component->setValue($parts['THUMBNAIL_MIME_TYPE']->getValue());
 		
 		$component =& $step->addComponent("use_custom_thumbnail_type", new WCheckBox());
+		$component->setValue(false);
+		
+		
+		// Thumbnail dimensions
+		$thumDim = $parts['THUMBNAIL_DIMENSIONS']->getValue();
+		$component =& $step->addComponent("thumbnail_height", $dimensionComponent->shallowCopy());
+		if ($thumDim[1])
+			$component->setValue($thumDim[1].'px');
+		
+		$component =& $step->addComponent("use_custom_thumbnail_height", new WCheckBox());
+		$component->setValue(false);
+		
+		$component =& $step->addComponent("thumbnail_width", $dimensionComponent->shallowCopy());
+		if ($thumDim[0])
+			$component->setValue($thumDim[0].'px');
+		
+		$component =& $step->addComponent("use_custom_thumbnail_width", new WCheckBox());
 		$component->setValue(false);
 		
 		
@@ -198,6 +241,30 @@ class HarmoniFileModule
 		
 		print "\n<tr>";
 		print "\n\t<td>";
+		print "\n\t\t"._("Width")."";
+		print "\n\t</td>";
+		print "\n\t<td align='center'>";
+		print "\n\t\t[[use_custom_width]]";
+		print "\n\t</td>";
+		print "\n\t<td>";
+		print "\n\t\t[[width]]";
+		print "\n\t</td>";
+		print "\n</tr>";
+		
+		print "\n<tr>";
+		print "\n\t<td>";
+		print "\n\t\t"._("Height")."";
+		print "\n\t</td>";
+		print "\n\t<td align='center'>";
+		print "\n\t\t[[use_custom_height]]";
+		print "\n\t</td>";
+		print "\n\t<td>";
+		print "\n\t\t[[height]]";
+		print "\n\t</td>";
+		print "\n</tr>";
+		
+		print "\n<tr>";
+		print "\n\t<td>";
 		print "\n\t\t"._("Thumbnail")."";
 		print "\n\t</td>";
 		print "\n\t<td align='center'>";
@@ -217,6 +284,30 @@ class HarmoniFileModule
 		print "\n\t</td>";
 		print "\n\t<td>";
 		print "\n\t\t[[thumbnail_mime_type]]";
+		print "\n\t</td>";
+		print "\n</tr>";
+		
+		print "\n<tr>";
+		print "\n\t<td>";
+		print "\n\t\t"._("Thumbnail Width")."";
+		print "\n\t</td>";
+		print "\n\t<td align='center'>";
+		print "\n\t\t[[use_custom_thumbnail_width]]";
+		print "\n\t</td>";
+		print "\n\t<td>";
+		print "\n\t\t[[thumbnail_width]]";
+		print "\n\t</td>";
+		print "\n</tr>";
+		
+		print "\n<tr>";
+		print "\n\t<td>";
+		print "\n\t\t"._("Thumbnail Height")."";
+		print "\n\t</td>";
+		print "\n\t<td align='center'>";
+		print "\n\t\t[[use_custom_thumbnail_height]]";
+		print "\n\t</td>";
+		print "\n\t<td>";
+		print "\n\t\t[[thumbnail_height]]";
 		print "\n\t</td>";
 		print "\n</tr>";
 		
@@ -318,15 +409,59 @@ class HarmoniFileModule
 			}
 		}
 		
-		// if the "Take from new file" box was unchecked store the name.
+		// if the "use custom" box was checked store the name.
 		if ($values['use_custom_filename']) {
 			$parts['FILE_NAME']->updateValue($values['file_name']);
 		}
 		
-		// if the "Take from new file" box was unchecked store the mime type.
+		// if the "use custom" box was checked store the mime type.
 		if ($values['use_custom_type']) {
 			$parts['MIME_TYPE']->updateValue($values['mime_type']);
 		}
+		
+		// if the "use custom" box was checked store the height.
+		if ($values['use_custom_height']
+			&& ereg("^([0-9]+)px$", $values['height'], $matches)) 
+		{
+			$dimArray = $parts['DIMENSIONS']->getValue();
+			$dimArray[1] = $matches[1];
+			print "Setting DIMENSIONS to:"; printpre($dimArray);
+			$parts['DIMENSIONS']->updateValue($dimArray);
+		}
+		unset($dimArray, $matches);
+		
+		// if the "use custom" box was checked store the width.
+		if ($values['use_custom_width']
+			&& ereg("^([0-9]+)px$", $values['width'], $matches)) 
+		{
+			$dimArray = $parts['DIMENSIONS']->getValue();
+			$dimArray[0] = $matches[1];
+			print "Setting DIMENSIONS to:"; printpre($dimArray);
+			$parts['DIMENSIONS']->updateValue($dimArray);
+		}
+		unset($dimArray, $matches);
+		
+		// if the "use custom" box was checked store the height.
+		if ($values['use_custom_thumbnail_height']
+			&& ereg("^([0-9]+)px$", $values['thumbnail_height'], $matches)) 
+		{
+			$dimArray = $parts['THUMBNAIL_DIMENSIONS']->getValue();
+			$dimArray[1] = $matches[1];
+			print "Setting THUMBNAIL_DIMENSIONS to:"; printpre($dimArray);
+			$parts['THUMBNAIL_DIMENSIONS']->updateValue($dimArray);
+		}
+		unset($dimArray, $matches);
+		
+		// if the "use custom" box was checked store the width.
+		if ($values['use_custom_thumbnail_width']
+			&& ereg("^([0-9]+)px$", $values['thumbnail_width'], $matches)) 
+		{
+			$dimArray = $parts['THUMBNAIL_DIMENSIONS']->getValue();
+			$dimArray[0] = $matches[1];
+			print "Setting THUMBNAIL_DIMENSIONS to:"; printpre($dimArray);
+			$parts['THUMBNAIL_DIMENSIONS']->updateValue($dimArray);
+		}
+		unset($dimArray, $matches);
 	}
 
 	/**

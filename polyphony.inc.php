@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.28 2005/09/28 19:58:47 cws-midd Exp $
+ * @version $Id: polyphony.inc.php,v 1.29 2005/10/17 20:43:53 adamfranco Exp $
  */
 
 /**
@@ -47,6 +47,7 @@ require_once(dirname(__FILE__)."/main/library/Wizard/Components/WColorWheel.clas
 
 // error checking
 require_once(dirname(__FILE__)."/main/library/Wizard/ErrorCheckingRules/WECRegex.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/ErrorCheckingRules/WECNonZeroRegex.class.php");
 
 require_once(dirname(__FILE__)."/main/library/ResultPrinter/IteratorResultPrinter.class.php");
 require_once(dirname(__FILE__)."/main/library/ResultPrinter/ArrayResultPrinter.class.php");

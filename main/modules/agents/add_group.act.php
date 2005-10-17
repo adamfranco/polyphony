@@ -4,7 +4,7 @@
  * @package polyphony.modules.agents
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- * @version $Id: add_group.act.php,v 1.4 2005/09/28 20:50:28 gabeschine Exp $
+ * @version $Id: add_group.act.php,v 1.5 2005/10/17 20:43:53 adamfranco Exp $
  **/
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -16,7 +16,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @author Gabriel Schine
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- * @version $Id: add_group.act.php,v 1.4 2005/09/28 20:50:28 gabeschine Exp $
+ * @version $Id: add_group.act.php,v 1.5 2005/10/17 20:43:53 adamfranco Exp $
  */
 class add_groupAction extends MainWindowAction
 {
@@ -114,7 +114,7 @@ class add_groupAction extends MainWindowAction
 			// Create the properties.
 			$displayNameProp =& $wizard->addComponent("display_name", new WTextField());
 			$displayNameProp->setErrorText(_("A value for this field is required."));
-			$displayNameProp->setErrorRule(new WECRegex("[\\w]+"));
+			$displayNameProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
 
 			$descriptionProp =& $wizard->addComponent("description", WTextArea::withRowsAndColumns(3,50));
 

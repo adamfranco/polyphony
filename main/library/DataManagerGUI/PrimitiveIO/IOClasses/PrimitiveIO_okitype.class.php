@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_okitype.class.php,v 1.5 2005/08/24 14:34:42 cws-midd Exp $
+ * @version $Id: PrimitiveIO_okitype.class.php,v 1.6 2005/10/17 20:43:53 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_okitype.class.php,v 1.5 2005/08/24 14:34:42 cws-midd Exp $
+ * @version $Id: PrimitiveIO_okitype.class.php,v 1.6 2005/10/17 20:43:53 adamfranco Exp $
  */
 class PrimitiveIO_okitype extends WizardComponentWithChildren {
 	var $_domain;
@@ -24,7 +24,7 @@ class PrimitiveIO_okitype extends WizardComponentWithChildren {
 	var $_keyword;
 
 	function PrimitiveIO_okitype() {
-		$rule =& new WECRegex("[\\w]+");
+		$rule =& new WECNonZeroRegex("[\\w]+");
 		$this->_domain =& new WTextField();
 		$this->_domain->setErrorRule($rule);
 		$this->_domain->setErrorText(dgettext("polyphony", "Please enter a domain."));
