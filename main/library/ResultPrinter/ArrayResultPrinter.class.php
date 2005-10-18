@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.13 2005/10/14 21:54:42 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.14 2005/10/18 17:33:38 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.13 2005/10/14 21:54:42 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.14 2005/10/18 17:33:38 adamfranco Exp $
  */
 
 class ArrayResultPrinter {
@@ -150,7 +150,12 @@ class ArrayResultPrinter {
 		if ($numItems > $this->_pageSize) {
 			ob_start();
 			$numPages = ceil($numItems/$this->_pageSize);
-			$currentPage = floor($startingNumber/$this->_pageSize)+1; // add one for 1-based counting
+			
+			if ($this->_pageSize > 1)
+				$currentPage = floor($startingNumber/$this->_pageSize)+1; // add one for 1-based counting
+			else
+				$currentPage = $startingNumber;
+				
 			for ($i=1; $i<=$numPages; $i++) {
 				if ($i > 0 && ($i+1) % 10 == 0)
 					print "<br />";
