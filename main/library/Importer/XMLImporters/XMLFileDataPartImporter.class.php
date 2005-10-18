@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileDataPartImporter.class.php,v 1.5 2005/10/13 17:36:51 cws-midd Exp $
+ * @version $Id: XMLFileDataPartImporter.class.php,v 1.6 2005/10/18 19:57:24 cws-midd Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileDataPartImporter.class.php,v 1.5 2005/10/13 17:36:51 cws-midd Exp $
+ * @version $Id: XMLFileDataPartImporter.class.php,v 1.6 2005/10/18 19:57:24 cws-midd Exp $
  */
 class XMLFileDataPartImporter extends XMLImporter {
 		
@@ -102,11 +102,15 @@ class XMLFileDataPartImporter extends XMLImporter {
 	 */
 	function getNodeInfo () {
 		$idManager =& Services::getService("Id");
-		
-		$this->_info['partStructureId'] =& $idManager->getId("FILE_DATA");
-				
-		$this->_info['value'] = $this->_node->getText();
 	
+		$path = $this->_node->getText();
+		if (!ereg("^(([:alpha:]+://)|([:alpha:]+:\\)|/)", $path))
+			$path = $this->_node->ownerDocument->xmlPath.$path;
+		
+		$this->_info['value'] = $path;
+	
+		$this->_info['partStructureId'] =& $idManager->getId("FILE_DATA");
+					
 		$this->_info['namePartId'] =& $idManager->getId("FILE_NAME");
 		
 		$this->_info['filename'] = basename($this->_info['value']);

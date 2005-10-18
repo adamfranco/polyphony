@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
+ * @version $Id: XMLFileRecordExporter.class.php,v 1.3 2005/10/18 19:57:23 cws-midd Exp $
  */ 
 
 //require_once(POLYPHONY."/main/library/Exporter/XMLPartExporter.class.php");
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
+ * @version $Id: XMLFileRecordExporter.class.php,v 1.3 2005/10/18 19:57:23 cws-midd Exp $
  */
 class XMLFileRecordExporter {
 		
@@ -103,9 +103,12 @@ class XMLFileRecordExporter {
 		$parts =& $this->_object->getPartsByPartStructure($FILE_NAME_ID);
 		if ($parts->count() == 1) {
 			$part =& $parts->next();
-			$this->_info['f_name'] = $this->_fileDir."/".$part->getValue();
+			$path = $this->_fileDir."/".$part->getValue();
 // CHECK FOR FILE NAME UNIQUENESS HERE
-			$this->_dataFile =& fopen($this->_info['f_name'], "wb");
+			$this->_dataFile =& fopen($path, "wb");
+			
+			$this->_info['f_name'] = 
+	"RepositoryDirectory/".basename($this->_fileDir)."/".basename($path);
 		}
 		$parts =& $this->_object->getPartsByPartStructure($FILE_DATA_ID);
 		if ($parts->count() == 1) {
@@ -122,8 +125,10 @@ class XMLFileRecordExporter {
 			$part =& $parts->next();
 			$this->_info['f_mime'] = $part->getValue();
 		}
-		$this->_info['t_name'] = dirname($this->_info['f_name'])."/THUMB_".basename($this->_info['f_name']);
-		$this->_thumbFile =& fopen($this->_info['t_name'], "wb");
+		$path = $this->_fileDir."/THUMB_".basename($this->_info['fname']);
+		$this->_info['t_name'] = 
+	"RepositoryDirectory/".basename($this->_fileDir)."/".basename($path);
+		$this->_thumbFile =& fopen($path, "wb");
 		$parts =& $this->_object->getPartsByPartStructure($THUMB_DATA_ID);
 		if ($parts->count() == 1) {
 			$part =& $parts->next();

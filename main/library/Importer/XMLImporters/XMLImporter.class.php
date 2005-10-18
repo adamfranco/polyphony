@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.10 2005/10/17 18:48:47 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.11 2005/10/18 19:57:24 cws-midd Exp $
  *
  * @author Christopher W. Shubert
  */ 
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryImporte
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.10 2005/10/17 18:48:47 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.11 2005/10/18 19:57:24 cws-midd Exp $
  */
 class XMLImporter {
 		
@@ -112,6 +112,7 @@ class XMLImporter {
 	function parseAndImportBelow () {
 		$this->_import =& new DOMIT_Document();
 		if ($this->_import->loadXML($this->_xmlFile)) {
+			$this->_import->xmlPath = dirname($this->_xmlFile)."/";
 			if (!($this->_import->documentElement->hasChildNodes()))
 				$this->addError("There are no Importables in this file");
 			else {
@@ -134,6 +135,7 @@ class XMLImporter {
 	function parseAndImport () {
 		$this->_import =& new DOMIT_Document();
 		if ($this->_import->loadXML($this->_xmlFile)) {
+			$this->_import->xmlPath = $this->_xmlFile;
 			if (!($this->_import->documentElement->hasChildNodes()))
 				$this->addError("There are no Importables in this file");
 			else {
@@ -214,7 +216,7 @@ class XMLImporter {
 	 * @since 10/5/05
 	 */
 	function importNode () {
-		/* this is the "application level" importer, it doesn't import info */
+		$this->_object = null;
 	}
 	
 	/**

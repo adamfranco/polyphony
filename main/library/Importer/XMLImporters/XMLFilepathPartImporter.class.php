@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFilepathPartImporter.class.php,v 1.6 2005/10/13 17:36:51 cws-midd Exp $
+ * @version $Id: XMLFilepathPartImporter.class.php,v 1.7 2005/10/18 19:57:24 cws-midd Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFilepathPartImporter.class.php,v 1.6 2005/10/13 17:36:51 cws-midd Exp $
+ * @version $Id: XMLFilepathPartImporter.class.php,v 1.7 2005/10/18 19:57:24 cws-midd Exp $
  */
 class XMLFilepathPartImporter extends XMLImporter {
 		
@@ -98,7 +98,11 @@ class XMLFilepathPartImporter extends XMLImporter {
 	 * @since 10/6/05
 	 */
 	function getNodeInfo () {
-		$this->_info['filepath'] = $this->_node->getText();
+		$path = $this->_node->getText();
+		if (!ereg("^(([:alpha:]+://)|([:alpha:]+:\\)|/)", $path))
+			$path = $this->_node->ownerDocument->xmlPath.$path;
+		
+		$this->_info['filepath'] = $path;
 	}
 	
 	/**
