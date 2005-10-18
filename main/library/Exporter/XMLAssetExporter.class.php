@@ -1,12 +1,12 @@
 <?php
 /**
- * @since 9/20/05
+ * @since 10/17/05
  * @package polyphony.exporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetExporter.class.php,v 1.1 2005/10/17 20:45:31 cws-midd Exp $
+ * @version $Id: XMLAssetExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Exporter/XMLRecordExporter.class.php");
@@ -15,47 +15,48 @@ require_once(POLYPHONY."/main/library/Exporter/XMLFileRecordExporter.class.php")
 /**
  * Exports into XML for use with the XML Importer
  * 
- * @since 9/20/05
+ * @since 10/17/05
  * @package polyphony.exporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetExporter.class.php,v 1.1 2005/10/17 20:45:31 cws-midd Exp $
+ * @version $Id: XMLAssetExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
  */
 class XMLAssetExporter {
 		
 	/**
 	 * Constructor
 	 *
+	 * Maintains the archive, xmlfile, and file directory for data files
 	 * 
-	 * 
-	 * @return <##>
+	 * @param object Archive_Tar
+	 * @param resource
+	 * @param string
 	 * @access public
-	 * @since 9/20/05
+	 * @since 10/17/05
 	 */
 	function XMLAssetExporter (&$archive, &$xmlFile, $fileDir) {
 		$this->_archive =& $archive;
 		$this->_xml =& $xmlFile;
 		$this->_fileDir = $fileDir;
 		
-		$this->_childExporterList = array("XMLRecordExporter", 
+		$this->_childExporterList = array("XMLRecordExporter",
 			"XMLAssetExporter");
 		$this->_childElementList = array("records", "assets");
 	}
 
 	/**
-	 * Exporter of All things
+	 * Exporter of Asset things
 	 * 
-	 * @return <##>
+	 * @param object HarmoniAsset
 	 * @access public
-	 * @since 9/26/05
+	 * @since 10/17/05
 	 */
 	function export (&$asset) {
 		$this->_object =& $asset;
 		$this->_myId =& $this->_object->getId();
-
-		$type =& $this->getType();
+		$type =& $this->_object->getAssetType();
 
 		fwrite($this->_xml,
 "\t<asset ".
@@ -63,13 +64,13 @@ class XMLAssetExporter {
 //isExisting?			
 ">\n".
 "\t\t<name>".$this->_object->getDisplayName()."</name>\n".
-"\t\t<description>".$this->_object->getDescription()."/<description>\n".
+"\t\t<description><![CDATA[".$this->_object->getDescription()."]]></description>\n".
 "\t\t<type>\n\t\t\t<domain>".$type->getDomain()."</domain>\n".
 "\t\t\t<authority>".$type->getAuthority()."</authority>\n".
 "\t\t\t<keyword>".$type->getKeyword()."</keyword>\n");
 		if ($type->getDescription() != "")
 			fwrite($this->_xml,
-"\t\t\t<description>".$type->getDescription()."</description>\n");
+"\t\t\t<description><![CDATA[".$type->getDescription()."]]></description>\n");
 		fwrite($this->_xml,
 "\t\t</type>\n");
 
@@ -91,9 +92,8 @@ class XMLAssetExporter {
 	 * Adds recordstructure elements to the xml, which contain the necessary
 	 * information to create the same recordstructure.
 	 * 
-	 * @return <##>
 	 * @access public
-	 * @since 9/26/05
+	 * @since 10/17/05
 	 */
 	function exportRecords () {
 		$idManager =& Services::getService("Id");
@@ -113,11 +113,10 @@ class XMLAssetExporter {
 	}
 
 	/**
-	 * Exporter of Assets
+	 * Exporter of child Assets
 	 * 
-	 * @return <##>
 	 * @access public
-	 * @since 9/26/05
+	 * @since 10/17/05
 	 */
 	function exportAssets () {
 		$children =& $this->_object->getAssets();
@@ -131,7 +130,5 @@ class XMLAssetExporter {
 			$exporter->export($child);
 		}
 	}
-	
 }
-
 ?>

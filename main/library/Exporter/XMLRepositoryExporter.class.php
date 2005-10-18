@@ -1,39 +1,39 @@
 <?php
 /**
- * @since 9/20/05
+ * @since 10/17/05
  * @package polyphony.exporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryExporter.class.php,v 1.1 2005/10/17 20:45:31 cws-midd Exp $
+ * @version $Id: XMLRepositoryExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
  */ 
 
-require_once(HARMONI."/Primitives/Chronology/DateAndTime.class.php");
 require_once(POLYPHONY."/main/library/Exporter/XMLRecordStructureExporter.class.php");
-
+require_once(POLYPHONY."/main/library/Exporter/XMLAssetExporter.class.php");
 
 /**
  * Exports into XML for use with the XML Importer
  * 
- * @since 9/20/05
+ * @since 10/17/05
  * @package polyphony.exporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryExporter.class.php,v 1.1 2005/10/17 20:45:31 cws-midd Exp $
+ * @version $Id: XMLRepositoryExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
  */
 class XMLRepositoryExporter {
 		
 	/**
 	 * Constructor
 	 *
+	 * Maintains archive and repository directory.
 	 * 
-	 * 
-	 * @return <##>
+	 * @param object Archive_Tar
+	 * @param string
 	 * @access public
-	 * @since 9/20/05
+	 * @since 10/17/05
 	 */
 	function XMLRepositoryExporter (&$archive, $repDir) {
 		$this->_archive =& $archive;
@@ -45,21 +45,22 @@ class XMLRepositoryExporter {
 	}
 
 	/**
-	 * Exporter of All things
+	 * Exporter of Repository things
 	 * 
-	 * @return <##>
+	 * 
+	 * @param object HarmoniId
 	 * @access public
-	 * @since 9/26/05
+	 * @since 10/17/05
 	 */
 	function export (&$repId) {
-		$this->_myId =& $repId;
 		$rm =& Services::getService("Repository");
 		
+		$this->_myId =& $repId;
 		$this->_object =& $rm->getRepository($this->_myId);
 		$type =& $this->_object->getType();
 
 		$this->_xml =& fopen($this->_repDir.
-			"/".$this->_myId->getIdString().".xml");
+			"/".$this->_myId->getIdString().".xml", "w");
 		
 		$this->_fileDir = $this->_repDir.
 			"/".$this->_myId->getIdString()."_files";
@@ -69,14 +70,14 @@ class XMLRepositoryExporter {
 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".
 "<repository id=\"".$this->_myId->getIdString()."\">\n".
 "\t<name>".$this->_object->getDisplayName()."</name>\n".
-"\t<description>".$this->_object->getDescription()."/<description>\n".
+"\t<description><![CDATA[".$this->_object->getDescription()."]]></description>\n".
 "\t<type>\n".
 "\t\t<domain>".$type->getDomain()."</domain>\n".
 "\t\t<authority>".$type->getAuthority()."</authority>\n".
 "\t\t<keyword>".$type->getKeyword()."</keyword>\n");
 		if ($type->getDescription() != "")
 			fwrite($this->_xml,
-"\t\t<description>".$type->getDescription()."</description>\n");
+"\t\t<description><![CDATA[".$type->getDescription()."]]></description>\n");
 		fwrite($this->_xml,
 "\t</type>\n");
 		
@@ -100,9 +101,8 @@ class XMLRepositoryExporter {
 	 * Adds recordstructure elements to the xml, which contain the necessary
 	 * information to create the same recordstructure.
 	 * 
-	 * @return <##>
 	 * @access public
-	 * @since 9/26/05
+	 * @since 10/17/05
 	 */
 	function exportRecordstructures () {
 		$children =& $this->_object->getRecordStructures();
@@ -119,9 +119,8 @@ class XMLRepositoryExporter {
 	/**
 	 * Exporter of Assets
 	 * 
-	 * @return <##>
 	 * @access public
-	 * @since 9/26/05
+	 * @since 10/17/05
 	 */
 	function exportAssets () {
 		$hasRootSearch = FALSE;
@@ -150,7 +149,5 @@ class XMLRepositoryExporter {
 			$exporter->export($child);
 		}
 	}
-	
 }
-
 ?>

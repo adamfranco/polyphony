@@ -1,38 +1,37 @@
 <?php
 /**
- * @since 9/20/05
+ * @since 10/17/05
  * @package polyphony.exporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureExporter.class.php,v 1.1 2005/10/17 20:45:31 cws-midd Exp $
+ * @version $Id: XMLRecordStructureExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
  */ 
 
-require_once(HARMONI."/Primitives/Chronology/DateAndTime.class.php");
 require_once(POLYPHONY."/main/library/Exporter/XMLPartStructureExporter.class.php");
 
 /**
  * Exports into XML for use with the XML Importer
  * 
- * @since 9/20/05
+ * @since 10/17/05
  * @package polyphony.exporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureExporter.class.php,v 1.1 2005/10/17 20:45:31 cws-midd Exp $
+ * @version $Id: XMLRecordStructureExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
  */
 class XMLRecordStructureExporter {
 		
 	/**
 	 * Constructor
 	 *
+	 * Maintains XML File
 	 * 
-	 * 
-	 * @return <##>
+	 * @param resource
 	 * @access public
-	 * @since 9/20/05
+	 * @since 10/17/05
 	 */
 	function XMLRecordStructureExporter (&$xmlFile) {
 		$this->_xml =& $xmlFile;
@@ -44,7 +43,7 @@ class XMLRecordStructureExporter {
 	/**
 	 * Exporter of All things
 	 * 
-	 * @return <##>
+	 * @param object HarmoniRecordStructure
 	 * @access public
 	 * @since 9/26/05
 	 */
@@ -60,10 +59,9 @@ class XMLRecordStructureExporter {
 //isExisting?			
 ">\n".
 "\t\t<name>".$this->_object->getDisplayName()."</name>\n".
-"\t\t<description>".$this->_object->getDescription()."/<description>\n".
-"\t\t<format>".$type->getFormat()."</format>\n");		
+"\t\t<description><![CDATA[".$this->_object->getDescription()."]]></description>\n".
+"\t\t<format>".$this->_object->getFormat()."</format>\n");		
 		
-		// recordStructures
 		foreach ($this->_childElementList as $child) {
 			$exportFn = "export".ucfirst($child);
 			if (method_exists($this, $exportFn))
@@ -80,7 +78,6 @@ class XMLRecordStructureExporter {
 	 * Adds partstructure elements to the xml, which contain the necessary
 	 * information to create the same partstructure.
 	 * 
-	 * @return <##>
 	 * @access public
 	 * @since 9/26/05
 	 */
@@ -95,19 +92,5 @@ class XMLRecordStructureExporter {
 			$exporter->export($child); // ????
 		}
 	}
-
-	/**
-	 * <##>
-	 * 
-	 * @param <##>
-	 * @return <##>
-	 * @access public
-	 * @since 9/26/05
-	 */
-	function <##> (<##>) {
-		<##>
-	}
-	
 }
-
 ?>

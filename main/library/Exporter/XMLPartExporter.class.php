@@ -1,35 +1,35 @@
 <?php
 /**
- * @since 9/20/05
+ * @since 10/17/05
  * @package polyphony.exporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartExporter.class.php,v 1.1 2005/10/17 20:45:31 cws-midd Exp $
+ * @version $Id: XMLPartExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
  */ 
 
 /**
  * Exports into XML for use with the XML Importer
  * 
- * @since 9/20/05
+ * @since 10/17/05
  * @package polyphony.exporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartExporter.class.php,v 1.1 2005/10/17 20:45:31 cws-midd Exp $
+ * @version $Id: XMLPartExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
  */
 class XMLPartExporter {
 		
 	/**
 	 * Constructor
 	 *
+	 * Maintains the xml file.
 	 * 
-	 * 
-	 * @return <##>
+	 * @param resource
 	 * @access public
-	 * @since 9/20/05
+	 * @since 10/17/05
 	 */
 	function XMLPartExporter (&$xmlFile) {
 		$this->_xml =& $xmlFile;
@@ -41,9 +41,9 @@ class XMLPartExporter {
 	/**
 	 * Exporter of All things
 	 * 
-	 * @return <##>
+	 * @param object HarmoniPart
 	 * @access public
-	 * @since 9/26/05
+	 * @since 10/17/05
 	 */
 	function export (&$part) {
 		$this->_object =& $part;
@@ -51,13 +51,14 @@ class XMLPartExporter {
 
 		$pS =& $this->_object->getPartStructure();
 		$pSId =& $pS->getId();
+		$partValue =& $this->_object->getValue();
 
 		fwrite($this->_xml,
 "\t\t\t<part ".
 "id=\"".$this->_myId->getIdString()."\" ".
 "xml:id=\"".$pSId->getIdString()."\" ".
 //isExisting?			
-">".$this->_object->getValue()."</part>\n");
+"><![CDATA[".$partValue->asString()."]]></part>\n");
 
 	}
 }

@@ -1,38 +1,39 @@
 <?php
 /**
- * @since 9/20/05
+ * @since 10/17/05
  * @package polyphony.exporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLExporter.class.php,v 1.1 2005/10/17 20:45:31 cws-midd Exp $
+ * @version $Id: XMLExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
  */ 
 
+require_once("Archive/Tar.php");
 require_once(HARMONI."/Primitives/Chronology/DateAndTime.class.php");
 require_once(POLYPHONY."/main/library/Exporter/XMLRepositoryExporter.class.php");
 
 /**
  * Exports into XML for use with the XML Importer
  * 
- * @since 9/20/05
+ * @since 10/17/05
  * @package polyphony.exporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLExporter.class.php,v 1.1 2005/10/17 20:45:31 cws-midd Exp $
+ * @version $Id: XMLExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
  */
 class XMLExporter {
 		
 	/**
 	 * Constructor
 	 *
-	 * Makes a directory in the /tmp directory to store the export
+	 * Makes a directory in the /tmp directory to store the export.
+	 * Creates the archive that will be given to the end user.
 	 * 
-	 * @return <##>
 	 * @access public
-	 * @since 9/20/05
+	 * @since 10/17/05
 	 */
 	function XMLExporter () {
 		$now =& DateAndTime::now();
@@ -54,21 +55,23 @@ class XMLExporter {
 	/**
 	 * Exporter of All things
 	 * 
-	 * @return <##>
 	 * @access public
-	 * @since 9/26/05
+	 * @since 10/17/05
 	 */
 	function exportAll () {
-		$this->_xml =& fopen($this->_tmpDir."/metadata.xml");
-		fwrite($this->_xml, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-		fwrite($this->_xml, "<import>\n");
+		$this->_xml =& fopen($this->_tmpDir."/metadata.xml", "w");
+		fwrite($this->_xml,
+"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".
+"<import>\n");
 		
 		foreach ($this->_childElementList as $child) {
 			$exportFn = "export".ucfirst($child);
 			if (method_exists($this, $exportFn))
 				$this->$exportFn();
 		}
-	}
+		fwrite($this->_xml,
+"</import>");
+}
 
 	/**
 	 * Exporter of repositories
@@ -78,7 +81,7 @@ class XMLExporter {
 	 * 
 	 * @return <##>
 	 * @access public
-	 * @since 9/26/05
+	 * @since 10/17/05
 	 */
 	function exportRepositories () {
 		$rm =& Services::getService("Repository");
@@ -98,34 +101,8 @@ class XMLExporter {
 			$exporter =& new XMLRepositoryExporter($this->_archive,
 				$this->_repDir);
 			
-			$exporter->export($repId); // ????
+			$exporter->export($childId); // ????
 		}
 	}
-
-	/**
-	 * <##>
-	 * 
-	 * @param <##>
-	 * @return <##>
-	 * @access public
-	 * @since 9/26/05
-	 */
-	function <##> (<##>) {
-		<##>
-	}
-
-	/**
-	 * <##>
-	 * 
-	 * @param <##>
-	 * @return <##>
-	 * @access public
-	 * @since 9/26/05
-	 */
-	function <##> (<##>) {
-		<##>
-	}
-	
 }
-
 ?>

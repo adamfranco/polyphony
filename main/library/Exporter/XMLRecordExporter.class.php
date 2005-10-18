@@ -1,12 +1,12 @@
 <?php
 /**
- * @since 9/20/05
+ * @since 10/17/05
  * @package polyphony.exporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordExporter.class.php,v 1.1 2005/10/18 13:36:20 cws-midd Exp $
+ * @version $Id: XMLRecordExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Exporter/XMLPartExporter.class.php");
@@ -14,24 +14,24 @@ require_once(POLYPHONY."/main/library/Exporter/XMLPartExporter.class.php");
 /**
  * Exports into XML for use with the XML Importer
  * 
- * @since 9/20/05
+ * @since 10/17/05
  * @package polyphony.exporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordExporter.class.php,v 1.1 2005/10/18 13:36:20 cws-midd Exp $
+ * @version $Id: XMLRecordExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
  */
 class XMLRecordExporter {
 		
 	/**
 	 * Constructor
 	 *
+	 * Maintains the xmlfile
 	 * 
-	 * 
-	 * @return <##>
+	 * @param resource
 	 * @access public
-	 * @since 9/20/05
+	 * @since 10/17/05
 	 */
 	function XMLRecordExporter (&$xmlFile) {
 		$this->_xml =& $xmlFile;
@@ -43,9 +43,9 @@ class XMLRecordExporter {
 	/**
 	 * Exporter of All things
 	 * 
-	 * @return <##>
+	 * @param object HarmoniRecord
 	 * @access public
-	 * @since 9/26/05
+	 * @since 10/17/05
 	 */
 	function export (&$record) {
 		$this->_object =& $record;
@@ -72,14 +72,13 @@ class XMLRecordExporter {
 	}
 
 	/**
-	 * Exporter of partstructures
+	 * Exporter of parts
 	 * 
-	 * Adds partstructure elements to the xml, which contain the necessary
-	 * information to create the same partstructure.
+	 * Adds part elements to the xml, which contain the necessary
+	 * information to create the same part.
 	 * 
-	 * @return <##>
 	 * @access public
-	 * @since 9/26/05
+	 * @since 10/17/05
 	 */
 	function exportParts () {
 		$children =& $this->_object->getParts();
@@ -91,20 +90,6 @@ class XMLRecordExporter {
 			
 			$exporter->export($child); // ????
 		}
-	}
-
-	/**
-	 * <##>
-	 * 
-	 * @param <##>
-	 * @return <##>
-	 * @access public
-	 * @since 9/26/05
-	 */
-	function <##> (<##>) {
-		<##>
-	}
-	
+	}	
 }
-
 ?>

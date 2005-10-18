@@ -1,12 +1,12 @@
 <?php
 /**
- * @since 9/20/05
+ * @since 10/17/05
  * @package polyphony.exporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordExporter.class.php,v 1.1 2005/10/17 20:45:31 cws-midd Exp $
+ * @version $Id: XMLFileRecordExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
  */ 
 
 //require_once(POLYPHONY."/main/library/Exporter/XMLPartExporter.class.php");
@@ -14,28 +14,31 @@
 /**
  * Exports into XML for use with the XML Importer
  * 
- * @since 9/20/05
+ * @since 10/17/05
  * @package polyphony.exporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordExporter.class.php,v 1.1 2005/10/17 20:45:31 cws-midd Exp $
+ * @version $Id: XMLFileRecordExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
  */
 class XMLFileRecordExporter {
 		
 	/**
 	 * Constructor
 	 *
+	 * Maintains the archive, xml file and destination folder for data files
 	 * 
-	 * 
-	 * @return <##>
+	 * @param object Archive_Tar
+	 * @param resource
+	 * @param string
 	 * @access public
-	 * @since 9/20/05
+	 * @since 10/17/05
 	 */
-	function XMLFileRecordExporter (&$archive, &$xmlFile) {
+	function XMLFileRecordExporter (&$archive, &$xmlFile, $fileDir) {
 		$this->_xml =& $xmlFile;
 		$this->_archive =& $archive;
+		$this->_fileDir = $fileDir; 
 		
 		$this->_childExporterList = null;
 		$this->_childElementList = null;
@@ -44,9 +47,9 @@ class XMLFileRecordExporter {
 	/**
 	 * Exporter of All things
 	 * 
-	 * @return <##>
+	 * @param object HarmoniFileRecord
 	 * @access public
-	 * @since 9/26/05
+	 * @since 10/17/05
 	 */
 	function export (&$record) {
 		$this->_object =& $record;
@@ -61,17 +64,19 @@ class XMLFileRecordExporter {
 ">\n".
 "\t\t\t<filedatapart>".$this->_info['f_name']."</filedatapart>\n".
 "\t\t\t<filedimensionspart>\n".
-"\t\t\t\t<width>".$this->_info['f_dime']['width']."</width>\n".
-"\t\t\t\t<height>".$this->_info['f_dime']['height']"</height>\n".
+"\t\t\t\t<width>".$this->_info['f_dime'][0]."</width>\n".
+"\t\t\t\t<height>".$this->_info['f_dime'][1]."</height>\n".
 "\t\t\t</filedimensionspart>\n".
 "\t\t\t<mimepart>".$this->_info['f_mime']."</mimepart>\n".
 "\t\t\t<thumbdatapart>".$this->_info['t_name']."</thumbdatapart>\n".
 "\t\t\t<thumbdimensionspart>\n".
-"\t\t\t\t<width>".$this->_info['t_dime']['width']."</width>\n".
-"\t\t\t\t<height>".$this->_info['t_dime']['height']."</height>\n".
-"\t\t\t<\thumbdimensionspart>\n".
+"\t\t\t\t<width>".$this->_info['t_dime'][0]."</width>\n".
+"\t\t\t\t<height>".$this->_info['t_dime'][1]."</height>\n".
+"\t\t\t</thumbdimensionspart>\n".
 "\t\t\t<thumbmimepart>".$this->_info['t_mime']."</thumbmimepart>\n".
 "\t\t</filerecord>\n");
+
+// ============== ADD DATA FILE TO ARCHIVE HERE =================//
 	}
 
 	/**
@@ -80,9 +85,8 @@ class XMLFileRecordExporter {
 	 * Adds partstructure elements to the xml, which contain the necessary
 	 * information to create the same partstructure.
 	 * 
-	 * @return <##>
 	 * @access public
-	 * @since 9/26/05
+	 * @since 10/17/05
 	 */
 	function getFileParts () {
 		$idManager =& Services::getService("Id");
@@ -99,8 +103,9 @@ class XMLFileRecordExporter {
 		$parts =& $this->_object->getPartsByPartStructure($FILE_NAME_ID);
 		if ($parts->count() == 1) {
 			$part =& $parts->next();
-			$this->_info['f_name'] = $this->_fileDir.$part->getValue();
-			$this->_dataFile =& fopen($this->_info['f_name'], "w");
+			$this->_info['f_name'] = $this->_fileDir."/".$part->getValue();
+// CHECK FOR FILE NAME UNIQUENESS HERE
+			$this->_dataFile =& fopen($this->_info['f_name'], "wb");
 		}
 		$parts =& $this->_object->getPartsByPartStructure($FILE_DATA_ID);
 		if ($parts->count() == 1) {
@@ -117,8 +122,8 @@ class XMLFileRecordExporter {
 			$part =& $parts->next();
 			$this->_info['f_mime'] = $part->getValue();
 		}
-		$this->_info['t_name'] = "THUMB_".$this->_info['f_name'];
-		$this->_thumbFile =& fopen($this->_info['t_name'], "w");
+		$this->_info['t_name'] = dirname($this->_info['f_name'])."/THUMB_".basename($this->_info['f_name']);
+		$this->_thumbFile =& fopen($this->_info['t_name'], "wb");
 		$parts =& $this->_object->getPartsByPartStructure($THUMB_DATA_ID);
 		if ($parts->count() == 1) {
 			$part =& $parts->next();
