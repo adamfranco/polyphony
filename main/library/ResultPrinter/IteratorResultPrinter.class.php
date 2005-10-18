@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.18 2005/10/18 17:33:38 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.19 2005/10/18 21:04:18 adamfranco Exp $
  */
  
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.18 2005/10/18 17:33:38 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.19 2005/10/18 21:04:18 adamfranco Exp $
  */
 
 class IteratorResultPrinter {
@@ -115,7 +115,10 @@ class IteratorResultPrinter {
 					
 					$itemLayout =& call_user_func_array(
 						$this->_callbackFunction, $params);
-					$resultLayout->add($itemLayout, null, null, CENTER, TOP);
+					$resultLayout->add($itemLayout, 
+						floor(100/$this->_numColumns)."%", 
+						"100%", 
+						CENTER, TOP);
 				}
 			}
 			
