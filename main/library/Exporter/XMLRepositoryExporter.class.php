@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
+ * @version $Id: XMLRepositoryExporter.class.php,v 1.3 2005/10/19 18:56:41 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Exporter/XMLRecordStructureExporter.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLAssetExporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
+ * @version $Id: XMLRepositoryExporter.class.php,v 1.3 2005/10/19 18:56:41 cws-midd Exp $
  */
 class XMLRepositoryExporter {
 		
@@ -91,8 +91,12 @@ class XMLRepositoryExporter {
 		fwrite($this->_xml, 
 "</repository>\n");
 
+		fclose($this->_xml);
 // ==================== ADD REPOSITORY XML TO ARCHIVE =======================//
-//		$this->_archive->add(
+		$this->_archive->addModify(
+			array($this->_repDir."/".$this->_myId->getIdString().".xml"),
+			"RepositoryDirectory/",
+			$this->_repDir);
 	}
 
 	/**

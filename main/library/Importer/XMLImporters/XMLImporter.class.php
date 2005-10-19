@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.11 2005/10/18 19:57:24 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.12 2005/10/19 18:56:42 cws-midd Exp $
  *
  * @author Christopher W. Shubert
  */ 
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryImporte
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.11 2005/10/18 19:57:24 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.12 2005/10/19 18:56:42 cws-midd Exp $
  */
 class XMLImporter {
 		

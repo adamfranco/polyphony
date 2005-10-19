@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileDataPartImporter.class.php,v 1.6 2005/10/18 19:57:24 cws-midd Exp $
+ * @version $Id: XMLFileDataPartImporter.class.php,v 1.7 2005/10/19 18:56:42 cws-midd Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileDataPartImporter.class.php,v 1.6 2005/10/18 19:57:24 cws-midd Exp $
+ * @version $Id: XMLFileDataPartImporter.class.php,v 1.7 2005/10/19 18:56:42 cws-midd Exp $
  */
 class XMLFileDataPartImporter extends XMLImporter {
 		
@@ -104,7 +104,7 @@ class XMLFileDataPartImporter extends XMLImporter {
 		$idManager =& Services::getService("Id");
 	
 		$path = $this->_node->getText();
-		if (!ereg("^(([:alpha:]+://)|([:alpha:]+:\\)|/)", $path))
+		if (!ereg("^([a-zA-Z]+://|[a-zA-Z]+:\\|/)", $path))
 			$path = $this->_node->ownerDocument->xmlPath.$path;
 		
 		$this->_info['value'] = $path;
