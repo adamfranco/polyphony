@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.29 2005/10/17 20:43:53 adamfranco Exp $
+ * @version $Id: polyphony.inc.php,v 1.30 2005/10/20 19:11:10 adamfranco Exp $
  */
 
 /**
@@ -40,6 +40,7 @@ require_once(dirname(__FILE__)."/main/library/Wizard/Components/WRepeatableCompo
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WOrderedRepeatableComponentCollection.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WHiddenField.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WText.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/Components/WVerifiedChangeInput.class.php");
 
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WAgentBrowser.class.php");
 
