@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.6 2005/09/16 18:40:49 cws-midd Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.7 2005/10/20 14:49:05 adamfranco Exp $
  */ 
 
 /**
@@ -18,10 +18,12 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.6 2005/09/16 18:40:49 cws-midd Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.7 2005/10/20 14:49:05 adamfranco Exp $
  */
 
-class WRepeatableComponentCollection extends WizardComponentWithChildren {
+class WRepeatableComponentCollection 
+	extends WizardComponentWithChildren 
+{
 
     var $_collections = array();
     var $_min = 0;

@@ -6,10 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextArea.class.php,v 1.3 2005/08/10 17:52:05 adamfranco Exp $
+ * @version $Id: WTextArea.class.php,v 1.4 2005/10/20 14:49:05 adamfranco Exp $
  */ 
 
-require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
+require_once(dirname(__FILE__).'/WTextInput.abstract.php');
 
 /**
  * This class allows for the creation of a textarea element
@@ -20,15 +20,12 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextArea.class.php,v 1.3 2005/08/10 17:52:05 adamfranco Exp $
+ * @version $Id: WTextArea.class.php,v 1.4 2005/10/20 14:49:05 adamfranco Exp $
  */
 class WTextArea 
-	extends WizardComponent 
+	extends WTextInput 
 {
 
-	var $_value;
-	
-	var $_style = null;
 	var $_rows;
 	var $_cols;
 	
@@ -59,16 +56,6 @@ class WTextArea
 	}
 	
 	/**
-	 * Sets the inner text value of the textarea.
-	 * @param string $value
-	 * @access public
-	 * @return void
-	 */
-	function setValue ($value) {
-		$this->_value = $value;
-	}
-	
-	/**
 	 * Sets the number of visible rows in this textarea.
 	 * @param integer $rows
 	 * @access public
@@ -89,42 +76,6 @@ class WTextArea
 	}
 	
 	/**
-	 * Sets the CSS style of the label for this element.
-	 * @param string $style
-	 * @access public
-	 * @return void
-	 */
-	function setStyle ($style) {
-		$this->_style = $style;
-	}
-	
-	/**
-	 * Tells the wizard component to update itself - this may include getting
-	 * form post data or validation - whatever this particular component wants to
-	 * do every pageload. 
-	 * @param string $fieldName The field name to use when outputting form data or
-	 * similar parameters/information.
-	 * @access public
-	 * @return boolean - TRUE if everything is OK
-	 */
-	function update ($fieldName) {
-		$val = RequestContext::value($fieldName);
-		if ($val) $this->_value = $val;
-	}
-	
-	/**
-	 * Returns the values of wizard-components. Should return an array if children are involved,
-	 * otherwise a whatever type of object is expected.
-	 * 
-	 * In this case, a "1" or a "0" is returned, depending on the checked state of the checkbox.
-	 * @access public
-	 * @return mixed
-	 */
-	function getAllValues () {
-		return $this->_value;
-	}
-	
-	/**
 	 * Returns a block of XHTML-valid code that contains markup for this specific
 	 * component. 
 	 * @param string $fieldName The field name to use when outputting form data or
@@ -135,10 +86,37 @@ class WTextArea
 	function getMarkup ($fieldName) {
 		$name = RequestContext::name($fieldName);
 		
-		$style = '';
-		if ($this->_style) $style = " style=\"".addslashes($this->_style)."\"";
+		$m = "<textarea rows='".$this->_rows."' cols='".$this->_cols."'";
+		$m .= " name='$name'".($this->_readonly?" readonly='readonly'":"");
 		
-		$m = "<textarea rows='".$this->_rows."' cols='".$this->_cols."'$style name='$name'>".htmlentities($this->_value)."</textarea>";
+		if ($this->_style) {
+			$m .= " style=\"".str_replace("\"", "\\\"", $this->_style)."\"";
+		}
+		
+		if ($this->_onchange) {
+			$m .= " onchange=\"".str_replace("\"", "\\\"", $this->_onchange)."\"";
+		}
+		
+		if ($this->_value != null && $this->_value != $this->_startingDisplay) {
+			$m .= ">".htmlentities($this->_value);
+		} else if ($this->_startingDisplay) {
+			$v = htmlentities($this->_startingDisplay, ENT_QUOTES);
+			$m .= " onfocus='if (this.value == \"$v\") { this.value=\"\"; }'>".$v;
+		} else {
+			$m .= ">".htmlentities($this->_value);;
+		}
+		
+		$m .= "</textarea>";
+		
+		$errText = $this->getErrorText();
+		$errRule =& $this->getErrorRule();
+		$errStyle = $this->getErrorStyle();
+		
+		if ($errText && $errRule) {
+			$m .= "<span id='".$fieldName."_error' style=\"padding-left: 10px; $errStyle\">&laquo; $errText</span>";	
+			$m .= Wizard::getValidationJavascript($fieldName, $errRule, $fieldName."_error", $this->_showError);
+			$this->_showError = false;
+		}
 		
 		return $m;
 	}
