@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextInput.abstract.php,v 1.1 2005/10/20 14:49:05 adamfranco Exp $
+ * @version $Id: WTextInput.abstract.php,v 1.2 2005/10/20 19:43:51 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingWizardComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingWizardComponent.abstra
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextInput.abstract.php,v 1.1 2005/10/20 14:49:05 adamfranco Exp $
+ * @version $Id: WTextInput.abstract.php,v 1.2 2005/10/20 19:43:51 adamfranco Exp $
  */
 class WTextInput
 	extends ErrorCheckingWizardComponent 
@@ -74,7 +74,11 @@ class WTextInput
 	 */
 	function update ($fieldName) {
 		$val = RequestContext::value($fieldName);
-		if ($val) $this->_value = $val;
+		if ($val 
+			&& (!$this->_startingDisplay || $val != $this->_startingDisplay))
+		{
+			$this->_value = $val;
+		}
 	}
 	
 	/**
