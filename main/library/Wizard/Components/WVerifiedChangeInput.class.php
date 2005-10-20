@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WVerifiedChangeInput.class.php,v 1.1 2005/10/20 19:11:10 adamfranco Exp $
+ * @version $Id: WVerifiedChangeInput.class.php,v 1.2 2005/10/20 19:40:14 adamfranco Exp $
  */ 
 
 /**
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WVerifiedChangeInput.class.php,v 1.1 2005/10/20 19:11:10 adamfranco Exp $
+ * @version $Id: WVerifiedChangeInput.class.php,v 1.2 2005/10/20 19:40:14 adamfranco Exp $
  */
 
 class WVerifiedChangeInput 
@@ -142,11 +142,11 @@ class WVerifiedChangeInput
 		}
 			
 		$m = "\n<div>";
-		$m .= "\n\t<div title='".dgettext("polyphony", "Modify")."' style='display: inline'>";
+		$m .= "\n\t<div title='".dgettext("polyphony", "Modify")."' style='display: inline; vertical-align: top'>";
 		
 		$m .= "\n\t\t".$this->_checkbox->getMarkup($fieldName."_modify");
 		
-		$m .= "\n\t</div>\n\t<div style='display: inline'>";
+		$m .= "\n\t</div>\n\t<div style='display: inline; '>";
 		
 		$m .= "\n\t\t".$this->_input->getMarkup($fieldName);
 		
