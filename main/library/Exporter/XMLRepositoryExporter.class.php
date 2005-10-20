@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryExporter.class.php,v 1.3 2005/10/19 18:56:41 cws-midd Exp $
+ * @version $Id: XMLRepositoryExporter.class.php,v 1.4 2005/10/20 18:33:38 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Exporter/XMLRecordStructureExporter.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLAssetExporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryExporter.class.php,v 1.3 2005/10/19 18:56:41 cws-midd Exp $
+ * @version $Id: XMLRepositoryExporter.class.php,v 1.4 2005/10/20 18:33:38 cws-midd Exp $
  */
 class XMLRepositoryExporter {
 		
@@ -68,7 +68,12 @@ class XMLRepositoryExporter {
 		
 		fwrite($this->_xml,
 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".
-"<repository id=\"".$this->_myId->getIdString()."\">\n".
+"<repository id=\"".$this->_myId->getIdString()."\" ");
+		if ($this->_myId->getIdString() ==
+			"edu.middlebury.concerto.exhibition_repository")
+			fwrite($this->_xml, "isExisting=\"TRUE\"");
+
+		fwrite($this->_xml, ">\n".	
 "\t<name>".$this->_object->getDisplayName()."</name>\n".
 "\t<description><![CDATA[".$this->_object->getDescription()."]]></description>\n".
 "\t<type>\n".

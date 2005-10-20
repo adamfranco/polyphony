@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
+ * @version $Id: XMLPartStructureExporter.class.php,v 1.3 2005/10/20 18:33:38 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
+ * @version $Id: XMLPartStructureExporter.class.php,v 1.3 2005/10/20 18:33:38 cws-midd Exp $
  */
 class XMLPartStructureExporter {
 		
@@ -69,7 +69,7 @@ class XMLPartStructureExporter {
 "\t\t\t\t<description><![CDATA[".$type->getDescription()."]]></description>\n");
 		fwrite($this->_xml,
 "\t\t\t</type>\n".
-"\t\t<\partstructure>\n");
+"\t\t</partstructure>\n");
 	}
 }
 ?>

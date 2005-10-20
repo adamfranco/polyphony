@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLExporter.class.php,v 1.3 2005/10/19 18:56:40 cws-midd Exp $
+ * @version $Id: XMLExporter.class.php,v 1.4 2005/10/20 18:33:38 cws-midd Exp $
  */ 
 
 require_once("Archive/Tar.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLRepositoryExporter.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLExporter.class.php,v 1.3 2005/10/19 18:56:40 cws-midd Exp $
+ * @version $Id: XMLExporter.class.php,v 1.4 2005/10/20 18:33:38 cws-midd Exp $
  */
 class XMLExporter {
 		
@@ -76,9 +76,8 @@ class XMLExporter {
 		$this->_archive->addModify(
 			array($this->_tmpDir."/metadata.xml"),
 			 "", $this->_tmpDir);
-			
-		printpre($this->_archive->listContent());
-		exit();
+		
+		return $this->_tmpDir.".tar.gz";
 	}
 
 	/**
@@ -103,7 +102,7 @@ class XMLExporter {
 			$child =& $children->next();
 			$childId =& $child->getId();
 			
-			fwrite($this->_xml, "\t<repositoryfile>".$this->_repDir."/".
+			fwrite($this->_xml, "\t<repositoryfile>RepositoryDirectory/".
 				$childId->getIdString().".xml</repositoryfile>\n");
 			
 			$exporter =& new XMLRepositoryExporter($this->_archive,

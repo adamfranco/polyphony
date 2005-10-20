@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.12 2005/10/19 18:56:42 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.13 2005/10/20 18:33:39 cws-midd Exp $
  *
  * @author Christopher W. Shubert
  */ 
@@ -14,6 +14,7 @@
 require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(DOMIT);
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryImporter.class.php");
+require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryFileImporter.class.php");
 
 /**
  * This class provides the ability to import objects into a Harmoni Package
@@ -24,7 +25,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryImporte
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.12 2005/10/19 18:56:42 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.13 2005/10/20 18:33:39 cws-midd Exp $
  */
 class XMLImporter {
 		
@@ -60,7 +61,6 @@ class XMLImporter {
 		$importer =& new $class;
 		$importer->_xmlFile = $filepath;
 		$importer->_type = $type;
-		$importer->_basepath = dirname($filepath);
 		$importer->setupSelf();
 		
 		return $importer;
@@ -97,8 +97,8 @@ class XMLImporter {
 	 * @since 10/5/05
 	 */
 	function setupSelf () {
-		$this->_childImporterList = array("XMLRepositoryImporter");/*, "XMLSetImporter", "XMLHierarchyImporter", "XMLGroupImporter", "XMLAgentImporter");*/
-		$this->_childElementList = array("repository", "set", "hierarchy", 
+		$this->_childImporterList = array("XMLRepositoryImporter", "XMLRepositoryFileImporter");/*, "XMLSetImporter", "XMLHierarchyImporter", "XMLGroupImporter", "XMLAgentImporter");*/
+		$this->_childElementList = array("repository", "repositoryfile", "set", "hierarchy", 
 			"group", "agent");
 		$this->_info = array();
 	}
@@ -113,6 +113,7 @@ class XMLImporter {
 		$this->_import =& new DOMIT_Document();
 		if ($this->_import->loadXML($this->_xmlFile)) {
 			$this->_import->xmlPath = dirname($this->_xmlFile)."/";
+print "relpath: ".$this->_import->xmlPath."<br />";
 			if (!($this->_import->documentElement->hasChildNodes()))
 				$this->addError("There are no Importables in this file");
 			else {
@@ -135,7 +136,7 @@ class XMLImporter {
 	function parseAndImport () {
 		$this->_import =& new DOMIT_Document();
 		if ($this->_import->loadXML($this->_xmlFile)) {
-			$this->_import->xmlPath = $this->_xmlFile;
+			$this->_import->xmlPath = dirname($this->_xmlFile)."/";
 			if (!($this->_import->documentElement->hasChildNodes()))
 				$this->addError("There are no Importables in this file");
 			else {
@@ -453,7 +454,7 @@ class XMLImporter {
 	/**
 	 * 
 	 * 
-	 * @return void
+	 * @return string
 	 * @access public
 	 * @since 7/20/05
 	 */
@@ -464,7 +465,8 @@ class XMLImporter {
 		if ($worked == false)
 			$this->addError("Failed to decompress file: ".$filepath.
 				".  Unsupported archive extension.");
-	 unset($dearchiver);	
+	 	unset($dearchiver);
+	 	return dirname($filepath);
 	}
 	
 }

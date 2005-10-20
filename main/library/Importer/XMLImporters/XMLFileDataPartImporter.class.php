@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileDataPartImporter.class.php,v 1.7 2005/10/19 18:56:42 cws-midd Exp $
+ * @version $Id: XMLFileDataPartImporter.class.php,v 1.8 2005/10/20 18:33:39 cws-midd Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileDataPartImporter.class.php,v 1.7 2005/10/19 18:56:42 cws-midd Exp $
+ * @version $Id: XMLFileDataPartImporter.class.php,v 1.8 2005/10/20 18:33:39 cws-midd Exp $
  */
 class XMLFileDataPartImporter extends XMLImporter {
 		
@@ -108,6 +108,8 @@ class XMLFileDataPartImporter extends XMLImporter {
 			$path = $this->_node->ownerDocument->xmlPath.$path;
 		
 		$this->_info['value'] = $path;
+	
+print "filepath: ".$path;
 	
 		$this->_info['partStructureId'] =& $idManager->getId("FILE_DATA");
 					

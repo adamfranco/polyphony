@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryFileImporter.class.php,v 1.1 2005/10/18 19:57:24 cws-midd Exp $
+ * @version $Id: XMLRepositoryFileImporter.class.php,v 1.2 2005/10/20 18:33:39 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryImporte
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryFileImporter.class.php,v 1.1 2005/10/18 19:57:24 cws-midd Exp $
+ * @version $Id: XMLRepositoryFileImporter.class.php,v 1.2 2005/10/20 18:33:39 cws-midd Exp $
  */
 class XMLRepositoryFileImporter extends XMLImporter {
 
@@ -50,6 +50,23 @@ class XMLRepositoryFileImporter extends XMLImporter {
 	}
 
 	/**
+	 * Filters nodes of incorrect type
+	 * 
+	 * @param object DOMIT_Node
+	 * @return boolean
+	 * @static
+	 * @access public
+	 * @since 10/5/05
+	 */
+	function isImportable (&$element) {
+		if($element->nodeName == "repositoryfile")
+			return true;
+		else
+			return false;
+	}
+
+
+	/**
 	 * Organizes the import
 	 * 
 	 * @param object DOMIT_Node
@@ -60,11 +77,12 @@ class XMLRepositoryFileImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/5/05
 	 */
-	function import (&$node, $type = null, &$parent) {
+	function import (&$node, $type, &$parent) {
 		$path = $node->getText();
-		if (!ereg("^(([:alpha:]+://)|([:alpha:]+:\\)|/)", $path))
-			$path = $this->_node->ownerDocument->xmlPath.$path;
+		if (!ereg("^([a-zA-Z]+://|[a-zA-Z]+:\\|/)", $path))
+			$path = $node->ownerDocument->xmlPath.$path;
 		
-		$imp =& XMLRepositoryImporter::withFile($path);
+		$imp =& XMLRepositoryImporter::withFile($path, $type);
 		$imp->parseAndImport();
 	}
+}

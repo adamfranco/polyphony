@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveCancelListener.class.php,v 1.2 2005/08/10 17:52:05 adamfranco Exp $
+ * @version $Id: WSaveCancelListener.class.php,v 1.3 2005/10/20 18:33:39 cws-midd Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveCancelListener.class.php,v 1.2 2005/08/10 17:52:05 adamfranco Exp $
+ * @version $Id: WSaveCancelListener.class.php,v 1.3 2005/10/20 18:33:39 cws-midd Exp $
  */
 class WSaveCancelListener 
 	extends WizardComponent 
@@ -126,8 +126,10 @@ class WSaveCancelListener
 		switch ($eventType) {
 			case 'edu.middlebury.polyphony.wizard.save':
 				$this->_save = true;
+				$this->_cancel = false;
 				break;
 			case 'edu.middlebury.polyphony.wizard.cancel':
+				$this->_save = false;
 				$this->_cancel = true;
 				break;
 		}

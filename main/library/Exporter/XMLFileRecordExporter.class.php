@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordExporter.class.php,v 1.4 2005/10/19 18:56:41 cws-midd Exp $
+ * @version $Id: XMLFileRecordExporter.class.php,v 1.5 2005/10/20 18:33:38 cws-midd Exp $
  */ 
 
 //require_once(POLYPHONY."/main/library/Exporter/XMLPartExporter.class.php");
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordExporter.class.php,v 1.4 2005/10/19 18:56:41 cws-midd Exp $
+ * @version $Id: XMLFileRecordExporter.class.php,v 1.5 2005/10/20 18:33:38 cws-midd Exp $
  */
 class XMLFileRecordExporter {
 		
@@ -114,7 +114,7 @@ class XMLFileRecordExporter {
 			$this->_dataFile =& fopen($path, "wb");
 			
 			$this->_info['f_name'] = 
-	"RepositoryDirectory/".basename($this->_fileDir)."/".basename($path);
+	basename($this->_fileDir)."/".basename($path);
 		}
 		$parts =& $this->_object->getPartsByPartStructure($FILE_DATA_ID);
 		if ($parts->count() == 1) {
@@ -133,7 +133,7 @@ class XMLFileRecordExporter {
 		}
 		$path = $this->_fileDir."/THUMB_".basename($this->_info['f_name']);
 		$this->_info['t_name'] = 
-	"RepositoryDirectory/".basename($this->_fileDir)."/".basename($path);
+	basename($this->_fileDir)."/".basename($path);
 		$this->_thumbFile =& fopen($path, "wb");
 		$parts =& $this->_object->getPartsByPartStructure($THUMB_DATA_ID);
 		if ($parts->count() == 1) {
