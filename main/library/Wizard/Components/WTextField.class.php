@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.9 2005/10/20 14:49:05 adamfranco Exp $
+ * @version $Id: WTextField.class.php,v 1.10 2005/10/20 19:10:01 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__).'/WTextInput.abstract.php');
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__).'/WTextInput.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.9 2005/10/20 14:49:05 adamfranco Exp $
+ * @version $Id: WTextField.class.php,v 1.10 2005/10/20 19:10:01 adamfranco Exp $
  */
 class WTextField 
 	extends WTextInput 
@@ -59,18 +59,20 @@ class WTextField
 	 */
 	function getMarkup ($fieldName) {
 		$name = RequestContext::name($fieldName);
-		$m = "<input type='text' name='$name' id='$fieldName' size='".$this->_size."' maxlength='".$this->_maxlength."'".($this->_readonly?" readonly='readonly'":"");
+		$m = "<input type='text' \n\t\t\t\tname='$name' \n\t\t\t\tid='$fieldName' \n\t\t\t\tsize='".$this->_size."' maxlength='".$this->_maxlength."'".($this->_readonly?" readonly='readonly'":"");
 		if ($this->_value != null && $this->_value != $this->_startingDisplay) {
 			$m .= " value='".htmlentities($this->_value, ENT_QUOTES)."'";
 		} else if ($this->_startingDisplay) {
 			$v = htmlentities($this->_startingDisplay, ENT_QUOTES);
-			$m .= " value='$v' onfocus='if (this.value == \"$v\") { this.value=\"\"; }'";
+			$m .= "\n\t\t\t\tvalue='$v';";
+			$m .= "\n\t\t\t\tonfocus='if (this.value == \"$v\") { this.value=\"\"; }'";
+			$m .= "\n\t\t\t\tonblur='if (this.value == \"\") { this.value=\"$v\"; }'";
 		}
 		if ($this->_style) {
-			$m .= " style=\"".str_replace("\"", "\\\"", $this->_style)."\"";
+			$m .= "\n\t\t\t\tstyle=\"".str_replace("\"", "\\\"", $this->_style)."\"";
 		}
 		if ($this->_onchange) {
-			$m .= " onchange=\"".str_replace("\"", "\\\"", $this->_onchange)."\"";
+			$m .= "\n\t\t\t\tonchange=\"".str_replace("\"", "\\\"", $this->_onchange)."\"";
 		}
 		$m .= " />";
 		
@@ -79,7 +81,7 @@ class WTextField
 		$errStyle = $this->getErrorStyle();
 		
 		if ($errText && $errRule) {
-			$m .= "<span id='".$fieldName."_error' style=\"padding-left: 10px; $errStyle\">&laquo; $errText</span>";	
+			$m .= "\n\t\t<span id='".$fieldName."_error' style=\"padding-left: 10px; $errStyle\">&laquo; $errText</span>";	
 			$m .= Wizard::getValidationJavascript($fieldName, $errRule, $fieldName."_error", $this->_showError);
 			$this->_showError = false;
 		}

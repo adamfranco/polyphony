@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextArea.class.php,v 1.4 2005/10/20 14:49:05 adamfranco Exp $
+ * @version $Id: WTextArea.class.php,v 1.5 2005/10/20 19:10:01 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__).'/WTextInput.abstract.php');
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__).'/WTextInput.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextArea.class.php,v 1.4 2005/10/20 14:49:05 adamfranco Exp $
+ * @version $Id: WTextArea.class.php,v 1.5 2005/10/20 19:10:01 adamfranco Exp $
  */
 class WTextArea 
 	extends WTextInput 
@@ -86,22 +86,25 @@ class WTextArea
 	function getMarkup ($fieldName) {
 		$name = RequestContext::name($fieldName);
 		
-		$m = "<textarea rows='".$this->_rows."' cols='".$this->_cols."'";
-		$m .= " name='$name'".($this->_readonly?" readonly='readonly'":"");
+		$m = "\n\t\t\t<textarea rows='".$this->_rows."' cols='".$this->_cols."'";
+		$m .= "\n\t\t\t\tname='$name'";
+		$m .= ($this->_readonly?" readonly='readonly'":"");
 		
 		if ($this->_style) {
-			$m .= " style=\"".str_replace("\"", "\\\"", $this->_style)."\"";
+			$m .= "\n\t\t\t\tstyle=\"".str_replace("\"", "\\\"", $this->_style)."\"";
 		}
 		
 		if ($this->_onchange) {
-			$m .= " onchange=\"".str_replace("\"", "\\\"", $this->_onchange)."\"";
+			$m .= "\n\t\t\t\tonchange=\"".str_replace("\"", "\\\"", $this->_onchange)."\"";
 		}
 		
 		if ($this->_value != null && $this->_value != $this->_startingDisplay) {
 			$m .= ">".htmlentities($this->_value);
 		} else if ($this->_startingDisplay) {
 			$v = htmlentities($this->_startingDisplay, ENT_QUOTES);
-			$m .= " onfocus='if (this.value == \"$v\") { this.value=\"\"; }'>".$v;
+			$m .= "\n\t\t\t\tonfocus='if (this.value == \"$v\") { this.value=\"\"; }'";
+			$m .= "\n\t\t\t\tonblur='if (this.value == \"\") { this.value=\"$v\"; }'";
+			$m .= ">".$v;			
 		} else {
 			$m .= ">".htmlentities($this->_value);;
 		}
