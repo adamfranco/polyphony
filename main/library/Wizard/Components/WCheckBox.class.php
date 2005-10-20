@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCheckBox.class.php,v 1.7 2005/09/09 19:59:26 gabeschine Exp $
+ * @version $Id: WCheckBox.class.php,v 1.8 2005/10/20 19:08:49 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCheckBox.class.php,v 1.7 2005/09/09 19:59:26 gabeschine Exp $
+ * @version $Id: WCheckBox.class.php,v 1.8 2005/10/20 19:08:49 adamfranco Exp $
  */
 class WCheckBox 
 	extends WizardComponent 
@@ -139,15 +139,79 @@ class WCheckBox
 		$style = " style='cursor: pointer;'";
 		if ($this->_style) $style = " style=\"cursor: pointer; ".htmlentities($this->_style)."\"";
 		
-		$javascript1 = "document.getElementById('$dummyName').checked = (document.getElementById('$dummyName').checked? false : true); ";
-		$javascript2 = "document.getElementById('$fieldName').value = (document.getElementById('$dummyName').checked? '1' : '0'); ";
-//		$javascript3 = "document.getElementById('$name').value = (document.getElementById('$dummyName').checked? '0' : '1'); ";
-//		$tempJS = "alert('changed $name to ' + document.getElementById('$name').value); ";
-		$tempJS = '';
+				
+		$m = "\n\t\t\t<input type='hidden' \n\t\t\t\tname='$name' \n\t\t\t\tid='$fieldName' \n\t\t\t\tvalue='$val' />";
 		
-		$m = "<input type='hidden' name='$name' id='$fieldName' value='$val' /><input type='checkbox' onclick=\"$javascript2$tempJS\" id='$dummyName'$checked /> <label$style onclick=\"$javascript1$javascript2$tempJS\">".$this->_label."</label>";
+		$m .= "\n\t\t\t<input type='checkbox' ";
+		$m .= "\n\t\t\t\tonclick=\"".$this->getSetJS($fieldName)."\" ";
+		$m .= "\n\t\t\t\tid='$dummyName'$checked />";
+		
+		$m .= "\n\t\t\t<label$style ";
+		$m .= "\n\t\t\t\tonclick=\"".$this->getToggleJS($fieldName)."\" ";
+		$m .= "\n\t\t\t>".$this->_label."</label>";
 		
 		return $m;
+	}
+	
+	/**
+	 * Answer the javascript commands to execute when the checkbox is clicked.
+	 * 
+	 * @param string $fieldName
+	 * @return string
+	 * @access public
+	 * @since 10/20/05
+	 */
+	function getToggleJS ($fieldName) {
+		$dummyName = $fieldName . "_dummy";
+		
+		$js = "document.getElementById('$dummyName').checked = (document.getElementById('$dummyName').checked? false : true); ";
+		$js .= $this->getSetJS($fieldName);
+		return $js;
+	}
+	
+	/**
+	 * Answer the javascript commands to execute when the checkbox is clicked.
+	 * 
+	 * @param string $fieldName
+	 * @return string
+	 * @access public
+	 * @since 10/20/05
+	 */
+	function getSetJS ($fieldName) {
+		$dummyName = $fieldName . "_dummy";
+		
+		$js = "document.getElementById('$fieldName').value = (document.getElementById('$dummyName').checked? '1' : '0'); ";
+		return $js;
+	}
+	
+	/**
+	 * Answer the javascript commands to check the checkbox.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 10/20/05
+	 */
+	function getCheckJS ($fieldName) {
+		$dummyName = $fieldName . "_dummy";
+		
+		$js = "document.getElementById('$dummyName').checked = true; ";
+		$js .= $this->getSetJS($fieldName);
+		return $js;
+	}
+	
+	/**
+	 * Answer the javascript commands to check the checkbox.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 10/20/05
+	 */
+	function getUncheckJS ($fieldName) {
+		$dummyName = $fieldName . "_dummy";
+		
+		$js = "document.getElementById('$dummyName').checked = false; ";
+		$js .= $this->getSetJS($fieldName);
+		return $js;
 	}
 }
 
