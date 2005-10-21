@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_authorizations.act.php,v 1.19 2005/07/20 14:55:08 adamfranco Exp $
+ * @version $Id: browse_authorizations.act.php,v 1.20 2005/10/21 16:16:01 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_authorizations.act.php,v 1.19 2005/07/20 14:55:08 adamfranco Exp $
+ * @version $Id: browse_authorizations.act.php,v 1.20 2005/10/21 16:16:01 cws-midd Exp $
  */
 class browse_authorizationsAction 
 	extends MainWindowAction
@@ -59,11 +59,12 @@ class browse_authorizationsAction
 	 */
 	function buildContent () {
 		$defaultTextDomain = textdomain("polyphony");
-		
+
+		$idManager =& Services::getService("Id");		
 		$actionRows =& $this->getActionRows();
 		$harmoni =& Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-authorizations");
-		
+
 		$actionRows->add(new Block("&nbsp; &nbsp; "._("Below is a listing of all of the Users/Groups who are authorized to do various functions in the system. Click on a name to edit the authorizations for that User/Group")."<br /><br />",2));
 		
 		// Buttons to go back to edit auths for a different user, or to go home
@@ -94,18 +95,21 @@ class browse_authorizationsAction
 				$qualifier =& $qualifiers->next();
 				//print get_class($qualifier);
 				// Create a layout for this qualifier
-				ob_start();
-				
-				HierarchyPrinter::printNode($qualifier, $harmoni,
-									2,
-									"browse_authorizationsAction::printQualifier",
-									"browse_authorizationsAction::hasChildQualifiers",
-									"browse_authorizationsAction::getChildQualifiers",
-									new HTMLColor("#ddd")
-								);
-															
-				$actionRows->add(new Block(ob_get_contents(), 3), "100%", null, LEFT, CENTER);
-				ob_end_clean();		
+// 				if ($authZManager->isUserAuthorizedInChildren(
+// 					$idManager->getId("edu.middlebury.authorization.view"),
+// 					$qualifier->getId())) {
+					ob_start();
+					HierarchyPrinter::printNode($qualifier, $harmoni,
+										2,
+										"browse_authorizationsAction::printQualifier",
+										"browse_authorizationsAction::hasChildQualifiers",
+										"browse_authorizationsAction::getChildQualifiers",
+										new HTMLColor("#ddd")
+									);
+																
+					$actionRows->add(new Block(ob_get_contents(), 3), "100%", null, LEFT, CENTER);
+					ob_end_clean();		
+// 				}
 			}
 		}
 		

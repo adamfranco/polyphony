@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.12 2005/09/07 21:18:25 adamfranco Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.13 2005/10/21 16:16:00 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.12 2005/09/07 21:18:25 adamfranco Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.13 2005/10/21 16:16:00 cws-midd Exp $
  */
 class edit_agent_detailsAction 
 	extends MainWindowAction
@@ -40,8 +40,9 @@ class edit_agent_detailsAction
 		$idManager =& Services::getService("IdManager");
 		$harmoni =& Harmoni::instance();
 		
-		$harmoni->request->startNamespace("polyphony-agents");
+		$harmoni->request->startNamespace("polyphony-authorizations");
 		$agentIdString = $harmoni->request->get("agentId");
+
 		$harmoni->request->endNamespace();
 		
 		if ($authZManager->isUserAuthorized(
@@ -78,7 +79,7 @@ class edit_agent_detailsAction
 		$pageRows =& new Container(new YLayout(), OTHER, 1);
 		$harmoni =& Harmoni::instance();
 		
-		$harmoni->request->startNamespace("polyphony-agents");
+		$harmoni->request->startNamespace("polyphony-authorizations");
 		$harmoni->request->passthrough("agentId");
 		$agentIdString = $harmoni->request->get("agentId");
 		$furtherAction = $harmoni->request->get("furtherAction");
