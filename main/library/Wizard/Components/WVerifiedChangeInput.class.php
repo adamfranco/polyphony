@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WVerifiedChangeInput.class.php,v 1.2 2005/10/20 19:40:14 adamfranco Exp $
+ * @version $Id: WVerifiedChangeInput.class.php,v 1.3 2005/10/24 20:32:38 adamfranco Exp $
  */ 
 
 /**
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WVerifiedChangeInput.class.php,v 1.2 2005/10/20 19:40:14 adamfranco Exp $
+ * @version $Id: WVerifiedChangeInput.class.php,v 1.3 2005/10/24 20:32:38 adamfranco Exp $
  */
 
 class WVerifiedChangeInput 
@@ -30,6 +30,7 @@ class WVerifiedChangeInput
 
     var $_input;
     var $_checkbox;
+    var $_label;
     
 /*********************************************************
  * Class Methods - Instance creation
@@ -52,6 +53,20 @@ class WVerifiedChangeInput
 /*********************************************************
  * Instance Methods
  *********************************************************/
+ 	
+ 	/**
+ 	 * $this is a shallow copy, subclasses should override to copy fields as 
+ 	 * necessary to complete the full copy.
+ 	 * 
+ 	 * @return object
+ 	 * @access public
+ 	 * @since 7/11/05
+ 	 */
+ 	function &postCopy () {
+ 		$this->_checkbox =& $this->_checkbox->shallowCopy();
+ 		$this->_input =& $this->_input->shallowCopy();
+ 		return $this;
+ 	}
     
     /**
      * Constructor
@@ -63,6 +78,7 @@ class WVerifiedChangeInput
     function WVerifiedChangeInput() {
     	$this->_checkbox =& new WCheckBox;
     	$this->_checkbox->setParent($this);
+    	$this->_label = dgettext("polyphony", "Apply to All");
     }
     
     /**
@@ -84,6 +100,55 @@ class WVerifiedChangeInput
 		
 		return $this->_input;
     }
+    
+    /**
+     * Set the value of the input component
+     * 
+     * @param string $value
+	 * @access public
+	 * @return void
+     * @since 10/21/05
+     */
+    function setValue ($value) {
+    	if (is_array($value)) {
+    		$this->_checkbox->setValue($value['checked']);
+    		$this->_input->setValue($value['value']);
+    	} else
+	    	$this->_input->setValue($value);
+    }
+    
+    /**
+     * Set the checked state of the checkbox
+     * 
+     * @param boolean $checked
+     * @return void
+     * @access public
+     * @since 10/24/05
+     */
+    function setChecked ($checked) {
+    	$this->_checkbox->setValue($checked);
+    }
+    
+    /**
+	 * Sets the readonly flag for this element.
+	 * @param boolean $bool
+	 *
+	 * @return void
+	 **/
+	function setReadOnly($bool)
+	{
+		$this->_input->setReadOnly($bool);
+	}
+    
+    /**
+	 * Sets the label for this checkbox element.
+	 * @param string $label;
+	 * @access public
+	 * @return void
+	 */
+	function setLabel ($label) {
+		$this->_label = $label;
+	}
 	
 	/**
 	 * Returns true if this component (and all child components if applicable) have valid values.
@@ -106,7 +171,7 @@ class WVerifiedChangeInput
 	 * @return boolean - TRUE if everything is OK
 	 */
 	function update ($fieldName) {
-		$this->_checkbox->update($fieldName."_modify");
+		$this->_checkbox->update($fieldName."_checked");
 		return $this->_input->update($fieldName);
 	}
 	
@@ -118,7 +183,7 @@ class WVerifiedChangeInput
 	 */
 	function getAllValues () {
 		$array = array();
-		$array['modify'] = $this->_checkbox->getAllValues();
+		$array['checked'] = $this->_checkbox->getAllValues();
 		$array['value'] = $this->_input->getAllValues();
 		
 		return $array;
@@ -136,15 +201,15 @@ class WVerifiedChangeInput
 		if ($this->_input->_startingDisplay) {
 			$v = htmlentities($this->_input->_startingDisplay, ENT_QUOTES);
 			$this->_input->setOnChange(
-				"if (this.value != '$v') {".$this->_checkbox->getCheckJS($fieldName."_modify")."}");
+				"if (this.value != '$v') {".$this->_checkbox->getCheckJS($fieldName."_checked")."}");
 		} else {
-			$this->_input->setOnChange($this->_checkbox->getCheckJS($fieldName."_modify"));
+			$this->_input->setOnChange($this->_checkbox->getCheckJS($fieldName."_checked"));
 		}
 			
 		$m = "\n<div>";
-		$m .= "\n\t<div title='".dgettext("polyphony", "Modify")."' style='display: inline; vertical-align: top'>";
+		$m .= "\n\t<div title='".$this->_label."' style='display: inline; vertical-align: top'>";
 		
-		$m .= "\n\t\t".$this->_checkbox->getMarkup($fieldName."_modify");
+		$m .= "\n\t\t".$this->_checkbox->getMarkup($fieldName."_checked");
 		
 		$m .= "\n\t</div>\n\t<div style='display: inline; '>";
 		
