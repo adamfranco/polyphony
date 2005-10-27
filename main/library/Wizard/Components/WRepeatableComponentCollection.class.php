@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.7 2005/10/20 14:49:05 adamfranco Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.8 2005/10/27 22:21:02 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.7 2005/10/20 14:49:05 adamfranco Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.8 2005/10/27 22:21:02 adamfranco Exp $
  */
 
 class WRepeatableComponentCollection 
@@ -79,6 +79,17 @@ class WRepeatableComponentCollection
 	}
 	
 	/**
+	 * Sets this step's content text. 
+	 * This text will be parsed with {@link Wizard::parseText()}
+	 * @param string $content;
+	 * @access public
+	 * @return void
+	 */
+	function setContent ($content) {
+		$this->setElementLayout ($content);
+	}
+	
+	/**
 	 * Adds a collection of {@link WizardComponent}s indexed by field name to the list of collections.
 	 * This is useful when pre-populating the list with old/previous values.
 	 * @param ref array $collection Indexed by field name.
@@ -94,6 +105,22 @@ class WRepeatableComponentCollection
 		}
 		
 		return $newCollection;
+	}
+	
+	/**
+	 * A wrapper for addValueCollection which adds a ValueCollection for every element
+	 * in the array passet, to allow for adding values to nested 
+	 * RepeatableComponentCollections.
+	 * 
+	 * @param ref array $collectionArray
+	 * @return void
+	 * @access public
+	 * @since 10/27/05
+	 */
+	function setValue ( &$collectionArray ) {
+		foreach(array_keys($collectionArray) as $key) {
+			$this->addValueCollection($collectionArray[$key]);
+		}
 	}
 	
 	/**
