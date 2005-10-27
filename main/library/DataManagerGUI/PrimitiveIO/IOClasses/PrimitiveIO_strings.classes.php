@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_strings.classes.php,v 1.6 2005/08/24 14:34:42 cws-midd Exp $
+ * @version $Id: PrimitiveIO_strings.classes.php,v 1.7 2005/10/27 22:20:26 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_strings.classes.php,v 1.6 2005/08/24 14:34:42 cws-midd Exp $
+ * @version $Id: PrimitiveIO_strings.classes.php,v 1.7 2005/10/27 22:20:26 adamfranco Exp $
  */
 class PrimitiveIO_shortstring extends WTextField {
 
@@ -28,6 +28,7 @@ class PrimitiveIO_shortstring extends WTextField {
 	 **/
 	function setValue(&$value)
 	{
+		ArgumentValidator::validate($value, HasMethodsValidatorRule::getRule("asString"));
 		parent::setValue($value->asString());
 	}
 
@@ -73,6 +74,7 @@ class PrimitiveIO_string extends WTextArea {
 	 **/
 	function setValue(&$value)
 	{
+		ArgumentValidator::validate($value, HasMethodsValidatorRule::getRule("asString"));
 		parent::setValue($value->asString());
 	}
 	
