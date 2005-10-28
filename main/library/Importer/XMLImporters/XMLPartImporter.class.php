@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartImporter.class.php,v 1.6 2005/10/13 17:36:51 cws-midd Exp $
+ * @version $Id: XMLPartImporter.class.php,v 1.7 2005/10/28 15:08:16 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartImporter.class.php,v 1.6 2005/10/13 17:36:51 cws-midd Exp $
+ * @version $Id: XMLPartImporter.class.php,v 1.7 2005/10/28 15:08:16 adamfranco Exp $
  */
 class XMLPartImporter extends XMLImporter {
 		
@@ -159,7 +159,7 @@ class XMLPartImporter extends XMLImporter {
 				return Boolean::withValue($part);
 				break;
 			case "shortstring":
-				return ShortString::withValue($part);
+				return String::withValue($part);
 				break;
 			case "float":
 				return Float::withValue($part);
