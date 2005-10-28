@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.8 2005/10/27 22:21:02 adamfranco Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.9 2005/10/28 16:33:59 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.8 2005/10/27 22:21:02 adamfranco Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.9 2005/10/28 16:33:59 adamfranco Exp $
  */
 
 class WRepeatableComponentCollection 
@@ -271,7 +271,7 @@ class WRepeatableComponentCollection
 		
 		foreach (array_keys($this->_collections) as $key) {
 			$this->_collections[$key]["_remove"]->setEnabled($includeRemove);
-			$m .= "<tr><td valign='top' style='border-bottom: 1px solid #555;'>".$this->_collections[$key]["_remove"]->getMarkup($fieldName."_".$key."__remove")."</td><td style='border-bottom: 1px solid #555;'>";
+			$m .= "<tr><td valign='top' style='border-bottom: 1px solid #555; width: 75px'>".$this->_collections[$key]["_remove"]->getMarkup($fieldName."_".$key."__remove")."</td><td style='border-bottom: 1px solid #555;'>";
 			$m .= Wizard::parseText($this->_text, $this->_collections[$key], $fieldName."_".$key."_");
 			$m .= "</td></tr>\n";
 		}

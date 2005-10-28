@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WVerifiedChangeInput.class.php,v 1.3 2005/10/24 20:32:38 adamfranco Exp $
+ * @version $Id: WVerifiedChangeInput.class.php,v 1.4 2005/10/28 16:33:59 adamfranco Exp $
  */ 
 
 /**
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WVerifiedChangeInput.class.php,v 1.3 2005/10/24 20:32:38 adamfranco Exp $
+ * @version $Id: WVerifiedChangeInput.class.php,v 1.4 2005/10/28 16:33:59 adamfranco Exp $
  */
 
 class WVerifiedChangeInput 
@@ -206,17 +206,17 @@ class WVerifiedChangeInput
 			$this->_input->setOnChange($this->_checkbox->getCheckJS($fieldName."_checked"));
 		}
 			
-		$m = "\n<div>";
-		$m .= "\n\t<div title='".$this->_label."' style='display: inline; vertical-align: top'>";
+		$m = "\n<table><tr>";
+		$m .= "\n\t<td title='".$this->_label."' style='vertical-align: top; padding: 0px; margin: 0px;'>";
 		
 		$m .= "\n\t\t".$this->_checkbox->getMarkup($fieldName."_checked");
 		
-		$m .= "\n\t</div>\n\t<div style='display: inline; '>";
+		$m .= "\n\t</td>\n\t<td style='padding: 0px; margin: 0px;'>";
 		
 		$m .= "\n\t\t".$this->_input->getMarkup($fieldName);
 		
-		$m .= "\n\t</div>";
-		$m .= "\n</div>";
+		$m .= "\n\t</td>";
+		$m .= "\n</tr></table>";
 		return $m;
 	}
     
