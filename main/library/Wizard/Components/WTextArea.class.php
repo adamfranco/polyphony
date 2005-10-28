@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextArea.class.php,v 1.5 2005/10/20 19:10:01 adamfranco Exp $
+ * @version $Id: WTextArea.class.php,v 1.6 2005/10/28 16:33:26 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__).'/WTextInput.abstract.php');
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__).'/WTextInput.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextArea.class.php,v 1.5 2005/10/20 19:10:01 adamfranco Exp $
+ * @version $Id: WTextArea.class.php,v 1.6 2005/10/28 16:33:26 adamfranco Exp $
  */
 class WTextArea 
 	extends WTextInput 
@@ -73,6 +73,17 @@ class WTextArea
 	 */
 	function setColumns ($cols) {
 		$this->_cols = $cols;
+	}
+	
+	/**
+	 * Sets the size of this text area. This method allows Text-Areas to be used
+	 * more interchangebly with text-fields
+	 * @param int $size
+	 * @access public
+	 * @return void
+	 */
+	function setSize ($size) {
+		$this->setColumns($size);
 	}
 	
 	/**
