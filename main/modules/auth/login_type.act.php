@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login_type.act.php,v 1.14 2005/07/22 15:35:16 adamfranco Exp $
+ * @version $Id: login_type.act.php,v 1.15 2005/10/28 14:20:30 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login_type.act.php,v 1.14 2005/07/22 15:35:16 adamfranco Exp $
+ * @version $Id: login_type.act.php,v 1.15 2005/10/28 14:20:30 cws-midd Exp $
  */
 class login_typeAction
 	extends Action
@@ -60,6 +60,7 @@ class login_typeAction
 		}
 		// If we aren't authenticated, try to authenticate.
 		else {
+
 			$harmoni->request->startNamespace("polyphony");
 			
 			$currentUrl =& $harmoni->request->mkURL();
@@ -76,8 +77,9 @@ class login_typeAction
 				$harmoni->history->goBack("polyphony/login");
 			}
 			
-			// Otherwise, print our our failed-login screen:
+			// Otherwise, send us to our failed-login screen:
 			else {
+				$harmoni =& Harmoni::instance();
 				
 				// Set our textdomain
 				$defaultTextDomain = textdomain("polyphony");
@@ -103,7 +105,7 @@ class login_typeAction
 				
 				// go back to the default text domain
 				textdomain($defaultTextDomain);
-				
+
 				return $introText;
 			}
 		}

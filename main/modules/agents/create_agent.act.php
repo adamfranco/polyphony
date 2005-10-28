@@ -6,14 +6,14 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.12 2005/09/07 21:18:25 adamfranco Exp $
+ * @version $Id: create_agent.act.php,v 1.13 2005/10/28 14:20:29 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
 require_once(HARMONI."GUIManager/Components/Blank.class.php");
 
 /**
- * This action will allow for the modification of group Membership.
+ * This action will allow for the creation of agents.
  *
  * @since 11/10/04 
  * 
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.12 2005/09/07 21:18:25 adamfranco Exp $
+ * @version $Id: create_agent.act.php,v 1.13 2005/10/28 14:20:29 cws-midd Exp $
  */
 class create_agentAction 
 	extends MainWindowAction
@@ -55,7 +55,7 @@ class create_agentAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		return dgettext("polyphony", "Manage Group Membership");
+		return dgettext("polyphony", "Create Agents");
 	}
 	
 	/**

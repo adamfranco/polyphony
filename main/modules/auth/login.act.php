@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login.act.php,v 1.10 2005/07/22 15:35:14 adamfranco Exp $
+ * @version $Id: login.act.php,v 1.11 2005/10/28 14:20:30 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login.act.php,v 1.10 2005/07/22 15:35:14 adamfranco Exp $
+ * @version $Id: login.act.php,v 1.11 2005/10/28 14:20:30 cws-midd Exp $
  */
 class loginAction
 	extends Action
@@ -62,15 +62,17 @@ class loginAction
 			// If they are authenticated, quit
 			if ($authN->isUserAuthenticated($authType)) {
 				$isAuthenticated = TRUE;
-				break;
 			}
 		}
-		
+
 		if ($isAuthenticated) {
-			// Send us back to where we were
+			// Send us back to where we want to be if we succeeded 
+			// (usually where we were)
 			$harmoni->history->goBack("polyphony/login");
 		} else {
-			throwError(new Error("Could not authenticate, but we weren't forwarded to the failed auth action for some reason.","Polyphony::auth::login",true));
+			// send us to where we want to be if we failed
+			// (possibly some form of authentication viewer)
+			$harmoni->history->goBack("polyphony/login_fail");
 		}
 	}
 }
