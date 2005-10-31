@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WFileUploadField.class.php,v 1.2 2005/08/10 17:52:05 adamfranco Exp $
+ * @version $Id: WFileUploadField.class.php,v 1.3 2005/10/31 22:54:19 adamfranco Exp $
  */
 
 require_once (POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once (POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WFileUploadField.class.php,v 1.2 2005/08/10 17:52:05 adamfranco Exp $
+ * @version $Id: WFileUploadField.class.php,v 1.3 2005/10/31 22:54:19 adamfranco Exp $
  */
 class WFileUploadField 
 	extends WizardComponent 
@@ -37,6 +37,9 @@ class WFileUploadField
 	var $_errString = null;
 
 	var $_accept = array ();
+	
+	var $_startingDisplayFilename;
+	var $_startingDisplaySize;
 
 	/**
 	 * Sets the CSS style of this field.
@@ -70,6 +73,47 @@ class WFileUploadField
 		$this->_filename = $filename != null ? $filename : basename($filename);
 		$this->_size = filesize($filename);
 		$this->_hdfile = $filename;
+	}
+	
+	/**
+	 * Sets the values of the field to display until the user enters the field.
+	 * @param string $text
+	 * @access public
+	 * @return void
+	 */
+	function setStartingDisplay ($filename, $size) {
+		$this->_startingDisplayFilename = $filename;
+		$this->_startingDisplaySize = $size;
+	}
+	
+	/**
+	 * Sets the values of this field. This is needed when the field is part of
+	 * a repeatable collection.
+	 *
+	 * @param array $values
+	 * @access public
+	 * @return void
+	 */
+	function setValue ($values) {
+		foreach ($values as $key => $value) {
+			switch ($key) {
+				case "name":
+					$this->_filename = $value;
+					break;
+				case "type":
+					$this->_mimetype = $value;
+					break;
+				case "size":
+					$this->_size = $value;
+					break;
+				case "starting_name":
+					$this->_startingDisplayFilename = $value;
+					break;
+				case "starting_size":
+					$this->_startingDisplaySize = $value;
+					break;
+			}
+		}
 	}
 
 	/**
@@ -152,22 +196,6 @@ class WFileUploadField
 	}
 
 	/**
-	 * Returns a filesize string
-	 * @param integer $size
-	 * @access private
-	 * @return string
-	 */
-	function _mkfilesize($size) {
-		$j = 0;
-		$ext = array ("B", "KB", "MB", "GB", "TB");
-		$file_size = $size;
-		while ($file_size >= pow(1024, $j))
-			++ $j;
-		$file_size = round($file_size / pow(1024, $j -1) * 100) / 100 . $ext[$j -1];
-		return $file_size;
-	}
-
-	/**
 	 * Returns a block of XHTML-valid code that contains markup for this specific
 	 * component. 
 	 * @param string $fieldName The field name to use when outputting form data or
@@ -181,7 +209,12 @@ class WFileUploadField
 		$m = "";
 
 		if ($this->_filename) {
-			$m .= "<i>". $this->_filename." (".$this->_mkfilesize($this->_size).")</i>\n";
+			$size =& ByteSize::withValue($this->_size);
+			$m .= "<i>". $this->_filename." (".$size->asString().")</i>\n";
+		} else if ($this->_startingDisplayFilename && $this->_startingDisplaySize) {
+			$size =& ByteSize::withValue($this->_startingDisplaySize);
+			$m .= "<i>". $this->_startingDisplayFilename
+				." (".$size->asString().")</i>\n";
 		}
 
 		$m .= "<input type='file' name='$name'";
