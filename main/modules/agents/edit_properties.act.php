@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_properties.act.php,v 1.4 2005/11/01 19:55:27 adamfranco Exp $
+ * @version $Id: edit_properties.act.php,v 1.5 2005/11/01 20:25:27 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_properties.act.php,v 1.4 2005/11/01 19:55:27 adamfranco Exp $
+ * @version $Id: edit_properties.act.php,v 1.5 2005/11/01 20:25:27 adamfranco Exp $
  */
 class edit_propertiesAction 
 	extends MainWindowAction
@@ -219,7 +219,12 @@ END;
 		$valueComponent->setSize(40);
 		if (count($list) > 1) {
 //			$valueComponent->setOnChange("alert(this.id+'_update_dummy');");
-			$valueComponent->setOnChange("getWizardElement(this.id+'_update').value = '1'; getWizardElement(this.id+'_update_dummy').checked = true;");
+			$valueComponent->setOnChange(
+				"if (this.value != '' && this.value != '".dgettext("polyphony", "(multiple values exist)")."')" .
+				"{" . 		
+					"getWizardElement(this.id+'_update').value = '1';" .
+					"getWizardElement(this.id+'_update_dummy').checked = true;" .
+				"}");
 			$collection->addComponent("value_update", new WCheckBox());
 		}
 
@@ -238,14 +243,16 @@ END;
 					'update'=>false,
 					'value'=>''
 				);
-				
-				// if the values are the same and there are as many values as there are agents (otherwise, some didn't have a value),
-				// add the value in to the display.
-				if ($typeSameArray[$key] && $valueCount[$typeString][$key] == count($list)) $valuesArray['value'] = $typeArray[$key];
-				
+								
 				$newSet =& $collection->addValueCollection($valuesArray);
 				$newSet["key"]->setReadOnly(true);
 				$newSet["key"]->setStyle("border: 0px;"); // <-- not sure if this actually works as desired.
+				// if the values are the same and there are as many values as there are agents (otherwise, some didn't have a value),
+				// add the value in to the display.
+				if ($typeSameArray[$key] && $valueCount[$typeString][$key] == count($list))
+					$newSet['value']->setValue($typeArray[$key]);
+				else
+					$newSet['value']->setStartingDisplayText(dgettext("polyphony", "(multiple values exist)"));
 			}
 		}
 		
@@ -295,7 +302,12 @@ END;
 			if (count($list) == 1) $agent->deleteAllProperties();
 			
 			foreach($props as $values) {
-				$type = $values['type']?Type::stringToType($values['type']):$agent->getType();
+				if ($values['type'])
+					$type = Type::stringToType($values['type']);
+				else
+					$type = new Type("agent_properties", "harmoni", "custom", 
+						"Properties defined outside of an authentication system.");
+				
 				$valuesHandled[Type::typeToString($type)][$values['key']] = true;
 				if (count($list) == 1 || $values['value_update']) {
 					$key = $values['key'];
