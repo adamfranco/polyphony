@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.31 2005/10/24 20:51:13 cws-midd Exp $
+ * @version $Id: choose_agent.act.php,v 1.32 2005/11/01 22:02:43 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.31 2005/10/24 20:51:13 cws-midd Exp $
+ * @version $Id: choose_agent.act.php,v 1.32 2005/11/01 22:02:43 adamfranco Exp $
  */
 class choose_agentAction 
 	extends MainWindowAction
@@ -328,7 +328,7 @@ END;
 		$harmoni->request->forget("search_type");
 		$harmoni->request->forget("agentId");
 //		$oldNS = $harmoni->request->endNamespace();
-		$harmoni->request->startNamespace("polyphony-agents");
+// 		$harmoni->request->startNamespace("polyphony-agents");
 		
 		$agentId =& $member->getId();
 		$agentIdString= $agentId->getIdString();
@@ -342,7 +342,7 @@ END;
 		print "<span style='text-decoration: underline;'>".$id->getIdString()." - ".$member->getDisplayName()."</span></a>";
 		print " - <em>".$memberType->getDescription()."</em>";		
 		
-		$harmoni->request->endNamespace();
+// 		$harmoni->request->endNamespace();
 		$harmoni->request->passthrough();
 //		$harmoni->request->startNamespace($oldNS);
 	}
