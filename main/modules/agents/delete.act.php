@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: delete.act.php,v 1.1 2005/09/08 20:48:53 gabeschine Exp $
+ * @version $Id: delete.act.php,v 1.2 2005/11/01 19:54:54 adamfranco Exp $
  */
 
 require_once(HARMONI."/GUIManager/Layouts/YLayout.class.php");
@@ -29,7 +29,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: delete.act.php,v 1.1 2005/09/08 20:48:53 gabeschine Exp $
+ * @version $Id: delete.act.php,v 1.2 2005/11/01 19:54:54 adamfranco Exp $
  */
 class deleteAction 
 	extends MainWindowAction
@@ -46,7 +46,7 @@ class deleteAction
  		$authZManager =& Services::getService("AuthZ");
  		$idManager =& Services::getService("IdManager");
  		return $authZManager->isUserAuthorized(
- 					$idManager->getId("edu.middlebury.authorization.delete_agents"),
+ 					$idManager->getId("edu.middlebury.authorization.delete_agent"),
  					$idManager->getId("edu.middlebury.authorization.root"));
 	}
 
