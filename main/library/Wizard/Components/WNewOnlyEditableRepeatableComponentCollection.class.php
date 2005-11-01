@@ -6,11 +6,13 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WNewOnlyEditableRepeatableComponentCollection.class.php,v 1.1 2005/10/24 20:32:38 adamfranco Exp $
+ * @version $Id: WNewOnlyEditableRepeatableComponentCollection.class.php,v 1.2 2005/11/01 19:55:27 adamfranco Exp $
  */ 
 
 /**
- * This component allows for the creation of repeatable components or groups of components. 
+ * This component allows for the creation of repeatable components or groups of 
+ * components. Only the newly added comonents are editable. Existing ones can only
+ * be removed.
  * 
  * @since Aug 1, 2005
  * @package polyphony.library.wizard.components
@@ -18,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WNewOnlyEditableRepeatableComponentCollection.class.php,v 1.1 2005/10/24 20:32:38 adamfranco Exp $
+ * @version $Id: WNewOnlyEditableRepeatableComponentCollection.class.php,v 1.2 2005/11/01 19:55:27 adamfranco Exp $
  */
 
 class WNewOnlyEditableRepeatableComponentCollection

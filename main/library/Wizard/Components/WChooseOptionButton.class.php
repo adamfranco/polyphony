@@ -6,8 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.class.php,v 1.7 2005/11/01 19:55:27 adamfranco Exp $
- */ 
+ * @version $Id: WChooseOptionButton.class.php,v 1.1 2005/11/01 19:55:27 adamfranco Exp $
+ */
+
+require_once(dirname(__FILE__)."/WEventButton.class.php");
 
 /**
  * This is a base class for any button in a {@link Wizard} that will throw an event when
@@ -19,16 +21,13 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.class.php,v 1.7 2005/11/01 19:55:27 adamfranco Exp $
+ * @version $Id: WChooseOptionButton.class.php,v 1.1 2005/11/01 19:55:27 adamfranco Exp $
  */
-class WEventButton 
-	extends WizardComponent
+class WChooseOptionButton 
+	extends WEventButton
 {
-	var $_event = "nop";
-	var $_label = "NO LABEL";
-	var $_pressed = false;
-	var $_enabled = true;
-	var $_onclick = null;
+	var $_options = array();
+	var $_option;
 	
 	/**
 	 * virtual constructor
@@ -39,7 +38,7 @@ class WEventButton
 	 * @static
 	 */
 	function &withEventAndLabel ($event, $label) {
-		$obj =& new WEventButton();
+		$obj =& new WChooseOptionButton();
 		$obj->setEventAndLabel($event, $label);
 		
 		return $obj;
@@ -52,54 +51,23 @@ class WEventButton
 	 * @return ref object
 	 */
 	function &withLabel ($label) {
-		$obj =& new WEventButton();
+		$obj =& new WChooseOptionButton();
 		$obj->_label = $label;
 		return $obj;
 	}
 	
 	/**
-	 * Sets the event type and label for the button.
-	 * @param string $event
-	 * @param string $label
-	 * @param optional string $textDomain the gettext() text domain to use for the label.
-	 * @access public
+	 * Add an array of value collections for use when adding
+	 * 
+	 * @param string $name
+	 * @param mixed $value
 	 * @return void
+	 * @access public
+	 * @since 11/1/05
 	 */
-	function setEventAndLabel ($event, $label) {
-		$this->_label = $label;
-		$this->_event = $event;
+	function addOptionValue ( $name, &$value ) {
+		$this->_options[$name] =& $value;
 	}
-	
-	/**
-	 * Sets the label for the button.
-	 * @param string $label
-	 * @param optional string $textDomain the gettext() text domain to use for the label.
-	 * @access public
-	 * @return void
-	 */
-	function setLabel ($label) {
-		$this->_label = $label;
-	}
-	
-	/**
-	 * Sets if this component will be enabled or disabled.
-	 * @param boolean $enabled
-	 * @access public
-	 * @return void
-	 */
-	function setEnabled ($enabled) {
-		$this->_enabled = $enabled;
-	}
-	
-	/**
-	 * Sets the on-click javascript to be called.
-	 * @param string $javascript
-	 * @access public
-	 * @return void
-	 */
-	function setOnClick ($javascript) {
-		$this->_onclick = $javascript;
-	}	
 	
 	/**
 	 * Tells the wizard component to update itself - this may include getting
@@ -112,11 +80,13 @@ class WEventButton
 	 */
 	function update ($fieldName) {
 		$val = RequestContext::value($fieldName);
+		$option = stripslashes(RequestContext::value($fieldName."_option"));
 		if ($val) {
 			// trigger the save event on the wizard
 			$wizard =& $this->getWizard();
 			$wizard->triggerLater($this->_event, $wizard);
 			$this->_pressed = true;
+			$this->_option = $option;
 		}
 	}
 	
@@ -128,8 +98,15 @@ class WEventButton
 	 */
 	function getAllValues () {
 		$val = $this->_pressed;
+		$option = $this->_option;
 		$this->_pressed = false;
-		return $val;
+		$this->_option = null;
+		
+		$values = array();
+		$values['pressed'] = $val;
+		$values['option_name'] = $option;
+		$values['option'] =& $this->_options[$option];
+		return $values;
 	}
 	
 	/**
@@ -142,11 +119,15 @@ class WEventButton
 	 */
 	function getMarkup ($fieldName) {
 		$name = RequestContext::name($fieldName);
-		$label = htmlentities($this->_label, ENT_QUOTES);
-		$onclick = '';
-		if ($this->_onclick) $onclick = addslashes($this->_onclick) . ";";
-		$m = "<input type='hidden' name='$name' id='$name' value='0' />\n";
-		$m .= "<input type='button' value='$label' onclick='$onclick if (validateWizard(this.form)) { getWizardElement(\"$name\").value=\"1\"; this.form.submit(); }'".($this->_enabled?"":" disabled='disabled'")." />";
+		$m = parent::getMarkup($fieldName);
+		$m .= "\n<select name='".$name."_option'>";
+		
+		foreach (array_keys($this->_options) as $option)
+			if ($option != '')
+				$m .= "\n\t<option value='".addslashes($option)."'>".$option."</option>";
+		
+		$m .= "\n</select>";
+		
 		return $m;
 	}
 }

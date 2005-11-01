@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.32 2005/10/31 21:19:18 adamfranco Exp $
+ * @version $Id: polyphony.inc.php,v 1.33 2005/11/01 19:55:27 adamfranco Exp $
  */
 
 /**
@@ -39,9 +39,11 @@ require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSaveCancelListe
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WRepeatableComponentCollection.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WOrderedRepeatableComponentCollection.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WNewOnlyEditableRepeatableComponentCollection.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/Components/WAddFromListRepeatableComponentCollection.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WHiddenField.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WText.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WVerifiedChangeInput.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/Components/WChooseOptionButton.class.php");
 
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WAgentBrowser.class.php");
 

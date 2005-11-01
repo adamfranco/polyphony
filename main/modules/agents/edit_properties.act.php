@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_properties.act.php,v 1.3 2005/09/28 20:50:28 gabeschine Exp $
+ * @version $Id: edit_properties.act.php,v 1.4 2005/11/01 19:55:27 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_properties.act.php,v 1.3 2005/09/28 20:50:28 gabeschine Exp $
+ * @version $Id: edit_properties.act.php,v 1.4 2005/11/01 19:55:27 adamfranco Exp $
  */
 class edit_propertiesAction 
 	extends MainWindowAction
@@ -195,15 +195,28 @@ END;
 		$wizard->addComponent("_save", WSaveButton::withLabel(dgettext("polyphony", "Update")));
 		$wizard->addComponent("_cancel", new WCancelButton());
 		
-		$collection =& $wizard->addComponent("properties", new WRepeatableComponentCollection());
+		$collection =& $wizard->addComponent("properties", 
+			new WAddFromListRepeatableComponentCollection());
 		$collection->setStartingNumber(0);
-						$keyComponent =& $collection->addComponent("key", new WTextField());
-		$keyComponent->setSize(20);
+		$propertyManager =& Services::getService("Property");
+		$collection->addOptionCollection(dgettext("polyphony", "New Key..."), $value = null);
+		unset($array);
+		$allProperties = $propertyManager->getAllPropertyKeys();
+		foreach ($allProperties as $key) {
+			$collection->addOptionCollection($key, $array = array(
+				'key'=>$key,
+				'update'=>false,
+				'value'=>''));
+			unset($array);
+		}
+		
+		$keyComponent =& $collection->addComponent("key", new WTextField());
+		$keyComponent->setSize(15);
 		$collection->addComponent("type", new WHiddenField());
 		$typeText =& $collection->addComponent("type_text", new WText());
 		$typeText->setStyle("color: #666;");
 		$valueComponent =& $collection->addComponent("value", new WTextField());
-		$valueComponent->setSize(50);
+		$valueComponent->setSize(40);
 		if (count($list) > 1) {
 //			$valueComponent->setOnChange("alert(this.id+'_update_dummy');");
 			$valueComponent->setOnChange("getWizardElement(this.id+'_update').value = '1'; getWizardElement(this.id+'_update_dummy').checked = true;");
@@ -239,9 +252,24 @@ END;
 		if (count($values) == 0) $collection->setStartingNumber(1);
 		
 		if (count($list) > 1) {
-			$collection->setElementLayout("[[value_update]] [[key]] [[type_text]] <span style='font-weight: bolder; font-size: larger;'>=</span> [[value]]\n[[type]]");
+			$collection->setElementLayout("
+<table width='100%'><tr>
+	<td>[[value_update]]</td>
+	<td>[[key]]</td>
+	<td>[[type_text]]</td>
+	<td><span style='font-weight: bolder; font-size: larger;'>=</span></td>
+	<td align='right'>[[value]]</td>
+	<td>[[type]]</td>
+</tr></table");
 		} else {
-			$collection->setElementLayout("[[key]] [[type_text]] <span style='font-weight: bolder; font-size: larger;'>=</span> [[value]]\n[[type]]");
+			$collection->setElementLayout("
+<table width='100%'><tr>
+	<td>[[key]]</td>
+	<td>[[type_text]]</td>
+	<td><span style='font-weight: bolder; font-size: larger;'>=</span></td>
+	<td align='right'>[[value]]</td>
+	<td>[[type]]</td>
+</tr></table>");
 		}
 		return $wizard;
 	}
