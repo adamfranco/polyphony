@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.37 2005/09/28 22:14:16 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.38 2005/11/02 22:40:45 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -26,7 +26,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.37 2005/09/28 22:14:16 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.38 2005/11/02 22:40:45 adamfranco Exp $
  */
 class edit_authorizationsAction 
 	extends MainWindowAction
@@ -385,10 +385,10 @@ class edit_authorizationsAction
 				
 				if ($numImplicit > 0) {
 				// print out a checkbox	 for the implicit AZ
-					$safeTitle = str_replace("\n","\\n",htmlentities($title, ENT_QUOTES));
+// 					$safeTitle = str_replace("\n","\\n",htmlentities($title, ENT_QUOTES));
 					print "\n\t\t\t\t\t<span style='white-space: nowrap'>";
 					print "\n\t\t\t\t\t\t<input type='checkbox' name='blah' value='blah'";
-					print " title='".$safeTitle."'";
+					print " title='".htmlentities($title, ENT_QUOTES)."'";
 					print " checked='checked' disabled='disabled' />";
 					if ($totalAgents > 1) {
 						print "Im: <b>". $numImplicit . "/" . $totalAgents . "</b> ";
@@ -397,8 +397,8 @@ class edit_authorizationsAction
 	// 			print " id='".$explicitAgentId->getIdString()
 	// 						."-".$functionId->getIdString()
 	// 						."-".$explicitQualifierId->getIdString()."'";
-					print " title='".$safeTitle."'";
-					print " href=\"Javascript:window.alert('".$safeTitle."')\"";
+					print " title='".htmlentities($title, ENT_QUOTES)."'";
+					print " href=\"Javascript:window.alert('".str_replace("\n","\\n",htmlentities($title, ENT_QUOTES))."')\"";
 					print ">?</a>";
 						
 					print "\n\t\t\t\t\t</span>";
