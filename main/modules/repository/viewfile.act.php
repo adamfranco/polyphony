@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.6 2005/07/21 15:45:25 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.7 2005/11/03 15:33:42 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.6 2005/07/21 15:45:25 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.7 2005/11/03 15:33:42 adamfranco Exp $
  */
 class viewfileAction 
 	extends MainWindowAction
@@ -125,8 +125,21 @@ class viewfileAction
 				// Get a version in a web-safe format if so requested
 				if ($websafe) 
 				{
-					header("Content-Type: "
-						. $imgProcessor->getWebsafeFormat($parts['MIME_TYPE']->getValue()));
+					header("Content-Type: ". $imgProcessor->getWebsafeFormat(
+							$parts['MIME_TYPE']->getValue()));
+					
+					$mime =& Services::getService("MIME");
+					$extension = $mime->getExtensionForMIMEType(
+									$imgProcessor->getWebsafeFormat(
+										$parts['MIME_TYPE']->getValue()));
+					if (ereg("^.+\.".$extension."$", $parts['FILE_NAME']->getValue())) {
+						header('Content-Disposition: attachment; filename="'.
+							$parts['FILE_NAME']->getValue().'"');
+					} else {
+						header('Content-Disposition: attachment; filename="'.
+							$parts['FILE_NAME']->getValue().".".$extension.'"');
+					}
+					
 					print $imgProcessor->getWebsafeData(
 									$parts['MIME_TYPE']->getValue(),
 									$size,
@@ -136,6 +149,8 @@ class viewfileAction
 				else {
 					header("Content-Type: "
 						. $imgProcessor->getResizedFormat($parts['MIME_TYPE']->getValue()));
+					header('Content-Disposition: attachment; filename="'.
+							$parts['FILE_NAME']->getValue().'"');
 					
 					print $imgProcessor->getResizedData(
 									$parts['MIME_TYPE']->getValue(),
@@ -146,6 +161,8 @@ class viewfileAction
 			// Otherwise, just send the original file
 			else {
 				header("Content-Type: ".$parts['MIME_TYPE']->getValue());
+				header('Content-Disposition: attachment; filename="'.
+							$parts['FILE_NAME']->getValue().'"');
 			
 				print $parts['FILE_DATA']->getValue();
 			}

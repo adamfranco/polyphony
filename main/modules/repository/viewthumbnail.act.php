@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.5 2005/07/21 15:45:25 adamfranco Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.6 2005/11/03 15:33:42 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.5 2005/07/21 15:45:25 adamfranco Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.6 2005/11/03 15:33:42 adamfranco Exp $
  */
 class viewthumbnailAction 
 	extends MainWindowAction
@@ -105,8 +105,14 @@ class viewthumbnailAction
 			
 			// If we have a thumbnail, print that.
 			if ($parts['THUMBNAIL_MIME_TYPE']->getValue()) {
-			
+				
 				header("Content-Type: ".$parts['THUMBNAIL_MIME_TYPE']->getValue());
+				
+				$mime =& Services::getService("MIME");
+				$extension = $mime->getExtensionForMIMEType(
+									$parts['THUMBNAIL_MIME_TYPE']->getValue());
+				header('Content-Disposition: attachment; filename="'.
+					$parts['FILE_NAME']->getValue().".".$extension.'"');
 			
 				print $parts['THUMBNAIL_DATA']->getValue();
 			}
@@ -169,6 +175,8 @@ class viewthumbnailAction
 					$typeParts = explode("/", $mimeType);
 					$imageName = $typeImages[$typeParts[0]];
 				}
+				
+				header('Content-Disposition: attachment; filename="'.$imageName.'"');
 				
 				print file_get_contents(dirname(__FILE__)."/icons/".$imageName);
 			}
