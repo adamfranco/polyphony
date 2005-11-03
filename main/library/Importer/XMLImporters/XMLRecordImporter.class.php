@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordImporter.class.php,v 1.7 2005/10/19 18:56:42 cws-midd Exp $
+ * @version $Id: XMLRecordImporter.class.php,v 1.8 2005/11/03 21:13:15 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLPartImporter.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordImporter.class.php,v 1.7 2005/10/19 18:56:42 cws-midd Exp $
+ * @version $Id: XMLRecordImporter.class.php,v 1.8 2005/11/03 21:13:15 cws-midd Exp $
  */
 class XMLRecordImporter extends XMLImporter {
 		
@@ -33,8 +33,8 @@ class XMLRecordImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function XMLRecordImporter () {
-		parent::XMLImporter();
+	function XMLRecordImporter (&$existingArray) {
+		parent::XMLImporter($existingArray);
 	}
 	
 	/**
@@ -66,6 +66,17 @@ class XMLRecordImporter extends XMLImporter {
 	}
 
 	/**
+	 * Checks if the user is able to import underneath this level
+	 *
+	 * @param string $authZQString qualifier for authz checking
+	 * @access public
+	 * @since 11/3/05
+	 */
+	function canImportBelow($authZQString) {
+		return true;
+	}
+
+	/**
 	 * Imports the current node's information
 	 * 
 	 * @access public
@@ -76,8 +87,8 @@ class XMLRecordImporter extends XMLImporter {
 		
 		$this->getNodeInfo();
 		
-		if ($this->_node->hasAttribute("isExisting") && 		
-			($this->_node->getAttribute("isExisting") == TRUE)) {
+		if ($this->_node->hasAttribute("id") && 
+			in_array($this->_node->getAttribute("id"), $this->_existingArray)) {
 			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
 			$this->_object =& $this->_parent->getRecord($this->_myId);
 		} else if (($this->_type == "insert") || 
@@ -116,9 +127,14 @@ class XMLRecordImporter extends XMLImporter {
 			$idManager =& Services::getService("Id");
 			$this->_info['recordStructureId'] =& $idManager->getId(
 				$result['conc_id']);
-		} else
-			throwError(new Error("table", "bad", TRUE));
-			//$this->addError("Bad XML IDREF: ".$id);
+		} else {
+			while ($results->hasNext()) {
+				$row =& $results->next();
+				printpre($row);
+			}
+//			throwError(new Error("table", "bad", TRUE));
+			$this->addError("Bad XML IDREF: ".$id);
+		}
 		$results->free();
 	}
 }

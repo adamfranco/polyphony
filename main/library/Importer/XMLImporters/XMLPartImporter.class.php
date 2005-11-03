@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartImporter.class.php,v 1.7 2005/10/28 15:08:16 adamfranco Exp $
+ * @version $Id: XMLPartImporter.class.php,v 1.8 2005/11/03 21:13:15 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartImporter.class.php,v 1.7 2005/10/28 15:08:16 adamfranco Exp $
+ * @version $Id: XMLPartImporter.class.php,v 1.8 2005/11/03 21:13:15 cws-midd Exp $
  */
 class XMLPartImporter extends XMLImporter {
 		
@@ -32,8 +32,8 @@ class XMLPartImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function XMLPartImporter () {
-		parent::XMLImporter();
+	function XMLPartImporter (&$existingArray) {
+		parent::XMLImporter($existingArray);
 	}
 	
 	/**
@@ -65,6 +65,17 @@ class XMLPartImporter extends XMLImporter {
 	}
 
 	/**
+	 * Checks if the user is able to import underneath this level
+	 *
+	 * @param string $authZQString qualifier for authz checking
+	 * @access public
+	 * @since 11/3/05
+	 */
+	function canImportBelow($authZQString) {
+		return true;
+	}
+
+	/**
 	 * Imports the current node's information
 	 * 
 	 * @access public
@@ -75,8 +86,8 @@ class XMLPartImporter extends XMLImporter {
 		
 		$this->getNodeInfo();
 
-		if ($this->_node->hasAttribute("isExisting") && 		
-			($this->_node->getAttribute("isExisting") == TRUE)) {
+		if ($this->_node->hasAttribute("id") && 
+			in_array($this->_node->getAttribute("id"), $this->_existingArray)) {
 			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
 			$this->_object =& $this->_parent->getPart($this->_myId);
 		} else if (($this->_type == "insert") || 

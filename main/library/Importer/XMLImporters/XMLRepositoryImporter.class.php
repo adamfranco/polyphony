@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.7 2005/10/13 17:36:51 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.8 2005/11/03 21:13:15 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRecordStructureIm
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.7 2005/10/13 17:36:51 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.8 2005/11/03 21:13:15 cws-midd Exp $
  */
 class XMLRepositoryImporter extends XMLImporter {
 		
@@ -34,8 +34,8 @@ class XMLRepositoryImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/5/05
 	 */
-	function XMLRepositoryImporter () {
-		parent::XMLImporter();
+	function XMLRepositoryImporter (&$existingArray) {
+		parent::XMLImporter($existingArray);
 	}
 
 	/**
@@ -48,8 +48,8 @@ class XMLRepositoryImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/11/05
 	 */
-	function &withFile ($filepath, $type, $class = 'XMLRepositoryImporter') {
-		return parent::withFile($filepath, $type, $class);
+	function &withFile (&$existingArray, $filepath, $type, $class = 'XMLRepositoryImporter') {
+		return parent::withFile($existingArray, $filepath, $type, $class);
 	}
 
 	/**
@@ -63,8 +63,8 @@ class XMLRepositoryImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/11/05
 	 */
-	function &withObject (&$object, $filepath, $type, $class = 'XMLRepositoryImporter') {
-		return parent::withObject($object, $filepath, $type, $class);
+	function &withObject (&$existingArray, &$object, $filepath, $type, $class = 'XMLRepositoryImporter') {
+		return parent::withObject($existingArray, $object, $filepath, $type, $class);
 	}
 	
 	/**
@@ -109,8 +109,8 @@ class XMLRepositoryImporter extends XMLImporter {
 		$this->getNodeInfo();
 		
 		// make/find object
-		if ($this->_node->hasAttribute("isExisting") && 		
-			($this->_node->getAttribute("isExisting") == TRUE)) {
+		if ($this->_node->hasAttribute("id") && 
+			in_array($this->_node->getAttribute("id"), $this->_existingArray)) {
 			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
 			$this->_object =& $repositoryManager->getRepository($this->_myId);
 		} else if (($this->_type == "insert") || 
@@ -157,7 +157,7 @@ class XMLRepositoryImporter extends XMLImporter {
 		$createTableQuery->addSQLQuery("Create temporary table if not exists
 			xml_id_matrix ( xml_id varchar(50)
 			not null , conc_id varchar(75) not null)");
-		
+		$dbHandler->disconnect(IMPORTER_CONNECTION);
 		$dbHandler->connect(IMPORTER_CONNECTION);
 		$dbHandler->query($createTableQuery, IMPORTER_CONNECTION);
 	}
@@ -176,6 +176,7 @@ class XMLRepositoryImporter extends XMLImporter {
 		
 //		$dbHandler->query($dropTableQuery, $dbIndexConcerto);
 		$dbHandler->disconnect(IMPORTER_CONNECTION);
+		$dbHandler->pconnect(IMPORTER_CONNECTION);
 	}	
 	
 	/**

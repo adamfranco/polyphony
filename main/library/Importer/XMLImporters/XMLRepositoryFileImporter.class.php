@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryFileImporter.class.php,v 1.2 2005/10/20 18:33:39 cws-midd Exp $
+ * @version $Id: XMLRepositoryFileImporter.class.php,v 1.3 2005/11/03 21:13:15 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryImporte
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryFileImporter.class.php,v 1.2 2005/10/20 18:33:39 cws-midd Exp $
+ * @version $Id: XMLRepositoryFileImporter.class.php,v 1.3 2005/11/03 21:13:15 cws-midd Exp $
  */
 class XMLRepositoryFileImporter extends XMLImporter {
 
@@ -33,8 +33,8 @@ class XMLRepositoryFileImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/5/05
 	 */
-	function XMLRepositoryFileImporter () {
-		parent::XMLImporter();
+	function XMLRepositoryFileImporter (&$existingArray) {
+		parent::XMLImporter($existingArray);
 	}
 
 	/**
@@ -82,7 +82,7 @@ class XMLRepositoryFileImporter extends XMLImporter {
 		if (!ereg("^([a-zA-Z]+://|[a-zA-Z]+:\\|/)", $path))
 			$path = $node->ownerDocument->xmlPath.$path;
 		
-		$imp =& XMLRepositoryImporter::withFile($path, $type);
+		$imp =& XMLRepositoryImporter::withFile($this->_existingArray, $path, $type);
 		$imp->parseAndImport();
 	}
 }

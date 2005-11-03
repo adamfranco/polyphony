@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFilepathPartImporter.class.php,v 1.8 2005/10/19 18:56:42 cws-midd Exp $
+ * @version $Id: XMLFilepathPartImporter.class.php,v 1.9 2005/11/03 21:13:15 cws-midd Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFilepathPartImporter.class.php,v 1.8 2005/10/19 18:56:42 cws-midd Exp $
+ * @version $Id: XMLFilepathPartImporter.class.php,v 1.9 2005/11/03 21:13:15 cws-midd Exp $
  */
 class XMLFilepathPartImporter extends XMLImporter {
 		
@@ -31,8 +31,8 @@ class XMLFilepathPartImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function XMLFilepathPartImporter () {
-		parent::XMLImporter();
+	function XMLFilepathPartImporter (&$existingArray) {
+		parent::XMLImporter($existingArray);
 	}
 	
 	/**
@@ -61,6 +61,17 @@ class XMLFilepathPartImporter extends XMLImporter {
 		$this->_childImporterList = NULL;
 		$this->_childElementList = NULL;
 		$this->_info = array();
+	}
+
+	/**
+	 * Checks if the user is able to import underneath this level
+	 *
+	 * @param string $authZQString qualifier for authz checking
+	 * @access public
+	 * @since 11/3/05
+	 */
+	function canImportBelow($authZQString) {
+		return true;
 	}
 
 	/**

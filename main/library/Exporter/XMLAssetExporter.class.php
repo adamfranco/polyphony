@@ -6,9 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
+ * @version $Id: XMLAssetExporter.class.php,v 1.3 2005/11/03 21:13:15 cws-midd Exp $
  */ 
 
+require_once(POLYPHONY."/main/library/Exporter/XMLExporter.class.php");
 require_once(POLYPHONY."/main/library/Exporter/XMLRecordExporter.class.php");
 require_once(POLYPHONY."/main/library/Exporter/XMLFileRecordExporter.class.php");
 
@@ -21,29 +22,47 @@ require_once(POLYPHONY."/main/library/Exporter/XMLFileRecordExporter.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
+ * @version $Id: XMLAssetExporter.class.php,v 1.3 2005/11/03 21:13:15 cws-midd Exp $
  */
-class XMLAssetExporter {
+class XMLAssetExporter extends XMLExporter {
 		
 	/**
 	 * Constructor
 	 *
-	 * Maintains the archive, xmlfile, and file directory for data files
-	 * 
-	 * @param object Archive_Tar
-	 * @param resource
-	 * @param string
 	 * @access public
 	 * @since 10/17/05
 	 */
-	function XMLAssetExporter (&$archive, &$xmlFile, $fileDir) {
-		$this->_archive =& $archive;
-		$this->_xml =& $xmlFile;
-		$this->_fileDir = $fileDir;
-		
-		$this->_childExporterList = array("XMLRecordExporter",
+	function XMLAssetExporter () {
+		parent::XMLExporter();
+	}
+
+	/**
+	 * Creates the child lists
+	 * 
+	 * @access public
+	 * @since 10/31/05
+	 */
+	function setupSelf() {
+		$this->_childExporterList = array("XMLRecordExporter", 
 			"XMLAssetExporter");
 		$this->_childElementList = array("records", "assets");
+	}
+
+	/*
+	 * Constructor for adding repository to an export
+	 *
+	 * @param object Archive_Tar
+	 * @param string
+	 * @access public
+	 * @since 10/31/05
+	 */
+	function &withArchive(&$archive, $xmlFile, $fileDir) {
+		$exporter =& new XMLAssetExporter();
+		$exporter->_archive =& $archive;
+		$exporter->_xml =& $xmlFile;
+		$exporter->_fileDir = $fileDir;						
+		
+		return $exporter;
 	}
 
 	/**
@@ -60,9 +79,7 @@ class XMLAssetExporter {
 
 		fwrite($this->_xml,
 "\t<asset ".
-"id=\"".$this->_myId->getIdString()."\" ".
-//isExisting?			
-">\n".
+"id=\"".$this->_myId->getIdString()."\">\n".
 "\t\t<name>".$this->_object->getDisplayName()."</name>\n".
 "\t\t<description><![CDATA[".$this->_object->getDescription()."]]></description>\n".
 "\t\t<type>\n\t\t\t<domain>".$type->getDomain()."</domain>\n".
@@ -124,8 +141,8 @@ class XMLAssetExporter {
 		while ($children->hasNext()) {
 			$child =& $children->next();
 
-			$exporter =& new XMLAssetExporter($this->_archive, $this->_xml, 
-				$this->_fileDir);
+			$exporter =& XMLAssetExporter::withArchive($this->_archive,
+				$this->_xml, $this->_fileDir);
 
 			$exporter->export($child);
 		}

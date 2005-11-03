@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLThumbDataPartImporter.class.php,v 1.8 2005/10/19 18:56:42 cws-midd Exp $
+ * @version $Id: XMLThumbDataPartImporter.class.php,v 1.9 2005/11/03 21:13:15 cws-midd Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLThumbDataPartImporter.class.php,v 1.8 2005/10/19 18:56:42 cws-midd Exp $
+ * @version $Id: XMLThumbDataPartImporter.class.php,v 1.9 2005/11/03 21:13:15 cws-midd Exp $
  */
 class XMLThumbDataPartImporter extends XMLImporter {
 		
@@ -30,8 +30,8 @@ class XMLThumbDataPartImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/10/05
 	 */
-	function XMLThumbDataPartImporter () {
-		parent::XMLImporter();
+	function XMLThumbDataPartImporter (&$existingArray) {
+		parent::XMLImporter($existingArray);
 	}
 
 	/**
@@ -63,6 +63,17 @@ class XMLThumbDataPartImporter extends XMLImporter {
 	}
 
 	/**
+	 * Checks if the user is able to import underneath this level
+	 *
+	 * @param string $authZQString qualifier for authz checking
+	 * @access public
+	 * @since 11/3/05
+	 */
+	function canImportBelow($authZQString) {
+		return true;
+	}
+
+	/**
 	 * Imports the current node's information
 	 * 
 	 * @access public
@@ -73,8 +84,8 @@ class XMLThumbDataPartImporter extends XMLImporter {
 		
 		$this->getNodeInfo();
 
-		if ($this->_node->hasAttribute("isExisting") && 		
-			($this->_node->getAttribute("isExisting") == TRUE)) {
+		if ($this->_node->hasAttribute("id") && 
+			in_array($this->_node->getAttribute("id"), $this->_existingArray)) {
 			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
 			$this->_object =& $this->_parent->getPart($this->_myId);
 		} else if (($this->_type == "insert") || 

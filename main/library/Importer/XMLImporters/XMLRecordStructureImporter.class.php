@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.7 2005/10/13 17:36:51 cws-midd Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.8 2005/11/03 21:13:15 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLPartStructureImpo
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.7 2005/10/13 17:36:51 cws-midd Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.8 2005/11/03 21:13:15 cws-midd Exp $
  */
 class XMLRecordStructureImporter extends XMLImporter {
 		
@@ -34,8 +34,8 @@ class XMLRecordStructureImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function XMLRecordStructureImporter () {
-		parent::XMLImporter();
+	function XMLRecordStructureImporter (&$existingArray) {
+		parent::XMLImporter($existingArray);
 	}
 
 	/**
@@ -48,8 +48,8 @@ class XMLRecordStructureImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/11/05
 	 */
-	function &withFile ($filepath, $type, $class = 'XMLRecordStructureImporter') {
-		return parent::withFile($filepath, $type, $class);
+	function &withFile (&$existingArray, $filepath, $type, $class = 'XMLRecordStructureImporter') {
+		return parent::withFile($existingArray, $filepath, $type, $class);
 	}
 
 	/**
@@ -63,8 +63,8 @@ class XMLRecordStructureImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/11/05
 	 */
-	function &withObject (&$object, $filepath, $type, $class = 'XMLRecordStructureImporter') {
-		return parent::withObject($object, $filepath, $type, $class);
+	function &withObject (&$existingArray, &$object, $filepath, $type, $class = 'XMLRecordStructureImporter') {
+		return parent::withObject($existingArray, $object, $filepath, $type, $class);
 	}
 
 	/**
@@ -96,6 +96,17 @@ class XMLRecordStructureImporter extends XMLImporter {
 	}
 	
 	/**
+	 * Checks if the user is able to import underneath this level
+	 *
+	 * @param string $authZQString qualifier for authz checking
+	 * @access public
+	 * @since 11/3/05
+	 */
+	function canImportBelow($authZQString) {
+		return true;
+	}
+
+	/**
 	 * Checks this node for any changes to make to this
 	 * 
 	 * @access public
@@ -107,8 +118,8 @@ class XMLRecordStructureImporter extends XMLImporter {
 		$this->getNodeInfo();
 		
 		// make/find object
-		if ($this->_node->hasAttribute("isExisting") && 		
-			($this->_node->getAttribute("isExisting") == TRUE)) {
+		if ($this->_node->hasAttribute("id") && 
+			in_array($this->_node->getAttribute("id"), $this->_existingArray)) {
 			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
 			$this->_object =& $this->_parent->getRecordStructure($this->_myId);
 		} else if (($this->_type == "insert") || 

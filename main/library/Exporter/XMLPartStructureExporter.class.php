@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureExporter.class.php,v 1.3 2005/10/20 18:33:38 cws-midd Exp $
+ * @version $Id: XMLPartStructureExporter.class.php,v 1.4 2005/11/03 21:13:15 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureExporter.class.php,v 1.3 2005/10/20 18:33:38 cws-midd Exp $
+ * @version $Id: XMLPartStructureExporter.class.php,v 1.4 2005/11/03 21:13:15 cws-midd Exp $
  */
 class XMLPartStructureExporter {
 		
@@ -56,9 +56,8 @@ class XMLPartStructureExporter {
 "xml:id=\"".$this->_myId->getIdString()."\" ".
 "isMandatory=\"".(($this->_object->isMandatory())?"TRUE":"FALSE")."\" ".
 "isRepeatable=\"".(($this->_object->isRepeatable())?"TRUE":"FALSE")."\" ".
-"isPopulated=\"".(($this->_object->isPopulatedByRepository())?"TRUE":"FALSE")."\" ".	
-// isExisting?			
-">\n".
+"isPopulated=\"".(($this->_object->isPopulatedByRepository())?"TRUE":"FALSE").
+"\">\n".
 "\t\t\t<name>".$this->_object->getDisplayName()."</name>\n".
 "\t\t\t<description><![CDATA[".$this->_object->getDescription()."]]></description>\n".
 "\t\t\t<type>\n\t\t\t\t<domain>".$type->getDomain()."</domain>\n".

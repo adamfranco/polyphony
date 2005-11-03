@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileDataPartImporter.class.php,v 1.8 2005/10/20 18:33:39 cws-midd Exp $
+ * @version $Id: XMLFileDataPartImporter.class.php,v 1.9 2005/11/03 21:13:15 cws-midd Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileDataPartImporter.class.php,v 1.8 2005/10/20 18:33:39 cws-midd Exp $
+ * @version $Id: XMLFileDataPartImporter.class.php,v 1.9 2005/11/03 21:13:15 cws-midd Exp $
  */
 class XMLFileDataPartImporter extends XMLImporter {
 		
@@ -31,8 +31,8 @@ class XMLFileDataPartImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/10/05
 	 */
-	function XMLFileDataPartImporter () {
-		parent::XMLImporter();
+	function XMLFileDataPartImporter (&$existingArray) {
+		parent::XMLImporter($existingArray);
 	}
 
 	/**
@@ -64,6 +64,17 @@ class XMLFileDataPartImporter extends XMLImporter {
 	}
 
 	/**
+	 * Checks if the user is able to import underneath this level
+	 *
+	 * @param string $authZQString qualifier for authz checking
+	 * @access public
+	 * @since 11/3/05
+	 */
+	function canImportBelow($authZQString) {
+		return true;
+	}
+
+	/**
 	 * Imports the current node's information
 	 * 
 	 * @access public
@@ -74,8 +85,8 @@ class XMLFileDataPartImporter extends XMLImporter {
 		
 		$this->getNodeInfo();
 
-		if ($this->_node->hasAttribute("isExisting") && 		
-			($this->_node->getAttribute("isExisting") == TRUE)) {
+		if ($this->_node->hasAttribute("id") && 
+			in_array($this->_node->getAttribute("id"), $this->_existingArray)) {
 			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
 			$this->_object =& $this->_parent->getPart($this->_myId);
 		} else if (($this->_type == "insert") || 
@@ -108,9 +119,7 @@ class XMLFileDataPartImporter extends XMLImporter {
 			$path = $this->_node->ownerDocument->xmlPath.$path;
 		
 		$this->_info['value'] = $path;
-	
-print "filepath: ".$path;
-	
+		
 		$this->_info['partStructureId'] =& $idManager->getId("FILE_DATA");
 					
 		$this->_info['namePartId'] =& $idManager->getId("FILE_NAME");

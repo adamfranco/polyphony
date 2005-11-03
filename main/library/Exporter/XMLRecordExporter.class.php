@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
+ * @version $Id: XMLRecordExporter.class.php,v 1.3 2005/11/03 21:13:15 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Exporter/XMLPartExporter.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLPartExporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
+ * @version $Id: XMLRecordExporter.class.php,v 1.3 2005/11/03 21:13:15 cws-midd Exp $
  */
 class XMLRecordExporter {
 		
@@ -57,9 +57,7 @@ class XMLRecordExporter {
 		fwrite($this->_xml,
 "\t\t<record ".
 "id=\"".$this->_myId->getIdString()."\" ".
-"xml:id=\"".$rSId->getIdString()."\" ".
-//isExisting?			
-">\n");
+"xml:id=\"".$rSId->getIdString()."\">\n");
 		
 		foreach ($this->_childElementList as $child) {
 			$exportFn = "export".ucfirst($child);

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.7 2005/10/13 17:36:51 cws-midd Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.8 2005/11/03 21:13:15 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."Primitives/Chronology/DateAndTime.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.7 2005/10/13 17:36:51 cws-midd Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.8 2005/11/03 21:13:15 cws-midd Exp $
  */
 class XMLAssetImporter extends XMLImporter {
 		
@@ -35,8 +35,8 @@ class XMLAssetImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function XMLAssetImporter () {
-		parent::XMLImporter();
+	function XMLAssetImporter (&$existingArray) {
+		parent::XMLImporter($existingArray);
 	}
 
 	/**
@@ -49,8 +49,8 @@ class XMLAssetImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/11/05
 	 */
-	function &withFile ($filepath, $type, $class = 'XMLAssetImporter') {
-		return parent::withFile($filepath, $type, $class);
+	function &withFile (&$existingArray, $filepath, $type, $class = 'XMLAssetImporter') {
+		return parent::withFile($existingArray, $filepath, $type, $class);
 	}
 
 	/**
@@ -64,8 +64,8 @@ class XMLAssetImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/11/05
 	 */
-	function &withObject (&$object, $filepath, $type, $class = 'XMLAssetImporter') {
-		return parent::withObject($object, $filepath, $type, $class);
+	function &withObject (&$existingArray, &$object, $filepath, $type, $class = 'XMLAssetImporter') {
+		return parent::withObject($existingArray, $object, $filepath, $type, $class);
 	}
 
 	/**
@@ -113,8 +113,8 @@ class XMLAssetImporter extends XMLImporter {
 		
 		$this->getNodeInfo();
 		
-		if ($this->_node->hasAttribute("isExisting") && 		
-			($this->_node->getAttribute("isExisting") == TRUE)) {
+		if ($this->_node->hasAttribute("id") && 
+			in_array($this->_node->getAttribute("id"), $this->_existingArray)) {
 			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
 			$this->_object =& $this->_parent->getAsset($this->_myId);
 		} else if (($this->_type == "insert") || 
@@ -163,14 +163,21 @@ class XMLAssetImporter extends XMLImporter {
 	function relegateChildren () {
 		foreach ($this->_node->childNodes as $element)
 			foreach ($this->_childImporterList as $importer) {
+				if (!is_subclass_of(new $importer($this->_existingArray), 'XMLImporter')) {
+					$this->addError("Class, '$class', is not a subclass of 'XMLImporter'.");
+					break;
+				}
 				eval('$result = '.$importer.'::isImportable($element);');
 				if ($result) {
-					$imp =& new $importer();
+					$imp =& new $importer($this->_existingArray);
 					if (isset($this->_set) && $element->nodeName == "asset")
 						$this->_set->addItem($imp->import($element,
 							$this->_type, $this->_object));
 					else
 						$imp->import($element, $this->_type, $this->_object);
+					if ($imp->hasErrors()) 
+						foreach($imp->getErrors() as $error)
+							$this->addError($error);
 					unset($imp);
 				}
 			}

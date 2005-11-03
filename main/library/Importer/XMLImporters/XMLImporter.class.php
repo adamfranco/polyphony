@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.13 2005/10/20 18:33:39 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.14 2005/11/03 21:13:15 cws-midd Exp $
  *
  * @author Christopher W. Shubert
  */ 
@@ -25,7 +25,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryFileImp
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.13 2005/10/20 18:33:39 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.14 2005/11/03 21:13:15 cws-midd Exp $
  */
 class XMLImporter {
 		
@@ -37,28 +37,29 @@ class XMLImporter {
  	 * @access public
  	 * @since 10/5/05
  	 */
- 	function XMLImporter () {
- 		$this->setupSelf();
+ 	function XMLImporter (&$existingArray) {
+	 	$this->setupSelf();
+	 	$this->_errors = array();
+	 	$this->_existingArray =& $existingArray;
  	}
 
 	/**
 	 * Constructor with XML File to parse
 	 * 
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @return object mixed
+	 * @param string $filepath path to the xml file with importable data
+	 * @param string $type type of the import (update/insert)
+	 * @param string $class class of the importer to instantiate
+	 * @return object mixed 
 	 * @access public
 	 * @since 10/11/05
 	 */
-	function &withFile ($filepath, $type, $class = 'XMLImporter') {
+	function &withFile (&$existingArray, $filepath, $type, $class = 'XMLImporter') {
 		if (!(strtolower($class) == strtolower('XMLImporter')
-			|| is_subclass_of(new $class, 'XMLImporter')))
+			|| is_subclass_of(new $class($existingArray), 'XMLImporter')))
 		{
 			die("Class, '$class', is not a subclass of 'XMLImporter'.");
 		}
-
-		$importer =& new $class;
+		eval('$importer =& new '.$class.'($existingArray);');
 		$importer->_xmlFile = $filepath;
 		$importer->_type = $type;
 		$importer->setupSelf();
@@ -69,23 +70,24 @@ class XMLImporter {
 	/**
 	 * Constructor with XMLFile and starting object
 	 * 
-	 * @param object mixed
-	 * @param string
-	 * @param string
-	 * @param string
+	 * @param object mixed $object the object underneath which importer acts
+	 * @param string $filepath path to the xml data file
+	 * @param string $type type of the import (update/insert)
+	 * @param string $class class of the import to instantiate
 	 * @return object mixed
 	 * @access public
 	 * @since 10/11/05
 	 */
-	function &withObject (&$object, $filepath, $type, $class = 'XMLImporter') {
+	function &withObject (&$existingArray, &$object, $filepath, $type, $class = 'XMLImporter') {
 		if (!(strtolower($class) == strtolower('XMLImporter')
-			|| is_subclass_of(new $class, 'XMLImporter')))
+			|| is_subclass_of(new $class($existingArray), 'XMLImporter')))
 		{
 			die("Class, '$class', is not a subclass of 'XMLImporter'.");
 		}
-		eval('$importer =& '.$class.'::withFile($filepath, $type, $class);');
+		eval('$importer =& '.$class.'::withFile($existingArray, $filepath, $type, $class);');
 
 		$importer->_object =& $object;
+		$importer->_myId =& $importer->_object->getId();
 		
 		return $importer;
 	}
@@ -113,12 +115,14 @@ class XMLImporter {
 		$this->_import =& new DOMIT_Document();
 		if ($this->_import->loadXML($this->_xmlFile)) {
 			$this->_import->xmlPath = dirname($this->_xmlFile)."/";
-print "relpath: ".$this->_import->xmlPath."<br />";
 			if (!($this->_import->documentElement->hasChildNodes()))
 				$this->addError("There are no Importables in this file");
 			else {
 				$this->_node =& $this->_import->documentElement;
-				$this->importBelow();
+				if (isset($this->_myId))
+					$this->importBelow($this->_myId->getIdString());
+				else
+					$this->importBelow("edu.middlebury.authorization.root");
 			}
 		}
 		else {
@@ -154,39 +158,63 @@ print "relpath: ".$this->_import->xmlPath."<br />";
 	/**
 	 * Starts the import (no parameters, because should be set)
 	 * 
-	 * @return object HarmoniId
+	 * @param string $authZQString string of the qualifier for the object
+	 * @return object HarmoniId 
 	 * @access public
 	 * @since 10/11/05
 	 */
-	function importBelow () {
+	function importBelow ($authZQString) {
+		if (!$this->canImportBelow($authZQString))
+			return;
 		$this->doIdMatrix();
 		$this->relegateChildren();
 		$this->dropIdMatrix();
 		
 		if (isset($this->_myId)) {
-			$this->printErrorMessages();
+//			$this->printErrorMessages();
 			return $this->_myId;
 		}
 	}
 	
 	/**
+	 * Checks if the user is able to import underneath this level
+	 *
+	 * @param string $authZQString qualifier for authz checking
+	 * @access public
+	 * @since 11/3/05
+	 */
+	function canImportBelow($authZQString) {
+ 		$authZ =& Services::getService("AuthZ");
+ 		$idManager =& Services::getService("Id");
+ 		
+ 		if (!$authZ->isUserAuthorized(
+ 				$idManager->getId("edu.middlebury.authorization.add_children"),
+ 				$idManager->getId($authZQString))) {
+			$this->addError("No Authorization to Import under ".$authZQString);
+			return false;
+		}
+		return true;
+	}
+	
+	/**
 	 * Organizes the import
 	 * 
-	 * @param object DOMIT_Node
-	 * @param string
-	 * @param object mixed
-	 * @param string
+	 * @param object DOMIT_Node &$node domit node for importing
+	 * @param string $type type of import (update/insert) 
+	 * @param object mixed $parent parent of object to be imported
 	 * @return object HarmoniId
 	 * @access public
 	 * @since 10/5/05
 	 */
-	function import (&$node, $type = null, &$parent) {
+	function import (&$node, $type, &$parent) {
 		$this->_node =& $node;
 		$this->_type = $type;
 		$this->_parent =& $parent;
 		$this->importNode();
 		unset($this->_info);
 
+		if (isset($this->_myId))
+			return $this->importBelow($this->_myId->getIdString());
 		return $this->importBelow();
 	}
 
@@ -229,10 +257,18 @@ print "relpath: ".$this->_import->xmlPath."<br />";
 	function relegateChildren () {				
 		foreach ($this->_node->childNodes as $element)
 			foreach ($this->_childImporterList as $importer) {
+				if (!is_subclass_of(new $importer($this->_existingArray),
+						'XMLImporter')) {
+					$this->addError("Class, '$class', is not a subclass of 'XMLImporter'.");
+					break;
+				}
 				eval('$result = '.$importer.'::isImportable($element);');
 				if ($result) {
-					$imp =& new $importer();
+					$imp =& new $importer($this->_existingArray);
 					$imp->import($element, $this->_type, $this->_object);
+					if ($imp->hasErrors())
+						foreach($imp->getErrors() as $error)
+							$this->addError($error);
 					unset($imp);
 				}
 			}
@@ -364,7 +400,7 @@ print "relpath: ".$this->_import->xmlPath."<br />";
 	 */
 	 function printErrorMessages() {
 	 	foreach ($this->_errors as $errorString) {
-	 		print($this->_myId.": Error: ".$errorString."<br />");
+	 		print("Error: ".$errorString."<br />");
 	 	}
 	 }
 
@@ -413,7 +449,10 @@ print "relpath: ".$this->_import->xmlPath."<br />";
 	function addError($error) {
 		if (!isset($this->_errors))
 			$this->_errors = array();
-		$this->_errors[] = $error;
+		if (isset($this->_myId))
+			$this->_errors[] = $this->_myId->getIdString()."::".$error;
+		else
+			$this->_errors[] = $error;
 	}
 
 	/**

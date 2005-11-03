@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureImporter.class.php,v 1.8 2005/10/13 17:36:51 cws-midd Exp $
+ * @version $Id: XMLPartStructureImporter.class.php,v 1.9 2005/11/03 21:13:15 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureImporter.class.php,v 1.8 2005/10/13 17:36:51 cws-midd Exp $
+ * @version $Id: XMLPartStructureImporter.class.php,v 1.9 2005/11/03 21:13:15 cws-midd Exp $
  */
 class XMLPartStructureImporter extends XMLImporter {
 		
@@ -33,8 +33,8 @@ class XMLPartStructureImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function XMLPartStructureImporter () {
-		parent::XMLImporter();
+	function XMLPartStructureImporter (&$existingArray) {
+		parent::XMLImporter($existingArray);
 	}
 
 	/**
@@ -66,6 +66,17 @@ class XMLPartStructureImporter extends XMLImporter {
 	}
 	
 	/**
+	 * Checks if the user is able to import underneath this level
+	 *
+	 * @param string $authZQString qualifier for authz checking
+	 * @access public
+	 * @since 11/3/05
+	 */
+	function canImportBelow($authZQString) {
+		return true;
+	}
+
+	/**
 	 * Checks this node for any changes to make to this
 	 * 
 	 * @access public
@@ -76,8 +87,8 @@ class XMLPartStructureImporter extends XMLImporter {
 		
 		$this->getNodeInfo();
 		
-		if ($this->_node->hasAttribute("isExisting") && 		
-			($this->_node->getAttribute("isExisting") == TRUE)) {
+		if ($this->_node->hasAttribute("id") && 
+			in_array($this->_node->getAttribute("id"), $this->_existingArray)) {
 			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
 			$this->_object =& $this->_parent->getPartStructure($this->_myId);
 		} else if (($this->_type == "insert") || 

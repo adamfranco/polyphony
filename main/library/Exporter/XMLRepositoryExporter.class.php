@@ -6,9 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryExporter.class.php,v 1.4 2005/10/20 18:33:38 cws-midd Exp $
+ * @version $Id: XMLRepositoryExporter.class.php,v 1.5 2005/11/03 21:13:15 cws-midd Exp $
  */ 
 
+require_once(POLYPHONY."/main/library/Exporter/XMLExporter.class.php");
 require_once(POLYPHONY."/main/library/Exporter/XMLRecordStructureExporter.class.php");
 require_once(POLYPHONY."/main/library/Exporter/XMLAssetExporter.class.php");
 
@@ -21,9 +22,9 @@ require_once(POLYPHONY."/main/library/Exporter/XMLAssetExporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryExporter.class.php,v 1.4 2005/10/20 18:33:38 cws-midd Exp $
+ * @version $Id: XMLRepositoryExporter.class.php,v 1.5 2005/11/03 21:13:15 cws-midd Exp $
  */
-class XMLRepositoryExporter {
+class XMLRepositoryExporter extends XMLExporter {
 		
 	/**
 	 * Constructor
@@ -35,15 +36,58 @@ class XMLRepositoryExporter {
 	 * @access public
 	 * @since 10/17/05
 	 */
-	function XMLRepositoryExporter (&$archive, $repDir) {
-		$this->_archive =& $archive;
-		$this->_repDir = $repDir;						
-		
+	function XMLRepositoryExporter() {	
+		parent::XMLExporter();
+	}
+
+	/**
+	 * Creates the child lists
+	 * 
+	 * @access public
+	 * @since 10/31/05
+	 */
+	function setupSelf() {
 		$this->_childExporterList = array("XMLRecordStructureExporter", 
 			"XMLAssetExporter");
 		$this->_childElementList = array("recordstructures", "assets");
 	}
 
+	/*
+	 * Constructor for adding repository to an export
+	 *
+	 * @param object Archive_Tar
+	 * @param string
+	 * @access public
+	 * @since 10/31/05
+	 */
+	function &withArchive(&$archive, $repDir) {
+		$exporter =& new XMLRepositoryExporter();
+		$exporter->_archive =& $archive;
+		$exporter->_repDir = $repDir;	
+		
+		return $exporter;
+	}
+
+	/**
+	 * Constructor for starting an export
+	 *
+	 * @param string
+	 * @param string
+	 * @access public
+	 * @since 10/31/05
+	 */
+	function &withCompression($compression, $class = 'XMLRepositoryExporter') {
+		return parent::withCompression($compression, $class);
+	}
+	
+	function exportAll(&$repId) {
+		$this->_repDir = $this->_tmpDir."/".$repId->getIdString();
+		mkdir($this->_repDir);
+		$this->export($repId);
+		return $this->_tmpDir.$this->_compression;
+	}
+		
+	
 	/**
 	 * Exporter of Repository things
 	 * 
@@ -59,21 +103,11 @@ class XMLRepositoryExporter {
 		$this->_object =& $rm->getRepository($this->_myId);
 		$type =& $this->_object->getType();
 
-		$this->_xml =& fopen($this->_repDir.
-			"/".$this->_myId->getIdString().".xml", "w");
-		
-		$this->_fileDir = $this->_repDir.
-			"/".$this->_myId->getIdString()."_files";
-		mkdir($this->_fileDir);
-		
+		$this->_xml =& fopen($this->_repDir."/metadata.xml", "w");
+				
 		fwrite($this->_xml,
 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".
-"<repository id=\"".$this->_myId->getIdString()."\" ");
-		if ($this->_myId->getIdString() ==
-			"edu.middlebury.concerto.exhibition_repository")
-			fwrite($this->_xml, "isExisting=\"TRUE\"");
-
-		fwrite($this->_xml, ">\n".	
+"<repository id=\"".$this->_myId->getIdString()."\">\n".	
 "\t<name>".$this->_object->getDisplayName()."</name>\n".
 "\t<description><![CDATA[".$this->_object->getDescription()."]]></description>\n".
 "\t<type>\n".
@@ -99,8 +133,8 @@ class XMLRepositoryExporter {
 		fclose($this->_xml);
 // ==================== ADD REPOSITORY XML TO ARCHIVE =======================//
 		$this->_archive->addModify(
-			array($this->_repDir."/".$this->_myId->getIdString().".xml"),
-			"RepositoryDirectory/",
+			array($this->_repDir."/metadata.xml"),
+			$this->_myId->getIdString(),
 			$this->_repDir);
 	}
 
@@ -152,8 +186,8 @@ class XMLRepositoryExporter {
 		while ($children->hasNext()) {
 			$child =& $children->next();
 
-			$exporter =& new XMLAssetExporter($this->_archive, $this->_xml,
-				$this->_fileDir);
+			$exporter =& XMLAssetExporter::withArchive($this->_archive,
+				$this->_xml, $this->_repDir);
 
 			$exporter->export($child);
 		}

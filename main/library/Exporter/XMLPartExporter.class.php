@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
+ * @version $Id: XMLPartExporter.class.php,v 1.3 2005/11/03 21:13:15 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartExporter.class.php,v 1.2 2005/10/18 15:50:38 cws-midd Exp $
+ * @version $Id: XMLPartExporter.class.php,v 1.3 2005/11/03 21:13:15 cws-midd Exp $
  */
 class XMLPartExporter {
 		
@@ -56,9 +56,8 @@ class XMLPartExporter {
 		fwrite($this->_xml,
 "\t\t\t<part ".
 "id=\"".$this->_myId->getIdString()."\" ".
-"xml:id=\"".$pSId->getIdString()."\" ".
-//isExisting?			
-"><![CDATA[".$partValue->asString()."]]></part>\n");
+"xml:id=\"".$pSId->getIdString()."\">".
+"<![CDATA[".$partValue->asString()."]]></part>\n");
 
 	}
 }

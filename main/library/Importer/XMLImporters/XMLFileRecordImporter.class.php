@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordImporter.class.php,v 1.7 2005/10/13 17:36:51 cws-midd Exp $
+ * @version $Id: XMLFileRecordImporter.class.php,v 1.8 2005/11/03 21:13:15 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -28,7 +28,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLFilepathPartImpor
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordImporter.class.php,v 1.7 2005/10/13 17:36:51 cws-midd Exp $
+ * @version $Id: XMLFileRecordImporter.class.php,v 1.8 2005/11/03 21:13:15 cws-midd Exp $
  */
 class XMLFileRecordImporter extends XMLImporter {
 		
@@ -40,8 +40,8 @@ class XMLFileRecordImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function XMLFileRecordImporter () {
-		parent::XMLImporter();
+	function XMLFileRecordImporter (&$existingArray) {
+		parent::XMLImporter($existingArray);
 	}
 
 	/**
@@ -77,6 +77,17 @@ class XMLFileRecordImporter extends XMLImporter {
 	}
 
 	/**
+	 * Checks if the user is able to import underneath this level
+	 *
+	 * @param string $authZQString qualifier for authz checking
+	 * @access public
+	 * @since 11/3/05
+	 */
+	function canImportBelow($authZQString) {
+		return true;
+	}
+
+	/**
 	 * Imports the current node's information
 	 * 
 	 * @access public
@@ -87,8 +98,8 @@ class XMLFileRecordImporter extends XMLImporter {
 		
 		$this->getNodeInfo();
 		
-		if ($this->_node->hasAttribute("isExisting") && 		
-			($this->_node->getAttribute("isExisting") == TRUE)) {
+		if ($this->_node->hasAttribute("id") && 
+			in_array($this->_node->getAttribute("id"), $this->_existingArray)) {
 			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
 			$this->_object =& $this->_parent->getRecord($this->_myId);
 		} else if (($this->_type == "insert") || 
@@ -98,7 +109,7 @@ class XMLFileRecordImporter extends XMLImporter {
 			$this->_myId =& $this->_object->getId();
 		} else {
 			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
-			$this->_object =& $this->_parent->getRecord($id);
+			$this->_object =& $this->_parent->getRecord($this->_myId);
 		}
 	}
 
@@ -129,10 +140,17 @@ class XMLFileRecordImporter extends XMLImporter {
 			else if ($element->nodeName == "thumbpathpart")
 				$thumbpath = TRUE;
 			foreach ($this->_childImporterList as $importer) {
+				if (!is_subclass_of(new $importer($this->_existingArray), 'XMLImporter')) {
+					$this->addError("Class, '$class', is not a subclass of 'XMLImporter'.");
+					break;
+				}
 				eval('$result = '.$importer.'::isImportable($element);');
 				if ($result) {
-					$imp =& new $importer();
+					$imp =& new $importer($this->_existingArray);
 					$imp->import($element, $this->_type, $this->_object);
+					if ($imp->hasErrors())
+						foreach($imp->getErrors() as $error)
+							$this->addError($error);
 					unset($imp);
 				}
 			}
@@ -140,8 +158,11 @@ class XMLFileRecordImporter extends XMLImporter {
 		if ($filepath && !$thumbpath) {
 			$elements =& $this->_node->getElementsByTagName("filepathpart");
 			$element =& $elements->item(0);
-			$imp =& new XMLThumbpathPartImporter();
+			$imp =& new XMLThumbpathPartImporter($this->_existingArray);
 			$imp->import($element, $this->_type, $this->_object);
+			if ($imp->hasErrors())
+				foreach($imp->getErrors() as $error)
+					$this->addError($error);
 			unset($imp);
 		}
 	}

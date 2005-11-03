@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordExporter.class.php,v 1.5 2005/10/20 18:33:38 cws-midd Exp $
+ * @version $Id: XMLFileRecordExporter.class.php,v 1.6 2005/11/03 21:13:15 cws-midd Exp $
  */ 
 
 //require_once(POLYPHONY."/main/library/Exporter/XMLPartExporter.class.php");
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordExporter.class.php,v 1.5 2005/10/20 18:33:38 cws-midd Exp $
+ * @version $Id: XMLFileRecordExporter.class.php,v 1.6 2005/11/03 21:13:15 cws-midd Exp $
  */
 class XMLFileRecordExporter {
 		
@@ -59,9 +59,7 @@ class XMLFileRecordExporter {
 		
 		fwrite($this->_xml,
 "\t\t<filerecord ".
-"id=\"".$this->_myId->getIdString()."\" ".
-//isExisting?			
-">\n".
+"id=\"".$this->_myId->getIdString()."\">\n".
 "\t\t\t<filedatapart>".$this->_info['f_name']."</filedatapart>\n".
 "\t\t\t<filedimensionspart>\n".
 "\t\t\t\t<width>".$this->_info['f_dime'][0]."</width>\n".
@@ -77,12 +75,16 @@ class XMLFileRecordExporter {
 "\t\t</filerecord>\n");
 
 
+// print "*: ".$this->_fileDir."/".basename($this->_info['f_name']).", <br/>".
+// 	$this->_fileDir."/".basename($this->_info['t_name']).", <br />".
+// 	basename($this->_fileDir).", <br />".
+// 	$this->_fileDir."<br/><br/>";
 // ===== Add files to archive, keep from RepDir down ======//
 		$this->_archive->addModify(
-		array($this->_fileDir."/".basename($this->_info['f_name']),
-			  $this->_fileDir."/".basename($this->_info['t_name'])),
-		"RepositoryDirectory/".basename($this->_fileDir),
-		$this->_fileDir);
+			array($this->_fileDir."/".basename($this->_info['f_name']),
+			$this->_fileDir."/".basename($this->_info['t_name'])),
+			basename($this->_fileDir),
+			$this->_fileDir);
 	}
 
 	/**
@@ -113,8 +115,7 @@ class XMLFileRecordExporter {
 // CHECK FOR FILE NAME UNIQUENESS HERE
 			$this->_dataFile =& fopen($path, "wb");
 			
-			$this->_info['f_name'] = 
-	basename($this->_fileDir)."/".basename($path);
+			$this->_info['f_name'] = basename($path);
 		}
 		$parts =& $this->_object->getPartsByPartStructure($FILE_DATA_ID);
 		if ($parts->count() == 1) {
@@ -131,9 +132,8 @@ class XMLFileRecordExporter {
 			$part =& $parts->next();
 			$this->_info['f_mime'] = $part->getValue();
 		}
-		$path = $this->_fileDir."/THUMB_".basename($this->_info['f_name']);
-		$this->_info['t_name'] = 
-	basename($this->_fileDir)."/".basename($path);
+		$path = $this->_fileDir."/THUMB_".$this->_info['f_name'];
+		$this->_info['t_name'] = basename($path);
 		$this->_thumbFile =& fopen($path, "wb");
 		$parts =& $this->_object->getPartsByPartStructure($THUMB_DATA_ID);
 		if ($parts->count() == 1) {
