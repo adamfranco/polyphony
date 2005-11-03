@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.32 2005/11/01 22:02:43 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.33 2005/11/03 21:08:09 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.32 2005/11/01 22:02:43 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.33 2005/11/03 21:08:09 cws-midd Exp $
  */
 class choose_agentAction 
 	extends MainWindowAction
@@ -327,14 +327,16 @@ END;
 		$harmoni->request->forget("search_criteria");		
 		$harmoni->request->forget("search_type");
 		$harmoni->request->forget("agentId");
-//		$oldNS = $harmoni->request->endNamespace();
-// 		$harmoni->request->startNamespace("polyphony-agents");
+		$oldNS = $harmoni->request->endNamespace();
+ 		$harmoni->request->startNamespace("polyphony-agents");
 		
 		$agentId =& $member->getId();
 		$agentIdString= $agentId->getIdString();
 		
 		$harmoni->history->markReturnURL("polyphony/agents/edit_agent_details");
 		$link = $harmoni->request->quickURL("agents","edit_agent_details",array("agentId"=>$agentIdString));
+		$harmoni->request->endNamespace();
+		$harmoni->request->startNamespace($oldNS);
 		$id =& $member->getId();
 		$memberType =& $member->getType();
 		print "<input type='radio' id='agentId' name='".RequestContext::name("agentId")."' value='".$id->getIdString()."' />";
