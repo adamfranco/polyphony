@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.8 2005/11/03 21:13:15 cws-midd Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.9 2005/11/04 20:33:30 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLPartStructureImpo
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.8 2005/11/03 21:13:15 cws-midd Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.9 2005/11/04 20:33:30 cws-midd Exp $
  */
 class XMLRecordStructureImporter extends XMLImporter {
 		
@@ -118,23 +118,25 @@ class XMLRecordStructureImporter extends XMLImporter {
 		$this->getNodeInfo();
 		
 		// make/find object
-		if ($this->_node->hasAttribute("id") && 
-			in_array($this->_node->getAttribute("id"), $this->_existingArray)) {
+		$hasId = $this->_node->hasAttribute("id");
+		if ($hasId && (in_array($this->_node->getAttribute("id"),
+				$this->_existingArray)	|| $this->_type == "update")) {
 			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
 			$this->_object =& $this->_parent->getRecordStructure($this->_myId);
-		} else if (($this->_type == "insert") || 
-			(!$this->_node->hasAttribute("id"))) {
-			$this->_object =&
-				$this->_parent->createRecordStructure($this->_info['name'], 
-				$this->_info['description'], $this->_info['format'],"");
-				$this->_myId = $this->_object->getId();
-		} else {
-			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
-			$this->_object =& $this->_parent->getRecordStructure($this->_myId);
-		}
-		if ($this->_type == "update")
 			$this->update();
-		
+		} else {
+			if ($this->_node->hasAttribute("isGlobal") && 
+					($this->_node->getAttribute("isGlabal") == "TRUE"))
+				$this->_object =&
+					$this->_parent->createRecordStructure($this->_info['name'], 
+					$this->_info['description'], $this->_info['format'],"",
+					true);
+			else
+				$this->_object =& $this->_parent->createRecordStructure(
+					$this->_info['name'], $this->_info['description'], 
+					$this->_info['format']);
+			$this->_myId = $this->_object->getId();
+		}
 		// add structure to repository
 		$this->doSets();
 	}

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordImporter.class.php,v 1.8 2005/11/03 21:13:15 cws-midd Exp $
+ * @version $Id: XMLFileRecordImporter.class.php,v 1.9 2005/11/04 20:33:30 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -28,7 +28,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLFilepathPartImpor
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordImporter.class.php,v 1.8 2005/11/03 21:13:15 cws-midd Exp $
+ * @version $Id: XMLFileRecordImporter.class.php,v 1.9 2005/11/04 20:33:30 cws-midd Exp $
  */
 class XMLFileRecordImporter extends XMLImporter {
 		
@@ -98,18 +98,15 @@ class XMLFileRecordImporter extends XMLImporter {
 		
 		$this->getNodeInfo();
 		
-		if ($this->_node->hasAttribute("id") && 
-			in_array($this->_node->getAttribute("id"), $this->_existingArray)) {
+		$hasId = $this->_node->hasAttribute("id");
+		if ($hasId && (in_array($this->_node->getAttribute("id"),
+				$this->_existingArray)	|| $this->_type == "update")) {
 			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
 			$this->_object =& $this->_parent->getRecord($this->_myId);
-		} else if (($this->_type == "insert") || 
-			(!$this->_node->hasAttribute("id"))) {
+		} else {
 			$this->_object =& $this->_parent->createRecord(
 				$this->_info['recordStructureId']);
 			$this->_myId =& $this->_object->getId();
-		} else {
-			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
-			$this->_object =& $this->_parent->getRecord($this->_myId);
 		}
 	}
 

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileDataPartImporter.class.php,v 1.9 2005/11/03 21:13:15 cws-midd Exp $
+ * @version $Id: XMLFileDataPartImporter.class.php,v 1.10 2005/11/04 20:33:30 cws-midd Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileDataPartImporter.class.php,v 1.9 2005/11/03 21:13:15 cws-midd Exp $
+ * @version $Id: XMLFileDataPartImporter.class.php,v 1.10 2005/11/04 20:33:30 cws-midd Exp $
  */
 class XMLFileDataPartImporter extends XMLImporter {
 		
@@ -85,24 +85,22 @@ class XMLFileDataPartImporter extends XMLImporter {
 		
 		$this->getNodeInfo();
 
-		if ($this->_node->hasAttribute("id") && 
-			in_array($this->_node->getAttribute("id"), $this->_existingArray)) {
-			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
+		if (in_array($this->_info['parentId']->getIdString(),
+				$this->_existingArray) || ($this->_type == "update")) {
+			$this->_myId =& $this->_info['fileDataId'];
 			$this->_object =& $this->_parent->getPart($this->_myId);
-		} else if (($this->_type == "insert") || 
-			(!$this->_node->hasAttribute("id"))) {
+			$this->_object2 =& 
+				$this->_parent->getPart($this->_info['filenameId']);
+			$this->update();
+		} else {
 			$this->_object =& $this->_parent->createPart(
 				$this->_info['partStructureId'], 
 				file_get_contents($this->_info['value']));
 			$this->_myId =& $this->_object->getId();
 			$this->_object2 =& $this->_parent->createPart(
-				$this->_info['namePartId'], $this->_info['filename']);
-		} else {
-			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
-			$this->_object =& $this->_parent->getPart($this->_myId);				
+				$this->_info['namePartStructureId'], $this->_info['filename']);
 		}
-		if ($this->_type == "update")
-				$this->update();
+
 	}
 
 	/**
@@ -122,9 +120,17 @@ class XMLFileDataPartImporter extends XMLImporter {
 		
 		$this->_info['partStructureId'] =& $idManager->getId("FILE_DATA");
 					
-		$this->_info['namePartId'] =& $idManager->getId("FILE_NAME");
+		$this->_info['namePartStructureId'] =& $idManager->getId("FILE_NAME");
 		
 		$this->_info['filename'] = basename($this->_info['value']);
+
+		$this->_info['parentId'] = $this->_parent->getId();
+		
+		$this->_info['fileDataId'] =& $idManager->getId(
+			$this->_info['parentId']->getIdString()."-FILE_DATA");
+		
+		$this->_info['filenameId'] =& $idManager->getId(
+			$this->_info['parentId']->getIdString()."-FILE_NAME");
 	}
 	
 	/**
@@ -143,16 +149,11 @@ class XMLFileDataPartImporter extends XMLImporter {
 	 * @since 10/10/05
 	 */
 	function update () {
-		if ($this->_info['value'] != $this->_object->getValue())
-			$this->_object->updateValue($this->_info['value']);
-			
-		$parts =& $this->_parent->getPartsByPartStructure(
-			$this->_info['namePartId']);
-		if ($parts->count() == 1) {
-			$this->object2 =& $parts->next();	
-			if ($this->_info['filename'] != $this->_object2->getValue())
-				$this->_object2->updateValue($this->_info['filename']);
-		}
+		if (file_get_contents($this->_info['value']) !=
+				$this->_object->getValue())
+		$this->_object->updateValue(file_get_contents($this->_info['value']));
+		if ($this->_info['filename'] != $this->_object2->getValue())
+			$this->_object2->updateValue($this->_info['filename']);
 	}
 }
 

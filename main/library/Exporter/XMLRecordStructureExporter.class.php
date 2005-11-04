@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureExporter.class.php,v 1.3 2005/11/03 21:13:15 cws-midd Exp $
+ * @version $Id: XMLRecordStructureExporter.class.php,v 1.4 2005/11/04 20:33:29 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Exporter/XMLPartStructureExporter.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLPartStructureExporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureExporter.class.php,v 1.3 2005/11/03 21:13:15 cws-midd Exp $
+ * @version $Id: XMLRecordStructureExporter.class.php,v 1.4 2005/11/04 20:33:29 cws-midd Exp $
  */
 class XMLRecordStructureExporter {
 		
@@ -50,12 +50,18 @@ class XMLRecordStructureExporter {
 	function export (&$rS) {
 		$this->_object =& $rS;
 		$this->_myId =& $this->_object->getId();
-
+		$idString = $this->_myId->getIdString();
+		
 
 		fwrite($this->_xml,
 "\t<recordstructure ".
-"id=\"".$this->_myId->getIdString()."\" ".
-"xml:id=\"".$this->_myId->getIdString()."\">\n".
+"id=\"".$idString."\" ".
+"xml:id=\"".$idString."\"");
+		if (!ereg("^Repository", $idString))
+			fwrite($this->_xml,
+" isGlobal=\"TRUE\"");
+		fwrite($this->_xml,
+">\n".
 "\t\t<name>".$this->_object->getDisplayName()."</name>\n".
 "\t\t<description><![CDATA[".$this->_object->getDescription()."]]></description>\n".
 "\t\t<format>".$this->_object->getFormat()."</format>\n");		

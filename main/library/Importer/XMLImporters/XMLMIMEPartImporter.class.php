@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLMIMEPartImporter.class.php,v 1.6 2005/11/03 21:13:15 cws-midd Exp $
+ * @version $Id: XMLMIMEPartImporter.class.php,v 1.7 2005/11/04 20:33:30 cws-midd Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLMIMEPartImporter.class.php,v 1.6 2005/11/03 21:13:15 cws-midd Exp $
+ * @version $Id: XMLMIMEPartImporter.class.php,v 1.7 2005/11/04 20:33:30 cws-midd Exp $
  */
 class XMLMIMEPartImporter extends XMLImporter {
 		
@@ -86,21 +86,16 @@ class XMLMIMEPartImporter extends XMLImporter {
 		
 		$this->getNodeInfo();
 
-		if ($this->_node->hasAttribute("id") && 
-			in_array($this->_node->getAttribute("id"), $this->_existingArray)) {
-			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
+		if (in_array($this->_info['parentId']->getIdString(),
+				$this->_existingArray) || ($this->_type != "insert")) {
+			$this->_myId =& $this->_info['id'];
 			$this->_object =& $this->_parent->getPart($this->_myId);
-		} else if (($this->_type == "insert") || 
-			(!$this->_node->hasAttribute("id"))) {
+			$this->update();
+		} else {
 			$this->_object =& $this->_parent->createPart(
 				$this->_info['partStructureId'], $this->_info['value']);
 			$this->_myId =& $this->_object->getId();
-		} else {
-			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
-			$this->_object =& $this->_parent->getPart($this->_myId);
 		}
-		if ($this->_type == "update")
-			$this->update();
 	}
 
 	/**
@@ -115,6 +110,11 @@ class XMLMIMEPartImporter extends XMLImporter {
 		$this->_info['partStructureId'] =& $idManager->getId("MIME_TYPE");
 				
 		$this->_info['value'] = $this->_node->getText();
+		
+		$this->_info['parentId'] =& $this->_parent->getId();
+		
+		$this->_info['id'] =& 
+	$idManager->getId($this->_info['parentId']->getIdString()."-MIME_TYPE");
 	}
 	
 	/**
