@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.9 2005/11/04 20:33:30 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.10 2005/11/07 14:40:59 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRecordStructureIm
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.9 2005/11/04 20:33:30 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.10 2005/11/07 14:40:59 cws-midd Exp $
  */
 class XMLRepositoryImporter extends XMLImporter {
 		
@@ -116,7 +116,7 @@ class XMLRepositoryImporter extends XMLImporter {
 			$this->_object =& $repositoryManager->getRepository($this->_myId);
 			$this->update();
 		} 
-		if (!$this->_object) {
+		else {
 			$this->_object =& $repositoryManager->createRepository(
 				$this->_info['name'], $this->_info['description'],
 				$this->_info['type']);
