@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLExporter.class.php,v 1.5 2005/11/03 21:13:15 cws-midd Exp $
+ * @version $Id: XMLExporter.class.php,v 1.6 2005/11/07 15:40:38 cws-midd Exp $
  */ 
 
 require_once("Archive/Tar.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLRepositoryExporter.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLExporter.class.php,v 1.5 2005/11/03 21:13:15 cws-midd Exp $
+ * @version $Id: XMLExporter.class.php,v 1.6 2005/11/07 15:40:38 cws-midd Exp $
  */
 class XMLExporter {
 		
@@ -163,6 +163,7 @@ class XMLExporter {
 				$repDir);
 			
 			$exporter->export($childId); // ????
+			unset($exporter);
 		}
 	}
 }

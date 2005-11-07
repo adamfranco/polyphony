@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryExporter.class.php,v 1.5 2005/11/03 21:13:15 cws-midd Exp $
+ * @version $Id: XMLRepositoryExporter.class.php,v 1.6 2005/11/07 15:40:38 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Exporter/XMLExporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLAssetExporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryExporter.class.php,v 1.5 2005/11/03 21:13:15 cws-midd Exp $
+ * @version $Id: XMLRepositoryExporter.class.php,v 1.6 2005/11/07 15:40:38 cws-midd Exp $
  */
 class XMLRepositoryExporter extends XMLExporter {
 		
@@ -156,6 +156,7 @@ class XMLRepositoryExporter extends XMLExporter {
 			$exporter =& new XMLRecordStructureExporter($this->_xml);
 			
 			$exporter->export($child); // ????
+			unset($exporter);
 		}
 	}
 
@@ -190,6 +191,7 @@ class XMLRepositoryExporter extends XMLExporter {
 				$this->_xml, $this->_repDir);
 
 			$exporter->export($child);
+			unset($exporter);
 		}
 	}
 }
