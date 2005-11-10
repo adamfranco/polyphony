@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.14 2005/10/18 17:33:38 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.15 2005/11/10 15:56:10 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.14 2005/10/18 17:33:38 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.15 2005/11/10 15:56:10 adamfranco Exp $
  */
 
 class ArrayResultPrinter {
@@ -157,7 +157,7 @@ class ArrayResultPrinter {
 				$currentPage = $startingNumber;
 				
 			for ($i=1; $i<=$numPages; $i++) {
-				if ($i > 0 && ($i+1) % 10 == 0)
+				if ($i > 0 && ($i-1) % 10 == 0)
 					print "<br />";
 				print " ";
 				if ($i != $currentPage) {

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.19 2005/10/18 21:04:18 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.20 2005/11/10 15:56:10 adamfranco Exp $
  */
  
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.19 2005/10/18 21:04:18 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.20 2005/11/10 15:56:10 adamfranco Exp $
  */
 
 class IteratorResultPrinter {
@@ -155,8 +155,8 @@ class IteratorResultPrinter {
 				$currentPage = $startingNumber;
 			
 			for ($i=1; $i<=$numPages; $i++) {
-				if ($i > 0 && ($i+1) % 10 == 0)
-					print "<br />";
+				if ($i > 0 && ($i-1) % 10 == 0)
+					print "<br />\n";
 				print " ";
 				if ($i != $currentPage) {
 					print "<a href='";
@@ -167,13 +167,13 @@ class IteratorResultPrinter {
 				}
 				print $i;
 				if ($i != $currentPage)
-					print "</a>";
+					print "</a>\n";
 			}
 			
 			// Add the links to the page
-			$pageLinkBlock =& new Block(ob_get_contents(), 2);
+			$pageLinkBlock =& new Block(ob_get_contents(), 3);
 			ob_end_clean();
-			$layout->add($pageLinkBlock, "100%", null, LEFT, CENTER);
+			$layout->add($pageLinkBlock, "100%", null, RIGHT, CENTER);
 		}
 		
 		$layout->add($resultLayout, "100%", null, LEFT, CENTER);
