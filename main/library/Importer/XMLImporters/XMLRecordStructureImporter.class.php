@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.10 2005/11/15 18:28:49 cws-midd Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.11 2005/11/15 18:44:22 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLPartStructureImpo
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.10 2005/11/15 18:28:49 cws-midd Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.11 2005/11/15 18:44:22 cws-midd Exp $
  */
 class XMLRecordStructureImporter extends XMLImporter {
 		
@@ -128,7 +128,8 @@ class XMLRecordStructureImporter extends XMLImporter {
 			$this->_object =&
 				$this->_parent->createRecordStructure(
 				$this->_info['name'], $this->_info['description'],
-				$this->_info['format'], "", true);
+				$this->_info['format'], "", "", true);
+			$this->_myId = $this->_object->getId();
 		} else {
 			$this->_object =& $this->_parent->createRecordStructure(
 				$this->_info['name'], $this->_info['description'], 
