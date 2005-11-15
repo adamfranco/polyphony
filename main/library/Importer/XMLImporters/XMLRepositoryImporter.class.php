@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.10 2005/11/07 14:40:59 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.11 2005/11/15 18:28:49 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRecordStructureIm
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.10 2005/11/07 14:40:59 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.11 2005/11/15 18:28:49 cws-midd Exp $
  */
 class XMLRepositoryImporter extends XMLImporter {
 		
@@ -152,8 +152,8 @@ class XMLRepositoryImporter extends XMLImporter {
 // define dbIndexConcerto for children
 		$createTableQuery =& new GenericSQLQuery;
 		$createTableQuery->addSQLQuery("Create temporary table if not exists
-			xml_id_matrix ( xml_id varchar(50)
-			not null , conc_id varchar(75) not null)");
+			xml_id_matrix ( xml_id varchar(255)
+			not null , conc_id varchar(255) not null)");
 		$dbHandler->disconnect(IMPORTER_CONNECTION);
 		$dbHandler->connect(IMPORTER_CONNECTION);
 		$dbHandler->query($createTableQuery, IMPORTER_CONNECTION);

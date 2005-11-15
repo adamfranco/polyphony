@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.9 2005/11/04 20:33:30 cws-midd Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.10 2005/11/15 18:28:49 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLPartStructureImpo
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.9 2005/11/04 20:33:30 cws-midd Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.10 2005/11/15 18:28:49 cws-midd Exp $
  */
 class XMLRecordStructureImporter extends XMLImporter {
 		
@@ -116,25 +116,23 @@ class XMLRecordStructureImporter extends XMLImporter {
 		$idManager =& Services::getService("IdManager");
 		
 		$this->getNodeInfo();
-		
 		// make/find object
-		$hasId = $this->_node->hasAttribute("id");
-		if ($hasId && (in_array($this->_node->getAttribute("id"),
-				$this->_existingArray)	|| $this->_type == "update")) {
-			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
+		$foundId = $this->RSExists();
+		if ($foundId != false) {
+			$this->_myId =& $foundId;
 			$this->_object =& $this->_parent->getRecordStructure($this->_myId);
-			$this->update();
+			if ($this->_type == "update")
+				$this->update();
+		} else if ($this->_node->hasAttribute("isGlobal") && 
+					($this->_node->getAttribute("isGlobal") == "TRUE")) {
+			$this->_object =&
+				$this->_parent->createRecordStructure(
+				$this->_info['name'], $this->_info['description'],
+				$this->_info['format'], "", true);
 		} else {
-			if ($this->_node->hasAttribute("isGlobal") && 
-					($this->_node->getAttribute("isGlabal") == "TRUE"))
-				$this->_object =&
-					$this->_parent->createRecordStructure($this->_info['name'], 
-					$this->_info['description'], $this->_info['format'],"",
-					true);
-			else
-				$this->_object =& $this->_parent->createRecordStructure(
-					$this->_info['name'], $this->_info['description'], 
-					$this->_info['format']);
+			$this->_object =& $this->_parent->createRecordStructure(
+				$this->_info['name'], $this->_info['description'], 
+				$this->_info['format'], "");
 			$this->_myId = $this->_object->getId();
 		}
 		// add structure to repository
@@ -184,6 +182,68 @@ class XMLRecordStructureImporter extends XMLImporter {
 	function update () {
 		if ($this->_info['name'] != $this->_object->getDisplayName())
 			$this->_object->updateDisplayName($this->_info['name']);
+	}
+	
+   /**
+    * Attempts to find the an identical pre-existing global recordStructure
+    *
+    * @return object HarmoniId 
+    */
+	function &RSExists() {
+		$rS = array();
+		$recordStructures =& $this->_parent->getRecordStructures();
+	// ===== CREATE ARRAY OF RS ESSENTIALS FOR MATCHING ===== //
+		foreach ($this->_node->childNodes as $child) {
+			if ($child->nodeName == "name")
+				$rS['displayName'] = $child->getText();
+			else if ($child->nodeName == "partstructure") {
+				$pS = array();
+				foreach ($child->childNodes as $gchild) {
+					if ($gchild->nodeName == "name")
+						$pS['name'] = $gchild->getText();
+					else if ($gchild->nodeName == "type")
+						foreach ($gchild->childNodes as $ggchild)
+							if ($ggchild->nodeName == "keyword")
+								$ps['type'] = $ggchild->getText();
+				}
+				$rS[] = $pS;
+			}
+		}
+		$found = FALSE;
+		while ($recordStructures->hasNext() && !$found) {
+			$rStruct =& $recordStructures->next();
+			$found = $this->cmpRS($rS, $rStruct);
+		}
+		if ($found)
+			return $rStruct->getId();
+		return $found;
+	}
+	
+   /**
+   	* Compares an array of essential info to a recordStructure object
+   	*
+   	* @param array $rS an array containing displayName and partstructure info
+   	* @param object HarmoniRecordStructure $rStruct object of comparison
+	*/
+	function cmpRS(&$rS, &$rStruct) {
+		if ($rS['displayName'] != $rStruct->getDisplayName())
+			return FALSE;
+		foreach ($rS as $key => $value) {
+			if ($key != "displayName") {
+				$partStructures =& $rStruct->getPartStructures();
+				$found = FALSE;
+				while ($partStructures->hasNext() && !$found) {
+					$pS =& $partStructures->next();
+					$type =& $pS->getType();
+					if (($pS->getDisplayName() == $value['name']) &&
+						($type->getKeyword() == $value['type']))
+						$found = TRUE;
+				}
+				if (!$found)
+					return FALSE;
+			}
+		}
+		return TRUE;
 	}
 }
 

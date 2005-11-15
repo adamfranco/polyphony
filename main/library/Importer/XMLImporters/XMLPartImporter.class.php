@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartImporter.class.php,v 1.9 2005/11/04 20:33:30 cws-midd Exp $
+ * @version $Id: XMLPartImporter.class.php,v 1.10 2005/11/15 18:28:49 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartImporter.class.php,v 1.9 2005/11/04 20:33:30 cws-midd Exp $
+ * @version $Id: XMLPartImporter.class.php,v 1.10 2005/11/15 18:28:49 cws-midd Exp $
  */
 class XMLPartImporter extends XMLImporter {
 		
@@ -124,7 +124,15 @@ class XMLPartImporter extends XMLImporter {
 			$idManager =& Services::getService("Id");
 			$this->_info['partStructureId'] =& $idManager->getId(
 				$result['conc_id']);
-		} else
+		} else if ($results->getNumberOfRows() > 1) {
+			$this->addError("Multiple PartStructure matches: ");
+			while ($results->hasNext()) {
+				$result =& $results->next();
+				$this->addError("\tmatch: ".$result['conc_id']);
+			}
+			$this->_info['partStructureId'] =& $idManager->getId(
+				$result['conc_id']);
+		} else 
 			$this->addError("Bad XML IDREF: ".$id);
 		$results->free();
 
@@ -151,6 +159,9 @@ class XMLPartImporter extends XMLImporter {
 	 */
 	function getPartObject (&$part) {
 		$recordStructure =& $this->_parent->getRecordStructure();
+if ($this->hasErrors()){
+$this->printErrorMessages();
+exit();}
 		$partStructure =& $recordStructure->getPartStructure(
 			$this->_info['partStructureId']);
 		$type = $partStructure->getType();

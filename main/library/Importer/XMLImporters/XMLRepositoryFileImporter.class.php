@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryFileImporter.class.php,v 1.3 2005/11/03 21:13:15 cws-midd Exp $
+ * @version $Id: XMLRepositoryFileImporter.class.php,v 1.4 2005/11/15 18:28:49 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryImporte
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryFileImporter.class.php,v 1.3 2005/11/03 21:13:15 cws-midd Exp $
+ * @version $Id: XMLRepositoryFileImporter.class.php,v 1.4 2005/11/15 18:28:49 cws-midd Exp $
  */
 class XMLRepositoryFileImporter extends XMLImporter {
 
@@ -84,5 +84,6 @@ class XMLRepositoryFileImporter extends XMLImporter {
 		
 		$imp =& XMLRepositoryImporter::withFile($this->_existingArray, $path, $type);
 		$imp->parseAndImport();
+		unset($imp);
 	}
 }
