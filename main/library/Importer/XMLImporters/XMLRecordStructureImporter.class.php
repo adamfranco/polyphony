@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.11 2005/11/15 18:44:22 cws-midd Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.12 2005/11/15 18:54:18 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLPartStructureImpo
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.11 2005/11/15 18:44:22 cws-midd Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.12 2005/11/15 18:54:18 cws-midd Exp $
  */
 class XMLRecordStructureImporter extends XMLImporter {
 		
@@ -205,7 +205,7 @@ class XMLRecordStructureImporter extends XMLImporter {
 					else if ($gchild->nodeName == "type")
 						foreach ($gchild->childNodes as $ggchild)
 							if ($ggchild->nodeName == "keyword")
-								$ps['type'] = $ggchild->getText();
+								$pS['type'] = $ggchild->getText();
 				}
 				$rS[] = $pS;
 			}
