@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.9 2005/08/22 13:29:35 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.10 2005/11/21 16:22:06 adamfranco Exp $
  */
 
 /**
@@ -21,8 +21,8 @@ require_once(dirname(__FILE__)."/modules/HarmoniFileModule.class.php");
  * appropriate RepositoryInputOutputModule based on their Schema Formats.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.9 2005/08/22 13:29:35 adamfranco Exp $
- * @since $Date: 2005/08/22 13:29:35 $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.10 2005/11/21 16:22:06 adamfranco Exp $
+ * @since $Date: 2005/11/21 16:22:06 $
  * @copyright 2004 Middlebury College
  */
 
@@ -220,17 +220,27 @@ class RepositoryInputOutputModuleManager {
 	 * @access public
 	 * @since 7/22/05
 	 */
-	function getThumbnailUrlForAsset (&$assetId ) {
-		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
+	function getThumbnailUrlForAsset (&$assetOrId ) {
+		ArgumentValidator::validate($assetOrId, 
+			OrValidatorRule::getRule(
+				ExtendsValidatorRule::getRule("Id"),
+				ExtendsValidatorRule::getRule("Asset")));
 		
-		$repositoryManager =& Services::getService("RepositoryManager");
+		$rule =& ExtendsValidatorRule::getRule("Id");
+		if ($rule->check($assetOrId)) {
+			$repositoryManager =& Services::getService("RepositoryManager");
+			$asset =& $repositoryManager->getAsset($assetOrId);
+		} else {
+			$asset =& $assetOrId;
+		}
+		
 		$idManager =& Services::getService("IdManager");
-		$asset =& $repositoryManager->getAsset($assetId);
+		$assetId =& $asset->getId();
 		$repository =& $asset->getRepository();
 		$repositoryId =& $repository->getId();
-		
+ 		
 		$fileRecord =& RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset(
-							$assetId);		
+							$asset);		
 		
 		if ($fileRecord === FALSE)
 			return FALSE;
@@ -280,12 +290,22 @@ class RepositoryInputOutputModuleManager {
 	 * @access public
 	 * @since 7/22/05
 	 */
-	function getFileUrlForAsset (&$assetId ) {
-		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
+	function getFileUrlForAsset (&$assetOrId ) {
+		ArgumentValidator::validate($assetOrId, 
+			OrValidatorRule::getRule(
+				ExtendsValidatorRule::getRule("Id"),
+				ExtendsValidatorRule::getRule("Asset")));
 		
-		$repositoryManager =& Services::getService("RepositoryManager");
+		$rule =& ExtendsValidatorRule::getRule("Id");
+		if ($rule->check($assetOrId)) {
+			$repositoryManager =& Services::getService("RepositoryManager");
+			$asset =& $repositoryManager->getAsset($assetOrId);
+		} else {
+			$asset =& $assetOrId;
+		}
+		
 		$idManager =& Services::getService("IdManager");
-		$asset =& $repositoryManager->getAsset($assetId);
+		$assetId =& $asset->getId();
 		$repository =& $asset->getRepository();
 		$repositoryId =& $repository->getId();
 		
@@ -328,12 +348,22 @@ class RepositoryInputOutputModuleManager {
 	 * @access public
 	 * @since 8/19/05
 	 */
-	function &getFirstImageOrFileRecordForAsset ( &$assetId ) {
-		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
+	function &getFirstImageOrFileRecordForAsset ( &$assetOrId ) {
+		ArgumentValidator::validate($assetOrId, 
+			OrValidatorRule::getRule(
+				ExtendsValidatorRule::getRule("Id"),
+				ExtendsValidatorRule::getRule("Asset")));
 		
-		$repositoryManager =& Services::getService("RepositoryManager");
+		$rule =& ExtendsValidatorRule::getRule("Id");
+		if ($rule->check($assetOrId)) {
+			$repositoryManager =& Services::getService("RepositoryManager");
+			$asset =& $repositoryManager->getAsset($assetOrId);
+		} else {
+			$asset =& $assetOrId;
+		}
+		
 		$idManager =& Services::getService("IdManager");
-		$asset =& $repositoryManager->getAsset($assetId);
+		$assetId =& $asset->getId();
 		
 		$imageProcessor =& Services::getService("ImageProcessor");
 		$fileRecords =& $asset->getRecordsByRecordStructure($idManager->getId("FILE"));
