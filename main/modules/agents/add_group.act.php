@@ -4,7 +4,7 @@
  * @package polyphony.modules.agents
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- * @version $Id: add_group.act.php,v 1.5 2005/10/17 20:43:53 adamfranco Exp $
+ * @version $Id: add_group.act.php,v 1.6 2005/11/21 21:43:05 adamfranco Exp $
  **/
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -16,7 +16,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @author Gabriel Schine
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- * @version $Id: add_group.act.php,v 1.5 2005/10/17 20:43:53 adamfranco Exp $
+ * @version $Id: add_group.act.php,v 1.6 2005/11/21 21:43:05 adamfranco Exp $
  */
 class add_groupAction extends MainWindowAction
 {
@@ -130,13 +130,13 @@ class add_groupAction extends MainWindowAction
 			$property->setValue("NONE");
 
 			$property =& $wizard->addComponent("type_domain", new WTextField());
-			$property->setStartingDisplayText("Groups");
+			$property->setStartingDisplayText(_("Domain, i.e. 'groups'"));
 
 			$property =& $wizard->addComponent("type_authority", new WTextField());
-			$property->setStartingDisplayText("edu.middlebury.polyphony");
+			$property->setStartingDisplayText(_("Authority, i.e. 'edu.middlebury'"));
 
 			$property =& $wizard->addComponent("type_keyword", new WTextField());
-			$property->setStartingDisplayText("Generic");
+			$property->setStartingDisplayText(_("Keyword, i.e 'classes"));
 			
 			$property =& $wizard->addComponent("type_description", WTextArea::withRowsAndColumns(3, 50));
 			
