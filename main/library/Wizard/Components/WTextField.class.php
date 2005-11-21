@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.10 2005/10/20 19:10:01 adamfranco Exp $
+ * @version $Id: WTextField.class.php,v 1.11 2005/11/21 19:18:36 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__).'/WTextInput.abstract.php');
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__).'/WTextInput.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.10 2005/10/20 19:10:01 adamfranco Exp $
+ * @version $Id: WTextField.class.php,v 1.11 2005/11/21 19:18:36 adamfranco Exp $
  */
 class WTextField 
 	extends WTextInput 
@@ -64,9 +64,9 @@ class WTextField
 			$m .= " value='".htmlentities($this->_value, ENT_QUOTES)."'";
 		} else if ($this->_startingDisplay) {
 			$v = htmlentities($this->_startingDisplay, ENT_QUOTES);
-			$m .= "\n\t\t\t\tvalue='$v';";
-			$m .= "\n\t\t\t\tonfocus='if (this.value == \"$v\") { this.value=\"\"; }'";
-			$m .= "\n\t\t\t\tonblur='if (this.value == \"\") { this.value=\"$v\"; }'";
+			$m .= "\n\t\t\t\tvalue='$v' style='color: #888' ";
+			$m .= "\n\t\t\t\tonfocus='if (this.value == \"$v\") { this.value=\"\";  this.style.color=\"#000\";}'";
+			$m .= "\n\t\t\t\tonblur='if (this.value == \"\") { this.value=\"$v\"; this.style.color=\"#888\";}'";
 		}
 		if ($this->_style) {
 			$m .= "\n\t\t\t\tstyle=\"".str_replace("\"", "\\\"", $this->_style)."\"";
