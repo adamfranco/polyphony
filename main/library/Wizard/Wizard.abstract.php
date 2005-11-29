@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.11 2005/09/28 20:50:28 gabeschine Exp $
+ * @version $Id: Wizard.abstract.php,v 1.12 2005/11/29 22:05:35 adamfranco Exp $
  */
 
 /*
@@ -30,7 +30,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.11 2005/09/28 20:50:28 gabeschine Exp $
+ * @version $Id: Wizard.abstract.php,v 1.12 2005/11/29 22:05:35 adamfranco Exp $
  * @author Gabe Schine
  * @abstract
  */
@@ -111,7 +111,7 @@ class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 	function &getLayout () {
 		$markup = $this->getMarkup($this->_id);
 		
-		return new Block($markup, 3);
+		return new Block($markup, WIZARD_BLOCK);
 	}
 	
 	/**

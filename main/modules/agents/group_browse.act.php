@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_browse.act.php,v 1.5 2005/08/10 21:20:17 gabeschine Exp $
+ * @version $Id: group_browse.act.php,v 1.6 2005/11/29 22:05:35 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_browse.act.php,v 1.5 2005/08/10 21:20:17 gabeschine Exp $
+ * @version $Id: group_browse.act.php,v 1.6 2005/11/29 22:05:35 adamfranco Exp $
  */
 class group_browseAction 
 	extends MainWindowAction
@@ -119,7 +119,7 @@ END;
 			print "<input type='button' value='"._("Clear")."' /></a>";
 		print "\n</div>\n</form>";
 		
-		$actionRows->add(new Block(ob_get_contents(), 3), "100%", null, LEFT, CENTER);
+		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 		ob_end_clean();
 		
 		
@@ -172,7 +172,7 @@ END;
 			}
 			print "\n</div>";
 			
-			$pageRows->add(new Block(ob_get_contents(), 3), "100%", null, LEFT, CENTER);	
+			$pageRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);	
 			ob_end_clean();
 		}
 		
@@ -195,7 +195,7 @@ END;
 				while ($childGroups->hasNext()) {
 					$group =& $childGroups->next();
 					$groupId =& $group->getId();
-					$childGroupIds[] =& $groupId->getIdString();
+					$childGroupIds[] = $groupId->getIdString();
 				}
 			}
 		}
@@ -214,7 +214,7 @@ END;
 												2,
 												"group_browseAction::printGroup", 
 												"group_browseAction::printMember");
-				$groupLayout =& new Block(ob_get_contents(), 4);
+				$groupLayout =& new Block(ob_get_contents(), STANDARD_BLOCK);
 				ob_end_clean();
 				$pageRows->add($groupLayout, "100%", null, LEFT, CENTER);	
 			}

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.13 2005/10/28 14:20:29 cws-midd Exp $
+ * @version $Id: create_agent.act.php,v 1.14 2005/11/29 22:05:35 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.13 2005/10/28 14:20:29 cws-midd Exp $
+ * @version $Id: create_agent.act.php,v 1.14 2005/11/29 22:05:35 adamfranco Exp $
  */
 class create_agentAction 
 	extends MainWindowAction
@@ -55,7 +55,7 @@ class create_agentAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		return dgettext("polyphony", "Create Agents");
+		return dgettext("polyphony", "Create a new User");
 	}
 	
 	/**
@@ -114,7 +114,7 @@ class create_agentAction
 		}
 		
 		// Layout
-		$actionRows->add(new Block(ob_get_contents(),3), "100%", null, CENTER, TOP);
+		$actionRows->add(new Block(ob_get_contents(), WIZARD_BLOCK), "100%", null, CENTER, TOP);
 		ob_end_clean();
 		
 		$harmoni->request->endNamespace();
@@ -133,7 +133,6 @@ class create_agentAction
 		$harmoni =& Harmoni::instance();
 		
 		print "<center><form action='".$harmoni->request->quickURL()."' method='post'>
-				Create A New User<br />
 				<table>";
 		
 		//switch($GLOBALS["AuthNMethod"]){

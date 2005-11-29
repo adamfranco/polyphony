@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BasketManager.class.php,v 1.3 2005/10/19 21:03:03 adamfranco Exp $
+ * @version $Id: BasketManager.class.php,v 1.4 2005/11/29 22:05:35 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BasketManager.class.php,v 1.3 2005/10/19 21:03:03 adamfranco Exp $
+ * @version $Id: BasketManager.class.php,v 1.4 2005/11/29 22:05:35 adamfranco Exp $
  */
 class BasketManager {
 		
@@ -113,7 +113,7 @@ class BasketManager {
 		print "(".$basket->count()." "._("items").")";
 		print "</a>";
 		
-		$block = new Block(ob_get_contents(), 4);
+		$block = new Block(ob_get_contents(), ALERT_BLOCK);
 		ob_end_clean();
 		$harmoni->request->endNamespace();
 		return $block;
