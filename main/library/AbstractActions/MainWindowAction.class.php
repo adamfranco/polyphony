@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MainWindowAction.class.php,v 1.3 2005/07/22 19:29:43 adamfranco Exp $
+ * @version $Id: MainWindowAction.class.php,v 1.4 2005/11/29 18:39:32 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/WizardAction.class.php");
@@ -31,7 +31,7 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MainWindowAction.class.php,v 1.3 2005/07/22 19:29:43 adamfranco Exp $
+ * @version $Id: MainWindowAction.class.php,v 1.4 2005/11/29 18:39:32 adamfranco Exp $
  */
 class MainWindowAction 
 	extends WizardAction {
@@ -88,7 +88,7 @@ class MainWindowAction
 		// Add a heading if specified
 		if ($headingText = $this->getHeadingText()) {
 			$actionRows->add(
-				new Heading($headingText, 2),
+				new Heading($headingText, 1),
 				"100%",
 				null, 
 				LEFT, 
