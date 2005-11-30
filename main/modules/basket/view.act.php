@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.4 2005/10/17 18:21:30 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.5 2005/11/30 21:46:03 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/BasketManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.4 2005/10/17 18:21:30 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.5 2005/11/30 21:46:03 adamfranco Exp $
  */
 class viewAction 
 	extends MainWindowAction
@@ -120,8 +120,8 @@ function printAssetShort(&$assetId) {
 	}
 	
 	$xLayout =& new XLayout();
-	$layout =& new Container($xLayout, BLOCK, 4);
-	$assetBlock =& new Block(ob_get_contents(), 3);
+	$layout =& new Container($xLayout, BLOCK, EMPHASIZED_BLOCK);
+	$assetBlock =& new UnstyledBlock(ob_get_contents());
 	$layout->add($assetBlock, null, null, CENTER, CENTER);
 	ob_end_clean();
 	
@@ -144,7 +144,7 @@ function printAssetShort(&$assetId) {
 	print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/arrowright.png' width='25px' border='0'  alt='"._("Move Down")."'  />";
 	print "</a>";
 	
-	$functionsBlock =& new Block(ob_get_contents(), 3);
+	$functionsBlock =& new UnstyledBlock(ob_get_contents());
 	$layout->add($functionsBlock, null, null, CENTER, TOP);
 	ob_end_clean();
 	
