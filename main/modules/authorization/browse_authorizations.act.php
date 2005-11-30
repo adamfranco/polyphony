@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_authorizations.act.php,v 1.20 2005/10/21 16:16:01 cws-midd Exp $
+ * @version $Id: browse_authorizations.act.php,v 1.21 2005/11/30 21:33:06 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_authorizations.act.php,v 1.20 2005/10/21 16:16:01 cws-midd Exp $
+ * @version $Id: browse_authorizations.act.php,v 1.21 2005/11/30 21:33:06 adamfranco Exp $
  */
 class browse_authorizationsAction 
 	extends MainWindowAction
@@ -65,7 +65,7 @@ class browse_authorizationsAction
 		$harmoni =& Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-authorizations");
 
-		$actionRows->add(new Block("&nbsp; &nbsp; "._("Below is a listing of all of the Users/Groups who are authorized to do various functions in the system. Click on a name to edit the authorizations for that User/Group")."<br /><br />",2));
+		$actionRows->add(new Block("&nbsp; &nbsp; "._("Below is a listing of all of the Users/Groups who are authorized to do various functions in the system. Click on a name to edit the authorizations for that User/Group")."<br /><br />",STANDARD_BLOCK));
 		
 		// Buttons to go back to edit auths for a different user, or to go home
 		ob_start();
@@ -74,7 +74,7 @@ class browse_authorizationsAction
 		print "<a href='".$harmoni->request->quickURL("admin","main")."'><button>"._("Return to the Admin Tools")."</button></a>";
 		print "</td></tr></table>";
 		
-		$nav =& new Block(ob_get_contents(), 2);
+		$nav =& new Block(ob_get_contents(), STANDARD_BLOCK);
 		$actionRows->add($nav, "100%", null, LEFT, CENTER);
 		ob_end_clean();
 		
@@ -107,7 +107,7 @@ class browse_authorizationsAction
 										new HTMLColor("#ddd")
 									);
 																
-					$actionRows->add(new Block(ob_get_contents(), 3), "100%", null, LEFT, CENTER);
+					$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 					ob_end_clean();		
 // 				}
 			}

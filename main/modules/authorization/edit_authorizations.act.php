@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.38 2005/11/02 22:40:45 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.39 2005/11/30 21:33:06 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -26,7 +26,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.38 2005/11/02 22:40:45 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.39 2005/11/30 21:33:06 adamfranco Exp $
  */
 class edit_authorizationsAction 
 	extends MainWindowAction
@@ -108,7 +108,7 @@ class edit_authorizationsAction
 		
 		// Intro message
 		$intro =& new Block("&nbsp; &nbsp; "._("Check or uncheck authorization(s) for the section(s) of your choice.")."<br />
-				&nbsp; &nbsp; "._("After each change, the changes are saved automatically.")."<br /><br />", 3);
+				&nbsp; &nbsp; "._("After each change, the changes are saved automatically.")."<br /><br />", STANDARD_BLOCK);
 		
 		
 		// Get the id of the selected agent using $_REQUEST <-- !!! do we need this???
@@ -126,7 +126,7 @@ class edit_authorizationsAction
 		print "<a href='".$harmoni->request->quickURL("admin","main")."'><button>"._("Return to the Admin Tools")."</button></a>";
 		print "</td></tr></table>";
 		
-		$nav =& new Block(ob_get_contents(),3);
+		$nav =& new Block(ob_get_contents(), STANDARD_BLOCK);
 		$actionRows->add($nav, "100%", null, LEFT, CENTER);
 		ob_end_clean();
 		
@@ -154,14 +154,14 @@ class edit_authorizationsAction
 										"edit_authorizationsAction::getChildQualifiers",
 										new HTMLColor("#ddd")
 									);
-				$qualifierLayout =& new Block(ob_get_contents(), 4);
+				$qualifierLayout =& new Block(ob_get_contents(), STANDARD_BLOCK);
 				ob_end_clean();
 				$actionRows->add($qualifierLayout, "100%", null, LEFT, CENTER);
 		
 			}
 		}
 		
-		$actionRows->add(new Block(_("Key: Im = Implicit authorization (an authorzation inherited further up the hierarchy or by group membership - must be changed where it was made Explicit)<br/>Ex = Explicit authorization (can be changed)"),3), "100%", null, TOP, LEFT);
+		$actionRows->add(new Block(_("Key: Im = Implicit authorization (an authorzation inherited further up the hierarchy or by group membership - must be changed where it was made Explicit)<br/>Ex = Explicit authorization (can be changed)"), STANDARD_BLOCK), "100%", null, TOP, LEFT);
 		
 		// Buttons to go back to edit auths for a different user, or to go home
 		$actionRows->add($nav,"100%", null, LEFT,CENTER);

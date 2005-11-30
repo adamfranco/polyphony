@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.20 2005/11/10 15:56:10 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.21 2005/11/30 21:33:05 adamfranco Exp $
  */
  
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.20 2005/11/10 15:56:10 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.21 2005/11/30 21:33:05 adamfranco Exp $
  */
 
 class IteratorResultPrinter {
@@ -139,7 +139,7 @@ class IteratorResultPrinter {
 					$numItems++;
 			}	
 		} else {
-			$text =& new Block("<ul><li>"._("No items are availible.")."</li></ul>", 3);
+			$text =& new Block("<ul><li>"._("No items are availible.")."</li></ul>", STANDARD_BLOCK);
 			$resultLayout->add($text, null, null, CENTER, CENTER);
 		}		
 		
@@ -171,7 +171,7 @@ class IteratorResultPrinter {
 			}
 			
 			// Add the links to the page
-			$pageLinkBlock =& new Block(ob_get_contents(), 3);
+			$pageLinkBlock =& new Block(ob_get_contents(), STANDARD_BLOCK);
 			ob_end_clean();
 			$layout->add($pageLinkBlock, "100%", null, RIGHT, CENTER);
 		}
