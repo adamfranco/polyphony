@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.5 2005/12/07 21:16:14 adamfranco Exp $
+ * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.6 2005/12/07 21:59:16 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -18,10 +18,12 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.5 2005/12/07 21:16:14 adamfranco Exp $
+ * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.6 2005/12/07 21:59:16 adamfranco Exp $
  */
 
-class EmbeddedArrayResultPrinter {
+class EmbeddedArrayResultPrinter 
+	extends ResultPrinter
+{
 
 	var $_array;
 	var $_numColumns;
