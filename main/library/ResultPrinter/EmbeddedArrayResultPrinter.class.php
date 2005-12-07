@@ -5,8 +5,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.4 2005/11/10 15:56:10 adamfranco Exp $
+ * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.5 2005/12/07 21:16:14 adamfranco Exp $
  */
+
+require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
 
 /**
  * Print out an Array of items in rows and columns in a TABLE HTML element.
@@ -16,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.4 2005/11/10 15:56:10 adamfranco Exp $
+ * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.5 2005/12/07 21:16:14 adamfranco Exp $
  */
 
 class EmbeddedArrayResultPrinter {
@@ -105,45 +107,6 @@ class EmbeddedArrayResultPrinter {
 	function createItemElement($content)
 	{
 		return $this->createTDElement($content);
-	}
-
-	/**
-	 * Creates the links that go from one page to another.
-	 * @param integer $numItems The total number of items in the result set.
-	 * @param integer $startingNumber The index of the first item actually displayed.
-	 *
-	 * @return string
-	 **/
-	function createPageLinks($numItems, $startingNumber)
-	{
-		$harmoni =& Harmoni::instance();
-		ob_start();
-		$numPages = ceil($numItems/$this->_pageSize);
-		
-		if ($this->_pageSize > 1)
-			$currentPage = floor($startingNumber/$this->_pageSize)+1; // add one for 1-based counting
-		else
-			$currentPage = $startingNumber;
-	
-		for ($i=1; $i<=$numPages; $i++) {
-			if ($i > 0 && ($i-1) % 10 == 0)
-				print "<br />";
-			print " ";
-			if ($i != $currentPage) {
-				$url =& $harmoni->request->mkURLWithPassthrough();
-				$url->setValue("starting_number", (($i-1)*$this->_pageSize+1));
-				print "<a href='".$url->write()."'>";
-			}
-			print $i;
-			if ($i != $currentPage)
-				print "</a>";
-		}
-
-		// Add the links to the page
-		$pageLinks = ob_get_contents();
-		ob_end_clean();
-		
-		return $pageLinks;
 	}
 	
 	/**
@@ -309,18 +272,15 @@ class EmbeddedArrayResultPrinter {
 	
 		$markup .= "</tr>\n";
 
-		// print out links to skip to more items if the number of Items is greater
-		// than the number we display on the page
-		
-/*		if ($numItems > $this->_pageSize) {
-			
-			$table .= $this->createTRElement().$this->createTDElement($pageLinks, $this->_numColumns)."</tr>";			
-		}*/
-
 		$table .= $markup;
 		
-		if ($numItems > $this->_pageSize) {
-			$pageLinks = $this->createPageLinks($numItems, $startingNumber);
+/*********************************************************
+ *  Page Links
+ * ------------
+ * print out links to skip to more items if the number of Items is greater
+ * than the number we display on the page
+ *********************************************************/
+ 		if ($pageLinks = $this->getPageLinks($startingNumber, $numItems)) {
 			$table .= $this->createTRElement().$this->createTDElement($pageLinks, $this->_numColumns, "right")."</tr>";
 		}
 		

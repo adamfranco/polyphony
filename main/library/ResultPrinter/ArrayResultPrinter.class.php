@@ -5,8 +5,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.16 2005/11/30 21:33:05 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.17 2005/12/07 21:16:14 adamfranco Exp $
  */
+
+require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
 
 /**
  * Print out an Array of items in rows and columns of TEXT_BLOCK widgets 
@@ -17,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.16 2005/11/30 21:33:05 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.17 2005/12/07 21:16:14 adamfranco Exp $
  */
 
 class ArrayResultPrinter {
@@ -145,37 +147,17 @@ class ArrayResultPrinter {
 			$resultLayout->add($text, null, null, CENTER, CENTER);
 		}		
 		
-		// print out links to skip to more items if the number of Items is greater
-		// than the number we display on the page
-		if ($numItems > $this->_pageSize) {
-			ob_start();
-			$numPages = ceil($numItems/$this->_pageSize);
-			
-			if ($this->_pageSize > 1)
-				$currentPage = floor($startingNumber/$this->_pageSize)+1; // add one for 1-based counting
-			else
-				$currentPage = $startingNumber;
-				
-			for ($i=1; $i<=$numPages; $i++) {
-				if ($i > 0 && ($i-1) % 10 == 0)
-					print "<br />";
-				print " ";
-				if ($i != $currentPage) {
-					print "<a href='";
-					$url =& $harmoni->request->mkURLWithPassthrough();
-					$url->setValue("starting_number", (($i-1)*$this->_pageSize+1));
-					print $url->write();
-					print "'>";
-				}
-				print $i;
-				if ($i != $currentPage)
-					print "</a>";
-			}
+/*********************************************************
+ *  Page Links
+ * ------------
+ * print out links to skip to more items if the number of Items is greater
+ * than the number we display on the page
+ *********************************************************/
+ 		if ($linksHTML = $this->getPageLinks($startingNumber, $numItems)) {
 			
 			// Add the links to the page
-			$pageLinkBlock =& new Block(ob_get_contents(), STANDARD_BLOCK);
-			ob_end_clean();
-			$layout->add($pageLinkBlock, "100%", null, LEFT, CENTER);
+			$pageLinkBlock =& new Block($linksHTML, STANDARD_BLOCK);
+			$layout->add($pageLinkBlock, "100%", null, RIGHT, CENTER);
 		}
 		
 		$layout->add($resultLayout, "100%", null, LEFT, CENTER);
