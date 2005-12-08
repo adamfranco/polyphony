@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositorySearchModuleManager.class.php,v 1.4 2005/08/11 18:27:21 ndhungel Exp $
+ * @version $Id: RepositorySearchModuleManager.class.php,v 1.5 2005/12/08 20:17:58 adamfranco Exp $
  */
 
 /**
@@ -21,8 +21,8 @@ require_once(dirname(__FILE__)."/modules/SimpleFieldModule.class.php");
  * to the appropriate RepositorySearchModule based on their types.
  * 
  * @package polyphony.library.repository.search
- * @version $Id: RepositorySearchModuleManager.class.php,v 1.4 2005/08/11 18:27:21 ndhungel Exp $
- * @since $Date: 2005/08/11 18:27:21 $
+ * @version $Id: RepositorySearchModuleManager.class.php,v 1.5 2005/12/08 20:17:58 adamfranco Exp $
+ * @since $Date: 2005/12/08 20:17:58 $
  * @copyright 2004 Middlebury College
  */
 
@@ -37,6 +37,7 @@ class RepositorySearchModuleManager {
 	 */
 	function RepositorySearchModuleManager () {
 		$this->_modules = array();
+		$this->_modules["Repository::edu.middlebury.harmoni::Keyword"] =& new SimpleFieldModule("Keyword");
 		$this->_modules["Repository::edu.middlebury.harmoni::AssetType"] =& new SimpleFieldModule("AssetType");
 		$this->_modules["Repository::edu.middlebury.harmoni::RootAssets"] =& new SimpleFieldModule("RootAssets");
 		$this->_modules["Repository::edu.middlebury.harmoni::DisplayName"] =& new SimpleFieldModule("DisplayName");
@@ -129,7 +130,7 @@ class RepositorySearchModuleManager {
 	 * @since 10/28/04
 	 */
 	function getSearchCriteria ( & $searchType ) {
-		ArgumentValidator::validate($searchType, new ExtendsValidatorRule("HarmoniType"));
+		ArgumentValidator::validate($searchType, new ExtendsValidatorRule("Type"));
 				
 		$typeKey = $searchType->getDomain()
 					."::".$searchType->getAuthority()
