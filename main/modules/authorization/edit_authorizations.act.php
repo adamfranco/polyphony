@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.39 2005/11/30 21:33:06 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.40 2005/12/08 15:48:10 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -26,7 +26,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.39 2005/11/30 21:33:06 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.40 2005/12/08 15:48:10 adamfranco Exp $
  */
 class edit_authorizationsAction 
 	extends MainWindowAction
@@ -191,7 +191,7 @@ class edit_authorizationsAction
 		$title = _("Id: ").$id->getIdString()." ";
 		$title .= _("Type: ").$type->getDomain()."::".$type->getAuthority()."::".$type->getKeyword();
 	
-		print "\n<a title='".htmlentities($title, ENT_QUOTES)."'><strong>".htmlentities($qualifier->getReferenceName(), ENT_QUOTES)."</strong></a>";
+		print "\n<a title='".htmlspecialchars($title, ENT_QUOTES)."'><strong>".htmlspecialchars($qualifier->getReferenceName(), ENT_QUOTES)."</strong></a>";
 		
 		// Check that the current user is authorized to see the authorizations.
 		$authZ =& Services::getService("AuthZ");
@@ -282,8 +282,8 @@ class edit_authorizationsAction
 			
 			print "\n\t<th style='margin-bottom: 3px'>";
 			print "\n\t\t<a";
-			print " title='".htmlentities($title, ENT_QUOTES)."'";
-			print " href=\"Javascript:window.alert('".htmlentities($title, ENT_QUOTES)."')\"";
+			print " title='".htmlspecialchars($title, ENT_QUOTES)."'";
+			print " href=\"Javascript:window.alert('".htmlspecialchars($title, ENT_QUOTES)."')\"";
 			print ">?</a>";
 			print "\n\t</th>";
 			
@@ -385,10 +385,10 @@ class edit_authorizationsAction
 				
 				if ($numImplicit > 0) {
 				// print out a checkbox	 for the implicit AZ
-// 					$safeTitle = str_replace("\n","\\n",htmlentities($title, ENT_QUOTES));
+// 					$safeTitle = str_replace("\n","\\n",htmlspecialchars($title, ENT_QUOTES));
 					print "\n\t\t\t\t\t<span style='white-space: nowrap'>";
 					print "\n\t\t\t\t\t\t<input type='checkbox' name='blah' value='blah'";
-					print " title='".htmlentities($title, ENT_QUOTES)."'";
+					print " title='".htmlspecialchars($title, ENT_QUOTES)."'";
 					print " checked='checked' disabled='disabled' />";
 					if ($totalAgents > 1) {
 						print "Im: <b>". $numImplicit . "/" . $totalAgents . "</b> ";
@@ -397,8 +397,8 @@ class edit_authorizationsAction
 	// 			print " id='".$explicitAgentId->getIdString()
 	// 						."-".$functionId->getIdString()
 	// 						."-".$explicitQualifierId->getIdString()."'";
-					print " title='".htmlentities($title, ENT_QUOTES)."'";
-					print " href=\"Javascript:window.alert('".str_replace("\n","\\n",htmlentities($title, ENT_QUOTES))."')\"";
+					print " title='".htmlspecialchars($title, ENT_QUOTES)."'";
+					print " href=\"Javascript:window.alert('".str_replace("\n","\\n",htmlspecialchars($title, ENT_QUOTES))."')\"";
 					print ">?</a>";
 						
 					print "\n\t\t\t\t\t</span>";
@@ -465,7 +465,7 @@ class edit_authorizationsAction
 //				print "</td>";
 		
 //				print "\n\t\t\t\t\t<td>";
-				print "<span style='white-space: nowrap'>".htmlentities($function->getReferenceName())."</span></td>";
+				print "<span style='white-space: nowrap'>".htmlspecialchars($function->getReferenceName())."</span></td>";
 				print "\n\t\t\t\t</tr>";
 				print "\n\t\t\t\t</table>";
 				print "\n\t</td>";

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WHiddenField.class.php,v 1.1 2005/09/08 20:48:53 gabeschine Exp $
+ * @version $Id: WHiddenField.class.php,v 1.2 2005/12/08 15:47:58 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WHiddenField.class.php,v 1.1 2005/09/08 20:48:53 gabeschine Exp $
+ * @version $Id: WHiddenField.class.php,v 1.2 2005/12/08 15:47:58 adamfranco Exp $
  */
 class WHiddenField 
 	extends WizardComponent 
@@ -87,7 +87,7 @@ class WHiddenField
 	function getMarkup ($fieldName) {
 		$name = RequestContext::name($fieldName);
 		
-		$val = htmlentities($this->_value, ENT_QUOTES);
+		$val = htmlspecialchars($this->_value, ENT_QUOTES);
 		$m = "<input type='hidden' name='$name' id='$name' value='$val' />";
 		
 		return $m;

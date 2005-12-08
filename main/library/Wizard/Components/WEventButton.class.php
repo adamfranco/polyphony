@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.class.php,v 1.8 2005/12/08 15:24:45 adamfranco Exp $
+ * @version $Id: WEventButton.class.php,v 1.9 2005/12/08 15:47:58 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.class.php,v 1.8 2005/12/08 15:24:45 adamfranco Exp $
+ * @version $Id: WEventButton.class.php,v 1.9 2005/12/08 15:47:58 adamfranco Exp $
  */
 class WEventButton 
 	extends WizardComponent
@@ -151,7 +151,7 @@ class WEventButton
 	 */
 	function getMarkup ($fieldName) {
 		$name = RequestContext::name($fieldName);
-		$label = htmlentities($this->_label, ENT_QUOTES);
+		$label = htmlspecialchars($this->_label, ENT_QUOTES);
 		$onclick = '';
 		if ($this->_onclick) $onclick = addslashes($this->_onclick) . ";";
 		$m = "<input type='hidden' name='$name' id='$name' value='0' />\n";

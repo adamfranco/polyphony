@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.11 2005/11/21 19:18:36 adamfranco Exp $
+ * @version $Id: WTextField.class.php,v 1.12 2005/12/08 15:47:58 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__).'/WTextInput.abstract.php');
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__).'/WTextInput.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.11 2005/11/21 19:18:36 adamfranco Exp $
+ * @version $Id: WTextField.class.php,v 1.12 2005/12/08 15:47:58 adamfranco Exp $
  */
 class WTextField 
 	extends WTextInput 
@@ -57,13 +57,13 @@ class WTextField
 	 * @access public
 	 * @return string
 	 */
-	function getMarkup ($fieldName) {
+	function getMarkup ($fieldName) {		
 		$name = RequestContext::name($fieldName);
 		$m = "<input type='text' \n\t\t\t\tname='$name' \n\t\t\t\tid='$fieldName' \n\t\t\t\tsize='".$this->_size."' maxlength='".$this->_maxlength."'".($this->_readonly?" readonly='readonly'":"");
 		if ($this->_value != null && $this->_value != $this->_startingDisplay) {
-			$m .= " value='".htmlentities($this->_value, ENT_QUOTES)."'";
+			$m .= " value='".htmlspecialchars($this->_value, ENT_QUOTES)."'";
 		} else if ($this->_startingDisplay) {
-			$v = htmlentities($this->_startingDisplay, ENT_QUOTES);
+			$v = htmlspecialchars($this->_startingDisplay, ENT_QUOTES);
 			$m .= "\n\t\t\t\tvalue='$v' style='color: #888' ";
 			$m .= "\n\t\t\t\tonfocus='if (this.value == \"$v\") { this.value=\"\";  this.style.color=\"#000\";}'";
 			$m .= "\n\t\t\t\tonblur='if (this.value == \"\") { this.value=\"$v\"; this.style.color=\"#888\";}'";

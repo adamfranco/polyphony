@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCheckBox.class.php,v 1.8 2005/10/20 19:08:49 adamfranco Exp $
+ * @version $Id: WCheckBox.class.php,v 1.9 2005/12/08 15:47:58 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCheckBox.class.php,v 1.8 2005/10/20 19:08:49 adamfranco Exp $
+ * @version $Id: WCheckBox.class.php,v 1.9 2005/12/08 15:47:58 adamfranco Exp $
  */
 class WCheckBox 
 	extends WizardComponent 
@@ -137,7 +137,7 @@ class WCheckBox
 		$checked = $this->_value?" checked='checked'":"";
 		
 		$style = " style='cursor: pointer;'";
-		if ($this->_style) $style = " style=\"cursor: pointer; ".htmlentities($this->_style)."\"";
+		if ($this->_style) $style = " style=\"cursor: pointer; ".htmlspecialchars($this->_style)."\"";
 		
 				
 		$m = "\n\t\t\t<input type='hidden' \n\t\t\t\tname='$name' \n\t\t\t\tid='$fieldName' \n\t\t\t\tvalue='$val' />";

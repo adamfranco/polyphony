@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WText.class.php,v 1.1 2005/09/09 19:59:26 gabeschine Exp $
+ * @version $Id: WText.class.php,v 1.2 2005/12/08 15:47:58 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WText.class.php,v 1.1 2005/09/09 19:59:26 gabeschine Exp $
+ * @version $Id: WText.class.php,v 1.2 2005/12/08 15:47:58 adamfranco Exp $
  */
 class WText 
 	extends WizardComponent 
@@ -96,7 +96,7 @@ class WText
 	 * @return string
 	 */
 	function getMarkup ($fieldName) {
-		$val = htmlentities($this->_value, ENT_QUOTES);
+		$val = htmlspecialchars($this->_value, ENT_QUOTES);
 		$style = str_replace('"', '\\"', $this->_style);
 		$m = "<span style=\"$style\">$val</span>";
 		

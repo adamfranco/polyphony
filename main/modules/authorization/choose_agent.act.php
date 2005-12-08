@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.33 2005/11/03 21:08:09 cws-midd Exp $
+ * @version $Id: choose_agent.act.php,v 1.34 2005/12/08 15:48:10 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.33 2005/11/03 21:08:09 cws-midd Exp $
+ * @version $Id: choose_agent.act.php,v 1.34 2005/12/08 15:48:10 adamfranco Exp $
  */
 class choose_agentAction 
 	extends MainWindowAction
@@ -118,10 +118,10 @@ END;
 			$typeString = $type->getDomain()
 								."::".$type->getAuthority()
 								."::".$type->getKeyword();
-			print "\n\t\t<option value='".htmlentities($typeString, ENT_QUOTES)."'";
+			print "\n\t\t<option value='".htmlspecialchars($typeString, ENT_QUOTES)."'";
 			if ($harmoni->request->get("search_type") == $typeString)
 				print " selected='selected'";
-			print ">".htmlentities($typeString)."</option>";
+			print ">".htmlspecialchars($typeString)."</option>";
 		}
 		
 		print "\n\t</select>";

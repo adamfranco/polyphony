@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextArea.class.php,v 1.7 2005/11/21 19:18:36 adamfranco Exp $
+ * @version $Id: WTextArea.class.php,v 1.8 2005/12/08 15:47:58 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__).'/WTextInput.abstract.php');
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__).'/WTextInput.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextArea.class.php,v 1.7 2005/11/21 19:18:36 adamfranco Exp $
+ * @version $Id: WTextArea.class.php,v 1.8 2005/12/08 15:47:58 adamfranco Exp $
  */
 class WTextArea 
 	extends WTextInput 
@@ -110,14 +110,14 @@ class WTextArea
 		}
 		
 		if ($this->_value != null && $this->_value != $this->_startingDisplay) {
-			$m .= ">".htmlentities($this->_value);
+			$m .= ">".htmlspecialchars($this->_value);
 		} else if ($this->_startingDisplay) {
-			$v = htmlentities($this->_startingDisplay, ENT_QUOTES);
+			$v = htmlspecialchars($this->_startingDisplay, ENT_QUOTES);
 			$m .= "\n\t\t\t\tonfocus='if (this.value == \"$v\") { this.value=\"\";   this.style.color=\"#000\";}'";
 			$m .= "\n\t\t\t\tonblur='if (this.value == \"\") { this.value=\"$v\";  this.style.color=\"#888\";}'";
 			$m .= " style='color: #888'>".$v;			
 		} else {
-			$m .= ">".htmlentities($this->_value);;
+			$m .= ">".htmlspecialchars($this->_value);;
 		}
 		
 		$m .= "</textarea>";
