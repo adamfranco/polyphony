@@ -1,0 +1,304 @@
+<?php
+/**
+ * @since 12/8/05
+ * @package polyphony.modules.help
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: browse.act.php,v 1.1 2005/12/09 21:41:28 adamfranco Exp $
+ */
+ 
+require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
+
+require_once(DOMIT);
+
+require_once(HARMONI."GUIManager/Container.class.php");
+require_once(HARMONI."GUIManager/Layouts/XLayout.class.php");
+require_once(HARMONI."GUIManager/Layouts/YLayout.class.php");
+require_once(HARMONI."GUIManager/Components/Block.class.php");
+require_once(HARMONI."GUIManager/Components/UnstyledBlock.class.php");
+require_once(HARMONI."GUIManager/Components/Menu.class.php");
+require_once(HARMONI."GUIManager/Components/MenuItemHeading.class.php");
+require_once(HARMONI."GUIManager/Components/MenuItemLink.class.php");
+require_once(HARMONI."GUIManager/Components/Heading.class.php");
+require_once(HARMONI."GUIManager/Components/Footer.class.php");
+
+
+/**
+ * This is the help-browser action which enables browsing of help documentation.
+ * 
+ * @since 12/8/05
+ * @package polyphony.modules.help
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: browse.act.php,v 1.1 2005/12/09 21:41:28 adamfranco Exp $
+ */
+class browseAction 
+	extends Action
+{
+		
+	/**
+	 * Check Authorizations
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 4/26/05
+	 */
+	function isAuthorizedToExecute () {
+		return true;
+	}
+	
+	
+	/**
+	 * Return the heading text for this action, or an empty string.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 4/26/05
+	 */
+	function getHeadingText () {
+		return dgettext('polyphony', 'Help Browser');
+	}
+	
+	/**
+	 * Execute this action.
+	 * 
+	 * @param object Harmoni $harmoni
+	 * @return mixed
+	 * @access public
+	 * @since 4/25/05
+	 */
+	function execute ( &$harmoni ) {
+		$actionRows =& new Container(new YLayout, BLOCK, BACKGROUND_BLOCK);
+		
+		$heading = dgettext("polyphony", 'Help');
+		if ($topic = $this->getTopic())
+			$heading .= " - ".$topic;
+		$actionRows->add(new Heading($heading, 1));
+		
+		$actionCols =& $actionRows->add(new Container(new XLayout, BLANK, 1));
+		
+		$actionCols->add($this->getHelpMenu(), "250px", null, null, TOP);
+		
+		$actionCols->add($this->getTopicContents($this->getTopic()), null, null, null, TOP);
+		
+		return $actionRows;
+	}
+	
+	/**
+	 * Create the main help Menu
+	 * 
+	 * @return object Component
+	 * @access public
+	 * @since 12/8/05
+	 */
+	function &getHelpMenu () {
+		$harmoni =& Harmoni::instance();
+		
+		$menu =& new Menu(new YLayout, 1);
+		
+		$menuItem =& new MenuItemLink(
+			$this->getMainTopic(), 
+			$harmoni->request->quickURL("help", "browse"), 
+			(RequestContext::value("topic"))?FALSE:TRUE,
+			1);
+			
+		$menu->add($menuItem, "100%", null, LEFT, CENTER);
+		
+		foreach ($this->getHelpTopics() as $file => $topic) {
+			if ($topic != $this->getMainTopic()) {
+				$menuItem =& new MenuItemLink(
+					"$topic", 
+					$harmoni->request->quickURL("help", "browse", array("topic" => $topic)), 
+					(RequestContext::value("topic") == $topic)?TRUE:FALSE,
+					2);
+					
+				$menu->add($menuItem, "100%", null, LEFT, CENTER);
+			}
+		}
+		
+		return $menu; 
+	}
+	
+	/**
+	 * Answer an array of the Help topics
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 12/8/05
+	 */
+	function &getHelpTopics () {
+		if (!isset($this->_topics)) {
+			
+			//replace this with config lines.
+			$this->_dirs = array(MYDIR."/doc/help");
+			
+			$this->_topics = array();
+			
+			$langMan =& Services::getService('LanguageManager');
+			$lang = $langMan->getLanguage();
+			
+			foreach ($this->_dirs as $helpDir) {
+				$dir = $helpDir."/".$lang;
+				if ($handle = opendir($dir)) {
+					while (false !== ($file = readdir($handle))) {
+						$filePath = $dir."/".$file;
+						if (preg_match(
+							"/<title>(.*)<\/title>/i", 
+							file_get_contents($filePath),
+							$matches))
+						{
+							$this->_topics[$filePath] = $matches[1];
+						}
+					}
+					closedir($handle);
+				}
+			}
+			
+			asort($this->_topics);
+		}
+		return $this->_topics;
+	}
+	
+	/**
+	 * Answer the title of the index page
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 12/9/05
+	 */
+	function getMainTopic () {
+		if (!isset($this->_mainTopic)) {
+			$topics =& $this->getHelpTopics();
+		
+			foreach ($topics as $file => $topic) {
+				if (basename($file) == 'index.html')
+					$this->_mainTopic = $topic;
+			}
+			
+			if (!isset($this->_mainTopic))
+				$this->_mainTopic = dgettext("polyphony", "Main");
+		}
+		
+		return $this->_mainTopic;
+	}
+	
+	/**
+	 * Answer the current topic
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 12/9/05
+	 */
+	function getTopic () {
+		if ($topic = RequestContext::value("topic"))
+			return $topic;
+		else
+			return $this->getMainTopic();
+	}
+	
+	/**
+	 * Answer the contents of the current topic
+	 * 
+	 * @param string $topic
+	 * @return object Component
+	 * @access public
+	 * @since 12/9/05
+	 */
+	function &getTopicContents ($topic) {
+		$topicContainer =& new Container(new YLayout, BLANK, 1);
+		
+		$document =& $this->getTopicXmlDocument($topic);
+		
+		$bodyElements =& $document->getElementsByPath("/html/body");
+		$body =& $bodyElements->item(0);
+		
+		ob_start();
+		for ($i = 0; $i < count($body->childNodes); $i++) {
+			$element =& $body->childNodes[$i];
+			switch ($element->getTagName()) {
+
+				case 'h1':
+					$heading =& new Heading($element->getText(), 1);
+				case 'h2':
+					if (!isset($heading))
+						$heading =& new Heading($element->getText(), 2);
+				case 'h3':
+					if (!isset($heading))
+						$heading =& new Heading($element->getText(), 3);
+				case 'h4':
+					if (!isset($heading))
+						$heading =& new Heading($element->getText(), 4);
+				
+				
+					// Finish off our previous block if it had contents.
+					$previousBlockText = ob_get_contents();
+					ob_end_clean();
+					if (strlen(trim($previousBlockText)))
+						$topicContainer->add(new Block($previousBlockText, STANDARD_BLOCK));
+					
+					// create our heading element
+					$topicContainer->add($heading);
+					unset($heading);
+					
+					// Start a new buffer for the next block contents.
+					ob_start();
+					break;
+
+				default:
+					print $element->toString()."\n";
+						
+			}
+		}
+		
+		$topicContainer->add(new Block(ob_get_contents(), STANDARD_BLOCK));
+		ob_end_clean();
+		
+		return $topicContainer;
+	}
+	
+	/**
+	 * Answer a DOMIT XML Document for the given topic
+	 * 
+	 * @param string $topic
+	 * @return object DOMIT_Document
+	 * @access public
+	 * @since 12/9/05
+	 */
+	function &getTopicXmlDocument ($topic) {
+		$document =& new DOMIT_Document();
+		
+		$file = array_search($topic, $this->getHelpTopics());
+		
+		if (!$file || !file_exists($file)) {
+			ob_start();
+			print 	"<html>\n";
+			print 	"	<head>\n";
+			print 	"		<title>";
+			print dgettext("polyphony", "Topic Not Found");
+			print 			"</title>\n";
+			print 	"	</head>\n";
+			print 	"	<body>\n";
+			print 	"		<h1>";
+			print dgettext("polyphony", "Topic Not Found");
+			print			"</h1>\n";
+			print 	"		<p>";
+			print dgettext("polyphony", "The topic that you requested was not found.");
+			print			"</p>\n";
+			print 	"	</body>\n";
+			print 	"</html>\n";
+			
+			$document->parseXML(ob_get_contents());
+			ob_end_clean();
+		} else {
+			$document->loadXML($file);
+		}
+			
+		return $document;
+	}
+}
+
+?>
