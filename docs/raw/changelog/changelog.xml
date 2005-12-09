@@ -4,12 +4,24 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.23 2005/10/12 20:27:52 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.24 2005/12/09 22:35:54 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
+	<version number="0.4.0" date="The Nebulous Future">
+		<new author='adam'>
+			HelpBrowser system.
+		</new>
+		<new author='adam'>
+			Added Wizard components to support repeatable values as well as
+			'confirmed-change' linked checkboxes and fields.
+		</new>
+		<change author='adam'>
+			Optimizations to speed loading of thumbnails.
+		</change>
+	</version>
 	<version number="0.3.0" date="2005-10-12">
 		<new author='adam'>
 			Repository OutputModules now support accessing the first image
