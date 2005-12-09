@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.1 2005/12/09 22:12:13 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.2 2005/12/09 22:21:28 adamfranco Exp $
  */
  
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -34,7 +34,7 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.1 2005/12/09 22:12:13 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.2 2005/12/09 22:21:28 adamfranco Exp $
  */
 class browse_helpAction 
 	extends Action
@@ -146,7 +146,19 @@ class browse_helpAction
 			
 			foreach ($this->_dirs as $helpDir) {
 				$dir = $helpDir."/".$lang;
-				if ($handle = opendir($dir)) {
+				if (is_dir($dir) && $handle = opendir($dir)) {
+					while (false !== ($file = readdir($handle))) {
+						$filePath = $dir."/".$file;
+						if (preg_match(
+							"/<title>(.*)<\/title>/i", 
+							file_get_contents($filePath),
+							$matches))
+						{
+							$this->_topics[$filePath] = $matches[1];
+						}
+					}
+					closedir($handle);
+				} else if (is_dir($dir = $helpDir."/en_US") && $handle = opendir($dir)) {
 					while (false !== ($file = readdir($handle))) {
 						$filePath = $dir."/".$file;
 						if (preg_match(
