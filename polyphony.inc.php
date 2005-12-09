@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.33 2005/11/01 19:55:27 adamfranco Exp $
+ * @version $Id: polyphony.inc.php,v 1.34 2005/12/09 22:12:10 adamfranco Exp $
  */
 
 /**
@@ -89,5 +89,9 @@ if (file_exists(dirname(__FILE__)."/config/exif.conf.php"))
 	require_once(dirname(__FILE__)."/config/exif.conf.php");
 else
 	require_once(dirname(__FILE__)."/config/exif_default.conf.php");
+	
+
+require_once(dirname(__FILE__)."/main/modules/help/browse_help.act.php");
+
 
 ?>

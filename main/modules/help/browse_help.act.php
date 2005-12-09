@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.1 2005/12/09 21:41:28 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.1 2005/12/09 22:12:13 adamfranco Exp $
  */
  
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -34,9 +34,9 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.1 2005/12/09 21:41:28 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.1 2005/12/09 22:12:13 adamfranco Exp $
  */
-class browseAction 
+class browse_helpAction 
 	extends Action
 {
 		
@@ -134,7 +134,10 @@ class browseAction
 		if (!isset($this->_topics)) {
 			
 			//replace this with config lines.
-			$this->_dirs = array(MYDIR."/doc/help");
+			if (isset($_SESSION['__help_dirs__']) && is_array($_SESSION['__help_dirs__']))
+				$this->_dirs = $_SESSION['__help_dirs__'];
+			else
+				$this->_dirs = array();
 			
 			$this->_topics = array();
 			
@@ -161,6 +164,27 @@ class browseAction
 			asort($this->_topics);
 		}
 		return $this->_topics;
+	}
+	
+	/**
+	 * Register a directory of help topics
+	 * This directory should contain sub-directories for each language code.
+	 * The default sub-directory is en_US
+	 * 
+	 * @param string $directory
+	 * @return void
+	 * @access public
+	 * @static
+	 * @since 12/9/05
+	 */
+	function addHelpDirectory ( $directory ) {
+		if (!isset($_SESSION['__help_dirs__']) || !is_array($_SESSION['__help_dirs__']))
+			$_SESSION['__help_dirs__'] = array();
+		
+		if (is_dir($directory))
+			$_SESSION['__help_dirs__'][] = $directory;
+		else
+			throwError(new Error("Invalid Help directory, '$directory'", "polyphony.help", true));
 	}
 	
 	/**
