@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.2 2005/12/09 22:21:28 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.3 2005/12/12 15:06:40 adamfranco Exp $
  */
  
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -34,7 +34,7 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.2 2005/12/09 22:21:28 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.3 2005/12/12 15:06:40 adamfranco Exp $
  */
 class browse_helpAction 
 	extends Action
@@ -102,7 +102,7 @@ class browse_helpAction
 		
 		$menuItem =& new MenuItemLink(
 			$this->getMainTopic(), 
-			$harmoni->request->quickURL("help", "browse"), 
+			$harmoni->request->quickURL("help", "browse_help"), 
 			(RequestContext::value("topic"))?FALSE:TRUE,
 			1);
 			
@@ -112,7 +112,7 @@ class browse_helpAction
 			if ($topic != $this->getMainTopic()) {
 				$menuItem =& new MenuItemLink(
 					"$topic", 
-					$harmoni->request->quickURL("help", "browse", array("topic" => $topic)), 
+					$harmoni->request->quickURL("help", "browse_help", array("topic" => $topic)), 
 					(RequestContext::value("topic") == $topic)?TRUE:FALSE,
 					2);
 					
