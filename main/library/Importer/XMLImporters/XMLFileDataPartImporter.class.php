@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileDataPartImporter.class.php,v 1.10 2005/11/04 20:33:30 cws-midd Exp $
+ * @version $Id: XMLFileDataPartImporter.class.php,v 1.11 2005/12/12 17:06:26 cws-midd Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileDataPartImporter.class.php,v 1.10 2005/11/04 20:33:30 cws-midd Exp $
+ * @version $Id: XMLFileDataPartImporter.class.php,v 1.11 2005/12/12 17:06:26 cws-midd Exp $
  */
 class XMLFileDataPartImporter extends XMLImporter {
 		
@@ -82,7 +82,7 @@ class XMLFileDataPartImporter extends XMLImporter {
 	 */
 	function importNode () {
 		$idManager =& Services::getService("Id");
-		
+
 		$this->getNodeInfo();
 
 		if (in_array($this->_info['parentId']->getIdString(),
@@ -100,7 +100,6 @@ class XMLFileDataPartImporter extends XMLImporter {
 			$this->_object2 =& $this->_parent->createPart(
 				$this->_info['namePartStructureId'], $this->_info['filename']);
 		}
-
 	}
 
 	/**
@@ -149,10 +148,11 @@ class XMLFileDataPartImporter extends XMLImporter {
 	 * @since 10/10/05
 	 */
 	function update () {
-		if (file_get_contents($this->_info['value']) !=
-				$this->_object->getValue())
+		if (!is_null($this->_info['value']) && 
+			(file_get_contents($this->_info['value']) !=
+			$this->_object->getValue()))
 		$this->_object->updateValue(file_get_contents($this->_info['value']));
-		if ($this->_info['filename'] != $this->_object2->getValue())
+		if (!is_null($this->_info['filename']) && ($this->_info['filename'] != $this->_object2->getValue()))
 			$this->_object2->updateValue($this->_info['filename']);
 	}
 }

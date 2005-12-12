@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.14 2005/11/03 21:13:15 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.15 2005/12/12 17:06:26 cws-midd Exp $
  *
  * @author Christopher W. Shubert
  */ 
@@ -25,7 +25,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryFileImp
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.14 2005/11/03 21:13:15 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.15 2005/12/12 17:06:26 cws-midd Exp $
  */
 class XMLImporter {
 		
@@ -63,7 +63,7 @@ class XMLImporter {
 		$importer->_xmlFile = $filepath;
 		$importer->_type = $type;
 		$importer->setupSelf();
-		
+
 		return $importer;
 	}
 	
@@ -163,11 +163,13 @@ class XMLImporter {
 	 * @access public
 	 * @since 10/11/05
 	 */
-	function importBelow ($authZQString) {
+	function importBelow ($authZQString = null) {
 		if (!$this->canImportBelow($authZQString))
 			return;
 		$this->doIdMatrix();
+
 		$this->relegateChildren();
+
 		$this->dropIdMatrix();
 		
 		if (isset($this->_myId)) {
@@ -184,15 +186,16 @@ class XMLImporter {
 	 * @since 11/3/05
 	 */
 	function canImportBelow($authZQString) {
- 		$authZ =& Services::getService("AuthZ");
- 		$idManager =& Services::getService("Id");
- 		
- 		if (!$authZ->isUserAuthorized(
- 				$idManager->getId("edu.middlebury.authorization.add_children"),
- 				$idManager->getId($authZQString))) {
-			$this->addError("No Authorization to Import under ".$authZQString);
-			return false;
-		}
+ // 		$authZ =& Services::getService("AuthZ");
+//  		$idManager =& Services::getService("Id");
+//  		
+//  		if (!$authZ->isUserAuthorized(
+//  				$idManager->getId("edu.middlebury.authorization.add_children"),
+//  				$idManager->getId($authZQString))) {
+// 			$this->addError("No Authorization to Import under ".
+// 				get_class($this).": ".$authZQString);
+// 			return false;
+// 		}
 		return true;
 	}
 	
@@ -210,12 +213,15 @@ class XMLImporter {
 		$this->_node =& $node;
 		$this->_type = $type;
 		$this->_parent =& $parent;
+
 		$this->importNode();
 		unset($this->_info);
 
-		if (isset($this->_myId))
+		if (isset($this->_myId)) {
 			return $this->importBelow($this->_myId->getIdString());
-		return $this->importBelow();
+		} else {
+			return $this->importBelow();
+		}
 	}
 
 	/**
