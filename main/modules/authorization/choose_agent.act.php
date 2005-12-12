@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.35 2005/12/12 16:27:40 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.36 2005/12/12 16:33:05 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.35 2005/12/12 16:27:40 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.36 2005/12/12 16:33:05 adamfranco Exp $
  */
 class choose_agentAction 
 	extends MainWindowAction
@@ -66,6 +66,7 @@ class choose_agentAction
 		$harmoni =& Harmoni::instance();
 		
 		// start our namespace
+		$harmoni->history->markReturnURL("polyphony/authorization/edit_authorizations");
 		$harmoni->request->startNamespace("polyphony-authorizations");
 		$harmoni->request->passthrough();
 		
