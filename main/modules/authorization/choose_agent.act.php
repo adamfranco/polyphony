@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.34 2005/12/08 15:48:10 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.35 2005/12/12 16:27:40 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.34 2005/12/08 15:48:10 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.35 2005/12/12 16:27:40 adamfranco Exp $
  */
 class choose_agentAction 
 	extends MainWindowAction
@@ -87,7 +87,7 @@ class choose_agentAction
 		print " value='"._("Edit Authorizations for the selected User/Group")." --&gt;' />";
 		print "</td></tr></table>";
 		
-		$submit =& new Block(ob_get_contents(),2);
+		$submit =& new Block(ob_get_contents(), STANDARD_BLOCK);
 		$actionRows->add($submit, "100%", null, LEFT, CENTER);
 		ob_end_clean();	
 		
@@ -130,7 +130,7 @@ END;
 		print "\n\t\t<input type='button' value='"._("Clear")."' />\n\t</a>";
 		print "\n</div>\n</form>";
 		
-		$actionRows->add(new Block(ob_get_contents(), 3));
+		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK));
 		ob_end_clean();
 		
 		/*********************************************************
@@ -234,7 +234,7 @@ END;
 			}
 			print "\n</div>";
 			
-			$pageRows->add(new Block(ob_get_contents(), 2), "100%", null, LEFT, CENTER);	
+			$pageRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);	
 			ob_end_clean();
 		}
 		
@@ -276,7 +276,7 @@ END;
 												2,
 												"choose_agentAction::printGroup", 
 												"choose_agentAction::printMember");
-				$groupLayout =& new Block(ob_get_contents(), 4);
+				$groupLayout =& new Block(ob_get_contents(), STANDARD_BLOCK);
 				ob_end_clean();
 				$pageRows->add($groupLayout, "100%", null, LEFT, CENTER);	
 			}
