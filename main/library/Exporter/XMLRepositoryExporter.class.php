@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryExporter.class.php,v 1.6 2005/11/07 15:40:38 cws-midd Exp $
+ * @version $Id: XMLRepositoryExporter.class.php,v 1.7 2005/12/13 22:45:32 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Exporter/XMLExporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLAssetExporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryExporter.class.php,v 1.6 2005/11/07 15:40:38 cws-midd Exp $
+ * @version $Id: XMLRepositoryExporter.class.php,v 1.7 2005/12/13 22:45:32 cws-midd Exp $
  */
 class XMLRepositoryExporter extends XMLExporter {
 		
@@ -38,6 +38,8 @@ class XMLRepositoryExporter extends XMLExporter {
 	 */
 	function XMLRepositoryExporter() {	
 		parent::XMLExporter();
+		
+$this->_pfile = fopen("/tmp/memoryUsage.txt", "w");
 	}
 
 	/**
@@ -52,22 +54,6 @@ class XMLRepositoryExporter extends XMLExporter {
 		$this->_childElementList = array("recordstructures", "assets");
 	}
 
-	/*
-	 * Constructor for adding repository to an export
-	 *
-	 * @param object Archive_Tar
-	 * @param string
-	 * @access public
-	 * @since 10/31/05
-	 */
-	function &withArchive(&$archive, $repDir) {
-		$exporter =& new XMLRepositoryExporter();
-		$exporter->_archive =& $archive;
-		$exporter->_repDir = $repDir;	
-		
-		return $exporter;
-	}
-
 	/**
 	 * Constructor for starting an export
 	 *
@@ -78,15 +64,22 @@ class XMLRepositoryExporter extends XMLExporter {
 	 */
 	function &withCompression($compression, $class = 'XMLRepositoryExporter') {
 		return parent::withCompression($compression, $class);
-	}
-	
-	function exportAll(&$repId) {
-		$this->_repDir = $this->_tmpDir."/".$repId->getIdString();
-		mkdir($this->_repDir);
-		$this->export($repId);
-		return $this->_tmpDir.$this->_compression;
-	}
-		
+	}	
+
+	/**
+	 * Constructor for in an export
+	 *
+	 * @param string
+	 * @param string
+	 * @access public
+	 * @since 10/31/05
+	 */
+	function &withDir($tmpDir,$file, $class = 'XMLRepositoryExporter') {
+		$exporter =& new $class;
+		$exporter->_tmpDir = $tmpDir;
+		$exporter->_pfile =& $file;
+		return $exporter;
+	}	
 	
 	/**
 	 * Exporter of Repository things
@@ -97,16 +90,19 @@ class XMLRepositoryExporter extends XMLExporter {
 	 * @since 10/17/05
 	 */
 	function export (&$repId) {
-		$rm =& Services::getService("Repository");
-		
+	// ===== CREATE THE DIRECTORY FOR THIS OBJECT ===== //
+		$this->_repDir = $this->_tmpDir."/".$repId->getIdString();
+		mkdir($this->_repDir);
+
+	// ===== SELF KNOWLEDGE ===== //
 		$this->_myId =& $repId;
+		$rm =& Services::getService("Repository");
 		$this->_object =& $rm->getRepository($this->_myId);
 		$type =& $this->_object->getType();
 
-		$this->_xml =& fopen($this->_repDir."/metadata.xml", "w");
-				
+	// ===== SELF EXPORT ===== //
+		$this->setupXML($this->_repDir);				
 		fwrite($this->_xml,
-"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".
 "<repository id=\"".$this->_myId->getIdString()."\">\n".	
 "\t<name>".$this->_object->getDisplayName()."</name>\n".
 "\t<description><![CDATA[".$this->_object->getDescription()."]]></description>\n".
@@ -120,22 +116,19 @@ class XMLRepositoryExporter extends XMLExporter {
 		fwrite($this->_xml,
 "\t</type>\n");
 		
-		// recordStructures
+	// ===== CHILD CLASSES ARE EXPORTED HERE ===== //
 		foreach ($this->_childElementList as $child) {
 			$exportFn = "export".ucfirst($child);
 			if (method_exists($this, $exportFn))
 				$this->$exportFn();
 		}
 
-		fwrite($this->_xml, 
-"</repository>\n");
-
+	// ===== CLOSE SELF XML ===== //
+		fwrite($this->_xml, "</repository>\n");
 		fclose($this->_xml);
-// ==================== ADD REPOSITORY XML TO ARCHIVE =======================//
-		$this->_archive->addModify(
-			array($this->_repDir."/metadata.xml"),
-			$this->_myId->getIdString(),
-			$this->_repDir);
+
+	// ===== RETURN THE NAME OF THE ARCHIVE (important when top level) ===== //
+		return $this->_tmpDir;
 	}
 
 	/**
@@ -149,15 +142,12 @@ class XMLRepositoryExporter extends XMLExporter {
 	 */
 	function exportRecordstructures () {
 		$children =& $this->_object->getRecordStructures();
-		
 		while ($children->hasNext()) {
 			$child =& $children->next();
-			
 			$exporter =& new XMLRecordStructureExporter($this->_xml);
-			
 			$exporter->export($child); // ????
-			unset($exporter);
 		}
+		unset($children, $child, $exporter);
 	}
 
 	/**
@@ -183,16 +173,13 @@ class XMLRepositoryExporter extends XMLExporter {
 				$rootSearchType, $searchProperties = NULL);
 		} else
 			$children =& $this->_object->getAssets();
-
 		while ($children->hasNext()) {
 			$child =& $children->next();
-
-			$exporter =& XMLAssetExporter::withArchive($this->_archive,
-				$this->_xml, $this->_repDir);
-
+			$exporter =& XMLAssetExporter::withDir($this->_xml, $this->_repDir,
+			$this->_pfile);
 			$exporter->export($child);
-			unset($exporter);
 		}
+			unset($exporter);
 	}
 }
 ?>

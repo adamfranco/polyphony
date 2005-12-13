@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLExporter.class.php,v 1.6 2005/11/07 15:40:38 cws-midd Exp $
+ * @version $Id: XMLExporter.class.php,v 1.7 2005/12/13 22:45:32 cws-midd Exp $
  */ 
 
 require_once("Archive/Tar.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLRepositoryExporter.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLExporter.class.php,v 1.6 2005/11/07 15:40:38 cws-midd Exp $
+ * @version $Id: XMLExporter.class.php,v 1.7 2005/12/13 22:45:32 cws-midd Exp $
  */
 class XMLExporter {
 		
@@ -49,7 +49,7 @@ class XMLExporter {
 	}
 
 	/**
-	 * Initializes with an archive for the export
+	 * Initializes the export by creating a dir in /tmp/
 	 * 
 	 * @param string
 	 * @access public
@@ -72,11 +72,7 @@ class XMLExporter {
 		mkdir($exporter->_tmpDir);
 		
 		$exporter->_compression = $compression;
-		
-		$exporter->_archive =& new Archive_Tar(
-			$exporter->_tmpDir.$exporter->_compression, 
-			$exporter->getTarKey($exporter->_compression));
-			
+					
 		return $exporter;
 	}
 
@@ -104,36 +100,32 @@ class XMLExporter {
 	 * @since 10/17/05
 	 */
 	function exportAll () {
-		$this->setupXML();
+		$this->setupXML($this->_tmpDir);
+		fwrite($this->_xml, "<import>\n");
 		
 		foreach ($this->_childElementList as $child) {
 			$exportFn = "export".ucfirst($child);
 			if (method_exists($this, $exportFn))
 				$this->$exportFn();
 		}
-		fwrite($this->_xml,
-"</import>");
 
+		fwrite($this->_xml, "</import>");
 		fclose($this->_xml);
-		$this->_archive->addModify(
-			array($this->_tmpDir."/metadata.xml"),
-			 "", $this->_tmpDir);
-		
-		return $this->_tmpDir.$this->_compression;
+
+		return $this->_tmpDir;
 	}
 
 	/**
 	 * creates xmlfile and initializes it
 	 * 
+	 * @param string $dir the directory in which the xml file resides
 	 * @access public
 	 * @since 10/31/05
 	 */
-	function setupXML () {
-		$this->_xml =& fopen($this->_tmpDir."/metadata.xml", "w");
-		fwrite($this->_xml,
-"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".
-"<import>\n");
-	}
+	function setupXML ($dir) {
+		$this->_xml =& fopen($dir."/metadata.xml", "w");
+		fwrite($this->_xml, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+}
 	
 	/**
 	 * Exporter of repositories
@@ -147,20 +139,16 @@ class XMLExporter {
 	 */
 	function exportRepositories () {
 		$rm =& Services::getService("Repository");
-		
+		$file =& fopen("/tmp/memoryUsage.txt", "w");
 		$children =& $rm->getRepositories();
 		while ($children->hasNext()) {
 			$child =& $children->next();
 			$childId =& $child->getId();
-			// define subdir
-			$repDir = $this->_tmpDir."/".$childId->getIdString();
-			mkdir($repDir);
 			
 			fwrite($this->_xml, "\t<repositoryfile>".$childId->getIdString().
 				"/metadata.xml</repositoryfile>\n");
 			
-			$exporter =& XMLRepositoryExporter::withArchive($this->_archive,
-				$repDir);
+			$exporter =& XMLRepositoryExporter::withDir($this->_tmpDir, $file);
 			
 			$exporter->export($childId); // ????
 			unset($exporter);

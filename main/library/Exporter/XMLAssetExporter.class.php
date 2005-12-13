@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetExporter.class.php,v 1.4 2005/11/07 15:40:38 cws-midd Exp $
+ * @version $Id: XMLAssetExporter.class.php,v 1.5 2005/12/13 22:45:32 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Exporter/XMLExporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLFileRecordExporter.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetExporter.class.php,v 1.4 2005/11/07 15:40:38 cws-midd Exp $
+ * @version $Id: XMLAssetExporter.class.php,v 1.5 2005/12/13 22:45:32 cws-midd Exp $
  */
 class XMLAssetExporter extends XMLExporter {
 		
@@ -48,19 +48,32 @@ class XMLAssetExporter extends XMLExporter {
 		$this->_childElementList = array("records", "assets");
 	}
 
-	/*
-	 * Constructor for adding repository to an export
+	/**
+	 * Constructor for starting an export
 	 *
-	 * @param object Archive_Tar
+	 * @param string
 	 * @param string
 	 * @access public
 	 * @since 10/31/05
 	 */
-	function &withArchive(&$archive, $xmlFile, $fileDir) {
+	function &withCompression($compression, $class = 'XMLAssetExporter') {
+		return parent::withCompression($compression, $class);
+	}	
+
+
+	/*
+	 * Constructor for adding repository to an export
+	 *
+	 * @param handle $xmlFile filehandle for the xml file
+	 * @param string $fileDir the directory for the files to be written
+	 * @access public
+	 * @since 10/31/05
+	 */
+	function &withDir($xmlFile, $fileDir, $file) {
 		$exporter =& new XMLAssetExporter();
-		$exporter->_archive =& $archive;
 		$exporter->_xml =& $xmlFile;
-		$exporter->_fileDir = $fileDir;						
+		$exporter->_fileDir = $fileDir;			
+		$exporter->_pfile =& $file;
 		
 		return $exporter;
 	}
@@ -99,15 +112,92 @@ class XMLAssetExporter extends XMLExporter {
 				$this->$exportFn();
 		}
 		
-		fwrite($this->_xml,
-"\t</asset>\n");
+		fwrite($this->_xml, "\t</asset>\n");
+	}
+	
+	/**
+	 * Exporter of a list of assets, for selective asset exporting
+	 * 
+	 * @param array $idList a list of asset id's
+	 * @return string $file is the directory where all the data is written
+	 * @access public
+	 * @since 12/13/05
+	 */
+	function exportList (&$idList) {
+		$harmoni =& Harmoni::Instance();
+		$repositoryManager =& Services::getService("Repository");
+		$listOfRS = array();
+		$idListRS = array();
+		
+		// prepare all the things we need to export
+		foreach ($idList as $assetId) {
+			$asset =& $repositoryManager->getAsset($assetId);
+
+			// build the list of recordstructures	
+			$this->buildRSList($asset, $idListRS, $listOfRS);
+		}
+
+		// get the xml file ready
+		$this->setupXML($this->_tmpDir);
+		fwrite($this->_xml, "<repository>\n");
+
+		// export the necessary recordstructures
+		foreach ($listOfRS as $rS) {
+			$exporter =& new XMLRecordStructureExporter($this->_xml);
+			$exporter->export($rS);
+			unset($exporter);
+		}
+		
+		// clean up after the recordstructures
+		unset($listOfRS, $idListRS);
+		
+		// export the assets
+		foreach ($idList as $assetId) {
+			$asset =& $repositoryManager->getAsset($assetId);
+			
+			$this->export($asset);
+		}
+		fwrite($this->_xml, "</repository>");
+		fclose($this->_xml);
+		
+		return $this->_tmpDir;
 	}
 
 	/**
-	 * Exporter of recordstructures
+	 * Builds a list of the necessary record structures to ex/import the asset
 	 * 
-	 * Adds recordstructure elements to the xml, which contain the necessary
-	 * information to create the same recordstructure.
+	 * @param object HarmoniAsset $asset an asset that is being exporter
+	 * @param array $listOfRS an array of all the necessary RecordStructures1
+	 * @access public
+	 * @since 12/13/05
+	 */
+	function buildRSList (&$asset, &$idListRS, &$listOfRS) {
+		$iterator =& $asset->getRecordStructures();
+		
+		// go through RS's find those with different Id's
+		while ($iterator->hasNext()) {
+			$rS =& $iterator->next();
+			$id =& $rS->getId();
+			$idString = $id->getIdString();
+			// new recordstructure add it to the list			
+			if (!in_array($idString, $idListRS)) {
+				$idListRS[] = $idString;
+				$listOfRS[] =& $rS;
+			}
+		}
+		// recurse through the children
+		$children =& $asset->getAssets();
+		while($children->hasNext()) {
+			$child =& $children->next();
+			$this->buildRSList($child, $idListRS, $listOfRS);
+		}
+	}
+
+	/**
+	 * Exporter of records
+	 * 
+	 * Adds record elements to the xml, which contain the necessary
+	 * information to create the same records.
 	 * 
 	 * @access public
 	 * @since 10/17/05
@@ -120,12 +210,12 @@ class XMLAssetExporter extends XMLExporter {
 			$child =& $children->next();
 			$rS =& $child->getRecordStructure();
 			if ($rS->getId() == $idManager->getId("FILE")) {
-				$exporter =& new XMLFileRecordExporter($this->_archive,
-					$this->_xml, $this->_fileDir);
+				$exporter =& new XMLFileRecordExporter($this->_xml, 
+					$this->_fileDir, $this->_pfile);
 			} else 
-				$exporter =& new XMLRecordExporter($this->_xml);
-			
+				$exporter =& new XMLRecordExporter($this->_xml, $this->_pfile);
 			$exporter->export($child); // ????
+
 			unset($exporter);
 		}
 	}
@@ -142,8 +232,8 @@ class XMLAssetExporter extends XMLExporter {
 		while ($children->hasNext()) {
 			$child =& $children->next();
 
-			$exporter =& XMLAssetExporter::withArchive($this->_archive,
-				$this->_xml, $this->_fileDir);
+			$exporter =& XMLAssetExporter::withDir($this->_xml,
+				$this->_fileDir, $this->_pfile);
 
 			$exporter->export($child);
 			unset($exporter);

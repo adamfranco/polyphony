@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordExporter.class.php,v 1.6 2005/11/03 21:13:15 cws-midd Exp $
+ * @version $Id: XMLFileRecordExporter.class.php,v 1.7 2005/12/13 22:45:32 cws-midd Exp $
  */ 
 
 //require_once(POLYPHONY."/main/library/Exporter/XMLPartExporter.class.php");
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordExporter.class.php,v 1.6 2005/11/03 21:13:15 cws-midd Exp $
+ * @version $Id: XMLFileRecordExporter.class.php,v 1.7 2005/12/13 22:45:32 cws-midd Exp $
  */
 class XMLFileRecordExporter {
 		
@@ -35,14 +35,14 @@ class XMLFileRecordExporter {
 	 * @access public
 	 * @since 10/17/05
 	 */
-	function XMLFileRecordExporter (&$archive, &$xmlFile, $fileDir) {
+	function XMLFileRecordExporter (&$xmlFile, $fileDir, $file) {
 		$this->_xml =& $xmlFile;
-		$this->_archive =& $archive;
 		$this->_fileDir = $fileDir; 
+		$this->_pfile =& $file;
 		
 		$this->_childExporterList = null;
 		$this->_childElementList = null;
-	}
+		}
 
 	/**
 	 * Exporter of All things
@@ -54,9 +54,9 @@ class XMLFileRecordExporter {
 	function export (&$record) {
 		$this->_object =& $record;
 		$this->_myId =& $this->_object->getId();
-		
+
 		$this->getFileParts();
-		
+
 		fwrite($this->_xml,
 "\t\t<filerecord ".
 "id=\"".$this->_myId->getIdString()."\">\n".
@@ -73,18 +73,6 @@ class XMLFileRecordExporter {
 "\t\t\t</thumbdimensionspart>\n".
 "\t\t\t<thumbmimepart>".$this->_info['t_mime']."</thumbmimepart>\n".
 "\t\t</filerecord>\n");
-
-
-// print "*: ".$this->_fileDir."/".basename($this->_info['f_name']).", <br/>".
-// 	$this->_fileDir."/".basename($this->_info['t_name']).", <br />".
-// 	basename($this->_fileDir).", <br />".
-// 	$this->_fileDir."<br/><br/>";
-// ===== Add files to archive, keep from RepDir down ======//
-		$this->_archive->addModify(
-			array($this->_fileDir."/".basename($this->_info['f_name']),
-			$this->_fileDir."/".basename($this->_info['t_name'])),
-			basename($this->_fileDir),
-			$this->_fileDir);
 	}
 
 	/**
@@ -121,6 +109,7 @@ class XMLFileRecordExporter {
 		if ($parts->count() == 1) {
 			$part =& $parts->next();
 			fwrite($this->_dataFile, $part->getValue());
+			fclose($this->_dataFile);
 		}
 		$parts =& $this->_object->getPartsByPartStructure($FILE_DIME_ID);
 		if ($parts->count() == 1) {
@@ -139,6 +128,7 @@ class XMLFileRecordExporter {
 		if ($parts->count() == 1) {
 			$part =& $parts->next();
 			fwrite($this->_thumbFile, $part->getValue());
+			fclose($this->_thumbFile);
 		}
 		$parts =& $this->_object->getPartsByPartStructure($THUMB_MIME_ID);
 		if ($parts->count() == 1) {
