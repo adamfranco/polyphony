@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.5 2005/11/30 21:46:03 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.6 2005/12/13 22:43:47 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/BasketManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.5 2005/11/30 21:46:03 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.6 2005/12/13 22:43:47 cws-midd Exp $
  */
 class viewAction 
 	extends MainWindowAction
@@ -64,6 +64,20 @@ class viewAction
 		
 		$basket =& BasketManager::getBasket();
 		$basket->reset();
+		
+		//***********************************
+		// Things to do with your basket
+		//***********************************
+		ob_start();
+		print _("Basket").": ";
+//      perhaps there will be enough links sometime for this function
+//		BasketPrinter::printBasketFunctionLinks($harmoni, $basket);
+
+		print "<a href=\"".$harmoni->request->quickURL("basket", "export").
+			"\">"._("Export Basket <em>Assets</em>")."</a>";
+		$layout =& new Block(ob_get_contents(), STANDARD_BLOCK);
+		ob_end_clean();
+		$actionRows->add($layout, "100%", null, CENTER, CENTER);
 		
 		//***********************************
 		// print the results

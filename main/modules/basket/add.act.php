@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.1 2005/08/05 21:38:29 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.2 2005/12/13 22:43:47 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/BasketManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.1 2005/08/05 21:38:29 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.2 2005/12/13 22:43:47 cws-midd Exp $
  */
 class addAction 
 	extends MainWindowAction
@@ -64,12 +64,16 @@ class addAction
 		
 		$basket =& BasketManager::getBasket();
 		$viewAZ =& $idManager->getId("edu.middlebury.authorization.view");
-		$assetId =& $idManager->getId(RequestContext::value("asset_id"));
-		if ($authZ->isUserAuthorized(
-			$viewAZ, 
-			$assetId)) 
-		{
-			$basket->addItem($assetId);
+		$assetIdList = RequestContext::value("assets");
+		$assetIdArray = explode(",", trim($assetIdList));
+		foreach ($assetIdArray as $id) {
+			$assetId =& $idManager->getId($id);
+			if ($authZ->isUserAuthorized(
+				$viewAZ, 
+				$assetId)) 
+			{
+				$basket->addItem($assetId);
+			}
 		}
 		$harmoni->request->endNamespace();
 		$harmoni->history->goBack("polyphony/basket");
