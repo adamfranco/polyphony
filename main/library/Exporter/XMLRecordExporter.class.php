@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordExporter.class.php,v 1.5 2005/12/13 22:45:32 cws-midd Exp $
+ * @version $Id: XMLRecordExporter.class.php,v 1.6 2005/12/14 21:04:50 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Exporter/XMLPartExporter.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLPartExporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordExporter.class.php,v 1.5 2005/12/13 22:45:32 cws-midd Exp $
+ * @version $Id: XMLRecordExporter.class.php,v 1.6 2005/12/14 21:04:50 cws-midd Exp $
  */
 class XMLRecordExporter {
 		
@@ -33,9 +33,8 @@ class XMLRecordExporter {
 	 * @access public
 	 * @since 10/17/05
 	 */
-	function XMLRecordExporter (&$xmlFile, $file) {
+	function XMLRecordExporter (&$xmlFile) {
 		$this->_xml =& $xmlFile;
-		$this->_pfile =& $file;
 		
 		$this->_childExporterList = array("XMLPartExporter");
 		$this->_childElementList = array("parts");

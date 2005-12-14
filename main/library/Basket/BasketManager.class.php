@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BasketManager.class.php,v 1.4 2005/11/29 22:05:35 adamfranco Exp $
+ * @version $Id: BasketManager.class.php,v 1.5 2005/12/14 21:04:49 cws-midd Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BasketManager.class.php,v 1.4 2005/11/29 22:05:35 adamfranco Exp $
+ * @version $Id: BasketManager.class.php,v 1.5 2005/12/14 21:04:49 cws-midd Exp $
  */
 class BasketManager {
 		
@@ -87,6 +87,32 @@ class BasketManager {
 	}
 	
 	/**
+	 * removes unauthorized assets from the basket
+	 * 
+	 * @return void
+	 * @access public
+	 * @static
+	 * @since 12/14/05
+	 */
+	function cleanBasket () {
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+
+		$basket =& BasketManager::getBasket();
+		$basket->reset();
+		while ($basket->hasNext()) {	
+			$id =& $basket->next();
+			if (!$authZ->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.view"), $id))
+			{
+				$basket->removeItem($id);
+				$basket->reset();
+			}
+		}
+		$basket->reset();
+	}
+	
+	/**
 	 * Return an XHTML string of a small version of the basket for use in a header. 
 	 * Includes a link and the number of items in it.
 	 * 
@@ -97,6 +123,8 @@ class BasketManager {
 	function &getSmallBasketBlock () {
 		$harmoni =& Harmoni::instance();
 		$harmoni->request->startNamespace("basket");
+		
+		BasketManager::cleanBasket();
 		
 		ob_start();
 		$setManager =& Services::getService("Sets");

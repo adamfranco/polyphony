@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetExporter.class.php,v 1.5 2005/12/13 22:45:32 cws-midd Exp $
+ * @version $Id: XMLAssetExporter.class.php,v 1.6 2005/12/14 21:04:50 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Exporter/XMLExporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLFileRecordExporter.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetExporter.class.php,v 1.5 2005/12/13 22:45:32 cws-midd Exp $
+ * @version $Id: XMLAssetExporter.class.php,v 1.6 2005/12/14 21:04:50 cws-midd Exp $
  */
 class XMLAssetExporter extends XMLExporter {
 		
@@ -69,11 +69,10 @@ class XMLAssetExporter extends XMLExporter {
 	 * @access public
 	 * @since 10/31/05
 	 */
-	function &withDir($xmlFile, $fileDir, $file) {
+	function &withDir($xmlFile, $fileDir) {
 		$exporter =& new XMLAssetExporter();
 		$exporter->_xml =& $xmlFile;
 		$exporter->_fileDir = $fileDir;			
-		$exporter->_pfile =& $file;
 		
 		return $exporter;
 	}
@@ -128,7 +127,7 @@ class XMLAssetExporter extends XMLExporter {
 		$repositoryManager =& Services::getService("Repository");
 		$listOfRS = array();
 		$idListRS = array();
-		
+		$this->_fileDir = $this->_tmpDir;
 		// prepare all the things we need to export
 		foreach ($idList as $assetId) {
 			$asset =& $repositoryManager->getAsset($assetId);
@@ -138,7 +137,7 @@ class XMLAssetExporter extends XMLExporter {
 		}
 
 		// get the xml file ready
-		$this->setupXML($this->_tmpDir);
+		$this->setupXML($this->_fileDir);
 		fwrite($this->_xml, "<repository>\n");
 
 		// export the necessary recordstructures
@@ -211,9 +210,9 @@ class XMLAssetExporter extends XMLExporter {
 			$rS =& $child->getRecordStructure();
 			if ($rS->getId() == $idManager->getId("FILE")) {
 				$exporter =& new XMLFileRecordExporter($this->_xml, 
-					$this->_fileDir, $this->_pfile);
+					$this->_fileDir);
 			} else 
-				$exporter =& new XMLRecordExporter($this->_xml, $this->_pfile);
+				$exporter =& new XMLRecordExporter($this->_xml);
 			$exporter->export($child); // ????
 
 			unset($exporter);
@@ -233,7 +232,7 @@ class XMLAssetExporter extends XMLExporter {
 			$child =& $children->next();
 
 			$exporter =& XMLAssetExporter::withDir($this->_xml,
-				$this->_fileDir, $this->_pfile);
+				$this->_fileDir);
 
 			$exporter->export($child);
 			unset($exporter);

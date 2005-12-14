@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.6 2005/12/13 22:43:47 cws-midd Exp $
+ * @version $Id: view.act.php,v 1.7 2005/12/14 21:04:50 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/BasketManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.6 2005/12/13 22:43:47 cws-midd Exp $
+ * @version $Id: view.act.php,v 1.7 2005/12/14 21:04:50 cws-midd Exp $
  */
 class viewAction 
 	extends MainWindowAction
@@ -63,8 +63,10 @@ class viewAction
 		$authZ =& Services::getService("AuthZ");
 		
 		$basket =& BasketManager::getBasket();
+		BasketManager::cleanBasket();
 		$basket->reset();
-		
+
+	
 		//***********************************
 		// Things to do with your basket
 		//***********************************
@@ -74,7 +76,11 @@ class viewAction
 //		BasketPrinter::printBasketFunctionLinks($harmoni, $basket);
 
 		print "<a href=\"".$harmoni->request->quickURL("basket", "export").
-			"\">"._("Export Basket <em>Assets</em>")."</a>";
+			"\">"._("Export Basket(<em>Assets</em>)")."</a>";
+		print " | ";
+		print "<a href=\"".$harmoni->request->quickURL("basket", "empty").
+			"\">"._("Empty Basket")."</a>";
+
 		$layout =& new Block(ob_get_contents(), STANDARD_BLOCK);
 		ob_end_clean();
 		$actionRows->add($layout, "100%", null, CENTER, CENTER);
@@ -92,15 +98,17 @@ class viewAction
 	function canView( & $assetId ) {
 		$authZ =& Services::getService("AuthZ");
 		$idManager =& Services::getService("Id");
-		
-		if ($authZ->isUserAuthorized($idManager->getId("edu.middlebury.authorization.access"), $assetId)
-			|| $authZ->isUserAuthorized($idManager->getId("edu.middlebury.authorization.view"), $assetId))
+
+		if ($authZ->isUserAuthorized($idManager->getId("edu.middlebury.authorization.view"), $assetId))
 		{
 			return TRUE;
 		} else {
+			$basket =& BasketManager::getBasket();
+			$basket->removeItem($assetId);
 			return FALSE;
 		}
 	}
+	
 }
 
 // Callback function for printing Assets

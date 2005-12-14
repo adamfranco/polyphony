@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryExporter.class.php,v 1.7 2005/12/13 22:45:32 cws-midd Exp $
+ * @version $Id: XMLRepositoryExporter.class.php,v 1.8 2005/12/14 21:04:50 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Exporter/XMLExporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLAssetExporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryExporter.class.php,v 1.7 2005/12/13 22:45:32 cws-midd Exp $
+ * @version $Id: XMLRepositoryExporter.class.php,v 1.8 2005/12/14 21:04:50 cws-midd Exp $
  */
 class XMLRepositoryExporter extends XMLExporter {
 		
@@ -38,8 +38,6 @@ class XMLRepositoryExporter extends XMLExporter {
 	 */
 	function XMLRepositoryExporter() {	
 		parent::XMLExporter();
-		
-$this->_pfile = fopen("/tmp/memoryUsage.txt", "w");
 	}
 
 	/**
@@ -77,7 +75,6 @@ $this->_pfile = fopen("/tmp/memoryUsage.txt", "w");
 	function &withDir($tmpDir,$file, $class = 'XMLRepositoryExporter') {
 		$exporter =& new $class;
 		$exporter->_tmpDir = $tmpDir;
-		$exporter->_pfile =& $file;
 		return $exporter;
 	}	
 	
@@ -175,8 +172,7 @@ $this->_pfile = fopen("/tmp/memoryUsage.txt", "w");
 			$children =& $this->_object->getAssets();
 		while ($children->hasNext()) {
 			$child =& $children->next();
-			$exporter =& XMLAssetExporter::withDir($this->_xml, $this->_repDir,
-			$this->_pfile);
+			$exporter =& XMLAssetExporter::withDir($this->_xml, $this->_repDir);
 			$exporter->export($child);
 		}
 			unset($exporter);
