@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.5 2005/12/08 15:47:58 adamfranco Exp $
+ * @version $Id: WSelectList.class.php,v 1.6 2005/12/15 21:44:33 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.5 2005/12/08 15:47:58 adamfranco Exp $
+ * @version $Id: WSelectList.class.php,v 1.6 2005/12/15 21:44:33 adamfranco Exp $
  */
 class WSelectList 
 	extends WizardComponent 
@@ -28,6 +28,7 @@ class WSelectList
 
 	var $_value;
 	var $_style = null;
+	var $_onchange = '';
 	
 	var $_items = array();
 	
@@ -96,6 +97,16 @@ class WSelectList
 	}
 	
 	/**
+	 * Sets the javascript onchange attribute.
+	 * @param string $commands
+	 * @access public
+	 * @return void
+	 */
+	function setOnChange($commands) {
+		$this->_onchange = $commands;
+	}
+	
+	/**
 	 * Returns a block of XHTML-valid code that contains markup for this specific
 	 * component. 
 	 * @param string $fieldName The field name to use when outputting form data or
@@ -110,7 +121,11 @@ class WSelectList
 		
 		if ($this->_style) $style = " style=\"".addslashes($this->_style)."\""; 
 
-		$m = "<select name='$name'$style>\n";
+		$m = "<select name='$name' $style ";
+		if ($this->_onchange) {
+			$m .= "\n\t\t\t\tonchange=\"".str_replace("\"", "\\\"", $this->_onchange)."\"";
+		}
+		$m .= ">\n";
 		
 		foreach (array_keys($this->_items) as $key) {
 			$disp = $this->_items[$key];
