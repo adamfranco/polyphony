@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRadioList.class.php,v 1.4 2005/12/08 15:47:58 adamfranco Exp $
+ * @version $Id: WRadioList.class.php,v 1.5 2005/12/20 03:30:55 gabeschine Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRadioList.class.php,v 1.4 2005/12/08 15:47:58 adamfranco Exp $
+ * @version $Id: WRadioList.class.php,v 1.5 2005/12/20 03:30:55 gabeschine Exp $
  */
 class WRadioList 
 	extends WizardComponent 
@@ -89,11 +89,12 @@ class WRadioList
 	/**
 	 * Adds a radio option to this list.
 	 * @param string $value The short value that represents the displayed text.
-	 * @param string $displayText The text to show to the end user.
+	 * @param optional string $displayText The text to show to the end user. Defaults to $value.
 	 * @access public
 	 * @return void
 	 */
-	function addOption ($value, $displayText) {
+	function addOption ($value, $displayText = null) {
+		if ($displayText == null) $displayText = $value;
 		$this->_items[$value] = $displayText;
 	}
 	
