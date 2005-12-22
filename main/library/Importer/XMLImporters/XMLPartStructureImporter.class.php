@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureImporter.class.php,v 1.11 2005/12/12 17:06:26 cws-midd Exp $
+ * @version $Id: XMLPartStructureImporter.class.php,v 1.12 2005/12/22 22:58:03 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureImporter.class.php,v 1.11 2005/12/12 17:06:26 cws-midd Exp $
+ * @version $Id: XMLPartStructureImporter.class.php,v 1.12 2005/12/22 22:58:03 cws-midd Exp $
  */
 class XMLPartStructureImporter extends XMLImporter {
 		
@@ -93,7 +93,7 @@ class XMLPartStructureImporter extends XMLImporter {
 			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
 			$this->_object =& $this->_parent->getPartStructure($this->_myId);
 			$this->update();
-		} else {
+		} else if (true/*$this->validate($this->_info['type'])*/) {
 			$this->_object =&
 				$this->_parent->createPartStructure(
 				$this->_info['name'], $this->_info['description'],

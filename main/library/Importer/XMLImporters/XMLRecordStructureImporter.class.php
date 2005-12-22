@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.13 2005/12/12 17:06:26 cws-midd Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.14 2005/12/22 22:58:03 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLPartStructureImpo
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.13 2005/12/12 17:06:26 cws-midd Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.14 2005/12/22 22:58:03 cws-midd Exp $
  */
 class XMLRecordStructureImporter extends XMLImporter {
 		
@@ -138,6 +138,9 @@ class XMLRecordStructureImporter extends XMLImporter {
 		}
 		// add structure to repository
 		$this->doSets();
+		
+		if ($foundId)
+			return true;
 	}
 
 	/**

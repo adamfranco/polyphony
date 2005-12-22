@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.15 2005/12/12 17:06:26 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.16 2005/12/22 22:58:03 cws-midd Exp $
  *
  * @author Christopher W. Shubert
  */ 
@@ -25,7 +25,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryFileImp
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.15 2005/12/12 17:06:26 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.16 2005/12/22 22:58:03 cws-midd Exp $
  */
 class XMLImporter {
 		
@@ -214,9 +214,10 @@ class XMLImporter {
 		$this->_type = $type;
 		$this->_parent =& $parent;
 
-		$this->importNode();
+		$bottom = $this->importNode(); // bottom says do not import below me
 		unset($this->_info);
-
+		if ($bottom === true)
+			return;
 		if (isset($this->_myId)) {
 			return $this->importBelow($this->_myId->getIdString());
 		} else {

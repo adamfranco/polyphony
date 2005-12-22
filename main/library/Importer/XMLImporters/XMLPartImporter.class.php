@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartImporter.class.php,v 1.11 2005/12/12 17:06:26 cws-midd Exp $
+ * @version $Id: XMLPartImporter.class.php,v 1.12 2005/12/22 22:58:03 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartImporter.class.php,v 1.11 2005/12/12 17:06:26 cws-midd Exp $
+ * @version $Id: XMLPartImporter.class.php,v 1.12 2005/12/22 22:58:03 cws-midd Exp $
  */
 class XMLPartImporter extends XMLImporter {
 		
@@ -85,13 +85,16 @@ class XMLPartImporter extends XMLImporter {
 		$idManager =& Services::getService("Id");
 		
 		$this->getNodeInfo();
-
+		
+		
 		$hasId = $this->_node->hasAttribute("id");
 		if ($hasId && (in_array($this->_node->getAttribute("id"),
 				$this->_existingArray)	|| $this->_type == "update")) {
 			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
 			$this->_object =& $this->_parent->getPart($this->_myId);
 			$this->update();
+		} else if (is_null($this->_info['value'])) {
+			return;
 		} else {
 			$this->_object =& $this->_parent->createPart(
 				$this->_info['partStructureId'], $this->_info['value']);
@@ -159,9 +162,6 @@ class XMLPartImporter extends XMLImporter {
 	 */
 	function getPartObject (&$part) {
 		$recordStructure =& $this->_parent->getRecordStructure();
-if ($this->hasErrors()){
-$this->printErrorMessages();
-exit();}
 		$partStructure =& $recordStructure->getPartStructure(
 			$this->_info['partStructureId']);
 		$type = $partStructure->getType();
