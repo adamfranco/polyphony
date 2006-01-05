@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE ExifImportSchema PUBLIC "- //Middlebury College//EXIF Import Schema//EN" "http://harmoni.sf.net/dtds/harmoni/1.0/ExifImportSchema.dtd">
+<!DOCTYPE ExifImportSchema PUBLIC "- //Middlebury College//EXIF Import Schema//EN" "http://harmoni.sf.net/dtds/polyphony/1.0/ExifImportSchema.dtd">
 <ExifImportSchema>
 	<recordStructure>
 		<id/>

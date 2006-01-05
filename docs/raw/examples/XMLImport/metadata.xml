@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE XMLImport PUBLIC "- //Middlebury College//XML Import//EN" "http://harmoni.sf.net/dtds/polyphony/1.0/XMLImport.dtd">
 <import>
 	<repositoryfile>path/to/a/repositoryxmlfile/ending/with/metadata.xml</repositoryfile>
 	<repositoryfile>ditto/metadata.xml</repositoryfile>
