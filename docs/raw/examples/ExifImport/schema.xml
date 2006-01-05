@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE ExifImportSchema PUBLIC "- //Middlebury College//EXIF Import Schema//EN" "http://harmoni.sf.net/dtds/harmoni/1.0/ExifImportSchema.dtd">
+<ExifImportSchema>
+	<recordStructure>
+		<id/>
+		<name>ExampleExifRecordStructure</name>
+		<partStructure>
+			<id/>
+			<name>Title</name>
+			<value>
+				<exifElement>Object Name (Title)</exifElement>
+			</value>
+		</partStructure>
+		<partStructure>
+			<id/>
+			<name>Author</name>
+			<value>
+				<exifElement>By-Line (Author)</exifElement>
+			</value>
+		</partStructure>
+		<partStructure>
+			<id/>
+			<name>Date</name>
+			<value>
+				<exifElement>Date Created</exifElement>
+			</value>
+		</partStructure>
+		<partStructure>
+			<id/>
+			<name>Date of Import</name>
+			<value>
+				<text>January 17, 2002</text>
+			</value>
+		</partStructure>
+	</recordStructure>
+</ExifImportSchema>

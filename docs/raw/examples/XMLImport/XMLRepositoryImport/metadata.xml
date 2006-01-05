@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository>
+	<name>The Art of Words</name>
+	<description></description>
+	<type>
+		<domain>User Repositories</domain>
+		<authority>edu.middlebury.concerto</authority>
+		<keyword>Mediaset</keyword>
+		<description>Mediaset from MediaDB imported into Concerto</description>
+	</type>
+		<recordstructure id="MDBRS-34" xml:id="MDBRS-34" isGlobal="TRUE">
+			<name>Mediaset-34</name>
+			<description><![CDATA[This is the Concerto 1.0 (MediaDB) RecordStructure for mediaset 34]]></description>
+			<format>format</format>
+			<partstructure xml:id="title">
+				<name>title</name>
+				<description><![CDATA[Mediaset-34-title]]></description>
+				<type>
+					<domain>Repository</domain>
+					<authority>edu.middlebury.harmoni</authority>
+					<keyword>string</keyword>
+				</type>
+			</partstructure>
+			<partstructure xml:id="keywords">
+				<name>keywords</name>
+				<description><![CDATA[Mediaset-34-keywords]]></description>
+				<type>
+					<domain>Repository</domain>
+					<authority>edu.middlebury.harmoni</authority>
+					<keyword>string</keyword>
+				</type>
+			</partstructure>
+			<partstructure xml:id="description">
+				<name>description</name>
+				<description><![CDATA[Mediaset-34-description]]></description>
+				<type>
+					<domain>Repository</domain>
+					<authority>edu.middlebury.harmoni</authority>
+					<keyword>string</keyword>
+				</type>
+			</partstructure>
+			<partstructure xml:id="Order">
+				<name>Order</name>
+				<description><![CDATA[Mediaset-34-Order]]></description>
+				<type>
+					<domain>Repository</domain>
+					<authority>edu.middlebury.harmoni</authority>
+					<keyword>string</keyword>
+				</type>
+			</partstructure>
+		</recordstructure>
+	<asset>
+		<name>Ceci n'est pas une pipe2</name>
+		<description><![CDATA[]]></description>
+		<type>
+			<domain>Asset Types</domain>
+			<authority>edu.middlebury.concerto</authority>
+			<keyword>MediaDB media</keyword>
+			<description>Media exported from MediaDB</description>
+		</type>
+		<record xml:id="MDBRS-34">
+			<part xml:id="title"><![CDATA[Ceci n'est pas une pipe2]]></part>
+			<part xml:id="Order"><![CDATA[1]]></part>
+		</record>
+		<filerecord>
+			<filepathpart>http://maggot.middlebury.edu/mediadb_media/34/magritte-la_trahison.jpg</filepathpart>
+		</filerecord>
+	</asset>
+	<asset>
+		<name>after Magritte's "ceci n'est pas une pipe</name>
+		<description><![CDATA[]]></description>
+		<type>
+			<domain>Asset Types</domain>
+			<authority>edu.middlebury.concerto</authority>
+			<keyword>MediaDB media</keyword>
+			<description>Media exported from MediaDB</description>
+		</type>
+		<record xml:id="MDBRS-34">
+			<part xml:id="title"><![CDATA[after Magritte's "ceci n'est pas une pipe]]></part>
+		</record>
+		<filerecord>
+			<filepathpart>http://maggot.middlebury.edu/mediadb_media/34/magrittebg.jpg</filepathpart>
+		</filerecord>
+	</asset>
+	<asset>
+		<name>This is not a pipe</name>
+		<description><![CDATA[]]></description>
+		<type>
+			<domain>Asset Types</domain>
+			<authority>edu.middlebury.concerto</authority>
+			<keyword>MediaDB media</keyword>
+			<description>Media exported from MediaDB</description>
+		</type>
+		<record xml:id="MDBRS-34">
+			<part xml:id="title"><![CDATA[This is not a pipe]]></part>
+			<part xml:id="Order"><![CDATA[3]]></part>
+		</record>
+		<filerecord>
+			<filepathpart>http://maggot.middlebury.edu/mediadb_media/34/pipe.gif</filepathpart>
+		</filerecord>
+	</asset>
+	<asset>
+		<name>This is not a pipe either.</name>
+		<description><![CDATA[]]></description>
+		<type>
+			<domain>Asset Types</domain>
+			<authority>edu.middlebury.concerto</authority>
+			<keyword>MediaDB media</keyword>
+			<description>Media exported from MediaDB</description>
+		</type>
+		<record xml:id="MDBRS-34">
+			<part xml:id="title"><![CDATA[This is not a pipe either.]]></part>
+			<part xml:id="Order"><![CDATA[2]]></part>
+		</record>
+		<filerecord>
+			<filepathpart>http://maggot.middlebury.edu/mediadb_media/34/notapipe.jpg</filepathpart>
+		</filerecord>
+	</asset>
+	<asset>
+		<name>Beginner's Mind (shoshin)</name>
+		<description><![CDATA[]]></description>
+		<type>
+			<domain>Asset Types</domain>
+			<authority>edu.middlebury.concerto</authority>
+			<keyword>MediaDB media</keyword>
+			<description>Media exported from MediaDB</description>
+		</type>
+		<record xml:id="MDBRS-34">
+			<part xml:id="title"><![CDATA[Beginner's Mind (shoshin)]]></part>
+		</record>
+		<filerecord>
+			<filepathpart>http://maggot.middlebury.edu/mediadb_media/34/shoshin.jpg</filepathpart>
+		</filerecord>
+	</asset>
+	<asset>
+		<name>Dhih</name>
+		<description><![CDATA[]]></description>
+		<type>
+			<domain>Asset Types</domain>
+			<authority>edu.middlebury.concerto</authority>
+			<keyword>MediaDB media</keyword>
+			<description>Media exported from MediaDB</description>
+		</type>
+		<record xml:id="MDBRS-34">
+			<part xml:id="title"><![CDATA[Dhih]]></part>
+		</record>
+		<filerecord>
+			<filepathpart>http://maggot.middlebury.edu/mediadb_media/34/dhih2.jpg</filepathpart>
+		</filerecord>
+	</asset>
+	<asset>
+		<name>Hum Bhyo</name>
+		<description><![CDATA[]]></description>
+		<type>
+			<domain>Asset Types</domain>
+			<authority>edu.middlebury.concerto</authority>
+			<keyword>MediaDB media</keyword>
+			<description>Media exported from MediaDB</description>
+		</type>
+		<record xml:id="MDBRS-34">
+			<part xml:id="title"><![CDATA[Hum Bhyo]]></part>
+		</record>
+		<filerecord>
+			<filepathpart>http://maggot.middlebury.edu/mediadb_media/34/humbhyo.jpg</filepathpart>
+		</filerecord>
+	</asset>
+	<asset>
+		<name>Hrih</name>
+		<description><![CDATA[]]></description>
+		<type>
+			<domain>Asset Types</domain>
+			<authority>edu.middlebury.concerto</authority>
+			<keyword>MediaDB media</keyword>
+			<description>Media exported from MediaDB</description>
+		</type>
+		<record xml:id="MDBRS-34">
+			<part xml:id="title"><![CDATA[Hrih]]></part>
+		</record>
+		<filerecord>
+			<filepathpart>http://maggot.middlebury.edu/mediadb_media/34/hrih1.jpg</filepathpart>
+		</filerecord>
+	</asset>
+	<asset>
+		<name>Ceci n'est pas une pipe</name>
+		<description><![CDATA[]]></description>
+		<type>
+			<domain>Asset Types</domain>
+			<authority>edu.middlebury.concerto</authority>
+			<keyword>MediaDB media</keyword>
+			<description>Media exported from MediaDB</description>
+		</type>
+		<record xml:id="MDBRS-34">
+			<part xml:id="title"><![CDATA[Ceci n'est pas une pipe]]></part>
+		</record>
+		<filerecord>
+			<filepathpart>http://maggot.middlebury.edu/mediadb_media/34/pipe4.jpg</filepathpart>
+		</filerecord>
+	</asset>
+	<asset>
+		<name>This is not a pipe</name>
+		<description><![CDATA[]]></description>
+		<type>
+			<domain>Asset Types</domain>
+			<authority>edu.middlebury.concerto</authority>
+			<keyword>MediaDB media</keyword>
+			<description>Media exported from MediaDB</description>
+		</type>
+		<record xml:id="MDBRS-34">
+			<part xml:id="title"><![CDATA[This is not a pipe]]></part>
+			<part xml:id="Order"><![CDATA[4]]></part>
+		</record>
+		<filerecord>
+			<filepathpart>http://maggot.middlebury.edu/mediadb_media/34/pipe.jpg</filepathpart>
+		</filerecord>
+	</asset>
+</repository>

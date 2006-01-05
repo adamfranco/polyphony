@@ -1,0 +1,5 @@
+Metaschema
+name	description	type	filename	metadata1	metadata2	metadata3
+file1	this is the first file	file	test.file	stuff	stuff	stuff
+file2	this is the second file	file	test2.file	stuff1	stuff2	stuff3
+file3	i hope you get the idea behind tab-delimited	file	test3.file	stuff	stuffer	stuffest

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+/**
+ * This DTD defines a document for use in importing data using the XML Importer.
+ * 
+ * It is confusing.  But Important and functional.
+ *
+ * @package polyphony.dtds
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ */
+ -->
+
+<!DOCTYPE import [
+
+<!ELEMENT import (repository|repositoryfile)*>
+
+<!ELEMENT repository (name, description, type, recordstructure*, asset*)>
+<!ATTLIST repository
+	id CDATA #IMPLIED>
+
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT type (domain, authority, keyword, description)>
+
+<!ELEMENT domain (#PCDATA)>
+<!ELEMENT authority (#PCDATA)>
+<!ELEMENT keyword (#PCDATA)>
+
+<!ELEMENT recordstructure (name, description, format, partstructure*)>
+<!ATTLIST recordstructure
+	id CDATA #IMPLIED
+	xml:id ID #REQUIRED>
+
+<!ELEMENT format (#PCDATA)>
+<!ELEMENT partstructure (name, description, type)>
+<!ATTLIST partstructure
+	id CDATA #IMPLIED
+	xml:id ID #REQUIRED
+	isMandatory CDATA "FALSE"
+	isRepeatable CDATA "FALSE"
+	isPopulated CDATA "FALSE">
+
+<!ELEMENT asset (name, description, type, effectivedate?, expirationdate?, (record|filerecord|asset)*)>
+<!ATTLIST asset
+	id CDATA #IMPLIED>
+
+<!ELEMENT effectivedate (#PCDATA)>
+<!ELEMENT expirationdate (#PCDATA)>
+<!ELEMENT record (part*)>
+<!ATTLIST record
+	id CDATA #IMPLIED
+	xml:id IDREF #IMPLIED>
+
+<!ELEMENT part (#PCDATA|part)*>
+<!ATTLIST part
+	id CDATA #IMPLIED
+	xml:id IDREF #IMPLIED>
+
+<!ELEMENT filerecord ((filedatapart, filedimensionspart, mimepart, thumbdatapart, thumbdimensionspart, thumbmimepart)|(filepathpart, thumbpathpart?))>
+<!ATTLIST filerecord
+	id CDATA #IMPLIED>
+
+<!ELEMENT filedatapart (#PCDATA)>
+<!ELEMENT filedimensionspart (width, height, filetype)>
+<!ELEMENT width (#PCDATA)>
+<!ELEMENT height (#PCDATA)>
+<!ELEMENT filetype (#PCDATA)>
+<!ELEMENT mimepart (#PCDATA)>
+<!ELEMENT thumbdatapart (#PCDATA)>
+<!ELEMENT thumbdimensionspart (width, height, filetype)>
+<!ELEMENT thumbmimepart (#PCDATA)>
+<!ELEMENT filepathpart (#PCDATA)>
+<!ELEMENT thumbpathpart (#PCDATA)>
+
+<!ELEMENT repositoryfile (#PCDATA)>
+]>

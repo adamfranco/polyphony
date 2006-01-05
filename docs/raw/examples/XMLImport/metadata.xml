@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<import>
+	<repositoryfile>path/to/a/repositoryxmlfile/ending/with/metadata.xml</repositoryfile>
+	<repositoryfile>ditto/metadata.xml</repositoryfile>
+	<repository>
+		<name>Sample Collection</name>
+		<description><![CDATA[This is an example for xml structure.]]></description>
+		<type>
+			<domain>User Repositories</domain>
+			<authority>edu.middlebury.concerto</authority>
+			<keyword>Multimedia</keyword>
+			<description>User-created repository for storing multimedia.</description>
+		</type>
+		<recordstructure xml:id="IDREFforThisRecordStructureInThisXMLFile" isGlobal="TRUE">
+			<name>ExampleRS</name>
+			<description><![CDATA[this is a description of the record structure]]></description>
+			<format>format</format>
+			<partstructure xml:id="IDREFforthisPartStructure">
+				<name>title</name>
+				<description><![CDATA[this partstructure holds the title of the asset]]></description>
+				<type>
+					<domain>Repository</domain>
+					<authority>edu.middlebury.harmoni</authority>
+					<keyword>string</keyword>
+				</type>
+			</partstructure>
+			<partstructure xml:id="keywords(anotherIDREF)">
+				<name>keywords</name>
+				<description><![CDATA[the keywords in this PS describe the asset]]></description>
+				<type>
+					<domain>Repository</domain>
+					<authority>edu.middlebury.harmoni</authority>
+					<keyword>string</keyword>
+				</type>
+			</partstructure>
+		</recordstructure>
+	<asset>
+		<name>This is not a pipe</name>
+		<description><![CDATA[]]></description>
+		<type>
+			<domain>Asset Types</domain>
+			<authority>edu.middlebury.concerto</authority>
+			<keyword>MediaDB media</keyword>
+			<description>Media exported from MediaDB</description>
+		</type>
+		<record xml:id="uniqueIDforthisRecordstructure">
+			<part xml:id="uniqueIDforthisPSthatisonlyforthisxmlfile"><![CDATA[This is not a pipe]]></part>
+			<part xml:id="keywords"><![CDATA[pipe not]]></part>
+		</record>
+		<filerecord>
+			<filepathpart>full/or/relative/path/to/the/file.jpg</filepathpart>
+		</filerecord>
+	</asset>
+</import>
