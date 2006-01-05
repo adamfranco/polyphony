@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.6 2005/11/03 15:33:42 adamfranco Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.7 2006/01/05 19:50:32 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.6 2005/11/03 15:33:42 adamfranco Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.7 2006/01/05 19:50:32 cws-midd Exp $
  */
 class viewthumbnailAction 
 	extends MainWindowAction
@@ -59,6 +59,20 @@ class viewthumbnailAction
 	function getHeadingText () {
 		return dgettext("polyphony", "File Thumbnail");
 	}
+	
+	/**
+	 * Return a junk image that says you can't view the file
+	 *
+	 * @since 12/22/05
+	 */
+	function getUnauthorizedMessage() {
+		header("Content-Type: image/gif");
+		header('Content-Disposition: attachment; filename="english.gif"');
+			
+		print file_get_contents(POLYPHONY.'/docs/images/unauthorized/english.gif');
+		exit;
+	}
+	
 	
 	/**
 	 * Build the content for this action

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartImporter.class.php,v 1.12 2005/12/22 22:58:03 cws-midd Exp $
+ * @version $Id: XMLPartImporter.class.php,v 1.13 2006/01/05 19:50:25 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartImporter.class.php,v 1.12 2005/12/22 22:58:03 cws-midd Exp $
+ * @version $Id: XMLPartImporter.class.php,v 1.13 2006/01/05 19:50:25 cws-midd Exp $
  */
 class XMLPartImporter extends XMLImporter {
 		
@@ -85,7 +85,6 @@ class XMLPartImporter extends XMLImporter {
 		$idManager =& Services::getService("Id");
 		
 		$this->getNodeInfo();
-		
 		
 		$hasId = $this->_node->hasAttribute("id");
 		if ($hasId && (in_array($this->_node->getAttribute("id"),

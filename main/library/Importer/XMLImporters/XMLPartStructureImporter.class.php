@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureImporter.class.php,v 1.12 2005/12/22 22:58:03 cws-midd Exp $
+ * @version $Id: XMLPartStructureImporter.class.php,v 1.13 2006/01/05 19:50:25 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureImporter.class.php,v 1.12 2005/12/22 22:58:03 cws-midd Exp $
+ * @version $Id: XMLPartStructureImporter.class.php,v 1.13 2006/01/05 19:50:25 cws-midd Exp $
  */
 class XMLPartStructureImporter extends XMLImporter {
 		
@@ -93,7 +93,7 @@ class XMLPartStructureImporter extends XMLImporter {
 			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
 			$this->_object =& $this->_parent->getPartStructure($this->_myId);
 			$this->update();
-		} else if (true/*$this->validate($this->_info['type'])*/) {
+		} else if ($this->validate($this->_info['type'])) {
 			$this->_object =&
 				$this->_parent->createPartStructure(
 				$this->_info['name'], $this->_info['description'],
@@ -104,6 +104,23 @@ class XMLPartStructureImporter extends XMLImporter {
 			$this->_myId =& $this->_object->getId();
 		}
 	}
+	
+	/**
+	 *	Makes sure partstructures are of a valid type by checking them
+	 *
+	 * @param string $type the type for the partstructure that wants to be imported
+	 * @return boolean
+	 * @since 12/31/05
+	 */
+	 function validate($type) {
+		// get a set of valid types from the DM
+		$dm =& Services::getService("DataManager");
+		$validTypes = $dm->getRegisteredTypes();
+		if (in_array($type, $validTypes))
+		 	return true;
+		else
+			return false;
+	 }
 	
 	/**
 	 * Does what is necessary to the temporary table for internal id association
