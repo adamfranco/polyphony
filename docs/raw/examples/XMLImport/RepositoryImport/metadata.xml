@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE XMLRepositoryImport PUBLIC "- //Middlebury College//XML Repository Import//EN" "http://harmoni.sf.net/dtds/polyphony/1.0/XMLRepositoryImport.dtd">
+<repository>
+	<name>The Name of the Collection</name>
+	<description><![CDATA[A description of the Collection that is being imported.  What is written inside the xml tags is either an example of what should be there or a description of what should be there, this is not meant to confuse you, but to help you.  I suggest reading an XML tutorial especially noticing what an IDREF is.]]></description>
+	<type>
+		<domain>User Repositories</domain>
+		<authority>edu.middlebury.concerto</authority>
+		<keyword>Example</keyword>
+		<description><![CDATA[This is an Exapmle metadata.xml Collection.]]></description>
+	</type>
+		<recordstructure xml:id="idref-for-this-rs-in-this-xml-file" isGlobal="TRUE">
+			<name>Example RecordStructure</name>
+			<description><![CDATA[This is an explanatory Example RecordStructure description.]]></description>
+			<format>format</format>
+			<partstructure xml:id="xml-idref-for-title">
+				<name>title</name>
+				<description><![CDATA[This is the description of what the title partstructure is, it is a string that is the title of the data in the asset (e.g. song name, painting name, etc.).]]></description>
+				<type>
+					<domain>Repository</domain>
+					<authority>edu.middlebury.harmoni</authority>
+					<keyword>string</keyword>
+					<description><![CDATA[This value for a part of this partstructure should always be a string.  Also, not all 'type' elements need to be described.]]></description>
+				</type>
+			</partstructure>
+			<partstructure xml:id="xml-idref-for-keywords">
+				<name>keywords</name>
+				<description><![CDATA[This is the description of what the keywords partstructure is...]]></description>
+				<type>
+					<domain>Repository</domain>
+					<authority>edu.middlebury.harmoni</authority>
+					<keyword>string</keyword>
+				</type>
+			</partstructure>
+			<partstructure xml:id="xml-idref-for-description">
+				<name>description</name>
+				<description><![CDATA[This is the description of what the description partstructure is...]]></description>
+				<type>
+					<domain>Repository</domain>
+					<authority>edu.middlebury.harmoni</authority>
+					<keyword>string</keyword>
+				</type>
+			</partstructure>
+			<partstructure xml:id="xml-idref-for-Order">
+				<name>Order</name>
+				<description><![CDATA[This is the description of what the order partstructure is...]]></description>
+				<type>
+					<domain>Repository</domain>
+					<authority>edu.middlebury.harmoni</authority>
+					<keyword>string</keyword>
+				</type>
+			</partstructure>
+		</recordstructure>
+	<asset>
+		<name>The name of the first Asset</name>
+		<description><![CDATA[The description of the first Asset.  Note that the metadata stored in a 'record' is associated with its 'recordstructure' via the xml:id used in this xml file, the same for 'parts' and 'partstructures', as shown below.]]></description>
+		<type>
+			<domain>Asset Types</domain>
+			<authority>edu.middlebury.concerto</authority>
+			<keyword>image</keyword>
+			<description>The keyword should explain what type of Asset this is.</description>
+		</type>
+		<record xml:id="id-for-this-rs-in-this-xml-file">
+			<part xml:id="xml-idref-for-title"><![CDATA[This is the Title of the Asset]]></part>
+			<part xml:id="xml-idref-for-Order"><![CDATA[1]]></part>
+		</record>
+		<filerecord>
+			<filepathpart>the/path/to/the/file/being/imported/this/path/can/be/full/or/relative/just/as/long/as/the/file/is/where/you/say/it/is</filepathpart>
+		</filerecord>
+	</asset>
+</repository>
