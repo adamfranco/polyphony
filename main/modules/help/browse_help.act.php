@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.3 2005/12/12 15:06:40 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.4 2006/01/06 21:28:26 adamfranco Exp $
  */
  
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -34,7 +34,7 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.3 2005/12/12 15:06:40 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.4 2006/01/06 21:28:26 adamfranco Exp $
  */
 class browse_helpAction 
 	extends Action
@@ -268,13 +268,19 @@ class browse_helpAction
 				case 'h4':
 					if (!isset($heading))
 						$heading =& new Heading($element->getText(), 4);
+					
+					$heading->setPreHTML(
+						"<a name=\""
+						.strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', $element->getText()))
+						."\"></a>");
 				
 				
 					// Finish off our previous block if it had contents.
-					$previousBlockText = ob_get_contents();
-					ob_end_clean();
+					$previousBlockText = ob_get_clean();
 					if (strlen(trim($previousBlockText)))
-						$topicContainer->add(new Block($previousBlockText, STANDARD_BLOCK));
+						$topicContainer->add(
+							new Block($this->linkify($previousBlockText), 
+							STANDARD_BLOCK));
 					
 					// create our heading element
 					$topicContainer->add($heading);
@@ -290,10 +296,58 @@ class browse_helpAction
 			}
 		}
 		
-		$topicContainer->add(new Block(ob_get_contents(), STANDARD_BLOCK));
-		ob_end_clean();
+		$topicContainer->add(new Block($this->linkify(ob_get_clean()), STANDARD_BLOCK));
 		
 		return $topicContainer;
+	}
+	
+	/**
+	 * Convert links of the form [[title]] or [[title#heading]] to html links
+	 * of the form <a href='link'>title: heading</a>
+	 * 
+	 * @param string $inputText
+	 * @return string
+	 * @access public
+	 * @since 1/6/06
+	 */
+	function linkify ( $inputText ) {
+		// Find all link-holders
+		$regex = 
+'/
+	\[\[
+	([^\]\#]+)		# Match the title
+	(?:
+		\#
+		([^\]]+)	# Match the heading
+	)?
+	\]\]
+/ix';
+		
+		if (preg_match_all($regex, $inputText, $matches)) {
+			$harmoni =& Harmoni::instance();
+			for ($i = 0; $i < count($matches[0]); $i++) {
+				ob_start();
+				
+				print '<a href="';
+				print $harmoni->request->quickURL(
+								"help", "browse_help", 
+								array("topic" => $matches[1][$i]));
+				print '#';
+				print strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', $matches[2][$i]));
+				print '">';
+				
+				print $matches[1][$i];
+				
+				if ($matches[2][$i])
+					print ': '.$matches[2][$i];
+				
+				print '</a>';
+				
+				$inputText = str_replace($matches[0][$i], ob_get_clean(), $inputText);
+			}
+		}
+		
+		return $inputText;
 	}
 	
 	/**
