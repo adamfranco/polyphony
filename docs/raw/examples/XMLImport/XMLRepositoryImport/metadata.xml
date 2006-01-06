@@ -1,48 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE XMLRepositoryImport PUBLIC "- //Middlebury College//XML Repository Import//EN" "http://harmoni.sf.net/dtds/polyphony/1.0/XMLRepositoryImport.dtd">
 <repository>
-	<name>The Art of Words</name>
-	<description></description>
+	<name>The Name of the Collection</name>
+	<description><![CDATA[A description of the Collection that is being imported.  What is written inside the xml tags is either an example of what should be there or a description of what should be there, this is not meant to confuse you, but to help you.  I suggest reading an XML tutorial especially noticing what an IDREF is.]]></description>
 	<type>
 		<domain>User Repositories</domain>
 		<authority>edu.middlebury.concerto</authority>
-		<keyword>Mediaset</keyword>
-		<description>Mediaset from MediaDB imported into Concerto</description>
+		<keyword>Example</keyword>
+		<description><![CDATA[This is an Exapmle metadata.xml Collection.]]></description>
 	</type>
-		<recordstructure id="MDBRS-34" xml:id="MDBRS-34" isGlobal="TRUE">
-			<name>Mediaset-34</name>
-			<description><![CDATA[This is the Concerto 1.0 (MediaDB) RecordStructure for mediaset 34]]></description>
+		<recordstructure xml:id="idref-for-this-rs-in-this-xml-file" isGlobal="TRUE">
+			<name>Example RecordStructure</name>
+			<description><![CDATA[This is an explanatory Example RecordStructure description.]]></description>
 			<format>format</format>
-			<partstructure xml:id="title">
+			<partstructure xml:id="xml-idref-for-title">
 				<name>title</name>
-				<description><![CDATA[Mediaset-34-title]]></description>
+				<description><![CDATA[This is the description of what the title partstructure is, it is a string that is the title of the data in the asset (e.g. song name, painting name, etc.).]]></description>
 				<type>
 					<domain>Repository</domain>
 					<authority>edu.middlebury.harmoni</authority>
 					<keyword>string</keyword>
+					<description><![CDATA[This value for a part of this partstructure should always be a string.  Also, not all 'type' elements need to be described.]]></description>
 				</type>
 			</partstructure>
-			<partstructure xml:id="keywords">
+			<partstructure xml:id="xml-idref-for-keywords">
 				<name>keywords</name>
-				<description><![CDATA[Mediaset-34-keywords]]></description>
+				<description><![CDATA[This is the description of what the keywords partstructure is...]]></description>
 				<type>
 					<domain>Repository</domain>
 					<authority>edu.middlebury.harmoni</authority>
 					<keyword>string</keyword>
 				</type>
 			</partstructure>
-			<partstructure xml:id="description">
+			<partstructure xml:id="xml-idref-for-description">
 				<name>description</name>
-				<description><![CDATA[Mediaset-34-description]]></description>
+				<description><![CDATA[This is the description of what the description partstructure is...]]></description>
 				<type>
 					<domain>Repository</domain>
 					<authority>edu.middlebury.harmoni</authority>
 					<keyword>string</keyword>
 				</type>
 			</partstructure>
-			<partstructure xml:id="Order">
+			<partstructure xml:id="xml-idref-for-Order">
 				<name>Order</name>
-				<description><![CDATA[Mediaset-34-Order]]></description>
+				<description><![CDATA[This is the description of what the order partstructure is...]]></description>
 				<type>
 					<domain>Repository</domain>
 					<authority>edu.middlebury.harmoni</authority>
@@ -51,167 +52,20 @@
 			</partstructure>
 		</recordstructure>
 	<asset>
-		<name>Ceci n'est pas une pipe2</name>
-		<description><![CDATA[]]></description>
+		<name>The name of the first Asset</name>
+		<description><![CDATA[The description of the first Asset.  Note that the metadata stored in a 'record' is associated with its 'recordstructure' via the xml:id used in this xml file, the same for 'parts' and 'partstructures', as shown below.]]></description>
 		<type>
 			<domain>Asset Types</domain>
 			<authority>edu.middlebury.concerto</authority>
-			<keyword>MediaDB media</keyword>
-			<description>Media exported from MediaDB</description>
+			<keyword>image</keyword>
+			<description>The keyword should explain what type of Asset this is.</description>
 		</type>
-		<record xml:id="MDBRS-34">
-			<part xml:id="title"><![CDATA[Ceci n'est pas une pipe2]]></part>
-			<part xml:id="Order"><![CDATA[1]]></part>
+		<record xml:id="id-for-this-rs-in-this-xml-file">
+			<part xml:id="xml-idref-for-title"><![CDATA[This is the Title of the Asset]]></part>
+			<part xml:id="xml-idref-for-Order"><![CDATA[1]]></part>
 		</record>
 		<filerecord>
-			<filepathpart>http://maggot.middlebury.edu/mediadb_media/34/magritte-la_trahison.jpg</filepathpart>
-		</filerecord>
-	</asset>
-	<asset>
-		<name>after Magritte's "ceci n'est pas une pipe</name>
-		<description><![CDATA[]]></description>
-		<type>
-			<domain>Asset Types</domain>
-			<authority>edu.middlebury.concerto</authority>
-			<keyword>MediaDB media</keyword>
-			<description>Media exported from MediaDB</description>
-		</type>
-		<record xml:id="MDBRS-34">
-			<part xml:id="title"><![CDATA[after Magritte's "ceci n'est pas une pipe]]></part>
-		</record>
-		<filerecord>
-			<filepathpart>http://maggot.middlebury.edu/mediadb_media/34/magrittebg.jpg</filepathpart>
-		</filerecord>
-	</asset>
-	<asset>
-		<name>This is not a pipe</name>
-		<description><![CDATA[]]></description>
-		<type>
-			<domain>Asset Types</domain>
-			<authority>edu.middlebury.concerto</authority>
-			<keyword>MediaDB media</keyword>
-			<description>Media exported from MediaDB</description>
-		</type>
-		<record xml:id="MDBRS-34">
-			<part xml:id="title"><![CDATA[This is not a pipe]]></part>
-			<part xml:id="Order"><![CDATA[3]]></part>
-		</record>
-		<filerecord>
-			<filepathpart>http://maggot.middlebury.edu/mediadb_media/34/pipe.gif</filepathpart>
-		</filerecord>
-	</asset>
-	<asset>
-		<name>This is not a pipe either.</name>
-		<description><![CDATA[]]></description>
-		<type>
-			<domain>Asset Types</domain>
-			<authority>edu.middlebury.concerto</authority>
-			<keyword>MediaDB media</keyword>
-			<description>Media exported from MediaDB</description>
-		</type>
-		<record xml:id="MDBRS-34">
-			<part xml:id="title"><![CDATA[This is not a pipe either.]]></part>
-			<part xml:id="Order"><![CDATA[2]]></part>
-		</record>
-		<filerecord>
-			<filepathpart>http://maggot.middlebury.edu/mediadb_media/34/notapipe.jpg</filepathpart>
-		</filerecord>
-	</asset>
-	<asset>
-		<name>Beginner's Mind (shoshin)</name>
-		<description><![CDATA[]]></description>
-		<type>
-			<domain>Asset Types</domain>
-			<authority>edu.middlebury.concerto</authority>
-			<keyword>MediaDB media</keyword>
-			<description>Media exported from MediaDB</description>
-		</type>
-		<record xml:id="MDBRS-34">
-			<part xml:id="title"><![CDATA[Beginner's Mind (shoshin)]]></part>
-		</record>
-		<filerecord>
-			<filepathpart>http://maggot.middlebury.edu/mediadb_media/34/shoshin.jpg</filepathpart>
-		</filerecord>
-	</asset>
-	<asset>
-		<name>Dhih</name>
-		<description><![CDATA[]]></description>
-		<type>
-			<domain>Asset Types</domain>
-			<authority>edu.middlebury.concerto</authority>
-			<keyword>MediaDB media</keyword>
-			<description>Media exported from MediaDB</description>
-		</type>
-		<record xml:id="MDBRS-34">
-			<part xml:id="title"><![CDATA[Dhih]]></part>
-		</record>
-		<filerecord>
-			<filepathpart>http://maggot.middlebury.edu/mediadb_media/34/dhih2.jpg</filepathpart>
-		</filerecord>
-	</asset>
-	<asset>
-		<name>Hum Bhyo</name>
-		<description><![CDATA[]]></description>
-		<type>
-			<domain>Asset Types</domain>
-			<authority>edu.middlebury.concerto</authority>
-			<keyword>MediaDB media</keyword>
-			<description>Media exported from MediaDB</description>
-		</type>
-		<record xml:id="MDBRS-34">
-			<part xml:id="title"><![CDATA[Hum Bhyo]]></part>
-		</record>
-		<filerecord>
-			<filepathpart>http://maggot.middlebury.edu/mediadb_media/34/humbhyo.jpg</filepathpart>
-		</filerecord>
-	</asset>
-	<asset>
-		<name>Hrih</name>
-		<description><![CDATA[]]></description>
-		<type>
-			<domain>Asset Types</domain>
-			<authority>edu.middlebury.concerto</authority>
-			<keyword>MediaDB media</keyword>
-			<description>Media exported from MediaDB</description>
-		</type>
-		<record xml:id="MDBRS-34">
-			<part xml:id="title"><![CDATA[Hrih]]></part>
-		</record>
-		<filerecord>
-			<filepathpart>http://maggot.middlebury.edu/mediadb_media/34/hrih1.jpg</filepathpart>
-		</filerecord>
-	</asset>
-	<asset>
-		<name>Ceci n'est pas une pipe</name>
-		<description><![CDATA[]]></description>
-		<type>
-			<domain>Asset Types</domain>
-			<authority>edu.middlebury.concerto</authority>
-			<keyword>MediaDB media</keyword>
-			<description>Media exported from MediaDB</description>
-		</type>
-		<record xml:id="MDBRS-34">
-			<part xml:id="title"><![CDATA[Ceci n'est pas une pipe]]></part>
-		</record>
-		<filerecord>
-			<filepathpart>http://maggot.middlebury.edu/mediadb_media/34/pipe4.jpg</filepathpart>
-		</filerecord>
-	</asset>
-	<asset>
-		<name>This is not a pipe</name>
-		<description><![CDATA[]]></description>
-		<type>
-			<domain>Asset Types</domain>
-			<authority>edu.middlebury.concerto</authority>
-			<keyword>MediaDB media</keyword>
-			<description>Media exported from MediaDB</description>
-		</type>
-		<record xml:id="MDBRS-34">
-			<part xml:id="title"><![CDATA[This is not a pipe]]></part>
-			<part xml:id="Order"><![CDATA[4]]></part>
-		</record>
-		<filerecord>
-			<filepathpart>http://maggot.middlebury.edu/mediadb_media/34/pipe.jpg</filepathpart>
+			<filepathpart>the/path/to/the/file/being/imported/this/path/can/be/full/or/relative/just/as/long/as/the/file/is/where/you/say/it/is</filepathpart>
 		</filerecord>
 	</asset>
 </repository>
