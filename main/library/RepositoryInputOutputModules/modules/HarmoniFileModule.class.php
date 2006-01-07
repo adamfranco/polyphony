@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HarmoniFileModule.class.php,v 1.12 2005/10/17 20:43:53 adamfranco Exp $
+ * @version $Id: HarmoniFileModule.class.php,v 1.13 2006/01/07 00:42:51 cws-midd Exp $
  */
 
 /**
@@ -24,8 +24,8 @@ require_once(HARMONI."Primitives/Numbers/ByteSize.class.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: HarmoniFileModule.class.php,v 1.12 2005/10/17 20:43:53 adamfranco Exp $
- * @since $Date: 2005/10/17 20:43:53 $
+ * @version $Id: HarmoniFileModule.class.php,v 1.13 2006/01/07 00:42:51 cws-midd Exp $
+ * @since $Date: 2006/01/07 00:42:51 $
  * @copyright 2004 Middlebury College
  */
 
@@ -519,9 +519,6 @@ class HarmoniFileModule
 		$partStructuresToSkip = array ('FILE_DATA', 'THUMBNAIL_DATA', 
 									'THUMBNAIL_MIME_TYPE', 'THUMBNAIL_DIMENSIONS');
 		$printThumbnail = FALSE;
-		
-		
-		
 		foreach (array_keys($partStructures) as $key) {
 			$partStructure =& $partStructures[$key];
 			$partStructureId =& $partStructure->getId();
@@ -549,7 +546,7 @@ class HarmoniFileModule
 				$printThumbnail = TRUE;
 			}
 		}
-		
+
 		$html = ob_get_contents();
 		ob_end_clean();
 		
@@ -559,15 +556,25 @@ class HarmoniFileModule
 		if ($printThumbnail) {
 			ob_start();
 			$recordId =& $record->getId();
+			$ns = $harmoni->request->endNamespace();
+// ======= BROKEN VIEWER LINK ======== //			
+			$xmlAssetIdString = $harmoni->request->get("asset_id");
 			
-			print "\n<a href='".$harmoni->request->quickURL("repository", "viewfile", 
-				array(
-					"repository_id" => $repositoryId->getIdString(),
-					"asset_id" => $assetId->getIdString(),
-					"record_id" => $recordId->getIdString(),
-					"file_name" => $parts['FILE_NAME'][0]->getValue()))."'";
-			print " target='_blank'>";
-			
+			print "<a href='#' onclick='Javascript:window.open(";
+			print '"'.VIEWER_URL."?&amp;source=";
+			print urlencode($harmoni->request->quickURL("asset", "browserecordxml",
+						array("collection_id" => $repositoryId->getIdString(),
+						"asset_id" => $xmlAssetIdString,
+						"record_id" => $recordId->getIdString(),
+						RequestContext::name("limit_by") => RequestContext::value("limit_by"),
+						RequestContext::name("type") => RequestContext::value("type"),
+						RequestContext::name("searchtype") => RequestContext::value("searchtype"),
+						RequestContext::name("searchstring") => RequestContext::value("searchstring"))));
+			print '&amp;start=0", ';
+			print '"'.preg_replace("/[^a-z0-9]/i", '_', $assetId->getIdString()).'", ';
+			print '"toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,copyhistory=no,width=600,height=500"';
+			print ")'>";
+			$harmoni->request->startNamespace($ns);
 			// If we have a thumbnail with a valid mime type, print a link to that.
 			$thumbnailName = ereg_replace("\.[^\.]+$", "", 
 											$parts['FILE_NAME'][0]->getValue());
@@ -583,13 +590,29 @@ class HarmoniFileModule
 					"thumbnail_name" => $thumbnailName))."'";
 			print " style='border: 0px;'";
 			print " alt='Thumbnail image.'";
+			print " align='left'";
 			print " />";
 		
 			
 			print "</a> <br />";
 			
-			$html = ob_get_contents().$html;
-			ob_end_clean();
+			$html2 = ob_get_clean();
+
+			ob_start();
+			print "\n<a href='".$harmoni->request->quickURL("repository", "viewfile", 
+				array(
+					"repository_id" => $repositoryId->getIdString(),
+					"asset_id" => $assetId->getIdString(),
+					"record_id" => $recordId->getIdString(),
+					"file_name" => $parts['FILE_NAME'][0]->getValue()))."'";
+			print " target='_blank'>";
+
+			print "Download This File</a>\n";
+			$downloadlink = ob_get_clean();
+			
+			
+			$html = "<table border=0><tr><td>".$html2."</td><td>".$html.$downloadlink."</td></tr></table>";
+		
 		}
 		
 		$harmoni->request->endNamespace();
