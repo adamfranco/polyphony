@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.16 2005/12/22 22:58:03 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.17 2006/01/10 18:21:35 cws-midd Exp $
  *
  * @author Christopher W. Shubert
  */ 
@@ -25,7 +25,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryFileImp
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.16 2005/12/22 22:58:03 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.17 2006/01/10 18:21:35 cws-midd Exp $
  */
 class XMLImporter {
 		
@@ -166,8 +166,9 @@ class XMLImporter {
 	function importBelow ($authZQString = null) {
 		if (!$this->canImportBelow($authZQString))
 			return;
-		$this->doIdMatrix();
-
+		if (isset($this->_myId)) {
+			$this->doIdMatrix();
+		}
 		$this->relegateChildren();
 
 		$this->dropIdMatrix();
