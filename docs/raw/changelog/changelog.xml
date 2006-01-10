@@ -4,15 +4,15 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.26 2006/01/10 17:02:28 cws-midd Exp $
+ @version $Id: changelog.xml,v 1.27 2006/01/10 18:08:01 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
-	<version number="0.4.0" date="The Nebulous Future">
+	<version number="0.4.0" date="2005-01-10">
 		<change author='adam'>
-			Agents & Authorizations: Added, edited, and reworked aspects of 
+			Agents &amp; Authorizations: Added, edited, and reworked aspects of 
 			editing and lookup for faster cleaner and more sensible interfacing.
 		</change>
 		<change author='chris'>
@@ -55,7 +55,7 @@
 			Optimizations to speed loading of thumbnails.
 		</change>
 		<change author='chris'>
-			Basket & Exporter: Together at last, exporting assets from anywhere
+			Basket &amp; Exporter: Together at last, exporting assets from anywhere
 			in the system by adding them to the basket and exporting the basket.
 		</change>
 		<new author='chris'>

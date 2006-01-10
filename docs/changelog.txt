@@ -3,22 +3,40 @@
 Name: Polyphony ChangeLog
 
 
-v. 0.4.0 (The Nebulous Future)
+v. 0.4.0 (2005-01-10)
 ----------------------------------------------------
+		
+	* Change: Agents &amp; Authorizations: Added, edited, and reworked aspects of editing and lookup for faster cleaner and more sensible interfacing. (Adam Franco)
+		
+	* Change: Login: modified the login process so that it is more consistent and understandable. (Christopher W. Shubert)
+		
+	* Change: Result Printers: now capable of configurable display. (Adam Franco)
+		
+	* Change: Printers: all links and other clickable things do what should be expected of clicking on them. (Christopher W. Shubert)
+		
+	* Change: Validator: fixed rules and moved some validations (Adam Franco)
+		
+	* New feature: Created help files for importing and exporting, along with examples and dtds for the different types of importers. They are available on sf.net in the appropriate locations. (Christopher W. Shubert)
 		
 	* New feature: HelpBrowser system. (Adam Franco)
 		
-	* New feature: Added Wizard components to support repeatable values as well as 'confirmed-change' linked checkboxes and fields. (Adam Franco)
+	* New feature: Added Wizard components to support repeatable values as well as 'confirmed-change' linked checkboxes and fields. Modified I/O modules to function with system. (Adam Franco)
+		
+	* Change: Modified the implementation of the repeatable wizard components so that everything is elegant and makes more sense, generally more usable. (Christopher W. Shubert)
 		
 	* Change: Now using GUI Block level constants such as EMPHAZISED_BLOCK instead of 'Block 3'. (Adam Franco)
 		
 	* Change: Optimizations to speed loading of thumbnails. (Adam Franco)
 		
+	* Change: Basket &amp; Exporter: Together at last, exporting assets from anywhere in the system by adding them to the basket and exporting the basket. (Christopher W. Shubert)
+		
 	* New feature: Basket: New functionality for clearing the basket, adding multiple and single files to the basket. (Christopher W. Shubert)
 		
-	* New feature: Exporter: (Christopher W. Shubert)
+	* New feature: Exporter: XML Exporter is designed to function with XML Importer and allows for human readable (XML) backups of the repository system. It is also readily extensible to other aspects of our system. (Christopher W. Shubert)
 		
-	* New feature: Importer: (Christopher W. Shubert)
+	* New feature: Importer: XML Importer is capable of populating repositories with flexibility, and is readily extended to work with groups and authorizations, or any other aspects of our system. (Christopher W. Shubert)
+		
+	* Change: Importer: XML importer has been removed from the "RepositoryImporter" classification, and re-designed to be extensible to all aspects of our systems. Tab and Exif are still only available for repository data population. (Christopher W. Shubert)
 	
 v. 0.3.0 (2005-10-12)
 ----------------------------------------------------

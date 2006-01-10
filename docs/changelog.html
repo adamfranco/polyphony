@@ -3,14 +3,43 @@
 	h1, h2 {color: #005;}
 	h1 {font-size: 18pt;}
 	li {padding-bottom: 3px;}
-	</style><div style="font-family: Verdana; font-size: 12px;"><h1>Polyphony ChangeLog</h1><h2>Version 0.4.0</h2><h3>The Nebulous Future</h3><ul>
+	</style><div style="font-family: Verdana; font-size: 12px;"><h1>Polyphony ChangeLog</h1><h2>Version 0.4.0</h2><h3>2005-01-10</h3><ul>
+		<li/> Change:  
+			Agents &amp; Authorizations: Added, edited, and reworked aspects of 
+			editing and lookup for faster cleaner and more sensible interfacing.
+		 (<i>Adam Franco</i>)
+		<li/> Change:  
+			Login: modified the login process so that it is more consistent and 
+			understandable.
+		 (<i>Christopher W. Shubert</i>)
+		<li/> Change:  
+			Result Printers: now capable of configurable display.
+		 (<i>Adam Franco</i>)
+		<li/> Change:  
+			Printers: all links and other clickable things do what should be 
+			expected of clicking on them.
+		 (<i>Christopher W. Shubert</i>)
+		<li/> Change:  
+			Validator: fixed rules and moved some validations
+		 (<i>Adam Franco</i>)
+		<li/> New feature:  
+			Created help files for importing and exporting, along with examples
+			and dtds for the different types of importers.  They are available
+			on sf.net in the appropriate locations.
+		 (<i>Christopher W. Shubert</i>)
 		<li/> New feature:  
 			HelpBrowser system.
 		 (<i>Adam Franco</i>)
 		<li/> New feature:  
 			Added Wizard components to support repeatable values as well as
-			'confirmed-change' linked checkboxes and fields.
+			'confirmed-change' linked checkboxes and fields.  Modified I/O 
+			modules to function with system.
 		 (<i>Adam Franco</i>)
+		<li/> Change:  
+			Modified the implementation of the repeatable wizard components so 
+			that everything is elegant and makes more sense, generally more 
+			usable.
+		 (<i>Christopher W. Shubert</i>)
 		<li/> Change:  
 			Now using GUI Block level constants such as EMPHAZISED_BLOCK instead 
 			of 'Block 3'.
@@ -18,15 +47,29 @@
 		<li/> Change:  
 			Optimizations to speed loading of thumbnails.
 		 (<i>Adam Franco</i>)
+		<li/> Change:  
+			Basket &amp; Exporter: Together at last, exporting assets from anywhere
+			in the system by adding them to the basket and exporting the basket.
+		 (<i>Christopher W. Shubert</i>)
 		<li/> New feature:  
 			Basket: New functionality for clearing the basket, adding multiple
 			and single files to the basket.
 		 (<i>Christopher W. Shubert</i>)
 		<li/> New feature:  
-			Exporter: 
+			Exporter: XML Exporter is designed to function with XML Importer and
+			allows for human readable (XML) backups of the repository system.
+			It is also readily extensible to other aspects of our system.
 		 (<i>Christopher W. Shubert</i>)
 		<li/> New feature:  
-			Importer: 
+			Importer: XML Importer is capable of populating repositories with
+			flexibility, and is readily extended to work with groups and
+			authorizations, or any other aspects of our system.  
+		 (<i>Christopher W. Shubert</i>)
+		<li/> Change:  
+			Importer: XML importer has been removed from the 
+			"RepositoryImporter" classification, and re-designed to be
+			extensible to all aspects of our systems.  Tab and Exif are still 
+			only available for repository data population.
 		 (<i>Christopher W. Shubert</i>)
 	</ul><br/><h2>Version 0.3.0</h2><h3>2005-10-12</h3><ul>
 		<li/> New feature:  
