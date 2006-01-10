@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureImporter.class.php,v 1.13 2006/01/05 19:50:25 cws-midd Exp $
+ * @version $Id: XMLPartStructureImporter.class.php,v 1.14 2006/01/10 18:03:50 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureImporter.class.php,v 1.13 2006/01/05 19:50:25 cws-midd Exp $
+ * @version $Id: XMLPartStructureImporter.class.php,v 1.14 2006/01/10 18:03:50 cws-midd Exp $
  */
 class XMLPartStructureImporter extends XMLImporter {
 		
@@ -114,7 +114,7 @@ class XMLPartStructureImporter extends XMLImporter {
 	 */
 	 function validate($type) {
 		// get a set of valid types from the DM
-		$dm =& Services::getService("DataManager");
+		$dm =& Services::getService("DataTypeManager");
 		$validTypes = $dm->getRegisteredTypes();
 		if (in_array($type, $validTypes))
 		 	return true;
