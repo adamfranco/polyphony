@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.24 2005/12/09 22:35:54 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.25 2006/01/10 16:17:13 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -19,8 +19,22 @@
 			'confirmed-change' linked checkboxes and fields.
 		</new>
 		<change author='adam'>
+			Now using GUI Block level constants such as EMPHAZISED_BLOCK instead 
+			of 'Block 3'.
+		</change>
+		<change author='adam'>
 			Optimizations to speed loading of thumbnails.
 		</change>
+		<new author='chris'>
+			Basket: New functionality for clearing the basket, adding multiple
+			and single files to the basket.
+		</new>
+		<new author='chris'>
+			Exporter: 
+		</new>
+		<new author='chris'>
+			Importer: 
+		</new>
 	</version>
 	<version number="0.3.0" date="2005-10-12">
 		<new author='adam'>
@@ -31,7 +45,7 @@
 			Importers: Abstract, XML, Tab-Delimited, and EXIF fully functioning.
 			Batch importing of assets now available.
 		</new>
-		<new author='whitey'>
+		<new author='chris'>
 			Importers: Abstract, XML, Tab-Delimited, and EXIF fully functioning.
 			Batch importing of assets now available.
 		</new>
@@ -139,7 +153,7 @@
 		<name short="nik">Nikitas Stamatopoulos</name>
 		<name short="niraj">Niraj Dhungel</name>
 		<name short="alex">Alex Chapin</name>
-		<name short='whitey'>Christopher W. Shubert</name>
+		<name short='chris'>Christopher W. Shubert</name>
 	</authors>
 	<groupid>82873</groupid>
 	<reftypes>

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MainWindowAction.class.php,v 1.6 2005/12/15 19:08:26 adamfranco Exp $
+ * @version $Id: MainWindowAction.class.php,v 1.7 2006/01/10 16:17:14 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/WizardAction.class.php");
@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MainWindowAction.class.php,v 1.6 2005/12/15 19:08:26 adamfranco Exp $
+ * @version $Id: MainWindowAction.class.php,v 1.7 2006/01/10 16:17:14 adamfranco Exp $
  */
 class MainWindowAction 
 	extends WizardAction {
@@ -81,7 +81,7 @@ class MainWindowAction
 		
 		// Check authorization
 		if (!$this->isAuthorizedToExecute()) {
-			$actionRows->add(new Block($this->getUnauthorizedMessage(), 3),
+			$actionRows->add(new Block($this->getUnauthorizedMessage(), EMPHASIZED_BLOCK),
 				"100%", null, CENTER, TOP);
 			return $actionRows;
 		}
@@ -123,7 +123,7 @@ class MainWindowAction
 	 */
 	function &getActionRows () {
 		if (!is_object($this->_actionRows))
-			$this->_actionRows =& new Container(new YLayout(), BLOCK, 1);
+			$this->_actionRows =& new Container(new YLayout(), BLOCK, BACKGROUND_BLOCK);
 		
 		return $this->_actionRows;
 	}
