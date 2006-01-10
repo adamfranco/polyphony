@@ -3,6 +3,23 @@
 Name: Polyphony ChangeLog
 
 
+v. 0.4.0 (The Nebulous Future)
+----------------------------------------------------
+		
+	* New feature: HelpBrowser system. (Adam Franco)
+		
+	* New feature: Added Wizard components to support repeatable values as well as 'confirmed-change' linked checkboxes and fields. (Adam Franco)
+		
+	* Change: Now using GUI Block level constants such as EMPHAZISED_BLOCK instead of 'Block 3'. (Adam Franco)
+		
+	* Change: Optimizations to speed loading of thumbnails. (Adam Franco)
+		
+	* New feature: Basket: New functionality for clearing the basket, adding multiple and single files to the basket. (Christopher W. Shubert)
+		
+	* New feature: Exporter: (Christopher W. Shubert)
+		
+	* New feature: Importer: (Christopher W. Shubert)
+	
 v. 0.3.0 (2005-10-12)
 ----------------------------------------------------
 		
