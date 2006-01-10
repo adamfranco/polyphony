@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartImporter.class.php,v 1.13 2006/01/05 19:50:25 cws-midd Exp $
+ * @version $Id: XMLPartImporter.class.php,v 1.14 2006/01/10 19:47:55 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartImporter.class.php,v 1.13 2006/01/05 19:50:25 cws-midd Exp $
+ * @version $Id: XMLPartImporter.class.php,v 1.14 2006/01/10 19:47:55 cws-midd Exp $
  */
 class XMLPartImporter extends XMLImporter {
 		
@@ -134,8 +134,9 @@ class XMLPartImporter extends XMLImporter {
 			}
 			$this->_info['partStructureId'] =& $idManager->getId(
 				$result['conc_id']);
-		} else 
+		} else {
 			$this->addError("Bad XML IDREF: ".$id);
+		}
 		$results->free();
 
 		$this->_info['value'] = $this->getPartObject($this->_node->getText());

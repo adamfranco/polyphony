@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureImporter.class.php,v 1.15 2006/01/10 18:21:35 cws-midd Exp $
+ * @version $Id: XMLPartStructureImporter.class.php,v 1.16 2006/01/10 19:47:55 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureImporter.class.php,v 1.15 2006/01/10 18:21:35 cws-midd Exp $
+ * @version $Id: XMLPartStructureImporter.class.php,v 1.16 2006/01/10 19:47:55 cws-midd Exp $
  */
 class XMLPartStructureImporter extends XMLImporter {
 		
@@ -86,7 +86,7 @@ class XMLPartStructureImporter extends XMLImporter {
 		$idManager =& Services::getService("IdManager");
 		
 		$this->getNodeInfo();
-		
+
 		$hasId = $this->_node->hasAttribute("id");
 		if ($hasId && (in_array($this->_node->getAttribute("id"),
 				$this->_existingArray)	|| $this->_type == "update")) {
@@ -119,7 +119,7 @@ class XMLPartStructureImporter extends XMLImporter {
 		// get a set of valid types from the DM
 		$dm =& Services::getService("DataTypeManager");
 		$validTypes = $dm->getRegisteredTypes();
-		if (in_array($type, array_keys($validTypes)))
+		if (in_array($type->getKeyword(), $validTypes))
 		 	return true;
 		else
 			return false;

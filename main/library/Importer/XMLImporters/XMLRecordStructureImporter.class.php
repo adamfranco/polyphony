@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.14 2005/12/22 22:58:03 cws-midd Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.15 2006/01/10 19:47:55 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLPartStructureImpo
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.14 2005/12/22 22:58:03 cws-midd Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.15 2006/01/10 19:47:55 cws-midd Exp $
  */
 class XMLRecordStructureImporter extends XMLImporter {
 		
@@ -139,8 +139,11 @@ class XMLRecordStructureImporter extends XMLImporter {
 		// add structure to repository
 		$this->doSets();
 		
-		if ($foundId)
+		if ($foundId) {
+			$this->doIdMatrix();
+			$this->doChildIdMatrices();
 			return true;
+		}
 	}
 
 	/**
@@ -158,6 +161,57 @@ class XMLRecordStructureImporter extends XMLImporter {
 
 	/**
 	 * Does what is necessary to the temporary table for internal id association
+	 * 
+	 * @access public
+	 * @since 10/6/05
+	 */
+	function doChildIdMatrices () {
+		$imp =& new XMLPartStructureImporter($this->_existingArray);
+		foreach ($this->_node->childNodes as $child) {
+			if ($child->nodeName == "partstructure") {
+				$imp->_node =& $child;
+				$imp->_myId =& $this->matchPartStructure($this->_object,
+					$child);
+				$imp->doIdMatrix();
+			}
+		}
+		unset($imp);
+	}
+	
+	/**
+  	 * Matches a partstructure from a recordstructure
+ 	 * 
+ 	 * @return false if not matched and an array of partstructure ids
+ 	 * @access public
+ 	 * @since 7/18/05
+ 	 */
+	function matchPartStructure (&$rS, &$partElement) {
+		$partStructures =& $rS->getPartStructures(); // get all ps's
+		$dname = '';
+		$type = '';
+		foreach ($partElement->childNodes as $partPiece) {
+			if ($partPiece->nodeName == "name")
+				$dname = $partPiece->getText();
+			else if ($partPiece->nodeName == "type") {
+				foreach ($partPiece->childNodes as $typePart) {
+					if($typePart->nodeName == "keyword") {
+					 	$type = $typePart->getText();
+					 }
+				}
+			}
+		}
+		while ($partStructures->hasNext()) {
+			$partStructure = $partStructures->next();
+			$pType =& $partStructure->getType();
+			if ($dname == $partStructure->getDisplayName() && 
+					$type == $pType->getKeyword()) {
+				return $partStructure->getId();
+			}
+		}
+	}
+
+	/**
+	 * Does what is necessary to the child table for internal id association
 	 * 
 	 * @access public
 	 * @since 10/6/05
