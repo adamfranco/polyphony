@@ -4,20 +4,49 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.25 2006/01/10 16:17:13 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.26 2006/01/10 17:02:28 cws-midd Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
 	<version number="0.4.0" date="The Nebulous Future">
+		<change author='adam'>
+			Agents & Authorizations: Added, edited, and reworked aspects of 
+			editing and lookup for faster cleaner and more sensible interfacing.
+		</change>
+		<change author='chris'>
+			Login: modified the login process so that it is more consistent and 
+			understandable.
+		</change>
+		<change author='adam'>
+			Result Printers: now capable of configurable display.
+		</change>
+		<change author='chris'>
+			Printers: all links and other clickable things do what should be 
+			expected of clicking on them.
+		</change>
+		<change author='adam'>
+			Validator: fixed rules and moved some validations
+		</change>
+		<new author='chris'>
+			Created help files for importing and exporting, along with examples
+			and dtds for the different types of importers.  They are available
+			on sf.net in the appropriate locations.
+		</new>
 		<new author='adam'>
 			HelpBrowser system.
 		</new>
 		<new author='adam'>
 			Added Wizard components to support repeatable values as well as
-			'confirmed-change' linked checkboxes and fields.
+			'confirmed-change' linked checkboxes and fields.  Modified I/O 
+			modules to function with system.
 		</new>
+		<change author='chris'>
+			Modified the implementation of the repeatable wizard components so 
+			that everything is elegant and makes more sense, generally more 
+			usable.
+		</change>
 		<change author='adam'>
 			Now using GUI Block level constants such as EMPHAZISED_BLOCK instead 
 			of 'Block 3'.
@@ -25,16 +54,30 @@
 		<change author='adam'>
 			Optimizations to speed loading of thumbnails.
 		</change>
+		<change author='chris'>
+			Basket & Exporter: Together at last, exporting assets from anywhere
+			in the system by adding them to the basket and exporting the basket.
+		</change>
 		<new author='chris'>
 			Basket: New functionality for clearing the basket, adding multiple
 			and single files to the basket.
 		</new>
 		<new author='chris'>
-			Exporter: 
+			Exporter: XML Exporter is designed to function with XML Importer and
+			allows for human readable (XML) backups of the repository system.
+			It is also readily extensible to other aspects of our system.
 		</new>
 		<new author='chris'>
-			Importer: 
+			Importer: XML Importer is capable of populating repositories with
+			flexibility, and is readily extended to work with groups and
+			authorizations, or any other aspects of our system.  
 		</new>
+		<change author='chris'>
+			Importer: XML importer has been removed from the 
+			"RepositoryImporter" classification, and re-designed to be
+			extensible to all aspects of our systems.  Tab and Exif are still 
+			only available for repository data population.
+		</change>
 	</version>
 	<version number="0.3.0" date="2005-10-12">
 		<new author='adam'>
