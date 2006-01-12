@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.41 2006/01/09 23:41:05 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.42 2006/01/12 14:52:33 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -26,7 +26,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.41 2006/01/09 23:41:05 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.42 2006/01/12 14:52:33 adamfranco Exp $
  */
 class edit_authorizationsAction 
 	extends MainWindowAction
@@ -694,19 +694,21 @@ class edit_authorizationsAction
 						[$qualifierId->getIdString()]
 						[$functionId->getIdString()];
 					$hasExplicit = $hasImplicit = false;
-					foreach (array_keys($allAZs) as $azKey) {
-						$az =& $allAZs[$azKey];
-						if ($az->isExplicit()) {
-							$hasExplicit = true;
-						} else {
-							$hasImplicit = true;
-							$implicitAZs[] =& $az;
-							$implicitAZOwners[] =& $this->_agentIds[$key];
+					if (is_array($allAZs)) {
+						foreach (array_keys($allAZs) as $azKey) {
+							$az =& $allAZs[$azKey];
+							if ($az->isExplicit()) {
+								$hasExplicit = true;
+							} else {
+								$hasImplicit = true;
+								$implicitAZs[] =& $az;
+								$implicitAZOwners[] =& $this->_agentIds[$key];
+							}
 						}
+						if ($hasExplicit) $numExplicit++;
+						if ($hasImplicit) $numImplicit++;
+						if ($hasExplicit || $hasImplicit) $authorized++;
 					}
-					if ($hasExplicit) $numExplicit++;
-					if ($hasImplicit) $numImplicit++;
-					if ($hasExplicit || $hasImplicit) $authorized++;
 				}
 				
 				// Store values for display output
