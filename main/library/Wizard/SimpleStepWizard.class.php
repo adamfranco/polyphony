@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleStepWizard.class.php,v 1.5 2005/12/15 19:21:49 adamfranco Exp $
+ * @version $Id: SimpleStepWizard.class.php,v 1.6 2006/01/17 20:06:41 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/SimpleWizard.class.php");
@@ -28,7 +28,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WStepDisplayBar.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleStepWizard.class.php,v 1.5 2005/12/15 19:21:49 adamfranco Exp $
+ * @version $Id: SimpleStepWizard.class.php,v 1.6 2006/01/17 20:06:41 adamfranco Exp $
  */
 class SimpleStepWizard extends SimpleWizard {
 	var $_stepContainer;
@@ -103,7 +103,8 @@ class SimpleStepWizard extends SimpleWizard {
 	 * @return ref object
 	 */
 	function &withTitleAndDefaultLayout ($title) {
-		return SimpleStepWizard::withDefaultLayout("<h2>$title</h2>\n");
+		$obj =& SimpleStepWizard::withDefaultLayout("<h2>$title</h2>\n");
+		return $obj;
 	}
 	
 	/**

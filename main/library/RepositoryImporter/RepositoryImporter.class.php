@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.22 2005/09/26 17:56:22 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.23 2006/01/17 20:06:41 adamfranco Exp $
  */ 
 require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.22 2005/09/26 17:56:22 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.23 2006/01/17 20:06:41 adamfranco Exp $
  */
 class RepositoryImporter {
 	
@@ -150,7 +150,8 @@ class RepositoryImporter {
 			else if ($this->_dieOnError)
 				return $info["recordList"]; // false
 		}
-		return new HarmoniIterator($allAssetInfo);
+		$obj =& new HarmoniIterator($allAssetInfo);
+		return $obj;
 	}
 
 	/**
@@ -288,7 +289,7 @@ class RepositoryImporter {
 	 * @access public
 	 * @since 7/21/05
 	 */
-	function getPartObject(&$structureId, &$partStructureId, $part) {
+	function &getPartObject(&$structureId, &$partStructureId, $part) {
 		$structure =& $this->_destinationRepository->getRecordStructure(
 			$structureId);
 		$partStructure =& $structure->getPartStructure($partStructureId);
@@ -296,25 +297,32 @@ class RepositoryImporter {
 		$typeString = $type->getKeyword();
 		switch($typeString) {
 			case "string":
-				return String::withValue($part);
+				$obj =& String::withValue($part);
+				return $obj;
 				break;
 			case "integer":
-				return Integer::withValue($part);
+				$obj =& Integer::withValue($part);
+				return $obj;
 				break;
 			case "boolean":
-				return Boolean::withValue($part);
+				$obj =& Boolean::withValue($part);
+				return $obj;
 				break;
 			case "shortstring":
-				return ShortString::withValue($part);
+				$obj =& ShortString::withValue($part);
+				return $obj;
 				break;
 			case "float":
-				return Float::withValue($part);
+				$obj =& Float::withValue($part);
+				return $obj;
 				break;
 			case "datetime":
-				return DateAndTime::fromString($part);
+				$obj =& DateAndTime::fromString($part);
+				return $obj;
 				break;
 			case "type": 
-				return HarmoniType::stringToType($part);
+				$obj =& HarmoniType::stringToType($part);
+				return $obj;
 				break;
 			default:
 				$this->addError("Unsupported PartStructure DataType: ".

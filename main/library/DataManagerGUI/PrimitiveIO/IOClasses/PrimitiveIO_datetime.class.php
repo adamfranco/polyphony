@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_datetime.class.php,v 1.3 2005/10/17 20:43:53 adamfranco Exp $
+ * @version $Id: PrimitiveIO_datetime.class.php,v 1.4 2006/01/17 20:06:41 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_datetime.class.php,v 1.3 2005/10/17 20:43:53 adamfranco Exp $
+ * @version $Id: PrimitiveIO_datetime.class.php,v 1.4 2006/01/17 20:06:41 adamfranco Exp $
  */
 class PrimitiveIO_datetime extends WTextField /* implements PrimitiveIO */ {
 
@@ -69,7 +69,8 @@ class PrimitiveIO_datetime extends WTextField /* implements PrimitiveIO */ {
 	 * @access public
 	 * @return mixed
 	 */
-	function getAllValues () {
-		return DateAndTime::fromString($this->_value);
+	function &getAllValues () {
+		$obj =& DateAndTime::fromString($this->_value);
+		return $obj;
 	}
 }

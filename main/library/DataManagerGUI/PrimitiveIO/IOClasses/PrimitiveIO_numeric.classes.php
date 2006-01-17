@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_numeric.classes.php,v 1.6 2005/08/24 14:34:42 cws-midd Exp $
+ * @version $Id: PrimitiveIO_numeric.classes.php,v 1.7 2006/01/17 20:06:41 adamfranco Exp $
  */
 
 /**
@@ -53,8 +53,9 @@ class PrimitiveIO_integer extends PrimitiveIO_shortstring {
 	 * @access public
 	 * @return mixed
 	 */
-	function getAllValues () {
-		return Integer::withValue($this->_value?intval($this->_value):0);
+	function &getAllValues () {
+		$obj =& Integer::withValue($this->_value?intval($this->_value):0);
+		return $obj;
 	}
 	
 	/**
@@ -110,8 +111,9 @@ class PrimitiveIO_float extends PrimitiveIO_integer {
 	 * @access public
 	 * @return mixed
 	 */
-	function getAllValues () {
-		return Float::withValue($this->_value?floatval($this->_value):0);
+	function &getAllValues () {
+		$obj =& Float::withValue($this->_value?floatval($this->_value):0);
+		return $obj;
 	}
 	
 	/**

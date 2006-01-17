@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_boolean.class.php,v 1.6 2005/08/24 14:34:42 cws-midd Exp $
+ * @version $Id: PrimitiveIO_boolean.class.php,v 1.7 2006/01/17 20:06:40 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_boolean.class.php,v 1.6 2005/08/24 14:34:42 cws-midd Exp $
+ * @version $Id: PrimitiveIO_boolean.class.php,v 1.7 2006/01/17 20:06:40 adamfranco Exp $
  */
 class PrimitiveIO_boolean extends WRadioList /* implements PrimitiveIO */ {
 	
@@ -56,8 +56,9 @@ class PrimitiveIO_boolean extends WRadioList /* implements PrimitiveIO */ {
 	 * @access public
 	 * @return mixed
 	 */
-	function getAllValues () {
-		return new Boolean($this->_value=="1"?true:false);
+	function &getAllValues () {
+		$obj =& new Boolean($this->_value=="1"?true:false);
+		return $obj;
 	}
 
 }

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_strings.classes.php,v 1.7 2005/10/27 22:20:26 adamfranco Exp $
+ * @version $Id: PrimitiveIO_strings.classes.php,v 1.8 2006/01/17 20:06:41 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_strings.classes.php,v 1.7 2005/10/27 22:20:26 adamfranco Exp $
+ * @version $Id: PrimitiveIO_strings.classes.php,v 1.8 2006/01/17 20:06:41 adamfranco Exp $
  */
 class PrimitiveIO_shortstring extends WTextField {
 
@@ -49,8 +49,9 @@ class PrimitiveIO_shortstring extends WTextField {
 	 * @access public
 	 * @return mixed
 	 */
-	function getAllValues () {
-		return new String($this->_value?$this->_value:"");
+	function &getAllValues () {
+		$obj =& new String($this->_value?$this->_value:"");
+		return $obj;
 	}
 	
 }
@@ -95,7 +96,8 @@ class PrimitiveIO_string extends WTextArea {
 	 * @access public
 	 * @return mixed
 	 */
-	function getAllValues () {
-		return new String($this->_value?$this->_value:"");
+	function &getAllValues () {
+		$obj =& new String($this->_value?$this->_value:"");
+		return $obj;
 	}
 }

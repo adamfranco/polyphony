@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIOManager.class.php,v 1.5 2005/08/10 13:27:04 gabeschine Exp $
+ * @version $Id: PrimitiveIOManager.class.php,v 1.6 2006/01/17 20:06:40 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIOManager.class.php,v 1.5 2005/08/10 13:27:04 gabeschine Exp $
+ * @version $Id: PrimitiveIOManager.class.php,v 1.6 2006/01/17 20:06:40 adamfranco Exp $
  * @author Gabe Schine
  */
 class PrimitiveIOManager {
@@ -32,7 +32,9 @@ class PrimitiveIOManager {
 		$class = "PrimitiveIO_".$dataType;
 		if (!class_exists($class)) return ($null=null);
 
-		return new $class();
+		$obj =& new $class();
+
+		return $obj;
 	}
 	
 }

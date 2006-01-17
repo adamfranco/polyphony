@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MainWindowAction.class.php,v 1.7 2006/01/10 16:17:14 adamfranco Exp $
+ * @version $Id: MainWindowAction.class.php,v 1.8 2006/01/17 20:06:40 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/WizardAction.class.php");
@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MainWindowAction.class.php,v 1.7 2006/01/10 16:17:14 adamfranco Exp $
+ * @version $Id: MainWindowAction.class.php,v 1.8 2006/01/17 20:06:40 adamfranco Exp $
  */
 class MainWindowAction 
 	extends WizardAction {
@@ -73,7 +73,7 @@ class MainWindowAction
 	 * @access public
 	 * @since 4/25/05
 	 */
-	function execute ( &$harmoni ) {		
+	function &execute ( &$harmoni ) {		
 		$pageTitle = 'Concerto';
 		
 		// Our Rows for action content

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.42 2006/01/12 14:52:33 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.43 2006/01/17 20:06:41 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -26,7 +26,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.42 2006/01/12 14:52:33 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.43 2006/01/17 20:06:41 adamfranco Exp $
  */
 class edit_authorizationsAction 
 	extends MainWindowAction
@@ -367,12 +367,6 @@ class edit_authorizationsAction
 		$authZManager =& Services::getService("AuthZ");
 		$idManager =& Services::getService("IdManager");
 		$agentManager =& Services::getService("AgentManager");
-		
-		// Authorized Agents: none, some, all
-		$authorizedAgents = 'none';
-		foreach ($ancestorQualifierIds as $ancestorId) {
-			
-		}
 		
 		print "\n\t\t<td>";
 		

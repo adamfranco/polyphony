@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Action.class.php,v 1.4 2005/08/10 21:20:14 gabeschine Exp $
+ * @version $Id: Action.class.php,v 1.5 2006/01/17 20:06:40 adamfranco Exp $
  */ 
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Action.class.php,v 1.4 2005/08/10 21:20:14 gabeschine Exp $
+ * @version $Id: Action.class.php,v 1.5 2006/01/17 20:06:40 adamfranco Exp $
  * @since 4/28/05
  */
 class Action {
@@ -76,7 +76,7 @@ class Action {
 	 * @access public
 	 * @since 4/25/05
 	 */
-	function execute ( &$harmoni ) {
+	function &execute ( &$harmoni ) {
 		throwError(new Error(__CLASS__."::".__FUNCTION__."() must be overridden in child classes."));
 	}
 	

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartImporter.class.php,v 1.14 2006/01/10 19:47:55 cws-midd Exp $
+ * @version $Id: XMLPartImporter.class.php,v 1.15 2006/01/17 20:06:41 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartImporter.class.php,v 1.14 2006/01/10 19:47:55 cws-midd Exp $
+ * @version $Id: XMLPartImporter.class.php,v 1.15 2006/01/17 20:06:41 adamfranco Exp $
  */
 class XMLPartImporter extends XMLImporter {
 		
@@ -160,7 +160,7 @@ class XMLPartImporter extends XMLImporter {
 	 * @access public
 	 * @since 7/21/05
 	 */
-	function getPartObject (&$part) {
+	function &getPartObject (&$part) {
 		$recordStructure =& $this->_parent->getRecordStructure();
 		$partStructure =& $recordStructure->getPartStructure(
 			$this->_info['partStructureId']);
@@ -168,25 +168,32 @@ class XMLPartImporter extends XMLImporter {
 		$typeString = $type->getKeyword();
 		switch($typeString) {
 			case "string":
-				return String::withValue($part);
+				$obj =& String::withValue($part);
+				return $obj;
 				break;
 			case "integer":
-				return Integer::withValue($part);
+				$obj =& Integer::withValue($part);
+				return $obj;
 				break;
 			case "boolean":
-				return Boolean::withValue($part);
+				$obj =& Boolean::withValue($part);
+				return $obj;
 				break;
 			case "shortstring":
-				return String::withValue($part);
+				$obj =& String::withValue($part);
+				return $obj;
 				break;
 			case "float":
-				return Float::withValue($part);
+				$obj =& Float::withValue($part);
+				return $obj;
 				break;
 			case "datetime":
-				return DateAndTime::fromString($part);
+				$obj =& DateAndTime::fromString($part);
+				return $obj;
 				break;
 			case "type": 
-				return HarmoniType::stringToType($part);
+				$obj =& HarmoniType::stringToType($part);
+				return $obj;
 				break;
 			default:
 				$this->addError("Unsupported PartStructure DataType: ".

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.18 2005/12/07 21:59:16 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.19 2006/01/17 20:06:41 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.18 2005/12/07 21:59:16 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.19 2006/01/17 20:06:41 adamfranco Exp $
  */
 
 class ArrayResultPrinter 
@@ -40,7 +40,7 @@ class ArrayResultPrinter
 	 * @access public
 	 * @date 8/5/04
 	 */
-	function ArrayResultPrinter (& $array, $numColumns, 
+	function ArrayResultPrinter (&$array, $numColumns, 
 									$numResultsPerPage, $callbackFunction) {
 		ArgumentValidator::validate($array, ArrayValidatorRule::getRule());
 		ArgumentValidator::validate($numColumns, IntegerValidatorRule::getRule());
@@ -53,7 +53,7 @@ class ArrayResultPrinter
 		$this->_callbackFunction =& $callbackFunction;
 		
 		$this->_callbackParams = array();
-		$args =& func_get_args();
+		$args = func_get_args();
 		for ($i=4; $i<count($args); $i++) {
 			$this->_callbackParams[] =& $args[$i];
 		}
@@ -93,7 +93,7 @@ class ArrayResultPrinter
 			
 			// trash the items before our starting number
 			while ($numItems+1 < $startingNumber && $numItems < count($this->_array)) {
-				$item =& current($this->_array);
+				$item =& $this->_array[key($this->_array)];
 				next($this->_array);
 				
 				// Ignore this if it should be filtered.
@@ -105,7 +105,7 @@ class ArrayResultPrinter
 			// print up to $this->_pageSize items
 			$pageItems = 0;
 			while ($numItems < $endingNumber && $numItems < count($this->_array)) {
-				$item =& current($this->_array);
+				$item =& $this->_array[key($this->_array)];
 				next($this->_array);
 				
 				// Only Act if this item isn't to be filtered.
@@ -121,7 +121,9 @@ class ArrayResultPrinter
 					// Add in our starting number to the end so that that it is accessible.
 					$params[] = $numItems;
 					
-					$itemLayout =& call_user_func_array(
+					// The following call returns an object, but notices are given
+					// if an '&' is used.
+					$itemLayout = call_user_func_array(
 						$this->_callbackFunction, $params);
 					$resultLayout->add($itemLayout, null, null, CENTER, TOP);
 				}
@@ -136,7 +138,7 @@ class ArrayResultPrinter
 			
 			// find the count of items 
 			while (true) {
-				$item =& current($this->_array);
+				$item =& $this->_array[key($this->_array)];
 				if (!$item) break;
 				next($this->_array);
 				// Ignore this if it should be filtered.
