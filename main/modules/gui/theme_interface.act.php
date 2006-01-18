@@ -1,11 +1,11 @@
 <?php
 /**
- * @package concerto.modules.gui
+ * @package polyphony.modules.gui
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: theme_interface.act.php,v 1.4 2005/10/17 20:43:53 adamfranco Exp $
+ * @version $Id: theme_interface.act.php,v 1.5 2006/01/18 15:42:55 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -13,12 +13,12 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
 /**
  * 
  * 
- * @package concerto.modules.gui
+ * @package polyphony.modules.gui
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: theme_interface.act.php,v 1.4 2005/10/17 20:43:53 adamfranco Exp $
+ * @version $Id: theme_interface.act.php,v 1.5 2006/01/18 15:42:55 adamfranco Exp $
  */
 class theme_interfaceAction 
 	extends MainWindowAction

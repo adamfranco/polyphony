@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change.act.php,v 1.7 2005/07/22 15:35:17 adamfranco Exp $
+ * @version $Id: change.act.php,v 1.8 2006/01/18 15:42:55 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change.act.php,v 1.7 2005/07/22 15:35:17 adamfranco Exp $
+ * @version $Id: change.act.php,v 1.8 2006/01/18 15:42:55 adamfranco Exp $
  */
 class changeAction
 	extends Action
@@ -45,7 +45,7 @@ class changeAction
 	 * @access public
 	 * @since 4/25/05
 	 */
-	function execute ( &$harmoni ) {
+	function &execute ( &$harmoni ) {
 		// Set the new language
 		$langLoc =& Services::getService('Lang');
 		$harmoni->request->startNamespace("polyphony");
@@ -56,6 +56,9 @@ class changeAction
 		debug::output("SESSION: ".printpre($_SESSION, TRUE));
 		
 		$harmoni->history->goBack("polyphony/language/change");
+		
+		$null = null;
+		return $null;
 	}
 	
 }

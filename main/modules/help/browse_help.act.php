@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.4 2006/01/06 21:28:26 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.5 2006/01/18 15:42:55 adamfranco Exp $
  */
  
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -34,7 +34,7 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.4 2006/01/06 21:28:26 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.5 2006/01/18 15:42:55 adamfranco Exp $
  */
 class browse_helpAction 
 	extends Action
@@ -71,7 +71,7 @@ class browse_helpAction
 	 * @access public
 	 * @since 4/25/05
 	 */
-	function execute ( &$harmoni ) {
+	function &execute ( &$harmoni ) {
 		$actionRows =& new Container(new YLayout, BLOCK, BACKGROUND_BLOCK);
 		
 		$heading = dgettext("polyphony", 'Help');

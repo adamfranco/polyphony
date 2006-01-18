@@ -1,11 +1,11 @@
 <?php
 /**
- * @package concerto.modules.exhibitions
+ * @package polyphony.modules.exhibitions
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.7 2005/12/14 21:04:50 cws-midd Exp $
+ * @version $Id: view.act.php,v 1.8 2006/01/18 15:42:55 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -14,12 +14,12 @@ require_once(POLYPHONY."/main/library/Basket/BasketManager.class.php");
 /**
  * 
  * 
- * @package concerto.modules.exhibitions
+ * @package polyphony.modules.exhibitions
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.7 2005/12/14 21:04:50 cws-midd Exp $
+ * @version $Id: view.act.php,v 1.8 2006/01/18 15:42:55 adamfranco Exp $
  */
 class viewAction 
 	extends MainWindowAction

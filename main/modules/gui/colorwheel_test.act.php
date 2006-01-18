@@ -1,11 +1,11 @@
 <?php
 /**
- * @package concerto.modules.gui
+ * @package polyphony.modules.gui
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: colorwheel_test.act.php,v 1.2 2005/09/29 17:34:56 cws-midd Exp $
+ * @version $Id: colorwheel_test.act.php,v 1.3 2006/01/18 15:42:55 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -14,12 +14,12 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
 /**
  * 
  * 
- * @package concerto.modules.gui
+ * @package polyphony.modules.gui
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: colorwheel_test.act.php,v 1.2 2005/09/29 17:34:56 cws-midd Exp $
+ * @version $Id: colorwheel_test.act.php,v 1.3 2006/01/18 15:42:55 adamfranco Exp $
  */
 class colorwheel_testAction 
 	extends MainWindowAction

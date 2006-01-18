@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 4/28/05
- * @package concerto.modules
+ * @package polyphony.modules
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardAction.class.php,v 1.6 2005/12/15 19:08:26 adamfranco Exp $
+ * @version $Id: WizardAction.class.php,v 1.7 2006/01/18 15:42:55 adamfranco Exp $
  */ 
  
  require_once(dirname(__FILE__)."/Action.class.php");
@@ -50,7 +50,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardAction.class.php,v 1.6 2005/12/15 19:08:26 adamfranco Exp $
+ * @version $Id: WizardAction.class.php,v 1.7 2006/01/18 15:42:55 adamfranco Exp $
  */
 class WizardAction 
 	extends Action

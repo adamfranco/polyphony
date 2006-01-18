@@ -1,23 +1,23 @@
 <?php
 /**
- * @package concerto.modules
+ * @package polyphony.modules
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Action.class.php,v 1.5 2006/01/17 20:06:40 adamfranco Exp $
+ * @version $Id: Action.class.php,v 1.6 2006/01/18 15:42:55 adamfranco Exp $
  */ 
 
 /**
  * This class is the most simple abstraction of an action. It provides a structure
  * for common methods
  * 
- * @package concerto.modules
+ * @package polyphony.modules
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Action.class.php,v 1.5 2006/01/17 20:06:40 adamfranco Exp $
+ * @version $Id: Action.class.php,v 1.6 2006/01/18 15:42:55 adamfranco Exp $
  * @since 4/28/05
  */
 class Action {
