@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponentWithChildren.abstract.php,v 1.5 2005/12/14 22:16:26 adamfranco Exp $
+ * @version $Id: WizardComponentWithChildren.abstract.php,v 1.6 2006/01/18 22:51:59 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponentWithChildren.abstract.php,v 1.5 2005/12/14 22:16:26 adamfranco Exp $
+ * @version $Id: WizardComponentWithChildren.abstract.php,v 1.6 2006/01/18 22:51:59 adamfranco Exp $
  * @abstract
  */
 class WizardComponentWithChildren 
@@ -41,7 +41,8 @@ class WizardComponentWithChildren
 			NonZeroLengthStringValidatorRule::getRule());
 		ArgumentValidator::validate($component,
 			ExtendsValidatorRule::getRule('WizardComponent'));
-		$this->_children[$name] =& $component;
+		
+		$this->_children[preg_replace("/[^a-zA-Z0-9:_-]/", "_", $name)] =& $component;
 		$component->setParent($this);
 		return $component;
 	}
@@ -62,7 +63,7 @@ class WizardComponentWithChildren
 	 * @return ref object
 	 */
 	function &getChild ($name) {
-		return $this->_children[$name];
+		return $this->_children[preg_replace("/[^a-zA-Z0-9:_-]/", "_", $name)];
 	}
 	
 	/**
@@ -72,7 +73,7 @@ class WizardComponentWithChildren
 	 * @return void
 	 */
 	function removeChild ($name) {
-		unset($this->_children[$name]);
+		unset($this->_children[preg_replace("/[^a-zA-Z0-9:_-]/", "_", $name)]);
 	}
 	
 	/**

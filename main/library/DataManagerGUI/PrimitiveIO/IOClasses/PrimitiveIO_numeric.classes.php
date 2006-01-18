@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_numeric.classes.php,v 1.7 2006/01/17 20:06:41 adamfranco Exp $
+ * @version $Id: PrimitiveIO_numeric.classes.php,v 1.8 2006/01/18 22:51:58 adamfranco Exp $
  */
 
 /**
@@ -33,7 +33,7 @@ class PrimitiveIO_integer extends PrimitiveIO_shortstring {
 	 **/
 	function setValue(&$value)
 	{
-		parent::setValue($value->asString());
+		parent::setValue($value);
 	}
 
 	/**

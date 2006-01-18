@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.6 2005/08/10 17:52:05 adamfranco Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.7 2006/01/18 22:51:59 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.6 2005/08/10 17:52:05 adamfranco Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.7 2006/01/18 22:51:59 adamfranco Exp $
  */
 class WizardStepContainer extends WizardComponent {
 	var $_currStep;
@@ -46,6 +46,8 @@ class WizardStepContainer extends WizardComponent {
 	 */
 	function &addStep ($name, &$step) {
 		ArgumentValidator::validate($step, ExtendsValidatorRule::getRule("WizardStep"), true);
+		$name = preg_replace("/[^a-zA-Z0-9:_\-]/", "_", $name);
+		
 		$this->_steps[] =& $step;
 		$this->_stepNames[] = $name;
 		$step->setParent($this);
@@ -78,6 +80,7 @@ class WizardStepContainer extends WizardComponent {
 	 * @return void
 	 */
 	function setStep ($name) {
+		$name = preg_replace("/[^a-zA-Z0-9:_-]/", "_", $name);
 		$ind = array_search($name, $this->_stepNames);
 		if ($ind !== false) {
 			$this->_currStep = $ind;
@@ -100,6 +103,7 @@ class WizardStepContainer extends WizardComponent {
 	 * @return ref object
 	 */
 	function &getStep ($name) {
+		$name = preg_replace("/[^a-zA-Z0-9:_-]/", "_", $name);
 		$key = array_search($name, $this->_stepNames);
 		if($key !== false) return $this->_steps[$key];
 		return ($null = null);
