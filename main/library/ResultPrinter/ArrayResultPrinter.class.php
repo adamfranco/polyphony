@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.19 2006/01/17 20:06:41 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.20 2006/01/18 19:44:40 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.19 2006/01/17 20:06:41 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.20 2006/01/18 19:44:40 adamfranco Exp $
  */
 
 class ArrayResultPrinter 
@@ -126,6 +126,10 @@ class ArrayResultPrinter
 					$itemLayout = call_user_func_array(
 						$this->_callbackFunction, $params);
 					$resultLayout->add($itemLayout, null, null, CENTER, TOP);
+					
+					// If $itemLayout is not unset, since it is an object,
+					// it may references to it made in add() will be changed.
+					unset($itemLayout);
 				}
 			}
 			

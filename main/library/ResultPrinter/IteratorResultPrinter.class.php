@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.23 2006/01/18 16:12:21 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.24 2006/01/18 19:44:40 adamfranco Exp $
  */
  
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.23 2006/01/18 16:12:21 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.24 2006/01/18 19:44:40 adamfranco Exp $
  */
 
 class IteratorResultPrinter 
@@ -123,6 +123,10 @@ class IteratorResultPrinter
 						floor(100/$this->_numColumns)."%", 
 						"100%", 
 						CENTER, TOP);
+					
+					// If $itemLayout is not unset, since it is an object,
+					// it may references to it made in add() will be changed.
+					unset($itemLayout);
 				}
 			}
 			
