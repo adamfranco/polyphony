@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardAction.class.php,v 1.7 2006/01/18 15:42:55 adamfranco Exp $
+ * @version $Id: WizardAction.class.php,v 1.8 2006/01/18 19:53:11 adamfranco Exp $
  */ 
  
  require_once(dirname(__FILE__)."/Action.class.php");
@@ -50,7 +50,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardAction.class.php,v 1.7 2006/01/18 15:42:55 adamfranco Exp $
+ * @version $Id: WizardAction.class.php,v 1.8 2006/01/18 19:53:11 adamfranco Exp $
  */
 class WizardAction 
 	extends Action
@@ -158,6 +158,10 @@ class WizardAction
 	 * @since 4/28/05
 	 */
 	function runWizard ( $cacheName, &$container) {
+		// The browser will translate '.'s into '_'s, resulting in a miss-match,
+		// so swap these now.
+		$cacheName = str_replace(".", "_", $cacheName);
+		
 		$wizard =& $this->getWizard($cacheName);
 		$harmoni =& Harmoni::instance();
 		// tell the wizard to GO
