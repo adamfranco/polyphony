@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.5 2006/01/18 15:42:55 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.6 2006/01/18 19:15:20 adamfranco Exp $
  */
  
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -34,7 +34,7 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.5 2006/01/18 15:42:55 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.6 2006/01/18 19:15:20 adamfranco Exp $
  */
 class browse_helpAction 
 	extends Action
@@ -134,8 +134,9 @@ class browse_helpAction
 		if (!isset($this->_topics)) {
 			
 			//replace this with config lines.
-			if (isset($_SESSION['__help_dirs__']) && is_array($_SESSION['__help_dirs__']))
-				$this->_dirs = $_SESSION['__help_dirs__'];
+			$harmoni =& Harmoni::instance();
+			if (isset($_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')]) && is_array($_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')]))
+				$this->_dirs = $_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')];
 			else
 				$this->_dirs = array();
 			
@@ -190,12 +191,14 @@ class browse_helpAction
 	 * @since 12/9/05
 	 */
 	function addHelpDirectory ( $directory ) {
-		if (!isset($_SESSION['__help_dirs__']) || !is_array($_SESSION['__help_dirs__']))
-			$_SESSION['__help_dirs__'] = array();
+		$harmoni =& Harmoni::instance();
+		if (!isset($_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')]) || !is_array($_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')]))
+			$_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')] = array();
 		
-		if (is_dir($directory))
-			$_SESSION['__help_dirs__'][] = $directory;
-		else
+		if (is_dir($directory)) {
+			if (!in_array($directory, $_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')]))
+				$_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')][] = $directory;
+		} else
 			throwError(new Error("Invalid Help directory, '$directory'", "polyphony.help", true));
 	}
 	
