@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.22 2005/12/07 21:16:14 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.23 2006/01/18 16:12:21 adamfranco Exp $
  */
  
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.22 2005/12/07 21:16:14 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.23 2006/01/18 16:12:21 adamfranco Exp $
  */
 
 class IteratorResultPrinter 
@@ -53,7 +53,7 @@ class IteratorResultPrinter
 		$this->_callbackFunction =& $callbackFunction;
 		
 		$this->_callbackParams = array();
-		$args =& func_get_args();
+		$args = func_get_args();
 		for ($i=4; $i<count($args); $i++) {
 			$this->_callbackParams[] =& $args[$i];
 		}
@@ -117,7 +117,7 @@ class IteratorResultPrinter
 					// Add in our starting number to the end so that that it is accessible.
 					$params[] = $numItems;
 					
-					$itemLayout =& call_user_func_array(
+					$itemLayout = call_user_func_array(
 						$this->_callbackFunction, $params);
 					$resultLayout->add($itemLayout, 
 						floor(100/$this->_numColumns)."%", 
