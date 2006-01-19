@@ -1,10 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!-- 
  @package polyphony.docs
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.dtd,v 1.2 2005/04/07 17:07:26 adamfranco Exp $
+ @version $Id: changelog.dtd,v 1.3 2006/01/19 21:37:11 cws-midd Exp $
  -->
  
 <!ELEMENT changelog (version*, authors?, groupid?, reftypes?)>
