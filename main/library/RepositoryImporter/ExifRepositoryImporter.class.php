@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.15 2005/12/12 19:38:20 cws-midd Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.16 2006/01/24 15:15:34 cws-midd Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -21,10 +21,10 @@ require_once(DOMIT);
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.15 2005/12/12 19:38:20 cws-midd Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.16 2006/01/24 15:15:34 cws-midd Exp $
  */
 class ExifRepositoryImporter
-extends RepositoryImporter
+	extends RepositoryImporter
 {
 
 	/**
