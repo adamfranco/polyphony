@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.10 2005/11/21 16:22:06 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.11 2006/01/24 16:17:34 adamfranco Exp $
  */
 
 /**
@@ -21,8 +21,8 @@ require_once(dirname(__FILE__)."/modules/HarmoniFileModule.class.php");
  * appropriate RepositoryInputOutputModule based on their Schema Formats.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.10 2005/11/21 16:22:06 adamfranco Exp $
- * @since $Date: 2005/11/21 16:22:06 $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.11 2006/01/24 16:17:34 adamfranco Exp $
+ * @since $Date: 2006/01/24 16:17:34 $
  * @copyright 2004 Middlebury College
  */
 
@@ -250,12 +250,12 @@ class RepositoryInputOutputModuleManager {
 		$filenameParts =& $fileRecord->getPartsByPartStructure(
 			$idManager->getId("FILE_NAME"));
 		$filenamePart =& $filenameParts->next();
-		$filename =& $filenamePart->getValue();
+		$filename = $filenamePart->getValue();
 		
 		$mimeTypeParts =& $fileRecord->getPartsByPartStructure(
 				$idManager->getId("THUMBNAIL_MIME_TYPE"));
 		$mimeTypePart =& $mimeTypeParts->next();
-		$mimeType =& $mimeTypePart->getValue();
+		$mimeType = $mimeTypePart->getValue();
 		
 		// If we have a thumbnail with a valid mime type, print a link to that.
 		$filename = ereg_replace("\.[^\.]+$", "", $filename);
@@ -320,7 +320,7 @@ class RepositoryInputOutputModuleManager {
 		$filenameParts =& $fileRecord->getPartsByPartStructure(
 			$idManager->getId("FILE_NAME"));
 		$filenamePart =& $filenameParts->next();
-		$filename =& $filenamePart->getValue();		
+		$filename = $filenamePart->getValue();		
 		
 		
 		$harmoni =& Harmoni::instance();
@@ -376,7 +376,7 @@ class RepositoryInputOutputModuleManager {
 			$mimeTypeParts =& $record->getPartsByPartStructure(
 				$idManager->getId("MIME_TYPE"));
 			$mimeTypePart =& $mimeTypeParts->next();
-			$mimeType =& $mimeTypePart->getValue();
+			$mimeType = $mimeTypePart->getValue();
 			
 			// If this record is supported by the image processor, then use it
 			// to generate a thumbnail instead of the default icons.
