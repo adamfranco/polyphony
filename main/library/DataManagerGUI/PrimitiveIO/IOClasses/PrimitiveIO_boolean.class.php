@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_boolean.class.php,v 1.7 2006/01/17 20:06:40 adamfranco Exp $
+ * @version $Id: PrimitiveIO_boolean.class.php,v 1.8 2006/01/26 19:10:13 cws-midd Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_boolean.class.php,v 1.7 2006/01/17 20:06:40 adamfranco Exp $
+ * @version $Id: PrimitiveIO_boolean.class.php,v 1.8 2006/01/26 19:10:13 cws-midd Exp $
  */
 class PrimitiveIO_boolean extends WRadioList /* implements PrimitiveIO */ {
 	
@@ -25,7 +25,8 @@ class PrimitiveIO_boolean extends WRadioList /* implements PrimitiveIO */ {
 		
 		$this->addOption("1", "true");
 		$this->addOption("0", "false");
-		$this->setValue("0");
+		$zero =& Boolean::withValue("0");
+		$this->setValue($zero);
 	}
 	
 	/**
