@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HarmoniFileModule.class.php,v 1.13 2006/01/07 00:42:51 cws-midd Exp $
+ * @version $Id: HarmoniFileModule.class.php,v 1.14 2006/02/01 18:55:42 cws-midd Exp $
  */
 
 /**
@@ -24,8 +24,8 @@ require_once(HARMONI."Primitives/Numbers/ByteSize.class.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: HarmoniFileModule.class.php,v 1.13 2006/01/07 00:42:51 cws-midd Exp $
- * @since $Date: 2006/01/07 00:42:51 $
+ * @version $Id: HarmoniFileModule.class.php,v 1.14 2006/02/01 18:55:42 cws-midd Exp $
+ * @since $Date: 2006/02/01 18:55:42 $
  * @copyright 2004 Middlebury College
  */
 
@@ -517,7 +517,7 @@ class HarmoniFileModule
 		ob_start();
 		
 		$partStructuresToSkip = array ('FILE_DATA', 'THUMBNAIL_DATA', 
-									'THUMBNAIL_MIME_TYPE', 'THUMBNAIL_DIMENSIONS');
+								'THUMBNAIL_MIME_TYPE', 'THUMBNAIL_DIMENSIONS');
 		$printThumbnail = FALSE;
 		foreach (array_keys($partStructures) as $key) {
 			$partStructure =& $partStructures[$key];
@@ -547,8 +547,7 @@ class HarmoniFileModule
 			}
 		}
 
-		$html = ob_get_contents();
-		ob_end_clean();
+		$html = ob_get_clean();
 		
 		$harmoni =& Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-repository");
@@ -557,7 +556,7 @@ class HarmoniFileModule
 			ob_start();
 			$recordId =& $record->getId();
 			$ns = $harmoni->request->endNamespace();
-// ======= BROKEN VIEWER LINK ======== //			
+// ======= VIEWER LINK ======== //			
 			$xmlAssetIdString = $harmoni->request->get("asset_id");
 			
 			print "<a href='#' onclick='Javascript:window.open(";
@@ -593,7 +592,6 @@ class HarmoniFileModule
 			print " align='left'";
 			print " />";
 		
-			
 			print "</a> <br />";
 			
 			$html2 = ob_get_clean();
