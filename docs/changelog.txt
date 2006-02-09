@@ -3,6 +3,13 @@
 Name: Polyphony ChangeLog
 
 
+v. 0.4.1 (2005-02-09)
+----------------------------------------------------
+		
+	* Bug Fix: Fixed return by reference errors that threw notices in PHP 4.4 (Adam Franco)
+		
+	* Bug Fix: Fixed url '.' to '_' conversion errors. (Adam Franco)
+	
 v. 0.4.0 (2005-01-10)
 ----------------------------------------------------
 		

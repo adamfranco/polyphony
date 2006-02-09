@@ -4,12 +4,20 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.27 2006/01/10 18:08:01 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.28 2006/02/09 19:10:05 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
+	<version number="0.4.1" date="2005-02-09">
+		<fix author='adam'>
+			Fixed return by reference errors that threw notices in PHP 4.4
+		</fix>
+		<fix author='adam'>
+			Fixed url '.' to '_' conversion errors.
+		</fix>
+	</version>
 	<version number="0.4.0" date="2005-01-10">
 		<change author='adam'>
 			Agents &amp; Authorizations: Added, edited, and reworked aspects of 
