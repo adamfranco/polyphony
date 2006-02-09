@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartImporter.class.php,v 1.15 2006/01/17 20:06:41 adamfranco Exp $
+ * @version $Id: XMLPartImporter.class.php,v 1.16 2006/02/09 20:16:49 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartImporter.class.php,v 1.15 2006/01/17 20:06:41 adamfranco Exp $
+ * @version $Id: XMLPartImporter.class.php,v 1.16 2006/02/09 20:16:49 cws-midd Exp $
  */
 class XMLPartImporter extends XMLImporter {
 		
@@ -149,7 +149,7 @@ class XMLPartImporter extends XMLImporter {
 	 * @since 10/6/05
 	 */
 	function update () {
-		if (!is_null($this->_info['value']) && ($this->_info['value'] != $this->_object->getValue()))
+		if (isset($this->_info['value']) && !is_null($this->_info['value']) && ($this->_info['value'] != $this->_object->getValue()))
 			$this->_object->updateValue($this->_info['value']);
 	}
 	

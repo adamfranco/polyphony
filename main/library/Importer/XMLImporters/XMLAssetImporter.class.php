@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.10 2005/12/12 17:06:26 cws-midd Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.11 2006/02/09 20:16:49 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."Primitives/Chronology/DateAndTime.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.10 2005/12/12 17:06:26 cws-midd Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.11 2006/02/09 20:16:49 cws-midd Exp $
  */
 class XMLAssetImporter extends XMLImporter {
 		
@@ -185,9 +185,9 @@ class XMLAssetImporter extends XMLImporter {
 	 * @since 9/12/05
 	 */
 	function update () {
-		if (!is_null($this->_info['name']) && ($this->_info['name'] != $this->_object->getDisplayName()))
+		if (isset($this->_info['name']) && !is_null($this->_info['name']) && ($this->_info['name'] != $this->_object->getDisplayName()))
 			$this->_object->updateDisplayName($this->_info['name']);
-		if (!is_null($this->_info['description']) && ($this->_info['description'] != $this->_object->getDescription()))
+		if (isset($this->_info['description']) && !is_null($this->_info['description']) && ($this->_info['description'] != $this->_object->getDescription()))
 			$this->_object->updateDescription($this->_info['description']);
 // 		if (isset($this->_info['effectivedate']) && 
 // 			(DateAndTime::fromString($this->_info['effectivedate']) != 

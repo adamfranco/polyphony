@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.12 2005/12/12 17:06:26 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.13 2006/02/09 20:16:49 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRecordStructureIm
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.12 2005/12/12 17:06:26 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.13 2006/02/09 20:16:49 cws-midd Exp $
  */
 class XMLRepositoryImporter extends XMLImporter {
 		
@@ -107,9 +107,12 @@ class XMLRepositoryImporter extends XMLImporter {
 		$repositoryManager =& Services::getService("RepositoryManager");
 		
 		$this->getNodeInfo();
-		
+printpre($this->_node->nodeName);
 		// make/find object
 		$hasId = $this->_node->hasAttribute("id");
+// printpre($hasId."::".$this->_node->getAttribute("id")."::".$this->_existingArray
+// ."::".$this->type);
+		
 		if ($hasId && (in_array($this->_node->getAttribute("id"),
 				$this->_existingArray)	|| $this->_type == "update")) {
 			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
@@ -183,10 +186,10 @@ class XMLRepositoryImporter extends XMLImporter {
 	 * @since10/5/05
 	 */
 	function update () {
-		if (!is_null($this->_info['name']) && ($this->_info['name'] != 
+		if (isset($this->_info['name']) && !is_null($this->_info['name']) && ($this->_info['name'] != 
 		$this->_object->getDisplayName()))
 			$this->_object->updateDisplayName($this->_info['name']);
-		if (!is_null($this->_info['description']) && 
+		if (isset($this->_info['description']) && !is_null($this->_info['description']) && 
 		($this->_info['description'] != $this->_object->getDescription()))
 			$this->_object->updateDescription($this->_info['description']);
 		// DATES GO HERE

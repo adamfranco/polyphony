@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLThumbMIMEPartImporter.class.php,v 1.8 2005/12/12 17:06:26 cws-midd Exp $
+ * @version $Id: XMLThumbMIMEPartImporter.class.php,v 1.9 2006/02/09 20:16:49 cws-midd Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLThumbMIMEPartImporter.class.php,v 1.8 2005/12/12 17:06:26 cws-midd Exp $
+ * @version $Id: XMLThumbMIMEPartImporter.class.php,v 1.9 2006/02/09 20:16:49 cws-midd Exp $
  */
 class XMLThumbMIMEPartImporter extends XMLImporter {
 	/**
@@ -133,7 +133,7 @@ class XMLThumbMIMEPartImporter extends XMLImporter {
 	 * @since 10/10/05
 	 */
 	function update () {
-		if (!is_null($this->_info['value']) && ($this->_info['value'] != $this->_object->getValue()))
+		if (isset($this->_info['value']) && !is_null($this->_info['value']) && ($this->_info['value'] != $this->_object->getValue()))
 			$this->_object->updateValue($this->_info['value']);
 	}
 }

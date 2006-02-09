@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.7 2006/01/05 19:50:32 cws-midd Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.8 2006/02/09 20:16:52 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.7 2006/01/05 19:50:32 cws-midd Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.8 2006/02/09 20:16:52 cws-midd Exp $
  */
 class viewthumbnailAction 
 	extends MainWindowAction
@@ -99,7 +99,7 @@ class viewthumbnailAction
 		$repository =& $repositoryManager->getRepository($repositoryId);
 		$asset =& $repository->getAsset($assetId);
 		$record =& $asset->getRecord($recordId);
-		
+				
 		// Make sure that the structure is the right one.
 		$structure =& $record->getRecordStructure();
 		$fileId =& $idManager->getId('FILE');
@@ -120,19 +120,19 @@ class viewthumbnailAction
 			// If we have a thumbnail, print that.
 			if ($parts['THUMBNAIL_MIME_TYPE']->getValue()) {
 				
-				header("Content-Type: ".$parts['THUMBNAIL_MIME_TYPE']->getValue());
+ 				header("Content-Type: ".$parts['THUMBNAIL_MIME_TYPE']->getValue());
 				
 				$mime =& Services::getService("MIME");
 				$extension = $mime->getExtensionForMIMEType(
 									$parts['THUMBNAIL_MIME_TYPE']->getValue());
-				header('Content-Disposition: attachment; filename="'.
-					$parts['FILE_NAME']->getValue().".".$extension.'"');
+ 				header('Content-Disposition: attachment; filename="'.
+ 					$parts['FILE_NAME']->getValue().".".$extension.'"');
 			
 				print $parts['THUMBNAIL_DATA']->getValue();
 			}
 			// Otherwise, print a stock image for the mime type.
 			else {
-				header("Content-Type: image/png");
+ 				header("Content-Type: image/png");
 				
 				$mimeType = $parts['MIME_TYPE']->getValue();
 				if (!$mimeType || $mimeType == 'application/octet-stream') {
@@ -190,7 +190,7 @@ class viewthumbnailAction
 					$imageName = $typeImages[$typeParts[0]];
 				}
 				
-				header('Content-Disposition: attachment; filename="'.$imageName.'"');
+ 				header('Content-Disposition: attachment; filename="'.$imageName.'"');
 				
 				print file_get_contents(dirname(__FILE__)."/icons/".$imageName);
 			}
