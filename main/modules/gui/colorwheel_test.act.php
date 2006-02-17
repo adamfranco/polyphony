@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: colorwheel_test.act.php,v 1.3 2006/01/18 15:42:55 adamfranco Exp $
+ * @version $Id: colorwheel_test.act.php,v 1.4 2006/02/17 21:36:41 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: colorwheel_test.act.php,v 1.3 2006/01/18 15:42:55 adamfranco Exp $
+ * @version $Id: colorwheel_test.act.php,v 1.4 2006/02/17 21:36:41 cws-midd Exp $
  */
 class colorwheel_testAction 
 	extends MainWindowAction
@@ -35,7 +35,7 @@ class colorwheel_testAction
 		$authZManager =& Services::getService("AuthZ");
 		$idManager =& Services::getService("IdManager");
 		if ($authZManager->isUserAuthorized(
-					$idManager->getId("edu.middlebury.authorization.create_agents"),
+					$idManager->getId("edu.middlebury.authorization.create_agent"),
 					$idManager->getId("edu.middlebury.authorization.root")))
 		{
 			return TRUE;

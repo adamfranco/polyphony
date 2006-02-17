@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.17 2006/01/10 18:21:35 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.18 2006/02/17 21:36:40 cws-midd Exp $
  *
  * @author Christopher W. Shubert
  */ 
@@ -17,7 +17,8 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryImporte
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryFileImporter.class.php");
 
 /**
- * This class provides the ability to import objects into a Harmoni Package
+ * This class and its children provide the ability to import objects into a 
+ * Harmoni Based Application
  * 
  * @since 10/5/05
  * @package polyphony.importer
@@ -25,27 +26,38 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryFileImp
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.17 2006/01/10 18:21:35 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.18 2006/02/17 21:36:40 cws-midd Exp $
  */
 class XMLImporter {
+
+	var _totalThings;	// things being an appropriate granule
 		
+	var _completedThings;	// right now things are just assets
+	
+/*********************************************************
+ * CONSTRUCTORS AND INITIALIZATION
+ *********************************************************/
+
  	/**
  	 * 	Constructor
  	 * 
- 	 * 
+ 	 * @param array $existingArray contains the idStrings of any objects that 
+ 	 * may be in the xml file but are not to be created.
  	 * @return object XMLImporter
  	 * @access public
  	 * @since 10/5/05
  	 */
  	function XMLImporter (&$existingArray) {
-	 	$this->setupSelf();
-	 	$this->_errors = array();
+	 	$this->setupSelf();		// gives the importer knowledge about itself
+	 	$this->_errors = array();	// end-user friendly error handling
 	 	$this->_existingArray =& $existingArray;
  	}
 
 	/**
 	 * Constructor with XML File to parse
 	 * 
+ 	 * @param array $existingArray contains the idStrings of any objects that 
+ 	 * may be in the xml file but are not to be created.
 	 * @param string $filepath path to the xml file with importable data
 	 * @param string $type type of the import (update/insert)
 	 * @param string $class class of the importer to instantiate
@@ -70,6 +82,8 @@ class XMLImporter {
 	/**
 	 * Constructor with XMLFile and starting object
 	 * 
+ 	 * @param array $existingArray contains the idStrings of any objects that 
+ 	 * may be in the xml file but are not to be created.
 	 * @param object mixed $object the object underneath which importer acts
 	 * @param string $filepath path to the xml data file
 	 * @param string $type type of the import (update/insert)
@@ -95,6 +109,8 @@ class XMLImporter {
 	/**
 	 * Sets up importer's self-knowledge
 	 * 
+	 * This knowledge is a list of importers that are available below this and
+	 * the xml elements that correspond to these importers.
 	 * @access public
 	 * @since 10/5/05
 	 */
@@ -102,12 +118,18 @@ class XMLImporter {
 		$this->_childImporterList = array("XMLRepositoryImporter", "XMLRepositoryFileImporter");/*, "XMLSetImporter", "XMLHierarchyImporter", "XMLGroupImporter", "XMLAgentImporter");*/
 		$this->_childElementList = array("repository", "repositoryfile", "set", "hierarchy", 
 			"group", "agent");
-		$this->_info = array();
+		$this->_info = array();	// stores information about importing element
 	}
 
+/*********************************************************
+ * ACTIVE IMPORT FUNCTIONS
+ *********************************************************/
+
 	/**
-	 * Creates the DOMIT Document and calls import
+	 * Creates the DOMIT Document and Imports the data below the target
 	 *
+	 * This is used to import data underneath an object that already exists
+	 * in the system.
 	 * @access public
 	 * @since 10/5/05
 	 */
@@ -119,6 +141,7 @@ class XMLImporter {
 				$this->addError("There are no Importables in this file");
 			else {
 				$this->_node =& $this->_import->documentElement;
+				$this->_initializeStatistics();
 				if (isset($this->_myId))
 					$this->importBelow($this->_myId->getIdString());
 				else
@@ -132,7 +155,7 @@ class XMLImporter {
 	}
 	
 	/**
-	 * Creates the DOMIT Document and calls import
+	 * Creates the DOMIT Document and Imports the data including the top target
 	 *
 	 * @access public
 	 * @since 10/5/05
@@ -145,6 +168,7 @@ class XMLImporter {
 				$this->addError("There are no Importables in this file");
 			else {
 				$this->_node =& $this->_import->documentElement;
+				$this->_initializeStatistics();
 				$null = null;
 				$this->import($this->_node, $this->_type, $null);
 			}
@@ -156,7 +180,7 @@ class XMLImporter {
 	}	
 	
 	/**
-	 * Starts the import (no parameters, because should be set)
+	 * Starts an import below the qualifier passed
 	 * 
 	 * @param string $authZQString string of the qualifier for the object
 	 * @return object HarmoniId 
@@ -182,6 +206,7 @@ class XMLImporter {
 	/**
 	 * Checks if the user is able to import underneath this level
 	 *
+	 * @todo the authorizations could not keep up with the importer
 	 * @param string $authZQString qualifier for authz checking
 	 * @access public
 	 * @since 11/3/05
@@ -258,7 +283,13 @@ class XMLImporter {
 	
 	/**
 	 * Relegates Children to their classes
-	 * 
+	 *
+	 * By matching the xml elements with their importers the importer hierachy
+	 * is able to import each element with high customization (detail) making it
+	 * easier to handle new elements with new child classes.  This function also
+	 * passes any errors encountered in a child importer back up until the
+	 * errors reach the top importer where they get printed at the end of the 
+	 * import
 	 * @access public
 	 * @since 10/5/05
 	 */
@@ -283,8 +314,10 @@ class XMLImporter {
 	}
 	
 	/**
-	 * sets the node's info
-	 * 
+	 * Populates _info array with data from the xml file
+	 *
+	 * Retrieves all the necessary information to build the object that the 
+	 * current xml element represents.
 	 * @access public
 	 * @since 10/5/05
 	 */
@@ -310,6 +343,10 @@ class XMLImporter {
 	function update () {
 		/* no update */
 	}
+
+/*********************************************************
+ * HELPER FUNCTIONS FOR GETTING NODE INFO
+ *********************************************************/
 
 	/**
 	 * Builds a type object from a type import node
@@ -400,7 +437,29 @@ class XMLImporter {
 		$this->_info['expirationdate'] = $element->getText();
 	}
 	
-		/**
+	/**
+	 * 
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 7/20/05
+	 */
+	function decompress ($filepath) {
+		$dearchiver =& new Dearchiver();
+		$worked = $dearchiver->uncompressFile($filepath,
+			dirname($filepath));
+		if ($worked == false)
+			$this->addError("Failed to decompress file: ".$filepath.
+				".  Unsupported archive extension.");
+	 	unset($dearchiver);
+	 	return dirname($filepath);
+	}
+
+/*********************************************************
+ * ERROR HANDLING FOR THE IMPORTERS
+ *********************************************************/
+
+	/**
 	 * Print the AssetIds for Assets created properly by the importer
 	 *
 	 * @param array $goodAssetIds
@@ -409,19 +468,6 @@ class XMLImporter {
 	 function printErrorMessages() {
 	 	foreach ($this->_errors as $errorString) {
 	 		print("Error: ".$errorString."<br />");
-	 	}
-	 }
-
-	
-	/**
-	 * Print the AssetIds for Assets created properly by the importer
-	 *
-	 * @param array $goodAssetIds
-	 * @since 7/29/05
-	 */
-	 function printGoodAssetIds() {
-	 	foreach ($this->_goodAssetIds as $id) {
-	 		print("Asset: ".$id->getIdString()."<br />");
 	 	}
 	 }
 
@@ -463,58 +509,79 @@ class XMLImporter {
 			$this->_errors[] = $error;
 	}
 
+/*********************************************************
+ * STATISTICS HANDLING
+ *********************************************************/
+
 	/**
-	 * gets created assset ids array
+	 * Gathers the total number of granules for importer status
 	 * 
-	 * @return array
 	 * @access public
-	 * @since 7/26/05
+	 * @since 2/17/06
 	 */
-	function getGoodAssetIds() {
-		return $this->_goodAssetIds;
+	function _initializeStatistics () {
+		// @todo collect the number of objects to be imported
 	}
 
 	/**
-	 * checks for built Assets
+	 * Updates the number of granules imported for importer status
 	 * 
-	 * @return boolean
 	 * @access public
-	 * @since 7/26/05
+	 * @since 2/17/06
 	 */
-	function hasAssets() {
-		return (count($this->_goodAssetIds) > 0);
+	function _updateStatistics () {
+		// @todo update the number of imported items and get a new percentage
 	}
 
-	/**
-	 * adds an error to the  error array
-	 * 
-	 * @param String $error
-	 * @access public
-	 * @since 7/26/05
-	 */
-	function addGoodAssetId($goodAssetId) {
-		if (!isset($this->_errors))
-			$this->_errors = array();
-		$this->_goodAssetIds[] = $goodAssetId;
-	}
-	
-	/**
-	 * 
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 7/20/05
-	 */
-	function decompress ($filepath) {
-		$dearchiver =& new Dearchiver();
-		$worked = $dearchiver->uncompressFile($filepath,
-			dirname($filepath));
-		if ($worked == false)
-			$this->addError("Failed to decompress file: ".$filepath.
-				".  Unsupported archive extension.");
-	 	unset($dearchiver);
-	 	return dirname($filepath);
-	}
+/*********************************************************
+ * ASSET ID TRACKING FOR DEVELOPMENT
+ *********************************************************/
+// 	/**
+// 	 * Print the AssetIds for Assets created properly by the importer
+// 	 *
+// 	 * @param array $goodAssetIds
+// 	 * @since 7/29/05
+// 	 */
+// 	 function printGoodAssetIds() {
+// 	 	foreach ($this->_goodAssetIds as $id) {
+// 	 		print("Asset: ".$id->getIdString()."<br />");
+// 	 	}
+// 	 }
+// 
+// 	/**
+// 	 * gets created assset ids array
+// 	 * 
+// 	 * @return array
+// 	 * @access public
+// 	 * @since 7/26/05
+// 	 */
+// 	function getGoodAssetIds() {
+// 		return $this->_goodAssetIds;
+// 	}
+// 
+// 	/**
+// 	 * checks for built Assets
+// 	 * 
+// 	 * @return boolean
+// 	 * @access public
+// 	 * @since 7/26/05
+// 	 */
+// 	function hasAssets() {
+// 		return (count($this->_goodAssetIds) > 0);
+// 	}
+// 
+// 	/**
+// 	 * adds an error to the  error array
+// 	 * 
+// 	 * @param String $error
+// 	 * @access public
+// 	 * @since 7/26/05
+// 	 */
+// 	function addGoodAssetId($goodAssetId) {
+// 		if (!isset($this->_errors))
+// 			$this->_errors = array();
+// 		$this->_goodAssetIds[] = $goodAssetId;
+// 	}
 	
 }
 

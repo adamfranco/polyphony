@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: theme_interface.act.php,v 1.5 2006/01/18 15:42:55 adamfranco Exp $
+ * @version $Id: theme_interface.act.php,v 1.6 2006/02/17 21:36:41 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: theme_interface.act.php,v 1.5 2006/01/18 15:42:55 adamfranco Exp $
+ * @version $Id: theme_interface.act.php,v 1.6 2006/02/17 21:36:41 cws-midd Exp $
  */
 class theme_interfaceAction 
 	extends MainWindowAction
@@ -34,7 +34,7 @@ class theme_interfaceAction
 		$authZManager =& Services::getService("AuthZ");
 		$idManager =& Services::getService("IdManager");
 		if ($authZManager->isUserAuthorized(
-					$idManager->getId("edu.middlebury.authorization.create_agents"),
+					$idManager->getId("edu.middlebury.authorization.create_agent"),
 					$idManager->getId("edu.middlebury.authorization.root")))
 		{
 			return TRUE;
@@ -114,11 +114,12 @@ class theme_interfaceAction
 		print "<h3>List of Modifiable Style Properties:</h3>";
 		print "<p></p>";
 		$modifiable = true;
+// 		printpre($array);
 		if(count($array)!=0){
 			foreach (array_keys($array) as $stylePropertyKey){
 				$sp =& $array[$stylePropertyKey];
 				print "<b>".$sp->getDisplayName()."</b>: <br />";
-				$scs =& $sp->getSCs();
+				$scs = $sp->getSCs();
 				$output ="";
 				foreach(array_keys($scs) as $styleComponentKey){
 					$sc =& $scs[$styleComponentKey];
@@ -206,9 +207,7 @@ class theme_interfaceAction
 	function saveWizard ( $cacheName ) {
 		$wizard =& $this->getWizard($cacheName);
 		$properties =& $wizard->getAllValues();
-		printpre($properties);
-		exit();
-			
+
 		$guimanager =& Services::getService('GUIManager');
 		$currenttheme =& $guimanager->getTheme();
 		$array =& $currenttheme->getAllRegisteredSPs();
