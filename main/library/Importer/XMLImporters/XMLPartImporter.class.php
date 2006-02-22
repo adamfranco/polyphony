@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartImporter.class.php,v 1.16 2006/02/09 20:16:49 cws-midd Exp $
+ * @version $Id: XMLPartImporter.class.php,v 1.17 2006/02/22 21:46:40 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartImporter.class.php,v 1.16 2006/02/09 20:16:49 cws-midd Exp $
+ * @version $Id: XMLPartImporter.class.php,v 1.17 2006/02/22 21:46:40 cws-midd Exp $
  */
 class XMLPartImporter extends XMLImporter {
 		
@@ -115,14 +115,14 @@ class XMLPartImporter extends XMLImporter {
 		$query->addTable("xml_id_matrix");
 		$query->addColumn("conc_id");
 		$query->addColumn("xml_id");
-		$id =& $this->_node->getAttribute("xml:id");
+		$id = $this->_node->getAttribute("xml:id");
 		$query->addWhere("xml_id = '".addslashes($id)."'");
 		
 		//$dbHandler->connect($dbIndexConcerto);
 		$results =& $dbHandler->query($query, IMPORTER_CONNECTION);
 		
 		if ($results->getNumberOfRows() == 1) {
-			$result =& $results->next();
+			$result = $results->next();
 			$idManager =& Services::getService("Id");
 			$this->_info['partStructureId'] =& $idManager->getId(
 				$result['conc_id']);

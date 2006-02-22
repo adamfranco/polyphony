@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordImporter.class.php,v 1.9 2005/11/04 20:33:30 cws-midd Exp $
+ * @version $Id: XMLFileRecordImporter.class.php,v 1.10 2006/02/22 21:46:40 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -28,7 +28,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLFilepathPartImpor
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordImporter.class.php,v 1.9 2005/11/04 20:33:30 cws-midd Exp $
+ * @version $Id: XMLFileRecordImporter.class.php,v 1.10 2006/02/22 21:46:40 cws-midd Exp $
  */
 class XMLFileRecordImporter extends XMLImporter {
 		
@@ -125,10 +125,11 @@ class XMLFileRecordImporter extends XMLImporter {
 	/**
 	 * Relegates Children to their classes
 	 * 
+	 * @param object mixed $topImporter is the importer instance that parsed the XML
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function relegateChildren () {
+	function relegateChildren (&$topImporter) {
 		$filepath = FALSE;
 		$thumbpath = FALSE;
 		foreach ($this->_node->childNodes as $element) {
@@ -144,7 +145,8 @@ class XMLFileRecordImporter extends XMLImporter {
 				eval('$result = '.$importer.'::isImportable($element);');
 				if ($result) {
 					$imp =& new $importer($this->_existingArray);
-					$imp->import($element, $this->_type, $this->_object);
+					$imp->import($topImporter, $element, $this->_type,
+						$this->_object);
 					if ($imp->hasErrors())
 						foreach($imp->getErrors() as $error)
 							$this->addError($error);
@@ -156,7 +158,7 @@ class XMLFileRecordImporter extends XMLImporter {
 			$elements =& $this->_node->getElementsByTagName("filepathpart");
 			$element =& $elements->item(0);
 			$imp =& new XMLThumbpathPartImporter($this->_existingArray);
-			$imp->import($element, $this->_type, $this->_object);
+			$imp->import($topImporter, $element, $this->_type, $this->_object);
 			if ($imp->hasErrors())
 				foreach($imp->getErrors() as $error)
 					$this->addError($error);

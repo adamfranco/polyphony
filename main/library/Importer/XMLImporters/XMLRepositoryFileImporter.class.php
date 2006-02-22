@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryFileImporter.class.php,v 1.4 2005/11/15 18:28:49 cws-midd Exp $
+ * @version $Id: XMLRepositoryFileImporter.class.php,v 1.5 2006/02/22 21:46:40 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryImporte
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryFileImporter.class.php,v 1.4 2005/11/15 18:28:49 cws-midd Exp $
+ * @version $Id: XMLRepositoryFileImporter.class.php,v 1.5 2006/02/22 21:46:40 cws-midd Exp $
  */
 class XMLRepositoryFileImporter extends XMLImporter {
 
@@ -69,6 +69,7 @@ class XMLRepositoryFileImporter extends XMLImporter {
 	/**
 	 * Organizes the import
 	 * 
+	 * @param object mixed $topImporter is the importer instance that parsed the XML
 	 * @param object DOMIT_Node
 	 * @param string
 	 * @param object mixed
@@ -77,12 +78,13 @@ class XMLRepositoryFileImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/5/05
 	 */
-	function import (&$node, $type, &$parent) {
+	function import (&$topImporter, &$node, $type, &$parent) {
 		$path = $node->getText();
 		if (!ereg("^([a-zA-Z]+://|[a-zA-Z]+:\\|/)", $path))
 			$path = $node->ownerDocument->xmlPath.$path;
-		
-		$imp =& XMLRepositoryImporter::withFile($this->_existingArray, $path, $type);
+	// @todo keep the topImporter passing down to new importer hierarchies
+		$imp =& XMLRepositoryImporter::withFile($this->_existingArray, $path,
+			$type);
 		$imp->parseAndImport();
 		unset($imp);
 	}

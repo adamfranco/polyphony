@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.18 2006/02/17 21:36:40 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.19 2006/02/22 21:46:40 cws-midd Exp $
  *
  * @author Christopher W. Shubert
  */ 
@@ -15,6 +15,7 @@ require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(DOMIT);
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryImporter.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryFileImporter.class.php");
+require_once(POLYPHONY."/main/library/Importer/StatusStars.class.php");
 
 /**
  * This class and its children provide the ability to import objects into a 
@@ -26,14 +27,10 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryFileImp
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.18 2006/02/17 21:36:40 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.19 2006/02/22 21:46:40 cws-midd Exp $
  */
 class XMLImporter {
 
-	var _totalThings;	// things being an appropriate granule
-		
-	var _completedThings;	// right now things are just assets
-	
 /*********************************************************
  * CONSTRUCTORS AND INITIALIZATION
  *********************************************************/
@@ -119,6 +116,7 @@ class XMLImporter {
 		$this->_childElementList = array("repository", "repositoryfile", "set", "hierarchy", 
 			"group", "agent");
 		$this->_info = array();	// stores information about importing element
+
 	}
 
 /*********************************************************
@@ -141,11 +139,14 @@ class XMLImporter {
 				$this->addError("There are no Importables in this file");
 			else {
 				$this->_node =& $this->_import->documentElement;
-				$this->_initializeStatistics();
+				$this->_status =& new StatusStars();
+				$nodes =& $this->_import->documentElement->getElementsByTagName(
+					"asset");
+				$this->_status->initializeStatistics($nodes->getLength(), 50);
 				if (isset($this->_myId))
-					$this->importBelow($this->_myId->getIdString());
+					$this->importBelow($this, $this->_myId->getIdString());
 				else
-					$this->importBelow("edu.middlebury.authorization.root");
+					$this->importBelow($this, "edu.middlebury.authorization.root");
 			}
 		}
 		else {
@@ -168,9 +169,12 @@ class XMLImporter {
 				$this->addError("There are no Importables in this file");
 			else {
 				$this->_node =& $this->_import->documentElement;
-				$this->_initializeStatistics();
+				$this->_status =& new StatusStars();
+				$nodes =& $this->_import->documentElement->getElementsByTagName(
+					"asset");
+				$this->_status->initializeStatistics($nodes->getLength(), 50);
 				$null = null;
-				$this->import($this->_node, $this->_type, $null);
+				$this->import($this, $this->_node, $this->_type, $null);
 			}
 		}
 		else {
@@ -182,18 +186,19 @@ class XMLImporter {
 	/**
 	 * Starts an import below the qualifier passed
 	 * 
+	 * @param object mixed $topImporter is the importer instance that parsed the XML
 	 * @param string $authZQString string of the qualifier for the object
 	 * @return object HarmoniId 
 	 * @access public
 	 * @since 10/11/05
 	 */
-	function importBelow ($authZQString = null) {
+	function importBelow (&$topImporter, $authZQString = null) {
 		if (!$this->canImportBelow($authZQString))
 			return;
 		if (isset($this->_myId)) {
 			$this->doIdMatrix();
 		}
-		$this->relegateChildren();
+		$this->relegateChildren($topImporter);
 
 		$this->dropIdMatrix();
 		
@@ -228,6 +233,7 @@ class XMLImporter {
 	/**
 	 * Organizes the import
 	 * 
+	 * @param object mixed $topImporter is the importer instance that parsed the XML
 	 * @param object DOMIT_Node &$node domit node for importing
 	 * @param string $type type of import (update/insert) 
 	 * @param object mixed $parent parent of object to be imported
@@ -235,7 +241,7 @@ class XMLImporter {
 	 * @access public
 	 * @since 10/5/05
 	 */
-	function import (&$node, $type, &$parent) {
+	function import (&$topImporter, &$node, $type, &$parent) {
 		$this->_node =& $node;
 		$this->_type = $type;
 		$this->_parent =& $parent;
@@ -245,9 +251,10 @@ class XMLImporter {
 		if ($bottom === true)
 			return;
 		if (isset($this->_myId)) {
-			return $this->importBelow($this->_myId->getIdString());
+			return $this->importBelow($topImporter, 
+				$this->_myId->getIdString());
 		} else {
-			return $this->importBelow();
+			return $this->importBelow($topImporter);
 		}
 	}
 
@@ -285,15 +292,16 @@ class XMLImporter {
 	 * Relegates Children to their classes
 	 *
 	 * By matching the xml elements with their importers the importer hierachy
-	 * is able to import each element with high customization (detail) making it
+	 * is able to import each element with much customization (detail) making it
 	 * easier to handle new elements with new child classes.  This function also
 	 * passes any errors encountered in a child importer back up until the
 	 * errors reach the top importer where they get printed at the end of the 
 	 * import
+	 * @param object mixed $topImporter is the importer instance that parsed the XML
 	 * @access public
 	 * @since 10/5/05
 	 */
-	function relegateChildren () {				
+	function relegateChildren (&$topImporter) {				
 		foreach ($this->_node->childNodes as $element)
 			foreach ($this->_childImporterList as $importer) {
 				if (!is_subclass_of(new $importer($this->_existingArray),
@@ -304,7 +312,7 @@ class XMLImporter {
 				eval('$result = '.$importer.'::isImportable($element);');
 				if ($result) {
 					$imp =& new $importer($this->_existingArray);
-					$imp->import($element, $this->_type, $this->_object);
+					$imp->import($topImporter, $element, $this->_type, $this->_object);
 					if ($imp->hasErrors())
 						foreach($imp->getErrors() as $error)
 							$this->addError($error);
@@ -355,18 +363,18 @@ class XMLImporter {
 	 * @access public
 	 * @since 9/12/05
 	 */
-	function &buildType (&$element) {
+	function buildType (&$element) {
 		$pieces = $element->childNodes;
 		$type = array();
 		foreach ($pieces as $piece)
 			$type[$piece->nodeName] = $piece->getText();
 		if (isset($type['description']))
-			$this->_info['type'] =& new Type($type['domain'],
+			$this->_info['type'] = new Type($type['domain'],
 				$type['authority'], $type['keyword'], $type['description']);	
 		else 
-			$this->_info['type'] =& new Type($type['domain'],
+			$this->_info['type'] = new Type($type['domain'],
 				$type['authority'], $type['keyword']);
-	}	
+	}
 
 	/**
 	 * Builds a dimensions object from a type import node
@@ -375,7 +383,7 @@ class XMLImporter {
 	 * @access public
 	 * @since 10/10/05
 	 */
-	function &buildDimensions (&$element) {
+	function buildDimensions (&$element) {
 		$pieces = $element->childNodes;
 		$dim = array();
 		foreach ($pieces as $piece)
@@ -508,31 +516,7 @@ class XMLImporter {
 		else
 			$this->_errors[] = $error;
 	}
-
-/*********************************************************
- * STATISTICS HANDLING
- *********************************************************/
-
-	/**
-	 * Gathers the total number of granules for importer status
-	 * 
-	 * @access public
-	 * @since 2/17/06
-	 */
-	function _initializeStatistics () {
-		// @todo collect the number of objects to be imported
-	}
-
-	/**
-	 * Updates the number of granules imported for importer status
-	 * 
-	 * @access public
-	 * @since 2/17/06
-	 */
-	function _updateStatistics () {
-		// @todo update the number of imported items and get a new percentage
-	}
-
+	
 /*********************************************************
  * ASSET ID TRACKING FOR DEVELOPMENT
  *********************************************************/

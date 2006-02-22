@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileDataPartImporter.class.php,v 1.12 2006/02/09 20:16:49 cws-midd Exp $
+ * @version $Id: XMLFileDataPartImporter.class.php,v 1.13 2006/02/22 21:46:40 cws-midd Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileDataPartImporter.class.php,v 1.12 2006/02/09 20:16:49 cws-midd Exp $
+ * @version $Id: XMLFileDataPartImporter.class.php,v 1.13 2006/02/22 21:46:40 cws-midd Exp $
  */
 class XMLFileDataPartImporter extends XMLImporter {
 		
@@ -135,10 +135,11 @@ class XMLFileDataPartImporter extends XMLImporter {
 	/**
 	 * Relegates Children to their classes
 	 * 
+	 * @param object mixed $topImporter is the importer instance that parsed the XML
 	 * @access public
 	 * @since 10/10/05
 	 */
-	function relegateChildren () {
+	function relegateChildren (&$topImporter) {
 	}
 	
 	/**

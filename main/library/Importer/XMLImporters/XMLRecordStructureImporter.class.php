@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.16 2006/02/09 20:16:49 cws-midd Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.17 2006/02/22 21:46:40 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLPartStructureImpo
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.16 2006/02/09 20:16:49 cws-midd Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.17 2006/02/22 21:46:40 cws-midd Exp $
  */
 class XMLRecordStructureImporter extends XMLImporter {
 		
@@ -170,7 +170,7 @@ class XMLRecordStructureImporter extends XMLImporter {
 		foreach ($this->_node->childNodes as $child) {
 			if ($child->nodeName == "partstructure") {
 				$imp->_node =& $child;
-				$imp->_myId =& $this->matchPartStructure($this->_object,
+				$imp->_myId = $this->matchPartStructure($this->_object,
 					$child);
 				$imp->doIdMatrix();
 			}

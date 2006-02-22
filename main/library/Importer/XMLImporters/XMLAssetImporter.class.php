@@ -6,13 +6,14 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.11 2006/02/09 20:16:49 cws-midd Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.12 2006/02/22 21:46:40 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRecordImporter.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLFileRecordImporter.class.php");
 require_once(HARMONI."Primitives/Chronology/DateAndTime.class.php");
+require_once(POLYPHONY."/main/library/Importer/StatusStars.class.php");
 
 /**
  * XMLAssetImporter imports an asset into a repository
@@ -23,7 +24,7 @@ require_once(HARMONI."Primitives/Chronology/DateAndTime.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.11 2006/02/09 20:16:49 cws-midd Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.12 2006/02/22 21:46:40 cws-midd Exp $
  */
 class XMLAssetImporter extends XMLImporter {
 		
@@ -152,10 +153,11 @@ class XMLAssetImporter extends XMLImporter {
 	/**
 	 * Relegates Children to their classes
 	 * 
+	 * @param object mixed $topImporter is the importer instance that parsed the XML
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function relegateChildren () {
+	function relegateChildren (&$topImporter) {
 		foreach ($this->_node->childNodes as $element)
 			foreach ($this->_childImporterList as $importer) {
 				if (!is_subclass_of(new $importer($this->_existingArray), 'XMLImporter')) {
@@ -166,16 +168,18 @@ class XMLAssetImporter extends XMLImporter {
 				if ($result) {
 					$imp =& new $importer($this->_existingArray);
 					if (isset($this->_set) && $element->nodeName == "asset")
-						$this->_set->addItem($imp->import($element,
-							$this->_type, $this->_object));
+						$this->_set->addItem($imp->import($topImporter,
+							$element, $this->_type, $this->_object));
 					else
-						$imp->import($element, $this->_type, $this->_object);
+						$imp->import($topImporter, $element, $this->_type,
+							$this->_object);
 					if ($imp->hasErrors()) 
 						foreach($imp->getErrors() as $error)
 							$this->addError($error);
 					unset($imp);
 				}
 			}
+		$topImporter->_status->updateStatistics();
 	}
 	
 	/**
@@ -200,6 +204,7 @@ class XMLAssetImporter extends XMLImporter {
 // 			$this->_object->updateExpirationDate(DateAndTime::fromString(
 // 				$this->_info['expirationdate']));
 	}
+
 }
 
 ?>
