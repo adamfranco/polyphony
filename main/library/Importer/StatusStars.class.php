@@ -6,11 +6,17 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: StatusStars.class.php,v 1.1 2006/02/22 21:46:26 cws-midd Exp $
+ * @version $Id: StatusStars.class.php,v 1.2 2006/02/24 19:01:41 cws-midd Exp $
  */ 
 
 /**
- * <##>
+ * This lovely little class will print a semi-accurate series of asterisks as a 
+ * status bar for anything you want(written for the importer system).  The idea
+ * is that you give it a total number of objects and a level of detail, then 
+ * make sure that you update statistics when one of your total is done, and it 
+ * will print directly to the end user the status of the process.  Don't forget 
+ * to use a javascript re-direct at the end of your process, otherwise you'll 
+ * have header problems.
  * 
  * @since 2/22/06
  * @package polyphony.library.importer.status
@@ -18,7 +24,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: StatusStars.class.php,v 1.1 2006/02/22 21:46:26 cws-midd Exp $
+ * @version $Id: StatusStars.class.php,v 1.2 2006/02/24 19:01:41 cws-midd Exp $
  */
 class StatusStars {
 		
@@ -78,7 +84,7 @@ class StatusStars {
 		$stars = $pct - $this->_currentPercent;
 		$this->_currentPercent = $pct;
 		$end = false;
-		if ($pct == 100)
+		if ($pct == $this->_detail)
 			$end = true;
 		if ($stars > 0)
 			$this->_updateStatusBar($stars, $end);
@@ -100,7 +106,7 @@ class StatusStars {
 		print "50";
 		$this->_addSpaces(1);
 		print "75";
-		$this->_addSpaces(1);
+		$this->_addSpaces(2);
 		print "100%\n";
 		print "|";
 		$this->_addDashes();
@@ -111,7 +117,7 @@ class StatusStars {
 		print "|";
 		$this->_addDashes();
 		print "|\n";
-		print "*";
+//		print "*";
 		
 		$this->_land_obs();
 	}
@@ -124,7 +130,7 @@ class StatusStars {
 	 * @since 2/22/06
 	 */
 	function _addSpaces ($mod = 0) {
-		for ($count = ($this->_detail / 4) - 1 - $mod; $count > 0; $count--) {
+		for ($count = floor((($this->_detail - 4) / 4) - $mod); $count > 0; $count--) {
 			print " ";
 		}
 	}
@@ -136,7 +142,7 @@ class StatusStars {
 	 * @since 2/22/06
 	 */
 	function _addDashes () {
-		for ($count = ($this->_detail / 4) - 1; $count > 0; $count--) {
+		for ($count = floor((($this->_detail - 4) / 4)); $count > 0; $count--) {
 			print "-";
 		}
 	}
@@ -152,10 +158,8 @@ class StatusStars {
 	function _updateStatusBar ($stars, $end) {
 		$this->_jump_obs();
 		
-		while ($stars > 0) {
+		for (; $stars > 0; $stars--)
 			print "*";
-			$stars--;
-		}
 		flush();
 		if ($end)
 			print "</pre>";

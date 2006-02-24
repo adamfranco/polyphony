@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.19 2006/02/22 21:46:40 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.20 2006/02/24 19:01:42 cws-midd Exp $
  *
  * @author Christopher W. Shubert
  */ 
@@ -27,7 +27,7 @@ require_once(POLYPHONY."/main/library/Importer/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.19 2006/02/22 21:46:40 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.20 2006/02/24 19:01:42 cws-midd Exp $
  */
 class XMLImporter {
 
@@ -71,7 +71,6 @@ class XMLImporter {
 		eval('$importer =& new '.$class.'($existingArray);');
 		$importer->_xmlFile = $filepath;
 		$importer->_type = $type;
-		$importer->setupSelf();
 
 		return $importer;
 	}
@@ -97,6 +96,7 @@ class XMLImporter {
 		}
 		eval('$importer =& '.$class.'::withFile($existingArray, $filepath, $type, $class);');
 
+		// this object is already existant; the imported objects will go under
 		$importer->_object =& $object;
 		$importer->_myId =& $importer->_object->getId();
 		
@@ -113,8 +113,8 @@ class XMLImporter {
 	 */
 	function setupSelf () {
 		$this->_childImporterList = array("XMLRepositoryImporter", "XMLRepositoryFileImporter");/*, "XMLSetImporter", "XMLHierarchyImporter", "XMLGroupImporter", "XMLAgentImporter");*/
-		$this->_childElementList = array("repository", "repositoryfile", "set", "hierarchy", 
-			"group", "agent");
+		$this->_childElementList = array("repository", "repositoryfile", "set",
+			"hierarchy", "group", "agent");
 		$this->_info = array();	// stores information about importing element
 
 	}
@@ -133,23 +133,32 @@ class XMLImporter {
 	 */
 	function parseAndImportBelow () {
 		$this->_import =& new DOMIT_Document();
+		// attempt to load (parse) the xml file
 		if ($this->_import->loadXML($this->_xmlFile)) {
+			// xmlPath is used for finding files tared up with the import
 			$this->_import->xmlPath = dirname($this->_xmlFile)."/";
+			// check the xml structure against what is expected
+			$this->_checkXMLStructure();
 			if (!($this->_import->documentElement->hasChildNodes()))
 				$this->addError("There are no Importables in this file");
 			else {
+				// the parsing importer is responsible for the docElement
 				$this->_node =& $this->_import->documentElement;
+// here we set up the status bar for long imports
 				$this->_status =& new StatusStars();
 				$nodes =& $this->_import->documentElement->getElementsByTagName(
 					"asset");
 				$this->_status->initializeStatistics($nodes->getLength(), 50);
+// done with the status bar
 				if (isset($this->_myId))
 					$this->importBelow($this, $this->_myId->getIdString());
 				else
-					$this->importBelow($this, "edu.middlebury.authorization.root");
+					$this->importBelow($this, 
+						"edu.middlebury.authorization.root");
 			}
 		}
 		else {
+			// any errors encountered by DOMIT in parsing handled here
 			$this->addError("DOMIT error: ".$this->_import->getErrorCode().
 			"<br/>\t meaning: ".$this->_import->getErrorString()."<br/>");
 		}
@@ -163,25 +172,33 @@ class XMLImporter {
 	 */
 	function parseAndImport () {
 		$this->_import =& new DOMIT_Document();
+		// attempt to load (parse) XML file
 		if ($this->_import->loadXML($this->_xmlFile)) {
+			// path for finding files associated with import
 			$this->_import->xmlPath = dirname($this->_xmlFile)."/";
+			// check the xml structure against what is expected
+			$this->_checkXMLStructure();
 			if (!($this->_import->documentElement->hasChildNodes()))
 				$this->addError("There are no Importables in this file");
 			else {
+				// the parsing importer is responsible for the docElement
 				$this->_node =& $this->_import->documentElement;
+// here we set up the status bar for long imports
 				$this->_status =& new StatusStars();
 				$nodes =& $this->_import->documentElement->getElementsByTagName(
 					"asset");
 				$this->_status->initializeStatistics($nodes->getLength(), 50);
+// done with the status bar
 				$null = null;
 				$this->import($this, $this->_node, $this->_type, $null);
 			}
 		}
 		else {
+			// any errors encountered by DOMIT in parsing handled here
 			$this->addError("DOMIT error: ".$this->_import->getErrorCode().
 			"<br/>\t meaning: ".$this->_import->getErrorString()."<br/>");
 		}
-	}	
+	}
 	
 	/**
 	 * Starts an import below the qualifier passed
@@ -195,15 +212,16 @@ class XMLImporter {
 	function importBelow (&$topImporter, $authZQString = null) {
 		if (!$this->canImportBelow($authZQString))
 			return;
+		// some importables need to map ids
 		if (isset($this->_myId)) {
 			$this->doIdMatrix();
 		}
+		// send the child elements (XML) to the appropriate importers
 		$this->relegateChildren($topImporter);
-
+		// done with id mapping
 		$this->dropIdMatrix();
 		
 		if (isset($this->_myId)) {
-//			$this->printErrorMessages();
 			return $this->_myId;
 		}
 	}
@@ -242,12 +260,12 @@ class XMLImporter {
 	 * @since 10/5/05
 	 */
 	function import (&$topImporter, &$node, $type, &$parent) {
-		$this->_node =& $node;
-		$this->_type = $type;
-		$this->_parent =& $parent;
+		$this->_node =& $node;	// xml element representing datastructure
+		$this->_type = $type;	// type of import (currently unimportant)
+		$this->_parent =& $parent;	// xml element parent
 
 		$bottom = $this->importNode(); // bottom says do not import below me
-		unset($this->_info);
+		unset($this->_info);	// don't need anymore
 		if ($bottom === true)
 			return;
 		if (isset($this->_myId)) {
@@ -289,7 +307,7 @@ class XMLImporter {
 	}
 	
 	/**
-	 * Relegates Children to their classes
+	 * Relegates child XML elements to their importer classes
 	 *
 	 * By matching the xml elements with their importers the importer hierachy
 	 * is able to import each element with much customization (detail) making it
@@ -313,6 +331,7 @@ class XMLImporter {
 				if ($result) {
 					$imp =& new $importer($this->_existingArray);
 					$imp->import($topImporter, $element, $this->_type, $this->_object);
+					// used for bubbling errors to the top...
 					if ($imp->hasErrors())
 						foreach($imp->getErrors() as $error)
 							$this->addError($error);
@@ -466,6 +485,20 @@ class XMLImporter {
 /*********************************************************
  * ERROR HANDLING FOR THE IMPORTERS
  *********************************************************/
+
+	/**
+	 * This function determines the structure wanted and makes sure it is so
+	 * 
+	 * @access public
+	 * @since 2/23/06
+	 */
+	function checkXMLStructure () {
+		//@todo based on the class of the importer determine what xml elements
+		// need to be at the top level of the xml file in order for it to work
+		// with the import... note this may involve knowing more about which
+		// action you are in than you think.
+	}
+
 
 	/**
 	 * Print the AssetIds for Assets created properly by the importer
