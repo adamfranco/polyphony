@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLThumbpathPartImporter.class.php,v 1.8 2005/11/03 21:13:15 cws-midd Exp $
+ * @version $Id: XMLThumbpathPartImporter.class.php,v 1.9 2006/02/27 19:23:09 cws-midd Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLThumbpathPartImporter.class.php,v 1.8 2005/11/03 21:13:15 cws-midd Exp $
+ * @version $Id: XMLThumbpathPartImporter.class.php,v 1.9 2006/02/27 19:23:09 cws-midd Exp $
  */
 class XMLThumbpathPartImporter extends XMLImporter {
 		
@@ -121,11 +121,11 @@ class XMLThumbpathPartImporter extends XMLImporter {
 	/**
 	 * Relegates Children to their classes
 	 * 
+	 * @param object mixed $topImporter will be passed down
 	 * @access public
-	 * @since 9/12/05
+	 * @since 10/10/05
 	 */
-	function relegateChildren () {
-		/* there should be no child nodes of this element */
+	function relegateChildren (&$topImporter) {
 	}
 }
 

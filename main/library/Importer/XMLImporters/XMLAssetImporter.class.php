@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.12 2006/02/22 21:46:40 cws-midd Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.13 2006/02/27 19:23:09 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/Importer/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.12 2006/02/22 21:46:40 cws-midd Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.13 2006/02/27 19:23:09 cws-midd Exp $
  */
 class XMLAssetImporter extends XMLImporter {
 		
@@ -158,7 +158,7 @@ class XMLAssetImporter extends XMLImporter {
 	 * @since 10/6/05
 	 */
 	function relegateChildren (&$topImporter) {
-		foreach ($this->_node->childNodes as $element)
+		foreach ($this->_node->childNodes as $element) {
 			foreach ($this->_childImporterList as $importer) {
 				if (!is_subclass_of(new $importer($this->_existingArray), 'XMLImporter')) {
 					$this->addError("Class, '$class', is not a subclass of 'XMLImporter'.");
@@ -179,7 +179,9 @@ class XMLAssetImporter extends XMLImporter {
 					unset($imp);
 				}
 			}
-		$topImporter->_status->updateStatistics();
+			if ($topImporter->_granule == $element->nodeName)
+				$topImporter->_status->updateStatistics();
+		}
 	}
 	
 	/**

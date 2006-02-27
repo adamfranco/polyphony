@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordImporter.class.php,v 1.10 2006/02/22 21:46:40 cws-midd Exp $
+ * @version $Id: XMLFileRecordImporter.class.php,v 1.11 2006/02/27 19:23:09 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -28,7 +28,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLFilepathPartImpor
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordImporter.class.php,v 1.10 2006/02/22 21:46:40 cws-midd Exp $
+ * @version $Id: XMLFileRecordImporter.class.php,v 1.11 2006/02/27 19:23:09 cws-midd Exp $
  */
 class XMLFileRecordImporter extends XMLImporter {
 		
@@ -153,6 +153,8 @@ class XMLFileRecordImporter extends XMLImporter {
 					unset($imp);
 				}
 			}
+		if ($topImporter->_granule == $element->nodeName)
+			$topImporter->_status->updateStatistics();
 		}
 		if ($filepath && !$thumbpath) {
 			$elements =& $this->_node->getElementsByTagName("filepathpart");

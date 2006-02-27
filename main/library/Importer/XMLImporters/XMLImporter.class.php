@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.20 2006/02/24 19:01:42 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.21 2006/02/27 19:23:09 cws-midd Exp $
  *
  * @author Christopher W. Shubert
  */ 
@@ -27,7 +27,7 @@ require_once(POLYPHONY."/main/library/Importer/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.20 2006/02/24 19:01:42 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.21 2006/02/27 19:23:09 cws-midd Exp $
  */
 class XMLImporter {
 
@@ -128,29 +128,26 @@ class XMLImporter {
 	 *
 	 * This is used to import data underneath an object that already exists
 	 * in the system.
+	 * @param string $granule the xml element to count for status
+	 * @param int $detail the number of divisions for status
 	 * @access public
 	 * @since 10/5/05
 	 */
-	function parseAndImportBelow () {
+	function parseAndImportBelow ($granule, $detail = 50) {
 		$this->_import =& new DOMIT_Document();
 		// attempt to load (parse) the xml file
 		if ($this->_import->loadXML($this->_xmlFile)) {
 			// xmlPath is used for finding files tared up with the import
 			$this->_import->xmlPath = dirname($this->_xmlFile)."/";
-			// check the xml structure against what is expected
+			// @todo check the xml structure against what is expected
 			$this->_checkXMLStructure();
 			if (!($this->_import->documentElement->hasChildNodes()))
 				$this->addError("There are no Importables in this file");
 			else {
 				// the parsing importer is responsible for the docElement
 				$this->_node =& $this->_import->documentElement;
-// here we set up the status bar for long imports
-				$this->_status =& new StatusStars();
-				$nodes =& $this->_import->documentElement->getElementsByTagName(
-					"asset");
-				$this->_status->initializeStatistics($nodes->getLength(), 50);
-// done with the status bar
-				if (isset($this->_myId))
+	 			$this->setupStatusBar($granule, $detail);
+	 			if (isset($this->_myId))
 					$this->importBelow($this, $this->_myId->getIdString());
 				else
 					$this->importBelow($this, 
@@ -167,28 +164,25 @@ class XMLImporter {
 	/**
 	 * Creates the DOMIT Document and Imports the data including the top target
 	 *
+	 * @param string $granule the xml element to count for status
+	 * @param int $detail the number of divisions for status
 	 * @access public
 	 * @since 10/5/05
 	 */
-	function parseAndImport () {
+	function parseAndImport ($granule, $detail = 50) {
 		$this->_import =& new DOMIT_Document();
 		// attempt to load (parse) XML file
 		if ($this->_import->loadXML($this->_xmlFile)) {
 			// path for finding files associated with import
 			$this->_import->xmlPath = dirname($this->_xmlFile)."/";
-			// check the xml structure against what is expected
+			// @todo check the xml structure against what is expected
 			$this->_checkXMLStructure();
 			if (!($this->_import->documentElement->hasChildNodes()))
 				$this->addError("There are no Importables in this file");
 			else {
 				// the parsing importer is responsible for the docElement
 				$this->_node =& $this->_import->documentElement;
-// here we set up the status bar for long imports
-				$this->_status =& new StatusStars();
-				$nodes =& $this->_import->documentElement->getElementsByTagName(
-					"asset");
-				$this->_status->initializeStatistics($nodes->getLength(), 50);
-// done with the status bar
+				$this->setupStatusBar($granule, $detail);
 				$null = null;
 				$this->import($this, $this->_node, $this->_type, $null);
 			}
@@ -320,7 +314,7 @@ class XMLImporter {
 	 * @since 10/5/05
 	 */
 	function relegateChildren (&$topImporter) {				
-		foreach ($this->_node->childNodes as $element)
+		foreach ($this->_node->childNodes as $element) {
 			foreach ($this->_childImporterList as $importer) {
 				if (!is_subclass_of(new $importer($this->_existingArray),
 						'XMLImporter')) {
@@ -338,6 +332,9 @@ class XMLImporter {
 					unset($imp);
 				}
 			}
+			if ($topImporter->_granule == $element->nodeName)
+				$topImporter->_status->updateStatistics();
+		}
 	}
 	
 	/**
@@ -492,7 +489,7 @@ class XMLImporter {
 	 * @access public
 	 * @since 2/23/06
 	 */
-	function checkXMLStructure () {
+	function _checkXMLStructure () {
 		//@todo based on the class of the importer determine what xml elements
 		// need to be at the top level of the xml file in order for it to work
 		// with the import... note this may involve knowing more about which
@@ -550,6 +547,27 @@ class XMLImporter {
 			$this->_errors[] = $error;
 	}
 	
+/*********************************************************
+ * STATUS BAR UTILITY
+ *********************************************************/
+
+	/**
+	 * Sets up the status bar with appropriate granule
+	 * 
+	 * @param string $granule the xml element for status bar granule
+	 * @param int $detail the number of divisions for the status bar
+	 * @access public
+	 * @since 2/27/06
+	 */
+	function setupStatusBar ($granule, $detail) {
+		// @todo allow for array parameter so that multiple granules are used!
+		$this->_granule = $granule;
+		$this->_status = new StatusStars();
+		$nodes =& $this->_import->documentElement->getElementsByTagName(
+			$granule);
+		$this->_status->initializeStatistics($nodes->getLength(), $detail);
+	}
+
 /*********************************************************
  * ASSET ID TRACKING FOR DEVELOPMENT
  *********************************************************/
