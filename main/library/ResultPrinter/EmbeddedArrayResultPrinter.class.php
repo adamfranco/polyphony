@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.6 2005/12/07 21:59:16 adamfranco Exp $
+ * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.7 2006/02/27 19:50:24 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -18,7 +18,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.6 2005/12/07 21:59:16 adamfranco Exp $
+ * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.7 2006/02/27 19:50:24 adamfranco Exp $
  */
 
 class EmbeddedArrayResultPrinter 
@@ -63,7 +63,7 @@ class EmbeddedArrayResultPrinter
 		$this->_callbackFunction =& $callbackFunction;
 
 		$this->_callbackParams = array();
-		$args =& func_get_args();
+		$args = func_get_args();
 		for ($i=4; $i<count($args); $i++) {
 			$this->_callbackParams[] =& $args[$i];
 		}
@@ -208,7 +208,7 @@ class EmbeddedArrayResultPrinter
 
 			// trash the items before our starting number
 			while ($numItems+1 < $startingNumber && $numItems < count($this->_array)) {
-				$item =& current($this->_array);
+				$item =& $this->_array[key($this->_array)];
 				next($this->_array);
 
 				// Ignore this if it should be filtered.
@@ -220,7 +220,7 @@ class EmbeddedArrayResultPrinter
 			// print up to $this->_pageSize items
 			$pageItems = 0;
 			while ($numItems < $endingNumber && $numItems < count($this->_array)) {
-				$item =& current($this->_array);
+				$item =& $this->_array[key($this->_array)];
 				next($this->_array);
 
 				// Only Act if this item isn't to be filtered.
@@ -260,7 +260,7 @@ class EmbeddedArrayResultPrinter
 			
 			// find the count of items 
 			while (true) {
-				$item =& current($this->_array);
+				$item =& $this->_array[key($this->_array)];
 				if (!$item) break;
 				next($this->_array);
 				// Ignore this if it should be filtered.
