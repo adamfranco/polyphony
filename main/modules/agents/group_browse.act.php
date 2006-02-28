@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_browse.act.php,v 1.6 2005/11/29 22:05:35 adamfranco Exp $
+ * @version $Id: group_browse.act.php,v 1.7 2006/02/28 19:00:38 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_browse.act.php,v 1.6 2005/11/29 22:05:35 adamfranco Exp $
+ * @version $Id: group_browse.act.php,v 1.7 2006/02/28 19:00:38 adamfranco Exp $
  */
 class group_browseAction 
 	extends MainWindowAction
@@ -251,9 +251,9 @@ END;
 		print "\n&nbsp; &nbsp; &nbsp;";
 		
 		print "\n<a title='".htmlspecialchars($groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()." - ".$groupType->getDescription())."'>";
-		print "\n<span style='text-decoration: underline; font-weight: bold;'>".$id->getIdString()." - ".htmlspecialchars($group->getDisplayName())."</span></a>";
+		print "\n<span style='text-decoration: underline; font-weight: bold;'>".htmlspecialchars($group->getDisplayName())."</span></a>";
 		
-		
+		print "\n - <a href=\"Javascript:alert('"._("Id:").'\n\t'.addslashes($id->getIdString())."')\">"._("Show Id")."</a>";
 		print "\n - <em>".htmlspecialchars($group->getDescription())."</em>";
 		
 		// print out the properties of the Agent
@@ -295,7 +295,8 @@ END;
 		$harmoni->history->markReturnURL("polyphony/agents/edit_agent_details");
 		
 		print "\n<a href='".$harmoni->request->quickURL("agents","edit_agent_details", array("agentId"=>$id->getIdString()))."' title='".htmlspecialchars($memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription())."'>";
-		print "\n<span style='text-decoration: none;'>".$id->getIdString()." - ".htmlspecialchars($member->getDisplayName())."</span></a>";
+		print "\n<span style='text-decoration: none;'>".htmlspecialchars($member->getDisplayName())."</span></a>";
+		print "\n - <a href=\"Javascript:alert('"._("Id:").'\n\t'.addslashes($id->getIdString())."')\">"._("Show Id")."</a>";
 		
 		// print out the properties of the Agent
 		print "\n<em>";
@@ -306,7 +307,7 @@ END;
 			$properties =& $propertiesIterator->next();
 			
 			$propertiesType =& $properties->getType();
-			print "\n\t(<a title='".htmlspecialchars($propertiesType->getDomain()." :: ".$propertiesType->getAuthority()." :: ".$propertiesType->getKeyword()." - ".$propertiesType->getDescription())."'>";
+			print "\n\t(<a style='text-decoration: none; font-weight: normal;' title='".htmlspecialchars($propertiesType->getDomain()." :: ".$propertiesType->getAuthority()." :: ".$propertiesType->getKeyword()." - ".$propertiesType->getDescription())."'>";
 			
 			$keys =& $properties->getKeys();
 			$i = 0;

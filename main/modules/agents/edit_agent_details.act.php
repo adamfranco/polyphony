@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.14 2005/10/24 20:51:13 cws-midd Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.15 2006/02/28 19:00:38 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.14 2005/10/24 20:51:13 cws-midd Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.15 2006/02/28 19:00:38 adamfranco Exp $
  */
 class edit_agent_detailsAction 
 	extends MainWindowAction
@@ -193,6 +193,23 @@ class edit_agent_detailsAction
 		print "'>Edit authorizations</a></li>
 				<li><a href='".$url->write("furtherAction","edit_agent_detailsAction::confirmClearProperties")."'>Clear properties</a></li>
 				<li><a href='".$url->write("furtherAction","edit_agent_detailsAction::confirmDeleteAgent")."'>Delete agent</a></li>
+				</ul>";
+		
+		// Groups
+		print "<h3>Groups</h3>
+				<ul>";
+		$agentManager =& Services::getService("Agent");
+		$groups =& $agentManager->getGroupsBySearch($agentId, 
+					new Type(	"Agent & Group Search", 
+								"edu.middlebury.harmoni",
+								"AncestorGroups"));
+		while ($groups->hasNext()) {
+			$group =& $groups->next();
+			$groupId =& $group->getId();
+			print "\n\t<li title=\"".addslashes($groupId->getIdString())."\">".$group->getDisplayName()."</li>";
+		}
+		
+		print "
 				</ul>";
 		return;
 	}
