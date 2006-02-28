@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_browse.act.php,v 1.7 2006/02/28 19:00:38 adamfranco Exp $
+ * @version $Id: group_browse.act.php,v 1.8 2006/02/28 21:32:49 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_browse.act.php,v 1.7 2006/02/28 19:00:38 adamfranco Exp $
+ * @version $Id: group_browse.act.php,v 1.8 2006/02/28 21:32:49 adamfranco Exp $
  */
 class group_browseAction 
 	extends MainWindowAction
@@ -184,40 +184,24 @@ END;
  		$pageRows->add(new Heading(_("Groups"), 2), "100%", null, LEFT, CENTER);
 
 		
-		// Loop through all of the Groups and figure out which ones are childen of
-		// other groups, so that we can just display the root-groups
+		// Loop through all of the Root Groups
 		$childGroupIds = array();
-		$groups =& $agentManager->getGroups();
-		while ($groups->hasNext()) {
-			$group =& $groups->next();
-			if (!$everyoneId->isEqual($group->getId()) && !$usersId->isEqual($group->getId())) {
-				$childGroups =& $group->getGroups(FALSE);
-				while ($childGroups->hasNext()) {
-					$group =& $childGroups->next();
-					$groupId =& $group->getId();
-					$childGroupIds[] = $groupId->getIdString();
-				}
-			}
-		}
-		
-		$groups =& $agentManager->getGroups();
+		$groups =& $agentManager->getGroupsBySearch($null = null, new Type("Agent & Group Search", "edu.middlebury.harmoni", "RootGroups"));
+
 		while ($groups->hasNext()) {
 			$group =& $groups->next();
 			$groupId =& $group->getId();
+							
+			// Create a layout for this group using the GroupPrinter
+			ob_start();
 			
-			if (!in_array($groupId->getIdString(), $childGroupIds)) {
-				
-				// Create a layout for this group using the GroupPrinter
-				ob_start();
-				
-				GroupPrinter::printGroup($group, $harmoni,
-												2,
-												"group_browseAction::printGroup", 
-												"group_browseAction::printMember");
-				$groupLayout =& new Block(ob_get_contents(), STANDARD_BLOCK);
-				ob_end_clean();
-				$pageRows->add($groupLayout, "100%", null, LEFT, CENTER);	
-			}
+			GroupPrinter::printGroup($group, $harmoni,
+											2,
+											"group_browseAction::printGroup", 
+											"group_browseAction::printMember");
+			$groupLayout =& new Block(ob_get_contents(), STANDARD_BLOCK);
+			ob_end_clean();
+			$pageRows->add($groupLayout, "100%", null, LEFT, CENTER);	
 		}
 		
 		// In order to preserve proper nesting on the HTML output, the checkboxes

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.38 2006/02/28 18:57:10 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.39 2006/02/28 21:32:49 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.38 2006/02/28 18:57:10 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.39 2006/02/28 21:32:49 adamfranco Exp $
  */
 class choose_agentAction 
 	extends MainWindowAction
@@ -247,40 +247,25 @@ END;
 		// Users header
 		$pageRows->add(new Heading(_("Groups"), 2), "100%", null, LEFT, CENTER);
 		
-		// Loop through all of the Groups and figure out which ones are childen of
-		// other groups, so that we can just display the root-groups
+		// Loop through all of the Groups
 		$childGroupIds = array();
-		$groups =& $agentManager->getGroups();
-		while ($groups->hasNext()) {
-			$group =& $groups->next();
-			if (!$everyoneId->isEqual($group->getId()) && !$usersId->isEqual($group->getId())) {
-				$childGroups =& $group->getGroups(FALSE);
-				while ($childGroups->hasNext()) {
-					$group =& $childGroups->next();
-					$groupId =& $group->getId();
-					$childGroupIds[] = $groupId->getIdString();
-				}
-			}
-		}
-		
-		// Get all the groups first.
-		$groups =& $agentManager->getGroups();  // Groups ARE agents
+		$groups =& $agentManager->getGroupsBySearch($null = null, new Type("Agent & Group Search", "edu.middlebury.harmoni", "RootGroups"));
+
 		while ($groups->hasNext()) {
 			$group =& $groups->next();
 			$groupId =& $group->getId();
 			
-			if (!in_array($groupId->getIdString(), $childGroupIds)) {
 			
-				// Create a layout for this group using the GroupPrinter
-				ob_start();
-				GroupPrinter::printGroup($group, $harmoni,
-												2,
-												"choose_agentAction::printGroup", 
-												"choose_agentAction::printMember");
-				$groupLayout =& new Block(ob_get_contents(), STANDARD_BLOCK);
-				ob_end_clean();
-				$pageRows->add($groupLayout, "100%", null, LEFT, CENTER);	
-			}
+			// Create a layout for this group using the GroupPrinter
+			ob_start();
+			GroupPrinter::printGroup($group, $harmoni,
+											2,
+											"choose_agentAction::printGroup", 
+											"choose_agentAction::printMember");
+			$groupLayout =& new Block(ob_get_contents(), STANDARD_BLOCK);
+			ob_end_clean();
+			$pageRows->add($groupLayout, "100%", null, LEFT, CENTER);	
+		
 		}
 		$pageRows->add($submit, "100%", null, LEFT, CENTER);
 		

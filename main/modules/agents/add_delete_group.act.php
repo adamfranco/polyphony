@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add_delete_group.act.php,v 1.12 2005/08/10 21:20:17 gabeschine Exp $
+ * @version $Id: add_delete_group.act.php,v 1.13 2006/02/28 21:32:49 adamfranco Exp $
  */
 
 require_once(HARMONI."/GUIManager/Layouts/YLayout.class.php");
@@ -29,7 +29,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add_delete_group.act.php,v 1.12 2005/08/10 21:20:17 gabeschine Exp $
+ * @version $Id: add_delete_group.act.php,v 1.13 2006/02/28 21:32:49 adamfranco Exp $
  */
 class add_delete_groupAction 
 	extends MainWindowAction
@@ -104,39 +104,22 @@ class add_delete_groupAction
 		$actionRows->add(new Block(ob_get_contents(), 4));
 		ob_end_clean();
 
-		// Loop through all of the Groups and figure out which ones are childen of
-		// other groups, so that we can just display the root-groups
-		$childGroupIds = array();
-		$groups =& $agentManager->getGroups();
-		while ($groups->hasNext()) {
-			$group =& $groups->next();
-			$childGroups =& $group->getGroups(FALSE);
-			while ($childGroups->hasNext()) {
-				$group =& $childGroups->next();
-				$groupId =& $group->getId();
-				$childGroupIds[] =& $groupId->getIdString();
-			}
-		}
-
-		// Get all the groups first.
-		$groups =& $agentManager->getGroups();
+		// Loop through all of the Root Groups 
+		$groups =& $agentManager->getGroupsBySearch($null = null, new Type("Agent & Group Search", "edu.middlebury.harmoni", "RootGroups"));
 		while ($groups->hasNext()) {
 			$group =& $groups->next();
 			$groupId =& $group->getId();
+			
+			// Create a layout for this group using the GroupPrinter
+			ob_start();
 
-			if (!in_array($groupId->getIdString(), $childGroupIds)) {
-
-				// Create a layout for this group using the GroupPrinter
-				ob_start();
-
-				GroupPrinter::printGroup($group, $harmoni,
-												2,
-												"add_delete_groupAction::printGroup",
-												"add_delete_groupAction::printMember");
-				$groupLayout =& new Block(ob_get_contents(), 4);
-				ob_end_clean();
-				$actionRows->add($groupLayout, "100%", null, LEFT, CENTER);
-			}
+			GroupPrinter::printGroup($group, $harmoni,
+											2,
+											"add_delete_groupAction::printGroup",
+											"add_delete_groupAction::printMember");
+			$groupLayout =& new Block(ob_get_contents(), 4);
+			ob_end_clean();
+			$actionRows->add($groupLayout, "100%", null, LEFT, CENTER);
 		}
 
 		$harmoni->request->endNamespace();
