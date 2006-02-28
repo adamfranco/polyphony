@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.36 2005/12/12 16:33:05 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.37 2006/02/28 18:32:12 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.36 2005/12/12 16:33:05 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.37 2006/02/28 18:32:12 adamfranco Exp $
  */
 class choose_agentAction 
 	extends MainWindowAction
@@ -258,7 +258,7 @@ END;
 				while ($childGroups->hasNext()) {
 					$group =& $childGroups->next();
 					$groupId =& $group->getId();
-					$childGroupIds[] =& $groupId->getIdString();
+					$childGroupIds[] = $groupId->getIdString();
 				}
 			}
 		}
