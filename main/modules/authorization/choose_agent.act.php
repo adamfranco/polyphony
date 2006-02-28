@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.37 2006/02/28 18:32:12 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.38 2006/02/28 18:57:10 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.37 2006/02/28 18:32:12 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.38 2006/02/28 18:57:10 adamfranco Exp $
  */
 class choose_agentAction 
 	extends MainWindowAction
@@ -309,8 +309,8 @@ END;
 		$id =& $group->getId();
 		$groupType =& $group->getType();
 		print "<input type='radio' id='agentId' name='".RequestContext::name("agentId")."' value='".$id->getIdString()."' />";
-		print "<a title='".$groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()."'>";
-		print "<span style='text-decoration: underline; font-weight: bold;'>".$id->getIdString()." - ".$group->getDisplayName()."</span></a>";	
+		print "<a title='".$id->getIdString()."'>";
+		print "<span style='text-decoration: underline; font-weight: bold;'>".$group->getDisplayName()."</span></a>";	
 		print " - <em>".$groupType->getDescription()."</em>";
 	}
 	
@@ -341,8 +341,8 @@ END;
 		$id =& $member->getId();
 		$memberType =& $member->getType();
 		print "<input type='radio' id='agentId' name='".RequestContext::name("agentId")."' value='".$id->getIdString()."' />";
-		print "<a title='".$memberType->getAuthority()." :: ".$memberType->getDomain()." :: ".$memberType->getKeyword()."' href='$link'>";
-		print "<span style='text-decoration: underline;'>".$id->getIdString()." - ".$member->getDisplayName()."</span></a>";
+		print "<a title='".$id->getIdString()."' href='$link'>";
+		print "<span style='text-decoration: underline;'>".$member->getDisplayName()."</span></a>";
 		print " - <em>".$memberType->getDescription()."</em>";		
 		
 // 		$harmoni->request->endNamespace();
