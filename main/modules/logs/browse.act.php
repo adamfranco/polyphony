@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.1 2006/03/03 17:20:17 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.2 2006/03/06 19:18:49 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.1 2006/03/03 17:20:17 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.2 2006/03/06 19:18:49 adamfranco Exp $
  */
 class browseAction 
 	extends MainWindowAction
@@ -113,7 +113,7 @@ class browseAction
 			if (!isset($currentLogName))
 				$currentLogName = $logName;
 			
-			if ($logName == $currentLogName) {
+			if ($logName != $currentLogName) {
 				print "\n<a href='";
 				print $harmoni->request->quickURL("logs", "browse",
 						array(	"log" => $logName));
@@ -163,12 +163,27 @@ class browseAction
 		// Entries
 		print<<<END
 
+<script type='text/javascript'>
+	/* <![CDATA[ */
+
+	function showTrace(buttonElement) {
+		newWindow = window.open("", "traceWindow", 'toolbar=no,width=600,height=500,resizable=yes,scrollbars=yes,status=no')
+		// the next sibling is text, the one after that is our hidden div
+		newWindow.document.write(buttonElement.nextSibling.nextSibling.innerHTML)
+		newWindow.document.bgColor="lightpink"
+		newWindow.document.close() 
+	}
+
+	/* ]]> */
+</script>
+
 <table border='1'>
 <tr>
 	<th></th>
 	<th>timestamp</th>
 	<th>priority</th>
 	<th>description</th>
+	<th>trace</th>
 	<th>agents</th>
 	<th>nodes</th>
 </tr>
@@ -188,11 +203,18 @@ END;
 			print "\n\t\t<td>".$timestamp->asString()."</td>";
 			
 			$priority =& $entry->getPriorityType();
-			print "\n\t\t<td>".Type::typeToString($priority)."</td>";
+			print "\n\t\t<td>".$priority->getKeyword()."</td>";
 			
 			$item =& $entry->getItem();
 			
 			print "\n\t\t<td>".$item->getDescription()."</td>";
+			
+			print "\n\t\t<td>";
+			if ($trace = $item->getBacktrace()) {
+				print "\n\t\t\t<input type='button' value='"._("Show Trace")."' onclick='showTrace(this)'/>";
+				print "\n\t\t\t<div style='display: none'>".$trace."</div>";
+			}
+			print "</td>";
 			
 			print "\n\t\t<td>";
 			$agentIds =& $item->getAgentIds(true);
