@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.2 2006/03/06 19:18:49 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.3 2006/03/07 15:32:31 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.2 2006/03/06 19:18:49 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.3 2006/03/07 15:32:31 adamfranco Exp $
  */
 class browseAction 
 	extends MainWindowAction
@@ -229,10 +229,15 @@ END;
 			print "\n\t\t<td>";
 			$nodeIds =& $item->getNodeIds(true);
 			while ($nodeIds->hasNext()) {
-				$node =& $hierarchyManager->getNode($nodeIds->next());
-				print $node->getDisplayName();
+				$nodeId =& $nodeIds->next();
+				if ($hierarchyManager->nodeExists($nodeId)) {
+					$node =& $hierarchyManager->getNode($nodeId);
+					print $node->getDisplayName();
+				} else {
+					print $nodeId->getIdString();
+				}
 				if ($nodeIds->hasNext())
-					print ", ";
+					print ", <br/>";
 			}
 			print "\n\t\t</td>";
 			
