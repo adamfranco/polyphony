@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.4 2006/03/07 18:02:14 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.5 2006/03/07 19:27:15 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.4 2006/03/07 18:02:14 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.5 2006/03/07 19:27:15 adamfranco Exp $
  */
 class browseAction 
 	extends MainWindowAction
@@ -97,7 +97,6 @@ class browseAction
 						"A format in which the acting Agent[s] and the target nodes affected are specified.");
 		$priorityType =& new Type("logging", "edu.middlebury", "normal",
 						"An action which involves reading.");
-// 		$log->appendLogWithTypes(new AgentNodeEntryItem("View Logs"), $formatType, $priorityType);
 		
 		
 		// Links to other logs
@@ -181,7 +180,7 @@ class browseAction
 	<tr>
 		<th></th>
 		<th>timestamp</th>
-		<th>priority</th>
+		<th>category</th>
 		<th>description</th>
 		<th>trace</th>
 		<th>agents</th>
@@ -202,10 +201,9 @@ END;
 				$timestamp =& $entry->getTimestamp();
 				print "\n\t\t<td>".$timestamp->asString()."</td>";
 				
-				$priority =& $entry->getPriorityType();
-				print "\n\t\t<td>".$priority->getKeyword()."</td>";
-				
 				$item =& $entry->getItem();
+				
+				print "\n\t\t<td>".$item->getCategory()."</td>";
 				
 				print "\n\t\t<td>".$item->getDescription()."</td>";
 				
