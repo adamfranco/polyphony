@@ -6,10 +6,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.6 2006/03/09 19:47:51 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.7 2006/03/09 20:38:26 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
+require_once(POLYPHONY."/main/library/ResultPrinter/TableIteratorResultPrinter.class.php");
 require_once(HARMONI."GUIManager/Components/Blank.class.php");
 
 /**
@@ -22,7 +23,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.6 2006/03/09 19:47:51 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.7 2006/03/09 20:38:26 adamfranco Exp $
  */
 class browseAction 
 	extends MainWindowAction
@@ -239,16 +240,6 @@ class browseAction
 		/* ]]> */
 	</script>
 	
-	<table border='1'>
-	<tr>
-		<th>timestamp</th>
-		<th>category</th>
-		<th>description</th>
-		<th>trace</th>
-		<th>agents</th>
-		<th>nodes</th>
-	</tr>
-	
 END;
 			// Do a search if needed
 			if (!$startDate->isEqualTo($this->minDate())
@@ -271,70 +262,21 @@ END;
 			} else {
 				$entries =& $log->getEntries($formatType, $currentPriorityType);
 			}
-			$i = $entries->count();
-			while ($entries->hasNext()) {
-				$entry =& $entries->next();
-				print "\n\t<tr>";
-				
-// 				print "\n\t\t<td style='text-align: right'>$i</td>";
-// 				$i--;
-				
-				$timestamp =& $entry->getTimestamp();
-				print "\n\t\t<td>".$timestamp->asString()."</td>";
-				
-				$item =& $entry->getItem();
-				
-				print "\n\t\t<td>".$item->getCategory()."</td>";
-				
-				print "\n\t\t<td>".$item->getDescription()."</td>";
-				
-				print "\n\t\t<td>";
-				if ($trace = $item->getBacktrace()) {
-					print "\n\t\t\t<input type='button' value='"._("Show Trace")."' onclick='showTrace(this)'/>";
-					print "\n\t\t\t<div style='display: none'>".$trace."</div>";
-				}
-				print "</td>";
-				
-				print "\n\t\t<td>";
-				$agentIds =& $item->getAgentIds(true);
-				while ($agentIds->hasNext()) {
-					$agentId =& $agentIds->next();
-					$agent =& $agentManager->getAgent($agentId);
-					print "<a href='";
-					print $harmoni->request->quickURL("logs", "browse",
-							array(	"agent_id" => $agentId->getIdString()));
-					print "'>";
-					print $agent->getDisplayName();
-					print "</a>";
-					if ($agentIds->hasNext())
-						print ", ";
-				}
-				print "\n\t\t</td>";
-				
-				print "\n\t\t<td>";
-				$nodeIds =& $item->getNodeIds(true);
-				while ($nodeIds->hasNext()) {
-					$nodeId =& $nodeIds->next();
-					print "<a href='";
-					print $harmoni->request->quickURL("logs", "browse",
-							array(	"node_id" => $nodeId->getIdString()));
-					print "'>";
-					if ($hierarchyManager->nodeExists($nodeId)) {
-						$node =& $hierarchyManager->getNode($nodeId);
-						print $node->getDisplayName();
-					} else {
-						print $nodeId->getIdString();
-					}
-					print "</a>";
-					if ($nodeIds->hasNext())
-						print ", <br/>";
-				}
-				print "\n\t\t</td>";
-				
-				print "\n\t</tr>";
-			}
 			
-			print "\n</table>";
+			
+			$headRow = "
+	<tr>
+		<th>timestamp</th>
+		<th>category</th>
+		<th>description</th>
+		<th>trace</th>
+		<th>agents</th>
+		<th>nodes</th>
+	</tr>";
+			$resultPrinter =& new TableIteratorResultPrinter($entries, $headRow,
+									20, "printLogRow", 1);
+			print $resultPrinter->getTable();
+			
 			$actionRows->add(new Block(ob_get_clean(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
 		}
  		
@@ -471,4 +413,75 @@ END;
 		print "\n\t<input type='submit' value='Submit'/>";
 		print "\n</form>";
 	}
+}
+
+/**
+ * Print the row for an entry
+ * 
+ * @param object Entry $entry
+ * @return void
+ * @access public
+ * @since 3/9/06
+ */
+function printLogRow ( &$entry ) {
+	$harmoni =& Harmoni::instance();
+	$agentManager =& Services::getService("Agent");
+	$idManager = Services::getService("Id");
+	$hierarchyManager = Services::getService("Hierarchy");
+	
+	print "\n\t<tr>";
+			
+	$timestamp =& $entry->getTimestamp();
+	print "\n\t\t<td>".$timestamp->asString()."</td>";
+	
+	$item =& $entry->getItem();
+	
+	print "\n\t\t<td>".$item->getCategory()."</td>";
+	
+	print "\n\t\t<td>".$item->getDescription()."</td>";
+	
+	print "\n\t\t<td>";
+	if ($trace = $item->getBacktrace()) {
+		print "\n\t\t\t<input type='button' value='"._("Show Trace")."' onclick='showTrace(this)'/>";
+		print "\n\t\t\t<div style='display: none'>".$trace."</div>";
+	}
+	print "</td>";
+	
+	print "\n\t\t<td>";
+	$agentIds =& $item->getAgentIds(true);
+	while ($agentIds->hasNext()) {
+		$agentId =& $agentIds->next();
+		$agent =& $agentManager->getAgent($agentId);
+		print "<a href='";
+		print $harmoni->request->quickURL("logs", "browse",
+				array(	"agent_id" => $agentId->getIdString()));
+		print "'>";
+		print $agent->getDisplayName();
+		print "</a>";
+		if ($agentIds->hasNext())
+			print ", ";
+	}
+	print "\n\t\t</td>";
+	
+	print "\n\t\t<td>";
+	$nodeIds =& $item->getNodeIds(true);
+	while ($nodeIds->hasNext()) {
+		$nodeId =& $nodeIds->next();
+		print "<a href='";
+		print $harmoni->request->quickURL("logs", "browse",
+				array(	"node_id" => $nodeId->getIdString()));
+		print "'>";
+		if ($hierarchyManager->nodeExists($nodeId)) {
+			$node =& $hierarchyManager->getNode($nodeId);
+			print $node->getDisplayName();
+		} else {
+			print $nodeId->getIdString();
+		}
+		print "</a>";
+		if ($nodeIds->hasNext())
+			print ", <br/>";
+	}
+	print "\n\t\t</td>";
+	
+	print "\n\t</tr>";
 }
