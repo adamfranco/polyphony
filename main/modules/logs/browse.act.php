@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.8 2006/03/09 21:06:44 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.9 2006/03/09 21:20:14 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.8 2006/03/09 21:06:44 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.9 2006/03/09 21:20:14 adamfranco Exp $
  */
 class browseAction 
 	extends MainWindowAction
@@ -80,7 +80,7 @@ class browseAction
 		$harmoni->request->passthrough('log', 'priority',
 			'startYear', 'startMonth', 'startDay', 'startHour',
 			'endYear', 'endMonth', 'endDay', 'endHour',
-			'agent_id', 'node_id');
+			'agent_id', 'node_id', 'category');
 
 		$agentManager =& Services::getService("Agent");
 		$idManager = Services::getService("Id");
@@ -148,7 +148,9 @@ class browseAction
 		</tr>
 ";
 		
-		if (RequestContext::value('agent_id') || RequestContext::value('node_id')) {
+		if (RequestContext::value('agent_id') || RequestContext::value('node_id') 
+			|| RequestContext::value('category')) 
+		{
 			print "
 		<tr>
 			<th>"._("Filters:")."</th>
@@ -178,6 +180,19 @@ class browseAction
 								array(	"node_id" => ''));
 				$node =& $hierarchyManager->getNode($id);
 				print $node->getDisplayName();
+				print "\n\t\t\t\t<input type='button' onclick='window.location=\"";
+				print str_replace('&amp;', '&', $url);
+				print "\"' value='X'/>";
+			}
+			
+			if ((RequestContext::value('agent_id') || RequestContext::value('node_id')) && RequestContext::value('category'))
+				print "\n\t\t\t &nbsp; &nbsp; &nbsp; &nbsp; ";
+			
+			if (RequestContext::value('category')) {
+				print "\n\t\t\t";
+				$url = $harmoni->request->quickURL("logs", "browse",
+								array(	"category" => ''));
+				print  urldecode(RequestContext::value('category'));
 				print "\n\t\t\t\t<input type='button' onclick='window.location=\"";
 				print str_replace('&amp;', '&', $url);
 				print "\"' value='X'/>";
@@ -245,7 +260,8 @@ END;
 			if (!$startDate->isEqualTo($this->minDate())
 				|| !$endDate->isEqualTo(DateAndTime::tomorrow())
 				|| RequestContext::value('agent_id')
-				|| RequestContext::value('node_id'))
+				|| RequestContext::value('node_id')
+				|| RequestContext::value('category'))
 			{
 				$criteria = array();
 				$criteria['start'] =& $startDate;
@@ -256,6 +272,9 @@ END;
 				if (RequestContext::value('node_id'))
 					$criteria['node_id'] =& $idManager->getId(
 												RequestContext::value('node_id'));
+				if (RequestContext::value('category'))
+					$criteria['category'] = urldecode(RequestContext::value('category'));
+				
 				$searchType =& new Type("logging_search", "edu.middlebury", "Date-Range/Agent/Node");
 				$entries =& $log->getEntriesBySearch($criteria, $searchType, 
 										$formatType, $currentPriorityType);
@@ -460,7 +479,7 @@ function printLogRow ( &$entry ) {
 	$timezoneOffset =& $timezone->offset();
 	print "\n\t\t<td title='";
 	print $timezone->name()." (".$timezoneOffset->hours().":".sprintf("%02d", abs($timezoneOffset->minutes())).")";
-	print "'>";
+	print "' style='white-space: nowrap'>";
 	print $timestamp->monthName()." ";
 	print $timestamp->dayOfMonth().", ";
 	print $timestamp->year()." ";
@@ -469,7 +488,14 @@ function printLogRow ( &$entry ) {
 	
 	$item =& $entry->getItem();
 	
-	print "\n\t\t<td>".$item->getCategory()."</td>";
+	print "\n\t\t<td style='white-space: nowrap'>";
+	print "\n\t\t\t<a href='";
+	print $harmoni->request->quickURL("logs", "browse",
+			array(	"category" => urlencode($item->getCategory())));
+	print "'>";
+	print $item->getCategory();
+	print "</a>";
+	print "\n\t\t</td>";
 	
 	print "\n\t\t<td>".$item->getDescription()."</td>";
 	
@@ -480,7 +506,7 @@ function printLogRow ( &$entry ) {
 	}
 	print "</td>";
 	
-	print "\n\t\t<td>";
+	print "\n\t\t<td style='white-space: nowrap'>";
 	$agentIds =& $item->getAgentIds(true);
 	while ($agentIds->hasNext()) {
 		$agentId =& $agentIds->next();
@@ -492,11 +518,11 @@ function printLogRow ( &$entry ) {
 		print $agent->getDisplayName();
 		print "</a>";
 		if ($agentIds->hasNext())
-			print ", ";
+			print ", <br/>";
 	}
 	print "\n\t\t</td>";
 	
-	print "\n\t\t<td>";
+	print "\n\t\t<td style='white-space: nowrap'>";
 	$nodeIds =& $item->getNodeIds(true);
 	while ($nodeIds->hasNext()) {
 		$nodeId =& $nodeIds->next();
