@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.7 2006/03/09 20:38:26 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.8 2006/03/09 21:06:44 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.7 2006/03/09 20:38:26 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.8 2006/03/09 21:06:44 adamfranco Exp $
  */
 class browseAction 
 	extends MainWindowAction
@@ -78,8 +78,8 @@ class browseAction
 		
 		$harmoni->request->startNamespace("polyphony-logs");
 		$harmoni->request->passthrough('log', 'priority',
-			'startYear', 'startMonth', 'startDay',
-			'endYear', 'endMonth', 'endDay', 
+			'startYear', 'startMonth', 'startDay', 'startHour',
+			'endYear', 'endMonth', 'endDay', 'endHour',
 			'agent_id', 'node_id');
 
 		$agentManager =& Services::getService("Agent");
@@ -292,10 +292,12 @@ END;
 	 */
 	function &getStartDate () {
 		if (RequestContext::value("startYear"))
-			return DateAndTime::withYearMonthDay(
+			return DateAndTime::withYearMonthDayHourMinute(
 								RequestContext::value("startYear"),
 								RequestContext::value("startMonth"),
-								RequestContext::value("startDay"));
+								RequestContext::value("startDay"),
+								RequestContext::value("startHour"),
+								0);
 		else
 			return $this->minDate();
 	}
@@ -309,10 +311,12 @@ END;
 	 */
 	function &getEndDate () {
 		if (RequestContext::value("endYear"))
-			return DateAndTime::withYearMonthDay(
+			return DateAndTime::withYearMonthDayHourMinute(
 								RequestContext::value("endYear"),
 								RequestContext::value("endMonth"),
-								RequestContext::value("endDay"));
+								RequestContext::value("endDay"),
+								RequestContext::value("endHour"),
+								0);
 		else
 			return DateAndTime::tomorrow();
 	}
@@ -377,6 +381,16 @@ END;
 		}
 		print "\n\t</select>";
 		
+		print "\n\t<select name='".RequestContext::name("startHour")."'>";
+		$hour = 0;
+		while ($hour <= 23) {
+			print "\n\t\t<option value='".$hour."'";
+			print (($hour == $startDate->hour())?" selected='selected'":"");
+			print ">".sprintf("%02d", $hour).":00</option>";
+			$hour++;
+		}
+		print "\n\t</select>";
+		
 		print "\n\t<strong> to: </strong>";
 		
 		print "\n\t<select name='".RequestContext::name("endMonth")."'>";
@@ -410,6 +424,16 @@ END;
 		}
 		print "\n\t</select>";
 		
+		print "\n\t<select name='".RequestContext::name("endHour")."'>";
+		$hour = 0;
+		while ($hour <= 23) {
+			print "\n\t\t<option value='".$hour."'";
+			print (($hour == $endDate->hour())?" selected='selected'":"");
+			print ">".sprintf("%02d", $hour).":00</option>";
+			$hour++;
+		}
+		print "\n\t</select>";
+		
 		print "\n\t<input type='submit' value='Submit'/>";
 		print "\n</form>";
 	}
@@ -432,7 +456,16 @@ function printLogRow ( &$entry ) {
 	print "\n\t<tr>";
 			
 	$timestamp =& $entry->getTimestamp();
-	print "\n\t\t<td>".$timestamp->asString()."</td>";
+	$timezone =& $timestamp->timeZone();
+	$timezoneOffset =& $timezone->offset();
+	print "\n\t\t<td title='";
+	print $timezone->name()." (".$timezoneOffset->hours().":".sprintf("%02d", abs($timezoneOffset->minutes())).")";
+	print "'>";
+	print $timestamp->monthName()." ";
+	print $timestamp->dayOfMonth().", ";
+	print $timestamp->year()." ";
+	print $timestamp->hmsString();
+	print "</td>";
 	
 	$item =& $entry->getItem();
 	
