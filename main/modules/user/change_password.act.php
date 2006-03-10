@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change_password.act.php,v 1.2 2006/03/10 20:54:14 adamfranco Exp $
+ * @version $Id: change_password.act.php,v 1.3 2006/03/10 21:01:10 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change_password.act.php,v 1.2 2006/03/10 20:54:14 adamfranco Exp $
+ * @version $Id: change_password.act.php,v 1.3 2006/03/10 21:01:10 adamfranco Exp $
  */
 class change_passwordAction 
 	extends MainWindowAction
@@ -131,7 +131,7 @@ class change_passwordAction
 		$tokenM =& Services::getService("AgentTokenMapping");
 		$wizard =& $this->getWizard($cacheName);
 		
-		$properties =& $wizard->getAllValues();
+		$properties = $wizard->getAllValues();
 		
 		$dbAuthType =& new Type ("Authentication", "edu.middlebury.harmoni",
 			"Harmoni DB");		
