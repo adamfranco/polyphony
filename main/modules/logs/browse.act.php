@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.9 2006/03/09 21:20:14 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.10 2006/03/10 21:34:49 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.9 2006/03/09 21:20:14 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.10 2006/03/10 21:34:49 adamfranco Exp $
  */
 class browseAction 
 	extends MainWindowAction
@@ -213,88 +213,102 @@ class browseAction
 			
 			// Links to other priorities
 			print "<strong>"._("Priority: ")."</strong>";
-			if (RequestContext::value("priority"))
+			if (RequestContext::value("priority")) {
 				$currentPriorityType =& Type::stringToType(
 											RequestContext::value("priority"));
+				$entries =& $log->getEntries($formatType, $currentPriorityType);
+				if (!$entries->hasNext()) {
+					unset($currentPriorityType, $entries);
+				}
+			}
 				
 			$priorityTypes =& $loggingManager->getPriorityTypes();
+			$priorityLinks = array();
 			while ($priorityTypes->hasNext()) {
 				$priorityType =& $priorityTypes->next();
-								
-				if (!isset($currentPriorityType))
-					$currentPriorityType =& $priorityType;
 				
-				if (!$priorityType->isEqual($currentPriorityType)) {
-					print "\n<a href='";
-					print $harmoni->request->quickURL("logs", "browse",
-							array(	"log" => RequestContext::value("log"),
-									"priority" => Type::typeToString($priorityType)));
-					print "'>".$priorityType->getKeyword()."</a>";
-				} else
-					print $priorityType->getKeyword();
-				
-				if ($priorityTypes->hasNext())
-					print " | ";
+				// Only print priority types with entries
+				$entries =& $log->getEntries($formatType, $priorityType);
+				if ($entries->hasNext()) {
+					
+					if (!isset($currentPriorityType))
+						$currentPriorityType =& $priorityType;
+					
+					if (!$priorityType->isEqual($currentPriorityType)) {
+						$string = "\n<a href='";
+						$string .= $harmoni->request->quickURL("logs", "browse",
+								array(	"log" => RequestContext::value("log"),
+										"priority" => Type::typeToString($priorityType)));
+						$string .= "'>".$priorityType->getKeyword()."</a>";
+					} else
+						$string = $priorityType->getKeyword();
+					
+					$priorityLinks[] = $string;
+				}
+				unset($entries);
 			}
 			
+			print implode(" | ", $priorityLinks);
 			
-			// Entries
-			print<<<END
-	
-	<script type='text/javascript'>
-		/* <![CDATA[ */
-	
-		function showTrace(buttonElement) {
-			newWindow = window.open("", "traceWindow", 'toolbar=no,width=600,height=500,resizable=yes,scrollbars=yes,status=no')
-			// the next sibling is text, the one after that is our hidden div
-			newWindow.document.write(buttonElement.nextSibling.nextSibling.innerHTML)
-			newWindow.document.bgColor="lightpink"
-			newWindow.document.close() 
-		}
-	
-		/* ]]> */
-	</script>
-	
+			if (isset($currentPriorityType)) {
+				// Entries
+				print<<<END
+		
+		<script type='text/javascript'>
+			/* <![CDATA[ */
+		
+			function showTrace(buttonElement) {
+				newWindow = window.open("", "traceWindow", 'toolbar=no,width=600,height=500,resizable=yes,scrollbars=yes,status=no')
+				// the next sibling is text, the one after that is our hidden div
+				newWindow.document.write(buttonElement.nextSibling.nextSibling.innerHTML)
+				newWindow.document.bgColor="lightpink"
+				newWindow.document.close() 
+			}
+		
+			/* ]]> */
+		</script>
+		
 END;
-			// Do a search if needed
-			if (!$startDate->isEqualTo($this->minDate())
-				|| !$endDate->isEqualTo(DateAndTime::tomorrow())
-				|| RequestContext::value('agent_id')
-				|| RequestContext::value('node_id')
-				|| RequestContext::value('category'))
-			{
-				$criteria = array();
-				$criteria['start'] =& $startDate;
-				$criteria['end'] =& $endDate;
-				if (RequestContext::value('agent_id'))
-					$criteria['agent_id'] =& $idManager->getId(
-												RequestContext::value('agent_id'));
-				if (RequestContext::value('node_id'))
-					$criteria['node_id'] =& $idManager->getId(
-												RequestContext::value('node_id'));
-				if (RequestContext::value('category'))
-					$criteria['category'] = urldecode(RequestContext::value('category'));
+				// Do a search if needed
+				if (!$startDate->isEqualTo($this->minDate())
+					|| !$endDate->isEqualTo(DateAndTime::tomorrow())
+					|| RequestContext::value('agent_id')
+					|| RequestContext::value('node_id')
+					|| RequestContext::value('category'))
+				{
+					$criteria = array();
+					$criteria['start'] =& $startDate;
+					$criteria['end'] =& $endDate;
+					if (RequestContext::value('agent_id'))
+						$criteria['agent_id'] =& $idManager->getId(
+													RequestContext::value('agent_id'));
+					if (RequestContext::value('node_id'))
+						$criteria['node_id'] =& $idManager->getId(
+													RequestContext::value('node_id'));
+					if (RequestContext::value('category'))
+						$criteria['category'] = urldecode(RequestContext::value('category'));
+					
+					$searchType =& new Type("logging_search", "edu.middlebury", "Date-Range/Agent/Node");
+					$entries =& $log->getEntriesBySearch($criteria, $searchType, 
+											$formatType, $currentPriorityType);
+				} else {
+					$entries =& $log->getEntries($formatType, $currentPriorityType);
+				}
 				
-				$searchType =& new Type("logging_search", "edu.middlebury", "Date-Range/Agent/Node");
-				$entries =& $log->getEntriesBySearch($criteria, $searchType, 
-										$formatType, $currentPriorityType);
-			} else {
-				$entries =& $log->getEntries($formatType, $currentPriorityType);
+				
+				$headRow = "
+		<tr>
+			<th>timestamp</th>
+			<th>category</th>
+			<th>description</th>
+			<th>trace</th>
+			<th>agents</th>
+			<th>nodes</th>
+		</tr>";
+				$resultPrinter =& new TableIteratorResultPrinter($entries, $headRow,
+										20, "printLogRow", 1);
+				print $resultPrinter->getTable();
 			}
-			
-			
-			$headRow = "
-	<tr>
-		<th>timestamp</th>
-		<th>category</th>
-		<th>description</th>
-		<th>trace</th>
-		<th>agents</th>
-		<th>nodes</th>
-	</tr>";
-			$resultPrinter =& new TableIteratorResultPrinter($entries, $headRow,
-									20, "printLogRow", 1);
-			print $resultPrinter->getTable();
 			
 			$actionRows->add(new Block(ob_get_clean(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
 		}
