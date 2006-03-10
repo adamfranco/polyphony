@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRadioList.class.php,v 1.5 2005/12/20 03:30:55 gabeschine Exp $
+ * @version $Id: WRadioList.class.php,v 1.6 2006/03/10 20:45:42 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRadioList.class.php,v 1.5 2005/12/20 03:30:55 gabeschine Exp $
+ * @version $Id: WRadioList.class.php,v 1.6 2006/03/10 20:45:42 adamfranco Exp $
  */
 class WRadioList 
 	extends WizardComponent 
@@ -84,6 +84,17 @@ class WRadioList
 	 */
 	function setValue ($value) {
 		$this->_value = $value;
+	}
+	
+	/**
+	 * Sets the javascript onchange attribute.
+	 * @param string $commands
+	 * @access public
+	 * @return void
+	 * @since 3/10/06
+	 */
+	function setOnChange($commands) {
+		$this->_onchange = $commands;
 	}
 	
 	/**
@@ -156,6 +167,9 @@ class WRadioList
 			foreach ($others as $otherId) {
 				$javascript .= "document.getElementById('$otherId').checked = false; ";
 			}
+			
+			if ($this->_onchange)
+				$javascript .= " ".str_replace("\"", "\\\"", $this->_onchange)."; ";
 			
 			$s[] = "<label onmousedown=\"$javascript\" style='cursor: pointer;'$style><input type='radio' name='$name' id='$id' value='$val'$checked /> $disp</label>";
 		}

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WVerifiedChangeInput.class.php,v 1.5 2005/12/08 15:47:58 adamfranco Exp $
+ * @version $Id: WVerifiedChangeInput.class.php,v 1.6 2006/03/10 20:45:42 adamfranco Exp $
  */ 
 
 /**
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WVerifiedChangeInput.class.php,v 1.5 2005/12/08 15:47:58 adamfranco Exp $
+ * @version $Id: WVerifiedChangeInput.class.php,v 1.6 2006/03/10 20:45:42 adamfranco Exp $
  */
 
 class WVerifiedChangeInput 
@@ -198,7 +198,7 @@ class WVerifiedChangeInput
 	 * @return string
 	 */
 	function getMarkup ($fieldName) {
-		if ($this->_input->_startingDisplay) {
+		if (isset($this->_input->_startingDisplay)) {
 			$v = htmlspecialchars($this->_input->_startingDisplay, ENT_QUOTES);
 			$this->_input->setOnChange(
 				"if (this.value != '$v') {".$this->_checkbox->getCheckJS($fieldName."_checked")."}");
