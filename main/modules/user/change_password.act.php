@@ -6,13 +6,13 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change_password.act.php,v 1.1 2006/03/10 20:49:41 adamfranco Exp $
+ * @version $Id: change_password.act.php,v 1.2 2006/03/10 20:54:14 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
 
 /**
- * This file will allow the user to change their ConcertoDB password.
+ * This file will allow the user to change their HarmoniDB password.
  *
  * @since 10/24/05 
  * @author Christopher W. Shubert
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change_password.act.php,v 1.1 2006/03/10 20:49:41 adamfranco Exp $
+ * @version $Id: change_password.act.php,v 1.2 2006/03/10 20:54:14 adamfranco Exp $
  */
 class change_passwordAction 
 	extends MainWindowAction
@@ -41,7 +41,7 @@ class change_passwordAction
 	}
 	
 	function getUnauthorizedMessage() {
-		return _("You must be currently Authenticated under ConcertoDB");
+		return _("You must be currently Authenticated under 'Harmoni DB'");
 	}
 	
 	/**
@@ -52,7 +52,7 @@ class change_passwordAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		return _("Change Your ConcertoDB Password");
+		return _("Change Your 'Harmoni DB' Password");
 	}
 	
 	/**
@@ -109,7 +109,7 @@ class change_passwordAction
 		$pass =& $wizard->addComponent("n_p_again", new WPasswordField());
 		
 		$save =& $wizard->addComponent("_save", 
-			WSaveButton::withLabel("Click to Change Password!!"));
+			WSaveButton::withLabel("Change Password"));
 		$cancel =& $wizard->addComponent("_cancel", new WCancelButton());
 
 		return $wizard;
