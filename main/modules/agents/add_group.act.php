@@ -4,7 +4,7 @@
  * @package polyphony.modules.agents
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- * @version $Id: add_group.act.php,v 1.6 2005/11/21 21:43:05 adamfranco Exp $
+ * @version $Id: add_group.act.php,v 1.7 2006/03/14 22:07:36 cws-midd Exp $
  **/
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -16,7 +16,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @author Gabriel Schine
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- * @version $Id: add_group.act.php,v 1.6 2005/11/21 21:43:05 adamfranco Exp $
+ * @version $Id: add_group.act.php,v 1.7 2006/03/14 22:07:36 cws-midd Exp $
  */
 class add_groupAction extends MainWindowAction
 {
@@ -183,7 +183,7 @@ class add_groupAction extends MainWindowAction
 				$desc = $properties["type_description"];
 				$theType =& new Type($domain, $authority, $keyword, $desc);
 			} else {
-				$theType =& Type::stringToType(urldecode($properties["type"]));
+				$theType =& Type::fromString(urldecode($properties["type"]));
 			}
 			
 			// empty properties set

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WText.class.php,v 1.2 2005/12/08 15:47:58 adamfranco Exp $
+ * @version $Id: WText.class.php,v 1.3 2006/03/14 22:07:36 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WText.class.php,v 1.2 2005/12/08 15:47:58 adamfranco Exp $
+ * @version $Id: WText.class.php,v 1.3 2006/03/14 22:07:36 cws-midd Exp $
  */
 class WText 
 	extends WizardComponent 
@@ -39,6 +39,19 @@ class WText
 	function &withValue ($value) {
 		$obj =& new WText();
 		$obj->_value = $value;
+		return $obj;
+	}
+	
+	/**
+	 * Virtual Constructor with fromString naming convention
+	 * @param string $aString
+	 * @access public
+	 * @return ref object
+	 * @static
+	 */
+	function &fromString ($aString) {
+		$obj =& new WText();
+		$obj->_value = $aString;
 		return $obj;
 	}
 	

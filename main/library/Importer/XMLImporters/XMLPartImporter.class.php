@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartImporter.class.php,v 1.17 2006/02/22 21:46:40 cws-midd Exp $
+ * @version $Id: XMLPartImporter.class.php,v 1.18 2006/03/14 22:07:35 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartImporter.class.php,v 1.17 2006/02/22 21:46:40 cws-midd Exp $
+ * @version $Id: XMLPartImporter.class.php,v 1.18 2006/03/14 22:07:35 cws-midd Exp $
  */
 class XMLPartImporter extends XMLImporter {
 		
@@ -160,47 +160,23 @@ class XMLPartImporter extends XMLImporter {
 	 * @access public
 	 * @since 7/21/05
 	 */
-	function &getPartObject (&$part) {
+	function &getPartObject ($part) {
+		$dtm =& Services::getService("DataTypeManager");
+		
 		$recordStructure =& $this->_parent->getRecordStructure();
 		$partStructure =& $recordStructure->getPartStructure(
 			$this->_info['partStructureId']);
 		$type = $partStructure->getType();
-		$typeString = $type->getKeyword();
-		switch($typeString) {
-			case "string":
-				$obj =& String::withValue($part);
-				return $obj;
-				break;
-			case "integer":
-				$obj =& Integer::withValue($part);
-				return $obj;
-				break;
-			case "boolean":
-				$obj =& Boolean::withValue($part);
-				return $obj;
-				break;
-			case "shortstring":
-				$obj =& String::withValue($part);
-				return $obj;
-				break;
-			case "float":
-				$obj =& Float::withValue($part);
-				return $obj;
-				break;
-			case "datetime":
-				$obj =& DateAndTime::fromString($part);
-				return $obj;
-				break;
-			case "type": 
-				$obj =& HarmoniType::stringToType($part);
-				return $obj;
-				break;
-			default:
-				$this->addError("Unsupported PartStructure DataType: ".
-					HarmoniType::typeToString($type).".");
-				$false = false;
-				return $false;
+		$class = $dtm->primitiveClassForType($type->getKeyword());
+		$object =& $class::fromString($part);
+		
+		if (!is_object($object)) {
+			$this->addError("Unsupported PartStructure DataType: ".
+						HarmoniType::typeToString($type).".");
+					$false = false;
+					return $false;
 		}
+		return $object;
 	}
 }
 

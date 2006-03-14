@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.14 2005/11/29 22:05:35 adamfranco Exp $
+ * @version $Id: create_agent.act.php,v 1.15 2006/03/14 22:07:36 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.14 2005/11/29 22:05:35 adamfranco Exp $
+ * @version $Id: create_agent.act.php,v 1.15 2006/03/14 22:07:36 cws-midd Exp $
  */
 class create_agentAction 
 	extends MainWindowAction
@@ -194,7 +194,7 @@ class create_agentAction
 		$tokenMappingManager =& Services::getService("AgentTokenMapping");
 		
 		//find the authn type.  This is set in a hidden field in the form at the moment but could easily be changed to a drop down menu	
-		$authNType =& HarmoniType::stringToType(RequestContext::value('authn_type'));
+		$authNType =& HarmoniType::fromString(RequestContext::value('authn_type'));
 			
 		//for passing to the token handler
 		$newTokensPassed["username"]=RequestContext::value("username");

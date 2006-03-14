@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login_type.act.php,v 1.16 2006/01/18 15:42:55 adamfranco Exp $
+ * @version $Id: login_type.act.php,v 1.17 2006/03/14 22:07:37 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login_type.act.php,v 1.16 2006/01/18 15:42:55 adamfranco Exp $
+ * @version $Id: login_type.act.php,v 1.17 2006/03/14 22:07:37 cws-midd Exp $
  */
 class login_typeAction
 	extends Action
@@ -52,7 +52,7 @@ class login_typeAction
 		$authN =& Services::getService("AuthN");
 
 		$harmoni->request->startNamespace("polyphony");
-		$authType =& HarmoniType::stringToType(urldecode($harmoni->request->get("type")));
+		$authType =& HarmoniType::fromString(urldecode($harmoni->request->get("type")));
 		$harmoni->request->endNamespace();
 	
 		if ($authN->isUserAuthenticated($authType)) {
