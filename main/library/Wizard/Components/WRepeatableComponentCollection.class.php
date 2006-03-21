@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.9 2005/10/28 16:33:59 adamfranco Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.10 2006/03/21 02:33:48 gabeschine Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.9 2005/10/28 16:33:59 adamfranco Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.10 2006/03/21 02:33:48 gabeschine Exp $
  */
 
 class WRepeatableComponentCollection 
@@ -30,6 +30,7 @@ class WRepeatableComponentCollection
     var $_max = -1;
     var $_num = 1;
     var $_text = '';
+	var $_prefixFunction = 0;
     
     var $_addButton;
     
@@ -38,6 +39,18 @@ class WRepeatableComponentCollection
     	$this->_addButton->setParent($this);
     }
     
+	/**
+	 * Sets the Component to prefix each "collection" or value with the return
+	 * value of this function. The function will be passed: the index of the value (starting from zero)
+	 * and a hash of the values.
+	 * @param string $functionName
+	 * @access public
+	 * @return void
+	 */
+	function usePrefixFunction($functionName) {
+		$this->_prefixFunction = $functionName;
+	}
+
     /**
 	 * Sets the minimum number of elements that we allow in the collection.
 	 * @param integer $min
@@ -227,10 +240,23 @@ class WRepeatableComponentCollection
 		// make an array indexed by collection of all the values.
 		$array = array();
 		foreach (array_keys($this->_collections) as $key) {
-			foreach(array_keys($this->_collections[$key]) as $name) {
-				$array[$key][$name] = $this->_collections[$key][$name]->getAllValues();
-			}
+			$array[$key] = $this->_getAllValues($key);
 		}
+		return $array;
+	}
+	
+	/**
+	 * Returns the values for the given item.
+	 * @param string $key
+	 * @access public
+	 * @return array
+	 */
+	function _getAllValues($key) {
+		$array = array();
+		foreach(array_keys($this->_collections[$key]) as $name) {
+			$array[$name] = $this->_collections[$key][$name]->getAllValues();
+		}
+		
 		return $array;
 	}
 	
@@ -266,14 +292,24 @@ class WRepeatableComponentCollection
 		
 		$includeAdd = !($this->_num == $this->_max);
 		$includeRemove = !($this->_num == $this->_min);
+		
+		$cnt = 0;
+		$pfunc = $this->_prefixFunction;
 
 		$m = "<table width='100%' border='0' cellspacing='0' cellpadding='2'>\n";
 		
 		foreach (array_keys($this->_collections) as $key) {
+			$m .= "<tr>";
+			$m .= "<td valign='top' style='border-bottom: 1px solid #555; width: 75px'>".$this->_collections[$key]["_remove"]->getMarkup($fieldName."_".$key."__remove")."</td>";
+			if ($pfunc) {
+				$m .= "<td valign='middle' style='border-bottom: 1px solid #555;'>" . ($pfunc($cnt, $this->_getAllValues($key))) . "</td>";
+			}
 			$this->_collections[$key]["_remove"]->setEnabled($includeRemove);
-			$m .= "<tr><td valign='top' style='border-bottom: 1px solid #555; width: 75px'>".$this->_collections[$key]["_remove"]->getMarkup($fieldName."_".$key."__remove")."</td><td style='border-bottom: 1px solid #555;'>";
+			$m .= "<td style='border-bottom: 1px solid #555;'>";
 			$m .= Wizard::parseText($this->_text, $this->_collections[$key], $fieldName."_".$key."_");
 			$m .= "</td></tr>\n";
+
+			$cnt++;
 		}
 		
 		$this->_addButton->setEnabled($includeAdd);
