@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFilepathPartImporter.class.php,v 1.10 2006/02/22 21:46:40 cws-midd Exp $
+ * @version $Id: XMLFilepathPartImporter.class.php,v 1.11 2006/04/05 16:12:28 cws-midd Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFilepathPartImporter.class.php,v 1.10 2006/02/22 21:46:40 cws-midd Exp $
+ * @version $Id: XMLFilepathPartImporter.class.php,v 1.11 2006/04/05 16:12:28 cws-midd Exp $
  */
 class XMLFilepathPartImporter extends XMLImporter {
 		
@@ -98,7 +98,7 @@ class XMLFilepathPartImporter extends XMLImporter {
 			basename($this->_info['filepath']));
 		$this->_parent->createPart($MIME_TYPE_ID,
 			$mime->getMIMETypeForFileName($this->_info['filepath']));
-			
+
 		$this->_myId = null;
 	}
 

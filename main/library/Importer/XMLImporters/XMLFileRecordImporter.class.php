@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordImporter.class.php,v 1.11 2006/02/27 19:23:09 cws-midd Exp $
+ * @version $Id: XMLFileRecordImporter.class.php,v 1.12 2006/04/05 16:12:28 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -28,7 +28,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLFilepathPartImpor
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordImporter.class.php,v 1.11 2006/02/27 19:23:09 cws-midd Exp $
+ * @version $Id: XMLFileRecordImporter.class.php,v 1.12 2006/04/05 16:12:28 cws-midd Exp $
  */
 class XMLFileRecordImporter extends XMLImporter {
 		
@@ -140,6 +140,20 @@ class XMLFileRecordImporter extends XMLImporter {
 			foreach ($this->_childImporterList as $importer) {
 				if (!is_subclass_of(new $importer($this->_existingArray), 'XMLImporter')) {
 					$this->addError("Class, '$class', is not a subclass of 'XMLImporter'.");
+					// Log the success or failure
+					if (Services::serviceAvailable("Logging")) {
+						$loggingManager =& Services::getService("Logging");
+						$log =& $loggingManager->getLogForWriting("Harmoni");
+						$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+										"A format in which the acting Agent[s] and the target nodes affected are specified.");
+						$priorityType =& new Type("logging", "edu.middlebury", "Error",
+										"Events involving critical system errors.");
+						
+						$item =& new AgentNodeEntryItem("Instantiate Undefined Importer", "$class is not a subclass of Importer");
+						$item->addNodeId($this->_parent->getId());
+						
+						$log->appendLogWithTypes($item,	$formatType, $priorityType);
+					}
 					break;
 				}
 				eval('$result = '.$importer.'::isImportable($element);');

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.13 2006/02/09 20:16:49 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.14 2006/04/05 16:12:28 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRecordStructureIm
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.13 2006/02/09 20:16:49 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.14 2006/04/05 16:12:28 cws-midd Exp $
  */
 class XMLRepositoryImporter extends XMLImporter {
 		
@@ -79,6 +79,17 @@ class XMLRepositoryImporter extends XMLImporter {
 		$this->_childElementList = array("asset", "recordstructure");
 		$this->_info = array();
 	}
+	
+	/**
+	 * This function determines the structure wanted and makes sure it is so
+	 * 
+	 * sub-classes that can start an import should overwrite this function
+	 * @access public
+	 * @since 2/23/06
+	 */
+	function _checkXMLStructure () {
+		return ($this->_import->documentElement->nodeName == "repository");
+	}
 
 	/**
 	 * Filters nodes of incorrect type
@@ -107,7 +118,7 @@ class XMLRepositoryImporter extends XMLImporter {
 		$repositoryManager =& Services::getService("RepositoryManager");
 		
 		$this->getNodeInfo();
-printpre($this->_node->nodeName);
+//printpre($this->_node->nodeName);
 		// make/find object
 		$hasId = $this->_node->hasAttribute("id");
 // printpre($hasId."::".$this->_node->getAttribute("id")."::".$this->_existingArray
@@ -124,7 +135,19 @@ printpre($this->_node->nodeName);
 				$this->_info['name'], $this->_info['description'],
 				$this->_info['type']);
 			$this->_myId =& $this->_object->getId();
-
+			// log repository creation
+			if (Services::serviceAvailable("Logging")) {
+				$loggingManager =& Services::getService("Logging");
+				$log =& $loggingManager->getLogForWriting("Harmoni");
+				$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+								"A format in which the acting Agent[s] and the target nodes affected are specified.");
+				$priorityType =& new Type("logging", "edu.middlebury",
+					"Event_Notice",	"Normal events.");
+				$item =& new AgentNodeEntryItem("Create Node",
+					"Repository: ".$this->_myId->getIdString()." created.");
+				$item->addNodeId($this->_myId);
+				$log->appendLogWithTypes($item, $formatType, $priorityType);
+			}
 			// add FILE record structure to repository
 			$this->doSets();
 		}
@@ -186,12 +209,31 @@ printpre($this->_node->nodeName);
 	 * @since10/5/05
 	 */
 	function update () {
-		if (isset($this->_info['name']) && !is_null($this->_info['name']) && ($this->_info['name'] != 
-		$this->_object->getDisplayName()))
+		$modified = false;
+		if (isset($this->_info['name']) && !is_null($this->_info['name']) && 
+ 		 ($this->_info['name'] != $this->_object->getDisplayName())) {
+			$modified = true;
 			$this->_object->updateDisplayName($this->_info['name']);
-		if (isset($this->_info['description']) && !is_null($this->_info['description']) && 
-		($this->_info['description'] != $this->_object->getDescription()))
+		}
+		if (isset($this->_info['description']) &&
+		 !is_null($this->_info['description']) && 
+		 ($this->_info['description'] != $this->_object->getDescription())) {
+			$modified = true;
 			$this->_object->updateDescription($this->_info['description']);
+		}
+		if (Services::serviceAvailable("Logging") && $modified) {
+			$loggingManager =& Services::getService("Logging");
+			$log =& $loggingManager->getLogForWriting("Harmoni");
+			$formatType =& new Type("logging", "edu.middlebury", 
+				"AgentsAndNodes",
+				"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType =& new Type("logging", "edu.middlebury",
+				"Event_Notice",	"Normal events.");
+			$item =& new AgentNodeEntryItem("Modify Node",
+				"Repository: ".$this->_myId->getIdString()." modified.");
+			$item->addNodeId($this->_myId);
+			$log->appendLogWithTypes($item, $formatType, $priorityType);
+		}
 		// DATES GO HERE
 	}
 }

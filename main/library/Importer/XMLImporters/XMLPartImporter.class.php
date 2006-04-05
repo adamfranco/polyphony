@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartImporter.class.php,v 1.18 2006/03/14 22:07:35 cws-midd Exp $
+ * @version $Id: XMLPartImporter.class.php,v 1.19 2006/04/05 16:12:28 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartImporter.class.php,v 1.18 2006/03/14 22:07:35 cws-midd Exp $
+ * @version $Id: XMLPartImporter.class.php,v 1.19 2006/04/05 16:12:28 cws-midd Exp $
  */
 class XMLPartImporter extends XMLImporter {
 		
@@ -111,6 +111,15 @@ class XMLPartImporter extends XMLImporter {
 		$dbHandler =& Services::getService("DBHandler");
 //		$dbIndexConcerto =& $dbHandler->addDatabase(new 
 //			MySQLDatabase("localhost", "whitey_concerto", "test", "test"));
+		if (Services::serviceAvailable("Logging")) {
+			$loggingManager =& Services::getService("Logging");
+			$log =& $loggingManager->getLogForWriting("Harmoni");
+			$formatType =& new Type("logging", "edu.middlebury",
+				"AgentsAndNodes",
+				"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType =& new Type("logging", "edu.middlebury", "Error",
+				"Events involving critical system errors.");
+		}
 		$query =& new SelectQuery;
 		$query->addTable("xml_id_matrix");
 		$query->addColumn("conc_id");
@@ -127,15 +136,31 @@ class XMLPartImporter extends XMLImporter {
 			$this->_info['partStructureId'] =& $idManager->getId(
 				$result['conc_id']);
 		} else if ($results->getNumberOfRows() > 1) {
-			$this->addError("Multiple PartStructure matches: ");
+			$this->addError("Multiple PartStructure matches for $result[xml_id]: ");
+			if (isset($log))
+				$string = "Multiple PartStructure matches for $result[xml_id]:";
 			while ($results->hasNext()) {
 				$result =& $results->next();
 				$this->addError("\tmatch: ".$result['conc_id']);
+				// add matches
+				if (isset($log))
+					$string .= " Match: $result[conc_id]<br/>";
+			}
+			if (isset($log)) {
+				$item =& new AgentNodeEntryItem("PartImporter Error",
+					$string);				
+				$log->appendLogWithTypes($item,	$formatType, $priorityType);
 			}
 			$this->_info['partStructureId'] =& $idManager->getId(
 				$result['conc_id']);
 		} else {
 			$this->addError("Bad XML IDREF: ".$id);
+			// log error
+			if (isset($log)) {
+				$item =& new AgentNodeEntryItem("PartImport Error", 
+					"Bad XML IDREF: $id");
+				$log->appendLogWithTypes($item, $formatType, $priorityType);
+			}
 		}
 		$results->free();
 
@@ -149,7 +174,8 @@ class XMLPartImporter extends XMLImporter {
 	 * @since 10/6/05
 	 */
 	function update () {
-		if (isset($this->_info['value']) && !is_null($this->_info['value']) && ($this->_info['value'] != $this->_object->getValue()))
+		if (isset($this->_info['value']) && !is_null($this->_info['value']) &&
+		 ($this->_info['value'] != $this->_object->getValue()))
 			$this->_object->updateValue($this->_info['value']);
 	}
 	
@@ -168,13 +194,26 @@ class XMLPartImporter extends XMLImporter {
 			$this->_info['partStructureId']);
 		$type = $partStructure->getType();
 		$class = $dtm->primitiveClassForType($type->getKeyword());
-		$object =& $class::fromString($part);
+		eval('$object =& '.$class.'::fromString($part);');
 		
 		if (!is_object($object)) {
 			$this->addError("Unsupported PartStructure DataType: ".
 						HarmoniType::typeToString($type).".");
-					$false = false;
-					return $false;
+			// Log error
+			if (Services::serviceAvailable("Logging")) {
+				$loggingManager =& Services::getService("Logging");
+				$log =& $loggingManager->getLogForWriting("Harmoni");
+				$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+								"A format in which the acting Agent[s] and the target nodes affected are specified.");
+				$priorityType =& new Type("logging", "edu.middlebury", "Error",
+								"Events involving critical system errors.");
+				$item =& new AgentNodeEntryItem("PartImport Error",
+					"Unsupported PartStructure DataType: ".
+					HarmoniType::typeToString($type));
+				$log->appendLogWithTypes($item, $formatType, $priorityType);
+			}
+			$false = false;
+			return $false;
 		}
 		return $object;
 	}

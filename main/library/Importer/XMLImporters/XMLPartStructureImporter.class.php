@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureImporter.class.php,v 1.17 2006/02/09 20:16:49 cws-midd Exp $
+ * @version $Id: XMLPartStructureImporter.class.php,v 1.18 2006/04/05 16:12:28 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureImporter.class.php,v 1.17 2006/02/09 20:16:49 cws-midd Exp $
+ * @version $Id: XMLPartStructureImporter.class.php,v 1.18 2006/04/05 16:12:28 cws-midd Exp $
  */
 class XMLPartStructureImporter extends XMLImporter {
 		
@@ -105,6 +105,17 @@ class XMLPartStructureImporter extends XMLImporter {
 		}
 		else {
 			$this->addError("bad PartStructure data Type");
+			if (Services::serviceAvailable("Logging")) {
+				$loggingManager =& Services::getService("Logging");
+				$log =& $loggingManager->getLogForWriting("Harmoni");
+				$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+								"A format in which the acting Agent[s] and the target nodes affected are specified.");
+				$priorityType =& new Type("logging", "edu.middlebury", "Error",
+								"Events involving critical system errors.");
+				
+				$item =& new AgentNodeEntryItem("PartStructure Importer", "Bad PartStructure DataType: ".$this->_info['type']->getKeyword()." undefined");				
+				$log->appendLogWithTypes($item,	$formatType, $priorityType);
+			}
 		}
 	}
 	

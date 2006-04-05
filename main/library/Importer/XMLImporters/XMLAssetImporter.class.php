@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.13 2006/02/27 19:23:09 cws-midd Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.14 2006/04/05 16:12:28 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/Importer/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.13 2006/02/27 19:23:09 cws-midd Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.14 2006/04/05 16:12:28 cws-midd Exp $
  */
 class XMLAssetImporter extends XMLImporter {
 		
@@ -124,14 +124,31 @@ class XMLAssetImporter extends XMLImporter {
 				$this->_info['name'], $this->_info['description'], 
 				$this->_info['type']);
 			$this->_myId =& $this->_object->getId();
-			if (isset($this->_stepParent))
+			if (Services::serviceAvailable("Logging")) {
+				$loggingManager =& Services::getService("Logging");
+				$log =& $loggingManager->getLogForWriting("Harmoni");
+				$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+								"A format in which the acting Agent[s] and the target nodes affected are specified.");
+				$priorityType =& new Type("logging", "edu.middlebury",
+					"Event_Notice",	"Normal events.");
+				$item =& new AgentNodeEntryItem("Create Node",
+					"Asset: ".$this->_myId->getIdString()." created.");
+				$item->addNodeId($this->_myId);
+				$item->addNodeId($this->_parent->getId());
+			}	
+			if (isset($this->_stepParent)) {
 				$this->_stepParent->addAsset($this->_myId);
+				if (isset($item))
+					$item->addNodeId($this->_stepParent->getId());
+			}
 			if (isset($this->_info['effectivedate']))
 				$this->_object->updateEffectiveDate(DateAndTime::fromString(
 					$this->_info['effectivedate']));
 			if (isset($this->_info['expirationdate']))
 				$this->_object->updateExpirationDate(DateAndTime::fromString(
 					$this->_info['expirationdate']));
+			if (isset($item))
+				$log->appendLogWithTypes($item, $formatType, $priorityType);
 		}
 
 		if ($this->_node->hasAttribute("maintainOrder") &&
@@ -162,6 +179,19 @@ class XMLAssetImporter extends XMLImporter {
 			foreach ($this->_childImporterList as $importer) {
 				if (!is_subclass_of(new $importer($this->_existingArray), 'XMLImporter')) {
 					$this->addError("Class, '$class', is not a subclass of 'XMLImporter'.");
+					if (Services::serviceAvailable("Logging")) {
+						$loggingManager =& Services::getService("Logging");
+						$log =& $loggingManager->getLogForWriting("Harmoni");
+						$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+										"A format in which the acting Agent[s] and the target nodes affected are specified.");
+						$priorityType =& new Type("logging", "edu.middlebury", "Error",
+										"Events involving critical system errors.");
+						
+						$item =& new AgentNodeEntryItem("Instantiate Undefined Importer", "$class is not a subclass of Importer");
+						$item->addNodeId($this->_myId);
+						$log->appendLogWithTypes($item,	$formatType,
+							$priorityType);
+					}
 					break;
 				}
 				eval('$result = '.$importer.'::isImportable($element);');
@@ -191,10 +221,34 @@ class XMLAssetImporter extends XMLImporter {
 	 * @since 9/12/05
 	 */
 	function update () {
-		if (isset($this->_info['name']) && !is_null($this->_info['name']) && ($this->_info['name'] != $this->_object->getDisplayName()))
+		$modified = false;
+		if (isset($this->_info['name']) && !is_null($this->_info['name']) && 
+		 ($this->_info['name'] != $this->_object->getDisplayName())) {
+			$modified = true;
 			$this->_object->updateDisplayName($this->_info['name']);
-		if (isset($this->_info['description']) && !is_null($this->_info['description']) && ($this->_info['description'] != $this->_object->getDescription()))
+		}
+		if (isset($this->_info['description']) && 
+		 !is_null($this->_info['description']) &&
+		 ($this->_info['description'] != $this->_object->getDescription())) {
+			$modified = true;
 			$this->_object->updateDescription($this->_info['description']);
+		}
+		if (Services::serviceAvailable("Logging") && $modified) {
+			$loggingManager =& Services::getService("Logging");
+			$log =& $loggingManager->getLogForWriting("Harmoni");
+			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+							"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType =& new Type("logging", "edu.middlebury", "Event_Notice",
+							"Normal Events.");
+			
+			$item =& new AgentNodeEntryItem("Modified Node", "Asset: ".
+				$this->_myId->getIdString()." modified.");
+			$item->addNodeId($this->_myId);
+			
+			$log->appendLogWithTypes($item,	$formatType, $priorityType);
+		}
+
+
 // 		if (isset($this->_info['effectivedate']) && 
 // 			(DateAndTime::fromString($this->_info['effectivedate']) != 
 // 			$this->_object->getEffectiveDate()))

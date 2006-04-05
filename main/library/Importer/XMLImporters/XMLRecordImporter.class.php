@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordImporter.class.php,v 1.10 2006/02/22 21:46:40 cws-midd Exp $
+ * @version $Id: XMLRecordImporter.class.php,v 1.11 2006/04/05 16:12:28 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLPartImporter.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordImporter.class.php,v 1.10 2006/02/22 21:46:40 cws-midd Exp $
+ * @version $Id: XMLRecordImporter.class.php,v 1.11 2006/04/05 16:12:28 cws-midd Exp $
  */
 class XMLRecordImporter extends XMLImporter {
 		
@@ -124,12 +124,21 @@ class XMLRecordImporter extends XMLImporter {
 			$this->_info['recordStructureId'] =& $idManager->getId(
 				$result['conc_id']);
 		} else {
-			while ($results->hasNext()) {
-				$row =& $results->next();
-				printpre($row);
-			}
-//			throwError(new Error("table", "bad", TRUE));
 			$this->addError("Bad XML IDREF: ".$id);
+			// Log the success or failure
+			if (Services::serviceAvailable("Logging")) {
+				$loggingManager =& Services::getService("Logging");
+				$log =& $loggingManager->getLogForWriting("Harmoni");
+				$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNonNodes",
+								"A format in which the acting Agent[s] and the target nodes affected are specified.");
+				$priorityType =& new Type("logging", "edu.middlebury", "Error",
+								"Events involving critical system errors.");
+				
+				$item =& new AgentNodeEntryItem("RecordImport Error", "Bad XML IDREF: $id");
+				$item->addNodeId($this->_parent->getId());
+				
+				$log->appendLogWithTypes($item,	$formatType, $priorityType);
+			}
 		}
 		$results->free();
 	}

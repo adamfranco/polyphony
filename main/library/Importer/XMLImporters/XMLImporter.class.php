@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.21 2006/02/27 19:23:09 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.22 2006/04/05 16:12:28 cws-midd Exp $
  *
  * @author Christopher W. Shubert
  */ 
@@ -27,7 +27,7 @@ require_once(POLYPHONY."/main/library/Importer/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.21 2006/02/27 19:23:09 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.22 2006/04/05 16:12:28 cws-midd Exp $
  */
 class XMLImporter {
 
@@ -66,7 +66,7 @@ class XMLImporter {
 		if (!(strtolower($class) == strtolower('XMLImporter')
 			|| is_subclass_of(new $class($existingArray), 'XMLImporter')))
 		{
-			die("Class, '$class', is not a subclass of 'XMLImporter'.");
+			throwError(new Error ("Class, '$class', is not a subclass of 'XMLImporter'.", "XMLImporter"));
 		}
 		eval('$importer =& new '.$class.'($existingArray);');
 		$importer->_xmlFile = $filepath;
@@ -92,7 +92,7 @@ class XMLImporter {
 		if (!(strtolower($class) == strtolower('XMLImporter')
 			|| is_subclass_of(new $class($existingArray), 'XMLImporter')))
 		{
-			die("Class, '$class', is not a subclass of 'XMLImporter'.");
+			throwError(new Error ("Class, '$class', is not a subclass of 'XMLImporter'.", "XMLImporter"));
 		}
 		eval('$importer =& '.$class.'::withFile($existingArray, $filepath, $type, $class);');
 
@@ -134,6 +134,14 @@ class XMLImporter {
 	 * @since 10/5/05
 	 */
 	function parseAndImportBelow ($granule, $detail = 50) {
+		if (Services::serviceAvailable("Logging")) {
+			$loggingManager =& Services::getService("Logging");
+			$log =& $loggingManager->getLogForWriting("Harmoni");
+			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+							"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType =& new Type("logging", "edu.middlebury", "Error",
+							"Events involving critical system errors.");
+		}
 		$this->_import =& new DOMIT_Document();
 		// attempt to load (parse) the xml file
 		if ($this->_import->loadXML($this->_xmlFile)) {
@@ -141,9 +149,13 @@ class XMLImporter {
 			$this->_import->xmlPath = dirname($this->_xmlFile)."/";
 			// @todo check the xml structure against what is expected
 			$this->_checkXMLStructure();
-			if (!($this->_import->documentElement->hasChildNodes()))
+			if (!($this->_import->documentElement->hasChildNodes())) {
 				$this->addError("There are no Importables in this file");
-			else {
+				// log error
+				$item =& new AgentNodeEntryItem("XMLImporter Error",
+					"No Importables in the file: ".$this->_xmlFile.".");
+				$log->appendLogWithTypes($item, $formatType, $priorityType);
+			} else {
 				// the parsing importer is responsible for the docElement
 				$this->_node =& $this->_import->documentElement;
 	 			$this->setupStatusBar($granule, $detail);
@@ -158,6 +170,10 @@ class XMLImporter {
 			// any errors encountered by DOMIT in parsing handled here
 			$this->addError("DOMIT error: ".$this->_import->getErrorCode().
 			"<br/>\t meaning: ".$this->_import->getErrorString()."<br/>");
+			$item =& new AgentNodeEntryItem("XMLImporter DOMIT Error",
+				"Error Code: ".$this->_import->getErrorCode().", meaning: ".
+				$this->_import->getErrorString().".");
+			$log->appendLogWithTypes($item, $formatType, $priorityType);
 		}
 	}
 	
@@ -170,6 +186,14 @@ class XMLImporter {
 	 * @since 10/5/05
 	 */
 	function parseAndImport ($granule, $detail = 50) {
+		if (Services::serviceAvailable("Logging")) {
+			$loggingManager =& Services::getService("Logging");
+			$log =& $loggingManager->getLogForWriting("Harmoni");
+			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+							"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType =& new Type("logging", "edu.middlebury", "Error",
+							"Events involving critical system errors.");
+		}
 		$this->_import =& new DOMIT_Document();
 		// attempt to load (parse) XML file
 		if ($this->_import->loadXML($this->_xmlFile)) {
@@ -177,9 +201,13 @@ class XMLImporter {
 			$this->_import->xmlPath = dirname($this->_xmlFile)."/";
 			// @todo check the xml structure against what is expected
 			$this->_checkXMLStructure();
-			if (!($this->_import->documentElement->hasChildNodes()))
+			if (!($this->_import->documentElement->hasChildNodes())) {
 				$this->addError("There are no Importables in this file");
-			else {
+				// log error
+				$item =& new AgentNodeEntryItem("XMLImporter Error",
+					"No Importables in the file: ".$this->_xmlFile.".");
+				$log->appendLogWithTypes($item, $formatType, $priorityType);
+			} else {
 				// the parsing importer is responsible for the docElement
 				$this->_node =& $this->_import->documentElement;
 				$this->setupStatusBar($granule, $detail);
@@ -191,6 +219,10 @@ class XMLImporter {
 			// any errors encountered by DOMIT in parsing handled here
 			$this->addError("DOMIT error: ".$this->_import->getErrorCode().
 			"<br/>\t meaning: ".$this->_import->getErrorString()."<br/>");
+			$item =& new AgentNodeEntryItem("XMLImporter DOMIT Error",
+				"Error Code: ".$this->_import->getErrorCode().", meaning: ".
+				$this->_import->getErrorString().".");
+			$log->appendLogWithTypes($item, $formatType, $priorityType);
 		}
 	}
 	
@@ -319,6 +351,20 @@ class XMLImporter {
 				if (!is_subclass_of(new $importer($this->_existingArray),
 						'XMLImporter')) {
 					$this->addError("Class, '$class', is not a subclass of 'XMLImporter'.");
+					// log error
+					if (Services::serviceAvailable("Logging")) {
+						$loggingManager =& Services::getService("Logging");
+						$log =& $loggingManager->getLogForWriting("Harmoni");
+						$formatType =& new Type("logging", "edu.middlebury",
+							"AgentsAndNodes",
+							"A format in which the acting Agent[s] and the target nodes affected are specified.");
+						$priorityType =& new Type("logging", "edu.middlebury",
+							"Error","Events involving critical system errors.");
+						$item =& new AgentNodeEntryItem("XMLImporter Error",
+							"Class, '$class' is not a subclass of 'XMLImporter'.");
+						$log->appendLogWithTypes($item, $formatType, 
+							$priorityType);
+					}
 					break;
 				}
 				eval('$result = '.$importer.'::isImportable($element);');
@@ -352,8 +398,23 @@ class XMLImporter {
 				$helper = "build".ucfirst($element->nodeName);
 				if (method_exists($this, $helper))
 					$this->$helper($element);
-				else
+				else {
 					$this->addError($helper."() does not exist");
+					// log error
+					if (Services::serviceAvailable("Logging")) {
+						$loggingManager =& Services::getService("Logging");
+						$log =& $loggingManager->getLogForWriting("Harmoni");
+						$formatType =& new Type("logging", "edu.middlebury",
+							"AgentsAndNodes",
+							"A format in which the acting Agent[s] and the target nodes affected are specified.");
+						$priorityType =& new Type("logging", "edu.middlebury",
+							"Error","Events involving critical system errors.");
+						$item =& new AgentNodeEntryItem("XMLImporter Error",
+							"Function, '$helper' does not exist");
+						$log->appendLogWithTypes($item, $formatType,
+							$priorityType);
+					}
+				}
 			}
 		}
 	}
@@ -475,6 +536,19 @@ class XMLImporter {
 		if ($worked == false)
 			$this->addError("Failed to decompress file: ".$filepath.
 				".  Unsupported archive extension.");
+			// log error
+			if (Services::serviceAvailable("Logging")) {
+				$loggingManager =& Services::getService("Logging");
+				$log =& $loggingManager->getLogForWriting("Harmoni");
+				$formatType =& new Type("logging", "edu.middlebury",
+					"AgentsAndNodes",
+					"A format in which the acting Agent[s] and the target nodes affected are specified.");
+				$priorityType =& new Type("logging", "edu.middlebury", "Error",
+					"Events involving critical system errors.");
+				$item =& new AgentNodeEntryItem("XMLImporter Dearchiver Error",
+					"Failed to decompress file: $filepath.  Unsupported archive extension.");
+				$log->appendLogWithTypes($item, $formatType, $priorityType);
+			}
 	 	unset($dearchiver);
 	 	return dirname($filepath);
 	}
@@ -486,14 +560,12 @@ class XMLImporter {
 	/**
 	 * This function determines the structure wanted and makes sure it is so
 	 * 
+	 * sub-classes that can start an import should overwrite this function
 	 * @access public
 	 * @since 2/23/06
 	 */
 	function _checkXMLStructure () {
-		//@todo based on the class of the importer determine what xml elements
-		// need to be at the top level of the xml file in order for it to work
-		// with the import... note this may involve knowing more about which
-		// action you are in than you think.
+		return ($this->_import->documentElement->nodeName == "import");
 	}
 
 

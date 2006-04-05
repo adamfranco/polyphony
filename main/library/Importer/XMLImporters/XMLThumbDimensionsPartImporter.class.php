@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLThumbDimensionsPartImporter.class.php,v 1.7 2006/02/27 19:23:09 cws-midd Exp $
+ * @version $Id: XMLThumbDimensionsPartImporter.class.php,v 1.8 2006/04/05 16:12:28 cws-midd Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLThumbDimensionsPartImporter.class.php,v 1.7 2006/02/27 19:23:09 cws-midd Exp $
+ * @version $Id: XMLThumbDimensionsPartImporter.class.php,v 1.8 2006/04/05 16:12:28 cws-midd Exp $
  */
 class XMLThumbDimensionsPartImporter extends XMLImporter {
 		
@@ -135,8 +135,9 @@ class XMLThumbDimensionsPartImporter extends XMLImporter {
 	 * @since 10/10/05
 	 */
 	function update () {
-		if (isset($this->_info['value']) && !is_null($this->_info['value']) && ($this->_info['value'] != $this->_object->getValue()))
-			$this->_object->updateValue($this->_info['value']);			
+		if (isset($this->_info['value']) && !is_null($this->_info['value']) &&
+		 ($this->_info['value'] != $this->_object->getValue()))
+			$this->_object->updateValue($this->_info['value']);
 	}
 }
 
