@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCheckBox.class.php,v 1.9 2005/12/08 15:47:58 adamfranco Exp $
+ * @version $Id: WCheckBox.class.php,v 1.10 2006/04/21 20:58:12 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCheckBox.class.php,v 1.9 2005/12/08 15:47:58 adamfranco Exp $
+ * @version $Id: WCheckBox.class.php,v 1.10 2006/04/21 20:58:12 adamfranco Exp $
  */
 class WCheckBox 
 	extends WizardComponent 
@@ -31,6 +31,8 @@ class WCheckBox
 	var $_style = null;
 	
 	var $_label = '';
+	
+	var $_readonly = false;
 	
 	/**
 	 * Virtual Constructor
@@ -95,6 +97,17 @@ class WCheckBox
 	}
 	
 	/**
+	 * Sets the readonly flag for this element.
+	 * @param boolean $bool
+	 *
+	 * @return void
+	 **/
+	function setReadOnly($bool)
+	{
+		$this->_readonly = $bool;
+	}
+	
+	/**
 	 * Tells the wizard component to update itself - this may include getting
 	 * form post data or validation - whatever this particular component wants to
 	 * do every pageload. 
@@ -143,11 +156,16 @@ class WCheckBox
 		$m = "\n\t\t\t<input type='hidden' \n\t\t\t\tname='$name' \n\t\t\t\tid='$fieldName' \n\t\t\t\tvalue='$val' />";
 		
 		$m .= "\n\t\t\t<input type='checkbox' ";
-		$m .= "\n\t\t\t\tonclick=\"".$this->getSetJS($fieldName)."\" ";
+		if ($this->_readonly)
+			$m .= "\n\t\t\t\tdisabled=\"disabled\"";
+		else
+			$m .= "\n\t\t\t\tonclick=\"".$this->getSetJS($fieldName)."\" ";
+		
 		$m .= "\n\t\t\t\tid='$dummyName'$checked />";
 		
 		$m .= "\n\t\t\t<label$style ";
-		$m .= "\n\t\t\t\tonclick=\"".$this->getToggleJS($fieldName)."\" ";
+		if (!$this->_readonly)
+			$m .= "\n\t\t\t\tonclick=\"".$this->getToggleJS($fieldName)."\" ";
 		$m .= "\n\t\t\t>".$this->_label."</label>";
 		
 		return $m;

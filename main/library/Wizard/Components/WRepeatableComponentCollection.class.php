@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.10 2006/03/21 02:33:48 gabeschine Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.11 2006/04/21 20:58:12 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.10 2006/03/21 02:33:48 gabeschine Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.11 2006/04/21 20:58:12 adamfranco Exp $
  */
 
 class WRepeatableComponentCollection 
@@ -31,6 +31,7 @@ class WRepeatableComponentCollection
     var $_num = 1;
     var $_text = '';
 	var $_prefixFunction = 0;
+	var $_areElementsRemovable = true;
     
     var $_addButton;
     
@@ -103,6 +104,16 @@ class WRepeatableComponentCollection
 	}
 	
 	/**
+	 * Sets the status of the "Remove button for elements
+	 * @param boolean $areElementsRemovable
+	 * @access public
+	 * @return void
+	 */
+	function setAreElementsRemovable ($areElementsRemovable) {
+		$this->_areElementsRemovable = $areElementsRemovable;
+	}
+	
+	/**
 	 * Adds a collection of {@link WizardComponent}s indexed by field name to the list of collections.
 	 * This is useful when pre-populating the list with old/previous values.
 	 * @param ref array $collection Indexed by field name.
@@ -151,6 +162,7 @@ class WRepeatableComponentCollection
 			$newArray[$key] =& $base[$key]->copy();
 			$newArray[$key]->setParent($this);
 		}
+		
 		$newArray["_remove"] =& WEventButton::withLabel(
 			dgettext("polyphony", "Remove"));
 		$newArray["_remove"]->setParent($this);
@@ -170,7 +182,7 @@ class WRepeatableComponentCollection
 	 * @return void
 	 */
 	function _removeElements ($ar) {
-		if (($this->_num-count($ar)) < $this->_min) return;
+		if (($this->_num-count($ar)) < $this->_min || !$this->_areElementsRemovable) return;
 		foreach ($ar as $key) {
 			unset($this->_collections[$key]);
 			$this->_num--;
@@ -291,7 +303,7 @@ class WRepeatableComponentCollection
 		$this->_ensureNumber($this->_num);
 		
 		$includeAdd = !($this->_num == $this->_max);
-		$includeRemove = !($this->_num == $this->_min);
+		$includeRemove = (!($this->_num == $this->_min) && $this->_areElementsRemovable);
 		
 		$cnt = 0;
 		$pfunc = $this->_prefixFunction;
@@ -299,12 +311,13 @@ class WRepeatableComponentCollection
 		$m = "<table width='100%' border='0' cellspacing='0' cellpadding='2'>\n";
 		
 		foreach (array_keys($this->_collections) as $key) {
+			$this->_collections[$key]["_remove"]->setEnabled($includeRemove);
 			$m .= "<tr>";
 			$m .= "<td valign='top' style='border-bottom: 1px solid #555; width: 75px'>".$this->_collections[$key]["_remove"]->getMarkup($fieldName."_".$key."__remove")."</td>";
 			if ($pfunc) {
 				$m .= "<td valign='middle' style='border-bottom: 1px solid #555;'>" . ($pfunc($cnt, $this->_getAllValues($key))) . "</td>";
 			}
-			$this->_collections[$key]["_remove"]->setEnabled($includeRemove);
+			
 			$m .= "<td style='border-bottom: 1px solid #555;'>";
 			$m .= Wizard::parseText($this->_text, $this->_collections[$key], $fieldName."_".$key."_");
 			$m .= "</td></tr>\n";

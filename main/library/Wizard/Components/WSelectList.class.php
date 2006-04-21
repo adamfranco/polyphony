@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.6 2005/12/15 21:44:33 adamfranco Exp $
+ * @version $Id: WSelectList.class.php,v 1.7 2006/04/21 20:58:12 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.6 2005/12/15 21:44:33 adamfranco Exp $
+ * @version $Id: WSelectList.class.php,v 1.7 2006/04/21 20:58:12 adamfranco Exp $
  */
 class WSelectList 
 	extends WizardComponent 
@@ -29,6 +29,7 @@ class WSelectList
 	var $_value;
 	var $_style = null;
 	var $_onchange = '';
+	var $_readonly = false;
 	
 	var $_items = array();
 	
@@ -70,6 +71,17 @@ class WSelectList
 	 */
 	function addOption ($value, $displayText) {
 		$this->_items[$value] = $displayText;
+	}
+	
+	/**
+	 * Sets the readonly flag for this element.
+	 * @param boolean $bool
+	 *
+	 * @return void
+	 **/
+	function setReadOnly($bool)
+	{
+		$this->_readonly = $bool;
 	}
 	
 	/**
@@ -122,9 +134,11 @@ class WSelectList
 		if ($this->_style) $style = " style=\"".addslashes($this->_style)."\""; 
 
 		$m = "<select name='$name' $style ";
-		if ($this->_onchange) {
+		if ($this->_onchange && !$this->_readonly) {
 			$m .= "\n\t\t\t\tonchange=\"".str_replace("\"", "\\\"", $this->_onchange)."\"";
 		}
+		if ($this->_readonly)
+			$m .= "\n\t\t\t\tdisabled=\"disabled\"";
 		$m .= ">\n";
 		
 		foreach (array_keys($this->_items) as $key) {
