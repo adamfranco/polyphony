@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.4 2005/09/06 20:20:00 cws-midd Exp $
+ * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.5 2006/04/24 22:36:55 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.4 2005/09/06 20:20:00 cws-midd Exp $
+ * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.5 2006/04/24 22:36:55 adamfranco Exp $
  */
 
 class WOrderedRepeatableComponentCollection 
@@ -37,10 +37,11 @@ class WOrderedRepeatableComponentCollection
     	
 	/**
 	 * Adds a new element to the end of the list.
+	 * @param boolean $removable Can this collection be removed by the user?
 	 * @access private
 	 * @return void
 	 */
-	function &_addElement () {
+	function &_addElement ($removable = true) {
 		if ($this->_max != -1 && $this->_num == $this->_max - 1) return;
 //		printDebugBacktrace();
 		// clone our base set (the getChildren() array)
@@ -54,6 +55,7 @@ class WOrderedRepeatableComponentCollection
 			dgettext("polyphony", "Remove"));
 		$newArray["_remove"]->setParent($this);
 		$newArray["_remove"]->setOnClick("ignoreValidation(this.form);");
+		$newArray["_remove"]->setEnabled($removable, !$removable);
 
 		$newArray["_moveup"] =& WEventButton::withLabel(
 			dgettext("polyphony", "Move Up"));

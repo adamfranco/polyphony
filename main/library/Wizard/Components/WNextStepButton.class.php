@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WNextStepButton.class.php,v 1.4 2005/12/08 15:24:45 adamfranco Exp $
+ * @version $Id: WNextStepButton.class.php,v 1.5 2006/04/24 22:36:55 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WNextStepButton.class.php,v 1.4 2005/12/08 15:24:45 adamfranco Exp $
+ * @version $Id: WNextStepButton.class.php,v 1.5 2006/04/24 22:36:55 adamfranco Exp $
  */
 class WNextStepButton 
 	extends WEventButton 
@@ -61,7 +61,7 @@ class WNextStepButton
 	 * @access public
 	 * @return boolean
 	 */
-	function getEnabled () {
+	function isEnabled () {
 		return $this->_stepContainer->hasNext();
 	}
 

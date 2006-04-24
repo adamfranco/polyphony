@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponent.abstract.php,v 1.1 2005/08/10 18:49:22 adamfranco Exp $
+ * @version $Id: WizardComponent.abstract.php,v 1.2 2006/04/24 22:36:55 adamfranco Exp $
  */ 
 
 /**
@@ -19,12 +19,14 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponent.abstract.php,v 1.1 2005/08/10 18:49:22 adamfranco Exp $
+ * @version $Id: WizardComponent.abstract.php,v 1.2 2006/04/24 22:36:55 adamfranco Exp $
  */
 class WizardComponent 
 	extends SObject 
 {
 	var $_parent;
+	var $_enabled = true;
+	var $_enabledSticky = false;
 	
 	
 	/**
@@ -56,6 +58,35 @@ class WizardComponent
 	 */
 	function validate () {
 		return true;
+	}
+	
+	/**
+	 * Sets if this component will be enabled or disabled.
+	 * @param boolean $enabled
+	 * @param boolean $sticky If true, future calls to setEnabled without sticky
+	 *							will have no effect.
+	 * @access public
+	 * @return void
+	 */
+	function setEnabled ($enabled, $sticky = false) {		
+		if ($this->_enabledSticky) { 
+			if ($sticky) {
+				$this->_enabled = $enabled;
+				$this->_enabledSticky = $sticky;
+			}
+		} else {
+			$this->_enabled = $enabled;
+			$this->_enabledSticky = $sticky;
+		}
+	}
+	
+	/**
+	 * Answers true if this component will be enabled.
+	 * @access public
+	 * @return boolean
+	 */
+	function isEnabled () {
+		return $this->_enabled;
 	}
 	
 	/**

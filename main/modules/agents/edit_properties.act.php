@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_properties.act.php,v 1.6 2006/03/14 22:07:36 cws-midd Exp $
+ * @version $Id: edit_properties.act.php,v 1.7 2006/04/24 22:36:55 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_properties.act.php,v 1.6 2006/03/14 22:07:36 cws-midd Exp $
+ * @version $Id: edit_properties.act.php,v 1.7 2006/04/24 22:36:55 adamfranco Exp $
  */
 class edit_propertiesAction 
 	extends MainWindowAction
@@ -245,7 +245,7 @@ END;
 				);
 								
 				$newSet =& $collection->addValueCollection($valuesArray);
-				$newSet["key"]->setReadOnly(true);
+				$newSet["key"]->setEnabled(false, true);
 				$newSet["key"]->setStyle("border: 0px;"); // <-- not sure if this actually works as desired.
 				// if the values are the same and there are as many values as there are agents (otherwise, some didn't have a value),
 				// add the value in to the display.

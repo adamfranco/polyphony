@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponentWithChildren.abstract.php,v 1.6 2006/01/18 22:51:59 adamfranco Exp $
+ * @version $Id: WizardComponentWithChildren.abstract.php,v 1.7 2006/04/24 22:36:55 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponentWithChildren.abstract.php,v 1.6 2006/01/18 22:51:59 adamfranco Exp $
+ * @version $Id: WizardComponentWithChildren.abstract.php,v 1.7 2006/04/24 22:36:55 adamfranco Exp $
  * @abstract
  */
 class WizardComponentWithChildren 
@@ -105,6 +105,23 @@ class WizardComponentWithChildren
 		}
 		
 		return $array;
+	}
+	
+	/**
+	 * Sets if this component will be enabled or disabled.
+	 * @param boolean $enabled
+	 * @param boolean $sticky If true, future calls to setEnabled without sticky
+	 *							will have no effect.
+	 * @access public
+	 * @return void
+	 */
+	function setEnabled ($enabled, $sticky = false) {
+		parent::setEnabled($enabled, $sticky);
+		
+		$children =& $this->getChildren();
+		foreach(array_keys($children) as $key) {
+			$children[$key]->setEnabled($enabled, $sticky);
+		}
 	}
 }
 

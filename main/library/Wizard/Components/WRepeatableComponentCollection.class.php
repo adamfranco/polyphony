@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.11 2006/04/21 20:58:12 adamfranco Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.12 2006/04/24 22:36:55 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.11 2006/04/21 20:58:12 adamfranco Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.12 2006/04/24 22:36:55 adamfranco Exp $
  */
 
 class WRepeatableComponentCollection 
@@ -31,7 +31,6 @@ class WRepeatableComponentCollection
     var $_num = 1;
     var $_text = '';
 	var $_prefixFunction = 0;
-	var $_areElementsRemovable = true;
     
     var $_addButton;
     
@@ -104,25 +103,16 @@ class WRepeatableComponentCollection
 	}
 	
 	/**
-	 * Sets the status of the "Remove button for elements
-	 * @param boolean $areElementsRemovable
-	 * @access public
-	 * @return void
-	 */
-	function setAreElementsRemovable ($areElementsRemovable) {
-		$this->_areElementsRemovable = $areElementsRemovable;
-	}
-	
-	/**
 	 * Adds a collection of {@link WizardComponent}s indexed by field name to the list of collections.
 	 * This is useful when pre-populating the list with old/previous values.
 	 * @param ref array $collection Indexed by field name.
+	 * @param boolean $removable Can this collection be removed by the user?
 	 * @access public
 	 * @return ref array An array of the components created with the values passed.
 	 */
-	function &addValueCollection (&$collection) {
+	function &addValueCollection (&$collection, $removable = true) {
 		// @todo - make sure that the correct fields/classes are represented
-		$newCollection =& $this->_addElement();
+		$newCollection =& $this->_addElement($removable);
 		foreach (array_keys($newCollection) as $key) {
 			if (isset($collection[$key]))
 				$newCollection[$key]->setValue($collection[$key]);
@@ -149,10 +139,11 @@ class WRepeatableComponentCollection
 	
 	/**
 	 * Adds a new element to the end of the list.
+	 * @param boolean $removable Can this collection be removed by the user?
 	 * @access private
 	 * @return void
 	 */
-	function &_addElement () {
+	function &_addElement ($removable = true) {
 		if ($this->_max != -1 && $this->_num == $this->_max - 1) return;
 //		printDebugBacktrace();
 		// clone our base set (the getChildren() array)
@@ -167,6 +158,7 @@ class WRepeatableComponentCollection
 			dgettext("polyphony", "Remove"));
 		$newArray["_remove"]->setParent($this);
 		$newArray["_remove"]->setOnClick("ignoreValidation(this.form);");
+		$newArray["_remove"]->setEnabled($removable, !$removable);
 
 		$this->_collections[] =& $newArray;
 		$this->_num++;
@@ -182,7 +174,7 @@ class WRepeatableComponentCollection
 	 * @return void
 	 */
 	function _removeElements ($ar) {
-		if (($this->_num-count($ar)) < $this->_min || !$this->_areElementsRemovable) return;
+		if (($this->_num-count($ar)) < $this->_min) return;
 		foreach ($ar as $key) {
 			unset($this->_collections[$key]);
 			$this->_num--;
@@ -303,7 +295,7 @@ class WRepeatableComponentCollection
 		$this->_ensureNumber($this->_num);
 		
 		$includeAdd = !($this->_num == $this->_max);
-		$includeRemove = (!($this->_num == $this->_min) && $this->_areElementsRemovable);
+		$includeRemove = (!($this->_num == $this->_min));
 		
 		$cnt = 0;
 		$pfunc = $this->_prefixFunction;

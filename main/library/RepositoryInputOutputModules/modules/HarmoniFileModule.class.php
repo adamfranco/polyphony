@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HarmoniFileModule.class.php,v 1.14 2006/02/01 18:55:42 cws-midd Exp $
+ * @version $Id: HarmoniFileModule.class.php,v 1.15 2006/04/24 22:36:54 adamfranco Exp $
  */
 
 /**
@@ -24,8 +24,8 @@ require_once(HARMONI."Primitives/Numbers/ByteSize.class.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: HarmoniFileModule.class.php,v 1.14 2006/02/01 18:55:42 cws-midd Exp $
- * @since $Date: 2006/02/01 18:55:42 $
+ * @version $Id: HarmoniFileModule.class.php,v 1.15 2006/04/24 22:36:54 adamfranco Exp $
+ * @since $Date: 2006/04/24 22:36:54 $
  * @copyright 2004 Middlebury College
  */
 
@@ -119,7 +119,7 @@ class HarmoniFileModule
 		$component =& $step->addComponent("file_size", new WTextField());
 		$size =& ByteSize::withValue($parts['FILE_SIZE']->getValue());
 		$component->setValue($size->asString());
-		$component->setReadOnly(TRUE);
+		$component->setEnabled(FALSE, TRUE);
 // 		
 // 		$component =& $step->addComponent("size_from_file", new WCheckBox());
 // 		$component->setValue(false);

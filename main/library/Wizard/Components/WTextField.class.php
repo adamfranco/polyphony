@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.12 2005/12/08 15:47:58 adamfranco Exp $
+ * @version $Id: WTextField.class.php,v 1.13 2006/04/24 22:36:55 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__).'/WTextInput.abstract.php');
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__).'/WTextInput.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.12 2005/12/08 15:47:58 adamfranco Exp $
+ * @version $Id: WTextField.class.php,v 1.13 2006/04/24 22:36:55 adamfranco Exp $
  */
 class WTextField 
 	extends WTextInput 
@@ -59,7 +59,7 @@ class WTextField
 	 */
 	function getMarkup ($fieldName) {		
 		$name = RequestContext::name($fieldName);
-		$m = "<input type='text' \n\t\t\t\tname='$name' \n\t\t\t\tid='$fieldName' \n\t\t\t\tsize='".$this->_size."' maxlength='".$this->_maxlength."'".($this->_readonly?" readonly='readonly'":"");
+		$m = "<input type='text' \n\t\t\t\tname='$name' \n\t\t\t\tid='$fieldName' \n\t\t\t\tsize='".$this->_size."' maxlength='".$this->_maxlength."'".(!$this->isEnabled()?" readonly='readonly'":"");
 		if ($this->_value != null && $this->_value != $this->_startingDisplay) {
 			$m .= " value='".htmlspecialchars($this->_value, ENT_QUOTES)."'";
 		} else if ($this->_startingDisplay) {

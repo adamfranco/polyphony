@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextArea.class.php,v 1.8 2005/12/08 15:47:58 adamfranco Exp $
+ * @version $Id: WTextArea.class.php,v 1.9 2006/04/24 22:36:55 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__).'/WTextInput.abstract.php');
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__).'/WTextInput.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextArea.class.php,v 1.8 2005/12/08 15:47:58 adamfranco Exp $
+ * @version $Id: WTextArea.class.php,v 1.9 2006/04/24 22:36:55 adamfranco Exp $
  */
 class WTextArea 
 	extends WTextInput 
@@ -99,7 +99,7 @@ class WTextArea
 		
 		$m = "\n\t\t\t<textarea rows='".$this->_rows."' cols='".$this->_cols."'";
 		$m .= "\n\t\t\t\tname='$name'";
-		$m .= ($this->_readonly?" readonly='readonly'":"");
+		$m .= (!$this->isEnabled()?" readonly='readonly'":"");
 		
 		if ($this->_style) {
 			$m .= "\n\t\t\t\tstyle=\"".str_replace("\"", "\\\"", $this->_style)."\"";

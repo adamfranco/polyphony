@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.class.php,v 1.9 2005/12/08 15:47:58 adamfranco Exp $
+ * @version $Id: WEventButton.class.php,v 1.10 2006/04/24 22:36:55 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.class.php,v 1.9 2005/12/08 15:47:58 adamfranco Exp $
+ * @version $Id: WEventButton.class.php,v 1.10 2006/04/24 22:36:55 adamfranco Exp $
  */
 class WEventButton 
 	extends WizardComponent
@@ -27,7 +27,6 @@ class WEventButton
 	var $_event = "nop";
 	var $_label = "NO LABEL";
 	var $_pressed = false;
-	var $_enabled = true;
 	var $_onclick = null;
 	
 	/**
@@ -79,25 +78,6 @@ class WEventButton
 	 */
 	function setLabel ($label) {
 		$this->_label = $label;
-	}
-	
-	/**
-	 * Sets if this component will be enabled or disabled.
-	 * @param boolean $enabled
-	 * @access public
-	 * @return void
-	 */
-	function setEnabled ($enabled) {
-		$this->_enabled = $enabled;
-	}
-	
-	/**
-	 * Answers true if this component will be enabled.
-	 * @access public
-	 * @return boolean
-	 */
-	function getEnabled () {
-		return $this->_enabled;
 	}
 	
 	/**
@@ -155,7 +135,7 @@ class WEventButton
 		$onclick = '';
 		if ($this->_onclick) $onclick = addslashes($this->_onclick) . ";";
 		$m = "<input type='hidden' name='$name' id='$name' value='0' />\n";
-		$m .= "<input type='button' value='$label' onclick='$onclick if (validateWizard(this.form)) { getWizardElement(\"$name\").value=\"1\"; this.form.submit(); }'".($this->getEnabled()?"":" disabled='disabled'")." />";
+		$m .= "<input type='button' value='$label' onclick='$onclick if (validateWizard(this.form)) { getWizardElement(\"$name\").value=\"1\"; this.form.submit(); }'".($this->isEnabled()?"":" disabled='disabled'")." />";
 		return $m;
 	}
 }

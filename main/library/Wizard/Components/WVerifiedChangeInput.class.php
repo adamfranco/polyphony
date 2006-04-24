@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WVerifiedChangeInput.class.php,v 1.6 2006/03/10 20:45:42 adamfranco Exp $
+ * @version $Id: WVerifiedChangeInput.class.php,v 1.7 2006/04/24 22:36:55 adamfranco Exp $
  */ 
 
 /**
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WVerifiedChangeInput.class.php,v 1.6 2006/03/10 20:45:42 adamfranco Exp $
+ * @version $Id: WVerifiedChangeInput.class.php,v 1.7 2006/04/24 22:36:55 adamfranco Exp $
  */
 
 class WVerifiedChangeInput 
@@ -129,15 +129,16 @@ class WVerifiedChangeInput
     	$this->_checkbox->setValue($checked);
     }
     
-    /**
-	 * Sets the readonly flag for this element.
-	 * @param boolean $bool
-	 *
+	/**
+	 * Sets if this component will be enabled or disabled.
+	 * @param boolean $enabled
+	 * @param boolean $sticky If true, future calls to setEnabled without sticky
+	 *							will have no effect.
+	 * @access public
 	 * @return void
-	 **/
-	function setReadOnly($bool)
-	{
-		$this->_input->setReadOnly($bool);
+	 */
+	function setEnabled ($enabled, $sticky = false) {
+		$this->_input->setEnabled($enabled, $sticky);
 	}
     
     /**

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextInput.abstract.php,v 1.3 2006/01/18 22:51:59 adamfranco Exp $
+ * @version $Id: WTextInput.abstract.php,v 1.4 2006/04/24 22:36:55 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingWizardComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingWizardComponent.abstra
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextInput.abstract.php,v 1.3 2006/01/18 22:51:59 adamfranco Exp $
+ * @version $Id: WTextInput.abstract.php,v 1.4 2006/04/24 22:36:55 adamfranco Exp $
  */
 class WTextInput
 	extends ErrorCheckingWizardComponent 
@@ -29,7 +29,6 @@ class WTextInput
 	var $_style = null;
 	var $_value = null;
 	var $_startingDisplay = null;
-	var $_readonly = false;
 	var $_onchange = null;
 	var $_showError = false;
 	
@@ -104,17 +103,6 @@ class WTextInput
 	 */
 	function getAllValues () {
 		return $this->_value;
-	}
-	
-	/**
-	 * Sets the readonly flag for this element.
-	 * @param boolean $bool
-	 *
-	 * @return void
-	 **/
-	function setReadOnly($bool)
-	{
-		$this->_readonly = $bool;
 	}
 	
 	/**
