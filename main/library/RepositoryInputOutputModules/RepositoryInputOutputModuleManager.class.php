@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.11 2006/01/24 16:17:34 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.12 2006/04/26 19:56:07 adamfranco Exp $
  */
 
 /**
@@ -21,8 +21,8 @@ require_once(dirname(__FILE__)."/modules/HarmoniFileModule.class.php");
  * appropriate RepositoryInputOutputModule based on their Schema Formats.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.11 2006/01/24 16:17:34 adamfranco Exp $
- * @since $Date: 2006/01/24 16:17:34 $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.12 2006/04/26 19:56:07 adamfranco Exp $
+ * @since $Date: 2006/04/26 19:56:07 $
  * @copyright 2004 Middlebury College
  */
 
@@ -37,8 +37,19 @@ class RepositoryInputOutputModuleManager {
 	 */
 	function RepositoryInputOutputModuleManager () {
 		$this->_modules = array();
-		$this->_modules["DataManagerPrimatives"] =& new DataManagerPrimativesModule;
- 		$this->_modules['Harmoni File'] =& new HarmoniFileModule;
+		
+		$type =& new Type("RecordStructures", 
+					"edu.middlebury.harmoni", 
+					"DataManagerPrimatives", 
+					"RecordStructures stored in the Harmoni DataManager.");
+ 		$this->_modules[Type::typeToString($type)] =& new DataManagerPrimativesModule;
+		
+		$type =& new Type("RecordStructures", 
+					"edu.middlebury.harmoni", 
+					"File", 
+					"RecordStructures that store files.");
+ 		$this->_modules[Type::typeToString($type)] =& new HarmoniFileModule;
+ 		
 // 		$this->_modules['text/plain'] = new PlainTextModule;
 	}
 	
@@ -203,12 +214,12 @@ class RepositoryInputOutputModuleManager {
 		ArgumentValidator::validate($partStructures, new ArrayValidatorRuleWithRule(new ExtendsValidatorRule("PartStructure")));
 		
 		$recordStructure =& $record->getRecordStructure();
-		$format = $recordStructure->getFormat();
+		$type =& $recordStructure->getType();
 		
-		if (!is_object($this->_modules[$format]))
-			throwError(new Error("Unsupported Format, '$format'", "RepositoryInputOutputModuleManager", true));
+		if (!is_object($this->_modules[Type::typeToString($type)]))
+			throwError(new Error("Unsupported Format, '".Type::typeToString($type)."'", "RepositoryInputOutputModuleManager", true));
 		
-		return $this->_modules[$format]->generateDisplayForPartStructures($repositoryId, $assetId, $record, $partStructures);
+		return $this->_modules[Type::typeToString($type)]->generateDisplayForPartStructures($repositoryId, $assetId, $record, $partStructures);
 	}
 	
 	

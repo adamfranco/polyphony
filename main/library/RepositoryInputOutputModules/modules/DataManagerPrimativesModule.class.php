@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DataManagerPrimativesModule.class.php,v 1.9 2005/08/24 14:34:42 cws-midd Exp $
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.10 2006/04/26 19:56:08 adamfranco Exp $
  */
 
 /**
@@ -18,14 +18,14 @@ require_once(POLYPHONY."/main/library/DataManagerGUI/PrimitiveIO/inc.php");
 
 /**
  * InputOutput modules are classes which generate HTML for the display or editing
- * of Records. Which InputOutput module to use is determined by the Format
+ * of Records. Which InputOutput module to use is determined by the Type
  * of the RecordStructure corresponding to that Record. For example, a Structure
- * using the "DataManagerPrimitive" Format would use the DataManagerPrimative
+ * using the "DataManagerPrimitive" Type would use the DataManagerPrimative
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: DataManagerPrimativesModule.class.php,v 1.9 2005/08/24 14:34:42 cws-midd Exp $
- * @since $Date: 2005/08/24 14:34:42 $
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.10 2006/04/26 19:56:08 adamfranco Exp $
+ * @since $Date: 2006/04/26 19:56:08 $
  * @copyright 2004 Middlebury College
  */
 
