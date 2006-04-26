@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositorySearchModuleManager.class.php,v 1.5 2005/12/08 20:17:58 adamfranco Exp $
+ * @version $Id: RepositorySearchModuleManager.class.php,v 1.6 2006/04/26 21:40:29 adamfranco Exp $
  */
 
 /**
@@ -14,15 +14,15 @@
  * 
  */
 require_once(dirname(__FILE__)."/modules/SimpleFieldModule.class.php");
-//require_once(dirname(__FILE__)."/modules/HarmoniFileModule.class.php");
+require_once(dirname(__FILE__)."/modules/PartAndValuesModule.class.php");
 
 /**
  * The RepositorySearchModuleManager is responcible for sending requests for search forms
  * to the appropriate RepositorySearchModule based on their types.
  * 
  * @package polyphony.library.repository.search
- * @version $Id: RepositorySearchModuleManager.class.php,v 1.5 2005/12/08 20:17:58 adamfranco Exp $
- * @since $Date: 2005/12/08 20:17:58 $
+ * @version $Id: RepositorySearchModuleManager.class.php,v 1.6 2006/04/26 21:40:29 adamfranco Exp $
+ * @since $Date: 2006/04/26 21:40:29 $
  * @copyright 2004 Middlebury College
  */
 
@@ -38,9 +38,10 @@ class RepositorySearchModuleManager {
 	function RepositorySearchModuleManager () {
 		$this->_modules = array();
 		$this->_modules["Repository::edu.middlebury.harmoni::Keyword"] =& new SimpleFieldModule("Keyword");
+		$this->_modules["Repository::edu.middlebury.harmoni::DisplayName"] =& new SimpleFieldModule("DisplayName");
+		$this->_modules["Repository::edu.middlebury.harmoni::Authoritative Values"] =& new SimpleFieldModule("AuthoritativeValues");
 		$this->_modules["Repository::edu.middlebury.harmoni::AssetType"] =& new SimpleFieldModule("AssetType");
 		$this->_modules["Repository::edu.middlebury.harmoni::RootAssets"] =& new SimpleFieldModule("RootAssets");
-		$this->_modules["Repository::edu.middlebury.harmoni::DisplayName"] =& new SimpleFieldModule("DisplayName");
 		$this->_modules["Repository::edu.middlebury.harmoni::Description"] =& new SimpleFieldModule("Description");
 		$this->_modules["Repository::edu.middlebury.harmoni::Content"] =& new SimpleFieldModule("Content");
 		$this->_modules["Repository::edu.middlebury.harmoni::AllCustomStructures"] =& new SimpleFieldModule("AllCustomStructures");
@@ -101,14 +102,16 @@ class RepositorySearchModuleManager {
 	/**
 	 * Create a form for searching.
 	 * 
+	 * @param object Repository $repository
 	 * @param object $searchType
 	 * @param string $action The destination on form submit.
 	 * @return string
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function createSearchForm ( & $searchType, $action ) {
-		ArgumentValidator::validate($searchType, new ExtendsValidatorRule("HarmoniType"));
+	function createSearchForm ( &$repository, &$searchType, $action) {
+		ArgumentValidator::validate($repository, new ExtendsValidatorRule("Repository"));
+		ArgumentValidator::validate($searchType, new ExtendsValidatorRule("Type"));
 		ArgumentValidator::validate($action, new StringValidatorRule);
 		
 		$typeKey = $searchType->getDomain()
@@ -118,7 +121,32 @@ class RepositorySearchModuleManager {
 		if (!is_object($this->_modules[$typeKey]))
 			throwError(new Error("Unsupported Search Type, '$typeKey'", "RepositorySearchModuleManager", true));
 		
-		return $this->_modules[$typeKey]->createSearchForm($action);
+		return $this->_modules[$typeKey]->createSearchForm($repository, $action);
+		
+	}
+	
+	/**
+	 * Create a form for searching.
+	 * 
+	 * @param object Repository $repository
+	 * @param object $searchType
+	 * @param string $action The destination on form submit.
+	 * @return string
+	 * @access public
+	 * @since 10/19/04
+	 */
+	function createSearchFields ( &$repository, &$searchType) {
+		ArgumentValidator::validate($repository, new ExtendsValidatorRule("Repository"));
+		ArgumentValidator::validate($searchType, new ExtendsValidatorRule("Type"));
+		
+		$typeKey = $searchType->getDomain()
+					."::".$searchType->getAuthority()
+					."::".$searchType->getKeyword();
+		
+		if (!is_object($this->_modules[$typeKey]))
+			throwError(new Error("Unsupported Search Type, '$typeKey'", "RepositorySearchModuleManager", true));
+		
+		return $this->_modules[$typeKey]->createSearchFields($repository);
 	}
 	
 	/**
@@ -143,25 +171,25 @@ class RepositorySearchModuleManager {
 	}
 	
 	/**
-	 * Start the service
+	 * Get an array of the current values to be added to a url. The keys of the
+	 * arrays are the field-names in the appropriate context.
 	 * 
-	 * @return void
+	 * @param object $searchType
+	 * @return array
 	 * @access public
-	 * @since 6/28/04
+	 * @since 10/28/04
 	 */
-	function start () {
+	function getCurrentValues ( & $searchType ) {
+		ArgumentValidator::validate($searchType, new ExtendsValidatorRule("Type"));
+				
+		$typeKey = $searchType->getDomain()
+					."::".$searchType->getAuthority()
+					."::".$searchType->getKeyword();
 		
-	}
-	
-	/**
-	 * Stop the service
-	 * 
-	 * @return void
-	 * @access public
-	 * @since 6/28/04
-	 */
-	function stop () {
+		if (!is_object($this->_modules[$typeKey]))
+			throwError(new Error("Unsupported Search Type, '$typeKey'", "RepositorySearchModuleManager", true));
 		
+		return $this->_modules[$typeKey]->getCurrentValues();
 	}
 }
 

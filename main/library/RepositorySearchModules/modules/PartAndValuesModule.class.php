@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleFieldModule.class.php,v 1.5 2006/04/26 21:40:29 adamfranco Exp $
+ * @version $Id: PartAndValuesModule.class.php,v 1.1 2006/04/26 21:40:29 adamfranco Exp $
  */
 
 /**
@@ -17,10 +17,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleFieldModule.class.php,v 1.5 2006/04/26 21:40:29 adamfranco Exp $
+ * @version $Id: PartAndValuesModule.class.php,v 1.1 2006/04/26 21:40:29 adamfranco Exp $
  */
 
-class SimpleFieldModule {
+class PartAndValuesModule {
 	
 	/**
 	 * Constructor
@@ -30,7 +30,7 @@ class SimpleFieldModule {
 	 * @access public
 	 * @since 10/28/04
 	 */
-	function SimpleFieldModule ( $fieldName ) {
+	function PartAndValuesModule ( $fieldName ) {
 		$this->_fieldname = $fieldName;
 	}
 	
@@ -66,6 +66,17 @@ class SimpleFieldModule {
 	 * @since 4/26/06
 	 */
 	function createSearchFields (&$repository) {
+		$setManager =& Services::getService("Sets");
+		$recordStructSet =& $setManager->getPersistentSet($repository->getId());
+		$recordStructSet->reset();
+		while ($recordStructSet->hasNext()) {
+			$recordStruct =& $repository->getRecordStructure($recordStructSet->next());
+			$partStructSet =& $setManager->getPersistentSet($recordStruct->getId());
+			while ($partStructSet->hasNext()) {
+				$partStruct =& $recordStruct->getPartStructure($partStructSet->next());
+					
+			}
+		}
 		return "\t<input type='text' name='".RequestContext::name($this->_fieldname)."' value=\"".RequestContext::value($this->_fieldname)."\" />\n";
 	}
 	
@@ -78,23 +89,6 @@ class SimpleFieldModule {
 	 */
 	function getSearchCriteria () {
 		return RequestContext::value($this->_fieldname);
-	}
-	
-	/**
-	 * Get an array of the current values to be added to a url. The keys of the
-	 * arrays are the field-names in the appropriate context.
-	 * 
-	 * @return array
-	 * @access public
-	 * @since 04/25/06
-	 */
-	function getCurrentValues () {
-		if (RequestContext::value($this->_fieldname))
-			return array(
-						RequestContext::name($this->_fieldname) => 
-						RequestContext::value($this->_fieldname));
-		else
-			return array();
 	}
 }
 
