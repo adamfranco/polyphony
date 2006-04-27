@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PartAndValuesModule.class.php,v 1.2 2006/04/27 18:15:12 adamfranco Exp $
+ * @version $Id: PartAndValuesModule.class.php,v 1.3 2006/04/27 21:02:58 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PartAndValuesModule.class.php,v 1.2 2006/04/27 18:15:12 adamfranco Exp $
+ * @version $Id: PartAndValuesModule.class.php,v 1.3 2006/04/27 21:02:58 adamfranco Exp $
  */
 
 class PartAndValuesModule {
@@ -28,7 +28,7 @@ class PartAndValuesModule {
 	 * @param string $fieldName
 	 * @return object
 	 * @access public
-	 * @since 10/28/04
+	 * @since 04/25/06
 	 */
 	function PartAndValuesModule ( $partStructFieldName, $valueFieldName ) {
 		$this->_partStructFieldName = $partStructFieldName;
@@ -41,7 +41,7 @@ class PartAndValuesModule {
 	 * @param string $action The destination on form submit.
 	 * @return string
 	 * @access public
-	 * @since 10/19/04
+	 * @since 04/25/06
 	 */
 	function createSearchForm (&$repository, $action ) {
 		ob_start();
@@ -72,9 +72,11 @@ class PartAndValuesModule {
 		print "' onchange='this.form.submit()'>";
 		
 		$idManager =& Services::getService("Id");
-		if (RequestContext::value($this->_partStructFieldName))
-			$selectedPartStructId =& $idManager->getId(
-				RequestContext::value($this->_partStructFieldName));
+		if (RequestContext::value($this->_partStructFieldName)) {
+			$idStrings = explode("_____", RequestContext::value($this->_partStructFieldName));
+			$selectedRecordStructId =& $idManager->getId($idStrings[0]);
+			$selectedPartStructId =& $idManager->getId($idStrings[1]);
+		}
 		
 		$setManager =& Services::getService("Sets");
 		$recordStructSet =& $setManager->getPersistentSet($repository->getId());
@@ -87,6 +89,7 @@ class PartAndValuesModule {
 			
 			$recordStructHeadingPrinted = FALSE;
 			$recordStruct =& $repository->getRecordStructure($recordStructSet->next());
+			$recordStructId =& $recordStruct->getId();
 			$partStructSet =& $setManager->getPersistentSet($recordStruct->getId());
 			while ($partStructSet->hasNext()) {
 				$partStruct =& $recordStruct->getPartStructure($partStructSet->next());
@@ -105,7 +108,11 @@ class PartAndValuesModule {
 					
 					$partStructId =& $partStruct->getId();
 					print "\n\t\t\t\t<option ";
-					print " value='".$partStructId->getIdString()."'";
+					print " value='";
+						print $recordStructId->getIdString();
+						print "_____";
+						print $partStructId->getIdString();
+					print "'";
 					
 					// Make sure that we keep either the selected part Structure
 					// or the first one around for populating the Authority List
@@ -134,7 +141,7 @@ class PartAndValuesModule {
 		if (isset($selectedPartStruct)) {
 			print "\n\t\t<select name='";
 			print RequestContext::name($this->_valueFieldName);
-			print "' onchange='this.form.submit'>";
+			print "'>";
 			print "\n\t\t\t<option value=''>"._("Please select a value...")."</option>";
 			
 			$authoritativeValues =& $selectedPartStruct->getAuthoritativeValues();
@@ -147,6 +154,11 @@ class PartAndValuesModule {
 				print ">".$value->asString()."</option>";
 			}
 			
+			print "\n\t\t\t<option value='__NonMatching__'";
+			if (RequestContext::value($this->_valueFieldName) == '__NonMatching__')
+				print " selected='selected'";
+			print ">"._("* Non-Matching *")."</option>";
+			
 			print "\n\t\t</select>";
 		}
 		
@@ -156,14 +168,32 @@ class PartAndValuesModule {
 	/**
 	 * Get the formatted search terms based on the submissions of the form
 	 * 
+	 * @param object Repository $repository
 	 * @return mixed
 	 * @access public
-	 * @since 10/28/04
+	 * @since 04/25/06
 	 */
-	function getSearchCriteria () {
-		return array (
-			'PartStructId' => RequestContext::value($this->_partStructFieldName),
-			'AuthoritativeValue' => urldecode(RequestContext::value($this->_valueFieldName)));
+	function getSearchCriteria ( &$repository ) {
+		if (RequestContext::value($this->_partStructFieldName)) {
+			$idManager =& Services::getService("Id");
+			
+			$idStrings = explode("_____", RequestContext::value($this->_partStructFieldName));
+			$selectedRecordStructId =& $idManager->getId($idStrings[0]);
+			$selectedPartStructId =& $idManager->getId($idStrings[1]);
+			
+			$recordStruct =& $repository->getRecordStructure($selectedRecordStructId);
+			$partStruct =& $recordStruct->getPartStructure($selectedPartStructId);
+			
+			$value =& $partStruct->createValueObjectFromString(
+				urldecode(RequestContext::value($this->_valueFieldName)));
+			
+			return array (
+				'RecordStructureId' => $selectedRecordStructId,
+				'PartStructureId' => $selectedPartStructId,
+				'AuthoritativeValue' => $value);
+		} else {
+			return false;
+		}
 	}
 	
 	/**

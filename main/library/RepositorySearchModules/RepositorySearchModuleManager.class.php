@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositorySearchModuleManager.class.php,v 1.7 2006/04/27 18:15:12 adamfranco Exp $
+ * @version $Id: RepositorySearchModuleManager.class.php,v 1.8 2006/04/27 21:02:57 adamfranco Exp $
  */
 
 /**
@@ -21,8 +21,8 @@ require_once(dirname(__FILE__)."/modules/PartAndValuesModule.class.php");
  * to the appropriate RepositorySearchModule based on their types.
  * 
  * @package polyphony.library.repository.search
- * @version $Id: RepositorySearchModuleManager.class.php,v 1.7 2006/04/27 18:15:12 adamfranco Exp $
- * @since $Date: 2006/04/27 18:15:12 $
+ * @version $Id: RepositorySearchModuleManager.class.php,v 1.8 2006/04/27 21:02:57 adamfranco Exp $
+ * @since $Date: 2006/04/27 21:02:57 $
  * @copyright 2004 Middlebury College
  */
 
@@ -157,7 +157,7 @@ class RepositorySearchModuleManager {
 	 * @access public
 	 * @since 10/28/04
 	 */
-	function getSearchCriteria ( & $searchType ) {
+	function getSearchCriteria ( &$repository, &$searchType ) {
 		ArgumentValidator::validate($searchType, new ExtendsValidatorRule("Type"));
 				
 		$typeKey = $searchType->getDomain()
@@ -167,7 +167,7 @@ class RepositorySearchModuleManager {
 		if (!is_object($this->_modules[$typeKey]))
 			throwError(new Error("Unsupported Search Type, '$typeKey'", "RepositorySearchModuleManager", true));
 		
-		return $this->_modules[$typeKey]->getSearchCriteria();
+		return $this->_modules[$typeKey]->getSearchCriteria($repository);
 	}
 	
 	/**
@@ -179,7 +179,7 @@ class RepositorySearchModuleManager {
 	 * @access public
 	 * @since 10/28/04
 	 */
-	function getCurrentValues ( & $searchType ) {
+	function getCurrentValues ( &$searchType ) {
 		ArgumentValidator::validate($searchType, new ExtendsValidatorRule("Type"));
 				
 		$typeKey = $searchType->getDomain()

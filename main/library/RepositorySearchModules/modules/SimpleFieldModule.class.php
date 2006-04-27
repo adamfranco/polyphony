@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleFieldModule.class.php,v 1.5 2006/04/26 21:40:29 adamfranco Exp $
+ * @version $Id: SimpleFieldModule.class.php,v 1.6 2006/04/27 21:02:58 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleFieldModule.class.php,v 1.5 2006/04/26 21:40:29 adamfranco Exp $
+ * @version $Id: SimpleFieldModule.class.php,v 1.6 2006/04/27 21:02:58 adamfranco Exp $
  */
 
 class SimpleFieldModule {
@@ -72,11 +72,12 @@ class SimpleFieldModule {
 	/**
 	 * Get the formatted search terms based on the submissions of the form
 	 * 
+	 * @param object Repository $repository
 	 * @return mixed
 	 * @access public
 	 * @since 10/28/04
 	 */
-	function getSearchCriteria () {
+	function getSearchCriteria ( &$repository ) {
 		return RequestContext::value($this->_fieldname);
 	}
 	
