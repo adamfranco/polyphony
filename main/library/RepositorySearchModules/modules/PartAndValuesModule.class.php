@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PartAndValuesModule.class.php,v 1.1 2006/04/26 21:40:29 adamfranco Exp $
+ * @version $Id: PartAndValuesModule.class.php,v 1.2 2006/04/27 18:15:12 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PartAndValuesModule.class.php,v 1.1 2006/04/26 21:40:29 adamfranco Exp $
+ * @version $Id: PartAndValuesModule.class.php,v 1.2 2006/04/27 18:15:12 adamfranco Exp $
  */
 
 class PartAndValuesModule {
@@ -30,8 +30,9 @@ class PartAndValuesModule {
 	 * @access public
 	 * @since 10/28/04
 	 */
-	function PartAndValuesModule ( $fieldName ) {
-		$this->_fieldname = $fieldName;
+	function PartAndValuesModule ( $partStructFieldName, $valueFieldName ) {
+		$this->_partStructFieldName = $partStructFieldName;
+		$this->_valueFieldName = $valueFieldName;
 	}
 	
 	/**
@@ -52,9 +53,7 @@ class PartAndValuesModule {
 		print "\t<input type='submit' />\n";
 		print "</div>\n</form>";
 		
-		$form = ob_get_contents();
-		ob_end_clean();
-		return $form;
+		return ob_get_clean();
 	}
 	
 	/**
@@ -66,18 +65,92 @@ class PartAndValuesModule {
 	 * @since 4/26/06
 	 */
 	function createSearchFields (&$repository) {
+		ob_start();
+		
+		print "\n\t\t<select name='";
+		print RequestContext::name($this->_partStructFieldName);
+		print "' onchange='this.form.submit()'>";
+		
+		$idManager =& Services::getService("Id");
+		if (RequestContext::value($this->_partStructFieldName))
+			$selectedPartStructId =& $idManager->getId(
+				RequestContext::value($this->_partStructFieldName));
+		
 		$setManager =& Services::getService("Sets");
 		$recordStructSet =& $setManager->getPersistentSet($repository->getId());
 		$recordStructSet->reset();
+		$recordStructHeadingPrinted = FALSE;
 		while ($recordStructSet->hasNext()) {
+			// Close the record structure group if needed
+			if ($recordStructHeadingPrinted)
+				print "\n\t\t\t</optgroup>";
+			
+			$recordStructHeadingPrinted = FALSE;
 			$recordStruct =& $repository->getRecordStructure($recordStructSet->next());
 			$partStructSet =& $setManager->getPersistentSet($recordStruct->getId());
 			while ($partStructSet->hasNext()) {
 				$partStruct =& $recordStruct->getPartStructure($partStructSet->next());
+				
+				// If the $partStruct has Authoritative values, add them to our menu
+				$authoritativeValues =& $partStruct->getAuthoritativeValues();
+				if ($authoritativeValues->hasNext()) {
+					// Print a heading for the record structure if it isn't printed
+					// yet.
+					if (!$recordStructHeadingPrinted) {
+						print "\n\t\t\t<optgroup label='";
+						print $recordStruct->getDisplayName();
+						print "'>";
+						$recordStructHeadingPrinted = TRUE;
+					}
 					
+					$partStructId =& $partStruct->getId();
+					print "\n\t\t\t\t<option ";
+					print " value='".$partStructId->getIdString()."'";
+					
+					// Make sure that we keep either the selected part Structure
+					// or the first one around for populating the Authority List
+					if (isset($selectedPartStructId)) {
+						if ($selectedPartStructId->isEqual($partStructId)) {
+							$selectedPartStruct =& $partStruct;
+							print " selected='selected'";
+						}
+					} else if (!isset($selectedPartStruct)) {
+						$selectedPartStruct =& $partStruct;
+						print " selected='selected'";
+					}
+					
+					print ">";
+					print $partStruct->getDisplayName();
+					print "</option>";					
+				}
 			}
 		}
-		return "\t<input type='text' name='".RequestContext::name($this->_fieldname)."' value=\"".RequestContext::value($this->_fieldname)."\" />\n";
+		
+		if (!isset($selectedPartStruct)) {
+			print "\n\t\t\t<option value=''>"._("No authoritative values are defined.")."</option>";
+		}
+		print "\n\t\t</select>";
+		
+		if (isset($selectedPartStruct)) {
+			print "\n\t\t<select name='";
+			print RequestContext::name($this->_valueFieldName);
+			print "' onchange='this.form.submit'>";
+			print "\n\t\t\t<option value=''>"._("Please select a value...")."</option>";
+			
+			$authoritativeValues =& $selectedPartStruct->getAuthoritativeValues();
+			while ($authoritativeValues->hasNext()) {
+				$value =& $authoritativeValues->next();
+				print "\n\t\t\t<option";
+				print " value='".urlencode($value->asString())."'";
+				if (RequestContext::value($this->_valueFieldName) == urlencode($value->asString()))
+					print " selected='selected'";
+				print ">".$value->asString()."</option>";
+			}
+			
+			print "\n\t\t</select>";
+		}
+		
+		return ob_get_clean();
 	}
 	
 	/**
@@ -88,7 +161,30 @@ class PartAndValuesModule {
 	 * @since 10/28/04
 	 */
 	function getSearchCriteria () {
-		return RequestContext::value($this->_fieldname);
+		return array (
+			'PartStructId' => RequestContext::value($this->_partStructFieldName),
+			'AuthoritativeValue' => urldecode(RequestContext::value($this->_valueFieldName)));
+	}
+	
+	/**
+	 * Get an array of the current values to be added to a url. The keys of the
+	 * arrays are the field-names in the appropriate context.
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 04/25/06
+	 */
+	function getCurrentValues () {
+		if (RequestContext::value($this->_partStructFieldName)
+			&& RequestContext::value($this->_valueFieldName)) 
+		{
+			return array(
+						RequestContext::name($this->_partStructFieldName) => 
+						RequestContext::value($this->_partStructFieldName),
+						RequestContext::name($this->_valueFieldName) => 
+						RequestContext::value($this->_valueFieldName));
+		} else
+			return array();
 	}
 }
 

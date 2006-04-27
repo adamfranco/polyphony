@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositorySearchModuleManager.class.php,v 1.6 2006/04/26 21:40:29 adamfranco Exp $
+ * @version $Id: RepositorySearchModuleManager.class.php,v 1.7 2006/04/27 18:15:12 adamfranco Exp $
  */
 
 /**
@@ -21,8 +21,8 @@ require_once(dirname(__FILE__)."/modules/PartAndValuesModule.class.php");
  * to the appropriate RepositorySearchModule based on their types.
  * 
  * @package polyphony.library.repository.search
- * @version $Id: RepositorySearchModuleManager.class.php,v 1.6 2006/04/26 21:40:29 adamfranco Exp $
- * @since $Date: 2006/04/26 21:40:29 $
+ * @version $Id: RepositorySearchModuleManager.class.php,v 1.7 2006/04/27 18:15:12 adamfranco Exp $
+ * @since $Date: 2006/04/27 18:15:12 $
  * @copyright 2004 Middlebury College
  */
 
@@ -39,7 +39,7 @@ class RepositorySearchModuleManager {
 		$this->_modules = array();
 		$this->_modules["Repository::edu.middlebury.harmoni::Keyword"] =& new SimpleFieldModule("Keyword");
 		$this->_modules["Repository::edu.middlebury.harmoni::DisplayName"] =& new SimpleFieldModule("DisplayName");
-		$this->_modules["Repository::edu.middlebury.harmoni::Authoritative Values"] =& new SimpleFieldModule("AuthoritativeValues");
+		$this->_modules["Repository::edu.middlebury.harmoni::Authoritative Values"] =& new PartAndValuesModule("PartId", "AuthValue");
 		$this->_modules["Repository::edu.middlebury.harmoni::AssetType"] =& new SimpleFieldModule("AssetType");
 		$this->_modules["Repository::edu.middlebury.harmoni::RootAssets"] =& new SimpleFieldModule("RootAssets");
 		$this->_modules["Repository::edu.middlebury.harmoni::Description"] =& new SimpleFieldModule("Description");
