@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: inc.php,v 1.3 2005/08/10 13:27:04 gabeschine Exp $
+ * @version $Id: inc.php,v 1.4 2006/05/01 17:43:10 adamfranco Exp $
  */
 
 /**
@@ -22,3 +22,8 @@ require_once POLYPHONY."/main/library/DataManagerGUI/PrimitiveIO/IOClasses/Primi
 require_once POLYPHONY."/main/library/DataManagerGUI/PrimitiveIO/IOClasses/PrimitiveIO_blob.class.php";
 require_once POLYPHONY."/main/library/DataManagerGUI/PrimitiveIO/IOClasses/PrimitiveIO_datetime.class.php";
 require_once POLYPHONY."/main/library/DataManagerGUI/PrimitiveIO/IOClasses/PrimitiveIO_okitype.class.php";
+
+require_once POLYPHONY."/main/library/DataManagerGUI/PrimitiveIO/IOClasses/PrimitiveIO_Authoritative.class.php";
+require_once POLYPHONY."/main/library/DataManagerGUI/PrimitiveIO/IOClasses/PrimitiveIO_AuthoritativeContainer.class.php";
+require_once POLYPHONY."/main/library/DataManagerGUI/PrimitiveIO/IOClasses/PrimitiveIO_Authoritative_strings.classes.php";
+require_once POLYPHONY."/main/library/DataManagerGUI/PrimitiveIO/IOClasses/PrimitiveIO_Authoritative_datetime.class.php";

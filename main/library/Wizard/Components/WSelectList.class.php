@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.8 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WSelectList.class.php,v 1.9 2006/05/01 17:43:10 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.8 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WSelectList.class.php,v 1.9 2006/05/01 17:43:10 adamfranco Exp $
  */
 class WSelectList 
 	extends WizardComponent 
@@ -58,11 +58,15 @@ class WSelectList
 	 * @return void
 	 */
 	function setValue ($value) {
-		$this->_value = $value;
+// 		ArgumentValidator::validate($value, StringValidatorRule::getRule());
+		if (is_object($value))
+			$this->_value = $value->asString();
+		else
+			$this->_value = $value;
 	}
 	
 	/**
-	 * Adds a radio option to this list.
+	 * Adds an option to this list.
 	 * @param string $value The short value that represents the displayed text.
 	 * @param string $displayText The text to show to the end user.
 	 * @access public
@@ -70,6 +74,19 @@ class WSelectList
 	 */
 	function addOption ($value, $displayText) {
 		$this->_items[$value] = $displayText;
+	}
+	
+	/**
+	 * Answer true if the value passed is a valid option
+	 * 
+	 * @param string $value
+	 * @return boolean
+	 * @access public
+	 * @since 4/28/06
+	 */
+	function isOption ($value) {
+		ArgumentValidator::validate($value, StringValidatorRule::getRule());
+		return array_key_exists($value, $this->_items);
 	}
 	
 	/**
@@ -135,6 +152,10 @@ class WSelectList
 			$val = htmlspecialchars($key, ENT_QUOTES);
 						
 			$m .= "<option value='$val'$selected>".htmlspecialchars($disp)."</option>\n";
+		}
+		
+		if (!$this->isOption($this->_value)) {
+			$m .= "<option value='".htmlspecialchars($this->_value, ENT_QUOTES)."' selected='selected'>"._("(Current value, '").htmlspecialchars($this->_value)." "._("', is not in allowed list.)")."</option>\n";
 		}
 		
 		$m .= "</select>\n";

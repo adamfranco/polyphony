@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.34 2005/12/09 22:12:10 adamfranco Exp $
+ * @version $Id: polyphony.inc.php,v 1.35 2006/05/01 17:43:07 adamfranco Exp $
  */
 
 /**
@@ -33,6 +33,7 @@ require_once(dirname(__FILE__)."/main/library/Wizard/Components/WizardStep.class
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WMultiSelectList.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WPasswordField.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSelectList.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSelectOrNew.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WTextArea.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WVerticalRadioList.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSaveCancelListener.class.php");

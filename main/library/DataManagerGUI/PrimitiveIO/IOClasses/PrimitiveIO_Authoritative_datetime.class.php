@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_datetime.class.php,v 1.5 2006/05/01 17:43:10 adamfranco Exp $
+ * @version $Id: PrimitiveIO_Authoritative_datetime.class.php,v 1.1 2006/05/01 17:43:10 adamfranco Exp $
  */
 
 /**
@@ -16,11 +16,14 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_datetime.class.php,v 1.5 2006/05/01 17:43:10 adamfranco Exp $
+ * @version $Id: PrimitiveIO_Authoritative_datetime.class.php,v 1.1 2006/05/01 17:43:10 adamfranco Exp $
  */
-class PrimitiveIO_datetime extends WTextField /* implements PrimitiveIO */ {
+class PrimitiveIO_Authoritative_datetime
+	extends PrimitiveIO_Authoritative 
+	/* implements PrimitiveIO */
+{
 
-	function PrimitiveIO_datetime() {
+	function PrimitiveIO_Authoritative_datetime() {
 		$this->setErrorText(dgettext("polyphony", "Enter a date/time string. (example: YYYY-MM-DD HH:MM:SS)"));
 // 		$this->setErrorRule(new WECNonZeroRegex("[\\w]+"));
 	}
@@ -39,28 +42,6 @@ class PrimitiveIO_datetime extends WTextField /* implements PrimitiveIO */ {
 			return false;
 		}
 		return true;
-	}
-
-	/**
-	 * Sets the value of this Component to the {@link SObject} passed.
-	 * @param ref object $value The {@link SObject} value to use.
-	 *
-	 * @return void
-	 **/
-	function setValue(&$value)
-	{
-		parent::setValue($value->asString());
-	}
-
-	/**
-	 * Sets the value of this Component to the {@link SObject} passed.
-	 * @param ref object $value The {@link SObject} value to use.
-	 *
-	 * @return void
-	 **/
-	function setValueFromSObject(&$value)
-	{
-		$this->setValue($value);
 	}
 
 	/**
