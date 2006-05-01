@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.1 2006/05/01 17:43:10 adamfranco Exp $
+ * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.2 2006/05/01 20:59:36 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.1 2006/05/01 17:43:10 adamfranco Exp $
+ * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.2 2006/05/01 20:59:36 adamfranco Exp $
  */
 class PrimitiveIO_AuthoritativeContainer
 	extends WSelectOrNew
@@ -59,6 +59,27 @@ class PrimitiveIO_AuthoritativeContainer
     	if ($hasMethods->check($this->_select))
 			$this->_select->setSize(40);
     }
+    
+    /**
+	 * Sets the javascript onchange attribute.
+	 * @param string $commands
+	 * @access public
+	 * @return void
+	 */
+	function setOnChange($commands) {
+		$this->_select->setOnChange($commands);
+		$this->_new->setOnChange($commands);
+	}
+	
+	/**
+	 * Sets the text of the field to display until the user enters the field.
+	 * @param string $text
+	 * @access public
+	 * @return void
+	 */
+	function setStartingDisplayText ($text) {
+		$this->_select->setStartingDisplayText($text);
+	}
 	
 	/**
 	 * Add an option to our choose list

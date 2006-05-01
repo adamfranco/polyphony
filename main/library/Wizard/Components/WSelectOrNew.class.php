@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectOrNew.class.php,v 1.1 2006/05/01 17:43:10 adamfranco Exp $
+ * @version $Id: WSelectOrNew.class.php,v 1.2 2006/05/01 20:59:38 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectOrNew.class.php,v 1.1 2006/05/01 17:43:10 adamfranco Exp $
+ * @version $Id: WSelectOrNew.class.php,v 1.2 2006/05/01 20:59:38 adamfranco Exp $
  */
 class WSelectOrNew
 	extends WizardComponentWithChildren 
@@ -133,8 +133,8 @@ class WSelectOrNew
  	 * @since 7/11/05
  	 */
  	function &postCopy () {
- 		$this->_select =& $this->_select->shallowCopy();
- 		$this->_new =& $this->_new->shallowCopy();
+ 		$this->_select =& $this->_select->copy();
+ 		$this->_new =& $this->_new->copy();
  		return $this;
  	}
  	

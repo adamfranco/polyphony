@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WVerifiedChangeInput.class.php,v 1.7 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WVerifiedChangeInput.class.php,v 1.8 2006/05/01 20:59:38 adamfranco Exp $
  */ 
 
 /**
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WVerifiedChangeInput.class.php,v 1.7 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WVerifiedChangeInput.class.php,v 1.8 2006/05/01 20:59:38 adamfranco Exp $
  */
 
 class WVerifiedChangeInput 
@@ -63,8 +63,8 @@ class WVerifiedChangeInput
  	 * @since 7/11/05
  	 */
  	function &postCopy () {
- 		$this->_checkbox =& $this->_checkbox->shallowCopy();
- 		$this->_input =& $this->_input->shallowCopy();
+ 		$this->_checkbox =& $this->_checkbox->copy();
+ 		$this->_input =& $this->_input->copy();
  		return $this;
  	}
     
@@ -116,6 +116,16 @@ class WVerifiedChangeInput
     	} else
 	    	$this->_input->setValue($value);
     }
+    
+    /**
+	 * Sets the text of the field to display until the user enters the field.
+	 * @param string $text
+	 * @access public
+	 * @return void
+	 */
+	function setStartingDisplayText ($text) {
+		$this->_input->setStartingDisplayText($text);
+	}
     
     /**
      * Set the checked state of the checkbox

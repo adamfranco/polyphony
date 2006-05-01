@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_Authoritative.class.php,v 1.1 2006/05/01 17:43:10 adamfranco Exp $
+ * @version $Id: PrimitiveIO_Authoritative.class.php,v 1.2 2006/05/01 20:59:35 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_Authoritative.class.php,v 1.1 2006/05/01 17:43:10 adamfranco Exp $
+ * @version $Id: PrimitiveIO_Authoritative.class.php,v 1.2 2006/05/01 20:59:35 adamfranco Exp $
  */
 class PrimitiveIO_Authoritative 
 	extends WSelectList
@@ -31,7 +31,7 @@ class PrimitiveIO_Authoritative
 	 *
 	 * @return void
 	 **/
-	function setValue(&$value)
+	function setValue($value)
 	{
 		if (is_object($value)) {
 			ArgumentValidator::validate($value, HasMethodsValidatorRule::getRule("asString"));

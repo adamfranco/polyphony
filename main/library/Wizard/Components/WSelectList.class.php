@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.9 2006/05/01 17:43:10 adamfranco Exp $
+ * @version $Id: WSelectList.class.php,v 1.10 2006/05/01 20:59:38 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.9 2006/05/01 17:43:10 adamfranco Exp $
+ * @version $Id: WSelectList.class.php,v 1.10 2006/05/01 20:59:38 adamfranco Exp $
  */
 class WSelectList 
 	extends WizardComponent 
@@ -50,6 +50,20 @@ class WSelectList
 	function setStyle ($style) {
 		$this->_style = $style;
 	}
+	
+	/**
+	 * Sets the text of the field to display until the user enters the field.
+	 * @param string $text
+	 * @access public
+	 * @return void
+	 */
+	function setStartingDisplayText ($text) {
+		if (!$this->isOption('_starting_display')) {
+			$this->addOption('_starting_display', $text);
+		}
+		$this->setValue('_starting_display');
+	}
+	
 	
 	/**
 	 * Sets the value of this radio button group.
@@ -85,8 +99,11 @@ class WSelectList
 	 * @since 4/28/06
 	 */
 	function isOption ($value) {
-		ArgumentValidator::validate($value, StringValidatorRule::getRule());
-		return array_key_exists($value, $this->_items);
+		$rule =& StringValidatorRule::getRule();
+		if ($rule->check($value))
+			return array_key_exists($value, $this->_items);
+		else
+			return array_key_exists('', $this->_items);
 	}
 	
 	/**
@@ -110,7 +127,11 @@ class WSelectList
 	 * @return mixed
 	 */
 	function getAllValues () {
-		return $this->_value;
+		if ($this->_value == '_starting_display')
+			return null;
+		else
+			return $this->_value;
+			
 	}
 	
 	/**
