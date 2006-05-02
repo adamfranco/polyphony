@@ -5,11 +5,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.3 2006/01/18 15:42:55 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.4 2006/05/02 20:24:00 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
-require_once(POLYPHONY."/main/library/Basket/BasketManager.class.php");
+require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
 
 /**
  * 
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/BasketManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.3 2006/01/18 15:42:55 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.4 2006/05/02 20:24:00 adamfranco Exp $
  */
 class addAction 
 	extends MainWindowAction
@@ -62,7 +62,7 @@ class addAction
 		$idManager =& Services::getService("Id");
 		$authZ =& Services::getService("AuthZ");
 		
-		$basket =& BasketManager::getBasket();
+		$basket =& Basket::instance();
 		$viewAZ =& $idManager->getId("edu.middlebury.authorization.view");
 		$assetIdList = RequestContext::value("assets");
 		$assetIdArray = explode(",", trim($assetIdList));

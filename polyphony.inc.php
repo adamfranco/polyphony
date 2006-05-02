@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.35 2006/05/01 17:43:07 adamfranco Exp $
+ * @version $Id: polyphony.inc.php,v 1.36 2006/05/02 20:23:59 adamfranco Exp $
  */
 
 /**
@@ -59,7 +59,7 @@ require_once(dirname(__FILE__)."/main/library/ResultPrinter/IteratorResultPrinte
 require_once(dirname(__FILE__)."/main/library/ResultPrinter/ArrayResultPrinter.class.php");
 require_once(dirname(__FILE__)."/main/library/ResultPrinter/EmbeddedArrayResultPrinter.class.php");
 
-require_once(dirname(__FILE__)."/main/library/Basket/BasketManager.class.php");
+require_once(dirname(__FILE__)."/main/library/Basket/Basket.class.php");
 
 
 require_once(dirname(__FILE__)."/main/library/RepositoryInputOutputModules/RepositoryInputOutputModuleManager.class.php");
