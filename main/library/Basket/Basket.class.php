@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.1 2006/05/02 20:24:00 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.2 2006/05/02 22:32:32 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.1 2006/05/02 20:24:00 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.2 2006/05/02 22:32:32 adamfranco Exp $
  */
 class Basket 
 	extends OrderedSet
@@ -111,7 +111,119 @@ class Basket
 	 * @since 8/5/05
 	 */
 	function &getSmallBasketBlock () {
-		$block = new Block($this->getSmallBasketHtml(), ALERT_BLOCK);
+		$block =& new Block(
+			"<div id='basket_small'>\n".$this->getSmallBasketHtml()."\n</div>", 
+			ALERT_BLOCK);
+		
+		// controlling JS
+		ob_start();
+		$harmoni =& Harmoni::instance();
+		
+		$placeHolderUrl = POLYPHONY_PATH."/main/library/Basket/icons/1x1.png";
+		
+		$harmoni->request->startNamespace("basket");
+		$addBasketURL = str_replace("&amp;", "&", 
+			$harmoni->request->quickURL("basket", "addAjax", array("assets" => "xxxxx")));
+		$harmoni->request->endNamespace();
+		
+		print<<<END
+
+<script type='text/javascript'>
+// <![CDATA[
+	
+	/**
+	 * Add the asset ids to the basket and refresh the basket contents
+	 * 
+	 * @param array idArray
+	 * @return void
+	 * @access public
+	 * @since 5/2/06
+	 */
+	function addAssetsToBasket ( idArray ) {
+		if (idArray.length == 0)
+			return;
+			
+		
+		// Get the basket element
+		var basketElement = getElementFromDocument('basket_small');
+		var basketContentsElement = getElementFromDocument('basket_small_contents');
+		
+		// Add placeholders to the basket
+		for (var i = 0; i < idArray.length; i++) {
+			var elem = document.createElement('img');
+			elem.style.border = '1px solid';
+			elem.style.margin = '5px';
+			elem.style.height = '30px';
+			elem.style.width = '30px';
+			elem.style.verticalAlign = 'middle';
+			elem.src = '$placeHolderUrl';
+			basketContentsElement.appendChild(elem);
+			basketContentsElement.appendChild(document.createTextNode("\\n"));
+		}
+		
+		// Build the destination url
+		var addBasketURL = new String('$addBasketURL');
+		var regex = new RegExp("xxxxx");
+		addBasketURL = addBasketURL.replace(regex, idArray.join(','));
+		
+		
+		/*********************************************************
+		 * Do the AJAX request and repopulate the basket with 
+		 * the contents of the result
+		 *********************************************************/
+					
+		// branch for native XMLHttpRequest object (Mozilla, Safari, etc)
+		if (window.XMLHttpRequest)
+			var req = new XMLHttpRequest();
+			
+		// branch for IE/Windows ActiveX version
+		else if (window.ActiveXObject)
+			var req = new ActiveXObject("Microsoft.XMLHTTP");
+		
+		
+		if (req) {
+			req.onreadystatechange = function () {
+				// only if req shows "loaded"
+				if (req.readyState == 4) {
+					// only if we get a good load should we continue.
+					if (req.status == 200) {
+						basketElement.innerHTML = req.responseText;
+					} else {
+						alert("There was a problem retrieving the XML data:\\n" +
+							req.statusText);
+					}
+				}
+			}
+			
+			req.open("GET", addBasketURL, true);
+			req.send(null);
+		}
+	}
+	
+	/**
+	 * Answer the element of the document by id.
+	 * 
+	 * @param string id
+	 * @return object The html element
+	 * @access public
+	 * @since 8/25/05
+	 */
+	function getElementFromDocument(id) {
+		// Gecko, KHTML, Opera, IE6+
+		if (document.getElementById) {
+			return document.getElementById(id);
+		}
+		// IE 4-5
+		if (document.all) {
+			return document.all[id];
+		}			
+	}
+	
+// ]]>
+</script>
+END;
+		
+		$block->setPostHTML(ob_get_clean());
 		
 		return $block;
 	}
@@ -131,30 +243,60 @@ class Basket
 		$this->clean();
 		
 		ob_start();
-		print "<a href='";
+		print "\n\t<a href='";
 		print $harmoni->request->quickURL("basket", "view");
 		print "'>";
-		print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/basket.png' height='25px' border='0' alt='"._("Basket")."' align='middle' /></a>";
-		print "<a href='";
+		print "\n\t\t<img src='".POLYPHONY_PATH."/main/library/Basket/icons/basket.png' height='25px' border='0' alt='"._("Basket")."' align='middle' />\n\t</a>";
+		print "\n\t<a href='";
 		print $harmoni->request->quickURL("basket", "view");
 		print "'>";
 		print "(".$this->count()." "._("items").")";
 		print "</a>";
 		
 		if ($this->hasNext()) {
-			print "\n\t\t<div style='text-align: left;'>";
+			print "\n\t<div id='basket_small_contents' style='text-align: left;'>";
 			while ($this->hasNext()) {
 				$id =& $this->next();
 				$thumbnailURL = RepositoryInputOutputModuleManager::getThumbnailUrlForAsset($id);
 				if ($thumbnailURL !== FALSE) {				
 	// 				print "\n\t<br />";
-					print "\n\t\t<img src='$thumbnailURL' alt='Thumbnail Image' border='0' style='max-height: 50px; max-width: 50px; vertical-align: middle;' />";
+					print "\n\t\t<img src='$thumbnailURL' alt='Thumbnail Image' border='0' style='max-height: 50px; max-width: 50px; vertical-align: middle; margin: 5px;' />";
 				}
 			}
-			print "\n\t\t</div>";
+			print "\n\t</div>";
 		}
 		
+		$harmoni->request->endNamespace();		
+		return ob_get_clean();
+	}
+	
+	/**
+	 * Answer the link to add a particular id to the basket
+	 * 
+	 * @param object Id $assetId
+	 * @return string XHTML
+	 * @access public
+	 * @since 5/2/06
+	 */
+	function getAddLink ( &$assetId ) {
+		$harmoni =& Harmoni::instance();
+		$harmoni->request->startNamespace("basket");
+		ob_start();
+		
+// 		print "<a href='".$harmoni->request->quickURL("basket", "add",
+// 			array("assets" => $assetId->getIdString()));
+// 		print "' title='". _('add to basket')."'>";
+		print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/basketplus.png'";
+		print " height='25px' border='0' alt='"._('Add to <em>Basket</em>')."' ";
+		print " style='cursor: pointer;'";
+		print " onclick='addAssetsToBasket(new Array(\"".$assetId->getIdString()."\"));'";
+		print "/>";
+// 		print "</a>";
+		
 		$harmoni->request->endNamespace();
+		$harmoni->history->markReturnURL("polyphony/basket",
+			$harmoni->request->mkURLWithPassthrough());
+				
 		return ob_get_clean();
 	}
 	
