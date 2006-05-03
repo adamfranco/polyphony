@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.2 2006/05/02 22:32:32 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.3 2006/05/03 14:45:13 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.2 2006/05/02 22:32:32 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.3 2006/05/03 14:45:13 adamfranco Exp $
  */
 class Basket 
 	extends OrderedSet
@@ -253,8 +253,8 @@ END;
 		print "(".$this->count()." "._("items").")";
 		print "</a>";
 		
+		print "\n\t<div id='basket_small_contents' style='text-align: left;'>";
 		if ($this->hasNext()) {
-			print "\n\t<div id='basket_small_contents' style='text-align: left;'>";
 			while ($this->hasNext()) {
 				$id =& $this->next();
 				$thumbnailURL = RepositoryInputOutputModuleManager::getThumbnailUrlForAsset($id);
@@ -263,8 +263,8 @@ END;
 					print "\n\t\t<img src='$thumbnailURL' alt='Thumbnail Image' border='0' style='max-height: 50px; max-width: 50px; vertical-align: middle; margin: 5px;' />";
 				}
 			}
-			print "\n\t</div>";
 		}
+		print "\n\t</div>";
 		
 		$harmoni->request->endNamespace();		
 		return ob_get_clean();
