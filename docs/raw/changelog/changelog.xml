@@ -4,13 +4,26 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.30 2006/02/27 19:23:08 cws-midd Exp $
+ @version $Id: changelog.xml,v 1.31 2006/05/03 15:16:52 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
 	<version number="0.4.2" date="The future">
+		<change author='adam'>
+			Reworked the basket library be more straight-forward, getting rid of 
+			the uneeded "BasketManager" and putting all of the functionality in 
+			the "Basket" singleton.
+		</change>
+		<change author='adam'>
+			Made the Add-Asset-To-Basket process work via AJAX rather than reloading
+			the page.
+		</change>
+		<new author='adam'>
+			Added the WSelectOrNew class to provide an interface element in which
+			a choice could be made or new value could be added.
+		</new>
 		<change author='chris'>
 			Importer class now uses StatusStars to keep track of progress and 
 			keep user informed
