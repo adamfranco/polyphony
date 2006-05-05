@@ -3,6 +3,21 @@
 Name: Polyphony ChangeLog
 
 
+v. 0.5.0 (2006-05-05)
+----------------------------------------------------
+		
+	* Change: Reworked the basket library be more straight-forward, getting rid of the uneeded "BasketManager" and putting all of the functionality in the "Basket" singleton. (Adam Franco)
+		
+	* Change: Made the Add-Asset-To-Basket process work via AJAX rather than reloading the page. (Adam Franco)
+		
+	* New feature: Added the WSelectOrNew class to provide an interface element in which a choice could be made or new value could be added. (Adam Franco)
+		
+	* Change: Importer class now uses StatusStars to keep track of progress and keep user informed (Christopher W. Shubert)
+		
+	* New feature: StatusStars class added, is a very simple asterisk status bar, created for the importer, but works anywhere. (direct output so no apache related timeouts) (Christopher W. Shubert)
+		
+	* New feature: Now caches resized versions of images. (Adam Franco)
+	
 v. 0.4.1 (2005-02-09)
 ----------------------------------------------------
 		

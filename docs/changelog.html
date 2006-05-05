@@ -3,7 +3,33 @@
 	h1, h2 {color: #005;}
 	h1 {font-size: 18pt;}
 	li {padding-bottom: 3px;}
-	</style><div style="font-family: Verdana; font-size: 12px;"><h1>Polyphony ChangeLog</h1><h2>Version 0.4.1</h2><h3>2005-02-09</h3><ul>
+	</style><div style="font-family: Verdana; font-size: 12px;"><h1>Polyphony ChangeLog</h1><h2>Version 0.5.0</h2><h3>2006-05-05</h3><ul>
+		<li/> Change:  
+			Reworked the basket library be more straight-forward, getting rid of 
+			the uneeded "BasketManager" and putting all of the functionality in 
+			the "Basket" singleton.
+		 (<i>Adam Franco</i>)
+		<li/> Change:  
+			Made the Add-Asset-To-Basket process work via AJAX rather than reloading
+			the page.
+		 (<i>Adam Franco</i>)
+		<li/> New feature:  
+			Added the WSelectOrNew class to provide an interface element in which
+			a choice could be made or new value could be added.
+		 (<i>Adam Franco</i>)
+		<li/> Change:  
+			Importer class now uses StatusStars to keep track of progress and 
+			keep user informed
+		 (<i>Christopher W. Shubert</i>)
+		<li/> New feature:  
+			StatusStars class added, is a very simple asterisk status bar,
+			created for the importer, but works anywhere. (direct output so no
+			apache related timeouts)
+		 (<i>Christopher W. Shubert</i>)
+		<li/> New feature:  
+			Now caches resized versions of images.
+		 (<i>Adam Franco</i>)
+	</ul><br/><h2>Version 0.4.1</h2><h3>2005-02-09</h3><ul>
 		<li/> Bug Fix:
 	 
 			Fixed return by reference errors that threw notices in PHP 4.4
