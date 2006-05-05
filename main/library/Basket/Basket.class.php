@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.3 2006/05/03 14:45:13 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.4 2006/05/05 15:44:20 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.3 2006/05/03 14:45:13 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.4 2006/05/05 15:44:20 adamfranco Exp $
  */
 class Basket 
 	extends OrderedSet
@@ -124,12 +124,24 @@ class Basket
 		$harmoni->request->startNamespace("basket");
 		$addBasketURL = str_replace("&amp;", "&", 
 			$harmoni->request->quickURL("basket", "addAjax", array("assets" => "xxxxx")));
+		$emptyBasketURL = str_replace("&amp;", "&", 
+			$harmoni->request->quickURL("basket", "emptyAjax"));
 		$harmoni->request->endNamespace();
 		
 		print<<<END
 
 <script type='text/javascript'>
 // <![CDATA[
+
+	/**
+	 * Basket class
+	 * Contains functions for interacting with the basket
+	 * 
+	 * @since 5/5/06
+	 */
+	function Basket () {
+		
+	}
 	
 	/**
 	 * Add the asset ids to the basket and refresh the basket contents
@@ -139,7 +151,7 @@ class Basket
 	 * @access public
 	 * @since 5/2/06
 	 */
-	function addAssetsToBasket ( idArray ) {
+	Basket.addAssets = function ( idArray ) {
 		if (idArray.length == 0)
 			return;
 			
@@ -165,8 +177,29 @@ class Basket
 		var addBasketURL = new String('$addBasketURL');
 		var regex = new RegExp("xxxxx");
 		addBasketURL = addBasketURL.replace(regex, idArray.join(','));
-		
-		
+		Basket.reload(addBasketURL);
+	}
+	
+	/**
+	 * Empty the basket and refresh the small basket contents
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 5/5/06
+	 */
+	Basket.empty = function () {
+		Basket.reload('$emptyBasketURL');
+	}
+	
+	/**
+	 * Reload the small basket display via AJAX
+	 * 
+	 * @param string url
+	 * @return void
+	 * @access public
+	 * @since 5/5/06
+	 */
+	Basket.reload = function ( url ) {
 		/*********************************************************
 		 * Do the AJAX request and repopulate the basket with 
 		 * the contents of the result
@@ -187,6 +220,7 @@ class Basket
 				if (req.readyState == 4) {
 					// only if we get a good load should we continue.
 					if (req.status == 200) {
+						var basketElement = getElementFromDocument('basket_small');
 						basketElement.innerHTML = req.responseText;
 					} else {
 						alert("There was a problem retrieving the XML data:\\n" +
@@ -195,7 +229,7 @@ class Basket
 				}
 			}
 			
-			req.open("GET", addBasketURL, true);
+			req.open("GET", url, true);
 			req.send(null);
 		}
 	}
