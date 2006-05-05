@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.4 2006/05/05 15:44:20 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.5 2006/05/05 19:56:13 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.4 2006/05/05 15:44:20 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.5 2006/05/05 19:56:13 adamfranco Exp $
  */
 class Basket 
 	extends OrderedSet
@@ -323,7 +323,7 @@ END;
 		print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/basketplus.png'";
 		print " height='25px' border='0' alt='"._('Add to <em>Basket</em>')."' ";
 		print " style='cursor: pointer;'";
-		print " onclick='addAssetsToBasket(new Array(\"".$assetId->getIdString()."\"));'";
+		print " onclick='Basket.addAssets(new Array(\"".$assetId->getIdString()."\"));'";
 		print "/>";
 // 		print "</a>";
 		
