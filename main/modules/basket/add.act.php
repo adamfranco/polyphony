@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.4 2006/05/02 20:24:00 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.5 2006/05/12 18:29:40 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.4 2006/05/02 20:24:00 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.5 2006/05/12 18:29:40 adamfranco Exp $
  */
 class addAction 
 	extends MainWindowAction
@@ -44,7 +44,7 @@ class addAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		return _("Add an Item to Your Basket");
+		return _("Add an Item to Your Selection");
 	}
 	
 	/**

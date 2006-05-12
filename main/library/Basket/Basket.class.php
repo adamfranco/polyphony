@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.5 2006/05/05 19:56:13 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.6 2006/05/12 18:29:39 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.5 2006/05/05 19:56:13 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.6 2006/05/12 18:29:39 adamfranco Exp $
  */
 class Basket 
 	extends OrderedSet
@@ -280,10 +280,7 @@ END;
 		print "\n\t<a href='";
 		print $harmoni->request->quickURL("basket", "view");
 		print "'>";
-		print "\n\t\t<img src='".POLYPHONY_PATH."/main/library/Basket/icons/basket.png' height='25px' border='0' alt='"._("Basket")."' align='middle' />\n\t</a>";
-		print "\n\t<a href='";
-		print $harmoni->request->quickURL("basket", "view");
-		print "'>";
+		print _("Selection: ");
 		print "(".$this->count()." "._("items").")";
 		print "</a>";
 		
@@ -317,15 +314,11 @@ END;
 		$harmoni->request->startNamespace("basket");
 		ob_start();
 		
-// 		print "<a href='".$harmoni->request->quickURL("basket", "add",
-// 			array("assets" => $assetId->getIdString()));
-// 		print "' title='". _('add to basket')."'>";
-		print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/basketplus.png'";
-		print " height='25px' border='0' alt='"._('Add to <em>Basket</em>')."' ";
+		print "<a ";
 		print " style='cursor: pointer;'";
 		print " onclick='Basket.addAssets(new Array(\"".$assetId->getIdString()."\"));'";
-		print "/>";
-// 		print "</a>";
+		print ">"._('+ Selection');
+		print "</a>";
 		
 		$harmoni->request->endNamespace();
 		$harmoni->history->markReturnURL("polyphony/basket",

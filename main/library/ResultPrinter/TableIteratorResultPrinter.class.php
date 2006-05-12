@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TableIteratorResultPrinter.class.php,v 1.11 2006/03/09 20:38:16 adamfranco Exp $
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.12 2006/05/12 18:29:40 adamfranco Exp $
  */
  
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TableIteratorResultPrinter.class.php,v 1.11 2006/03/09 20:38:16 adamfranco Exp $
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.12 2006/05/12 18:29:40 adamfranco Exp $
  */
 
 class TableIteratorResultPrinter 
@@ -85,11 +85,8 @@ class TableIteratorResultPrinter
 		
 		$defaultTextDomain = textdomain("polyphony");
 		
-		if ($harmoni->request->get('starting_number'))
-			$startingNumber = $harmoni->request->get('starting_number');
-		else
-			$startingNumber = 1;
-		
+		$startingNumber = $this->getStartingNumber();
+				
 		// print out all of the rows.
 		
 		$endingNumber = $startingNumber+$this->_pageSize-1;

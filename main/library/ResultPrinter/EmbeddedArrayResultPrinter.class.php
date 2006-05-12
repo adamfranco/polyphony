@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.7 2006/02/27 19:50:24 adamfranco Exp $
+ * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.8 2006/05/12 18:29:40 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -18,7 +18,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.7 2006/02/27 19:50:24 adamfranco Exp $
+ * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.8 2006/05/12 18:29:40 adamfranco Exp $
  */
 
 class EmbeddedArrayResultPrinter 
@@ -183,10 +183,7 @@ class EmbeddedArrayResultPrinter
 		$defaultTextDomain = textdomain("polyphony");
 		$harmoni =& Harmoni::instance();
 
-		if ($harmoni->request->get('starting_number'))
-			$startingNumber = $harmoni->request->get('starting_number');
-		else
-			$startingNumber = 1;
+		$startingNumber = $this->getStartingNumber();
 			
 		if ($this->_overridePage > 0) $startingNumber = $this->_overridePage;
 

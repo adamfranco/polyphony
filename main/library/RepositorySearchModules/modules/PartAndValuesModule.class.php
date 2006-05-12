@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PartAndValuesModule.class.php,v 1.3 2006/04/27 21:02:58 adamfranco Exp $
+ * @version $Id: PartAndValuesModule.class.php,v 1.4 2006/05/12 18:29:40 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PartAndValuesModule.class.php,v 1.3 2006/04/27 21:02:58 adamfranco Exp $
+ * @version $Id: PartAndValuesModule.class.php,v 1.4 2006/05/12 18:29:40 adamfranco Exp $
  */
 
 class PartAndValuesModule {
@@ -174,7 +174,9 @@ class PartAndValuesModule {
 	 * @since 04/25/06
 	 */
 	function getSearchCriteria ( &$repository ) {
-		if (RequestContext::value($this->_partStructFieldName)) {
+		if (RequestContext::value($this->_partStructFieldName) 
+			&& RequestContext::value($this->_valueFieldName)) 
+		{
 			$idManager =& Services::getService("Id");
 			
 			$idStrings = explode("_____", RequestContext::value($this->_partStructFieldName));

@@ -4,12 +4,20 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.32 2006/05/05 17:41:43 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.33 2006/05/12 18:29:39 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
+	<version number="5.1" date="The Nebulous Future">
+		<change author='adam'>
+			"Basket" is now being displayed as "Selection"
+		</change>
+		<change author='adam'>
+			Result printers now pull more from the common abstract class.
+		</change>
+	</version>
 	<version number="0.5.0" date="2006-05-05">
 		<change author='adam'>
 			Reworked the basket library be more straight-forward, getting rid of 

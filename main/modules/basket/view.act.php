@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.9 2006/05/02 20:24:00 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.10 2006/05/12 18:29:40 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.9 2006/05/02 20:24:00 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.10 2006/05/12 18:29:40 adamfranco Exp $
  */
 class viewAction 
 	extends MainWindowAction
@@ -44,7 +44,7 @@ class viewAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		return _("View Your Basket");
+		return _("View Your Selection");
 	}
 	
 	/**
@@ -76,10 +76,10 @@ class viewAction
 //		BasketPrinter::printBasketFunctionLinks($harmoni, $basket);
 
 		print "<a href=\"".$harmoni->request->quickURL("basket", "export").
-			"\">"._("Export Basket(<em>Assets</em>)")."</a>";
+			"\">"._("Export Selection(<em>Assets</em>)")."</a>";
 		print " | ";
 		print "<a href=\"".$harmoni->request->quickURL("basket", "empty").
-			"\">"._("Empty Basket")."</a>";
+			"\">"._("Empty Selection")."</a>";
 
 		$layout =& new Block(ob_get_contents(), STANDARD_BLOCK);
 		ob_end_clean();
@@ -151,7 +151,7 @@ function printAssetShort(&$assetId) {
 	print "\n<a href='";
 	print $harmoni->request->quickURL("basket", "remove", array('asset_id' => $assetId->getIdString()));
 	print "' title='". _('remove')."'>";
-	print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/basketminus.png' width='40px' border='0' alt='"._("Remove from Basket")."' />";
+	print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/basketminus.png' width='40px' border='0' alt='"._("Remove from Selection")."' />";
 	print "</a>";
 	
 	print "\n<br/><a href='";

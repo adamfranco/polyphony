@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.20 2006/01/18 19:44:40 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.21 2006/05/12 18:29:40 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.20 2006/01/18 19:44:40 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.21 2006/05/12 18:29:40 adamfranco Exp $
  */
 
 class ArrayResultPrinter 
@@ -74,10 +74,7 @@ class ArrayResultPrinter
 	function &getLayout (& $harmoni, $shouldPrintFunction = NULL) {
 		$defaultTextDomain = textdomain("polyphony");
 		
-		if ($harmoni->request->get('starting_number'))
-			$startingNumber = $harmoni->request->get('starting_number');
-		else
-			$startingNumber = 1;
+		$startingNumber = $this->getStartingNumber();
 		
 		$yLayout =& new YLayout();
 		$layout =& new Container($yLayout,OTHER,1);

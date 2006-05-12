@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: emptyAjax.act.php,v 1.1 2006/05/05 17:21:52 adamfranco Exp $
+ * @version $Id: emptyAjax.act.php,v 1.2 2006/05/12 18:29:40 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: emptyAjax.act.php,v 1.1 2006/05/05 17:21:52 adamfranco Exp $
+ * @version $Id: emptyAjax.act.php,v 1.2 2006/05/12 18:29:40 adamfranco Exp $
  */
 class emptyAjaxAction 
 	extends MainWindowAction {
@@ -46,7 +46,7 @@ class emptyAjaxAction
 	 * @since 5/5/06
 	 */
 	function getHeadingText () {
-		return _("Add an Item to Your Basket");
+		return _("Empty Your Selection");
 	}
 	
 	/**

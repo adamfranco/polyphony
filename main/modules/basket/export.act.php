@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.3 2006/05/02 20:24:00 adamfranco Exp $
+ * @version $Id: export.act.php,v 1.4 2006/05/12 18:29:40 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLAssetExporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.3 2006/05/02 20:24:00 adamfranco Exp $
+ * @version $Id: export.act.php,v 1.4 2006/05/12 18:29:40 adamfranco Exp $
  */
 class exportAction 
 	extends MainWindowAction
@@ -77,7 +77,7 @@ class exportAction
 		$harmoni =& Harmoni::Instance();
 		$idManager =& Services::getService("Id");
 
-		return dgettext("polyphony", "Export the <em>Assets</em> in the Basket");
+		return dgettext("polyphony", "Export the <em>Assets</em> in the Selection");
 	}
 
 	/**
@@ -116,8 +116,8 @@ class exportAction
 	function &createWizard () {
 		// Instantiate the wizard, then add our steps.
 		$wizard =& SimpleWizard::withText(
-			"\n<h3>"._("Click <em>Export</em> to Export the Basket")."</h3>".
-			"\n<br/>"._("The current content of the Basket will be exported and presented as an archive for download.  Once the archive is downloaded click <em>Cancel</em> to go back.").
+			"\n<h3>"._("Click <em>Export</em> to Export the Selection")."</h3>".
+			"\n<br/>"._("The current content of the Selection will be exported and presented as an archive for download.  Once the archive is downloaded click <em>Cancel</em> to go back.").
 			"\n<br/><h3>"._("Archive:")."</h3>".
 			"<table border='0' style='margin-top:20px' >\n" .
 			"\n<tr><td>"._("Archive Name: ")."</td>".

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ResultPrinter.abstract.php,v 1.1 2005/12/07 21:17:16 adamfranco Exp $
+ * @version $Id: ResultPrinter.abstract.php,v 1.2 2006/05/12 18:29:40 adamfranco Exp $
  */ 
 
 /**
@@ -18,9 +18,35 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ResultPrinter.abstract.php,v 1.1 2005/12/07 21:17:16 adamfranco Exp $
+ * @version $Id: ResultPrinter.abstract.php,v 1.2 2006/05/12 18:29:40 adamfranco Exp $
  */
 class ResultPrinter {
+
+	/**
+	 * Answer the number of the first asset on our current page
+	 * 
+	 * @return integer 1 through the total number of items
+	 * @access public
+	 * @since 5/11/06
+	 */
+	function getStartingNumber () {
+		if (RequestContext::value('starting_number'))
+			return RequestContext::value('starting_number');
+		else
+			return 1;
+	}
+	
+	/**
+	 * Answer the parameter name used to pass the starting number 
+	 * (for inclusion in other urls).
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 5/11/06
+	 */
+	function startingNumberParam () {
+		return RequestContext::name('starting_number');
+	}
 		
 	/**
 	 * Return a string containing HTML links to other pages of the iterator.
@@ -37,6 +63,9 @@ class ResultPrinter {
 			$harmoni =& Harmoni::instance();
 			
 			ob_start();
+			print "\n<table width='100%'>";
+			print "\n\t<tr>";
+			print "\n\t\t<td>";
 			$numPages = ceil($numItems/$this->_pageSize);
 			
 			if ($this->_pageSize > 1)
@@ -62,13 +91,13 @@ class ResultPrinter {
 			if ($lastPage > $numPages)
 				$lastPage = $numPages;
 			
-			if ($currentPage == 1)
-				print "&lt;&lt; \n";
-			else {
+			if ($currentPage == 1) {
+//				print "&lt;&lt; \n";
+			} else {
 				$url->setValue("starting_number", 1);
-				print "<a href='";
-				print $url->write();
-				print "'>&lt;&lt;</a> \n";
+// 				print "<a href='";
+// 				print $url->write();
+// 				print "'>&lt;&lt;</a> \n";
 				
 				if ($firstPage > 1) {
 					print "<a href='";
@@ -93,9 +122,9 @@ class ResultPrinter {
 					print "</a>\n";
 			}
 			
-			if ($currentPage == $numPages)
-				print " &gt;&gt;\n";
-			else {
+			if ($currentPage == $numPages) {
+//				print " &gt;&gt;\n";
+			} else {
 				$url->setValue("starting_number", (($numPages-1)*$this->_pageSize+1));
 				
 				if ($lastPage < $numPages) {
@@ -106,13 +135,25 @@ class ResultPrinter {
 					print "'>".$numPages."</a> \n";
 				}
 				
-				print " <a href='";
-				print $url->write();
-				print "'>&gt;&gt;</a>\n";
+// 				print " <a href='";
+// 				print $url->write();
+// 				print "'>&gt;&gt;</a>\n";
 			}
 			
+			print "\n\t\t</td>";
 			if ($numPages > 2*$pagesAround + 3) {
-				print " <br/>"._("Jump to page:")." <select onchange='Javascript:jumpToPage(this);'>\n";
+				print "\n\t\t<td style='text-align: center'>";
+			} else {
+				print "\n\t\t<td style='text-align: right'>";
+			}
+			print "(";
+			print $startingNumber;
+			print "-";
+			print ($startingNumber + $this->_pageSize - 1);
+			print " "._("of")." ".$numItems." "._("items").")";
+			
+			if ($numPages > 2*$pagesAround + 3) {
+				print "\n\t\t</td>\n\t\t<td style='text-align: right'>\n\t\t\t"._("Go to page:")." \n\t\t\t<select onchange='Javascript:jumpToPage(this);'>\n";
 				for ($i = 1; $i <= $numPages; $i++) {
 					$value = ($i-1)*$this->_pageSize + 1;
 					print "\t<option value='".$value."'";
@@ -131,6 +172,9 @@ class ResultPrinter {
 				print "\n	}";
 				print "\n//]]>\n</script>\n";
 			}
+			print "\n\t\t</td>";
+			print "\n\t</tr>";
+			print "\n</table>";
 			
 			$html = ob_get_contents();
 			ob_end_clean();
