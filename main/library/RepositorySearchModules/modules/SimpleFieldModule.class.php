@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleFieldModule.class.php,v 1.6 2006/04/27 21:02:58 adamfranco Exp $
+ * @version $Id: SimpleFieldModule.class.php,v 1.7 2006/05/15 21:32:51 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleFieldModule.class.php,v 1.6 2006/04/27 21:02:58 adamfranco Exp $
+ * @version $Id: SimpleFieldModule.class.php,v 1.7 2006/05/15 21:32:51 adamfranco Exp $
  */
 
 class SimpleFieldModule {
@@ -32,6 +32,31 @@ class SimpleFieldModule {
 	 */
 	function SimpleFieldModule ( $fieldName ) {
 		$this->_fieldname = $fieldName;
+		$this->_initilaized = false;
+	}
+	
+	/**
+	 * Initialize this object
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 5/15/06
+	 */
+	function init () {
+		if (!$this->_initilaized) {
+			$harmoni =& Harmoni::instance();
+			$harmoni->request->startNamespace('SimpleFieldModule');
+			
+			$this->_contextFieldName = RequestContext::name($this->_fieldname);
+			if (RequestContext::value($this->_fieldname))
+				$this->_value = RequestContext::value($this->_fieldname);
+			else
+				$this->_value = null;
+	
+			$harmoni->request->endNamespace();
+			
+			$this->_initilaized = true;
+		}
 	}
 	
 	/**
@@ -66,7 +91,8 @@ class SimpleFieldModule {
 	 * @since 4/26/06
 	 */
 	function createSearchFields (&$repository) {
-		return "\t<input type='text' name='".RequestContext::name($this->_fieldname)."' value=\"".RequestContext::value($this->_fieldname)."\" />\n";
+		$this->init();
+		return "\t<input type='text' name='".$this->_contextFieldName."' value=\"".$this->_value."\" />\n";
 	}
 	
 	/**
@@ -78,7 +104,8 @@ class SimpleFieldModule {
 	 * @since 10/28/04
 	 */
 	function getSearchCriteria ( &$repository ) {
-		return RequestContext::value($this->_fieldname);
+		$this->init();
+		return $this->_value;
 	}
 	
 	/**
@@ -90,12 +117,29 @@ class SimpleFieldModule {
 	 * @since 04/25/06
 	 */
 	function getCurrentValues () {
-		if (RequestContext::value($this->_fieldname))
-			return array(
-						RequestContext::name($this->_fieldname) => 
-						RequestContext::value($this->_fieldname));
+		$this->init();
+		if ($this->_value)
+			return array($this->_contextFieldName => $this->_value);
 		else
 			return array();
+	}
+	
+	/**
+	 * Update the current values with data (maybe stored in the session for instance. 
+	 * The keys of the arrays are the field-names in the appropriate context.
+	 * This could have been originally fetched via getCurrentValues
+	 * 
+	 * @param array $values
+	 * @return void
+	 * @access public
+	 * @since 04/25/06
+	 */
+	function setCurrentValues ($values) {
+		$this->init();
+		
+		if (isset($values[$this->_contextFieldName])) {
+			$this->_value = $values[$this->_contextFieldName];
+		}
 	}
 }
 

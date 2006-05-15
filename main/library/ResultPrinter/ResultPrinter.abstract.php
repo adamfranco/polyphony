@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ResultPrinter.abstract.php,v 1.2 2006/05/12 18:29:40 adamfranco Exp $
+ * @version $Id: ResultPrinter.abstract.php,v 1.3 2006/05/15 21:32:52 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ResultPrinter.abstract.php,v 1.2 2006/05/12 18:29:40 adamfranco Exp $
+ * @version $Id: ResultPrinter.abstract.php,v 1.3 2006/05/15 21:32:52 adamfranco Exp $
  */
 class ResultPrinter {
 
@@ -32,8 +32,22 @@ class ResultPrinter {
 	function getStartingNumber () {
 		if (RequestContext::value('starting_number'))
 			return RequestContext::value('starting_number');
+		else if (isset($this->_startingNumber))
+			return $this->_startingNumber;
 		else
 			return 1;
+	}
+	
+	/**
+	 * Set the starting number to use if none is passed
+	 * 
+	 * @param integer $startingNumber
+	 * @return void
+	 * @access public
+	 * @since 5/15/06
+	 */
+	function setStartingNumber ($startingNumber) {
+		$this->_startingNumber = $startingNumber;
 	}
 	
 	/**

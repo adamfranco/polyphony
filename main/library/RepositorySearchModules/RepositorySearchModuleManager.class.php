@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositorySearchModuleManager.class.php,v 1.8 2006/04/27 21:02:57 adamfranco Exp $
+ * @version $Id: RepositorySearchModuleManager.class.php,v 1.9 2006/05/15 21:32:51 adamfranco Exp $
  */
 
 /**
@@ -21,8 +21,8 @@ require_once(dirname(__FILE__)."/modules/PartAndValuesModule.class.php");
  * to the appropriate RepositorySearchModule based on their types.
  * 
  * @package polyphony.library.repository.search
- * @version $Id: RepositorySearchModuleManager.class.php,v 1.8 2006/04/27 21:02:57 adamfranco Exp $
- * @since $Date: 2006/04/27 21:02:57 $
+ * @version $Id: RepositorySearchModuleManager.class.php,v 1.9 2006/05/15 21:32:51 adamfranco Exp $
+ * @since $Date: 2006/05/15 21:32:51 $
  * @copyright 2004 Middlebury College
  */
 
@@ -190,6 +190,30 @@ class RepositorySearchModuleManager {
 			throwError(new Error("Unsupported Search Type, '$typeKey'", "RepositorySearchModuleManager", true));
 		
 		return $this->_modules[$typeKey]->getCurrentValues();
+	}
+	
+	/**
+	 * Update the current values with data (maybe stored in the session for instance. 
+	 * The keys of the arrays are the field-names in the appropriate context.
+	 * This could have been originally fetched via getCurrentValues
+	 * 
+	 * @param object $searchType
+	 * @param array $values
+	 * @return array
+	 * @access public
+	 * @since 10/28/04
+	 */
+	function setCurrentValues ( &$searchType, $values ) {
+		ArgumentValidator::validate($searchType, new ExtendsValidatorRule("Type"));
+				
+		$typeKey = $searchType->getDomain()
+					."::".$searchType->getAuthority()
+					."::".$searchType->getKeyword();
+		
+		if (!is_object($this->_modules[$typeKey]))
+			throwError(new Error("Unsupported Search Type, '$typeKey'", "RepositorySearchModuleManager", true));
+		
+		return $this->_modules[$typeKey]->setCurrentValues($values);
 	}
 }
 

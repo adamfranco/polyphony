@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PartAndValuesModule.class.php,v 1.4 2006/05/12 18:29:40 adamfranco Exp $
+ * @version $Id: PartAndValuesModule.class.php,v 1.5 2006/05/15 21:32:51 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PartAndValuesModule.class.php,v 1.4 2006/05/12 18:29:40 adamfranco Exp $
+ * @version $Id: PartAndValuesModule.class.php,v 1.5 2006/05/15 21:32:51 adamfranco Exp $
  */
 
 class PartAndValuesModule {
@@ -33,6 +33,39 @@ class PartAndValuesModule {
 	function PartAndValuesModule ( $partStructFieldName, $valueFieldName ) {
 		$this->_partStructFieldName = $partStructFieldName;
 		$this->_valueFieldName = $valueFieldName;
+		$this->_initilaized = false;
+	}
+	
+	/**
+	 * Initialize this object
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 5/15/06
+	 */
+	function init () {
+		if (!$this->_initilaized) {
+			$harmoni =& Harmoni::instance();
+			$harmoni->request->startNamespace('PartAndValuesModule');
+			
+			$this->_contextPartStructFieldName = RequestContext::name($this->_partStructFieldName);
+			$this->_contextValueFieldName = RequestContext::name($this->_valueFieldName);
+			
+			if (RequestContext::value($this->_partStructFieldName)) {
+				$this->_partStruct = RequestContext::value($this->_partStructFieldName);
+			} else {
+				$this->_partStruct = null;
+			}
+			
+			if (RequestContext::value($this->_valueFieldName))
+				$this->_value = RequestContext::value($this->_valueFieldName);
+			else
+				$this->_value = null;
+	
+			$harmoni->request->endNamespace();
+			
+			$this->_initilaized = true;
+		}
 	}
 	
 	/**
@@ -65,15 +98,15 @@ class PartAndValuesModule {
 	 * @since 4/26/06
 	 */
 	function createSearchFields (&$repository) {
+		$this->init();
 		ob_start();
 		
-		print "\n\t\t<select name='";
-		print RequestContext::name($this->_partStructFieldName);
-		print "' onchange='this.form.submit()'>";
+		print "\n\t\t<select name='".$this->_contextPartStructFieldName."'";
+		print " onchange='this.form.submit()'>";
 		
 		$idManager =& Services::getService("Id");
-		if (RequestContext::value($this->_partStructFieldName)) {
-			$idStrings = explode("_____", RequestContext::value($this->_partStructFieldName));
+		if ($this->_partStruct) {
+			$idStrings = explode("_____", $this->_partStruct);
 			$selectedRecordStructId =& $idManager->getId($idStrings[0]);
 			$selectedPartStructId =& $idManager->getId($idStrings[1]);
 		}
@@ -139,9 +172,7 @@ class PartAndValuesModule {
 		print "\n\t\t</select>";
 		
 		if (isset($selectedPartStruct)) {
-			print "\n\t\t<select name='";
-			print RequestContext::name($this->_valueFieldName);
-			print "'>";
+			print "\n\t\t<select name='".$this->_contextValueFieldName."'>";
 			print "\n\t\t\t<option value=''>"._("Please select a value...")."</option>";
 			
 			$authoritativeValues =& $selectedPartStruct->getAuthoritativeValues();
@@ -149,13 +180,13 @@ class PartAndValuesModule {
 				$value =& $authoritativeValues->next();
 				print "\n\t\t\t<option";
 				print " value='".urlencode($value->asString())."'";
-				if (RequestContext::value($this->_valueFieldName) == urlencode($value->asString()))
+				if ($this->_value == urlencode($value->asString()))
 					print " selected='selected'";
 				print ">".$value->asString()."</option>";
 			}
 			
 			print "\n\t\t\t<option value='__NonMatching__'";
-			if (RequestContext::value($this->_valueFieldName) == '__NonMatching__')
+			if ($this->_value == '__NonMatching__')
 				print " selected='selected'";
 			print ">"._("* Non-Matching *")."</option>";
 			
@@ -174,12 +205,14 @@ class PartAndValuesModule {
 	 * @since 04/25/06
 	 */
 	function getSearchCriteria ( &$repository ) {
-		if (RequestContext::value($this->_partStructFieldName) 
-			&& RequestContext::value($this->_valueFieldName)) 
+		$this->init();
+		
+		if ($this->_partStruct 
+			&& $this->_value) 
 		{
 			$idManager =& Services::getService("Id");
 			
-			$idStrings = explode("_____", RequestContext::value($this->_partStructFieldName));
+			$idStrings = explode("_____", $this->_partStruct);
 			$selectedRecordStructId =& $idManager->getId($idStrings[0]);
 			$selectedPartStructId =& $idManager->getId($idStrings[1]);
 			
@@ -187,7 +220,7 @@ class PartAndValuesModule {
 			$partStruct =& $recordStruct->getPartStructure($selectedPartStructId);
 			
 			$value =& $partStruct->createValueObjectFromString(
-				urldecode(RequestContext::value($this->_valueFieldName)));
+				urldecode($this->_value));
 			
 			return array (
 				'RecordStructureId' => $selectedRecordStructId,
@@ -207,16 +240,35 @@ class PartAndValuesModule {
 	 * @since 04/25/06
 	 */
 	function getCurrentValues () {
-		if (RequestContext::value($this->_partStructFieldName)
-			&& RequestContext::value($this->_valueFieldName)) 
-		{
-			return array(
-						RequestContext::name($this->_partStructFieldName) => 
-						RequestContext::value($this->_partStructFieldName),
-						RequestContext::name($this->_valueFieldName) => 
-						RequestContext::value($this->_valueFieldName));
+		$this->init();
+		
+		if ($this->_partStruct) {
+			$values = array(
+						$this->_contextPartStructFieldName => $this->_partStruct,
+						$this->_contextValueFieldName => $this->_value);
 		} else
-			return array();
+			$values = array();
+		
+		return $values;
+	}
+	
+	/**
+	 * Update the current values with data (maybe stored in the session for instance. 
+	 * The keys of the arrays are the field-names in the appropriate context.
+	 * This could have been originally fetched via getCurrentValues
+	 * 
+	 * @param array $values
+	 * @return void
+	 * @access public
+	 * @since 04/25/06
+	 */
+	function setCurrentValues ($values) {
+		$this->init();
+		
+		if (isset($values[$this->_contextPartStructFieldName])) {
+			$this->_partStruct = $values[$this->_contextPartStructFieldName];
+			$this->_value = $values[$this->_contextValueFieldName];
+		}
 	}
 }
 
