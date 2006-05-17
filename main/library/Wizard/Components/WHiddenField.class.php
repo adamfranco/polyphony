@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WHiddenField.class.php,v 1.3 2006/03/14 22:07:36 cws-midd Exp $
+ * @version $Id: WHiddenField.class.php,v 1.4 2006/05/17 16:56:37 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WHiddenField.class.php,v 1.3 2006/03/14 22:07:36 cws-midd Exp $
+ * @version $Id: WHiddenField.class.php,v 1.4 2006/05/17 16:56:37 adamfranco Exp $
  */
 class WHiddenField 
 	extends WizardComponent 
@@ -74,7 +74,8 @@ class WHiddenField
 	 * @return boolean - TRUE if everything is OK
 	 */
 	function update ($fieldName) {
-		return true;
+		$val = RequestContext::value($fieldName);
+		if ($val !== false) $this->_value = $val;
 	}
 	
 	/**
