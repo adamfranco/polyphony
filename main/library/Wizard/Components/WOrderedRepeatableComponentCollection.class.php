@@ -6,8 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.5 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.6 2006/05/17 16:56:54 adamfranco Exp $
  */ 
+
+require_once(POLYPHONY."/main/library/Wizard/Components/WSelectList.class.php");
 
 /**
  * This component allows for the creation of ordered repeatable components or groups of components. 
@@ -18,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.5 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.6 2006/05/17 16:56:54 adamfranco Exp $
  */
 
 class WOrderedRepeatableComponentCollection 
@@ -60,6 +62,7 @@ class WOrderedRepeatableComponentCollection
 		$newArray["_moveup"] =& WEventButton::withLabel(
 			dgettext("polyphony", "Move Up"));
 		$newArray["_moveup"]->setParent($this);
+		
 		$newArray["_movedown"] =& WEventButton::withLabel(
 			dgettext("polyphony", "Move Down"));
 		$newArray["_movedown"]->setParent($this);
@@ -90,6 +93,52 @@ class WOrderedRepeatableComponentCollection
 	}
 	
 	/**
+	 * Rebuild our position selects
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 5/16/06
+	 */
+	function rebuildPositionSelects () {
+		// Populate our position list;
+		$positionList = new WSelectList;
+		$js = '
+			var choiceName = this.name + \'Choice\';
+			for (var i = 0; i < this.form.elements.length; i++) {
+				if (this.form.elements[i].name == choiceName) {
+					this.form.elements[i].value = \'true\';
+					break;
+				}
+			}
+			
+			this.form.submit();
+		
+		';
+		$positionList->setOnChange(preg_replace("/\s{2,}/", " ", preg_replace("/[\n\r\t]/", " ", $js)));
+		$i = 0;
+		$this->_orderedSet->reset();
+		while ($this->_orderedSet->hasNext()) {
+			$this->_orderedSet->next();
+			$positionList->addOption($i, $i+1);
+			$i++;			
+		}
+		
+		// Rebuild the position lists.
+		$this->_orderedSet->reset();
+		while ($this->_orderedSet->hasNext()) {
+			$collectionId =& $this->_orderedSet->next();
+			$key = $collectionId->getIdString();
+			
+			$this->_collections[$key]["_moveToPosition"] =& $positionList->deepCopy();
+			$this->_collections[$key]["_moveToPosition"]->setParent($this);
+			$this->_collections[$key]["_moveToPosition"]->setValue(
+				strval($this->_orderedSet->getPosition($collectionId)));
+			$this->_collections[$key]["_moveToPositionChoice"] =& WHiddenField::withValue('false');
+			$this->_collections[$key]["_moveToPositionChoice"]->setParent($this);
+		}
+	}
+	
+	/**
 	 * Tells the wizard component to update itself - this may include getting
 	 * form post data or validation - whatever this particular component wants to
 	 * do every pageload. 
@@ -116,8 +165,18 @@ class WOrderedRepeatableComponentCollection
 				$toRemove[] = $key;
 			if ($this->_collections[$key]["_moveup"]->getAllValues()) 
 				$this->_orderedSet->moveUp($idManager->getId(strval($key)));
+				
+			$id = $idManager->getId(strval($key));
 			if ($this->_collections[$key]["_movedown"]->getAllValues()) 
-				$this->_orderedSet->moveDown($idManager->getId(strval($key)));
+				$this->_orderedSet->moveDown($id);
+
+			if (isset($this->_collections[$key]["_moveToPosition"])
+				&& isset($this->_collections[$key]["_moveToPositionChoice"])
+				&& $this->_collections[$key]["_moveToPositionChoice"]->getAllValues() == 'true') 
+			{
+				$this->_orderedSet->moveToPosition($id, 
+					$this->_collections[$key]["_moveToPosition"]->getAllValues());
+			}
 		}
 		$this->_removeElements($toRemove);
 		
@@ -127,6 +186,8 @@ class WOrderedRepeatableComponentCollection
 //			print "adding element.<br/>";
 			$this->_addElement();
 		}
+		
+		$this->rebuildPositionSelects();
 		
 		return $ok;
 	}
@@ -170,6 +231,7 @@ class WOrderedRepeatableComponentCollection
 
 		$m = "<table width='100%' border='0' cellspacing='0' cellpadding='2'>\n";
 		
+		
 		$this->_orderedSet->reset();
 		while ($this->_orderedSet->hasNext()) {
 			$collectionId =& $this->_orderedSet->next();
@@ -182,6 +244,11 @@ class WOrderedRepeatableComponentCollection
 			if ($this->_orderedSet->getPosition($collectionId) > 0)
 				$m .= "\n<br/>".$this->_collections[$key]["_moveup"]->getMarkup(
 					$fieldName."_".$key."__moveup");
+			
+			// Display the list
+			$m .= "\n<br/>".$this->_collections[$key]["_moveToPosition"]->getMarkup($fieldName."_".$key."__moveToPosition");
+			$m .= $this->_collections[$key]["_moveToPositionChoice"]->getMarkup($fieldName."_".$key."__moveToPositionChoice");
+			
 			if ($this->_orderedSet->hasNext())
 				$m .= "\n<br/>".
 					$this->_collections[$key]["_movedown"]->getMarkup(
