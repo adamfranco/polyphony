@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.10 2006/05/01 20:59:38 adamfranco Exp $
+ * @version $Id: WSelectList.class.php,v 1.11 2006/05/17 16:55:46 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.10 2006/05/01 20:59:38 adamfranco Exp $
+ * @version $Id: WSelectList.class.php,v 1.11 2006/05/17 16:55:46 adamfranco Exp $
  */
 class WSelectList 
 	extends WizardComponent 
@@ -117,7 +117,7 @@ class WSelectList
 	 */
 	function update ($fieldName) {
 		$val = RequestContext::value($fieldName);
-		if ($val) $this->_value = $val;
+		if ($val !== false) $this->_value = $val;
 	}
 	
 	/**
@@ -175,7 +175,7 @@ class WSelectList
 			$m .= "<option value='$val'$selected>".htmlspecialchars($disp)."</option>\n";
 		}
 		
-		if (!$this->isOption($this->_value)) {
+		if ($this->_value && !$this->isOption($this->_value)) {
 			$m .= "<option value='".htmlspecialchars($this->_value, ENT_QUOTES)."' selected='selected'>"._("(Current value, '").htmlspecialchars($this->_value)." "._("', is not in allowed list.)")."</option>\n";
 		}
 		
