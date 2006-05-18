@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.6 2006/05/12 18:29:39 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.7 2006/05/18 21:07:18 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.6 2006/05/12 18:29:39 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.7 2006/05/18 21:07:18 adamfranco Exp $
  */
 class Basket 
 	extends OrderedSet
@@ -106,14 +106,15 @@ class Basket
 	 * Return an XHTML string of a small version of the basket for use in a header. 
 	 * Includes a link and the number of items in it.
 	 * 
+	 * @param integer $level The level of component to return
 	 * @return object Component
 	 * @access public
 	 * @since 8/5/05
 	 */
-	function &getSmallBasketBlock () {
+	function &getSmallBasketBlock ($level = ALERT_BLOCK) {
 		$block =& new Block(
 			"<div id='basket_small'>\n".$this->getSmallBasketHtml()."\n</div>", 
-			ALERT_BLOCK);
+			$level);
 		
 		// controlling JS
 		ob_start();
