@@ -4,13 +4,21 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.34 2006/05/15 21:32:50 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.35 2006/05/18 15:34:38 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
 	<version number="5.1" date="The Nebulous Future">
+		<new author='adam'>
+			RepositoryInOutModules: Now provides for displaying thumbnails for 
+			particular file Records.
+		</new>
+		<change author='adam'>
+			Wizard: now suports dropdown-menu reordering rather than just
+			move-up/move-down.
+		</change>
 		<change author='adam'>
 			Repository Search Modules now support forced setting of values from 
 			from a session cache.

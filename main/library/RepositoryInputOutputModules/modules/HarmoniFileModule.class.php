@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HarmoniFileModule.class.php,v 1.15 2006/04/24 22:36:54 adamfranco Exp $
+ * @version $Id: HarmoniFileModule.class.php,v 1.16 2006/05/18 15:34:42 adamfranco Exp $
  */
 
 /**
@@ -24,8 +24,8 @@ require_once(HARMONI."Primitives/Numbers/ByteSize.class.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: HarmoniFileModule.class.php,v 1.15 2006/04/24 22:36:54 adamfranco Exp $
- * @since $Date: 2006/04/24 22:36:54 $
+ * @version $Id: HarmoniFileModule.class.php,v 1.16 2006/05/18 15:34:42 adamfranco Exp $
+ * @since $Date: 2006/05/18 15:34:42 $
  * @copyright 2004 Middlebury College
  */
 
@@ -585,8 +585,7 @@ class HarmoniFileModule
 				array(
 					"repository_id" => $repositoryId->getIdString(),
 					"asset_id" => $assetId->getIdString(),
-					"record_id" => $recordId->getIdString(),
-					"thumbnail_name" => $thumbnailName))."'";
+					"record_id" => $recordId->getIdString()))."'";
 			print " style='border: 0px;'";
 			print " alt='Thumbnail image.'";
 			print " align='left'";
@@ -601,8 +600,7 @@ class HarmoniFileModule
 				array(
 					"repository_id" => $repositoryId->getIdString(),
 					"asset_id" => $assetId->getIdString(),
-					"record_id" => $recordId->getIdString(),
-					"file_name" => $parts['FILE_NAME'][0]->getValue()))."'";
+					"record_id" => $recordId->getIdString()))."'";
 			print " target='_blank'>";
 
 			print "Download This File</a>\n";

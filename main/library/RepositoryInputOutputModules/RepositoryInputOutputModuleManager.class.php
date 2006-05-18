@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.12 2006/04/26 19:56:07 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.13 2006/05/18 15:34:42 adamfranco Exp $
  */
 
 /**
@@ -21,8 +21,8 @@ require_once(dirname(__FILE__)."/modules/HarmoniFileModule.class.php");
  * appropriate RepositoryInputOutputModule based on their Schema Formats.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.12 2006/04/26 19:56:07 adamfranco Exp $
- * @since $Date: 2006/04/26 19:56:07 $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.13 2006/05/18 15:34:42 adamfranco Exp $
+ * @since $Date: 2006/05/18 15:34:42 $
  * @copyright 2004 Middlebury College
  */
 
@@ -245,13 +245,38 @@ class RepositoryInputOutputModuleManager {
 			$asset =& $assetOrId;
 		}
 		
+		$fileRecord =& RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset(
+							$asset);
+		return RepositoryInputOutputModuleManager::getThumbnailUrlForRecord(
+							$asset, $fileRecord);
+	}
+	
+	/**
+	 * Return the URL of a thumbnail image for a given Asset.
+	 * 
+	 * @param object Id $assetId
+	 * @return string The URL of the thumbnail
+	 * @access public
+	 * @since 7/22/05
+	 */
+	function getThumbnailUrlForRecord (&$assetOrId, &$fileRecord ) {
+		ArgumentValidator::validate($assetOrId, 
+			OrValidatorRule::getRule(
+				ExtendsValidatorRule::getRule("Id"),
+				ExtendsValidatorRule::getRule("Asset")));
+		
+		$rule =& ExtendsValidatorRule::getRule("Id");
+		if ($rule->check($assetOrId)) {
+			$repositoryManager =& Services::getService("RepositoryManager");
+			$asset =& $repositoryManager->getAsset($assetOrId);
+		} else {
+			$asset =& $assetOrId;
+		}
+		
 		$idManager =& Services::getService("IdManager");
 		$assetId =& $asset->getId();
 		$repository =& $asset->getRepository();
-		$repositoryId =& $repository->getId();
- 		
-		$fileRecord =& RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset(
-							$asset);		
+		$repositoryId =& $repository->getId();		
 		
 		if ($fileRecord === FALSE)
 			return FALSE;
@@ -315,13 +340,41 @@ class RepositoryInputOutputModuleManager {
 			$asset =& $assetOrId;
 		}
 		
+		$fileRecord =& RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset(
+							$asset);
+		
+		return RepositoryInputOutputModuleManager::getFileUrlForRecord(
+							$asset, $fileRecord);
+	}
+		
+	/**
+	 * Return the URL of a file for a given Asset. If the Asset has multiple
+	 * files, only one will be returned.
+	 * 
+	 * @param object Id $assetId
+	 * @return string The URL of the thumbnail
+	 * @access public
+	 * @since 7/22/05
+	 */
+	function getFileUrlForRecord(&$assetOrId, &$fileRecord ) {
+		ArgumentValidator::validate($assetOrId, 
+			OrValidatorRule::getRule(
+				ExtendsValidatorRule::getRule("Id"),
+				ExtendsValidatorRule::getRule("Asset")));
+		
+		$rule =& ExtendsValidatorRule::getRule("Id");
+		if ($rule->check($assetOrId)) {
+			$repositoryManager =& Services::getService("RepositoryManager");
+			$asset =& $repositoryManager->getAsset($assetOrId);
+		} else {
+			$asset =& $assetOrId;
+		}
+		
 		$idManager =& Services::getService("IdManager");
 		$assetId =& $asset->getId();
 		$repository =& $asset->getRepository();
 		$repositoryId =& $repository->getId();
 		
-		$fileRecord =& RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset(
-							$assetId);
 		if ($fileRecord === FALSE)
 			return FALSE;
 		
