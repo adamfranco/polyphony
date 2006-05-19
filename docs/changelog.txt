@@ -3,6 +3,19 @@
 Name: Polyphony ChangeLog
 
 
+v. 5.1 (2006-05-19)
+----------------------------------------------------
+		
+	* New feature: RepositoryInOutModules: Now provides for displaying thumbnails for particular file Records. (Adam Franco)
+		
+	* Change: Wizard: now suports dropdown-menu reordering rather than just move-up/move-down. (Adam Franco)
+		
+	* Change: Repository Search Modules now support forced setting of values from from a session cache. (Adam Franco)
+		
+	* Change: "Basket" is now being displayed as "Selection" (Adam Franco)
+		
+	* Change: Result printers now pull more from the common abstract class. (Adam Franco)
+	
 v. 0.5.0 (2006-05-05)
 ----------------------------------------------------
 		
