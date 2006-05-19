@@ -4,13 +4,13 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.36 2006/05/19 13:33:11 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.37 2006/05/19 13:34:02 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
-	<version number="5.1" date="2006-05-19">
+	<version number="0.5.1" date="2006-05-19">
 		<new author='adam'>
 			RepositoryInOutModules: Now provides for displaying thumbnails for 
 			particular file Records.

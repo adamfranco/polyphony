@@ -3,7 +3,7 @@
 Name: Polyphony ChangeLog
 
 
-v. 5.1 (2006-05-19)
+v. 0.5.1 (2006-05-19)
 ----------------------------------------------------
 		
 	* New feature: RepositoryInOutModules: Now provides for displaying thumbnails for particular file Records. (Adam Franco)
