@@ -5,11 +5,15 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.10 2006/05/12 18:29:40 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.11 2006/05/22 20:46:41 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
 require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
+
+require_once(HARMONI."GUIManager/StyleProperties/TextAlignSP.class.php");
+require_once(HARMONI."GUIManager/StyleProperties/MinHeightSP.class.php");
+require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
 
 /**
  * 
@@ -19,7 +23,7 @@ require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.10 2006/05/12 18:29:40 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.11 2006/05/22 20:46:41 adamfranco Exp $
  */
 class viewAction 
 	extends MainWindowAction
@@ -88,7 +92,7 @@ class viewAction
 		//***********************************
 		// print the results
 		//***********************************
-		$resultPrinter =& new IteratorResultPrinter($basket, 3, 6, "printAssetShort", $harmoni);
+		$resultPrinter =& new IteratorResultPrinter($basket, 3, 6, "printAssetShort");
 		$resultLayout =& $resultPrinter->getLayout($harmoni, "viewAction::canView");
 		$actionRows->add($resultLayout, "100%", null, LEFT, CENTER);
 		$harmoni->request->endNamespace();
@@ -111,64 +115,90 @@ class viewAction
 	
 }
 
-// Callback function for printing Assets
-function printAssetShort(&$assetId) {
+function printAssetShort(&$assetId, $num) {
 	$harmoni =& Harmoni::instance();
 	$repositoryManager =& Services::getService("Repository");
-	ob_start();
-	
 	$asset =& $repositoryManager->getAsset($assetId);
-	$repository =& $asset->getRepository();
-	$repositoryId =& $repository->getId();
 	
-	$harmoni->request->endNamespace();
-	$assetViewUrl = $harmoni->request->quickURL("asset", "view", array('asset_id' => $assetId->getIdString(), 'collection_id' => $repositoryId->getIdString()));
-	$harmoni->request->startNamespace("basket");
+	$container =& new Container(new YLayout, BLOCK, EMPHASIZED_BLOCK);
+	$fillContainerSC =& new StyleCollection("*.fillcontainer", "fillcontainer", "Fill Container", "Elements with this style will fill their container.");
+	$fillContainerSC->addSP(new MinHeightSP("88%"));
+	$container->addStyle($fillContainerSC);
 	
+	$centered =& new StyleCollection("*.centered", "centered", "Centered", "Centered Text");
+	$centered->addSP(new TextAlignSP("center"));	
 	
-	print  "\n\t<strong>".$asset->getDisplayName()."</strong> - "._("ID#").": ";
-	print "<a href='".$assetViewUrl."'>".$assetId->getIdString()."</a>";
-	print  "\n\t<br /><em>".$asset->getDescription()."</em>";	
-	print  "\n\t<br />";
+	$assetId =& $asset->getId();
 	
-// 	ExhibitionPrinter::printFunctionLinks($asset);
+	if ($_SESSION["show_thumbnail"] == 'true') {
+		$thumbnailURL = RepositoryInputOutputModuleManager::getThumbnailUrlForAsset($asset);
+		if ($thumbnailURL !== FALSE) {
+			$xmlModule = 'collection';
+			$xmlAssetIdString = $assetId->getIdString();
+			$xmlStart = $num - 1;
+			
+			$thumbSize = $_SESSION["thumbnail_size"]."px";
 	
-	$thumbnailURL = RepositoryInputOutputModuleManager::getThumbnailUrlForAsset($assetId);
-	if ($thumbnailURL !== FALSE) {
-		
-		print "\n\t<br /><a href='".$assetViewUrl."'>";
-		print "\n\t\t<img src='$thumbnailURL' alt='Thumbnail Image' border='0' />";
-		print "\n\t</a>";
+			ob_start();
+			print "\n<div style='height: $thumbSize; width: $thumbSize; margin: auto;'>";
+			print "\n\t<a style='cursor: pointer;'";
+			print " onclick='Javascript:window.open(";
+			print '"'.VIEWER_URL."?&amp;source=";
+			$params["asset_id"] = $xmlAssetIdString;
+			print urlencode($harmoni->request->quickURL($xmlModule, "browse_outline_xml", $params));
+			print '&amp;start='.$xmlStart.'", ';
+	// 		print '"'.preg_replace("/[^a-z0-9]/i", '_', $assetId->getIdString()).'", ';
+			print '"_blank", ';
+			print '"toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,copyhistory=no,width=600,height=500"';
+			print ")'>";
+			print "\n\t\t<img src='$thumbnailURL' class='thumbnail' alt='Thumbnail Image' border='0' style='max-height: $thumbSize; max-width: $thumbSize;' />";
+			print "\n\t</a>";
+			print "\n</div>";
+			$component =& new UnstyledBlock(ob_get_contents());
+			$component->addStyle($centered);
+			ob_end_clean();
+			$container->add($component, "100%", null, CENTER, CENTER);
+		}
 	}
 	
-	$xLayout =& new XLayout();
-	$layout =& new Container($xLayout, BLOCK, EMPHASIZED_BLOCK);
-	$assetBlock =& new UnstyledBlock(ob_get_contents());
-	$layout->add($assetBlock, null, null, CENTER, CENTER);
+	ob_start();
+	if ($_SESSION["show_displayName"] == 'true')
+		print "\n\t<div style='font-weight: bold; height: 50px; overflow: auto;'>".htmlspecialchars($asset->getDisplayName())."</div>";
+	if ($_SESSION["show_id"] == 'true')
+		print "\n\t<div>"._("ID#").": ".$assetId->getIdString()."</div>";
+	if ($_SESSION["show_description"] == 'true') {
+		$description =& HtmlString::withValue($asset->getDescription());
+		$description->trim(25);
+		print  "\n\t<div style='font-size: smaller; height: 50px; overflow: auto;'>".$description->asString()."</div>";	
+	}
+	
+	$component =& new UnstyledBlock(ob_get_contents());
 	ob_end_clean();
+	$container->add($component, "100%", null, LEFT, TOP);
+	
 	
 	ob_start();
 	print "\n<a href='";
 	print $harmoni->request->quickURL("basket", "remove", array('asset_id' => $assetId->getIdString()));
-	print "' title='". _('remove')."'>";
-	print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/basketminus.png' width='40px' border='0' alt='"._("Remove from Selection")."' />";
+	print "' title='"._("Remove from Selection")."'>";
+	print _('remove');
 	print "</a>";
 	
-	print "\n<br/><a href='";
+	print "\n | <a href='";
 	print $harmoni->request->quickURL("basket", "up", array('asset_id' => $assetId->getIdString()));
 	print "' title='". _('move up')."'>";
-	print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/arrowleft.png' width='25px' border='0' alt='"._("Move Up")."' />";
+// 	print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/arrowleft.png' width='25px' border='0' alt='"._("Move Up")."' />";
+	print "&lt;--";
 	print "</a>";
 	
-	print "\n<br/><a href='";
+	print "\n | <a href='";
 	print $harmoni->request->quickURL("basket", "down", array('asset_id' => $assetId->getIdString()));
 	print "' title='". _('move down')."'>";
-	print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/arrowright.png' width='25px' border='0'  alt='"._("Move Down")."'  />";
+// 	print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/arrowright.png' width='25px' border='0'  alt='"._("Move Down")."'  />";
+	print "--&gt;";
 	print "</a>";
 	
-	$functionsBlock =& new UnstyledBlock(ob_get_contents());
-	$layout->add($functionsBlock, null, null, CENTER, TOP);
-	ob_end_clean();
+	$container->add(new UnstyledBlock(ob_get_clean()), "100%", null, RIGHT, BOTTOM);
 	
-	return $layout;
+	return $container;
 }
