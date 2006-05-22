@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.7 2006/05/18 21:07:18 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.8 2006/05/22 20:59:05 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.7 2006/05/18 21:07:18 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.8 2006/05/22 20:59:05 adamfranco Exp $
  */
 class Basket 
 	extends OrderedSet
@@ -286,6 +286,7 @@ END;
 		print "</a>";
 		
 		print "\n\t<div id='basket_small_contents' style='text-align: left;'>";
+		$this->reset();
 		if ($this->hasNext()) {
 			while ($this->hasNext()) {
 				$id =& $this->next();
@@ -297,6 +298,13 @@ END;
 			}
 		}
 		print "\n\t</div>";
+		
+		if ($this->count()) {
+			print "\n\t<div style='text-align: right; font-size: small;'>";
+			print "<a onclick='Basket.empty()'>"._("Empty")."</a>";
+			print "\n\t</div>";
+		}
+		
 		
 		$harmoni->request->endNamespace();		
 		return ob_get_clean();
