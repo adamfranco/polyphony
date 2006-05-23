@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.4 2006/05/12 18:29:40 adamfranco Exp $
+ * @version $Id: export.act.php,v 1.5 2006/05/23 15:09:28 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLAssetExporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.4 2006/05/12 18:29:40 adamfranco Exp $
+ * @version $Id: export.act.php,v 1.5 2006/05/23 15:09:28 cws-midd Exp $
  */
 class exportAction 
 	extends MainWindowAction
@@ -170,7 +170,7 @@ class exportAction
 	function saveWizard ( $cacheName ) {
 		$wizard =& $this->getWizard($cacheName);
 				
-		$properties =& $wizard->getAllValues();
+		$properties = $wizard->getAllValues();
 		// instantiate new exporter
 		$exporter =& XMLAssetExporter::withCompression(
 			$properties['compression']);

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLExporter.class.php,v 1.7 2005/12/13 22:45:32 cws-midd Exp $
+ * @version $Id: XMLExporter.class.php,v 1.8 2006/05/23 15:09:29 cws-midd Exp $
  */ 
 
 require_once("Archive/Tar.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLRepositoryExporter.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLExporter.class.php,v 1.7 2005/12/13 22:45:32 cws-midd Exp $
+ * @version $Id: XMLExporter.class.php,v 1.8 2006/05/23 15:09:29 cws-midd Exp $
  */
 class XMLExporter {
 		
@@ -123,7 +123,7 @@ class XMLExporter {
 	 * @since 10/31/05
 	 */
 	function setupXML ($dir) {
-		$this->_xml =& fopen($dir."/metadata.xml", "w");
+		$this->_xml = fopen($dir."/metadata.xml", "w");
 		fwrite($this->_xml, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 }
 	
@@ -139,7 +139,7 @@ class XMLExporter {
 	 */
 	function exportRepositories () {
 		$rm =& Services::getService("Repository");
-		$file =& fopen("/tmp/memoryUsage.txt", "w");
+		$file = fopen("/tmp/memoryUsage.txt", "w");
 		$children =& $rm->getRepositories();
 		while ($children->hasNext()) {
 			$child =& $children->next();

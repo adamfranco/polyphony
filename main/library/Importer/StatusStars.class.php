@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: StatusStars.class.php,v 1.2 2006/02/24 19:01:41 cws-midd Exp $
+ * @version $Id: StatusStars.class.php,v 1.3 2006/05/23 15:09:29 cws-midd Exp $
  */ 
 
 /**
@@ -24,7 +24,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: StatusStars.class.php,v 1.2 2006/02/24 19:01:41 cws-midd Exp $
+ * @version $Id: StatusStars.class.php,v 1.3 2006/05/23 15:09:29 cws-midd Exp $
  */
 class StatusStars {
 		
@@ -60,7 +60,7 @@ class StatusStars {
 	 * @access public
 	 * @since 2/17/06
 	 */
-	function initializeStatistics ($total, $detail = 20) {
+	function initializeStatistics ($total, $detail = 100) {
 		$this->_totalAssets = $total;
 		$this->_completedAssets = 0;
 		$this->_currentPercent = 0;

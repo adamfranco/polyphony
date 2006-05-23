@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordExporter.class.php,v 1.8 2005/12/14 21:04:50 cws-midd Exp $
+ * @version $Id: XMLFileRecordExporter.class.php,v 1.9 2006/05/23 15:09:29 cws-midd Exp $
  */ 
 
 //require_once(POLYPHONY."/main/library/Exporter/XMLPartExporter.class.php");
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordExporter.class.php,v 1.8 2005/12/14 21:04:50 cws-midd Exp $
+ * @version $Id: XMLFileRecordExporter.class.php,v 1.9 2006/05/23 15:09:29 cws-midd Exp $
  */
 class XMLFileRecordExporter {
 		
@@ -100,7 +100,7 @@ class XMLFileRecordExporter {
 			$part =& $parts->next();
 			$path = $this->_fileDir."/".$part->getValue();
 // CHECK FOR FILE NAME UNIQUENESS HERE
-			$this->_dataFile =& fopen($path, "wb");
+			$this->_dataFile = fopen($path, "wb");
 			
 			$this->_info['f_name'] = basename($path);
 		}
@@ -113,7 +113,7 @@ class XMLFileRecordExporter {
 		$parts =& $this->_object->getPartsByPartStructure($FILE_DIME_ID);
 		if ($parts->count() == 1) {
 			$part =& $parts->next();
-			$this->_info['f_dime'] =& $part->getValue();
+			$this->_info['f_dime'] = $part->getValue();
 		}
 		$parts =& $this->_object->getPartsByPartStructure($MIME_TYPE_ID);
 		if ($parts->count() == 1) {
@@ -122,7 +122,7 @@ class XMLFileRecordExporter {
 		}
 		$path = $this->_fileDir."/THUMB_".$this->_info['f_name'];
 		$this->_info['t_name'] = basename($path);
-		$this->_thumbFile =& fopen($path, "wb");
+		$this->_thumbFile = fopen($path, "wb");
 		$parts =& $this->_object->getPartsByPartStructure($THUMB_DATA_ID);
 		if ($parts->count() == 1) {
 			$part =& $parts->next();
@@ -137,7 +137,7 @@ class XMLFileRecordExporter {
 		$parts =& $this->_object->getPartsByPartStructure($THUMB_DIME_ID);
 		if ($parts->count() == 1) {
 			$part =& $parts->next();
-			$this->_info['t_dime'] =& $part->getValue();
+			$this->_info['t_dime'] = $part->getValue();
 		}
 	}	
 }
