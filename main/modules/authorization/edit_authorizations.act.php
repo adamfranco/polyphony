@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.44 2006/05/24 19:53:02 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.45 2006/05/24 20:01:04 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -26,7 +26,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.44 2006/05/24 19:53:02 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.45 2006/05/24 20:01:04 adamfranco Exp $
  */
 class edit_authorizationsAction 
 	extends MainWindowAction
@@ -361,6 +361,7 @@ class edit_authorizationsAction
 				$harmoni =& Harmoni::instance();
 				$url =& $harmoni->request->mkURLWithPassthrough();
 				$url->setValue($qualifierId->getIdString().'_start', max($start - 10, 0));
+				ob_start();
 				print "\n\t<tr>";
 				print "\n\t\t<td style='white-space: nowrap; text-align: left; border: 1px solid; border-right: 0px; padding-left: ".$linkLeftSpace."'>";
 				print "\n\t\t\t"._("Displaying: ");
@@ -379,6 +380,9 @@ class edit_authorizationsAction
 				print "\n\t\t\t</select>";
 				print "\n\t\t\t\t</td>";
 				print "\n\t</tr>";
+				
+				$moreResults = ob_get_clean();
+				print $moreResults;
 			}
 			
 			// Children
@@ -393,6 +397,10 @@ class edit_authorizationsAction
 					$printed++;
 				}
 			}
+			
+			// next link
+			if ($total > $limit)
+				print $moreResults;
 		}
 	}
 	
