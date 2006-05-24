@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.43 2006/01/17 20:06:41 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.44 2006/05/24 19:53:02 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -26,7 +26,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.43 2006/01/17 20:06:41 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.44 2006/05/24 19:53:02 adamfranco Exp $
  */
 class edit_authorizationsAction 
 	extends MainWindowAction
@@ -346,8 +346,52 @@ class edit_authorizationsAction
 		// Recursively print the children.
 		if (in_array($qualifierId->getIdString(), $this->expandedNodes)) {
 			$children =& $qualifier->getChildren();
-			while ($children->hasNext()) {
-				$this->printQualifierRows( $children->next(), $functionOrder, $depth + 1 );
+			
+			// Stuff for previous/next links
+			$linkLeftSpace = (($depth + 1) * 20 + 25).'px';
+			if (RequestContext::value($qualifierId->getIdString().'_start'))
+				$start = intval(RequestContext::value($qualifierId->getIdString().'_start'));
+			else
+				$start = 0;
+			$limit = 10;
+			$total = $children->count();
+			
+			// previous link
+			if ($total > $limit) {
+				$harmoni =& Harmoni::instance();
+				$url =& $harmoni->request->mkURLWithPassthrough();
+				$url->setValue($qualifierId->getIdString().'_start', max($start - 10, 0));
+				print "\n\t<tr>";
+				print "\n\t\t<td style='white-space: nowrap; text-align: left; border: 1px solid; border-right: 0px; padding-left: ".$linkLeftSpace."'>";
+				print "\n\t\t\t"._("Displaying: ");
+				$harmoni =& Harmoni::instance();
+				$url =& $harmoni->request->mkURLWithPassthrough();
+				$url->setValue($qualifierId->getIdString().'_start', 'STARTSTARTSTART');
+				print "\n\t\t\t<select onchange='";
+				print 'var url="'.$url->write().'"; var regex = /STARTSTARTSTART/; window.location = url.replace(regex, this.value);';
+				print "'>";
+				for ($i=0; $i<$total; $i=$i+10) {
+					print "\n\t\t\t<option value='".$i."'";
+					if ($i == $start)
+						print " selected='selected'";
+					print ">".($i+1)."-".($i+10)."</option>";
+				}
+				print "\n\t\t\t</select>";
+				print "\n\t\t\t\t</td>";
+				print "\n\t</tr>";
+			}
+			
+			// Children
+			$skipping = 0;
+			$printed = 0;
+			while ($children->hasNext() && $printed < $limit) {
+				if ($skipping < $start) {
+					$children->skipNext();
+					$skipping++;
+				} else {
+					$this->printQualifierRows( $children->next(), $functionOrder, $depth + 1 );
+					$printed++;
+				}
 			}
 		}
 	}
