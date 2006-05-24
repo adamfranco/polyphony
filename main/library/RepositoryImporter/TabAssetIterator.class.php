@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabAssetIterator.class.php,v 1.6 2005/08/08 16:06:19 cws-midd Exp $
+ * @version $Id: TabAssetIterator.class.php,v 1.7 2006/05/24 13:36:12 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabAssetIterator.class.php,v 1.6 2005/08/08 16:06:19 cws-midd Exp $
+ * @version $Id: TabAssetIterator.class.php,v 1.7 2006/05/24 13:36:12 cws-midd Exp $
  */
 class TabAssetIterator 
 extends HarmoniIterator 
@@ -45,6 +45,14 @@ extends HarmoniIterator
 	 * @since 7/20/05
 	 */
 	function TabAssetIterator ($srcDir, &$parentRepositoryImporter) {		
+		if (Services::serviceAvailable("Logging")) {
+			$loggingManager =& Services::getService("Logging");
+			$log =& $loggingManager->getLogForWriting("Harmoni");
+			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+							"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType =& new Type("logging", "edu.middlebury", "Error",
+							"Events involving critical system errors.");
+		}			
 		if (file_exists($srcDir."metadata.txt") && 
 			$meta = fopen($srcDir."metadata.txt", "r")) 
 		{
@@ -56,14 +64,24 @@ extends HarmoniIterator
 				$this->_assetList[] = $metadata;
 			}
 			
-			if (count($this->_assetList) == 0)
+			if (count($this->_assetList) == 0) {
 				$parentRepositoryImporter->addError("There are no assets to import in: ".$srcDir."metadata.txt.");
-
+				if (isset($log)) {
+					$item =& new AgentNodeEntryItem("TabImporter Error",
+						"There are no assets to import in: $srcDir/metadata.txt.");
+					$log->appendLogWithTypes($item, $formatType, $priorityType);
+			}
 			fclose($meta);
 				$this->_current = 0;
 		}
-		else
+		else {
 			$parentRepositoryImporter->addError("Tab-Delimited parse failed: ".$srcDir."metadata.txt does not exist or is unreadable.");
+			if (isset($log)) {
+				$item =& new AgentNodeEntryItem("TabImporter Error",
+					"Tab-Delimited parse failed: $srcDir/metadata.txt does not exist or is unreadable.");
+				$log->appendLogWithTypes($item, $formatType, $priorityType);
+			}
+		}
 	}
 	
 	/**

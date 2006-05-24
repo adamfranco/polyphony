@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.15 2005/08/11 18:05:42 cws-midd Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.16 2006/05/24 13:36:12 cws-midd Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.15 2005/08/11 18:05:42 cws-midd Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.16 2006/05/24 13:36:12 cws-midd Exp $
  */
 class TabRepositoryImporter
 	extends RepositoryImporter
@@ -74,6 +74,14 @@ class TabRepositoryImporter
 	 * @since 7/20/05
 	 */
 	function &getSingleAssetRecordList ($input) {
+		if (Services::serviceAvailable("Logging")) {
+			$loggingManager =& Services::getService("Logging");
+			$log =& $loggingManager->getLogForWriting("Harmoni");
+			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+							"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType =& new Type("logging", "edu.middlebury", "Error",
+							"Events involving critical system errors.");
+		}			
 		if (!isset($this->_structureId)) {
 			$meta = fopen($this->_srcDir."metadata.txt", "r");
 			if($this->_dataDir !== NULL){
@@ -98,6 +106,11 @@ class TabRepositoryImporter
 				$this->addError("The schema: ".$schema.
 					" does not exist in repository: ".
 					$this->_repositoryId->getIdString());
+				if (isset($log)) {
+					$item =& new AgentNodeEntryItem("TabImporter Error",
+						"The schema: $schema does not exist in repository: $this->_repositoryId->getIdString().");
+					$log->appendLogWithTypes($item, $formatType, $priorityType);
+				}
 				return $this->_structureId; // false
 			}
 
@@ -110,6 +123,11 @@ class TabRepositoryImporter
 			if (!$this->_partStructureIds) {
 				$this->addError("One or more of the Parts in the Tab-Delimited file for Schema: ".
 					$schema." are not valid.");
+				if (isset($log)) {
+					$item =& new AgentNodeEntryItem("TabImporter Error",
+						"One or more of the parts in the Tab-Delimited file for Schema: $schema are not valid.");
+					$log->appendLogWithTypes($item, $formatType, $priorityType);
+				}
 				return $this->_partStructureIds; // false
 			}
 		}
@@ -134,6 +152,11 @@ class TabRepositoryImporter
 				else {
 					$this->addError("File: ".$this->_srcDir.$input[3].
 						" does not exist for import.");
+					if (isset($log)) {
+						$item =& new AgentNodeEntryItem("TabImporter Error",
+							"File: $this->_srcDir/$input[3] does not exist for import.");
+						$log->appendLogWithTypes($item, $formatType, $priorityType);
+					}
 					$false = false;
 					return $false;
 				}

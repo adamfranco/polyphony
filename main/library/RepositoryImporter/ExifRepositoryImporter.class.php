@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.16 2006/01/24 15:15:34 cws-midd Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.17 2006/05/24 13:36:12 cws-midd Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -21,7 +21,7 @@ require_once(DOMIT);
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.16 2006/01/24 15:15:34 cws-midd Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.17 2006/05/24 13:36:12 cws-midd Exp $
  */
 class ExifRepositoryImporter
 	extends RepositoryImporter
@@ -84,22 +84,44 @@ class ExifRepositoryImporter
 	 * @since 7/20/05
 	 */
 	function &getSingleAssetRecordList (&$input) {
+		if (Services::serviceAvailable("Logging")) {
+			$loggingManager =& Services::getService("Logging");
+			$log =& $loggingManager->getLogForWriting("Harmoni");
+			$formatType =& new Type("logging", "edu.middlebury", 
+				"AgentsAndNodes",
+				"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType =& new Type("logging", "edu.middlebury", "Error",
+							"Events involving critical system errors.");
+		}			
 		$idManager =& Services::getService("Id");
 		$this->_fileStructureId =& $idManager->getId("FILE");
 		$fileparts = array("File Name", "Thumbnail Data");
-			$this->_fileNamePartIds = $this->matchPartStructures(
+		$this->_fileNamePartIds = $this->matchPartStructures(
 			$this->_destinationRepository->getRecordStructure(
 			$this->_fileStructureId), $fileparts);
 		if (!isset($this->_structureId)) {
 			$import =& new DOMIT_Document();
 			if ($import->loadXML($this->_srcDir."schema.xml")) {
 				if (!($import->documentElement->hasChildNodes())){
-					$this->addError("There are no schemas defined in : ".$this->_srcDir."schema.xml.");
+					$this->addError("There are no schemas defined in : ".
+						$this->_srcDir."schema.xml.");
+					if (isset($log)) {
+						$item =& new AgentNodeEntryItem("ExifImporter Error",
+							"There are no schemas defined in: ".
+							$this->_srcDir."schema.xml.");
+						$log->appendLogWithTypes($item, $formatType, 
+							$priorityType);
+					}
 					return false;
 				}
 			}
 			else {
 				$this->addError("XML parse failed: ".$this->_srcDir."schema.xml does not exist or contains poorly formed XML.");
+				if (isset($log)) {
+					$item =& new AgentNodeEntryItem("ExifImporter DOMIT Error",
+						"XML parse failed: ".$this->_srcDir."schema.xml does not exist or contains poorly formed XML.");
+					$log->appendLogWithTypes($item, $formatType, $priorityType);
+				}
 				return false;
 			}
 			$istructuresList =& $import->documentElement->childNodes;
@@ -117,7 +139,16 @@ class ExifRepositoryImporter
 					} else
 						$matchedSchema = $this->matchSchema($ipartStructures[1]->getText(), $this->_destinationRepository);
 					if($matchedSchema == false) {
-						$this->addError("Schema: ".$ipartStructures[1]->getText()." does not exist");
+						$this->addError("Schema: ".
+							$ipartStructures[1]->getText()." does not exist");
+						if (isset($log)) {
+							$item =& new AgentNodeEntryItem("ExifImporter 
+								Error", "Schema: ".
+								$ipartStructures[1]->getText().
+								" does not exist.");
+							$log->appendLogWithTypes($item, $formatType,
+								$priorityType);
+						}
 						return false;	
 					}
 					else
@@ -128,11 +159,23 @@ class ExifRepositoryImporter
 							
 							$ivaluesArray =& $ipartStructure->childNodes;
 							if($ivaluesArray[0]->getText() != ""){
-								$matchedId = $idManager->getId($ivaluesArray[0]->getText());
+								$matchedId = $idManager->getId(
+									$ivaluesArray[0]->getText());
 							}else
-								$matchedId = $this->getPartIdByName($ivaluesArray[1]->getText(), $matchedSchema);
-							if($matchedId == false) {
-								$this->addError("Part ".$ivaluesArray[1]." does not exist.");
+								$matchedId = $this->getPartIdByName(
+									$ivaluesArray[1]->getText(),
+									$matchedSchema);
+							if ($matchedId == false) {
+								$this->addError("Part ".$ivaluesArray[1].
+									" does not exist.");
+								if (isset($log)) {
+									$item =& new AgentNodeEntryItem(
+										"ExifImporter Error", 
+										"Part ".$ivaluesArray[1].
+										" does not exist.");
+									$log->appendLogWithTypes($item, $formatType,
+										$priorityType);
+								}
 								return false;
 							}
 							$partStructuresArray[] = $matchedId;

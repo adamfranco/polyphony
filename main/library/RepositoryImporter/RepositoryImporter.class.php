@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.24 2006/03/14 22:07:36 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.25 2006/05/24 13:36:12 cws-midd Exp $
  */ 
 require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.24 2006/03/14 22:07:36 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.25 2006/05/24 13:36:12 cws-midd Exp $
  */
 class RepositoryImporter {
 	
@@ -75,12 +75,27 @@ class RepositoryImporter {
 		$dearchiver =& new Dearchiver();
 		$worked = $dearchiver->uncompressFile($this->_filepath,
 			dirname($this->_filepath));
-		if ($worked == false)
+		if ($worked == false) {
 			$this->addError("Failed to decompress file: ".$this->_filepath.
 				".  Unsupported archive extension.");
-	 unset($dearchiver);	
+			if (Services::serviceAvailable("Logging")) {
+				$loggingManager =& Services::getService("Logging");
+				$log =& $loggingManager->getLogForWriting("Harmoni");
+				$formatType =& new Type("logging", "edu.middlebury", 
+					"AgentsAndNodes",
+					"A format in which the acting Agent[s] and the target nodes affected are specified.");
+				$priorityType =& new Type("logging", "edu.middlebury", "Error",
+								"Events involving critical system errors.");
+				
+				$item =& new AgentNodeEntryItem("Importer Decompression Error",
+					"Failed to decompress file: ".$this->_filepath.
+					". Unsupported archive extension.");
+				$log->appendLogWithTypes($item,	$formatType, $priorityType);
+			}
+		}
+		unset($dearchiver);	
 	}
-		
+
 	/**
 	 * Parses the archive file according to its type i.e. properly
 	 * 
@@ -225,10 +240,27 @@ class RepositoryImporter {
 		$MIME_TYPE_ID =& $idManager->getId("MIME_TYPE");
 		$THUMBNAIL_DATA_ID =& $idManager->getId("THUMBNAIL_DATA");
 		$THUMBNAIL_MIME_TYPE_ID =& $idManager->getId("THUMBNAIL_MIME_TYPE");
+
 		
 		$asset =& $this->_destinationRepository->createAsset(
 			$assetInfo['displayName'], $assetInfo['description'],
 			$assetInfo['type']);
+		$assetId =& $asset->getId();
+		// log creation
+		if (Services::serviceAvailable("Logging")) {
+			$loggingManager =& Services::getService("Logging");
+			$log =& $loggingManager->getLogForWriting("Harmoni");
+			$formatType =& new Type("logging", "edu.middlebury", 
+				"AgentsAndNodes",
+				"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType =& new Type("logging", "edu.middlebury",
+				"Event_Notice",	"Normal Events.");
+			$item =& new AgentNodeEntryItem("Create Node", "Asset: ".
+				$assetId->getIdString()." created.");
+			$item->addNodeId($assetId);
+			$item->addNodeId($this->_destinationRepository->getId());
+			$log->appendLogWithTypes($item, $formatType, $priorityType);
+		}
 		$this->addGoodAssetId($asset->getId());
 		RecordManager::setCacheMode(false);
 		foreach($recordList as $entry) {
