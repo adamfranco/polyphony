@@ -3,6 +3,15 @@
 Name: Polyphony ChangeLog
 
 
+v. 0.5.2 (2006-05-24)
+----------------------------------------------------
+		
+	* Change: Selection view now better matches the collection view. (Adam Franco)
+		
+	* Change: Basket/Selection now has an empty link. (Adam Franco)
+		
+	* Change: All importers log their actions and errors appropriately. (Christopher W. Shubert)
+	
 v. 0.5.1 (2006-05-19)
 ----------------------------------------------------
 		
