@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.11 2006/05/17 16:55:46 adamfranco Exp $
+ * @version $Id: WSelectList.class.php,v 1.12 2006/05/26 14:14:29 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.11 2006/05/17 16:55:46 adamfranco Exp $
+ * @version $Id: WSelectList.class.php,v 1.12 2006/05/26 14:14:29 adamfranco Exp $
  */
 class WSelectList 
 	extends WizardComponent 
@@ -117,7 +117,8 @@ class WSelectList
 	 */
 	function update ($fieldName) {
 		$val = RequestContext::value($fieldName);
-		if ($val !== false) $this->_value = $val;
+		if ($val !== false && $val !== null) 
+			$this->_value = $val;
 	}
 	
 	/**
