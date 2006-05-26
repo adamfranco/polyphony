@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.22 2006/04/05 16:12:28 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.23 2006/05/26 13:25:07 cws-midd Exp $
  *
  * @author Christopher W. Shubert
  */ 
@@ -27,7 +27,7 @@ require_once(POLYPHONY."/main/library/Importer/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.22 2006/04/05 16:12:28 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.23 2006/05/26 13:25:07 cws-midd Exp $
  */
 class XMLImporter {
 
@@ -533,7 +533,7 @@ class XMLImporter {
 		$dearchiver =& new Dearchiver();
 		$worked = $dearchiver->uncompressFile($filepath,
 			dirname($filepath));
-		if ($worked == false)
+		if ($worked == false) {
 			$this->addError("Failed to decompress file: ".$filepath.
 				".  Unsupported archive extension.");
 			// log error
@@ -549,6 +549,7 @@ class XMLImporter {
 					"Failed to decompress file: $filepath.  Unsupported archive extension.");
 				$log->appendLogWithTypes($item, $formatType, $priorityType);
 			}
+		}
 	 	unset($dearchiver);
 	 	return dirname($filepath);
 	}
@@ -623,6 +624,52 @@ class XMLImporter {
  * STATUS BAR UTILITY
  *********************************************************/
 
+	function moreGranulesFromXML () {
+		if (Services::serviceAvailable("Logging")) {
+			$loggingManager =& Services::getService("Logging");
+			$log =& $loggingManager->getLogForWriting("Harmoni");
+			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+							"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType =& new Type("logging", "edu.middlebury", "Error",
+							"Events involving critical system errors.");
+		}
+		$moreXML =& $this->_import->documentElement->getElementsByTagName(
+			"repositoryfile");
+		$granules = 0;
+		for ($i = 0; $i < $moreXML->getLength(); $i++) {
+			$element =& $moreXML->item($i);
+			$path = $element->getText();
+			if (!ereg("^([a-zA-Z]+://|[a-zA-Z]+:\\|/)", $path))
+				$path = $element->ownerDocument->xmlPath.$path;			
+		
+			$import =& new DOMIT_Document();
+			// attempt to load (parse) the xml file
+			if ($import->loadXML($path)) {
+				if (!($import->documentElement->hasChildNodes())) {
+					$this->addError("There are no Importables in this file");
+					// log error
+					$item =& new AgentNodeEntryItem("XMLImporter Error",
+						"No Importables in the file: ".$path.".");
+					$log->appendLogWithTypes($item, $formatType, $priorityType);
+				} else {
+					$nodes =& $import->documentElement->getElementsByTagName(
+						$this->_granule);
+					$granules += $nodes->getLength();
+				}
+			}
+			else {
+				// any errors encountered by DOMIT in parsing handled here
+				$this->addError("DOMIT error: ".$import->getErrorCode().
+				"<br/>\t meaning: ".$import->getErrorString()."<br/>");
+				$item =& new AgentNodeEntryItem("XMLImporter DOMIT Error",
+					"Error Code: ".$import->getErrorCode().", meaning: ".
+					$import->getErrorString().".");
+				$log->appendLogWithTypes($item, $formatType, $priorityType);
+			}
+		}
+		return $granules;
+	}
+
 	/**
 	 * Sets up the status bar with appropriate granule
 	 * 
@@ -635,10 +682,17 @@ class XMLImporter {
 		// @todo allow for array parameter so that multiple granules are used!
 		$this->_granule = $granule;
 		$this->_status = new StatusStars();
+		
+		$granules = 0;
 		$nodes =& $this->_import->documentElement->getElementsByTagName(
 			$granule);
-		$this->_status->initializeStatistics($nodes->getLength(), $detail);
+		$granules += $nodes->getLength();
+		
+//		$granules += $this->moreGranulesFromXML();
+
+		$this->_status->initializeStatistics($granules, $detail);
 	}
+	
 
 /*********************************************************
  * ASSET ID TRACKING FOR DEVELOPMENT
