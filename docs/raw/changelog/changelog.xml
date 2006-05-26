@@ -4,13 +4,16 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.40 2006/05/24 19:53:00 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.41 2006/05/26 13:58:40 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
-	<version number="0.5.2" date="2006-05-24">
+	<version number="0.5.2" date="2006-05-26">
+		<change author='adam'>
+			ResultPrinter pagination now matches background styles.
+		</change>
 		<change author='adam'>
 			Edit-authorization screen now limits each level of the hierarchy to
 			ten nodes to prevent being overwhelmed (and timing out) if there

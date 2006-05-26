@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.21 2006/05/12 18:29:40 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.22 2006/05/26 13:59:12 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.21 2006/05/12 18:29:40 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.22 2006/05/26 13:59:12 adamfranco Exp $
  */
 
 class ArrayResultPrinter 
@@ -161,8 +161,12 @@ class ArrayResultPrinter
  		if ($linksHTML = $this->getPageLinks($startingNumber, $numItems)) {
 			
 			// Add the links to the page
-			$pageLinkBlock =& new Block($linksHTML, STANDARD_BLOCK);
-			$layout->add($pageLinkBlock, "100%", null, RIGHT, CENTER);
+			$pageLinkBlock =& new Block($linksHTML, BACKGROUND_BLOCK);
+			$layout->add($pageLinkBlock, "100%", null, CENTER, CENTER);
+			
+			$styleCollection =& new StyleCollection("*.result_page_links", "result_page_links", "Result Page Links", "Links to other pages of results.");
+			$styleCollection->addSP(new MarginTopSP("10px"));
+			$pageLinkBlock->addStyle($styleCollection);
 		}
 		
 		$layout->add($resultLayout, "100%", null, LEFT, CENTER);
