@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change_password.act.php,v 1.3 2006/03/10 21:01:10 adamfranco Exp $
+ * @version $Id: change_password.act.php,v 1.4 2006/05/30 20:18:46 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change_password.act.php,v 1.3 2006/03/10 21:01:10 adamfranco Exp $
+ * @version $Id: change_password.act.php,v 1.4 2006/05/30 20:18:46 adamfranco Exp $
  */
 class change_passwordAction 
 	extends MainWindowAction
@@ -164,7 +164,7 @@ class change_passwordAction
 				($properties['new_password'] == $properties['n_p_again'])) {
 					
 				// Log the action
-				if (Services::serviceAvailable("Logging")) {
+				if (Services::serviceRunning("Logging")) {
 					$loggingManager =& Services::getService("Logging");
 					$log =& $loggingManager->getLogForWriting("Authentication");
 					$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
@@ -201,7 +201,7 @@ class change_passwordAction
 		 } 
 		 if (isset($error)) {
 		 	// Log the action
-			if (Services::serviceAvailable("Logging")) {
+			if (Services::serviceRunning("Logging")) {
 				$loggingManager =& Services::getService("Logging");
 				$log =& $loggingManager->getLogForWriting("Authentication");
 				$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",

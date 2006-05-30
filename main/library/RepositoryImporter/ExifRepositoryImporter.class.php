@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.17 2006/05/24 13:36:12 cws-midd Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.18 2006/05/30 20:18:45 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -21,7 +21,7 @@ require_once(DOMIT);
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.17 2006/05/24 13:36:12 cws-midd Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.18 2006/05/30 20:18:45 adamfranco Exp $
  */
 class ExifRepositoryImporter
 	extends RepositoryImporter
@@ -84,7 +84,7 @@ class ExifRepositoryImporter
 	 * @since 7/20/05
 	 */
 	function &getSingleAssetRecordList (&$input) {
-		if (Services::serviceAvailable("Logging")) {
+		if (Services::serviceRunning("Logging")) {
 			$loggingManager =& Services::getService("Logging");
 			$log =& $loggingManager->getLogForWriting("Harmoni");
 			$formatType =& new Type("logging", "edu.middlebury", 

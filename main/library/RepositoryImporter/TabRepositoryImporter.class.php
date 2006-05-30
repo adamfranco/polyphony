@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.16 2006/05/24 13:36:12 cws-midd Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.17 2006/05/30 20:18:45 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.16 2006/05/24 13:36:12 cws-midd Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.17 2006/05/30 20:18:45 adamfranco Exp $
  */
 class TabRepositoryImporter
 	extends RepositoryImporter
@@ -74,7 +74,7 @@ class TabRepositoryImporter
 	 * @since 7/20/05
 	 */
 	function &getSingleAssetRecordList ($input) {
-		if (Services::serviceAvailable("Logging")) {
+		if (Services::serviceRunning("Logging")) {
 			$loggingManager =& Services::getService("Logging");
 			$log =& $loggingManager->getLogForWriting("Harmoni");
 			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",

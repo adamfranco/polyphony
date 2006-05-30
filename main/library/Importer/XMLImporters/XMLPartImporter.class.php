@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartImporter.class.php,v 1.19 2006/04/05 16:12:28 cws-midd Exp $
+ * @version $Id: XMLPartImporter.class.php,v 1.20 2006/05/30 20:18:45 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartImporter.class.php,v 1.19 2006/04/05 16:12:28 cws-midd Exp $
+ * @version $Id: XMLPartImporter.class.php,v 1.20 2006/05/30 20:18:45 adamfranco Exp $
  */
 class XMLPartImporter extends XMLImporter {
 		
@@ -111,7 +111,7 @@ class XMLPartImporter extends XMLImporter {
 		$dbHandler =& Services::getService("DBHandler");
 //		$dbIndexConcerto =& $dbHandler->addDatabase(new 
 //			MySQLDatabase("localhost", "whitey_concerto", "test", "test"));
-		if (Services::serviceAvailable("Logging")) {
+		if (Services::serviceRunning("Logging")) {
 			$loggingManager =& Services::getService("Logging");
 			$log =& $loggingManager->getLogForWriting("Harmoni");
 			$formatType =& new Type("logging", "edu.middlebury",
@@ -200,7 +200,7 @@ class XMLPartImporter extends XMLImporter {
 			$this->addError("Unsupported PartStructure DataType: ".
 						HarmoniType::typeToString($type).".");
 			// Log error
-			if (Services::serviceAvailable("Logging")) {
+			if (Services::serviceRunning("Logging")) {
 				$loggingManager =& Services::getService("Logging");
 				$log =& $loggingManager->getLogForWriting("Harmoni");
 				$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",

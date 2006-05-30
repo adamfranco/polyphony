@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureImporter.class.php,v 1.18 2006/04/05 16:12:28 cws-midd Exp $
+ * @version $Id: XMLPartStructureImporter.class.php,v 1.19 2006/05/30 20:18:45 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureImporter.class.php,v 1.18 2006/04/05 16:12:28 cws-midd Exp $
+ * @version $Id: XMLPartStructureImporter.class.php,v 1.19 2006/05/30 20:18:45 adamfranco Exp $
  */
 class XMLPartStructureImporter extends XMLImporter {
 		
@@ -105,7 +105,7 @@ class XMLPartStructureImporter extends XMLImporter {
 		}
 		else {
 			$this->addError("bad PartStructure data Type");
-			if (Services::serviceAvailable("Logging")) {
+			if (Services::serviceRunning("Logging")) {
 				$loggingManager =& Services::getService("Logging");
 				$log =& $loggingManager->getLogForWriting("Harmoni");
 				$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",

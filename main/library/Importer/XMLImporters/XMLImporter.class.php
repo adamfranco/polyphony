@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.23 2006/05/26 13:25:07 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.24 2006/05/30 20:18:45 adamfranco Exp $
  *
  * @author Christopher W. Shubert
  */ 
@@ -27,7 +27,7 @@ require_once(POLYPHONY."/main/library/Importer/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.23 2006/05/26 13:25:07 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.24 2006/05/30 20:18:45 adamfranco Exp $
  */
 class XMLImporter {
 
@@ -134,7 +134,7 @@ class XMLImporter {
 	 * @since 10/5/05
 	 */
 	function parseAndImportBelow ($granule, $detail = 50) {
-		if (Services::serviceAvailable("Logging")) {
+		if (Services::serviceRunning("Logging")) {
 			$loggingManager =& Services::getService("Logging");
 			$log =& $loggingManager->getLogForWriting("Harmoni");
 			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
@@ -186,7 +186,7 @@ class XMLImporter {
 	 * @since 10/5/05
 	 */
 	function parseAndImport ($granule, $detail = 50) {
-		if (Services::serviceAvailable("Logging")) {
+		if (Services::serviceRunning("Logging")) {
 			$loggingManager =& Services::getService("Logging");
 			$log =& $loggingManager->getLogForWriting("Harmoni");
 			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
@@ -352,7 +352,7 @@ class XMLImporter {
 						'XMLImporter')) {
 					$this->addError("Class, '$class', is not a subclass of 'XMLImporter'.");
 					// log error
-					if (Services::serviceAvailable("Logging")) {
+					if (Services::serviceRunning("Logging")) {
 						$loggingManager =& Services::getService("Logging");
 						$log =& $loggingManager->getLogForWriting("Harmoni");
 						$formatType =& new Type("logging", "edu.middlebury",
@@ -401,7 +401,7 @@ class XMLImporter {
 				else {
 					$this->addError($helper."() does not exist");
 					// log error
-					if (Services::serviceAvailable("Logging")) {
+					if (Services::serviceRunning("Logging")) {
 						$loggingManager =& Services::getService("Logging");
 						$log =& $loggingManager->getLogForWriting("Harmoni");
 						$formatType =& new Type("logging", "edu.middlebury",
@@ -537,7 +537,7 @@ class XMLImporter {
 			$this->addError("Failed to decompress file: ".$filepath.
 				".  Unsupported archive extension.");
 			// log error
-			if (Services::serviceAvailable("Logging")) {
+			if (Services::serviceRunning("Logging")) {
 				$loggingManager =& Services::getService("Logging");
 				$log =& $loggingManager->getLogForWriting("Harmoni");
 				$formatType =& new Type("logging", "edu.middlebury",
@@ -625,7 +625,7 @@ class XMLImporter {
  *********************************************************/
 
 	function moreGranulesFromXML () {
-		if (Services::serviceAvailable("Logging")) {
+		if (Services::serviceRunning("Logging")) {
 			$loggingManager =& Services::getService("Logging");
 			$log =& $loggingManager->getLogForWriting("Harmoni");
 			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",

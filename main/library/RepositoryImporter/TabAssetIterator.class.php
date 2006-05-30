@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabAssetIterator.class.php,v 1.7 2006/05/24 13:36:12 cws-midd Exp $
+ * @version $Id: TabAssetIterator.class.php,v 1.8 2006/05/30 20:18:45 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabAssetIterator.class.php,v 1.7 2006/05/24 13:36:12 cws-midd Exp $
+ * @version $Id: TabAssetIterator.class.php,v 1.8 2006/05/30 20:18:45 adamfranco Exp $
  */
 class TabAssetIterator 
 extends HarmoniIterator 
@@ -45,7 +45,7 @@ extends HarmoniIterator
 	 * @since 7/20/05
 	 */
 	function TabAssetIterator ($srcDir, &$parentRepositoryImporter) {		
-		if (Services::serviceAvailable("Logging")) {
+		if (Services::serviceRunning("Logging")) {
 			$loggingManager =& Services::getService("Logging");
 			$log =& $loggingManager->getLogForWriting("Harmoni");
 			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",

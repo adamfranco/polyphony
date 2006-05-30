@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.25 2006/05/24 13:36:12 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.26 2006/05/30 20:18:45 adamfranco Exp $
  */ 
 require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.25 2006/05/24 13:36:12 cws-midd Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.26 2006/05/30 20:18:45 adamfranco Exp $
  */
 class RepositoryImporter {
 	
@@ -78,7 +78,7 @@ class RepositoryImporter {
 		if ($worked == false) {
 			$this->addError("Failed to decompress file: ".$this->_filepath.
 				".  Unsupported archive extension.");
-			if (Services::serviceAvailable("Logging")) {
+			if (Services::serviceRunning("Logging")) {
 				$loggingManager =& Services::getService("Logging");
 				$log =& $loggingManager->getLogForWriting("Harmoni");
 				$formatType =& new Type("logging", "edu.middlebury", 
@@ -247,7 +247,7 @@ class RepositoryImporter {
 			$assetInfo['type']);
 		$assetId =& $asset->getId();
 		// log creation
-		if (Services::serviceAvailable("Logging")) {
+		if (Services::serviceRunning("Logging")) {
 			$loggingManager =& Services::getService("Logging");
 			$log =& $loggingManager->getLogForWriting("Harmoni");
 			$formatType =& new Type("logging", "edu.middlebury", 

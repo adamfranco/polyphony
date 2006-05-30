@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.14 2006/04/05 16:12:28 cws-midd Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.15 2006/05/30 20:18:45 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/Importer/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.14 2006/04/05 16:12:28 cws-midd Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.15 2006/05/30 20:18:45 adamfranco Exp $
  */
 class XMLAssetImporter extends XMLImporter {
 		
@@ -124,7 +124,7 @@ class XMLAssetImporter extends XMLImporter {
 				$this->_info['name'], $this->_info['description'], 
 				$this->_info['type']);
 			$this->_myId =& $this->_object->getId();
-			if (Services::serviceAvailable("Logging")) {
+			if (Services::serviceRunning("Logging")) {
 				$loggingManager =& Services::getService("Logging");
 				$log =& $loggingManager->getLogForWriting("Harmoni");
 				$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
@@ -179,7 +179,7 @@ class XMLAssetImporter extends XMLImporter {
 			foreach ($this->_childImporterList as $importer) {
 				if (!is_subclass_of(new $importer($this->_existingArray), 'XMLImporter')) {
 					$this->addError("Class, '$class', is not a subclass of 'XMLImporter'.");
-					if (Services::serviceAvailable("Logging")) {
+					if (Services::serviceRunning("Logging")) {
 						$loggingManager =& Services::getService("Logging");
 						$log =& $loggingManager->getLogForWriting("Harmoni");
 						$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
@@ -233,7 +233,7 @@ class XMLAssetImporter extends XMLImporter {
 			$modified = true;
 			$this->_object->updateDescription($this->_info['description']);
 		}
-		if (Services::serviceAvailable("Logging") && $modified) {
+		if (Services::serviceRunning("Logging") && $modified) {
 			$loggingManager =& Services::getService("Logging");
 			$log =& $loggingManager->getLogForWriting("Harmoni");
 			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
