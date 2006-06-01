@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.6 2006/01/18 19:15:20 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.7 2006/06/01 14:41:46 adamfranco Exp $
  */
  
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -34,7 +34,7 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.6 2006/01/18 19:15:20 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.7 2006/06/01 14:41:46 adamfranco Exp $
  */
 class browse_helpAction 
 	extends Action
@@ -96,31 +96,59 @@ class browse_helpAction
 	 * @since 12/8/05
 	 */
 	function &getHelpMenu () {
+		$this->_menu =& new Menu(new YLayout, 1);
+		
+		$toc =& $this->getTableOfContents();
+		$toc->acceptVisitor($this);
+				
+		return $this->_menu; 
+	}
+	
+	/**
+	 * Visit a table of contents part and add it to our menue
+	 * 
+	 * @param object $tocPart
+	 * @return void
+	 * @access public
+	 * @since 5/31/06
+	 */
+	function &visitTableOfContentsPart ($tocPart) {
 		$harmoni =& Harmoni::instance();
 		
-		$menu =& new Menu(new YLayout, 1);
-		
-		$menuItem =& new MenuItemLink(
-			$this->getMainTopic(), 
-			$harmoni->request->quickURL("help", "browse_help"), 
-			(RequestContext::value("topic"))?FALSE:TRUE,
-			1);
+		if ($tocPart->topic == $harmoni->config->get('programTitle') && is_null($tocPart->heading)) {
+			$menuItem =& new MenuItemHeading($tocPart->topic, 1);
+		}else if ($tocPart->topic == $this->getMainTopic() && is_null($tocPart->heading))
+			$menuItem =& new MenuItemLink(
+				$this->getMainTopic(), 
+				$harmoni->request->quickURL("help", "browse_help"), 
+				(RequestContext::value("topic"))?FALSE:TRUE,
+				$tocPart->level + 2);			
+		else {
 			
-		$menu->add($menuItem, "100%", null, LEFT, CENTER);
-		
-		foreach ($this->getHelpTopics() as $file => $topic) {
-			if ($topic != $this->getMainTopic()) {
-				$menuItem =& new MenuItemLink(
-					"$topic", 
-					$harmoni->request->quickURL("help", "browse_help", array("topic" => $topic)), 
-					(RequestContext::value("topic") == $topic)?TRUE:FALSE,
-					2);
-					
-				$menu->add($menuItem, "100%", null, LEFT, CENTER);
+			$url = $harmoni->request->quickURL("help", "browse_help", array("topic" => $tocPart->topic, "heading" => $tocPart->heading));
+			
+			
+			if ($tocPart->heading) {
+				$url .= "#".strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', strip_tags($tocPart->heading)));
+				$title = $tocPart->heading;
+			} else {
+				$title = $tocPart->topic;
 			}
+			
+			$menuItem =& new MenuItemLink(
+				$title, 
+				$url, 
+				(RequestContext::value("topic") == $tocPart->topic && RequestContext::value("heading") == $tocPart->heading)?TRUE:FALSE,
+				$tocPart->level + 2);
 		}
 		
-		return $menu; 
+		$this->_menu->add($menuItem, "100%", null, LEFT, CENTER);
+		
+		foreach (array_keys($tocPart->children) as $key)
+			$tocPart->children[$key]->acceptVisitor($this);
+		
+		$null = null;
+		return $null;
 	}
 	
 	/**
@@ -142,41 +170,81 @@ class browse_helpAction
 			
 			$this->_topics = array();
 			
+			// Set up the table of contents
+			$this->_tableOfContents =& new TableofContentsPart;
+			$this->_tableOfContents->topic = $harmoni->config->get('programTitle');
+			$this->_tableOfContents->level = -1;
+			
+			
+			// traverse through our directories.
 			$langMan =& Services::getService('LanguageManager');
 			$lang = $langMan->getLanguage();
 			
-			foreach ($this->_dirs as $helpDir) {
-				$dir = $helpDir."/".$lang;
+			foreach ($this->_dirs as $key => $dirArray) {
+				$dir = $dirArray['directory']."/".$lang;
+							
 				if (is_dir($dir) && $handle = opendir($dir)) {
-					while (false !== ($file = readdir($handle))) {
-						$filePath = $dir."/".$file;
-						if (preg_match(
-							"/<title>(.*)<\/title>/i", 
-							file_get_contents($filePath),
-							$matches))
-						{
-							$this->_topics[$filePath] = $matches[1];
-						}
-					}
+					$this->addTopicsFromDirectory($dir, $handle, $dirArray['urlPath']."/".$lang);
 					closedir($handle);
-				} else if (is_dir($dir = $helpDir."/en_US") && $handle = opendir($dir)) {
-					while (false !== ($file = readdir($handle))) {
-						$filePath = $dir."/".$file;
-						if (preg_match(
-							"/<title>(.*)<\/title>/i", 
-							file_get_contents($filePath),
-							$matches))
-						{
-							$this->_topics[$filePath] = $matches[1];
-						}
-					}
+				} else if (is_dir($dir = $dirArray['directory']."/en_US") && $handle = opendir($dir)) {
+					$this->addTopicsFromDirectory($dir, $handle, $dirArray['urlPath']."/en_US/");
 					closedir($handle);
 				}
 			}
-			
+
 			asort($this->_topics);
 		}
 		return $this->_topics;
+	}
+	
+	/**
+	 * Answer our table of contents object tree
+	 * 
+	 * @return object
+	 * @access public
+	 * @since 5/31/06
+	 */
+	function &getTableOfContents () {
+		if (!isset($this->_tableOfContents))
+			$this->getHelpTopics();
+		
+		return $this->_tableOfContents;
+	}
+	
+	/**
+	 * Add the topics from a given file
+	 * 
+	 * @param string $dir
+	 * @param handle $handle
+	 * @return void
+	 * @access public
+	 * @since 5/31/06
+	 */
+	function addTopicsFromDirectory ($dir, $handle, $urlPath) {
+		while (false !== ($file = readdir($handle))) {
+			$filePath = $dir."/".$file;
+			$contents = file_get_contents($filePath);
+			if (preg_match(
+				"/<title>(.*)<\/title>/i", 
+				$contents,
+				$matches))
+			{
+				$topic = $matches[1];
+				$this->_topics[$filePath] = $topic;
+				
+				$part =& $this->_tableOfContents->addChild($topic, null, 0, $filePath, $urlPath);
+			
+				if (preg_match_all(
+					"/<h([1-6])>(.*)<\/h[1-6]>/i", 
+					$contents,
+					$matches))
+				{
+					for ($i = 0; $i < count($matches[1]); $i++) {
+						$part->addChild($topic, $matches[2][$i], $matches[1][$i], $filePath, $urlPath);
+					}
+				}
+			}
+		}
 	}
 	
 	/**
@@ -190,14 +258,15 @@ class browse_helpAction
 	 * @static
 	 * @since 12/9/05
 	 */
-	function addHelpDirectory ( $directory ) {
+	function addHelpDirectory ( $directory, $urlPath ) {
 		$harmoni =& Harmoni::instance();
 		if (!isset($_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')]) || !is_array($_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')]))
 			$_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')] = array();
 		
 		if (is_dir($directory)) {
-			if (!in_array($directory, $_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')]))
-				$_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')][] = $directory;
+			if (!array_key_exists($directory, $_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')])) {
+				$_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')][$directory] = array('directory' => $directory, 'urlPath' => $urlPath);
+			}
 		} else
 			throwError(new Error("Invalid Help directory, '$directory'", "polyphony.help", true));
 	}
@@ -250,10 +319,27 @@ class browse_helpAction
 	function &getTopicContents ($topic) {
 		$topicContainer =& new Container(new YLayout, BLANK, 1);
 		
+		$tocPart = $this->_tableOfContents->getTableOfContentsPart($topic);
+		
 		$document =& $this->getTopicXmlDocument($topic);
 		
 		$bodyElements =& $document->getElementsByPath("/html/body");
 		$body =& $bodyElements->item(0);
+				
+		$this->updateSrcTags($document->documentElement, $tocPart->urlPath."/");
+		
+		// put custom style sheets in the page's head
+		$headElements =& $document->getElementsByPath("/html/head");
+		$head =& $headElements->item(0);
+		$newHeadText = '';
+		for ($i = 0; $i < count($head->childNodes); $i++) {
+			$newHeadText .= $head->childNodes[$i]->toString()."\n\t\t";
+		}
+		
+		$harmoni =& Harmoni::instance();
+		$outputHandler =& $harmoni->getOutputHandler();
+		$outputHandler->setHead($outputHandler->getHead().$newHeadText);
+		
 		
 		ob_start();
 		for ($i = 0; $i < count($body->childNodes); $i++) {
@@ -292,9 +378,9 @@ class browse_helpAction
 					// Start a new buffer for the next block contents.
 					ob_start();
 					break;
-
+				
 				default:
-					print $element->toString()."\n";
+					print $element->toString(false, true)."\n";
 						
 			}
 		}
@@ -302,6 +388,36 @@ class browse_helpAction
 		$topicContainer->add(new Block($this->linkify(ob_get_clean()), STANDARD_BLOCK));
 		
 		return $topicContainer;
+	}
+	
+	/**
+	 * Convert relative links in src tags to contain the full path needed to
+	 * use them.
+	 * 
+	 * @param object 
+	 * @return void
+	 * @access public
+	 * @since 5/31/06
+	 */
+	function updateSrcTags (&$element, $path) {
+		if (method_exists($element, 'hasAttribute')
+			&& $element->hasAttribute('src') 
+			&& !preg_match('/([a-z]+:\/\/.+)|(\/.+)/', $element->getAttribute('src')))
+		{
+			$element->setAttribute('src',
+				$path.$element->getAttribute('src'));
+		}
+		
+		if (method_exists($element, 'hasAttribute')
+			&& $element->hasAttribute('href') 
+			&& !preg_match('/([a-z]+:\/\/.+)|(\/.+)/', $element->getAttribute('href')))
+		{
+			$element->setAttribute('href',
+				$path.$element->getAttribute('href'));
+		}
+		
+		for ($i = 0; $i < count($element->childNodes); $i++)
+			$this->updateSrcTags($element->childNodes[$i], $path);
 	}
 	
 	/**
@@ -364,9 +480,9 @@ class browse_helpAction
 	function &getTopicXmlDocument ($topic) {
 		$document =& new DOMIT_Document();
 		
-		$file = array_search($topic, $this->getHelpTopics());
+		$tocPart = $this->_tableOfContents->getTableOfContentsPart($topic);
 		
-		if (!$file || !file_exists($file)) {
+		if (!$tocPart->file || !file_exists($tocPart->file)) {
 			ob_start();
 			print 	"<html>\n";
 			print 	"	<head>\n";
@@ -387,10 +503,120 @@ class browse_helpAction
 			$document->parseXML(ob_get_contents());
 			ob_end_clean();
 		} else {
-			$document->loadXML($file);
+			$document->loadXML($tocPart->file);
 		}
 			
 		return $document;
+	}
+}
+
+
+/**
+ * <##>
+ * 
+ * @since 5/31/06
+ * @package <##>
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: browse_help.act.php,v 1.7 2006/06/01 14:41:46 adamfranco Exp $
+ */
+class TableOfContentsPart {
+		
+	/**
+	 * Constructor
+	 * 
+	 * @param <##>
+	 * @return <##>
+	 * @access public
+	 * @since 5/31/06
+	 */
+	function TableOfContentsPart () {
+		$this->level = 0;
+		$this->topic = null;
+		$this->heading = null;
+		$this->file = null;
+		$this->urlPath = null;
+		$this->children = array();
+	}
+	
+	
+	/**
+	 * Add a child part to our children or ourselves, or return false
+	 * if not possible (i.e. h1 being put under an h3)
+	 * 
+	 * @param string $topic
+	 * @param string $heading
+	 * @param integer $level
+	 * @return void
+	 * @access public
+	 * @since 5/31/06
+	 */
+	function &addChild ($topic, $heading, $level, $file, $urlPath) {
+		$false = false;
+		
+		// if the level is greater or equal to ours, it is a sibling or uncle
+		if ($level <= $this->level)
+			return $false;
+		
+		// see if our last child can handle it (to append to that child)
+		if (count($this->children))
+		{
+			$keys = array_keys($this->children);
+			
+			$part =& $this->children[$keys[count($keys) - 1]]->addChild($topic, $heading, $level, $file, $urlPath);
+			if ($part)
+				return $part;
+		}
+		
+		// if it couldn't be appended to our last child, add it as a new child
+		$part =& new TableofContentsPart;
+		$part->topic = $topic;
+		$part->heading = $heading;
+		$part->level = $level;
+		$part->file = $file;
+		$part->urlPath = $urlPath;
+		$this->children[$topic.$heading] =& $part;
+		if ($level == 0)
+			ksort($this->children);
+		return $part;
+	}
+	
+	/**
+	 * Accept a visitor
+	 * 
+	 * @param object $visitor
+	 * @return mixed
+	 * @access public
+	 * @since 5/31/06
+	 */
+	function &acceptVisitor ($visitor) {
+		$result =& $visitor->visitTableOfContentsPart($this);
+		return $result;
+	}
+	
+	/**
+	 * Answer the table of contents part that matches the given topic/heading
+	 * 
+	 * @param string $topic
+	 * @param string $heading
+	 * @return object
+	 * @access public
+	 * @since 5/31/06
+	 */
+	function &getTableOfContentsPart ($topic, $heading = null) {
+		if ($topic == $this->topic && $heading == $this->heading)
+			return $this;
+		
+		foreach (array_keys($this->children) as $key) {
+			$result =& $this->children[$key]->getTableOfContentsPart($topic, $heading);
+			if ($result)
+				return $result;
+		}
+		
+		$false = false;
+		return $false;			
 	}
 }
 
