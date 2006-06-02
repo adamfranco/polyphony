@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.24 2006/05/30 20:18:45 adamfranco Exp $
+ * @version $Id: XMLImporter.class.php,v 1.25 2006/06/02 14:28:59 cws-midd Exp $
  *
  * @author Christopher W. Shubert
  */ 
@@ -27,7 +27,7 @@ require_once(POLYPHONY."/main/library/Importer/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.24 2006/05/30 20:18:45 adamfranco Exp $
+ * @version $Id: XMLImporter.class.php,v 1.25 2006/06/02 14:28:59 cws-midd Exp $
  */
 class XMLImporter {
 
@@ -148,13 +148,21 @@ class XMLImporter {
 			// xmlPath is used for finding files tared up with the import
 			$this->_import->xmlPath = dirname($this->_xmlFile)."/";
 			// @todo check the xml structure against what is expected
-			$this->_checkXMLStructure();
-			if (!($this->_import->documentElement->hasChildNodes())) {
+			if (!$this->_checkXMLStructure()) {
+				$this->addError("This file can not be handled by this importer");
+				// log error
+				$item =& new AgentNodeEntryItem("XMLImporter Error",
+					"Improper Import Format: ".$this->_xmlFile.".");
+				if (isset($log))
+					$log->appendLogWithTypes($item, $formatType, $priorityType);
+			}
+			else if (!($this->_import->documentElement->hasChildNodes())) {
 				$this->addError("There are no Importables in this file");
 				// log error
 				$item =& new AgentNodeEntryItem("XMLImporter Error",
 					"No Importables in the file: ".$this->_xmlFile.".");
-				$log->appendLogWithTypes($item, $formatType, $priorityType);
+				if (isset($log))
+					$log->appendLogWithTypes($item, $formatType, $priorityType);
 			} else {
 				// the parsing importer is responsible for the docElement
 				$this->_node =& $this->_import->documentElement;
@@ -173,7 +181,8 @@ class XMLImporter {
 			$item =& new AgentNodeEntryItem("XMLImporter DOMIT Error",
 				"Error Code: ".$this->_import->getErrorCode().", meaning: ".
 				$this->_import->getErrorString().".");
-			$log->appendLogWithTypes($item, $formatType, $priorityType);
+			if (isset($log))
+				$log->appendLogWithTypes($item, $formatType, $priorityType);
 		}
 	}
 	
@@ -199,14 +208,22 @@ class XMLImporter {
 		if ($this->_import->loadXML($this->_xmlFile)) {
 			// path for finding files associated with import
 			$this->_import->xmlPath = dirname($this->_xmlFile)."/";
-			// @todo check the xml structure against what is expected
-			$this->_checkXMLStructure();
-			if (!($this->_import->documentElement->hasChildNodes())) {
+			// check the xml structure against what is expected
+			if (!$this->_checkXMLStructure()) {
+				$this->addError("This file can not be handled by this importer");
+				// log error
+				$item =& new AgentNodeEntryItem("XMLImporter Error",
+					"Improper Import Format: ".$this->_xmlFile.".");
+				if (isset($log))
+					$log->appendLogWithTypes($item, $formatType, $priorityType);
+			}
+			else if (!($this->_import->documentElement->hasChildNodes())) {
 				$this->addError("There are no Importables in this file");
 				// log error
 				$item =& new AgentNodeEntryItem("XMLImporter Error",
 					"No Importables in the file: ".$this->_xmlFile.".");
-				$log->appendLogWithTypes($item, $formatType, $priorityType);
+				if (isset($log))
+					$log->appendLogWithTypes($item, $formatType, $priorityType);
 			} else {
 				// the parsing importer is responsible for the docElement
 				$this->_node =& $this->_import->documentElement;
@@ -222,7 +239,8 @@ class XMLImporter {
 			$item =& new AgentNodeEntryItem("XMLImporter DOMIT Error",
 				"Error Code: ".$this->_import->getErrorCode().", meaning: ".
 				$this->_import->getErrorString().".");
-			$log->appendLogWithTypes($item, $formatType, $priorityType);
+			if (isset($log))
+				$log->appendLogWithTypes($item, $formatType, $priorityType);
 		}
 	}
 	
@@ -577,9 +595,12 @@ class XMLImporter {
 	 * @since 7/29/05
 	 */
 	 function printErrorMessages() {
+	 	print "<div style='color:#FF0000;'>";
 	 	foreach ($this->_errors as $errorString) {
 	 		print("Error: ".$errorString."<br />");
 	 	}
+	 	print 'Please, Cancel this wizard and investigate other import options.  See Help.';
+	 	print '</div>';
 	 }
 
 	/**
@@ -650,7 +671,8 @@ class XMLImporter {
 					// log error
 					$item =& new AgentNodeEntryItem("XMLImporter Error",
 						"No Importables in the file: ".$path.".");
-					$log->appendLogWithTypes($item, $formatType, $priorityType);
+					if (isset($log))
+						$log->appendLogWithTypes($item, $formatType, $priorityType);
 				} else {
 					$nodes =& $import->documentElement->getElementsByTagName(
 						$this->_granule);
@@ -664,7 +686,8 @@ class XMLImporter {
 				$item =& new AgentNodeEntryItem("XMLImporter DOMIT Error",
 					"Error Code: ".$import->getErrorCode().", meaning: ".
 					$import->getErrorString().".");
-				$log->appendLogWithTypes($item, $formatType, $priorityType);
+				if (isset($log))
+					$log->appendLogWithTypes($item, $formatType, $priorityType);
 			}
 		}
 		return $granules;
