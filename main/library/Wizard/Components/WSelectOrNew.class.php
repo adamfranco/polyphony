@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectOrNew.class.php,v 1.2 2006/05/01 20:59:38 adamfranco Exp $
+ * @version $Id: WSelectOrNew.class.php,v 1.3 2006/06/02 20:52:25 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectOrNew.class.php,v 1.2 2006/05/01 20:59:38 adamfranco Exp $
+ * @version $Id: WSelectOrNew.class.php,v 1.3 2006/06/02 20:52:25 adamfranco Exp $
  */
 class WSelectOrNew
 	extends WizardComponentWithChildren 
@@ -38,8 +38,23 @@ class WSelectOrNew
 	 */
 	function WSelectOrNew () {
 		$this->_select =& new WSelectList;
+		$this->_select->setParent($this);
 		$this->_new =& new WTextField;
 		$this->_new->setParent($this);
+		
+		$this->_init();
+	}
+	
+	/**
+	 * Initialize our fields
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 6/2/06
+	 */
+	function _init () {
+		$this->_select->addOption('__NEW_VALUE__', (dgettext("polyphony", "* New Value *")));
+		$this->_select->setValue('__NEW_VALUE__');
 	}
 	
 	/**
@@ -55,7 +70,7 @@ class WSelectOrNew
     		$this->_select->setValue($value);
     		$this->_new->setValue('');
     	} else {
-	    	$this->_select->setValue('');
+	    	$this->_select->setValue('__NEW_VALUE__');
     		$this->_new->setValue($value);
     	}
     }
@@ -89,6 +104,8 @@ class WSelectOrNew
 		
 		$this->_select =& $input;
 		$this->_select->setParent($this);
+		
+		$this->_init();
 		
 		return $this->_select;
     }
@@ -171,7 +188,7 @@ class WSelectOrNew
 	function update ($fieldName) {
 		$this->_select->update($fieldName."_select");
 		$this->_new->update($fieldName."_new");
-		if ($this->_new->getAllValues())
+		if ($this->isUsingNewValue() && $this->_new->getAllValues())
 			$this->setValue($this->_new->getAllValues());
 	}
 	
@@ -182,11 +199,21 @@ class WSelectOrNew
 	 * @return mixed
 	 */
 	function getAllValues () {
-		$array = array();
-		$array['selected'] = $this->_select->getAllValues();
-		$array['new'] = $this->_new->getAllValues();
-		
-		return $array;
+		if ($this->isUsingNewValue())
+			return $this->_new->getAllValues();
+		else
+			return $this->_select->getAllValues();
+	}
+	
+	/**
+	 * Return true if we should be using the new value rather than the select
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 6/2/06
+	 */
+	function isUsingNewValue () {
+		return ($this->_select->getAllValues() == '__NEW_VALUE__' || $this->_select->getAllValues() == '');
 	}
 	
 	/**
@@ -198,17 +225,27 @@ class WSelectOrNew
 	 * @return string
 	 */
 	function getMarkup ($fieldName) {
-		$m = "\n<table><tr>";
-		$m .= "\n\t<td title='".$this->_label."' style='vertical-align: top; padding: 0px; margin: 0px;'>";
+		$m = "";
+		$m .= "\n\t<div title='".$this->_label."' style='vertical-align: top; padding: 0px; margin: 0px;'>";
+		
+		$newId = RequestContext::name($fieldName."_new");
+		
+		if ($this->isUsingNewValue())
+			$display = " display: block;";
+		else
+			$display = " display: none;";
+		
+		$this->_select->setOnChange("var newField = getElementFromDocument('$newId'); if (this.value == '__NEW_VALUE__') { newField.style.display = 'block'; } else { newField.style.display = 'none'; }");
 		
 		$m .= "\n\t\t".$this->_select->getMarkup($fieldName."_select");
 		
-		$m .= "\n\t</td>\n\t<td style='padding: 0px; margin: 0px;'>";
+		$m .= "\n\t</div>";
+		
+		$m .= "\n\t<div id='$newId' style='padding: 0px; margin: 0px; $display'>";
 		
 		$m .= "\n\t\t".$this->_new->getMarkup($fieldName."_new");
 		
-		$m .= "\n\t</td>";
-		$m .= "\n</tr></table>";
+		$m .= "\n\t</div>";
 		return $m;
 	}
 

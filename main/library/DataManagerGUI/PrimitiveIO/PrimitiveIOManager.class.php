@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIOManager.class.php,v 1.7 2006/05/01 17:43:10 adamfranco Exp $
+ * @version $Id: PrimitiveIOManager.class.php,v 1.8 2006/06/02 20:52:25 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIOManager.class.php,v 1.7 2006/05/01 17:43:10 adamfranco Exp $
+ * @version $Id: PrimitiveIOManager.class.php,v 1.8 2006/06/02 20:52:25 adamfranco Exp $
  * @author Gabe Schine
  */
 class PrimitiveIOManager {
@@ -76,7 +76,6 @@ class PrimitiveIOManager {
 				$component =& new PrimitiveIO_AuthoritativeContainer();
 				$component->setSelectComponent(
 					PrimitiveIOManager::createAuthoritativeComponent($dataType));
-				$component->addOption('', (dgettext("polyphony", "* New Value *")));
 				$component->setNewComponent(
 					PrimitiveIOManager::createComponent($dataType));
 			} else {

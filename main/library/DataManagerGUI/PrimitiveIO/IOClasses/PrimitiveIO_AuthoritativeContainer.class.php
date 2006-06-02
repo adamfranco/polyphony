@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.2 2006/05/01 20:59:36 adamfranco Exp $
+ * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.3 2006/06/02 20:52:25 adamfranco Exp $
  */ 
 
 /**
@@ -19,11 +19,22 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.2 2006/05/01 20:59:36 adamfranco Exp $
+ * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.3 2006/06/02 20:52:25 adamfranco Exp $
  */
 class PrimitiveIO_AuthoritativeContainer
 	extends WSelectOrNew
 {
+	/**
+	 * Initialize our fields
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 6/2/06
+	 */
+	function _init () {
+		$this->_select->addOption('__NEW_VALUE__', (dgettext("polyphony", "* New Value *")));
+		$this->_select->setValue(String::fromString('__NEW_VALUE__'));
+	}
 	
 	/**
      * Set the value of the input component
@@ -34,11 +45,14 @@ class PrimitiveIO_AuthoritativeContainer
      * @since 10/21/05
      */
     function setValue (&$value) {
+    	if (is_string($value))
+    		$value = String::fromString($value);
+    		
     	if ($this->_select->isOption($value)) {
 			$this->_select->setValue($value);
 			$this->_new->setValue(String::fromString(''));
 		} else {
-			$this->_select->setValue(String::fromString(''));
+			$this->_select->setValue(String::fromString('__NEW_VALUE__'));
 			$this->_new->setValue($value);
 		}
     }
@@ -108,6 +122,19 @@ class PrimitiveIO_AuthoritativeContainer
 	}
 	
 	/**
+	 * Return true if we should be using the new value rather than the select
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 6/2/06
+	 */
+	function isUsingNewValue () {
+		$newOption =& String::fromString('__NEW_VALUE__');
+		$emptyOption =& String::fromString('');
+		return ($newOption->isEqualTo($this->_select->getAllValues()) || $emptyOption->isEqualTo($this->_select->getAllValues()));
+	}
+	
+	/**
 	 * Tells the wizard component to update itself - this may include getting
 	 * form post data or validation - whatever this particular component wants to
 	 * do every pageload. 
@@ -120,7 +147,7 @@ class PrimitiveIO_AuthoritativeContainer
 		$this->_select->update($fieldName."_select");
 		$this->_new->update($fieldName."_new");
 		$newValue =& $this->_new->getAllValues();
-		if ($newValue->asString())
+		if ($this->isUsingNewValue() && $newValue->asString())
 			$this->setValue($this->_new->getAllValues());
 	}	
 }
