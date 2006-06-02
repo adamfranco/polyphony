@@ -4,13 +4,17 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.43 2006/06/02 13:43:34 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.44 2006/06/02 19:25:20 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
 	<version number="0.5.3" date="the future">
+		<fix author='adam'>
+			WizardAction: now getWizard() will have the same cachename translation
+			as was in the runWizard() method.
+		</fix>
 		<change author='adam'>
 			Help: Improving the parsing and display of help files to support
 			relative links to images, stylesheets, and other files. Better
