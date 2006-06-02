@@ -4,12 +4,23 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.41 2006/05/26 13:58:40 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.42 2006/06/02 13:42:43 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
+	<version number="0.5.2" date="2006-05-26">
+		<change author='adam'>
+			Help: Improving the parsing and display of help files to support
+			relative links to images, stylesheets, and other files. Better
+			generation of menus too.
+		</change>
+		<fix author='adam'>
+			Logging: Ensured that logging is now ready for use before attempting
+			to log errors.
+		</fix>
+	</version>
 	<version number="0.5.2" date="2006-05-26">
 		<change author='adam'>
 			ResultPrinter pagination now matches background styles.
