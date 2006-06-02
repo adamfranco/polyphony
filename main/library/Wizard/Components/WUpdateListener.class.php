@@ -1,3 +1,4 @@
+<!-- 
 <?php
 
 /**
@@ -7,7 +8,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WUpdateListener.class.php,v 1.1 2006/06/02 16:00:28 cws-midd Exp $
+ * @version $Id: WUpdateListener.class.php,v 1.1.2.1 2006/06/02 21:04:47 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WizardEventListener.abstract.php");
@@ -22,7 +23,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WizardEventListener.abst
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WUpdateListener.class.php,v 1.1 2006/06/02 16:00:28 cws-midd Exp $
+ * @version $Id: WUpdateListener.class.php,v 1.1.2.1 2006/06/02 21:04:47 cws-midd Exp $
  */
 class WUpdateListener 
 	extends WizardEventListener 
@@ -64,7 +65,8 @@ class WUpdateListener
 	 */
 	function handleEvent ($eventType, &$source, $context) {
 		if ($eventType == 'edu.middlebury.polyphony.wizard.update')
-			$source->handleUpdate();
+			$source->handleUpdate($source->getIdString());
 	}
 }
 ?>
+ -->

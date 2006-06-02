@@ -6,10 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleStepWizard.class.php,v 1.6 2006/01/17 20:06:41 adamfranco Exp $
+ * @version $Id: SimpleStepWizard.class.php,v 1.6.2.1 2006/06/02 21:04:46 cws-midd Exp $
  */ 
 
-require_once(POLYPHONY."/main/library/Wizard/SimpleWizard.class.php");
+require_once(POLYPHONY."/main/library/Wizard/StepWizard.abstract.php");
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WizardStepContainer.class.php");
 require_once(POLYPHONY."/main/library/Wizard/Components/WNextStepButton.class.php");
@@ -17,6 +17,8 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WPreviousStepButton.clas
 require_once(POLYPHONY."/main/library/Wizard/Components/WSaveButton.class.php");
 require_once(POLYPHONY."/main/library/Wizard/Components/WCancelButton.class.php");
 require_once(POLYPHONY."/main/library/Wizard/Components/WStepDisplayBar.class.php");
+
+
 //require_once(POLYPHONY."/main/library/Wizard/Components/WizardStepContainer.class.php");
 
 /**
@@ -28,14 +30,12 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WStepDisplayBar.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleStepWizard.class.php,v 1.6 2006/01/17 20:06:41 adamfranco Exp $
+ * @version $Id: SimpleStepWizard.class.php,v 1.6.2.1 2006/06/02 21:04:46 cws-midd Exp $
  */
-class SimpleStepWizard extends SimpleWizard {
-	var $_stepContainer;
+class SimpleStepWizard extends StepWizard {
 	var $_nextButton;
 	var $_prevButton;
 	var $_saveButton;
-	var $_cancelButton;
 	
 	/**
 	 * Constructor
@@ -55,29 +55,10 @@ class SimpleStepWizard extends SimpleWizard {
 		$this->addComponent("_next", $this->_nextButton);
 		$this->addComponent("_prev", $this->_prevButton);
 		$this->addComponent("_stepsBar", new WStepDisplayBar($this->_stepContainer));
+		
+		$this->addEventListener($this->_stepContainer);
 	}
-	
-	/**
-	 * Adds a new {@link WizardStep} to this wizard.
-	 * @param string $name A short id/name for this step.
-	 * @param ref object $step
-	 * @access public
-	 * @return ref object
-	 */
-	function &addStep ($name, &$step) {
-		return $this->_stepContainer->addStep($name, $step);
-	}
-	
-	/**
-	 * Sets the step to the named step.
-	 * @param string $name
-	 * @access public
-	 * @return void
-	 */
-	function setStep ($name) {
-		$this->_stepContainer->setStep($name);
-	}
-	
+		
 	/**
 	 * Returns a new SimpleStepWizard with the layout defined as passed. The layout
 	 * may include any of the following tags:
@@ -93,9 +74,9 @@ class SimpleStepWizard extends SimpleWizard {
 	 * @static
 	 */
 	function &withText ($text) {
-		return parent::withText($text,"SimpleStepWizard");
+		return parent::withText($text, 'SimpleStepWizard');
 	}
-	
+
 	/**
 	 * Returns a new SimpleStepWizard with the default layout and a title.
 	 * @param string $title
@@ -135,16 +116,6 @@ class SimpleStepWizard extends SimpleWizard {
 				"</div>\n", "SimpleStepWizard");
 	}
 	
-	/**
-	 * Returns the values of wizard-components. Should return an array if children are involved,
-	 * otherwise a whatever type of object is expected.
-	 * @access public
-	 * @return mixed
-	 */
-	function getAllValues () {
-		$values = parent::getAllValues();
-		return $values['_steps'];
-	}
 }
 
 ?>

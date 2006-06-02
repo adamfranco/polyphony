@@ -6,11 +6,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardAction.class.php,v 1.9 2006/06/02 19:25:21 adamfranco Exp $
+ * @version $Id: WizardAction.class.php,v 1.8.2.1 2006/06/02 21:04:46 cws-midd Exp $
  */ 
  
  require_once(dirname(__FILE__)."/Action.class.php");
-
+ 
 /**
  * This class is an abstract class that provides a structure for building actions
  * that contain Wizards. Decendent actions are not required to contain Wizards,
@@ -50,7 +50,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardAction.class.php,v 1.9 2006/06/02 19:25:21 adamfranco Exp $
+ * @version $Id: WizardAction.class.php,v 1.8.2.1 2006/06/02 21:04:46 cws-midd Exp $
  */
 class WizardAction 
 	extends Action
@@ -158,6 +158,10 @@ class WizardAction
 	 * @since 4/28/05
 	 */
 	function runWizard ( $cacheName, &$container) {
+		// The browser will translate '.'s into '_'s, resulting in a miss-match,
+		// so swap these now.
+		$cacheName = str_replace(".", "_", $cacheName);
+		
 		$wizard =& $this->getWizard($cacheName);
 		$harmoni =& Harmoni::instance();
 		// tell the wizard to GO
@@ -170,9 +174,9 @@ class WizardAction
 				$this->cancelWizard($cacheName);
 		} 
 		else if ($listener->isCancelRequested()) {
-			$this->cancelWizard($cacheName);	
+			$this->cancelWizard($cacheName);
 		}
-		
+		// traverse wizard again for markup
 		if (isset($_SESSION[$cacheName])) 
 			$container->add($wizard->getLayout($harmoni), null, null, CENTER, TOP);
 	}
@@ -187,14 +191,12 @@ class WizardAction
 	 * @since 4/28/05
 	 */
 	function &getWizard ( $cacheName ) {
-		// The browser will translate '.'s into '_'s, resulting in a miss-match,
-		// so swap these now.
-		$cacheName = str_replace(".", "_", $cacheName);
-		
 		// Create the wizard if it doesn't exist.
 		 if (!isset($_SESSION[$cacheName])) {
 		 	$wizard =& $this->createWizard();
 		 	$wizard->addComponent("_savecancel_", new WSaveCancelListener());
+			// wizard listens for its components to call update
+		 	$wizard->addEventListener($wizard);
 		 	$wizard->setIdString($cacheName);
 		 	$_SESSION[$cacheName] =& $wizard;
 		 }

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: StepWizard.abstract.php,v 1.1 2006/06/02 16:00:28 cws-midd Exp $
+ * @version $Id: StepWizard.abstract.php,v 1.1.2.1 2006/06/02 21:04:46 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/SimpleWizard.class.php");
@@ -24,12 +24,26 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WStepDisplayBar.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: StepWizard.abstract.php,v 1.1 2006/06/02 16:00:28 cws-midd Exp $
+ * @version $Id: StepWizard.abstract.php,v 1.1.2.1 2006/06/02 21:04:46 cws-midd Exp $
  */
 class StepWizard extends SimpleWizard {
 		
 	var $_stepContainer;
 	var $_cancelButton;
+	
+	/**
+	 * Returns a new SimpleWizard object with the text supplied.
+	 * @static
+	 * @param string $text
+	 * @access public
+	 * @return ref object
+	 */
+	function &withText ($text, $class) {
+		$obj =& new $class();
+		$obj->_text = $text;
+		return $obj;
+	}
+
 
 	/**
 	 * Answers the step container

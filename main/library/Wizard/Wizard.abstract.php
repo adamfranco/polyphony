@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.13 2006/01/17 20:06:41 adamfranco Exp $
+ * @version $Id: Wizard.abstract.php,v 1.13.2.1 2006/06/02 21:04:46 cws-midd Exp $
  */
 
 /*
@@ -30,7 +30,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.13 2006/01/17 20:06:41 adamfranco Exp $
+ * @version $Id: Wizard.abstract.php,v 1.13.2.1 2006/06/02 21:04:46 cws-midd Exp $
  * @author Gabe Schine
  * @abstract
  */
@@ -39,13 +39,42 @@ class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 	var $_formName = 'wizard';
 	var $_id = 'w';
 	
+	
 	/**
 	 * Tells this wizard to update itself and run any events that have happened.
 	 * @return void
 	 * @access public
 	 */
 	function go() {
-		$this->update($this->_id);
+		$control =& $this->getActivatedControl();
+		if (!is_null($control)) {
+			$control->fire();
+		}
+		else
+			$this->triggerEvent('edu.middlebury.polyphony.wizard.update', $this);
+
+		foreach (array_keys($this->_eventsLater) as $key) {
+			$info =& $this->_eventsLater[$key];
+			$this->triggerEvent($info[0], $info[1], $info[2]);
+			unset($this->_eventsLater[$key]);
+		}
+	}
+	
+	/**
+	 * Answers the control component that caused the page reload
+	 * 
+	 * @return ref object WizardComponent
+	 * @access public
+	 * @since 6/2/06
+	 */
+	function &getActivatedControl () {
+		foreach (array_keys($this->_controlComponents) as $key) {
+			if ($this->_controlComponents[$key]->isActivated()) {
+				return $this->_controlComponents[$key];
+			}
+		}
+		$null = null;
+		return $null;
 	}
 	
 	/**
@@ -66,12 +95,8 @@ class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 				$ok = false;
 			}
 		}
-		$this->triggerEvent("edu.middlebury.polyphony.wizard.update", $this);
-		foreach (array_keys($this->_eventsLater) as $key) {
-			$info =& $this->_eventsLater[$key];
-			$this->triggerEvent($info[0], $info[1], $info[2]);
-			unset($this->_eventsLater[$key]);
-		}
+		$this->triggerEvent("edu.middlebury.polyphony.wizard.updated", $this);
+
 		return $ok;
 	}
 
@@ -150,7 +175,7 @@ class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 		$newArray[0] = $event;
 		$newArray[1] =& $source;
 		$newArray[2] = $context;
-		$this->_eventsLater[] =& $newArray;
+		$this->_eventsLater[$event] =& $newArray;
 	}
 	
 	/**
@@ -309,7 +334,7 @@ END;
 	 */
 	function addEventListener (&$eventListener) {
 		ArgumentValidator::validate($eventListener, HasMethodsValidatorRule::getRule("handleEvent"), true);
-		$this->_eventListeners[] =& $eventListener;
+		$this->_eventListeners[get_class($eventListener)] =& $eventListener;
 	}
 	
 	/**
@@ -326,6 +351,31 @@ END;
 		foreach (array_keys($list) as $key) {
 			$list[$key]->handleEvent($eventType, $source, $context);
 		}
+	}
+	
+	/**
+	 * wizard as event listener for update
+	 * 
+	 * @param string $event
+	 * @param ref object $source
+	 * @return void
+	 * @access public
+	 * @since 6/2/06
+	 */
+	function handleEvent ($event, &$source, $context) {
+		if ($event == 'edu.middlebury.polyphony.wizard.update')
+			$this->update($this->_id);
+	}
+	
+	/**
+	 * returns the id of the wizard
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 6/2/06
+	 */
+	function getFieldName () {
+		return $this->getIdString();
 	}
 }
 

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WPreviousStepButton.class.php,v 1.5 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WPreviousStepButton.class.php,v 1.5.2.1 2006/06/02 21:04:47 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WPreviousStepButton.class.php,v 1.5 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WPreviousStepButton.class.php,v 1.5.2.1 2006/06/02 21:04:47 cws-midd Exp $
  */
 class WPreviousStepButton extends WEventButton {
 	var $_stepContainer;
@@ -34,23 +34,20 @@ class WPreviousStepButton extends WEventButton {
 	function WPreviousStepButton (&$stepContainer) {
 		$this->setLabel(dgettext("polyphony", "Previous"));
 		$this->_stepContainer =& $stepContainer;
+		$this->setControl(true);
 	}
 
 	/**
-	 * Tells the wizard component to update itself - this may include getting
-	 * form post data or validation - whatever this particular component wants to
-	 * do every pageload. 
-	 * @param string $fieldName The field name to use when outputting form data or
-	 * similar parameters/information.
+	 * fires the control of this step
+	 * 
+	 * @return void
 	 * @access public
-	 * @return boolean - TRUE if everything is OK
+	 * @since 6/2/06
 	 */
-	function update ($fieldName) {
-		parent::update($fieldName);
-		if ($this->getAllValues()) {
-			// advance the step!
-			$this->_stepContainer->previousStep();
-		}
+	function fire () {
+		$wiz =& $this->getWizard();
+		$wiz->triggerEvent('edu.middlebury.polyphony.wizard.update', $wiz);
+		$wiz->triggerLater('edu.middlebury.polyphony.wizard.prev_step', $wiz);
 	}
 	
 	/**

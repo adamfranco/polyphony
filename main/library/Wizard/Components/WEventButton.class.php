@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.class.php,v 1.10 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WEventButton.class.php,v 1.10.2.1 2006/06/02 21:04:47 cws-midd Exp $
  */ 
 
 /**
@@ -19,12 +19,13 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.class.php,v 1.10 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WEventButton.class.php,v 1.10.2.1 2006/06/02 21:04:47 cws-midd Exp $
  */
 class WEventButton 
 	extends WizardComponent
 {
-	var $_event = "nop";
+	var $_events = array();
+	var $_controlEvents = array();
 	var $_label = "NO LABEL";
 	var $_pressed = false;
 	var $_onclick = null;
@@ -66,7 +67,19 @@ class WEventButton
 	 */
 	function setEventAndLabel ($event, $label) {
 		$this->_label = $label;
-		$this->_event = $event;
+		$this->_events[] = $event;
+	}
+	
+	/**
+	 * adds another event to the button
+	 * 
+	 * @param string $event
+	 * @return void
+	 * @access public
+	 * @since 6/2/06
+	 */
+	function addEvent ($event) {
+		$this->_events[] = $event;
 	}
 	
 	/**
@@ -102,11 +115,36 @@ class WEventButton
 	function update ($fieldName) {
 		$val = RequestContext::value($fieldName);
 		if ($val) {
-			// trigger the save event on the wizard
-			$wizard =& $this->getWizard();
-			$wizard->triggerLater($this->_event, $wizard);
 			$this->_pressed = true;
 		}
+	}
+
+	/**
+	 * adds a control event to be triggered immediately
+	 * 
+	 * @param string $event
+	 * @return void
+	 * @access public
+	 * @since 6/2/06
+	 */
+	function addControlEvent ($event) {
+		$this->_controlEvents[] = $event;
+	}
+
+	/**
+	 * gives control back to the button
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 6/2/06
+	 */
+	function fire () {
+		// trigger the events on the wizard
+		$wizard =& $this->getWizard();
+		foreach ($this->_controlEvents as $event)
+			$wizard->triggerEvent($event, $wizard);
+		foreach ($this->_events as $later)
+			$wizard->triggerLater($later, $wizard);
 	}
 	
 	/**

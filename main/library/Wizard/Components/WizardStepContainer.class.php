@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.7 2006/01/18 22:51:59 adamfranco Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.7.2.1 2006/06/02 21:04:47 cws-midd Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.7 2006/01/18 22:51:59 adamfranco Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.7.2.1 2006/06/02 21:04:47 cws-midd Exp $
  */
 class WizardStepContainer extends WizardComponent {
 	var $_currStep;
@@ -212,6 +212,25 @@ class WizardStepContainer extends WizardComponent {
 			$array[$this->_stepNames[$i]] = $this->_steps[$i]->getAllValues();
 		}
 		return $array;
+	}
+	
+	/**
+	 * handles step change events
+	 * 
+	 * @param string $event
+	 * @return void
+	 * @access public
+	 * @since 6/2/06
+	 */
+	function handleEvent ($event, &$source, $context = '') {
+		switch ($event) {
+			case 'edu.middlebury.polyphony.wizard.next_step':
+				$this->nextStep();
+				break;
+			case 'edu.middlebury.polyphony.wizard.prev_step':
+				$this->previousStep();
+				break;
+		}
 	}
 	
 	/**

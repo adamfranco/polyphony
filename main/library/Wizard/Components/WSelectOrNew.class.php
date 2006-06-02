@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectOrNew.class.php,v 1.2 2006/05/01 20:59:38 adamfranco Exp $
+ * @version $Id: WSelectOrNew.class.php,v 1.2.2.1 2006/06/02 21:04:47 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectOrNew.class.php,v 1.2 2006/05/01 20:59:38 adamfranco Exp $
+ * @version $Id: WSelectOrNew.class.php,v 1.2.2.1 2006/06/02 21:04:47 cws-midd Exp $
  */
 class WSelectOrNew
 	extends WizardComponentWithChildren 
@@ -117,11 +117,12 @@ class WSelectOrNew
 	 * Adds an option to this list.
 	 * @param string $value The short value that represents the displayed text.
 	 * @param string $displayText The text to show to the end user.
+	 * @param string $style Any style attributes for this option
 	 * @access public
 	 * @return void
 	 */
-	function addOption ($value, $displayText) {
-		$this->_select->addOption($value, $displayText);
+	function addOption ($value, $displayText, $style = '') {
+		$this->_select->addOption($value, $displayText, $style);
 	}
 	
 	/**

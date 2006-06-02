@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleWizard.class.php,v 1.5 2005/09/28 20:50:28 gabeschine Exp $
+ * @version $Id: SimpleWizard.class.php,v 1.5.2.1 2006/06/02 21:04:46 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Wizard.abstract.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Wizard/Wizard.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleWizard.class.php,v 1.5 2005/09/28 20:50:28 gabeschine Exp $
+ * @version $Id: SimpleWizard.class.php,v 1.5.2.1 2006/06/02 21:04:46 cws-midd Exp $
  */
 class SimpleWizard extends Wizard {
 	var $_text;
@@ -38,7 +38,7 @@ class SimpleWizard extends Wizard {
 		$obj->_text = $text;
 		return $obj;
 	}
-	
+		
 	/**
 	 * Returns a block of XHTML-valid code that contains markup for this specific
 	 * component. 

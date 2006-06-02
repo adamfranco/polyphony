@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponentWithChildren.abstract.php,v 1.7 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WizardComponentWithChildren.abstract.php,v 1.7.2.1 2006/06/02 21:04:46 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponentWithChildren.abstract.php,v 1.7 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WizardComponentWithChildren.abstract.php,v 1.7.2.1 2006/06/02 21:04:46 cws-midd Exp $
  * @abstract
  */
 class WizardComponentWithChildren 
@@ -44,6 +44,13 @@ class WizardComponentWithChildren
 		
 		$this->_children[preg_replace("/[^a-zA-Z0-9:_-]/", "_", $name)] =& $component;
 		$component->setParent($this);
+		$component->setSelfName($name);
+		
+		if ($component->isControlComponent()) {
+			$wiz =& $this->getWizard();
+			$wiz->_controlComponents[preg_replace("/[^a-zA-Z0-9:_-]/", "_", $name)] =& $component;
+		}
+
 		return $component;
 	}
 	

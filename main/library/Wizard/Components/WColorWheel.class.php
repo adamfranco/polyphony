@@ -7,7 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  * @license This is distributed under the BY-NC-SA licence(http://creativecommons.org/licenses/by-nc-sa/2.0/). License for commercial use is not possible
  *
- * @version $Id: WColorWheel.class.php,v 1.2 2005/09/02 19:09:20 nstamato Exp $
+ * @version $Id: WColorWheel.class.php,v 1.2.2.1 2006/06/02 21:04:47 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -22,7 +22,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *  @license This is distributed under the BY-NC-SA licence(http://creativecommons.org/licenses/by-nc-sa/2.0/). License for commercial use is not possible
  *
- * @version $Id: WColorWheel.class.php,v 1.2 2005/09/02 19:09:20 nstamato Exp $
+ * @version $Id: WColorWheel.class.php,v 1.2.2.1 2006/06/02 21:04:47 cws-midd Exp $
  */
 class WColorWheel 
 	extends WizardComponent 
@@ -128,7 +128,7 @@ class WColorWheel
 		$name = RequestContext::name($fieldName);
 		$value = $this->_value;
 		$settings = $this->_settings;
-		$colorwheelurl = "http://slug.middlebury.edu/~nstamato/polyphony/main/library/Wizard/Components/WColorWheelFiles/";
+		$colorwheelurl = "http://slug.middlebury.edu/~cshubert/polyphony/main/library/Wizard/Components/WColorWheelFiles/";
 
 
 		$style = '';
@@ -156,11 +156,11 @@ class WColorWheel
 		
 		
 		<div id='scheme-select'>
-			<img id=\"previmg-mono\"  src=".$colorwheelurl."prev_mono.gif\" alt=\"\" width=\"41\" height=\"52\" onclick=\"selectScheme('mono')\">
-			<img id=\"previmg-compl\" class='previmg' src=".$colorwheelurl."prev_compl.gif\" alt=\"\" width=\"41\" height=\"52\" onclick=\"selectScheme('compl')\">
-			<img id=\"previmg-triad\" class='previmg' src=".$colorwheelurl."prev_triad.gif\" alt=\"\" width=\"41\" height=\"52\" onclick=\"selectScheme('triad')\">
-			<img id=\"previmg-tetrad\" class='previmg' src=".$colorwheelurl."prev_tetrad.gif\" alt=\"\" width=\"41\" height=\"52\" onclick=\"selectScheme('tetrad')\">
-			<img id=\"previmg-analog\" class='previmg' src=".$colorwheelurl."prev_analog.gif\" alt=\"\" width=\"41\" height=\"52\" onclick=\"selectScheme('analog')\">
+			<img id=\"previmg-mono\"  src=\"".$colorwheelurl."prev_mono.gif\" alt=\"\" width=\"41\" height=\"52\" onclick=\"selectScheme('mono')\">
+			<img id=\"previmg-compl\" class='previmg' src=\"".$colorwheelurl."prev_compl.gif\" alt=\"\" width=\"41\" height=\"52\" onclick=\"selectScheme('compl')\">
+			<img id=\"previmg-triad\" class='previmg' src=\"".$colorwheelurl."prev_triad.gif\" alt=\"\" width=\"41\" height=\"52\" onclick=\"selectScheme('triad')\">
+			<img id=\"previmg-tetrad\" class='previmg' src=\"".$colorwheelurl."prev_tetrad.gif\" alt=\"\" width=\"41\" height=\"52\" onclick=\"selectScheme('tetrad')\">
+			<img id=\"previmg-analog\" class='previmg' src=\"".$colorwheelurl."prev_analog.gif\" alt=\"\" width=\"41\" height=\"52\" onclick=\"selectScheme('analog')\">
 		
 		</div>
 		
@@ -211,20 +211,24 @@ class WColorWheel
 			<div id=\"textWhite\"><strong>Lorem ipsum</strong> dolor sit amet</div>
 		</div>
 		
-		<div id=\"coltable\"></div>
+		<div id=\"coltable\"></div>".
+ 
+// 		<div id=\"websnapswitch\">
+//        <input type=\"checkbox\" id=\"websnapper\" 
+//	        	onclick=\"switchWebSnap(this.checked)\" 
+//	        	onchange=\"switchWebSnap(this.checked)\">
+//	        <label for=\"websnapper\">Reduce to \"safe\" colors (WebColors)
+//	        </label>
+//		</div>
 		
-		<div id=\"websnapswitch\">
-			<input type=\"checkbox\" id=\"websnapper\" onclick=\"switchWebSnap(this.checked)\" onchange=\"switchWebSnap(this.checked)\"> <label for=\"websnapper\">Reduce to \"safe\" colors (WebColors)</label>
-		</div>
-		
-		<div id=\"presetswitch\">
+		"<div id=\"presetswitch\">
 			Variations:
-			<a href=\"\" id=\"preset-default\" class=\"btn\" onclick=\"switchPreset('default');return false\">Default</a>
-			<a href=\"\" id=\"preset-pastel\" class=\"btn\" onclick=\"switchPreset('pastel');return false\">Pastel</a>
-			<a href=\"\" id=\"preset-soft\" class=\"btn\" onclick=\"switchPreset('soft');return false\">Dark pastel</a>
-			<a href=\"\" id=\"preset-light\" class=\"btn\" onclick=\"switchPreset('light');return false\">Light pastel</a>
-			<a href=\"\" id=\"preset-hard\" class=\"btn\" onclick=\"switchPreset('hard');return false\">Contrast</a>
-			<a href=\"\" id=\"preset-pale\" class=\"btn\" onclick=\"switchPreset('pale');return false\">Pale</a>
+			<a id=\"preset-default\" class=\"btn\" onclick=\"switchPreset('default');return true\">Default</a>
+			<a id=\"preset-pastel\" class=\"btn\" onclick=\"switchPreset('pastel');return false\">Pastel</a>
+			<a id=\"preset-soft\" class=\"btn\" onclick=\"switchPreset('soft');return false\">Dark pastel</a>
+			<a id=\"preset-light\" class=\"btn\" onclick=\"switchPreset('light');return false\">Light pastel</a>
+			<a id=\"preset-hard\" class=\"btn\" onclick=\"switchPreset('hard');return false\">Contrast</a>
+			<a id=\"preset-pale\" class=\"btn\" onclick=\"switchPreset('pale');return false\">Pale</a>
 		</div>
 		
 		<a id=\"url\" href=\"index.html\">URL of this scheme</a>

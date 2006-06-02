@@ -7,8 +7,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveCancelListener.class.php,v 1.3 2005/10/20 18:33:39 cws-midd Exp $
+ * @version $Id: WSaveCancelListener.class.php,v 1.3.2.1 2006/06/02 21:04:47 cws-midd Exp $
  */ 
+
+require_once(POLYPHONY."/main/library/Wizard/Components/WizardEventListener.abstract.php");
 
 /**
  * Supplies an event listener to a {@link Wizard} and keeps track of if a Save or Cancel event
@@ -20,45 +22,17 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveCancelListener.class.php,v 1.3 2005/10/20 18:33:39 cws-midd Exp $
+ * @version $Id: WSaveCancelListener.class.php,v 1.3.2.1 2006/06/02 21:04:47 cws-midd Exp $
  */
 class WSaveCancelListener 
-	extends WizardComponent 
+	extends WizardEventListener 
 	/* implements EventListener */ 
 {
 	var $_save = false;
 	var $_cancel = false;
 	
 	var $_added = false;
-	
-	/**
-	 * Sets this component's parent (some kind of {@link WizardComponentWithChildren} so that it can
-	 * have access to its information, if needed.
-	 * @param ref object $parent
-	 * @access public
-	 * @return void
-	 */
-	function setParent (&$parent) {
-		$this->_parent =& $parent;
 		
-		$this->_attemptAdding();
-	}
-	
-	/**
-	 * Attempts to add ourselves to the parent {@link Wizard} as an {@link EventListener}.
-	 * @access public
-	 * @return void
-	 */
-	function _attemptAdding () {
-		if ($this->_added) return;
-		
-		$wz =& $this->getWizard();
-		if ($wz) {
-			$wz->addEventListener($this);
-			$this->_added = true;
-		}
-	}
-	
 	/**
 	 * Tells the wizard component to update itself - this may include getting
 	 * form post data or validation - whatever this particular component wants to
@@ -100,19 +74,7 @@ class WSaveCancelListener
 	function getAllValues () {
 		return null;
 	}
-	
-	/**
-	 * Returns a block of XHTML-valid code that contains markup for this specific
-	 * component. 
-	 * @param string $fieldName The field name to use when outputting form data or
-	 * similar parameters/information.
-	 * @access public
-	 * @return string
-	 */
-	function getMarkup ($fieldName) {
-		return '';
-	}
-	
+		
 	/**
 	 * Handles an event triggered by an {@link EventTrigger}. The event type is passed in case this
 	 * particular EventListener is handling more than one type of event.

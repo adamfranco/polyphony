@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRadioList.class.php,v 1.6 2006/03/10 20:45:42 adamfranco Exp $
+ * @version $Id: WRadioList.class.php,v 1.6.2.1 2006/06/02 21:04:47 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRadioList.class.php,v 1.6 2006/03/10 20:45:42 adamfranco Exp $
+ * @version $Id: WRadioList.class.php,v 1.6.2.1 2006/06/02 21:04:47 cws-midd Exp $
  */
 class WRadioList 
 	extends WizardComponent 
@@ -97,6 +97,18 @@ class WRadioList
 		$this->_onchange = $commands;
 	}
 	
+	function isOptionDisabled($option) {
+		return $this->_disabled[$option];
+	}
+
+	function disableOption($option) {
+		$this->_disabled[$option] = true;
+	}
+
+	function enableOption($option) {
+		$this->_disabled[$option] = false;
+	}
+	
 	/**
 	 * Adds a radio option to this list.
 	 * @param string $value The short value that represents the displayed text.
@@ -104,9 +116,10 @@ class WRadioList
 	 * @access public
 	 * @return void
 	 */
-	function addOption ($value, $displayText = null) {
+	function addOption ($value, $displayText = null, $disabled = false) {
 		if ($displayText == null) $displayText = $value;
 		$this->_items[$value] = $displayText;
+		$this->_disabled[$value] = $disabled;
 	}
 	
 	/**
@@ -156,6 +169,7 @@ class WRadioList
 		}
 		foreach (array_keys($this->_items) as $key) {
 			$disp = $this->_items[$key];
+			$disabled = ($this->_disabled[$key]?'disabled':'');
 			$checked = $this->_value==$key?" checked":"";
 			$val = htmlspecialchars($key, ENT_QUOTES);
 			
@@ -171,7 +185,7 @@ class WRadioList
 			if ($this->_onchange)
 				$javascript .= " ".str_replace("\"", "\\\"", $this->_onchange)."; ";
 			
-			$s[] = "<label onmousedown=\"$javascript\" style='cursor: pointer;'$style><input type='radio' name='$name' id='$id' value='$val'$checked /> $disp</label>";
+			$s[] = "<label onmousedown=\"$javascript\" style='cursor: pointer;'$style><input type='radio' name='$name' id='$id' value='$val'$checked $disabled /> $disp</label>";
 		}
 		
 		$m .= $this->_eachPre;

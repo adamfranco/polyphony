@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.12 2006/05/26 14:14:29 adamfranco Exp $
+ * @version $Id: WSelectList.class.php,v 1.12.2.1 2006/06/02 21:04:47 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.12 2006/05/26 14:14:29 adamfranco Exp $
+ * @version $Id: WSelectList.class.php,v 1.12.2.1 2006/06/02 21:04:47 cws-midd Exp $
  */
 class WSelectList 
 	extends WizardComponent 
@@ -64,7 +64,6 @@ class WSelectList
 		$this->setValue('_starting_display');
 	}
 	
-	
 	/**
 	 * Sets the value of this radio button group.
 	 * @param string $value
@@ -78,16 +77,27 @@ class WSelectList
 		else
 			$this->_value = $value;
 	}
+
+	function disableOption($option) {
+		$this->_disabled[$option] = true;
+	}
+
+	function enableOption($option) {
+		$this->_disabled[$option] = false;
+	}
 	
 	/**
 	 * Adds an option to this list.
 	 * @param string $value The short value that represents the displayed text.
 	 * @param string $displayText The text to show to the end user.
+	 * @param string $style Any style attributes wanted for the option
 	 * @access public
 	 * @return void
 	 */
-	function addOption ($value, $displayText) {
+	function addOption ($value, $displayText, $style = '') {
 		$this->_items[$value] = $displayText;
+		$this->_styles[$value] = $style;
+		$this->_disabled[$value] = false;
 	}
 	
 	/**
@@ -170,10 +180,12 @@ class WSelectList
 		
 		foreach (array_keys($this->_items) as $key) {
 			$disp = $this->_items[$key];
+			$disabled = ($this->_disabled[$key]?'disabled':'');
+			$style = $this->_styles[$key];
 			$selected = $this->_value==$key?" selected='selected'":"";
 			$val = htmlspecialchars($key, ENT_QUOTES);
 						
-			$m .= "<option value='$val'$selected>".htmlspecialchars($disp)."</option>\n";
+			$m .= "<option value='$val'$selected style='$style' $disabled>".htmlspecialchars($disp)."</option>\n";
 		}
 		
 		if ($this->_value && !$this->isOption($this->_value)) {
