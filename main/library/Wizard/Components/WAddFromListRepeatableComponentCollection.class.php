@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WAddFromListRepeatableComponentCollection.class.php,v 1.1 2005/11/01 19:55:27 adamfranco Exp $
+ * @version $Id: WAddFromListRepeatableComponentCollection.class.php,v 1.2 2006/06/05 21:09:15 adamfranco Exp $
  */ 
 
 /**
@@ -20,14 +20,15 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WAddFromListRepeatableComponentCollection.class.php,v 1.1 2005/11/01 19:55:27 adamfranco Exp $
+ * @version $Id: WAddFromListRepeatableComponentCollection.class.php,v 1.2 2006/06/05 21:09:15 adamfranco Exp $
  */
 
 class WAddFromListRepeatableComponentCollection
 	extends WRepeatableComponentCollection 
 {
 	function WAddFromListRepeatableComponentCollection() {
-    	$this->_addButton =& WChooseOptionButton::withLabel(dgettext("polyphony", "Add"));
+		parent::WRepeatableComponentCollection();
+    	$this->_addButton =& WChooseOptionButton::withLabel($this->_addLabel);
     	$this->_addButton->setParent($this);
     }
     

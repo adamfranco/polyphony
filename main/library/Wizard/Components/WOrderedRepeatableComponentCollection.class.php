@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.7 2006/06/05 20:25:36 adamfranco Exp $
+ * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.8 2006/06/05 21:09:15 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WSelectList.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WSelectList.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.7 2006/06/05 20:25:36 adamfranco Exp $
+ * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.8 2006/06/05 21:09:15 adamfranco Exp $
  */
 
 class WOrderedRepeatableComponentCollection 
@@ -53,8 +53,7 @@ class WOrderedRepeatableComponentCollection
 			$newArray[$key] =& $base[$key]->copy();
 			$newArray[$key]->setParent($this);
 		}
-		$newArray["_remove"] =& WEventButton::withLabel(
-			dgettext("polyphony", "Remove"));
+		$newArray["_remove"] =& WEventButton::withLabel($this->_removeLabel);
 		$newArray["_remove"]->setParent($this);
 		$newArray["_remove"]->setOnClick("ignoreValidation(this.form);");
 		$newArray["_remove"]->setEnabled($removable, !$removable);
@@ -72,6 +71,8 @@ class WOrderedRepeatableComponentCollection
 		$this->_orderedSet->addItem($idManager->getId(strval($this->_nextId)));
 		$this->_nextId++;
 		$this->_num++;
+		
+		$this->rebuildPositionSelects();
 		
 		return $newArray;
 	}
