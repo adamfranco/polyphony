@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.12 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.13 2006/06/05 20:52:50 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.12 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.13 2006/06/05 20:52:50 adamfranco Exp $
  */
 
 class WRepeatableComponentCollection 
@@ -35,8 +35,39 @@ class WRepeatableComponentCollection
     var $_addButton;
     
     function WRepeatableComponentCollection() {
-    	$this->_addButton =& WEventButton::withLabel(dgettext("polyphony", "Add"));
+    	$this->_addLabel = dgettext("polyphony", "Add");
+    	$this->_removeLabel = dgettext("polyphony", "Remove");
+    	
+    	$this->_addButton =& WEventButton::withLabel($this->_addLabel);
     	$this->_addButton->setParent($this);
+    }
+    
+    /**
+     * Set the label to use on the addButton
+     * 
+     * @param string $label
+     * @return void
+     * @access public
+     * @since 6/5/06
+     */
+    function setAddLabel ($label) {
+    	$this->_addLabel = $label;
+    	$this->_addButton->setLabel($label);
+    }
+    
+    /**
+     * Set the label to use on the remove button
+     * 
+     * @param string $label
+     * @return void
+     * @access public
+     * @since 6/5/06
+     */
+    function setRemoveLabel ($label) {
+    	$this->_removeLabel = $label;
+    	foreach ($this->_collections as $key => $copy) {
+    		$this->_collections[$key]["_remove"]->setLabel($label);
+    	}
     }
     
 	/**
@@ -154,8 +185,7 @@ class WRepeatableComponentCollection
 			$newArray[$key]->setParent($this);
 		}
 		
-		$newArray["_remove"] =& WEventButton::withLabel(
-			dgettext("polyphony", "Remove"));
+		$newArray["_remove"] =& WEventButton::withLabel($this->_removeLabel);
 		$newArray["_remove"]->setParent($this);
 		$newArray["_remove"]->setOnClick("ignoreValidation(this.form);");
 		$newArray["_remove"]->setEnabled($removable, !$removable);

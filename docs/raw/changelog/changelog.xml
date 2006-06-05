@@ -4,13 +4,16 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.46 2006/06/05 20:25:34 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.47 2006/06/05 20:52:50 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
 	<version number="0.5.3" date="the future">
+		<change author='adam'>
+			Wizard: Can now change Add/Remove button labels for Repeatable Components.
+		</change>
 		<change author='adam'>
 			Wizard: Verified change inputs are now set to be checked for new values
 			by default.
