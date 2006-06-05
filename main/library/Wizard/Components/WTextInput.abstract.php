@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextInput.abstract.php,v 1.6 2006/05/03 18:28:51 adamfranco Exp $
+ * @version $Id: WTextInput.abstract.php,v 1.7 2006/06/05 20:25:36 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingWizardComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingWizardComponent.abstra
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextInput.abstract.php,v 1.6 2006/05/03 18:28:51 adamfranco Exp $
+ * @version $Id: WTextInput.abstract.php,v 1.7 2006/06/05 20:25:36 adamfranco Exp $
  */
 class WTextInput
 	extends ErrorCheckingWizardComponent 
@@ -109,13 +109,13 @@ class WTextInput
 	}
 	
 	/**
-	 * Sets the javascript onchange attribute.
+	 * Add commands to the javascript onchange attribute.
 	 * @param string $commands
 	 * @access public
 	 * @return void
 	 */
-	function setOnChange($commands) {
-		$this->_onchange = $commands;
+	function addOnChange($commands) {
+		$this->_onchange .= " ".$commands;
 	}
 }
 

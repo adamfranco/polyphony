@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRadioList.class.php,v 1.6 2006/03/10 20:45:42 adamfranco Exp $
+ * @version $Id: WRadioList.class.php,v 1.7 2006/06/05 20:25:36 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRadioList.class.php,v 1.6 2006/03/10 20:45:42 adamfranco Exp $
+ * @version $Id: WRadioList.class.php,v 1.7 2006/06/05 20:25:36 adamfranco Exp $
  */
 class WRadioList 
 	extends WizardComponent 
@@ -87,14 +87,13 @@ class WRadioList
 	}
 	
 	/**
-	 * Sets the javascript onchange attribute.
+	 * Add commands to the javascript onchange attribute.
 	 * @param string $commands
 	 * @access public
 	 * @return void
-	 * @since 3/10/06
 	 */
-	function setOnChange($commands) {
-		$this->_onchange = $commands;
+	function addOnChange($commands) {
+		$this->_onchange .= " ".$commands;
 	}
 	
 	/**

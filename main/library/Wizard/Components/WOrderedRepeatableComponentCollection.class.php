@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.6 2006/05/17 16:56:54 adamfranco Exp $
+ * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.7 2006/06/05 20:25:36 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WSelectList.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WSelectList.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.6 2006/05/17 16:56:54 adamfranco Exp $
+ * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.7 2006/06/05 20:25:36 adamfranco Exp $
  */
 
 class WOrderedRepeatableComponentCollection 
@@ -114,7 +114,7 @@ class WOrderedRepeatableComponentCollection
 			this.form.submit();
 		
 		';
-		$positionList->setOnChange(preg_replace("/\s{2,}/", " ", preg_replace("/[\n\r\t]/", " ", $js)));
+		$positionList->addOnChange(preg_replace("/\s{2,}/", " ", preg_replace("/[\n\r\t]/", " ", $js)));
 		$i = 0;
 		$this->_orderedSet->reset();
 		while ($this->_orderedSet->hasNext()) {

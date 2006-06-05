@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_properties.act.php,v 1.7 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: edit_properties.act.php,v 1.8 2006/06/05 20:25:36 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_properties.act.php,v 1.7 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: edit_properties.act.php,v 1.8 2006/06/05 20:25:36 adamfranco Exp $
  */
 class edit_propertiesAction 
 	extends MainWindowAction
@@ -218,8 +218,8 @@ END;
 		$valueComponent =& $collection->addComponent("value", new WTextField());
 		$valueComponent->setSize(40);
 		if (count($list) > 1) {
-//			$valueComponent->setOnChange("alert(this.id+'_update_dummy');");
-			$valueComponent->setOnChange(
+//			$valueComponent->addOnChange("alert(this.id+'_update_dummy');");
+			$valueComponent->addOnChange(
 				"if (this.value != '' && this.value != '".dgettext("polyphony", "(multiple values exist)")."')" .
 				"{" . 		
 					"getWizardElement(this.id+'_update').value = '1';" .

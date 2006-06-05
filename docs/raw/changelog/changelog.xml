@@ -4,15 +4,23 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.45 2006/06/02 20:52:23 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.46 2006/06/05 20:25:34 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
 	<version number="0.5.3" date="the future">
+		<change author='adam'>
+			Wizard: Verified change inputs are now set to be checked for new values
+			by default.
+		</change>
+		<change author='adam'>
+			Wizard: onchange items are now added with addOnChange() rather than 
+			overwritten with setOnchange();
+		</change>
 		<fix author='adam'>
-			Now Select or new fields show either the option OR new, not both.
+			Wizard: Now Select or new fields show either the option OR new, not both.
 		</fix>
 		<fix author='adam'>
 			WizardAction: now getWizard() will have the same cachename translation

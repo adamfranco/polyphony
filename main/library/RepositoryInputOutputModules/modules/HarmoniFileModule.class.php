@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HarmoniFileModule.class.php,v 1.16 2006/05/18 15:34:42 adamfranco Exp $
+ * @version $Id: HarmoniFileModule.class.php,v 1.17 2006/06/05 20:25:36 adamfranco Exp $
  */
 
 /**
@@ -24,8 +24,8 @@ require_once(HARMONI."Primitives/Numbers/ByteSize.class.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: HarmoniFileModule.class.php,v 1.16 2006/05/18 15:34:42 adamfranco Exp $
- * @since $Date: 2006/05/18 15:34:42 $
+ * @version $Id: HarmoniFileModule.class.php,v 1.17 2006/06/05 20:25:36 adamfranco Exp $
+ * @since $Date: 2006/06/05 20:25:36 $
  * @copyright 2004 Middlebury College
  */
 
@@ -138,7 +138,7 @@ class HarmoniFileModule
 		$dimensionComponent->setStyle("text-align: right");
 		$dimensionComponent->setErrorRule(new WECRegex("^([0-9]+px)?$"));
 		$dimensionComponent->setErrorText(_("Must be a positive integer followed by 'px'."));
-		$dimensionComponent->setOnChange("validateWizard(this.form);");
+		$dimensionComponent->addOnChange("validateWizard(this.form);");
 		
 		$dim = $parts['DIMENSIONS']->getValue();
 		$component =& $step->addComponent("height", $dimensionComponent->shallowCopy());

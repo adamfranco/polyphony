@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.3 2006/06/02 20:52:25 adamfranco Exp $
+ * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.4 2006/06/05 20:25:35 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.3 2006/06/02 20:52:25 adamfranco Exp $
+ * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.4 2006/06/05 20:25:35 adamfranco Exp $
  */
 class PrimitiveIO_AuthoritativeContainer
 	extends WSelectOrNew
@@ -80,9 +80,9 @@ class PrimitiveIO_AuthoritativeContainer
 	 * @access public
 	 * @return void
 	 */
-	function setOnChange($commands) {
-		$this->_select->setOnChange($commands);
-		$this->_new->setOnChange($commands);
+	function addOnChange($commands) {
+		$this->_select->addOnChange($commands);
+		$this->_new->addOnChange($commands);
 	}
 	
 	/**

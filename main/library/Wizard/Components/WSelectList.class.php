@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.12 2006/05/26 14:14:29 adamfranco Exp $
+ * @version $Id: WSelectList.class.php,v 1.13 2006/06/05 20:25:36 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.12 2006/05/26 14:14:29 adamfranco Exp $
+ * @version $Id: WSelectList.class.php,v 1.13 2006/06/05 20:25:36 adamfranco Exp $
  */
 class WSelectList 
 	extends WizardComponent 
@@ -136,13 +136,13 @@ class WSelectList
 	}
 	
 	/**
-	 * Sets the javascript onchange attribute.
+	 * Add commands to the javascript onchange attribute.
 	 * @param string $commands
 	 * @access public
 	 * @return void
 	 */
-	function setOnChange($commands) {
-		$this->_onchange = $commands;
+	function addOnChange($commands) {
+		$this->_onchange .= " ".$commands;
 	}
 	
 	/**

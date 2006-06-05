@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectOrNew.class.php,v 1.3 2006/06/02 20:52:25 adamfranco Exp $
+ * @version $Id: WSelectOrNew.class.php,v 1.4 2006/06/05 20:25:36 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectOrNew.class.php,v 1.3 2006/06/02 20:52:25 adamfranco Exp $
+ * @version $Id: WSelectOrNew.class.php,v 1.4 2006/06/05 20:25:36 adamfranco Exp $
  */
 class WSelectOrNew
 	extends WizardComponentWithChildren 
@@ -100,7 +100,7 @@ class WSelectOrNew
     	ArgumentValidator::validate($input,
     		ExtendsValidatorRule::getRule("WizardComponent"));
 		ArgumentValidator::validate($input, 
-			HasMethodsValidatorRule::getRule("setOnChange"));
+			HasMethodsValidatorRule::getRule("addOnChange"));
 		
 		$this->_select =& $input;
 		$this->_select->setParent($this);
@@ -122,7 +122,7 @@ class WSelectOrNew
     	ArgumentValidator::validate($input,
     		ExtendsValidatorRule::getRule("WizardComponent"));
 		ArgumentValidator::validate($input, 
-			HasMethodsValidatorRule::getRule("setOnChange"));
+			HasMethodsValidatorRule::getRule("addOnChange"));
 		
 		$this->_new =& $input;
 		$this->_new->setParent($this);
@@ -235,7 +235,7 @@ class WSelectOrNew
 		else
 			$display = " display: none;";
 		
-		$this->_select->setOnChange("var newField = getElementFromDocument('$newId'); if (this.value == '__NEW_VALUE__') { newField.style.display = 'block'; } else { newField.style.display = 'none'; }");
+		$this->_select->addOnChange("var newField = getElementFromDocument('$newId'); if (this.value == '__NEW_VALUE__') { newField.style.display = 'block'; } else { newField.style.display = 'none'; }");
 		
 		$m .= "\n\t\t".$this->_select->getMarkup($fieldName."_select");
 		

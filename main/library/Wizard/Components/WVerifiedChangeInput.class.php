@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WVerifiedChangeInput.class.php,v 1.8 2006/05/01 20:59:38 adamfranco Exp $
+ * @version $Id: WVerifiedChangeInput.class.php,v 1.9 2006/06/05 20:25:36 adamfranco Exp $
  */ 
 
 /**
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WVerifiedChangeInput.class.php,v 1.8 2006/05/01 20:59:38 adamfranco Exp $
+ * @version $Id: WVerifiedChangeInput.class.php,v 1.9 2006/06/05 20:25:36 adamfranco Exp $
  */
 
 class WVerifiedChangeInput 
@@ -79,6 +79,7 @@ class WVerifiedChangeInput
     	$this->_checkbox =& new WCheckBox;
     	$this->_checkbox->setParent($this);
     	$this->_label = dgettext("polyphony", "Apply to All");
+    	$this->setChecked(true);
     }
     
     /**
@@ -93,7 +94,7 @@ class WVerifiedChangeInput
     	ArgumentValidator::validate($input,
     		ExtendsValidatorRule::getRule("WizardComponent"));
 		ArgumentValidator::validate($input, 
-			HasMethodsValidatorRule::getRule("setOnChange"));
+			HasMethodsValidatorRule::getRule("addOnChange"));
 		
 		$this->_input =& $input;
 		$this->_input->setParent($this);
@@ -211,10 +212,10 @@ class WVerifiedChangeInput
 	function getMarkup ($fieldName) {
 		if (isset($this->_input->_startingDisplay)) {
 			$v = htmlspecialchars($this->_input->_startingDisplay, ENT_QUOTES);
-			$this->_input->setOnChange(
+			$this->_input->addOnChange(
 				"if (this.value != '$v') {".$this->_checkbox->getCheckJS($fieldName."_checked")."}");
 		} else {
-			$this->_input->setOnChange($this->_checkbox->getCheckJS($fieldName."_checked"));
+			$this->_input->addOnChange($this->_checkbox->getCheckJS($fieldName."_checked"));
 		}
 			
 		$m = "\n<table><tr>";
