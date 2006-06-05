@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DataManagerPrimativesModule.class.php,v 1.10 2006/04/26 19:56:08 adamfranco Exp $
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.11 2006/06/05 21:44:11 adamfranco Exp $
  */
 
 /**
@@ -24,8 +24,8 @@ require_once(POLYPHONY."/main/library/DataManagerGUI/PrimitiveIO/inc.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: DataManagerPrimativesModule.class.php,v 1.10 2006/04/26 19:56:08 adamfranco Exp $
- * @since $Date: 2006/04/26 19:56:08 $
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.11 2006/06/05 21:44:11 adamfranco Exp $
+ * @since $Date: 2006/06/05 21:44:11 $
  * @copyright 2004 Middlebury College
  */
 
@@ -270,6 +270,10 @@ class DataManagerPrimativesModule
 			
 			$mult->addComponent("value", $component);
 			$mult->setStartingNumber(0);
+			$mult->setAddLabel(dgettext("polyphony", "Add New ")
+				.$partStructure->getDisplayName());
+			$mult->setRemoveLabel(dgettext("polyphony", "Remove ")
+				.$partStructure->getDisplayName());
 			
 			$component =& $mult;
 			
