@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.13 2006/06/05 20:52:50 adamfranco Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.14 2006/06/07 19:22:35 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.13 2006/06/05 20:52:50 adamfranco Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.14 2006/06/07 19:22:35 adamfranco Exp $
  */
 
 class WRepeatableComponentCollection 
@@ -187,7 +187,7 @@ class WRepeatableComponentCollection
 		
 		$newArray["_remove"] =& WEventButton::withLabel($this->_removeLabel);
 		$newArray["_remove"]->setParent($this);
-		$newArray["_remove"]->setOnClick("ignoreValidation(this.form);");
+		$newArray["_remove"]->addOnClick("ignoreValidation(this.form);");
 		$newArray["_remove"]->setEnabled($removable, !$removable);
 
 		$this->_collections[] =& $newArray;

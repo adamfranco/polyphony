@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.47 2006/06/05 20:52:50 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.48 2006/06/07 19:22:32 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -20,8 +20,12 @@
 		</change>
 		<change author='adam'>
 			Wizard: onchange items are now added with addOnChange() rather than 
-			overwritten with setOnchange();
+			overwritten with setOnchange(). Same with setOnClick() going to addOnClick().
 		</change>
+		<new author='adam'>
+			Wizard: Added an addConfirm() method to EventButtons to allow prompting 
+			for user-confirmation.
+		</new>
 		<fix author='adam'>
 			Wizard: Now Select or new fields show either the option OR new, not both.
 		</fix>

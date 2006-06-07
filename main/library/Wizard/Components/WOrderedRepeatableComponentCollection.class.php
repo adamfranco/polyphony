@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.8 2006/06/05 21:09:15 adamfranco Exp $
+ * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.9 2006/06/07 19:22:35 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WSelectList.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WSelectList.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.8 2006/06/05 21:09:15 adamfranco Exp $
+ * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.9 2006/06/07 19:22:35 adamfranco Exp $
  */
 
 class WOrderedRepeatableComponentCollection 
@@ -55,7 +55,7 @@ class WOrderedRepeatableComponentCollection
 		}
 		$newArray["_remove"] =& WEventButton::withLabel($this->_removeLabel);
 		$newArray["_remove"]->setParent($this);
-		$newArray["_remove"]->setOnClick("ignoreValidation(this.form);");
+		$newArray["_remove"]->addOnClick("ignoreValidation(this.form);");
 		$newArray["_remove"]->setEnabled($removable, !$removable);
 
 		$newArray["_moveup"] =& WEventButton::withLabel(

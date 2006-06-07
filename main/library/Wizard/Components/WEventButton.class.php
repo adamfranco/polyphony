@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.class.php,v 1.10 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WEventButton.class.php,v 1.11 2006/06/07 19:22:35 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.class.php,v 1.10 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WEventButton.class.php,v 1.11 2006/06/07 19:22:35 adamfranco Exp $
  */
 class WEventButton 
 	extends WizardComponent
@@ -86,9 +86,24 @@ class WEventButton
 	 * @access public
 	 * @return void
 	 */
-	function setOnClick ($javascript) {
-		$this->_onclick = $javascript;
-	}	
+	function addOnClick ($javascript) {
+		$this->_onclick .= " ".$javascript;
+	}
+	
+	/**
+	 * Add a confirmation question that will be present in a javascript 'confirm' 
+	 * dialog on button press.
+	 * 
+	 * @param string $confirmText
+	 * @return void
+	 * @access public
+	 * @since 6/7/06
+	 */
+	function addConfirm ($confirmText) {
+		if (!isset($this->_confirms))
+			$this->_confirms = array();
+		$this->_confirms[] = $confirmText;
+	}
 	
 	/**
 	 * Tells the wizard component to update itself - this may include getting
@@ -135,7 +150,25 @@ class WEventButton
 		$onclick = '';
 		if ($this->_onclick) $onclick = addslashes($this->_onclick) . ";";
 		$m = "<input type='hidden' name='$name' id='$name' value='0' />\n";
-		$m .= "<input type='button' value='$label' onclick='$onclick if (validateWizard(this.form)) { getWizardElement(\"$name\").value=\"1\"; this.form.submit(); }'".($this->isEnabled()?"":" disabled='disabled'")." />";
+		$m .= "<input type='button' value='$label' onclick='";
+		
+		if (isset($this->_confirms) && count($this->_confirms)) {
+			$m .= "var confirmed = (confirm(\"";
+			$m .= implode("\") && confirm(\"", $this->_confirms);
+			$m .= "\"));";
+		} else {
+			$m .= "var confirmed = true; ";
+		}
+				
+		$m .= " if (confirmed) { ";		
+		$m .= 	$onclick;
+		$m .= 	" if (validateWizard(this.form)) { ";
+		$m .= 		" getWizardElement(\"$name\").value=\"1\";";
+		$m .=		" this.form.submit();";
+		$m .= 	" }";
+		$m .= " }";
+		
+		$m .= "'".($this->isEnabled()?"":" disabled='disabled'")." />";
 		return $m;
 	}
 }

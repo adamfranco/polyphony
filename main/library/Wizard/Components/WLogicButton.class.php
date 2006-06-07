@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicButton.class.php,v 1.1 2006/06/02 16:00:28 cws-midd Exp $
+ * @version $Id: WLogicButton.class.php,v 1.2 2006/06/07 19:22:35 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicButton.class.php,v 1.1 2006/06/02 16:00:28 cws-midd Exp $
+ * @version $Id: WLogicButton.class.php,v 1.2 2006/06/07 19:22:35 adamfranco Exp $
  */
 class WLogicButton extends WEventButton {
 		
@@ -92,8 +92,8 @@ class WLogicButton extends WEventButton {
 	 * @access public
 	 * @return void
 	 */
-	function setOnClick ($javascript) {
-		$this->_onclick = $javascript;
+	function addOnClick ($javascript) {
+		$this->_onclick .= " ".$javascript;
 	}	
 	
 	/**
