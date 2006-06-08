@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.14 2006/06/07 19:22:35 adamfranco Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.15 2006/06/08 15:56:34 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.14 2006/06/07 19:22:35 adamfranco Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.15 2006/06/08 15:56:34 adamfranco Exp $
  */
 
 class WRepeatableComponentCollection 
@@ -41,6 +41,23 @@ class WRepeatableComponentCollection
     	$this->_addButton =& WEventButton::withLabel($this->_addLabel);
     	$this->_addButton->setParent($this);
     }
+    
+    /**
+	 * Sets if this component will be enabled or disabled.
+	 * @param boolean $enabled
+	 * @param boolean $sticky If true, future calls to setEnabled without sticky
+	 *							will have no effect.
+	 * @access public
+	 * @return void
+	 */
+	function setEnabled ($enabled, $sticky = false) {
+		parent::setEnabled($enabled, $sticky);
+		
+		$this->_addButton->setEnabled($enabled, $sticky);
+		foreach ($this->_collections as $key => $copy) {
+    		$this->_collections[$key]["_remove"]->setEnabled($enabled, $sticky);
+    	}
+	}
     
     /**
      * Set the label to use on the addButton
@@ -188,7 +205,10 @@ class WRepeatableComponentCollection
 		$newArray["_remove"] =& WEventButton::withLabel($this->_removeLabel);
 		$newArray["_remove"]->setParent($this);
 		$newArray["_remove"]->addOnClick("ignoreValidation(this.form);");
-		$newArray["_remove"]->setEnabled($removable, !$removable);
+		if (!$this->_enabled && $this->_enabledSticky)
+			$newArray["_remove"]->setEnabled(false, true);
+		else
+			$newArray["_remove"]->setEnabled($removable, !$removable);
 
 		$this->_collections[] =& $newArray;
 		$this->_num++;

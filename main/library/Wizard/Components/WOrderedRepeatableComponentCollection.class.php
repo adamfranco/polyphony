@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.9 2006/06/07 19:22:35 adamfranco Exp $
+ * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.10 2006/06/08 15:56:34 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WSelectList.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WSelectList.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.9 2006/06/07 19:22:35 adamfranco Exp $
+ * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.10 2006/06/08 15:56:34 adamfranco Exp $
  */
 
 class WOrderedRepeatableComponentCollection 
@@ -57,14 +57,6 @@ class WOrderedRepeatableComponentCollection
 		$newArray["_remove"]->setParent($this);
 		$newArray["_remove"]->addOnClick("ignoreValidation(this.form);");
 		$newArray["_remove"]->setEnabled($removable, !$removable);
-
-		$newArray["_moveup"] =& WEventButton::withLabel(
-			dgettext("polyphony", "Move Up"));
-		$newArray["_moveup"]->setParent($this);
-		
-		$newArray["_movedown"] =& WEventButton::withLabel(
-			dgettext("polyphony", "Move Down"));
-		$newArray["_movedown"]->setParent($this);
 		
 		$this->_collections[$this->_nextId] =& $newArray;
 		$idManager =& Services::getService("Id");
@@ -124,6 +116,9 @@ class WOrderedRepeatableComponentCollection
 			$i++;			
 		}
 		
+		// Enabled State
+		$positionList->setEnabled($this->_enabled, $this->_enabledSticky);
+		
 		// Rebuild the position lists.
 		$this->_orderedSet->reset();
 		while ($this->_orderedSet->hasNext()) {
@@ -164,12 +159,8 @@ class WOrderedRepeatableComponentCollection
 			}
 			if ($this->_collections[$key]["_remove"]->getAllValues())
 				$toRemove[] = $key;
-			if ($this->_collections[$key]["_moveup"]->getAllValues()) 
-				$this->_orderedSet->moveUp($idManager->getId(strval($key)));
 				
 			$id = $idManager->getId(strval($key));
-			if ($this->_collections[$key]["_movedown"]->getAllValues()) 
-				$this->_orderedSet->moveDown($id);
 
 			if (isset($this->_collections[$key]["_moveToPosition"])
 				&& isset($this->_collections[$key]["_moveToPositionChoice"])
@@ -191,6 +182,22 @@ class WOrderedRepeatableComponentCollection
 		$this->rebuildPositionSelects();
 		
 		return $ok;
+	}
+	
+	/**
+	 * Sets if this component will be enabled or disabled.
+	 * @param boolean $enabled
+	 * @param boolean $sticky If true, future calls to setEnabled without sticky
+	 *							will have no effect.
+	 * @access public
+	 * @return void
+	 */
+	function setEnabled ($enabled, $sticky = false) {
+		parent::setEnabled($enabled, $sticky);
+		
+		foreach ($this->_collections as $key => $copy) {
+    		$this->_collections[$key]["_moveToPositionChoice"]->setEnabled($enabled, $sticky);
+    	}
 	}
 	
 	/**
@@ -242,18 +249,11 @@ class WOrderedRepeatableComponentCollection
 			$m .= "<tr><td valign='top' style='border-bottom: 1px solid #555;'>";
 			$m .= $this->_collections[$key]["_remove"]->getMarkup(
 				$fieldName."_".$key."__remove");
-			if ($this->_orderedSet->getPosition($collectionId) > 0)
-				$m .= "\n<br/>".$this->_collections[$key]["_moveup"]->getMarkup(
-					$fieldName."_".$key."__moveup");
 			
 			// Display the list
 			$m .= "\n<br/>".$this->_collections[$key]["_moveToPosition"]->getMarkup($fieldName."_".$key."__moveToPosition");
 			$m .= $this->_collections[$key]["_moveToPositionChoice"]->getMarkup($fieldName."_".$key."__moveToPositionChoice");
 			
-			if ($this->_orderedSet->hasNext())
-				$m .= "\n<br/>".
-					$this->_collections[$key]["_movedown"]->getMarkup(
-					$fieldName."_".$key."__movedown");
 			$m .= "</td><td style='border-bottom: 1px solid #555;'>";
 			$m .= Wizard::parseText($this->_text, $this->_collections[$key],
 				$fieldName."_".$key."_");
