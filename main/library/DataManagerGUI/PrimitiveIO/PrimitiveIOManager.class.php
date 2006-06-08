@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIOManager.class.php,v 1.8 2006/06/02 20:52:25 adamfranco Exp $
+ * @version $Id: PrimitiveIOManager.class.php,v 1.9 2006/06/08 15:57:29 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIOManager.class.php,v 1.8 2006/06/02 20:52:25 adamfranco Exp $
+ * @version $Id: PrimitiveIOManager.class.php,v 1.9 2006/06/08 15:57:29 adamfranco Exp $
  * @author Gabe Schine
  */
 class PrimitiveIOManager {
@@ -70,9 +70,13 @@ class PrimitiveIOManager {
 		$dataType = $partStructType->getKeyword();
 		
 		$authoritativeValues =& $partStruct->getAuthoritativeValues();
-		
 		if ($authoritativeValues->hasNext()) {
-			if ($partStruct->isUserAdditionAllowed()) {
+			$authZManager =& Services::getService("AuthZ");
+			$idManager =& Services::getService("Id");
+			if ($authZManager->isUserAuthorized(
+					$idManager->getId("edu.middlebury.authorization.modify_authority_list"),
+					$partStruct->getRepositoryId())) 
+			{
 				$component =& new PrimitiveIO_AuthoritativeContainer();
 				$component->setSelectComponent(
 					PrimitiveIOManager::createAuthoritativeComponent($dataType));

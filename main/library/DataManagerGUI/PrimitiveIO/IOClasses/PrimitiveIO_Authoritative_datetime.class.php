@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_Authoritative_datetime.class.php,v 1.1 2006/05/01 17:43:10 adamfranco Exp $
+ * @version $Id: PrimitiveIO_Authoritative_datetime.class.php,v 1.2 2006/06/08 15:57:29 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_Authoritative_datetime.class.php,v 1.1 2006/05/01 17:43:10 adamfranco Exp $
+ * @version $Id: PrimitiveIO_Authoritative_datetime.class.php,v 1.2 2006/06/08 15:57:29 adamfranco Exp $
  */
 class PrimitiveIO_Authoritative_datetime
 	extends PrimitiveIO_Authoritative 
@@ -24,7 +24,7 @@ class PrimitiveIO_Authoritative_datetime
 {
 
 	function PrimitiveIO_Authoritative_datetime() {
-		$this->setErrorText(dgettext("polyphony", "Enter a date/time string. (example: YYYY-MM-DD HH:MM:SS)"));
+// 		$this->setErrorText(dgettext("polyphony", "Enter a date/time string. (example: YYYY-MM-DD HH:MM:SS)"));
 // 		$this->setErrorRule(new WECNonZeroRegex("[\\w]+"));
 	}
 	

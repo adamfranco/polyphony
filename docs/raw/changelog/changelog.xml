@@ -4,13 +4,20 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.48 2006/06/07 19:22:32 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.49 2006/06/08 15:57:29 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
 	<version number="0.5.3" date="the future">
+		<change author='adam'>
+			DataManagerGUI: AuthoritativeValues addition is now an AuthorizationFunction.
+		</change>
+		<change author='adam'>
+			Wizard: Can now call setEnabled() on RepeatableComponentCollections
+			and have the intended effect.
+		</change>
 		<change author='adam'>
 			Wizard: Can now change Add/Remove button labels for Repeatable Components.
 		</change>
