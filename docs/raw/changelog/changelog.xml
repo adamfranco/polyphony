@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.49 2006/06/08 15:57:29 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.50 2006/06/12 15:01:22 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -30,8 +30,8 @@
 			overwritten with setOnchange(). Same with setOnClick() going to addOnClick().
 		</change>
 		<new author='adam'>
-			Wizard: Added an addConfirm() method to EventButtons to allow prompting 
-			for user-confirmation.
+			Wizard: Added an addConfirm() method to EventButtons and Selects to allow
+			prompting for user-confirmation.
 		</new>
 		<fix author='adam'>
 			Wizard: Now Select or new fields show either the option OR new, not both.

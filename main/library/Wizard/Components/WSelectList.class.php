@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.13 2006/06/05 20:25:36 adamfranco Exp $
+ * @version $Id: WSelectList.class.php,v 1.14 2006/06/12 15:01:22 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.13 2006/06/05 20:25:36 adamfranco Exp $
+ * @version $Id: WSelectList.class.php,v 1.14 2006/06/12 15:01:22 adamfranco Exp $
  */
 class WSelectList 
 	extends WizardComponent 
@@ -146,6 +146,21 @@ class WSelectList
 	}
 	
 	/**
+	 * Add a confirmation question that will be present in a javascript 'confirm' 
+	 * dialog onchange press.
+	 * 
+	 * @param string $confirmText
+	 * @return void
+	 * @access public
+	 * @since 6/7/06
+	 */
+	function addConfirm ($confirmText) {
+		if (!isset($this->_confirms))
+			$this->_confirms = array();
+		$this->_confirms[] = $confirmText;
+	}
+	
+	/**
 	 * Returns a block of XHTML-valid code that contains markup for this specific
 	 * component. 
 	 * @param string $fieldName The field name to use when outputting form data or
@@ -161,8 +176,24 @@ class WSelectList
 		if ($this->_style) $style = " style=\"".addslashes($this->_style)."\""; 
 
 		$m = "<select name='$name' $style ";
-		if ($this->_onchange && $this->isEnabled()) {
-			$m .= "\n\t\t\t\tonchange=\"".str_replace("\"", "\\\"", $this->_onchange)."\"";
+		if (($this->_onchange || (isset($this->_confirms) && count($this->_confirms))) 
+			&& $this->isEnabled()) 
+		{
+			$m .= "\n\t\t\t\tonchange=\"";
+			
+			if (isset($this->_confirms) && count($this->_confirms)) {
+				$m .= "var confirmed = (confirm('";
+				$m .= implode("') && confirm('", $this->_confirms);
+				$m .= "'));";
+			} else {
+				$m .= "var confirmed = true; ";
+			}
+					
+			$m .= " if (confirmed) { ";		
+			$m .= str_replace("\"", "\\\"", $this->_onchange);
+			$m .= " } else { ";
+			$m .= 	" this.value = '".htmlspecialchars($this->_value, ENT_QUOTES)."';";
+			$m .= " }\"";
 		}
 		if (!$this->isEnabled())
 			$m .= "\n\t\t\t\tdisabled=\"disabled\"";
