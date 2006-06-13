@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.11 2006/03/14 22:07:37 cws-midd Exp $
+ * @version $Id: browse.act.php,v 1.13 2006/06/13 21:23:53 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.11 2006/03/14 22:07:37 cws-midd Exp $
+ * @version $Id: browse.act.php,v 1.13 2006/06/13 21:23:53 adamfranco Exp $
  */
 class browseAction 
 	extends MainWindowAction

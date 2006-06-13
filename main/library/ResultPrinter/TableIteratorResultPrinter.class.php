@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TableIteratorResultPrinter.class.php,v 1.12 2006/05/12 18:29:40 adamfranco Exp $
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.13 2006/06/13 21:23:04 adamfranco Exp $
  */
  
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -19,13 +19,12 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TableIteratorResultPrinter.class.php,v 1.12 2006/05/12 18:29:40 adamfranco Exp $
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.13 2006/06/13 21:23:04 adamfranco Exp $
  */
 
 class TableIteratorResultPrinter 
 	extends ResultPrinter
 {
-	
 	
 	/**
 	 * Constructor
@@ -67,8 +66,6 @@ class TableIteratorResultPrinter
 		}
 	}
 	
-	
-	
 	/**
 	 * Returns a layout of the Results
 	 * 
@@ -97,11 +94,16 @@ class TableIteratorResultPrinter
 			
 			// trash the items before our starting number
 			while ($this->_iterator->hasNext() && $numItems+1 < $startingNumber) {
-				$item =& $this->_iterator->next();
-				
-				// Ignore this if it should be filtered.
-				if (!$shouldPrintFunction || $shouldPrintFunction($item))
+				if (!$shouldPrintFunction) {
+					$this->_iterator->skipNext();
 					$numItems++;
+				} else {
+					$item =& $this->_iterator->next();
+					// Ignore this if it should be filtered.
+					eval('$shouldPrint = ('.$shouldPrintFunction.'($item));');
+					if ($shouldPrint)
+						$numItems++;
+				}
 			}
 			
 			
@@ -127,13 +129,17 @@ class TableIteratorResultPrinter
 			}
 			
 			// find the count of items 
-			while ($this->_iterator->hasNext()) {
-				$item =& $this->_iterator->next();
-				
-				// Ignore this if it should be filtered.
-				eval('$shouldPrint = (!$shouldPrintFunction || '.$shouldPrintFunction.'($item));');
-				if ($shouldPrint)
-					$numItems++;
+			if (!$shouldPrintFunction) {
+				$numItems = $this->_iterator->count();
+			} else {
+				while ($this->_iterator->hasNext()) {
+					$item =& $this->_iterator->next();
+					
+					// Ignore this if it should be filtered.
+					eval('$shouldPrint = ('.$shouldPrintFunction.'($item));');
+					if ($shouldPrint)
+						$numItems++;
+				}
 			}
 			
 			$rows = ob_get_clean();

@@ -4,13 +4,20 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.51 2006/06/13 15:36:51 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.52 2006/06/13 21:23:03 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
 	<version number="0.6.0" date="2006-06-13">
+		<change author='adam'>
+			ResultPrinter: Now uses skipNext() and count() methods when iterating
+			if all items are authorized to print.
+		</change>
+		<change author='adam'>
+			StatusStars: Now will print a label if requested.
+		</change>
 		<change author='adam'>
 			DataManagerGUI: AuthoritativeValues addition is now an AuthorizationFunction.
 		</change>
