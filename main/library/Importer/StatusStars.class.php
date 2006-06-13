@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: StatusStars.class.php,v 1.3 2006/05/23 15:09:29 cws-midd Exp $
+ * @version $Id: StatusStars.class.php,v 1.4 2006/06/13 21:22:46 adamfranco Exp $
  */ 
 
 /**
@@ -24,7 +24,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: StatusStars.class.php,v 1.3 2006/05/23 15:09:29 cws-midd Exp $
+ * @version $Id: StatusStars.class.php,v 1.4 2006/06/13 21:22:46 adamfranco Exp $
  */
 class StatusStars {
 		
@@ -48,8 +48,9 @@ class StatusStars {
 	 * @access public
 	 * @since 2/22/06
 	 */
-	function StatusStars () {
+	function StatusStars ($label = '') {
 		// nothing to do here
+		$this->_label = $label;
 	}
 
 	/**
@@ -98,6 +99,10 @@ class StatusStars {
 	 */
 	function _createStatusBar () {
 		$this->_jump_obs();
+		
+		if ($this->_label) {
+			print "<pre>".$this->_label."</pre>\n";
+		}
 		print "<pre>";
 		print "0";
 		$this->_addSpaces();
