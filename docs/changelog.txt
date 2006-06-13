@@ -3,6 +3,29 @@
 Name: Polyphony ChangeLog
 
 
+v. 0.6.0 (2006-06-13)
+----------------------------------------------------
+		
+	* Change: DataManagerGUI: AuthoritativeValues addition is now an AuthorizationFunction. (Adam Franco)
+		
+	* Change: Wizard: Can now call setEnabled() on RepeatableComponentCollections and have the intended effect. (Adam Franco)
+		
+	* Change: Wizard: Can now change Add/Remove button labels for Repeatable Components. (Adam Franco)
+		
+	* Change: Wizard: Verified change inputs are now set to be checked for new values by default. (Adam Franco)
+		
+	* Change: Wizard: onchange items are now added with addOnChange() rather than overwritten with setOnchange(). Same with setOnClick() going to addOnClick(). (Adam Franco)
+		
+	* New feature: Wizard: Added an addConfirm() method to EventButtons and Selects to allow prompting for user-confirmation. (Adam Franco)
+		
+	* Bug Fix: Wizard: Now Select or new fields show either the option OR new, not both. (Adam Franco)
+		
+	* Bug Fix: WizardAction: now getWizard() will have the same cachename translation as was in the runWizard() method. (Adam Franco)
+		
+	* Change: Help: Improving the parsing and display of help files to support relative links to images, stylesheets, and other files. Better generation of menus too. (Adam Franco)
+		
+	* Bug Fix: Logging: Ensured that logging is now ready for use before attempting to log errors. (Adam Franco)
+	
 v. 0.5.2 (2006-05-26)
 ----------------------------------------------------
 		
