@@ -4,13 +4,16 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.53 2006/06/14 15:44:43 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.54 2006/06/14 21:41:33 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
 	<version number="0.6.0" date="2006-06-13">
+		<change author='adam'>
+			Basket/Selection images now show bordered placeholders before they are loaded.
+		</change>
 		<change author='adam'>
 			ResultPrinter: Now uses skipNext() and count() methods when iterating
 			if all items are authorized to print.

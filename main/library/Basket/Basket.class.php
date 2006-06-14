@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.8 2006/05/22 20:59:05 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.9 2006/06/14 21:41:34 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.8 2006/05/22 20:59:05 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.9 2006/06/14 21:41:34 adamfranco Exp $
  */
 class Basket 
 	extends OrderedSet
@@ -165,9 +165,10 @@ class Basket
 		for (var i = 0; i < idArray.length; i++) {
 			var elem = document.createElement('img');
 			elem.style.border = '1px solid';
-			elem.style.margin = '5px';
-			elem.style.height = '30px';
-			elem.style.width = '30px';
+			elem.style.margin = '2px';
+			elem.style.marginRight = '1px';
+			elem.style.height = '60px';
+			elem.style.width = '60px';
 			elem.style.verticalAlign = 'middle';
 			elem.src = '$placeHolderUrl';
 			basketContentsElement.appendChild(elem);
@@ -292,15 +293,16 @@ END;
 				$id =& $this->next();
 				$thumbnailURL = RepositoryInputOutputModuleManager::getThumbnailUrlForAsset($id);
 				if ($thumbnailURL !== FALSE) {				
-	// 				print "\n\t<br />";
-					print "\n\t\t<img src='$thumbnailURL' alt='Thumbnail Image' border='0' style='max-height: 50px; max-width: 50px; vertical-align: middle; margin: 5px;' />";
+					print "\n\t<div style='border: 1px solid; height: 60px; width: 60px; float: left; text-align: center; vertical-align: middle; padding: 0px; margin: 2px;'>";
+					print "\n\t\t<img src='$thumbnailURL' alt='Thumbnail Image' border='0' style='max-height: 50px; max-width: 50px; vertical-align: middle; margin: 5px;' onload=\"this.parentNode.style.border='0px'; this.parentNode.style.margin='3px';\" />";
+					print "\n\t</div>";
 				}
 			}
 		}
 		print "\n\t</div>";
 		
 		if ($this->count()) {
-			print "\n\t<div style='text-align: right; font-size: small;'>";
+			print "\n\t<div style='text-align: right; font-size: small; clear: both;'>";
 			print "<a onclick='Basket.empty()'>"._("Empty")."</a>";
 			print "\n\t</div>";
 		}
