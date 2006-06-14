@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCheckBox.class.php,v 1.11 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WCheckBox.class.php,v 1.12 2006/06/14 14:54:14 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCheckBox.class.php,v 1.11 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WCheckBox.class.php,v 1.12 2006/06/14 14:54:14 adamfranco Exp $
  */
 class WCheckBox 
 	extends WizardComponent 
@@ -122,6 +122,21 @@ class WCheckBox
 	}
 	
 	/**
+	 * Add a confirmation question that will be present in a javascript 'confirm' 
+	 * dialog onchange press.
+	 * 
+	 * @param string $confirmText
+	 * @return void
+	 * @access public
+	 * @since 6/14/06
+	 */
+	function addConfirm ($confirmText) {
+		if (!isset($this->_confirms))
+			$this->_confirms = array();
+		$this->_confirms[] = $confirmText;
+	}
+	
+	/**
 	 * Returns a block of XHTML-valid code that contains markup for this specific
 	 * component. 
 	 * @param string $fieldName The field name to use when outputting form data or
@@ -145,14 +160,43 @@ class WCheckBox
 		$m .= "\n\t\t\t<input type='checkbox' ";
 		if (!$this->isEnabled())
 			$m .= "\n\t\t\t\tdisabled=\"disabled\"";
-		else
-			$m .= "\n\t\t\t\tonclick=\"".$this->getSetJS($fieldName)."\" ";
+		else {
+			$m .= "\n\t\t\t\tonclick=\"";
+			
+			if (isset($this->_confirms) && count($this->_confirms)) {
+				$m .= "var confirmed = (confirm('";
+				$m .= implode("') && confirm('", $this->_confirms);
+				$m .= "'));";
+			} else {
+				$m .= "var confirmed = true; ";
+			}
+					
+			$m .= " if (confirmed) { ";		
+			$m .= $this->getSetJS($fieldName);
+			
+			$m .= " } else { ";
+			$m .= 	" this.checked = ".($this->_value?"true":"false").";";
+			$m .= " }\"";
+		}
 		
 		$m .= "\n\t\t\t\tid='$dummyName'$checked />";
 		
 		$m .= "\n\t\t\t<label$style ";
-		if ($this->isEnabled())
-			$m .= "\n\t\t\t\tonclick=\"".$this->getToggleJS($fieldName)."\" ";
+		if ($this->isEnabled()) {
+			$m .= "\n\t\t\t\tonclick=\"";
+			
+			if (isset($this->_confirms) && count($this->_confirms)) {
+				$m .= "var confirmed = (confirm('";
+				$m .= implode("') && confirm('", $this->_confirms);
+				$m .= "'));";
+			} else {
+				$m .= "var confirmed = true; ";
+			}
+					
+			$m .= " if (confirmed) { ";	
+			$m .= $this->getToggleJS($fieldName);
+			$m .= " }\" ";
+		}
 		$m .= "\n\t\t\t>".$this->_label."</label>";
 		
 		return $m;
