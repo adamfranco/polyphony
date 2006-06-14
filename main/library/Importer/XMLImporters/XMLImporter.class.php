@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.25 2006/06/02 14:28:59 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.26 2006/06/14 15:44:44 adamfranco Exp $
  *
  * @author Christopher W. Shubert
  */ 
@@ -15,7 +15,7 @@ require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(DOMIT);
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryImporter.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryFileImporter.class.php");
-require_once(POLYPHONY."/main/library/Importer/StatusStars.class.php");
+require_once(HARMONI."/utilities/StatusStars.class.php");
 
 /**
  * This class and its children provide the ability to import objects into a 
@@ -27,7 +27,7 @@ require_once(POLYPHONY."/main/library/Importer/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.25 2006/06/02 14:28:59 cws-midd Exp $
+ * @version $Id: XMLImporter.class.php,v 1.26 2006/06/14 15:44:44 adamfranco Exp $
  */
 class XMLImporter {
 

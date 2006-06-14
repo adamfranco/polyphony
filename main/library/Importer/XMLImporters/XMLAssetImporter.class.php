@@ -6,14 +6,14 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.15 2006/05/30 20:18:45 adamfranco Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.16 2006/06/14 15:44:44 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRecordImporter.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLFileRecordImporter.class.php");
 require_once(HARMONI."Primitives/Chronology/DateAndTime.class.php");
-require_once(POLYPHONY."/main/library/Importer/StatusStars.class.php");
+require_once(HARMONI."/utilities/StatusStars.class.php");
 
 /**
  * XMLAssetImporter imports an asset into a repository
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/Importer/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.15 2006/05/30 20:18:45 adamfranco Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.16 2006/06/14 15:44:44 adamfranco Exp $
  */
 class XMLAssetImporter extends XMLImporter {
 		
