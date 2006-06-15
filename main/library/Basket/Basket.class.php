@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.10 2006/06/15 14:19:26 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.11 2006/06/15 14:39:35 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.10 2006/06/15 14:19:26 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.11 2006/06/15 14:39:35 adamfranco Exp $
  */
 class Basket 
 	extends OrderedSet
@@ -257,6 +257,11 @@ class Basket
 						if (grandchild.height > 0 && grandchild.width > 0) {
 							child.style.border='0px';
 							child.style.margin='3px';
+							
+							/* Resize images for IE */ 
+							if (grandchild.height > 50 || grandchild.width > 50) {
+								grandchild.width = 50;
+							}
 						} else {
 							allLoaded = false;
 						}
@@ -280,7 +285,7 @@ class Basket
 		if (!Basket.removeBoardersForCompletedImages(
 					getElementFromDocument('basket_small_contents')))
 		{
-			widow.setTimeout('Basket.removeBorders()', 100);
+			window.setTimeout('Basket.removeBorders()', 100);
 		}
 	}
 	
@@ -342,7 +347,7 @@ END;
 				$thumbnailURL = RepositoryInputOutputModuleManager::getThumbnailUrlForAsset($id);
 				if ($thumbnailURL !== FALSE) {				
 					print "\n\t<div style='border: 1px solid; height: 60px; width: 60px; float: left; text-align: center; vertical-align: middle; padding: 0px; margin: 2px;'>";
-					print "\n\t\t<img src='$thumbnailURL' alt='Thumbnail Image' border='0' style='max-height: 50px; max-width: 50px; vertical-align: middle; margin: 5px;' onload=\"if (this.parentNode) { this.parentNode.style.border='0px'; this.parentNode.style.margin='3px'; }\" />";
+					print "\n\t\t<img src='$thumbnailURL' alt='Thumbnail Image' border='0' style='max-height: 50px; max-width: 50px; vertical-align: middle; margin: 5px;' onload=\"if (this.parentNode) { this.parentNode.style.border='0px'; this.parentNode.style.margin='3px'; } /* Resize images for IE */ if (this.height > 50 || this.width > 50) {this.width = 50;}\" />";
 					print "\n\t</div>";
 				}
 			}
