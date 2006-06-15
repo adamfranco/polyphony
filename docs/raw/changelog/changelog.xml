@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.54 2006/06/14 21:41:33 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.55 2006/06/15 14:47:33 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -12,7 +12,12 @@
 <changelog name="Polyphony ChangeLog">
 	<version number="0.6.0" date="2006-06-13">
 		<change author='adam'>
-			Basket/Selection images now show bordered placeholders before they are loaded.
+			Basket/Selection images are now show bordered placeholders before 
+			they are loaded.
+		</change>
+		<change author='adam'>
+			Basket/Selection images are now resized -- albeit only one dimension
+			-- in IE.
 		</change>
 		<change author='adam'>
 			ResultPrinter: Now uses skipNext() and count() methods when iterating
