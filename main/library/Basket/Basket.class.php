@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.9 2006/06/14 21:41:34 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.10 2006/06/15 14:19:26 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.9 2006/06/14 21:41:34 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.10 2006/06/15 14:19:26 adamfranco Exp $
  */
 class Basket 
 	extends OrderedSet
@@ -224,6 +224,7 @@ class Basket
 					if (req.status == 200) {
 						var basketElement = getElementFromDocument('basket_small');
 						basketElement.innerHTML = req.responseText;
+						Basket.removeBorders();
 					} else {
 						alert("There was a problem retrieving the XML data:\\n" +
 							req.statusText);
@@ -233,6 +234,53 @@ class Basket
 			
 			req.open("GET", url, true);
 			req.send(null);
+		}
+	}
+	
+	/**
+	 * Remove borders from div's surrounding images (in the basket) if the 
+	 * images are loaded.
+	 * 
+	 * @param element parentNode
+	 * @return boolean True if all are loaded
+	 * @access public
+	 * @since 6/15/06
+	 */
+	Basket.removeBoardersForCompletedImages = function (parentNode) {
+		var allLoaded = true;
+		for (var i in parentNode.childNodes) {
+			var child = parentNode.childNodes[i];
+			if (child.nodeType == 1 && child.tagName.toLowerCase() == "div") {
+				for (var j in child.childNodes) {
+					var grandchild = child.childNodes[j];
+					if (grandchild.nodeType == 1 && grandchild.tagName.toLowerCase() == "img") {
+						if (grandchild.height > 0 && grandchild.width > 0) {
+							child.style.border='0px';
+							child.style.margin='3px';
+						} else {
+							allLoaded = false;
+						}
+					}
+				}
+			}
+		}
+		
+		return allLoaded;
+	}
+	
+	/**
+	 * Loop waiting for images to load and then remove their boarders if they are
+	 * loaded.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 6/15/06
+	 */
+	Basket.removeBorders = function () {
+		if (!Basket.removeBoardersForCompletedImages(
+					getElementFromDocument('basket_small_contents')))
+		{
+			widow.setTimeout('Basket.removeBorders()', 100);
 		}
 	}
 	
@@ -259,7 +307,7 @@ class Basket
 </script>
 END;
 		
-		$block->setPostHTML(ob_get_clean());
+		$block->setPreHTML(ob_get_clean());
 		
 		return $block;
 	}
@@ -286,7 +334,7 @@ END;
 		print "(".$this->count()." "._("items").")";
 		print "</a>";
 		
-		print "\n\t<div id='basket_small_contents' style='text-align: left;'>";
+		print "\n\t<div id='basket_small_contents' style='text-align: left; min-width: 200px;'>";
 		$this->reset();
 		if ($this->hasNext()) {
 			while ($this->hasNext()) {
@@ -294,12 +342,24 @@ END;
 				$thumbnailURL = RepositoryInputOutputModuleManager::getThumbnailUrlForAsset($id);
 				if ($thumbnailURL !== FALSE) {				
 					print "\n\t<div style='border: 1px solid; height: 60px; width: 60px; float: left; text-align: center; vertical-align: middle; padding: 0px; margin: 2px;'>";
-					print "\n\t\t<img src='$thumbnailURL' alt='Thumbnail Image' border='0' style='max-height: 50px; max-width: 50px; vertical-align: middle; margin: 5px;' onload=\"this.parentNode.style.border='0px'; this.parentNode.style.margin='3px';\" />";
+					print "\n\t\t<img src='$thumbnailURL' alt='Thumbnail Image' border='0' style='max-height: 50px; max-width: 50px; vertical-align: middle; margin: 5px;' onload=\"if (this.parentNode) { this.parentNode.style.border='0px'; this.parentNode.style.margin='3px'; }\" />";
 					print "\n\t</div>";
 				}
 			}
 		}
 		print "\n\t</div>";
+		
+		print <<< END
+	
+	<script type='text/javascript'>
+	// <![CDATA[
+	
+		Basket.removeBorders();
+	
+	// ]]>
+	</script>
+		
+END;
 		
 		if ($this->count()) {
 			print "\n\t<div style='text-align: right; font-size: small; clear: both;'>";
