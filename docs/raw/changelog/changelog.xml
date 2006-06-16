@@ -4,13 +4,13 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.55 2006/06/15 14:47:33 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.56 2006/06/16 15:44:59 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
-	<version number="0.6.0" date="2006-06-13">
+	<version number="0.6.0" date="2006-06-16">
 		<change author='adam'>
 			Basket/Selection images are now show bordered placeholders before 
 			they are loaded.

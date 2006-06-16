@@ -3,8 +3,18 @@
 Name: Polyphony ChangeLog
 
 
-v. 0.6.0 (2006-06-13)
+v. 0.6.0 (2006-06-16)
 ----------------------------------------------------
+		
+	* Change: Basket/Selection images are now show bordered placeholders before they are loaded. (Adam Franco)
+		
+	* Change: Basket/Selection images are now resized -- albeit only one dimension -- in IE. (Adam Franco)
+		
+	* Change: ResultPrinter: Now uses skipNext() and count() methods when iterating if all items are authorized to print. (Adam Franco)
+		
+	* Change: StatusStars: Moved output buffer jumping methods to the RequestContext as ob_jump() and ob_land() from Chris's StatusStars. StatusStars is now in harmoni/core/utilities. (Adam Franco)
+		
+	* Change: StatusStars: Now will print a label if requested. (Adam Franco)
 		
 	* Change: DataManagerGUI: AuthoritativeValues addition is now an AuthorizationFunction. (Adam Franco)
 		
