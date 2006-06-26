@@ -1,24 +1,24 @@
 <?php
 /**
  * @since 12/7/05
- * @package polyphony.resultprinter
+ * @package polyphony.library.resultprinter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ResultPrinter.abstract.php,v 1.3 2006/05/15 21:32:52 adamfranco Exp $
+ * @version $Id: ResultPrinter.abstract.php,v 1.4 2006/06/26 12:51:45 adamfranco Exp $
  */ 
 
 /**
  * This abstract class provides common methods for child classes
  * 
  * @since 12/7/05
- * @package polyphony.resultprinter
+ * @package polyphony.library.resultprinter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ResultPrinter.abstract.php,v 1.3 2006/05/15 21:32:52 adamfranco Exp $
+ * @version $Id: ResultPrinter.abstract.php,v 1.4 2006/06/26 12:51:45 adamfranco Exp $
  */
 class ResultPrinter {
 

@@ -1,24 +1,24 @@
 <?php
 /**
  * @since 5/31/06
- * @package polyphony.wizard
+ * @package polyphony.library.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicButton.class.php,v 1.2 2006/06/07 19:22:35 adamfranco Exp $
+ * @version $Id: WLogicButton.class.php,v 1.3 2006/06/26 12:51:46 adamfranco Exp $
  */ 
 
 /**
  * Buttons of this class tree are used in logic wizards to control wizard flow.
  * 
  * @since 5/31/06
- * @package polyphony.wizard
+ * @package polyphony.library.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicButton.class.php,v 1.2 2006/06/07 19:22:35 adamfranco Exp $
+ * @version $Id: WLogicButton.class.php,v 1.3 2006/06/26 12:51:46 adamfranco Exp $
  */
 class WLogicButton extends WEventButton {
 		

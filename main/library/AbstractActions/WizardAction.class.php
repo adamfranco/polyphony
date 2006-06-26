@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardAction.class.php,v 1.10 2006/06/14 15:44:44 adamfranco Exp $
+ * @version $Id: WizardAction.class.php,v 1.11 2006/06/26 12:51:41 adamfranco Exp $
  */ 
  
  require_once(dirname(__FILE__)."/Action.class.php");
@@ -45,12 +45,12 @@
  *	</code>
  *
  * @since 4/28/05
- * @package <##>
+ * @package polyphony.modules
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardAction.class.php,v 1.10 2006/06/14 15:44:44 adamfranco Exp $
+ * @version $Id: WizardAction.class.php,v 1.11 2006/06/26 12:51:41 adamfranco Exp $
  */
 class WizardAction 
 	extends Action

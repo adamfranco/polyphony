@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.7 2006/06/01 14:41:46 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.8 2006/06/26 12:51:47 adamfranco Exp $
  */
  
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -34,7 +34,7 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.7 2006/06/01 14:41:46 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.8 2006/06/26 12:51:47 adamfranco Exp $
  */
 class browse_helpAction 
 	extends Action
@@ -515,12 +515,12 @@ class browse_helpAction
  * <##>
  * 
  * @since 5/31/06
- * @package <##>
+ * @package polyphony.modules.help
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.7 2006/06/01 14:41:46 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.8 2006/06/26 12:51:47 adamfranco Exp $
  */
 class TableOfContentsPart {
 		

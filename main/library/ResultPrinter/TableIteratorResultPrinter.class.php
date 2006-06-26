@@ -1,11 +1,11 @@
 <?php
 /**
- * @package polyphony.resultprinter
+ * @package polyphony.library.resultprinter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TableIteratorResultPrinter.class.php,v 1.13 2006/06/13 21:23:04 adamfranco Exp $
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.14 2006/06/26 12:51:45 adamfranco Exp $
  */
  
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -14,12 +14,12 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * Print out an Iterator of items in rows and columns of TEXT_BLOCK widgets 
  * spread over multiple pages.
  *
- * @package polyphony.resultprinter
+ * @package polyphony.library.resultprinter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TableIteratorResultPrinter.class.php,v 1.13 2006/06/13 21:23:04 adamfranco Exp $
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.14 2006/06/26 12:51:45 adamfranco Exp $
  */
 
 class TableIteratorResultPrinter 

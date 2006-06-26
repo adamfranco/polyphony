@@ -1,24 +1,24 @@
 <?php
 /**
  * @since 5/31/06
- * @package polyphony.wizard
+ * @package polyphony.library.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCancelContinueButton.class.php,v 1.1 2006/06/02 16:00:28 cws-midd Exp $
+ * @version $Id: WCancelContinueButton.class.php,v 1.2 2006/06/26 12:51:46 adamfranco Exp $
  */ 
 
 /**
  * a button that does not persist data changes
  * 
  * @since 5/31/06
- * @package polyphony.wizard
+ * @package polyphony.library.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCancelContinueButton.class.php,v 1.1 2006/06/02 16:00:28 cws-midd Exp $
+ * @version $Id: WCancelContinueButton.class.php,v 1.2 2006/06/26 12:51:46 adamfranco Exp $
  */
 class WCancelContinueButton extends WLogicButton {
 	

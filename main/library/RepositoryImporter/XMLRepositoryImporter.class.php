@@ -1,12 +1,12 @@
 <?php
 /**
 * @since 7/20/05
- * @package polyphony.repositoryImporter
+ * @package polyphony.library.repository_importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.16 2005/09/28 19:13:24 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.17 2006/06/26 12:51:45 adamfranco Exp $
  */ 
 require_once(DOMIT);
 
@@ -16,12 +16,12 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
 * <##>
  * 
  * @since 7/20/05
- * @package polyphony.repositoryImporter
+ * @package polyphony.library.repository_importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.16 2005/09/28 19:13:24 cws-midd Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.17 2006/06/26 12:51:45 adamfranco Exp $
  */
 class XMLRepositoryImporter
 	extends RepositoryImporter

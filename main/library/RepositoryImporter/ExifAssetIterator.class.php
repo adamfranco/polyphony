@@ -1,24 +1,24 @@
 <?php
 /**
 * @since 7/20/05
- * @package Polyphony.RepositoryImporter
+ * @package polyphony.library.repository_importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifAssetIterator.class.php,v 1.3 2005/08/11 18:27:20 ndhungel Exp $
+ * @version $Id: ExifAssetIterator.class.php,v 1.4 2006/06/26 12:51:45 adamfranco Exp $
  */ 
 
 /**
 * <##>
  * 
  * @since 7/20/05
- * @package Polyphony.RepositoryImporter
+ * @package polyphony.library.repository_importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifAssetIterator.class.php,v 1.3 2005/08/11 18:27:20 ndhungel Exp $
+ * @version $Id: ExifAssetIterator.class.php,v 1.4 2006/06/26 12:51:45 adamfranco Exp $
  */
 
 class ExifAssetIterator

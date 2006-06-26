@@ -1,11 +1,11 @@
 <?php
 /**
- * @package polyphony.resultprinter
+ * @package polyphony.library.resultprinter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.8 2006/05/12 18:29:40 adamfranco Exp $
+ * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.9 2006/06/26 12:51:45 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -13,12 +13,12 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
 /**
  * Print out an Array of items in rows and columns in a TABLE HTML element.
  *
- * @package polyphony.resultprinter
+ * @package polyphony.library.resultprinter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.8 2006/05/12 18:29:40 adamfranco Exp $
+ * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.9 2006/06/26 12:51:45 adamfranco Exp $
  */
 
 class EmbeddedArrayResultPrinter 

@@ -1,11 +1,11 @@
 <?php
 /**
- * @package polyphony.resultprinter
+ * @package polyphony.library.resultprinter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.22 2006/05/26 13:59:12 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.23 2006/06/26 12:51:45 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -14,12 +14,12 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * Print out an Array of items in rows and columns of TEXT_BLOCK widgets 
  * spread over multiple pages.
  *
- * @package polyphony.resultprinter
+ * @package polyphony.library.resultprinter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.22 2006/05/26 13:59:12 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.23 2006/06/26 12:51:45 adamfranco Exp $
  */
 
 class ArrayResultPrinter 

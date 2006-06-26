@@ -1,24 +1,24 @@
 <?php
 /**
 * @since 7/20/05
- * @package Polyphony.RepositoryImporter
+ * @package polyphony.library.repository_importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabAssetIterator.class.php,v 1.8 2006/05/30 20:18:45 adamfranco Exp $
+ * @version $Id: TabAssetIterator.class.php,v 1.9 2006/06/26 12:51:45 adamfranco Exp $
  */ 
 
 /**
 * <##>
  * 
  * @since 7/20/05
- * @package Polyphony.RepositoryImporter
+ * @package polyphony.library.repository_importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabAssetIterator.class.php,v 1.8 2006/05/30 20:18:45 adamfranco Exp $
+ * @version $Id: TabAssetIterator.class.php,v 1.9 2006/06/26 12:51:45 adamfranco Exp $
  */
 class TabAssetIterator 
 extends HarmoniIterator 
