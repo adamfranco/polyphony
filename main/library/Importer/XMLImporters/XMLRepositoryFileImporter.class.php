@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 10/18/05
- * @package polyphony.importer
+ * @package polyphony.library.importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryFileImporter.class.php,v 1.6 2006/02/27 19:23:09 cws-midd Exp $
+ * @version $Id: XMLRepositoryFileImporter.class.php,v 1.7 2006/06/26 19:22:42 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -16,12 +16,12 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryImporte
  * XMLRepositoryFileImporter imports a repository via delegation to subclasses
  * 
  * @since 10/18/05
- * @package polyphony.importer
+ * @package polyphony.library.importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryFileImporter.class.php,v 1.6 2006/02/27 19:23:09 cws-midd Exp $
+ * @version $Id: XMLRepositoryFileImporter.class.php,v 1.7 2006/06/26 19:22:42 adamfranco Exp $
  */
 class XMLRepositoryFileImporter extends XMLImporter {
 

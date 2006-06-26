@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 9/27/05
- * @package polyphony.basket
+ * @package polyphony.library.basket
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.5 2006/05/23 15:09:28 cws-midd Exp $
+ * @version $Id: export.act.php,v 1.6 2006/06/26 19:22:42 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -16,12 +16,12 @@ require_once(POLYPHONY."/main/library/Exporter/XMLAssetExporter.class.php");
  * This is the export action for an asset
  * 
  * @since 9/27/05
- * @package polyphony.basket
+ * @package polyphony.library.basket
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.5 2006/05/23 15:09:28 cws-midd Exp $
+ * @version $Id: export.act.php,v 1.6 2006/06/26 19:22:42 adamfranco Exp $
  */
 class exportAction 
 	extends MainWindowAction

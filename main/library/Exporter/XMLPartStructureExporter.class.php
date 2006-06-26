@@ -1,24 +1,24 @@
 <?php
 /**
  * @since 10/17/05
- * @package polyphony.exporter
+ * @package polyphony.library.exporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureExporter.class.php,v 1.4 2005/11/03 21:13:15 cws-midd Exp $
+ * @version $Id: XMLPartStructureExporter.class.php,v 1.5 2006/06/26 19:22:41 adamfranco Exp $
  */ 
 
 /**
  * Exports into XML for use with the XML Importer
  * 
  * @since 10/17/05
- * @package polyphony.exporter
+ * @package polyphony.library.exporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureExporter.class.php,v 1.4 2005/11/03 21:13:15 cws-midd Exp $
+ * @version $Id: XMLPartStructureExporter.class.php,v 1.5 2006/06/26 19:22:41 adamfranco Exp $
  */
 class XMLPartStructureExporter {
 		

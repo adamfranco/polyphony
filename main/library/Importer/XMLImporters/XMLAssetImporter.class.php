@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 10/6/05
- * @package polyphony.importer
+ * @package polyphony.library.importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.16 2006/06/14 15:44:44 adamfranco Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.17 2006/06/26 19:22:41 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -19,12 +19,12 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * XMLAssetImporter imports an asset into a repository
  * 
  * @since 10/6/05
- * @package polyphony.importer
+ * @package polyphony.library.importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.16 2006/06/14 15:44:44 adamfranco Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.17 2006/06/26 19:22:41 adamfranco Exp $
  */
 class XMLAssetImporter extends XMLImporter {
 		

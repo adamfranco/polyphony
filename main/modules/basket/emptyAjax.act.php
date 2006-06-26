@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 5/5/06
- * @package polyphony.basket
+ * @package polyphony.library.basket
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: emptyAjax.act.php,v 1.2 2006/05/12 18:29:40 adamfranco Exp $
+ * @version $Id: emptyAjax.act.php,v 1.3 2006/06/26 19:22:42 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -16,12 +16,12 @@ require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
  * empties the basket
  * 
  * @since 5/5/06
- * @package polyphony.basket
+ * @package polyphony.library.basket
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: emptyAjax.act.php,v 1.2 2006/05/12 18:29:40 adamfranco Exp $
+ * @version $Id: emptyAjax.act.php,v 1.3 2006/06/26 19:22:42 adamfranco Exp $
  */
 class emptyAjaxAction 
 	extends MainWindowAction {

@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 10/10/05
- * @package polyphony.importer
+ * @package polyphony.library.importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileDataPartImporter.class.php,v 1.13 2006/02/22 21:46:40 cws-midd Exp $
+ * @version $Id: XMLFileDataPartImporter.class.php,v 1.14 2006/06/26 19:22:41 adamfranco Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -14,12 +14,12 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * imports the filedata of a file, how interesting
  * 
  * @since 10/10/05
- * @package polyphony.importer
+ * @package polyphony.library.importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileDataPartImporter.class.php,v 1.13 2006/02/22 21:46:40 cws-midd Exp $
+ * @version $Id: XMLFileDataPartImporter.class.php,v 1.14 2006/06/26 19:22:41 adamfranco Exp $
  */
 class XMLFileDataPartImporter extends XMLImporter {
 		

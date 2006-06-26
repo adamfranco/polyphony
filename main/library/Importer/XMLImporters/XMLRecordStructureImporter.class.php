@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 10/6/05
- * @package polyphony.importer
+ * @package polyphony.library.importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.17 2006/02/22 21:46:40 cws-midd Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.18 2006/06/26 19:22:42 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -17,12 +17,12 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLPartStructureImpo
  * subclasses
  * 
  * @since 10/6/05
- * @package polyphony.importer
+ * @package polyphony.library.importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.17 2006/02/22 21:46:40 cws-midd Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.18 2006/06/26 19:22:42 adamfranco Exp $
  */
 class XMLRecordStructureImporter extends XMLImporter {
 		
