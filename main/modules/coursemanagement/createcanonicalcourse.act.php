@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcanonicalcourse.act.php,v 1.1 2006/06/30 15:37:54 jwlee100 Exp $
+ * @version $Id: createcanonicalcourse.act.php,v 1.2 2006/06/30 19:35:05 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcanonicalcourse.act.php,v 1.1 2006/06/30 15:37:54 jwlee100 Exp $
+ * @version $Id: createcanonicalcourse.act.php,v 1.2 2006/06/30 19:35:05 jwlee100 Exp $
  */
 class createcanonicalcourseAction
 	extends MainWindowAction
@@ -38,7 +38,7 @@ class createcanonicalcourseAction
 		
 		return $authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.add_children"),
-			$idManager->getId("edu.middlebury.concerto.coursemanagement")
+			$idManager->getId("edu.middlebury.coursemanagement")
 		);
 	}
 	
@@ -61,14 +61,7 @@ class createcanonicalcourseAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		$idManager =& Services::getService("Id");
-		$repositoryManager =& Services::getService("Repository");
-		$repository =& $repositoryManager->getRepository(
-				$idManager->getId(
-					"edu.middlebury.concerto.exhibition_repository"));
-		$asset =& $repository->getAsset(
-				$idManager->getId(RequestContext::value('exhibition_id')));
-		return _("Add a SlideShow to the")." <em>".$asset->getDisplayName()."</em> "._("Exhibition");
+		return _("Create a canonical course.");
 	}
 	
 	/**
@@ -80,15 +73,8 @@ class createcanonicalcourseAction
 	 */
 	function buildContent () {
 		$harmoni =& Harmoni::instance();
-		$harmoni->request->passthrough("exhibition_id");
-		
 		$actionRows =& $this->getActionRows();
-		
-		$idManager =& Services::getService("Id");
-		$exhibitionAssetId =& $idManager->getId(RequestContext::value('exhibition_id'));
-		
-		$cacheName = 'add_slideshow_wizard_'.$exhibitionAssetId->getIdString();
-		
+		$cacheName = "createCanonicalCourseWizard";
 		$this->runWizard ( $cacheName, $actionRows );
 	}
 		
@@ -103,7 +89,7 @@ class createcanonicalcourseAction
 	
 	function &createWizard () {
 		$harmoni =& Harmoni::instance();
-		$courseManagemer =& Services::getService("CourseManagement");
+		$courseManager =& Services::getService("CourseManagement");
 		$canonicalCourseIterator =& $courseManager->getCanonicalCourses();
 		
 		// Instantiate the wizard, then add our steps.
@@ -125,17 +111,17 @@ class createcanonicalcourseAction
 		
 		$descriptionProp =& $step->addComponent("description", WTextArea::withRowsAndColumns(10,30));
 		
-		$typeProp = $canonicalCourse->addComponent("type", new WTextField());
-		$numberProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-		$numberProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
+		$typeProp =& $step->addComponent("type", new WTextField());
+		$typeProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
+		$typeProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
 		
-		$statusTypeProp = $canonicalCourse->addComponent("statusType", new WTextField());
-		$numberProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-		$numberProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
+		$statusTypeProp =& $step->addComponent("statusType", new WTextField());
+		$statusTypeProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
+		$statusTypeProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
 		
-		$statusTypeProp = $canonicalCourse->addComponent("credits", new WTextField());
-		$numberProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-		$numberProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
+		$creditsProp =& $step->addComponent("credits", new WTextField());
+		$creditsProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
+		$creditsProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
 				
 		// Create the step text
 		ob_start();
@@ -151,35 +137,18 @@ class createcanonicalcourseAction
 		print "\n<br />[[description]]";
 		print "\n<h2>"._("Type")."</h2>";
 		print "\n"._("The type of this <em>canonical course</em>: ");
-		print "\n<br />[[Type]]";
+		print "\n<br />[[type]]";
 		print "\n<h2>"._("Status type")."</h2>";
 		print "\n"._("The status type of this <em>canonical course</em>: ");
 		print "\n<br />[[statusType]]";
+		print "\n<h2>"._("Credits")."</h2>";
+		print "\n"._("The status type of this <em>canonical course</em>: ");
+		print "\n<br />[[credits]]";
 		print "\n<div style='width: 400px'> &nbsp; </div>";
 		$step->setContent(ob_get_contents());
 		ob_end_clean();
 		
 		return $wizard;
-	}
-	
-	function browse_canonicalcourse() {
-	  	$harmoni =& Harmoni::instance();
-		$courseManagementManager =& Services::getService("CourseManagement");
-		$canonicalCourseIterator =& $courseManagementManager->getCanonicalCourses();
-		
-		// Instantiate the wizard, then add our steps.
-		$wizard =& SimpleStepWizard::withDefaultLayout();
-		
-		print "\n<table>";
-		while ($canonicalCourseIterator->hasNext()) {
-		  	$canonicalCourse =& $canonicalCourseIterator->next();
-		  	$id =& $canonicalCourse->getId();
-		  	print "\n\t<tr>";
-		  	attributesPrinter($canonicalCourse, $id);
-			print "</tr>";			
-		}
-		print "</table>";		
-			
 	}
 		
 	/**
@@ -197,25 +166,30 @@ class createcanonicalcourseAction
 		
 		// Make sure we have a valid Repository
 		$courseManager =& Services::getService("CourseManagement");
-		$courseManagementID =& $idManager->getId("edu.middlebury.concerto.coursemanagement");
+		$idManager =& Services::getService("Id");
+		$courseManagementId =& $idManager->getId("edu.middlebury.coursemanagement");
 
 		
 		// First, verify that we chose a parent that we can add children to.
 		$authZ =& Services::getService("AuthZ");
 		if ($authZ->isUserAuthorized(
-				$idManager->getId("edu.middlebury.authorization.add_children"), 
-				$courseManagementID))
+						$idManager->getId("edu.middlebury.authorization.add_children"), 
+						$courseManagementId))
 		{
 			
-			$values = $wizard->getAllValues();	
-			$type = new Type("title", "number", $values['type']);
-			$statusType = new Type("title", "number", $values['statusType']);
-			$canonicalCourseA = $courseManagement->createCanonicalCourse($values['title'], $values['number'], 	
-																		$values['description'], $type, 
-																		$statusType, $values['credits']);
+			$values = $wizard->getAllValues();
 			printpre($values);
-			browse_canonicalcourse();
-			exit();	
+			
+			$courseType =& new Type($values['namedescstep']['title'], $values['namedescstep']['number'], 
+									$values['namedescstep']['type']);
+			$statusType =& new Type($values['namedescstep']['title'], $values['namedescstep']['number'], 
+									$values['namedescstep']['statusType']);
+			$canonicalCourseA =& $courseManager->createCanonicalCourse($values['namedescstep']['title'], 
+																	   $values['namedescstep']['number'], 	
+																	   $values['namedescstep']['description'], 
+																	   $courseType, $statusType, 
+																	   $values['namedescstep']['credits']);
+			exit();
 			return TRUE;
 		} 
 		// If we don't have authorization to add to the picked parent, send us back to
@@ -234,33 +208,8 @@ class createcanonicalcourseAction
 	 */
 	function getReturnUrl () {
 		$harmoni =& Harmoni::instance();
-		$url =& $harmoni->request->mkURL("coursemanagementmanager");
+		$url =& $harmoni->request->mkURL("admin", "main");
 		return $url->write();
-	}
-	
-	function attributesPrinter(&$canonicalCourse, $id) {
-	  	$title = $canonicalCourse->getTitle($id);
-	  	$number = $canonicalCourse->getNumber($id);
-	  	$description = $canonicalCourse->getNumber($id);
-	  	$type = $canonicalCourse->getType();
-	  	$statusType = $canonicalCourse->getCourseStatusType();
-	  	
-		print "\n\t<td>";
-		print "Title: ";
-		print $title;
-		print "\n\t<td>";
-		print "\n\t<td>";
-		print "Number: ";
-		print $number;
-		print "\n\t<td>";
-		print "Description: ";
-		print $description;
-		print "\n\t<td>";
-		print "Type: ";
-		print $type;
-		print "\n\t<td>";
-		print "Status Type: ";
-		print $statusType;
 	}
 }
 
