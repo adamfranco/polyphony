@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecanonicalcourses.act.php,v 1.2 2006/07/03 14:24:34 jwlee100 Exp $
+ * @version $Id: browsecanonicalcourses.act.php,v 1.3 2006/07/06 19:01:22 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecanonicalcourses.act.php,v 1.2 2006/07/03 14:24:34 jwlee100 Exp $
+ * @version $Id: browsecanonicalcourses.act.php,v 1.3 2006/07/06 19:01:22 jwlee100 Exp $
  */
 class browsecanonicalcoursesAction
 	extends MainWindowAction
@@ -83,7 +83,7 @@ class browsecanonicalcoursesAction
 		  	print "\n\t<tr>";
 		  	$title = $canonicalCourse->getTitle();
 	  		$number = $canonicalCourse->getNumber();
-	  		$description = $canonicalCourse->getNumber();
+	  		$description = $canonicalCourse->getDescription();
 	  		// $type = $canonicalCourse->getType();
 	  		// $statusType = $canonicalCourse->getCourseStatusType();
 	  	
@@ -97,12 +97,6 @@ class browsecanonicalcoursesAction
 			print "\n\t<td>";
 			print "Description: ";
 			print $description;
-			print "\n\t<td>";
-			print "Type: ";
-			print $type;
-			print "\n\t<td>";
-			print "Status Type: ";
-			print $statusType;
 			print "</tr>";			
 		}
 		print "</table>";	
