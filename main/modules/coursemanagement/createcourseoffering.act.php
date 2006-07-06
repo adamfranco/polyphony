@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcourseoffering.act.php,v 1.1 2006/07/06 19:07:49 jwlee100 Exp $
+ * @version $Id: createcourseoffering.act.php,v 1.2 2006/07/06 19:14:46 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcourseoffering.act.php,v 1.1 2006/07/06 19:07:49 jwlee100 Exp $
+ * @version $Id: createcourseoffering.act.php,v 1.2 2006/07/06 19:14:46 jwlee100 Exp $
  */
 class createcourseofferingAction
 	extends MainWindowAction
@@ -111,6 +111,10 @@ class createcourseofferingAction
 		
 		$descriptionProp =& $step->addComponent("description", WTextArea::withRowsAndColumns(10,30));
 		
+		$termProp =& $step->addComponent("term", new WTextField());
+		$termProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
+		$termProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
+		
 		$typeProp =& $step->addComponent("type", new WTextField());
 		$typeProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
 		$typeProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
@@ -122,6 +126,10 @@ class createcourseofferingAction
 		$creditsProp =& $step->addComponent("credits", new WTextField());
 		$creditsProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
 		$creditsProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
+		
+		$courseGradeProp =& $step->addComponent("courseGrade", new WTextField());
+		$courseGradeProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
+		$courseGradeProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
 				
 		// Create the step text
 		ob_start();
@@ -180,10 +188,12 @@ class createcourseofferingAction
 			$values = $wizard->getAllValues();
 			printpre($values);
 			
-			$courseType =& new Type($values['namedescstep']['title'], $values['namedescstep']['number'], 
-									$values['namedescstep']['type']);
-			$statusType =& new Type($values['namedescstep']['title'], $values['namedescstep']['number'], 
-									$values['namedescstep']['statusType']);
+			$termType =& new Type("CourseManagement", "edu.middlebury", $values['namedescstep']['term']);
+          	$term =& $courseManagementManager->createTerm($termType, $schedule);
+          	$termId =& $term->getId();
+			$courseType =& new Type("CourseManagement", "edu.middlebury", $values['namedescstep']['type']);
+			$statusType =& new Type("CourseManagement", "edu.middlebury", $values['namedescstep']['statusType']);
+			$courseGradeType = new Type("CourseManagement", "edu.middlebury", $values['namedescstep']['courseGrade']);
 			$canonicalCourseA =& $courseManager->createCanonicalCourse($values['namedescstep']['title'], 
 																	   $values['namedescstep']['number'], 	
 																	   $values['namedescstep']['description'], 
@@ -192,8 +202,8 @@ class createcourseofferingAction
 			$courseOfferingA =& $canonicalCourseA->createCourseOffering($values['namedescstep']['title'], 
 																	    $values['namedescstep']['number'], 	
 																	    $values['namedescstep']['description'], 
-																	    $courseType, $statusType, 
-																	    $values['namedescstep']['credits']);
+																	    $termId, $courseType, $statusType, 
+																	    $courseGradeType);
 			exit();
 			return TRUE;
 		} 
