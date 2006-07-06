@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcourseoffering.act.php,v 1.2 2006/07/06 19:14:46 jwlee100 Exp $
+ * @version $Id: createcourseoffering.act.php,v 1.3 2006/07/06 19:26:24 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcourseoffering.act.php,v 1.2 2006/07/06 19:14:46 jwlee100 Exp $
+ * @version $Id: createcourseoffering.act.php,v 1.3 2006/07/06 19:26:24 jwlee100 Exp $
  */
 class createcourseofferingAction
 	extends MainWindowAction
@@ -97,7 +97,7 @@ class createcourseofferingAction
 		
 		// :: Name and Description ::
 		$step =& $wizard->addStep("namedescstep", new WizardStep());
-		$step->setDisplayName(_("Please enter the information about a canonical course:"));
+		$step->setDisplayName(_("Please enter the information about a course offering:"));
 		
 		// Create the properties.
 		$titleProp =& $step->addComponent("title", new WTextField());
@@ -141,8 +141,11 @@ class createcourseofferingAction
 		print "\n"._("The number of this <em>course offering</em>: ");
 		print "\n<br />[[number]]";
 		print "\n<h2>"._("Description")."</h2>";
-		print "\n"._("The number of this <em>course offering</em>: ");
+		print "\n"._("The description of this <em>course offering</em>: ");
 		print "\n<br />[[description]]";
+		print "\n<h2>"._("Term")."</h2>";
+		print "\n"._("The term of this <em>course offering</em>: ");
+		print "\n<br />[[term]]";
 		print "\n<h2>"._("Type")."</h2>";
 		print "\n"._("The type of this <em>course offering</em>: ");
 		print "\n<br />[[type]]";
@@ -152,6 +155,9 @@ class createcourseofferingAction
 		print "\n<h2>"._("Credits")."</h2>";
 		print "\n"._("The status type of this <em>course offering</em>: ");
 		print "\n<br />[[credits]]";
+		print "\n<h2>"._("Course Grading Type")."</h2>";
+		print "\n"._("The course grading type of this <em>course offering</em>: ");
+		print "\n<br />[[courseGrade]]";
 		print "\n<div style='width: 400px'> &nbsp; </div>";
 		$step->setContent(ob_get_contents());
 		ob_end_clean();
@@ -194,12 +200,12 @@ class createcourseofferingAction
 			$courseType =& new Type("CourseManagement", "edu.middlebury", $values['namedescstep']['type']);
 			$statusType =& new Type("CourseManagement", "edu.middlebury", $values['namedescstep']['statusType']);
 			$courseGradeType = new Type("CourseManagement", "edu.middlebury", $values['namedescstep']['courseGrade']);
-			$canonicalCourseA =& $courseManager->createCanonicalCourse($values['namedescstep']['title'], 
+			$canonicalCourse =& $courseManager->createCanonicalCourse($values['namedescstep']['title'], 
 																	   $values['namedescstep']['number'], 	
 																	   $values['namedescstep']['description'], 
 																	   $courseType, $statusType, 
 																	   $values['namedescstep']['credits']);
-			$courseOfferingA =& $canonicalCourseA->createCourseOffering($values['namedescstep']['title'], 
+			$courseOffering =& $canonicalCourse->createCourseOffering($values['namedescstep']['title'], 
 																	    $values['namedescstep']['number'], 	
 																	    $values['namedescstep']['description'], 
 																	    $termId, $courseType, $statusType, 
