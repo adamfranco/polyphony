@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcourseoffering.act.php,v 1.3 2006/07/06 19:26:24 jwlee100 Exp $
+ * @version $Id: createcourseoffering.act.php,v 1.4 2006/07/06 19:53:12 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcourseoffering.act.php,v 1.3 2006/07/06 19:26:24 jwlee100 Exp $
+ * @version $Id: createcourseoffering.act.php,v 1.4 2006/07/06 19:53:12 jwlee100 Exp $
  */
 class createcourseofferingAction
 	extends MainWindowAction
@@ -74,7 +74,7 @@ class createcourseofferingAction
 	function buildContent () {
 		$harmoni =& Harmoni::instance();
 		$actionRows =& $this->getActionRows();
-		$cacheName = "createCanonicalCourseWizard";
+		$cacheName = "createCourseOfferingWizard";
 		$this->runWizard ( $cacheName, $actionRows );
 	}
 		
