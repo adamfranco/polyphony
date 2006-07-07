@@ -5,13 +5,13 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createnewtype.act.php,v 1.2 2006/07/07 21:29:28 sporktim Exp $
+ * @version $Id: createnewterm.act.php,v 1.1 2006/07/07 21:29:28 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
 require_once(HARMONI."/utilities/StatusStars.class.php");
 
-class createnewtypeAction
+class createnewtermAction
 	extends MainWindowAction
 {
 	/**
@@ -22,7 +22,7 @@ class createnewtypeAction
 	 * @since 4/26/05
 	 */
 	function isAuthorizedToExecute () {
-		// Check that the user can create a type here.
+		// Check that the user can create a term here.
 		$authZ =& Services::getService("AuthZ");
 		$idManager =& Services::getService("Id");
 		
@@ -40,7 +40,7 @@ class createnewtypeAction
 	 * @since 4/26/05
 	 */
 	function getUnauthorizedMessage () {
-		return _("You are not authorized to create a CourseManagement Type.");
+		return _("You are not authorized to create a CourseManagement Term.");
 	}
 	
 	/**
@@ -51,7 +51,7 @@ class createnewtypeAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		return _("Create a Type.");
+		return _("Create a Term.");
 	}
 	
 	/**
@@ -64,7 +64,7 @@ class createnewtypeAction
 	function buildContent () {
 		$harmoni =& Harmoni::instance();
 		$actionRows =& $this->getActionRows();
-		$cacheName = "createnewtypeWizard";
+		$cacheName = "createnewtermWizard";
 		$this->runWizard ( $cacheName, $actionRows );
 	}
 		
@@ -86,15 +86,35 @@ class createnewtypeAction
 		$wizard =& SimpleStepWizard::withDefaultLayout();
 		
 		// :: Name and Description ::
-		$step =& $wizard->addStep("namedescstep2", new WizardStep());
-		$step->setDisplayName(_("Please choose the name and type for this type:"));
+		$step =& $wizard->addStep("namedescstep", new WizardStep());
+		$step->setDisplayName(_("Select options for the new term:"));
 		
+		//displayname
+		$titleProp =& $step->addComponent("displayname", new WTextField());
+		$titleProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
+		$titleProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
 		
 		
 		// Create the type chooser.
 		$select =& new WSelectList();
+		$typename = "term";	
+		$dbHandler =& Services::getService("DBHandler");
+		$query=& new SelectQuery;
+		$query->addTable('cm_'.$typename."_type");
+		$query->addColumn('id');
+		$query->addColumn('keyword');
+		$res=& $dbHandler->query($query);
+		while($res->hasMoreRows()){
+			$row = $res->getCurrentRow();
+			$res->advanceRow();
+			$select->addOption($row['id'],$row['keyword']);
+		}
+		$typeProp =& $step->addComponent("termtype", $select);
+		
+		//$courseManager =& Services::getService("CourseManagement");
+			
 		//$select->addOption('',"Canonical Course Type");
-		$select->addOption('can',"Canonical Course Type");
+		/*$select->addOption('can',"Canonical Course Type");
 		$select->addOption('can_stat',"Canonical Course Status Type");
 		$select->addOption('offer',"Course Offering Type");
 		$select->addOption('offer_stat',"Course Offering Status Type");
@@ -102,40 +122,35 @@ class createnewtypeAction
 		$select->addOption('section_stat',"Course Section Status Type");
 		$select->addOption('enroll_stat',"Enrollment Status Type");
 		$select->addOption('grade',"Course Grading Type");
-		$select->addOption('term',"Term Type");
+		$select->addOption('term',"Term Type");*/
 		//$select->setValue('');
 		
-		$typeProp =& $step->addComponent("typetype", $select);
+		
 		
 		//$typeProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
 		//$typeProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
 		
 		
 		
-		// Create the title
-		$titleProp =& $step->addComponent("keyword", new WTextField());
-		$titleProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-		$titleProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
+		// Create the display name
+	
 		
-		// Create the description
-		$descriptionProp =& $step->addComponent("description", WTextArea::withRowsAndColumns(10,30));
 		
 				
 		// Create the step text
 		ob_start();
-		print "\n<font size=+2><h2>"._("Type creator")."</h2></font>";
+		print "\n<font size=+2><h2>"._("Term creator")."</h2></font>";
 		
-		print "\n<h2>"._("Type")."</h2>";
-		print "\n"._("Please choose a type of <em>type</em> to create: ");
-		print "\n<br />[[typetype]]";
+		
 		
 		print "\n<h2>"._("Keyword")."</h2>";
-		print "\n"._("The keyword of the <em>type</em>: ");
-		print "\n<br />[[keyword]]";
+		print "\n"._("The name of the <em>term</em>: ");
+		print "\n<br />[[displayname]]";
 		
-		print "\n<h2>"._("Description")."</h2>";
-		print "\n"._("The optional description of the <em>type</em>: ");
-		print "\n<br />[[description]]";
+		print "\n<h2>"._("Type")."</h2>";
+		print "\n"._("Please choose a type of <em>term</em>: ");
+		print "\n<br />[[termtype]]";
+		
 		
 		print "\n<div style='width: 400px'> &nbsp; </div>";
 		$step->setContent(ob_get_contents());
@@ -173,9 +188,12 @@ class createnewtypeAction
 			$values = $wizard->getAllValues();
 			printpre($values);
 			
-			$type =& new Type("CourseManagement", "edu.middlebury",$values['namedescstep2']['keyword'], 	
-																	   $values['namedescstep2']['description']);
-			$courseManager->_typeToIndex($values['namedescstep2']['typetype'], $type);
+			
+			$type =& $courseManager->indexToType($values['namedescstep']['termtype']);
+			$courseManager->createTerm($type,null);
+			$term->updateDisplayName($values['namedescstep']['displayname']);
+			
+			
 			exit();
 			return TRUE;
 		} 

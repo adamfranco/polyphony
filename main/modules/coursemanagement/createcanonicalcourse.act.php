@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcanonicalcourse.act.php,v 1.2 2006/06/30 19:35:05 jwlee100 Exp $
+ * @version $Id: createcanonicalcourse.act.php,v 1.3 2006/07/07 21:29:28 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcanonicalcourse.act.php,v 1.2 2006/06/30 19:35:05 jwlee100 Exp $
+ * @version $Id: createcanonicalcourse.act.php,v 1.3 2006/07/07 21:29:28 sporktim Exp $
  */
 class createcanonicalcourseAction
 	extends MainWindowAction
@@ -111,14 +111,45 @@ class createcanonicalcourseAction
 		
 		$descriptionProp =& $step->addComponent("description", WTextArea::withRowsAndColumns(10,30));
 		
+		// Create the type chooser.
+		$select =& new WSelectList();
+		$typename = "can";	
+		$dbHandler =& Services::getService("DBHandler");
+		$query=& new SelectQuery;
+		$query->addTable('cm_'.$typename."_type");
+		$query->addColumn('id');
+		$query->addColumn('keyword');
+		$res=& $dbHandler->query($query);
+		while($res->hasMoreRows()){
+			$row = $res->getCurrentRow();
+			$res->advanceRow();
+			$select->addOption($row['id'],$row['keyword']);
+		}
+		$typeProp =& $step->addComponent("type", $select);
+		/*
 		$typeProp =& $step->addComponent("type", new WTextField());
 		$typeProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
 		$typeProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
-		
+		*/
+		$select =& new WSelectList();
+		$typename = "can_stat";	
+		$dbHandler =& Services::getService("DBHandler");
+		$query=& new SelectQuery;
+		$query->addTable('cm_'.$typename."_type");
+		$query->addColumn('id');
+		$query->addColumn('keyword');
+		$res=& $dbHandler->query($query);
+		while($res->hasMoreRows()){
+			$row = $res->getCurrentRow();
+			$res->advanceRow();
+			$select->addOption($row['id'],$row['keyword']);
+		}
+		$typeProp =& $step->addComponent("statusType", $select);
+		/*
 		$statusTypeProp =& $step->addComponent("statusType", new WTextField());
 		$statusTypeProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
 		$statusTypeProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
-		
+		*/
 		$creditsProp =& $step->addComponent("credits", new WTextField());
 		$creditsProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
 		$creditsProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
@@ -180,10 +211,14 @@ class createcanonicalcourseAction
 			$values = $wizard->getAllValues();
 			printpre($values);
 			
-			$courseType =& new Type($values['namedescstep']['title'], $values['namedescstep']['number'], 
+			
+			$courseType =& $courseManager->indexToType($values['namedescstep']['type']);
+			$statusType =& $courseManager->indexToType($values['namedescstep']['statusType']);
+			
+			/*$courseType =& new Type($values['namedescstep']['title'], $values['namedescstep']['number'], 
 									$values['namedescstep']['type']);
 			$statusType =& new Type($values['namedescstep']['title'], $values['namedescstep']['number'], 
-									$values['namedescstep']['statusType']);
+									$values['namedescstep']['statusType']);*/
 			$canonicalCourseA =& $courseManager->createCanonicalCourse($values['namedescstep']['title'], 
 																	   $values['namedescstep']['number'], 	
 																	   $values['namedescstep']['description'], 
