@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecanonicalcourses.act.php,v 1.7 2006/07/07 15:51:52 jwlee100 Exp $
+ * @version $Id: browsecanonicalcourses.act.php,v 1.8 2006/07/07 18:33:22 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecanonicalcourses.act.php,v 1.7 2006/07/07 15:51:52 jwlee100 Exp $
+ * @version $Id: browsecanonicalcourses.act.php,v 1.8 2006/07/07 18:33:22 jwlee100 Exp $
  */
 class browsecanonicalcoursesAction
 	extends MainWindowAction
@@ -95,8 +95,6 @@ class browsecanonicalcoursesAction
 	  		$courseStatusType =& $canonicalCourse->getStatus();
 	  		$courseStatusKeyword =& $courseStatusType->getKeyword();
 	  		$credits =& $canonicalCourse->getCredits();
-	  		
-	  		$credits = $canonicalCourse->getCredits();
 	  	
 			print "\n\t<td>";
 			print "Title: ";
