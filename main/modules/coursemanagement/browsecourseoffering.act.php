@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecourseoffering.act.php,v 1.3 2006/07/07 14:43:50 jwlee100 Exp $
+ * @version $Id: browsecourseoffering.act.php,v 1.4 2006/07/07 14:55:51 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,9 +19,9 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecourseoffering.act.php,v 1.3 2006/07/07 14:43:50 jwlee100 Exp $
+ * @version $Id: browsecourseoffering.act.php,v 1.4 2006/07/07 14:55:51 jwlee100 Exp $
  */
-class browsecanonicalcoursesAction
+class browsecourseofferingAction
 	extends MainWindowAction
 {
 	/**
@@ -61,7 +61,7 @@ class browsecanonicalcoursesAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		return _("List of canonical courses.");
+		return _("List of course offerings.");
 	}
 		
 	/**
@@ -89,8 +89,6 @@ class browsecanonicalcoursesAction
 	  		$courseStatusType =& $canonicalCourse->getStatus();
 	  		$courseStatusKeyword =& $courseStatusType->getKeyword();
 	  		$credits =& $canonicalCourse->getCredits();
-	  		
-	  		$credits = $canonicalCourse->getCredits();
 	  	
 			print "\n\t<td>";
 			print "Title: ";
@@ -146,7 +144,7 @@ class browsecanonicalcoursesAction
 				print $offeringGradeKeyword;
 				print "</tr>";
 			}			
-			print "</table>;
+			print "</table>";
 		}
 		print "</table>";	
 		
