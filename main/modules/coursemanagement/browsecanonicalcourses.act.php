@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecanonicalcourses.act.php,v 1.5 2006/07/07 14:38:56 jwlee100 Exp $
+ * @version $Id: browsecanonicalcourses.act.php,v 1.6 2006/07/07 14:43:50 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecanonicalcourses.act.php,v 1.5 2006/07/07 14:38:56 jwlee100 Exp $
+ * @version $Id: browsecanonicalcourses.act.php,v 1.6 2006/07/07 14:43:50 jwlee100 Exp $
  */
 class browsecanonicalcoursesAction
 	extends MainWindowAction
@@ -110,7 +110,7 @@ class browsecanonicalcoursesAction
 			print "\n\t<td>";
 			print "Credits: ";
 			print $credits;
-			print "</tr>";		
+			print "</tr>";
 		}
 		print "</table>";	
 		
