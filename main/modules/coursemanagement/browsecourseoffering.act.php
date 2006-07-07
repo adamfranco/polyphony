@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecourseoffering.act.php,v 1.5 2006/07/07 15:51:52 jwlee100 Exp $
+ * @version $Id: browsecourseoffering.act.php,v 1.6 2006/07/07 19:15:47 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecourseoffering.act.php,v 1.5 2006/07/07 15:51:52 jwlee100 Exp $
+ * @version $Id: browsecourseoffering.act.php,v 1.6 2006/07/07 19:15:47 jwlee100 Exp $
  */
 class browsecourseofferingAction
 	extends MainWindowAction
@@ -84,50 +84,57 @@ class browsecourseofferingAction
 		
 		print "\n<table>";
 		while ($canonicalCourseIterator->hasNext()) {
-		  	$canonicalCourse =& $canonicalCourseIterator->next();
-		  	$id =& $canonicalCourse->getId();
-		  	print "\n\t<tr>";
-		  	$title =& $canonicalCourse->getTitle();
-	  		$number =& $canonicalCourse->getNumber();
-	  		$description =& $canonicalCourse->getDescription();
-	  		$courseType =& $canonicalCourse->getCourseType();
-	  		$courseKeyword =& $courseType->getKeyword();
-	  		$courseStatusType =& $canonicalCourse->getStatus();
-	  		$courseStatusKeyword =& $courseStatusType->getKeyword();
-	  		$credits =& $canonicalCourse->getCredits();
-	  	
+		  	$canonicalCourse = $canonicalCourseIterator->next();
+		  	$title = $canonicalCourse->getTitle();
+	  		$number = $canonicalCourse->getNumber();
+	  		$description = $canonicalCourse->getDescription();
+	  		$courseType = $canonicalCourse->getCourseType();
+	  		$courseKeyword = $courseType->getKeyword();
+	  		$courseStatusType = $canonicalCourse->getStatus();
+	  		$courseStatusKeyword = $courseStatusType->getKeyword();
+	  		$credits = $canonicalCourse->getCredits();
+	  		
+	  		print "\n\t<tr>";
 			print "\n\t<td>";
 			print "Title: ";
-			print $title;
 			print "\n\t<td>";
 			print "Number: ";
-			print $number;
 			print "\n\t<td>";
 			print "Description: ";
-			print $description;
 			print "\n\t<td>";
-			print "Course type ";
-			print $courseKeyword;
+			print "Course type: ";
 			print "\n\t<td>";
-			print "Course status ";
-			print $courseStatusKeyword;
+			print "Course status: ";
 			print "\n\t<td>";
 			print "Credits: ";
+	  		
+	  		print "\n\t<tr>";
+			print "\n\t<td>";
+			print $title;
+			print "\n\t<td>";
+			print $number;
+			print "\n\t<td>";
+			print $description;
+			print "\n\t<td>";
+			print $courseKeyword;
+			print "\n\t<td>";
+			print $courseStatusKeyword;
+			print "\n\t<td>";
 			print $credits;
 			
 			print "<table>";
 			$courseOfferingIterator =& $canonicalCourse->getCourseOfferings();
 			while ($courseOfferingIterator->hasNext()) {
 				$courseOffering =& $courseOfferingIterator->next();
-				$title =& $courseOffering->getTitle();
-	  			$number =& $courseOffering->getNumber();
-	  			$description =& $courseOffering->getDescription();
-	  			$offeringType =& $courseOffering->getOfferingType();
-	  			$offeringKeyword =& $offeringType->getKeyword();
-	  			$offeringStatusType =& $courseOffering->getStatus();
-	  			$offeringStatusKeyword =& $offeringStatusType->getKeyword();
-	  			$offeringGradeType =& $courseOffering->getGradeType();
-	  			$offeringGradeKeyword =& $offeringGradeType->getKeyword();
+				$title = $courseOffering->getTitle();
+	  			$number = $courseOffering->getNumber();
+	  			$description = $courseOffering->getDescription();
+	  			$offeringType = $courseOffering->getOfferingType();
+	  			$offeringKeyword = $offeringType->getKeyword();
+	  			$offeringStatusType = $courseOffering->getStatus();
+	  			$offeringStatusKeyword = $offeringStatusType->getKeyword();
+	  			$offeringGradeType = $courseOffering->getGradeType();
+	  			$offeringGradeKeyword = $offeringGradeType->getKeyword();
 	  			
 	  			print "\n\t<tr>";
 				print "\n\t<td>";

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_authorizations.act.php,v 1.21 2005/11/30 21:33:06 adamfranco Exp $
+ * @version $Id: browse_authorizations.act.php,v 1.22 2006/07/07 19:15:46 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_authorizations.act.php,v 1.21 2005/11/30 21:33:06 adamfranco Exp $
+ * @version $Id: browse_authorizations.act.php,v 1.22 2006/07/07 19:15:46 jwlee100 Exp $
  */
 class browse_authorizationsAction 
 	extends MainWindowAction
@@ -99,7 +99,7 @@ class browse_authorizationsAction
 // 					$idManager->getId("edu.middlebury.authorization.view"),
 // 					$qualifier->getId())) {
 					ob_start();
-					HierarchyPrinter::printNode($qualifier, $harmoni,
+					HierarchyPrinter::sprintNode($qualifier, $harmoni,
 										2,
 										"browse_authorizationsAction::printQualifier",
 										"browse_authorizationsAction::hasChildQualifiers",
