@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createnewterm.act.php,v 1.1 2006/07/07 21:29:28 sporktim Exp $
+ * @version $Id: createnewterm.act.php,v 1.2 2006/07/10 14:40:49 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -189,11 +189,12 @@ class createnewtermAction
 			printpre($values);
 			
 			
-			$type =& $courseManager->indexToType($values['namedescstep']['termtype']);
-			$courseManager->createTerm($type,null);
+			$type =& $courseManager->_indexToType($values['namedescstep']['termtype'],'term');
+			$schedule = null;
+			$term =& $courseManager->createTerm($type,$schedule);
 			$term->updateDisplayName($values['namedescstep']['displayname']);
 			
-			
+			RequestContext::sendTo($this->getReturnUrl());
 			exit();
 			return TRUE;
 		} 

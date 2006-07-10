@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcanonicalcourse.act.php,v 1.3 2006/07/07 21:29:28 sporktim Exp $
+ * @version $Id: createcanonicalcourse.act.php,v 1.4 2006/07/10 14:40:49 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcanonicalcourse.act.php,v 1.3 2006/07/07 21:29:28 sporktim Exp $
+ * @version $Id: createcanonicalcourse.act.php,v 1.4 2006/07/10 14:40:49 sporktim Exp $
  */
 class createcanonicalcourseAction
 	extends MainWindowAction
@@ -212,8 +212,8 @@ class createcanonicalcourseAction
 			printpre($values);
 			
 			
-			$courseType =& $courseManager->indexToType($values['namedescstep']['type']);
-			$statusType =& $courseManager->indexToType($values['namedescstep']['statusType']);
+			$courseType =& $courseManager->_indexToType($values['namedescstep']['type'],'can');
+			$statusType =& $courseManager->_indexToType($values['namedescstep']['statusType'],'can_stat');
 			
 			/*$courseType =& new Type($values['namedescstep']['title'], $values['namedescstep']['number'], 
 									$values['namedescstep']['type']);
@@ -224,6 +224,7 @@ class createcanonicalcourseAction
 																	   $values['namedescstep']['description'], 
 																	   $courseType, $statusType, 
 																	   $values['namedescstep']['credits']);
+			RequestContext::sendTo($this->getReturnUrl());
 			exit();
 			return TRUE;
 		} 

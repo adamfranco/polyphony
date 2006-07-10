@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createnewtype.act.php,v 1.2 2006/07/07 21:29:28 sporktim Exp $
+ * @version $Id: createnewtype.act.php,v 1.3 2006/07/10 14:40:49 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -86,7 +86,7 @@ class createnewtypeAction
 		$wizard =& SimpleStepWizard::withDefaultLayout();
 		
 		// :: Name and Description ::
-		$step =& $wizard->addStep("namedescstep2", new WizardStep());
+		$step =& $wizard->addStep("namedescstep", new WizardStep());
 		$step->setDisplayName(_("Please choose the name and type for this type:"));
 		
 		
@@ -173,9 +173,10 @@ class createnewtypeAction
 			$values = $wizard->getAllValues();
 			printpre($values);
 			
-			$type =& new Type("CourseManagement", "edu.middlebury",$values['namedescstep2']['keyword'], 	
-																	   $values['namedescstep2']['description']);
-			$courseManager->_typeToIndex($values['namedescstep2']['typetype'], $type);
+			$type =& new Type("CourseManagement", "edu.middlebury",$values['namedescstep']['keyword'], 	
+																	   $values['namedescstep']['description']);
+			$courseManager->_typeToIndex($values['namedescstep']['typetype'], $type);
+			RequestContext::sendTo($this->getReturnUrl());
 			exit();
 			return TRUE;
 		} 

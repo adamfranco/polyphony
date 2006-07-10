@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcourseoffering.act.php,v 1.4 2006/07/06 19:53:12 jwlee100 Exp $
+ * @version $Id: createcourseoffering.act.php,v 1.5 2006/07/10 14:40:49 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcourseoffering.act.php,v 1.4 2006/07/06 19:53:12 jwlee100 Exp $
+ * @version $Id: createcourseoffering.act.php,v 1.5 2006/07/10 14:40:49 sporktim Exp $
  */
 class createcourseofferingAction
 	extends MainWindowAction
@@ -50,7 +50,7 @@ class createcourseofferingAction
 	 * @since 4/26/05
 	 */
 	function getUnauthorizedMessage () {
-		return _("You are not authorized to create a SlideShow in this <em>Exhibition</em>.");
+		return _("You are not authorized to create a <em>Course Offering</em>.");
 	}
 	
 	/**
@@ -99,6 +99,23 @@ class createcourseofferingAction
 		$step =& $wizard->addStep("namedescstep", new WizardStep());
 		$step->setDisplayName(_("Please enter the information about a course offering:"));
 		
+		
+		/*$select =& new WSelectList();
+	
+		$dbHandler =& Services::getService("DBHandler");
+		$query=& new SelectQuery;
+		$query->addTable('cm_can');
+		$query->addColumn('id');
+		$query->addColumn('title');
+		$res=& $dbHandler->query($query);
+		while($res->hasMoreRows()){
+			$row = $res->getCurrentRow();
+			$res->advanceRow();
+			$select->addOption($row['id'],$row['title']);
+		}
+		$canonicalCourseProp =& $step->addComponent("can", $select);
+		*/
+		/*
 		// Create the properties.
 		$titleProp =& $step->addComponent("title", new WTextField());
 		$titleProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
@@ -108,41 +125,132 @@ class createcourseofferingAction
 		$numberProp =& $step->addComponent("number", new WTextField());
 		$numberProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
 		$numberProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
+		*/
+		
+		$select =& new WSelectList();
+		$dbHandler =& Services::getService("DBHandler");
+		$query=& new SelectQuery;
+		$query->addTable('cm_can');
+		$query->addColumn('id');
+		$query->addColumn('title');
+		$query->addColumn('number');
+		$query->addOrderBy('number');
+		$res=& $dbHandler->query($query);
+		//$select->addOption("1","There");
+		while($res->hasMoreRows()){
+			$row = $res->getCurrentRow();
+			$res->advanceRow();
+			$select->addOption($row['id'],$row['number']." ".$row['title']);
+		}
+		
+		//$select->addOption("2","Here");
+		$canonicalCourse =& $step->addComponent("courseid", $select);
+		
+		
+	
+		
+		
+		
+		
 		
 		$descriptionProp =& $step->addComponent("description", WTextArea::withRowsAndColumns(10,30));
 		
-		$termProp =& $step->addComponent("term", new WTextField());
+		
+		$select =& new WSelectList();
+	
+		$dbHandler =& Services::getService("DBHandler");
+		$query=& new SelectQuery;
+		$query->addTable('cm_term');
+		$query->addColumn('id');
+		$query->addColumn('name');
+		$res=& $dbHandler->query($query);
+		while($res->hasMoreRows()){
+			$row = $res->getCurrentRow();
+			$res->advanceRow();
+			$select->addOption($row['id'],$row['name']);
+		}
+		$termProp =& $step->addComponent("term", $select);
+		/*$termProp =& $step->addComponent("term", new WTextField());
 		$termProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-		$termProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
+		$termProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));*/
 		
-		$typeProp =& $step->addComponent("type", new WTextField());
+		
+		$select =& new WSelectList();
+		$typename = "offer";	
+		$dbHandler =& Services::getService("DBHandler");
+		$query=& new SelectQuery;
+		$query->addTable('cm_'.$typename."_type");
+		$query->addColumn('id');
+		$query->addColumn('keyword');
+		$res=& $dbHandler->query($query);
+		while($res->hasMoreRows()){
+			$row = $res->getCurrentRow();
+			$res->advanceRow();
+			$select->addOption($row['id'],$row['keyword']);
+		}
+		$typeProp =& $step->addComponent("type", $select);
+		/*$typeProp =& $step->addComponent("type", new WTextField());
 		$typeProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-		$typeProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
+		$typeProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));*/
 		
+		
+		
+		$select =& new WSelectList();
+		$typename = "offer_stat";	
+		$dbHandler =& Services::getService("DBHandler");
+		$query=& new SelectQuery;
+		$query->addTable('cm_'.$typename."_type");
+		$query->addColumn('id');
+		$query->addColumn('keyword');
+		$res=& $dbHandler->query($query);
+		while($res->hasMoreRows()){
+			$row = $res->getCurrentRow();
+			$res->advanceRow();
+			$select->addOption($row['id'],$row['keyword']);
+		}
+		$statusTypeProp =& $step->addComponent("statusType", $select);
+		/*
 		$statusTypeProp =& $step->addComponent("statusType", new WTextField());
 		$statusTypeProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
 		$statusTypeProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
+		*/
+	
 		
-		$creditsProp =& $step->addComponent("credits", new WTextField());
-		$creditsProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-		$creditsProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
 		
+		$select =& new WSelectList();
+		$typename = "grade";	
+		$dbHandler =& Services::getService("DBHandler");
+		$query=& new SelectQuery;
+		$query->addTable('cm_'.$typename."_type");
+		$query->addColumn('id');
+		$query->addColumn('keyword');
+		$res=& $dbHandler->query($query);
+		while($res->hasMoreRows()){
+			$row = $res->getCurrentRow();
+			$res->advanceRow();
+			$select->addOption($row['id'],$row['keyword']);
+		}
+		$courseGradeProp =& $step->addComponent("courseGrade", $select);
+		/*
 		$courseGradeProp =& $step->addComponent("courseGrade", new WTextField());
 		$courseGradeProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
 		$courseGradeProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
-				
+		*/
 		// Create the step text
 		ob_start();
 		print "\n<font size=+2><h2>"._("Course Offering")."</h2></font>";
-		print "\n<h2>"._("Title")."</h2>";
-		print "\n"._("The title of this <em>course offering</em>: ");
-		print "\n<br />[[title]]";
-		print "\n<h2>"._("Number")."</h2>";
-		print "\n"._("The number of this <em>course offering</em>: ");
-		print "\n<br />[[number]]";
-		print "\n<h2>"._("Description")."</h2>";
-		print "\n"._("The description of this <em>course offering</em>: ");
-		print "\n<br />[[description]]";
+		//print "\n<h2>"._("Title")."</h2>";
+		//print "\n"._("The title of this <em>course offering</em>: ");
+		//print "\n<br />[[title]]";
+		//print "\n<h2>"._("Number")."</h2>";
+		//print "\n"._("The number of this <em>course offering</em>: ");
+		//print "\n<br />[[number]]";
+		print "\n<h2>"._("Canonical Course")."</h2>";
+		print "\n"._("The course for which you want to make an <em>offering</em>: ");
+		print "\n<br />[[courseid]]";
+		//print "\n<h2>"._("Description")."</h2>";
+		//print "\n"._("The description of this <em>course offering</em>: ");
+		//print "\n<br />[[description]]";
 		print "\n<h2>"._("Term")."</h2>";
 		print "\n"._("The term of this <em>course offering</em>: ");
 		print "\n<br />[[term]]";
@@ -152,9 +260,6 @@ class createcourseofferingAction
 		print "\n<h2>"._("Status type")."</h2>";
 		print "\n"._("The status type of this <em>course offering</em>: ");
 		print "\n<br />[[statusType]]";
-		print "\n<h2>"._("Credits")."</h2>";
-		print "\n"._("The status type of this <em>course offering</em>: ");
-		print "\n<br />[[credits]]";
 		print "\n<h2>"._("Course Grading Type")."</h2>";
 		print "\n"._("The course grading type of this <em>course offering</em>: ");
 		print "\n<br />[[courseGrade]]";
@@ -194,22 +299,43 @@ class createcourseofferingAction
 			$values = $wizard->getAllValues();
 			printpre($values);
 			
-			$termType =& new Type("CourseManagement", "edu.middlebury", $values['namedescstep']['term']);
+			/*$termType =& new Type("CourseManagement", "edu.middlebury", $values['namedescstep']['term']);
           	$term =& $courseManagementManager->createTerm($termType, $schedule);
-          	$termId =& $term->getId();
+          	$termId =& $term->getId();*/
+          
+          	
+          	
+          	
+          	$termId =& $idManager->getId($values['namedescstep']['term']); 
+          	
+          	
+          	
+          	
+          	/*
 			$courseType =& new Type("CourseManagement", "edu.middlebury", $values['namedescstep']['type']);
 			$statusType =& new Type("CourseManagement", "edu.middlebury", $values['namedescstep']['statusType']);
 			$courseGradeType = new Type("CourseManagement", "edu.middlebury", $values['namedescstep']['courseGrade']);
-			$canonicalCourse =& $courseManager->createCanonicalCourse($values['namedescstep']['title'], 
+			*/
+			$courseType =& $courseManager->_indexToType($values['namedescstep']['type'],'offer');
+			$statusType =& $courseManager->_indexToType($values['namedescstep']['statusType'],'offer_stat');
+			$courseGradeType =& $courseManager->_indexToType($values['namedescstep']['courseGrade'],'grade');
+			
+			/*$canonicalCourse =& $courseManager->createCanonicalCourse($values['namedescstep']['title'], 
 																	   $values['namedescstep']['number'], 	
 																	   $values['namedescstep']['description'], 
 																	   $courseType, $statusType, 
-																	   $values['namedescstep']['credits']);
-			$courseOffering =& $canonicalCourse->createCourseOffering($values['namedescstep']['title'], 
-																	    $values['namedescstep']['number'], 	
-																	    $values['namedescstep']['description'], 
+																	   $values['namedescstep']['credits']);*/
+																	   
+			$id =& $idManager->getId($values['namedescstep']['courseid']);   
+			$canonicalCourse =& $courseManager->getCanonicalCourse($id);														   
+																	   
+			$courseOffering =& $canonicalCourse->createCourseOffering($canonicalCourse->getTitle(), 
+																	    $canonicalCourse->getNumber(),
+																	    $canonicalCourse->getDescription(),	
+																	    //$values['namedescstep']['description'], 
 																	    $termId, $courseType, $statusType, 
 																	    $courseGradeType);
+			RequestContext::sendTo($this->getReturnUrl());
 			exit();
 			return TRUE;
 		} 
