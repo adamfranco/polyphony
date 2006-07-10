@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecoursesection.act.php,v 1.4 2006/07/10 19:56:01 jwlee100 Exp $
+ * @version $Id: browsecoursesection.act.php,v 1.5 2006/07/10 20:06:15 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecoursesection.act.php,v 1.4 2006/07/10 19:56:01 jwlee100 Exp $
+ * @version $Id: browsecoursesection.act.php,v 1.5 2006/07/10 20:06:15 jwlee100 Exp $
  */
 class browsecoursesectionAction
 	extends MainWindowAction
@@ -81,8 +81,22 @@ class browsecoursesectionAction
 		ob_start();
 		$courseManagementManager =& Services::getService("CourseManagement");
 		$canonicalCourseIterator =& $courseManagementManager->getCanonicalCourses();
-				
-		print "\n<table>";
+		
+		print "\n<table border=1>";
+		print "\n\t<tr>";
+		print "\n\t<td>";
+		print "Title: ";
+		print "\n\t<td>";
+		print "Number: ";
+		print "\n\t<td>";
+		print "Description: ";
+		print "\n\t<td>";
+		print "Section type: ";
+		print "\n\t<td>";
+		print "Section status: ";
+		print "\n\t<td>";
+		print "</tr>";
+		
 		while ($canonicalCourseIterator->hasNext()) {
 		  	$canonicalCourse =& $canonicalCourseIterator->next();
 		  	$title = $canonicalCourse->getTitle();
@@ -94,36 +108,7 @@ class browsecoursesectionAction
 	  		$courseStatusKeyword = $courseStatusType->getKeyword();
 	  		$credits = $canonicalCourse->getCredits();
 	  		
-	  		print "\n\t<tr>";
-			print "\n\t<td>";
-			print "Title: ";
-			print "\n\t<td>";
-			print "Number: ";
-			print "\n\t<td>";
-			print "Description: ";
-			print "\n\t<td>";
-			print "Course type: ";
-			print "\n\t<td>";
-			print "Course status: ";
-			print "\n\t<td>";
-			print "Credits: ";
-	  		
-	  		print "\n\t<tr>";
-			print "\n\t<td>";
-			print $title;
-			print "\n\t<td>";
-			print $number;
-			print "\n\t<td>";
-			print $description;
-			print "\n\t<td>";
-			print $courseKeyword;
-			print "\n\t<td>";
-			print $courseStatusKeyword;
-			print "\n\t<td>";
-			print $credits;
-			
-			print "<table>";
-			$courseOfferingIterator =& $canonicalCourse->getCourseOfferings();
+	  		$courseOfferingIterator =& $canonicalCourse->getCourseOfferings();
 			while ($courseOfferingIterator->hasNext()) {
 				$courseOffering =& $courseOfferingIterator->next();
 				$title = $courseOffering->getTitle();
@@ -133,31 +118,7 @@ class browsecoursesectionAction
 	  			$offeringKeyword = $offeringType->getKeyword();
 	  			$offeringStatusType = $courseOffering->getStatus();
 	  			$offeringStatusKeyword = $offeringStatusType->getKeyword();
-	  			$offeringGradeType = $courseOffering->getGradeType();
-	  			$offeringGradeKeyword = $offeringGradeType->getKeyword();
-	  			
-	  			print "\n\t<tr>";
-				print "\n\t<td>";
-				print "Title: ";
-				print $title;
-				print "\n\t<td>";
-				print "Number: ";
-				print $number;
-				print "\n\t<td>";
-				print "Description: ";
-				print $description;
-				print "\n\t<td>";
-				print "Course offering type: ";
-				print $offeringKeyword;
-				print "\n\t<td>";
-				print "Course offering status: ";
-				print $offeringStatusKeyword;
-				print "\n\t<td>";
-				print "Course offering grade: ";
-				print $offeringGradeKeyword;
-				print "</tr>";
-				
-				print "<table>";
+
 				$courseSectionIterator =& $courseOffering->getCourseSections();
 				while ($courseSectionIterator->hasNext()) {
 					$courseSection =& $courseSectionIterator->next();
@@ -189,11 +150,9 @@ class browsecoursesectionAction
 					print "\n\t<td>";
 					print "Course offering grade: ";
 					print $sectionLocation;
-					print "</tr>";	
+					print "</tr>";
 				}
-				print "</table>";
-			}			
-			print "</table>";
+			}
 		}
 		print "</table>";
 	}
