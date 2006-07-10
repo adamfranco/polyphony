@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcanonicalcourse.act.php,v 1.4 2006/07/10 14:40:49 sporktim Exp $
+ * @version $Id: createcanonicalcourse.act.php,v 1.5 2006/07/10 15:28:47 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcanonicalcourse.act.php,v 1.4 2006/07/10 14:40:49 sporktim Exp $
+ * @version $Id: createcanonicalcourse.act.php,v 1.5 2006/07/10 15:28:47 jwlee100 Exp $
  */
 class createcanonicalcourseAction
 	extends MainWindowAction
@@ -178,6 +178,52 @@ class createcanonicalcourseAction
 		print "\n<div style='width: 400px'> &nbsp; </div>";
 		$step->setContent(ob_get_contents());
 		ob_end_clean();
+		
+		$courseManagementManager =& Services::getService("CourseManagement");
+		$canonicalCourseIterator =& $courseManagementManager->getCanonicalCourses();
+		
+		print "Current list of canonical courses: ";
+		print "\n<table border=1>";
+		while ($canonicalCourseIterator->hasNext()) {
+		  	$canonicalCourse =& $canonicalCourseIterator->next();
+		  	$title = $canonicalCourse->getTitle();
+	  		$number = $canonicalCourse->getNumber();
+	  		$description = $canonicalCourse->getDescription();
+	  		$courseType = $canonicalCourse->getCourseType();
+	  		$courseKeyword = $courseType->getKeyword();
+	  		$courseStatusType = $canonicalCourse->getStatus();
+	  		$courseStatusKeyword = $courseStatusType->getKeyword();
+	  		$credits = $canonicalCourse->getCredits();
+	  		
+	  		print "\n\t<tr>";
+			print "\n\t<td>";
+			print "Title: ";
+			print "\n\t<td>";
+			print "Number: ";
+			print "\n\t<td>";
+			print "Description: ";
+			print "\n\t<td>";
+			print "Course type: ";
+			print "\n\t<td>";
+			print "Course status: ";
+			print "\n\t<td>";
+			print "Credits: ";
+	  		
+	  		print "\n\t<tr>";
+			print "\n\t<td>";
+			print $title;
+			print "\n\t<td>";
+			print $number;
+			print "\n\t<td>";
+			print $description;
+			print "\n\t<td>";
+			print $courseKeyword;
+			print "\n\t<td>";
+			print $courseStatusKeyword;
+			print "\n\t<td>";
+			print $credits;
+		}
+		print "</table>";
 		
 		return $wizard;
 	}
