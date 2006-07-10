@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcanonicalcourse.act.php,v 1.5 2006/07/10 15:28:47 jwlee100 Exp $
+ * @version $Id: createcanonicalcourse.act.php,v 1.6 2006/07/10 18:54:44 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcanonicalcourse.act.php,v 1.5 2006/07/10 15:28:47 jwlee100 Exp $
+ * @version $Id: createcanonicalcourse.act.php,v 1.6 2006/07/10 18:54:44 jwlee100 Exp $
  */
 class createcanonicalcourseAction
 	extends MainWindowAction
@@ -179,6 +179,7 @@ class createcanonicalcourseAction
 		$step->setContent(ob_get_contents());
 		ob_end_clean();
 		
+		ob_start();
 		$courseManagementManager =& Services::getService("CourseManagement");
 		$canonicalCourseIterator =& $courseManagementManager->getCanonicalCourses();
 		
