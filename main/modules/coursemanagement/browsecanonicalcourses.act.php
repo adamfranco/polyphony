@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecanonicalcourses.act.php,v 1.9 2006/07/07 19:15:47 jwlee100 Exp $
+ * @version $Id: browsecanonicalcourses.act.php,v 1.10 2006/07/10 19:56:01 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecanonicalcourses.act.php,v 1.9 2006/07/07 19:15:47 jwlee100 Exp $
+ * @version $Id: browsecanonicalcourses.act.php,v 1.10 2006/07/10 19:56:01 jwlee100 Exp $
  */
 class browsecanonicalcoursesAction
 	extends MainWindowAction
@@ -81,6 +81,11 @@ class browsecanonicalcoursesAction
 		$courseManagementManager =& Services::getService("CourseManagement");
 		$canonicalCourseIterator =& $courseManagementManager->getCanonicalCourses();
 		
+		ob_start();
+		$courseManagementManager =& Services::getService("CourseManagement");
+		$canonicalCourseIterator =& $courseManagementManager->getCanonicalCourses();
+		
+		print "Current list of canonical courses: ";
 		print "\n<table border=1>";
 		while ($canonicalCourseIterator->hasNext()) {
 		  	$canonicalCourse =& $canonicalCourseIterator->next();
@@ -121,7 +126,7 @@ class browsecanonicalcoursesAction
 			print "\n\t<td>";
 			print $credits;
 		}
-		print "</table>";	
+		print "</table>";
 		
 		$actionRows =& $this->getActionRows();
 	}
