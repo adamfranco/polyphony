@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcoursesection.act.php,v 1.5 2006/07/10 20:46:16 jwlee100 Exp $
+ * @version $Id: createcoursesection.act.php,v 1.6 2006/07/10 21:06:10 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcoursesection.act.php,v 1.5 2006/07/10 20:46:16 jwlee100 Exp $
+ * @version $Id: createcoursesection.act.php,v 1.6 2006/07/10 21:06:10 jwlee100 Exp $
  */
 class createcoursesectionAction
 	extends MainWindowAction
@@ -198,7 +198,7 @@ class createcoursesectionAction
 		print "\n<h2>"._("Term")."</h2>";
 		print "\n"._("The term of this <em>course offering</em>: ");
 		print "\n<br />[[term]]";
-		print "\n<h2>"._("Type")."</h2>";
+		print "\n<h2>"._("Section Type")."</h2>";
 		print "\n"._("The type of this <em>course offering</em>: ");
 		print "\n<br />[[type]]";
 		print "\n<h2>"._("Status type")."</h2>";
