@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcoursesection.act.php,v 1.4 2006/07/10 20:34:15 jwlee100 Exp $
+ * @version $Id: createcoursesection.act.php,v 1.5 2006/07/10 20:46:16 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcoursesection.act.php,v 1.4 2006/07/10 20:34:15 jwlee100 Exp $
+ * @version $Id: createcoursesection.act.php,v 1.5 2006/07/10 20:46:16 jwlee100 Exp $
  */
 class createcoursesectionAction
 	extends MainWindowAction
@@ -98,43 +98,6 @@ class createcoursesectionAction
 		// :: Name and Description ::
 		$step =& $wizard->addStep("namedescstep", new WizardStep());
 		$step->setDisplayName(_("Please enter the information about a course offering:"));
-				
-		// Create the step text
-		ob_start();
-		print "\n<font size=+2><h2>"._("Course Section")."</h2></font>";
-		print "\n<p><h2>"._("Title")."</h2>";
-		print "\n"._("The title of this <em>course section</em>: ");
-		print "\n<br />[[title]]";
-		print "\n<p><h2>"._("Number")."</h2>";
-		print "\n"._("The number of this <em>course section</em>: ");
-		print "\n<br />[[number]]";
-		print "\n<p><h2>"._("Description")."</h2>";
-		print "\n"._("The description of this <em>course section</em>: ");
-		print "\n<br />[[description]]";
-		print "\n<p><h2>"._("Term")."</h2>";
-		print "\n"._("The term of this <em>course section</em>: ");
-		print "\n<br />[[term]]";
-		print "\n<p><h2>"._("Type")."</h2>";
-		print "\n"._("The type of this <em>course section</em>: ");
-		print "\n<br />[[type]]";
-		print "\n<p><h2>"._("Status type")."</h2>";
-		print "\n"._("The status type of this <em>course section</em>: ");
-		print "\n<br />[[statusType]]";
-		print "\n<p><h2>"._("Credits")."</h2>";
-		print "\n"._("The status type of this <em>course section</em>: ");
-		print "\n<br />[[credits]]";
-		print "\n<p><h2>"._("Course Grading Type")."</h2>";
-		print "\n"._("The course grading type of this <em>course section</em>: ");
-		print "\n<br />[[courseGrade]]";
-		print "\n<p><h2>"._("Section")."</h2>";
-		print "\n"._("The section of this <em>course section</em>: ");
-		print "\n<br />[[section]]";
-		print "\n<p><h2>"._("Location")."</h2>";
-		print "\n"._("The location of this <em>course section</em>: ");
-		print "\n<br />[[location]]";
-		print "\n<div style='width: 400px'> &nbsp; </div>";
-		$step->setContent(ob_get_contents());
-		ob_end_clean();
 		
 		$select =& new WSelectList();
 		$dbHandler =& Services::getService("DBHandler");
@@ -156,11 +119,7 @@ class createcoursesectionAction
 		//$select->addOption("2","Here");
 		$canonicalCourse =& $step->addComponent("courseid", $select);
 		
-		
-	
-		
-		
-		
+					
 		
 		
 		$descriptionProp =& $step->addComponent("description", WTextArea::withRowsAndColumns(10,30));
@@ -180,9 +139,6 @@ class createcoursesectionAction
 			$select->addOption($row['id'],$row['name']);
 		}
 		$termProp =& $step->addComponent("term", $select);
-		/*$termProp =& $step->addComponent("term", new WTextField());
-		$termProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-		$termProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));*/
 		
 		
 		$select =& new WSelectList();
@@ -199,9 +155,6 @@ class createcoursesectionAction
 			$select->addOption($row['id'],$row['keyword']);
 		}
 		$typeProp =& $step->addComponent("type", $select);
-		/*$typeProp =& $step->addComponent("type", new WTextField());
-		$typeProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-		$typeProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));*/
 		
 		
 		
@@ -219,17 +172,14 @@ class createcoursesectionAction
 			$select->addOption($row['id'],$row['keyword']);
 		}
 		$statusTypeProp =& $step->addComponent("statusType", $select);
-		/*
-		$statusTypeProp =& $step->addComponent("statusType", new WTextField());
-		$statusTypeProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-		$statusTypeProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
-		*/
-	
-		/*
-		$courseGradeProp =& $step->addComponent("courseGrade", new WTextField());
-		$courseGradeProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-		$courseGradeProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
-		*/
+		
+		// Create the properties.
+		$locationProp =& $step->addComponent("location", new WTextField());
+		$locationProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
+		$locationProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
+		
+		
+		
 		// Create the step text
 		ob_start();
 		print "\n<font size=+2><h2>"._("Course Section")."</h2></font>";
@@ -254,9 +204,9 @@ class createcoursesectionAction
 		print "\n<h2>"._("Status type")."</h2>";
 		print "\n"._("The status type of this <em>course offering</em>: ");
 		print "\n<br />[[statusType]]";
-		print "\n<h2>"._("Course Grading Type")."</h2>";
+		print "\n<h2>"._("Location")."</h2>";
 		print "\n"._("The course grading type of this <em>course offering</em>: ");
-		print "\n<br />[[courseGrade]]";
+		print "\n<br />[[location]]";
 		print "\n<div style='width: 400px'> &nbsp; </div>";
 		$step->setContent(ob_get_contents());
 		ob_end_clean();
