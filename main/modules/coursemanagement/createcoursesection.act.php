@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcoursesection.act.php,v 1.6 2006/07/10 21:06:10 jwlee100 Exp $
+ * @version $Id: createcoursesection.act.php,v 1.7 2006/07/10 21:12:20 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcoursesection.act.php,v 1.6 2006/07/10 21:06:10 jwlee100 Exp $
+ * @version $Id: createcoursesection.act.php,v 1.7 2006/07/10 21:12:20 jwlee100 Exp $
  */
 class createcoursesectionAction
 	extends MainWindowAction
@@ -321,28 +321,35 @@ class createcoursesectionAction
 			$values = $wizard->getAllValues();
 			printpre($values);
 			
-			$termType =& new Type("CourseManagement", "edu.middlebury", $values['namedescstep']['term']);
-          	$term =& $courseManagementManager->createTerm($termType, $schedule);
-          	$termId =& $term->getId();
+			$termId =& $idManager->getId($values['namedescstep']['term']); 
+          	
+          	
+          	
+          	
+          	/*
 			$courseType =& new Type("CourseManagement", "edu.middlebury", $values['namedescstep']['type']);
 			$statusType =& new Type("CourseManagement", "edu.middlebury", $values['namedescstep']['statusType']);
-			$sectionType =& new Type("CourseManagement", "edu.middlebury", $values['namedescstep']['section']);
 			$courseGradeType = new Type("CourseManagement", "edu.middlebury", $values['namedescstep']['courseGrade']);
-			$canonicalCourse =& $courseManager->createCanonicalCourse($values['namedescstep']['title'], 
-																	  $values['namedescstep']['number'], 	
-																	  $values['namedescstep']['description'], 
-																	  $courseType, $statusType, 
-																	  $values['namedescstep']['credits']);
-			$courseOffering =& $canonicalCourse->createCourseOffering($values['namedescstep']['title'], 
-																	  $values['namedescstep']['number'], 	
-																	  $values['namedescstep']['description'], 
-																	  $termId, $courseType, $statusType, 
-																	  $courseGradeType);
-			$courseSection =& $courseOffering->createCanonicalCourse($values['namedescstep']['title'], 
-																	 $values['namedescstep']['number'], 	
-																	 $values['namedescstep']['description'], 
-																	 $courseType, $statusType, 
-																	 $values['namedescstep']['location']);
+			*/
+			$sectionType =& $courseManager->_indexToType($values['namedescstep']['type'],'section');
+			$statusType =& $courseManager->_indexToType($values['namedescstep']['statusType'],'section_stat');
+			$courseGradeType =& $courseManager->_indexToType($values['namedescstep']['courseGrade'],'grade');
+			$location =& $values['namedescstep']['location'];
+			
+			/*$canonicalCourse =& $courseManager->createCanonicalCourse($values['namedescstep']['title'], 
+																	   $values['namedescstep']['number'], 	
+																	   $values['namedescstep']['description'], 
+																	   $courseType, $statusType, 
+																	   $values['namedescstep']['credits']);*/
+																	   
+			$id =& $idManager->getId($values['namedescstep']['courseid']);   
+			$courseOffering =& $courseManager->getCanonicalCourse($id);														   
+																	   
+			$courseOffering =& $canonicalCourse->createCourseOffering($canonicalCourse->getTitle(), 
+																	  $canonicalCourse->getNumber(),
+																	  $canonicalCourse->getDescription(),	
+																	  $sectionType, $statusType, 
+																	  $location);
 			RequestContext::sendTo($this->getReturnUrl());
 			exit();
 			return TRUE;
