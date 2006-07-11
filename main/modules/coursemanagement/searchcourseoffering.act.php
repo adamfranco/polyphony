@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcourseoffering.act.php,v 1.1 2006/07/11 19:01:27 jwlee100 Exp $
+ * @version $Id: searchcourseoffering.act.php,v 1.3 2006/07/11 19:09:36 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,9 +19,9 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcourseoffering.act.php,v 1.1 2006/07/11 19:01:27 jwlee100 Exp $
+ * @version $Id: searchcourseoffering.act.php,v 1.3 2006/07/11 19:09:36 jwlee100 Exp $
  */
-class createcourseofferingAction
+class searchcourseofferingAction
 	extends MainWindowAction
 {
 	/**
@@ -372,8 +372,6 @@ class createcourseofferingAction
 			print "<b>Course Type</b>";
 			print "\n\t<td>";
 			print "<b>Course Status</b>";
-			print "\n\t<td>";
-			print "<b>Credits</b>";
 			print "\n\t</tr>";
 			$canonicalCourseIterator = $courseManager->getCanonicalCourses();
 			while ($canonicalCourseIterator->hasNext()) {
@@ -381,18 +379,20 @@ class createcourseofferingAction
 				$courseOfferingIterator = $canonicalCourse->getCourseOfferings();
 				while ($courseOfferingIterator->hasNext()) {
 					$courseOffering = $courseOfferingIterator->next();
-					$title = $canonicalCourse->getTitle();
-	  				$number = $canonicalCourse->getNumber();
-	  				$courseType = $canonicalCourse->getCourseType();
-	  				$courseKeyword = $courseType->getKeyword();
-	  				$courseStatusType = $canonicalCourse->getStatus();
-	  				$courseStatusKeyword = $courseStatusType->getKeyword();
+					$title = $courseOffering->getTitle();
+	  				$number = $courseOffering->getNumber();
+	  				$term = $courseOffering->getTerm();
+	  				$offeringType = $courseOffering->getOfferingType();
+	  				$offeringKeyword = $courseOffering->getKeyword();
+	  				$offeringStatusType = $courseOffering->getStatus();
+	  				$offeringStatusKeyword = $courseOffering->getKeyword();
+
 					if ($values['namedescstep']['title'] == $title ||
 						$values['namedescstep']['number'] == $number ||
-						$values['namedescstep']['type'] == $courseKeyword ||
-						$values['namedescstep']['statusType'] == $courseStatusKeyword) {
+						$values['namedescstep']['term'] == $term ||
+						$values['namedescstep']['type'] == $offeringKeyword ||
+						$values['namedescstep']['statusType'] == $offeringStatusKeyword) {
 						$description = $canonicalCourse->getDescription();
-						$credits = $canonicalCourse->getCredits();
 					
 						print "<tr>";
 						print "<td>";
@@ -402,11 +402,9 @@ class createcourseofferingAction
 						print "<td>";
 						print $description;
 						print "<td>";
-						print $courseKeyword;
+						print $offeringKeyword;
 						print "<td>";
-						print $courseStatusKeyword;
-						print "<td>";
-						print $credits;
+						print $offeringStatusKeyword;
 						print "</tr>";
 					}
 				}
