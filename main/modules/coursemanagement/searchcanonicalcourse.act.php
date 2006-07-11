@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcanonicalcourse.act.php,v 1.7 2006/07/11 18:03:48 jwlee100 Exp $
+ * @version $Id: searchcanonicalcourse.act.php,v 1.1 2006/07/11 18:08:19 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,9 +19,9 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcanonicalcourse.act.php,v 1.7 2006/07/11 18:03:48 jwlee100 Exp $
+ * @version $Id: searchcanonicalcourse.act.php,v 1.1 2006/07/11 18:08:19 jwlee100 Exp $
  */
-class createcanonicalcourseAction
+class searchcanonicalcourseAction
 	extends MainWindowAction
 {
 	/**
@@ -176,13 +176,55 @@ class createcanonicalcourseAction
 		print "\n"._("The status type of this <em>canonical course</em>: ");
 		print "\n<br />[[credits]]";
 		print "\n<div style='width: 400px'> &nbsp; </div>";
-		
-		print "<p><font size=+1><a href='".$harmoni->request->quickURL("coursemanagement","browsecanonicalcourse")."'>";
-		print _("Click here to browse through existing canonical courses</font>");
-		print "<p><font size=+1><a href='".$harmoni->request->quickURL("coursemanagement","searchcanonicalcourse")."'>";
-		print _("Click here to search for a canonical courses</font>");
 		$step->setContent(ob_get_contents());
 		ob_end_clean();
+		
+		ob_start();
+		$courseManagementManager =& Services::getService("CourseManagement");
+		$canonicalCourseIterator =& $courseManagementManager->getCanonicalCourses();
+		
+		print "Current list of canonical courses: ";
+		print "\n<table border=1>";
+		while ($canonicalCourseIterator->hasNext()) {
+		  	$canonicalCourse =& $canonicalCourseIterator->next();
+		  	$title = $canonicalCourse->getTitle();
+	  		$number = $canonicalCourse->getNumber();
+	  		$description = $canonicalCourse->getDescription();
+	  		$courseType = $canonicalCourse->getCourseType();
+	  		$courseKeyword = $courseType->getKeyword();
+	  		$courseStatusType = $canonicalCourse->getStatus();
+	  		$courseStatusKeyword = $courseStatusType->getKeyword();
+	  		$credits = $canonicalCourse->getCredits();
+	  		
+	  		print "\n\t<tr>";
+			print "\n\t<td>";
+			print "Title: ";
+			print "\n\t<td>";
+			print "Number: ";
+			print "\n\t<td>";
+			print "Description: ";
+			print "\n\t<td>";
+			print "Course type: ";
+			print "\n\t<td>";
+			print "Course status: ";
+			print "\n\t<td>";
+			print "Credits: ";
+	  		
+	  		print "\n\t<tr>";
+			print "\n\t<td>";
+			print $title;
+			print "\n\t<td>";
+			print $number;
+			print "\n\t<td>";
+			print $description;
+			print "\n\t<td>";
+			print $courseKeyword;
+			print "\n\t<td>";
+			print $courseStatusKeyword;
+			print "\n\t<td>";
+			print $credits;
+		}
+		print "</table>";
 		
 		return $wizard;
 	}
@@ -197,7 +239,7 @@ class createcanonicalcourseAction
 	 * @access public
 	 * @since 4/28/05
 	 */
-	function saveWizard ( $cacheName ) {
+	function searchWizard ( $cacheName ) {
 		$wizard =& $this->getWizard($cacheName);
 		
 		// Make sure we have a valid Repository

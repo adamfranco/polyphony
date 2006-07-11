@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecanonicalcourse.act.php,v 1.1 2006/07/11 18:03:48 jwlee100 Exp $
+ * @version $Id: browsecanonicalcourse.act.php,v 1.2 2006/07/11 18:07:32 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,9 +19,9 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecanonicalcourse.act.php,v 1.1 2006/07/11 18:03:48 jwlee100 Exp $
+ * @version $Id: browsecanonicalcourse.act.php,v 1.2 2006/07/11 18:07:32 jwlee100 Exp $
  */
-class browsecanonicalcoursesAction
+class browsecanonicalcourseAction
 	extends MainWindowAction
 {
 	/**
