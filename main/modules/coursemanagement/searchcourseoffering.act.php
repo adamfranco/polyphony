@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcourseoffering.act.php,v 1.3 2006/07/11 19:09:36 jwlee100 Exp $
+ * @version $Id: searchcourseoffering.act.php,v 1.4 2006/07/11 19:31:53 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcourseoffering.act.php,v 1.3 2006/07/11 19:09:36 jwlee100 Exp $
+ * @version $Id: searchcourseoffering.act.php,v 1.4 2006/07/11 19:31:53 jwlee100 Exp $
  */
 class searchcourseofferingAction
 	extends MainWindowAction
@@ -127,35 +127,10 @@ class searchcourseofferingAction
 		$numberProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
 		*/
 		
-		$select =& new WSelectList();
-		$dbHandler =& Services::getService("DBHandler");
-		$query=& new SelectQuery;
-		$query->addTable('cm_can');
-		$query->addColumn('id');
-		$query->addColumn('title');
-		$query->addColumn('number');
-		$query->addOrderBy('number');
-		$res=& $dbHandler->query($query);
-		//$select->addOption("1","There");
-		while($res->hasMoreRows()){
-			$row = $res->getCurrentRow();
-			$res->advanceRow();
-			$select->addOption($row['id'],$row['number']." ".$row['title']);
-		}
+		$titleProp =& $step->addComponent("title", new WTextField());
 		
-		//$select->addOption("2","Here");
-		$canonicalCourse =& $step->addComponent("courseid", $select);
-		
-		
+		$numberProp =& $step->addComponent("number", new WTextField());		
 	
-		
-		
-		
-		
-		
-		$descriptionProp =& $step->addComponent("description", WTextArea::withRowsAndColumns(10,30));
-		
-		
 		$select =& new WSelectList();
 	
 		$dbHandler =& Services::getService("DBHandler");
@@ -238,19 +213,12 @@ class searchcourseofferingAction
 		*/
 		// Create the step text
 		ob_start();
-		print "\n<font size=+2><h2>"._("Course Offering")."</h2></font>";
-		//print "\n<h2>"._("Title")."</h2>";
-		//print "\n"._("The title of this <em>course offering</em>: ");
-		//print "\n<br />[[title]]";
-		//print "\n<h2>"._("Number")."</h2>";
-		//print "\n"._("The number of this <em>course offering</em>: ");
-		//print "\n<br />[[number]]";
-		print "\n<h2>"._("Canonical Course")."</h2>";
-		print "\n"._("The course for which you want to make an <em>offering</em>: ");
-		print "\n<br />[[courseid]]";
-		//print "\n<h2>"._("Description")."</h2>";
-		//print "\n"._("The description of this <em>course offering</em>: ");
-		//print "\n<br />[[description]]";
+		print "\n<h2>"._("Title")."</h2>";
+		print "\n"._("The title of the <em>course offering</em>: ");
+		print "\n<br />[[title]]";
+		print "\n<h2>"._("Number")."</h2>";
+		print "\n"._("The number of the <em>course offering</em>: ");
+		print "\n<br />[[number]]";
 		print "\n<h2>"._("Term")."</h2>";
 		print "\n"._("The term of this <em>course offering</em>: ");
 		print "\n<br />[[term]]";
@@ -266,64 +234,6 @@ class searchcourseofferingAction
 		print "\n<div style='width: 400px'> &nbsp; </div>";
 		$step->setContent(ob_get_contents());
 		ob_end_clean();
-		
-		ob_start();
-		$courseManagementManager =& Services::getService("CourseManagement");
-		$canonicalCourseIterator =& $courseManagementManager->getCanonicalCourses();
-			
-		print "Current list of course offerings: ";
-		print "\n<table border=1>";
-		
-		print "\n\t<tr>";
-		print "\n\t<td>";
-		print "Title: ";
-		print "\n\t<td>";
-		print "Number: ";
-		print "\n\t<td>";
-		print "Description: ";
-		print "\n\t<td>";
-		print "Offering type: ";
-		print "\n\t<td>";
-		print "Offering status: ";
-		print "\n\t</tr>";
-		
-		while ($canonicalCourseIterator->hasNext()) {
-		  	$canonicalCourse =& $canonicalCourseIterator->next();
-		  	$title = $canonicalCourse->getTitle();
-	  		$number = $canonicalCourse->getNumber();
-	  		$description = $canonicalCourse->getDescription();
-	  		$courseType = $canonicalCourse->getCourseType();
-	  		$courseKeyword = $courseType->getKeyword();
-	  		$courseStatusType = $canonicalCourse->getStatus();
-	  		$courseStatusKeyword = $courseStatusType->getKeyword();
-	  		$credits = $canonicalCourse->getCredits();
-			
-			$courseOfferingIterator =& $canonicalCourse->getCourseOfferings();
-			while ($courseOfferingIterator->hasNext()) {
-				$courseOffering =& $courseOfferingIterator->next();
-				$title = $courseOffering->getTitle();
-	  			$number = $courseOffering->getNumber();
-	  			$description = $courseOffering->getDescription();
-	  			$offeringType = $courseOffering->getOfferingType();
-	  			$offeringKeyword = $offeringType->getKeyword();
-	  			$offeringStatusType = $courseOffering->getStatus();
-	  			$offeringStatusKeyword = $offeringStatusType->getKeyword();
-	  			
-	  			print "\n\t<tr>";
-				print "\n\t<td>";
-				print $title;
-				print "\n\t<td>";
-				print $number;
-				print "\n\t<td>";
-				print $description;
-				print "\n\t<td>";
-				print $offeringKeyword;
-				print "\n\t<td>";
-				print $offeringStatusKeyword;
-				print "</tr>";
-			}			
-		}
-		print "</table>";
 		
 		return $wizard;
 	}
@@ -383,15 +293,18 @@ class searchcourseofferingAction
 	  				$number = $courseOffering->getNumber();
 	  				$term = $courseOffering->getTerm();
 	  				$offeringType = $courseOffering->getOfferingType();
-	  				$offeringKeyword = $courseOffering->getKeyword();
+	  				$offeringKeyword = $offeringType->getKeyword();
 	  				$offeringStatusType = $courseOffering->getStatus();
-	  				$offeringStatusKeyword = $courseOffering->getKeyword();
+	  				$offeringStatusKeyword = $offeringStatusType->getKeyword();
+	  				$courseGradeType = $courseOffering->getCourseGradeType();
+	  				$courseGradeKeyword = $courseGradeType->getKeyword();
 
 					if ($values['namedescstep']['title'] == $title ||
 						$values['namedescstep']['number'] == $number ||
 						$values['namedescstep']['term'] == $term ||
 						$values['namedescstep']['type'] == $offeringKeyword ||
-						$values['namedescstep']['statusType'] == $offeringStatusKeyword) {
+						$values['namedescstep']['statusType'] == $offeringStatusKeyword ||
+						$values['namedescstep']['courseGrade']) {
 						$description = $canonicalCourse->getDescription();
 					
 						print "<tr>";
