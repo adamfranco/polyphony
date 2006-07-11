@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcanonicalcourse.act.php,v 1.1 2006/07/11 18:08:19 jwlee100 Exp $
+ * @version $Id: searchcanonicalcourse.act.php,v 1.2 2006/07/11 18:33:44 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcanonicalcourse.act.php,v 1.1 2006/07/11 18:08:19 jwlee100 Exp $
+ * @version $Id: searchcanonicalcourse.act.php,v 1.2 2006/07/11 18:33:44 jwlee100 Exp $
  */
 class searchcanonicalcourseAction
 	extends MainWindowAction
@@ -97,19 +97,11 @@ class searchcanonicalcourseAction
 		
 		// :: Name and Description ::
 		$step =& $wizard->addStep("namedescstep", new WizardStep());
-		$step->setDisplayName(_("Please enter the information about a canonical course:"));
+		$step->setDisplayName(_("Please enter the information to search for a canonical course:"));
 		
 		// Create the properties.
 		$titleProp =& $step->addComponent("title", new WTextField());
-		$titleProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-		$titleProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
-		
-		// Create the properties.		
 		$numberProp =& $step->addComponent("number", new WTextField());
-		$numberProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-		$numberProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
-		
-		$descriptionProp =& $step->addComponent("description", WTextArea::withRowsAndColumns(10,30));
 		
 		// Create the type chooser.
 		$select =& new WSelectList();
@@ -150,81 +142,25 @@ class searchcanonicalcourseAction
 		$statusTypeProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
 		$statusTypeProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
 		*/
-		$creditsProp =& $step->addComponent("credits", new WTextField());
-		$creditsProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-		$creditsProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
 				
 		// Create the step text
 		ob_start();
-		print "\n<font size=+2><h2>"._("Canonical Course")."</h2></font>";
+		print "\n<font size=+2><h2>"._("Search for Canonical Course")."</h2></font>";
 		print "\n<h2>"._("Title")."</h2>";
 		print "\n"._("The title of this <em>canonical course</em>: ");
 		print "\n<br />[[title]]";
 		print "\n<h2>"._("Number")."</h2>";
 		print "\n"._("The number of this <em>canonical course</em>: ");
 		print "\n<br />[[number]]";
-		print "\n<h2>"._("Description")."</h2>";
-		print "\n"._("The number of this <em>canonical course</em>: ");
-		print "\n<br />[[description]]";
 		print "\n<h2>"._("Type")."</h2>";
 		print "\n"._("The type of this <em>canonical course</em>: ");
 		print "\n<br />[[type]]";
 		print "\n<h2>"._("Status type")."</h2>";
 		print "\n"._("The status type of this <em>canonical course</em>: ");
 		print "\n<br />[[statusType]]";
-		print "\n<h2>"._("Credits")."</h2>";
-		print "\n"._("The status type of this <em>canonical course</em>: ");
-		print "\n<br />[[credits]]";
 		print "\n<div style='width: 400px'> &nbsp; </div>";
 		$step->setContent(ob_get_contents());
 		ob_end_clean();
-		
-		ob_start();
-		$courseManagementManager =& Services::getService("CourseManagement");
-		$canonicalCourseIterator =& $courseManagementManager->getCanonicalCourses();
-		
-		print "Current list of canonical courses: ";
-		print "\n<table border=1>";
-		while ($canonicalCourseIterator->hasNext()) {
-		  	$canonicalCourse =& $canonicalCourseIterator->next();
-		  	$title = $canonicalCourse->getTitle();
-	  		$number = $canonicalCourse->getNumber();
-	  		$description = $canonicalCourse->getDescription();
-	  		$courseType = $canonicalCourse->getCourseType();
-	  		$courseKeyword = $courseType->getKeyword();
-	  		$courseStatusType = $canonicalCourse->getStatus();
-	  		$courseStatusKeyword = $courseStatusType->getKeyword();
-	  		$credits = $canonicalCourse->getCredits();
-	  		
-	  		print "\n\t<tr>";
-			print "\n\t<td>";
-			print "Title: ";
-			print "\n\t<td>";
-			print "Number: ";
-			print "\n\t<td>";
-			print "Description: ";
-			print "\n\t<td>";
-			print "Course type: ";
-			print "\n\t<td>";
-			print "Course status: ";
-			print "\n\t<td>";
-			print "Credits: ";
-	  		
-	  		print "\n\t<tr>";
-			print "\n\t<td>";
-			print $title;
-			print "\n\t<td>";
-			print $number;
-			print "\n\t<td>";
-			print $description;
-			print "\n\t<td>";
-			print $courseKeyword;
-			print "\n\t<td>";
-			print $courseStatusKeyword;
-			print "\n\t<td>";
-			print $credits;
-		}
-		print "</table>";
 		
 		return $wizard;
 	}
@@ -239,7 +175,7 @@ class searchcanonicalcourseAction
 	 * @access public
 	 * @since 4/28/05
 	 */
-	function searchWizard ( $cacheName ) {
+	function saveWizard ( $cacheName ) {
 		$wizard =& $this->getWizard($cacheName);
 		
 		// Make sure we have a valid Repository
@@ -262,15 +198,53 @@ class searchcanonicalcourseAction
 			$courseType =& $courseManager->_indexToType($values['namedescstep']['type'],'can');
 			$statusType =& $courseManager->_indexToType($values['namedescstep']['statusType'],'can_stat');
 			
-			/*$courseType =& new Type($values['namedescstep']['title'], $values['namedescstep']['number'], 
-									$values['namedescstep']['type']);
-			$statusType =& new Type($values['namedescstep']['title'], $values['namedescstep']['number'], 
-									$values['namedescstep']['statusType']);*/
-			$canonicalCourseA =& $courseManager->createCanonicalCourse($values['namedescstep']['title'], 
-																	   $values['namedescstep']['number'], 	
-																	   $values['namedescstep']['description'], 
-																	   $courseType, $statusType, 
-																	   $values['namedescstep']['credits']);
+			print "\n<table border=1>";
+			print "\n\t<tr>";
+			print "\n\t<td>";
+			print "<b>Title</b>";
+			print "\n\t<td>";
+			print "<b>Number</b>";
+			print "\n\t<td>";
+			print "<b>Description</b>";
+			print "\n\t<td>";
+			print "<b>Course Type</b>";
+			print "\n\t<td>";
+			print "<b>Course Status</b>";
+			print "\n\t<td>";
+			print "<b>Credits</b>";
+			print "\n\t</tr>";
+			$canonicalCourseIterator = $courseManager->getCanonicalCourses();
+			while ($canonicalCourseIterator->hasNext()) {
+				$canonicalCourse = $canonicalCourseIterator->next();
+				$title = $canonicalCourse->getTitle();
+	  			$number = $canonicalCourse->getNumber();
+	  			$courseType = $canonicalCourse->getCourseType();
+	  			$courseKeyword = $courseType->getKeyword();
+	  			$courseStatusType = $canonicalCourse->getStatus();
+	  			$courseStatusKeyword = $courseStatusType->getKeyword();
+				if ($values['namedescstep']['title'] == $title ||
+					$values['namedescstep']['number'] == $number ||
+					$values['namedescstep']['type'] == $courseKeyword ||
+					$values['namedescstep']['statusType'] == $courseStatusKeyword) {
+					$description = $canonicalCourse->getDescription();
+					$credits = $canonicalCourse->getCredits();
+					
+					print "<tr>";
+					print "<td>";
+					print $title;
+					print "<td>";
+					print $number;
+					print "<td>";
+					print $description;
+					print "<td>";
+					print $courseKeyword;
+					print "<td>";
+					print $courseStatusKeyword;
+					print "<td>";
+					print $credits;
+					print "</tr>";
+				}
+			}
 			RequestContext::sendTo($this->getReturnUrl());
 			exit();
 			return TRUE;
