@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcoursesection.act.php,v 1.7 2006/07/10 21:12:20 jwlee100 Exp $
+ * @version $Id: createcoursesection.act.php,v 1.8 2006/07/11 15:00:12 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcoursesection.act.php,v 1.7 2006/07/10 21:12:20 jwlee100 Exp $
+ * @version $Id: createcoursesection.act.php,v 1.8 2006/07/11 15:00:12 jwlee100 Exp $
  */
 class createcoursesectionAction
 	extends MainWindowAction
@@ -173,7 +173,7 @@ class createcoursesectionAction
 		}
 		$statusTypeProp =& $step->addComponent("statusType", $select);
 		
-		// Create the properties.
+		// Text box for location
 		$locationProp =& $step->addComponent("location", new WTextField());
 		$locationProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
 		$locationProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
@@ -205,7 +205,7 @@ class createcoursesectionAction
 		print "\n"._("The status type of this <em>course offering</em>: ");
 		print "\n<br />[[statusType]]";
 		print "\n<h2>"._("Location")."</h2>";
-		print "\n"._("The course grading type of this <em>course offering</em>: ");
+		print "\n"._("The location of this <em>course offering</em>: ");
 		print "\n<br />[[location]]";
 		print "\n<div style='width: 400px'> &nbsp; </div>";
 		$step->setContent(ob_get_contents());

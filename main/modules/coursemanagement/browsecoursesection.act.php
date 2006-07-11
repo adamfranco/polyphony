@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecoursesection.act.php,v 1.6 2006/07/10 20:34:15 jwlee100 Exp $
+ * @version $Id: browsecoursesection.act.php,v 1.7 2006/07/11 15:00:12 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecoursesection.act.php,v 1.6 2006/07/10 20:34:15 jwlee100 Exp $
+ * @version $Id: browsecoursesection.act.php,v 1.7 2006/07/11 15:00:12 jwlee100 Exp $
  */
 class browsecoursesectionAction
 	extends MainWindowAction
@@ -76,12 +76,13 @@ class browsecoursesectionAction
 		$actionRows =& $this->getActionRows();
 		$harmoni->request->startNamespace("browse-coursesections");
 		
-		$actionRows->add(new Block("&nbsp; &nbsp; "._("Below is a listing of all of the course sections in the database.")."<br /><br />", STANDARD_BLOCK));
-		
 		ob_start();
+		
 		$courseManagementManager =& Services::getService("CourseManagement");
 		$canonicalCourseIterator =& $courseManagementManager->getCanonicalCourses();
 		
+		print "<p><font size=+1><b>Below is a listing of all the course sections in the database.</font></b></p>";
+		print "<p><b>Current list of course sections</b></p>";
 		print "\n<table border=1>";
 		print "\n\t<tr>";
 		print "\n\t<td>";
@@ -155,6 +156,8 @@ class browsecoursesectionAction
 			}
 		}
 		print "</table>";
+		
+		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 		ob_end_clean();
 	}
 }

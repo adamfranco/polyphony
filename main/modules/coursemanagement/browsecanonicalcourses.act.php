@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecanonicalcourses.act.php,v 1.10 2006/07/10 19:56:01 jwlee100 Exp $
+ * @version $Id: browsecanonicalcourses.act.php,v 1.11 2006/07/11 15:00:12 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecanonicalcourses.act.php,v 1.10 2006/07/10 19:56:01 jwlee100 Exp $
+ * @version $Id: browsecanonicalcourses.act.php,v 1.11 2006/07/11 15:00:12 jwlee100 Exp $
  */
 class browsecanonicalcoursesAction
 	extends MainWindowAction
@@ -76,8 +76,6 @@ class browsecanonicalcoursesAction
 		$actionRows =& $this->getActionRows();
 		$harmoni->request->startNamespace("browse-coursesections");
 		
-		ob_start();
-		
 		$courseManagementManager =& Services::getService("CourseManagement");
 		$canonicalCourseIterator =& $courseManagementManager->getCanonicalCourses();
 		
@@ -85,8 +83,23 @@ class browsecanonicalcoursesAction
 		$courseManagementManager =& Services::getService("CourseManagement");
 		$canonicalCourseIterator =& $courseManagementManager->getCanonicalCourses();
 		
-		print "Current list of canonical courses: ";
+		print "<p><font size=+1><b>Below is a listing of all the course sections in the database.</font></b></p>";
+		print "<p><b>Current list of course sections</b></p>";
 		print "\n<table border=1>";
+		print "\n\t<tr>";
+		print "\n\t<td>";
+		print "<b>Title</b>";
+		print "\n\t<td>";
+		print "<b>Number</b>";
+		print "\n\t<td>";
+		print "<b>Description</b>";
+		print "\n\t<td>";
+		print "<b>Course Type</b>";
+		print "\n\t<td>";
+		print "<b>Course Status</b>";
+		print "\n\t<td>";
+		print "<b>Credits</b>";
+		print "\n\t</tr>";
 		while ($canonicalCourseIterator->hasNext()) {
 		  	$canonicalCourse =& $canonicalCourseIterator->next();
 		  	$title = $canonicalCourse->getTitle();
@@ -96,22 +109,8 @@ class browsecanonicalcoursesAction
 	  		$courseKeyword = $courseType->getKeyword();
 	  		$courseStatusType = $canonicalCourse->getStatus();
 	  		$courseStatusKeyword = $courseStatusType->getKeyword();
-	  		$credits = $canonicalCourse->getCredits();
-	  		
-	  		print "\n\t<tr>";
-			print "\n\t<td>";
-			print "Title: ";
-			print "\n\t<td>";
-			print "Number: ";
-			print "\n\t<td>";
-			print "Description: ";
-			print "\n\t<td>";
-			print "Course type: ";
-			print "\n\t<td>";
-			print "Course status: ";
-			print "\n\t<td>";
-			print "Credits: ";
-	  		
+		  	$credits = $canonicalCourse->getCredits();
+	  	
 	  		print "\n\t<tr>";
 			print "\n\t<td>";
 			print $title;
@@ -127,6 +126,9 @@ class browsecanonicalcoursesAction
 			print $credits;
 		}
 		print "</table>";
+		
+		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);
+		ob_end_clean();
 		
 		$actionRows =& $this->getActionRows();
 	}
