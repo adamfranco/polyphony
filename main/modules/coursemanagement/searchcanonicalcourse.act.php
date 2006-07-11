@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcanonicalcourse.act.php,v 1.2 2006/07/11 18:33:44 jwlee100 Exp $
+ * @version $Id: searchcanonicalcourse.act.php,v 1.3 2006/07/11 19:01:26 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcanonicalcourse.act.php,v 1.2 2006/07/11 18:33:44 jwlee100 Exp $
+ * @version $Id: searchcanonicalcourse.act.php,v 1.3 2006/07/11 19:01:26 jwlee100 Exp $
  */
 class searchcanonicalcourseAction
 	extends MainWindowAction
@@ -190,11 +190,9 @@ class searchcanonicalcourseAction
 						$idManager->getId("edu.middlebury.authorization.add_children"), 
 						$courseManagementId))
 		{
-			
 			$values = $wizard->getAllValues();
 			printpre($values);
-			
-			
+						
 			$courseType =& $courseManager->_indexToType($values['namedescstep']['type'],'can');
 			$statusType =& $courseManager->_indexToType($values['namedescstep']['statusType'],'can_stat');
 			
