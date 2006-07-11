@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcoursesection.act.php,v 1.8 2006/07/11 15:00:12 jwlee100 Exp $
+ * @version $Id: createcoursesection.act.php,v 1.9 2006/07/11 15:33:42 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcoursesection.act.php,v 1.8 2006/07/11 15:00:12 jwlee100 Exp $
+ * @version $Id: createcoursesection.act.php,v 1.9 2006/07/11 15:33:42 jwlee100 Exp $
  */
 class createcoursesectionAction
 	extends MainWindowAction
@@ -184,28 +184,28 @@ class createcoursesectionAction
 		ob_start();
 		print "\n<font size=+2><h2>"._("Course Section")."</h2></font>";
 		//print "\n<h2>"._("Title")."</h2>";
-		//print "\n"._("The title of this <em>course offering</em>: ");
+		//print "\n"._("The title of this <em>course section</em>: ");
 		//print "\n<br />[[title]]";
 		//print "\n<h2>"._("Number")."</h2>";
-		//print "\n"._("The number of this <em>course offering</em>: ");
+		//print "\n"._("The number of this <em>course section</em>: ");
 		//print "\n<br />[[number]]";
 		print "\n<h2>"._("Course Section")."</h2>";
-		print "\n"._("The course for which you want to make an <em>offering</em>: ");
+		print "\n"._("The course for which you want to make a <em>section</em>: ");
 		print "\n<br />[[courseid]]";
 		//print "\n<h2>"._("Description")."</h2>";
-		//print "\n"._("The description of this <em>course offering</em>: ");
+		//print "\n"._("The description of this <em>course section</em>: ");
 		//print "\n<br />[[description]]";
 		print "\n<h2>"._("Term")."</h2>";
-		print "\n"._("The term of this <em>course offering</em>: ");
+		print "\n"._("The term of this <em>course section</em>: ");
 		print "\n<br />[[term]]";
 		print "\n<h2>"._("Section Type")."</h2>";
-		print "\n"._("The type of this <em>course offering</em>: ");
+		print "\n"._("The type of this <em>course section</em>: ");
 		print "\n<br />[[type]]";
 		print "\n<h2>"._("Status type")."</h2>";
-		print "\n"._("The status type of this <em>course offering</em>: ");
+		print "\n"._("The status type of this <em>course sectiong</em>: ");
 		print "\n<br />[[statusType]]";
 		print "\n<h2>"._("Location")."</h2>";
-		print "\n"._("The location of this <em>course offering</em>: ");
+		print "\n"._("The location of this <em>course section</em>: ");
 		print "\n<br />[[location]]";
 		print "\n<div style='width: 400px'> &nbsp; </div>";
 		$step->setContent(ob_get_contents());
