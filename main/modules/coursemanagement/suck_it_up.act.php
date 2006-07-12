@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: suck_it_up.act.php,v 1.1 2006/07/12 02:36:37 sporktim Exp $
+ * @version $Id: suck_it_up.act.php,v 1.2 2006/07/12 03:53:36 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -189,8 +189,8 @@ END;
 			
 				continue;	
 			}
-			if(substr($sectionName,0,8)!=$last){
-				$last=substr($sectionName,0,8);
+			if(substr($sectionName,0,strlen($sectionName)-5)!=$last){
+				$last=substr($sectionName,0,strlen($sectionName)-5);
 				$canonicalCourseId = $this->_getCanonicalCourse($sectionName);
 				
 			
@@ -280,7 +280,7 @@ END;
 		
 				
 		//$num = substr($courseString,4,4);
-		$number = substr($courseString,0,8);
+		$number = substr($courseString,0,strlen($courseString)-5);
 		
 		
 		
@@ -306,7 +306,7 @@ END;
 			//$termType =& new Type("Coursemanagement","edu.middlebury",$season);		
 			//$index = $cm->_typeToIndex('term',$termType);
 			
-			$dept =  substr($courseString,0,4);
+			$dept =  substr($courseString,0,strlen($courseString)-9);
 			
 			$type =& new Type("Coursemanagement","edu.middlebury",$dept);
 			$stattype =& new Type("Coursemanagement","edu.middlebury","default");
