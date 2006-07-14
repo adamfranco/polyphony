@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: suck_it_up.act.php,v 1.2 2006/07/12 03:53:36 sporktim Exp $
+ * @version $Id: suck_it_up.act.php,v 1.3 2006/07/14 19:40:20 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -221,6 +221,9 @@ END;
  		textdomain($defaultTextDomain);
 	}
 	
+	
+	
+	
 	/**
 	 *Gets a term from the LDAP name, creating it if necesary
 	 **/
@@ -274,6 +277,8 @@ END;
 		}		
 	}
 	
+	
+	
 	function &_getCanonicalCourse($courseString ){
 		
 		$cm =& Services::getService("CourseManagement");
@@ -321,7 +326,7 @@ END;
 
 			//return $canId->getIdString();
 		}else{
-			print " ";
+			
 			
 			$row = $res->getCurrentRow();
 			//$the_index = $row['id'];

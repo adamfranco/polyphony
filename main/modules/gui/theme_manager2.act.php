@@ -5,14 +5,14 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: theme_manager2.act.php,v 1.1 2006/06/02 16:00:29 cws-midd Exp $
+ * @version $Id: theme_manager2.act.php,v 1.2 2006/07/14 19:40:21 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
-//require_once(POLYPHONY."/main/library/Wizard/LogicStepWizard.class.php");
 require_once(POLYPHONY."/main/library/Wizard/SimpleStepWizard.class.php");
 require_once(POLYPHONY."/main/library/Wizard/Components/WizardStep.class.php");
 require_once(POLYPHONY."/main/library/Wizard/Components/WColorWheel.class.php");
+require_once(POLYPHONY."/main/library/Wizard/LogicStepWizard.class.php");
 
 /**
  * 
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WColorWheel.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: theme_manager2.act.php,v 1.1 2006/06/02 16:00:29 cws-midd Exp $
+ * @version $Id: theme_manager2.act.php,v 1.2 2006/07/14 19:40:21 sporktim Exp $
  */
 class theme_manager2Action 
 	extends MainWindowAction
@@ -149,7 +149,7 @@ class theme_manager2Action
 								WLogicButton::withLabel(_('Create Empty...')));
 		
 		// create logic for buttons
-		$newThemeRule =& WLogicRule::withSteps(array('dd_step', 'global_step'))
+		$newThemeRule =& WLogicRule::withSteps(array('dd_step', 'global_step'));
 		
 		$copyButton->setLogic($newThemeRule);
 		$newButton->setLogic($newThemeRule);
@@ -405,7 +405,7 @@ $sp =& new FontSP();
 	 * @since 6/1/06
 	 */
 	function handleUpdate () {
-		<##>
+		//<##>
 	}
 	
 	/**

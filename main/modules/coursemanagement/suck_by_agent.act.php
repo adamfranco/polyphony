@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: suck_by_agent.act.php,v 1.2 2006/07/12 03:53:36 sporktim Exp $
+ * @version $Id: suck_by_agent.act.php,v 1.3 2006/07/14 19:40:20 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -239,7 +239,19 @@ END;
 			if(substr($name,strlen($name)-4,1)!="-"){
 				continue;	
 			}
-			print "\n\t<br> ".$group->getDisplayName()."</br>";
+			
+			//filter out gym
+			if(substr($name,0,4)=="phed"){
+			
+				continue;	
+			}
+			
+			
+			print "\n\t<br> ".$group->getDisplayName()." ";
+			$this->_figureOut($group->getDisplayName());
+			print "</br>";
+			
+			
 			
 			
 			
@@ -257,24 +269,46 @@ END;
 	}
 	
 	
+	/**
+	 *Given a string, figure out if ets a term from the three letter name, creating it if necesary
+	 **/
+	function _figureOut($ldapName){
+		$term =& $this->_getTerm(substr($ldapName,strlen($ldapName)-3,3));
+		$can =& $this->_getCanonicalCourse($ldapName);
+		
+		$offer =& $this->_getCourseOffering($can, $term,$ldapName);
+		$section =&  $this->_getCourseSection($offer,$ldapName);
+		
+	}
 	
 	
-	
-	
+	/**
+	 *Gets a term from the three letter name, creating it if necesary
+	 **/
 	function &_getTerm($termName ){
 		
 		$cm =& Services::getService("CourseManagement");
 		
-		$season =  substr($termName,0,strlen($termName)-2);		
-		$year = '20'.substr($termName,strlen($termName)-2,2);
+		
+		
+		if($termName[0]=="s"){
+			$season = "Spring";
+		} else if($termName[0]=="f"){
+			$season = "Fall";
+		} else if($termName[0]=="w"){
+			$season = "Winter";
+		} else if($termName[0]=="l"){
+			$season = "Summer";
+		}
+		
+		
+			
+		$year = '20'.substr($termName,1,2);
 		$name = $season." ".$year;
 		
 		$termType =& new Type("Coursemanagement","edu.middlebury",$season);
 		
 		$index = $cm->_typeToIndex('term',$termType);
-		
-		
-		
 		
 		$dbHandler =& Services::getService("DBHandler");
 		$query=& new SelectQuery;
@@ -311,6 +345,7 @@ END;
 		}		
 	}
 	
+	
 	function &_getCanonicalCourse($courseString ){
 		
 		$cm =& Services::getService("CourseManagement");
@@ -318,11 +353,6 @@ END;
 				
 		//$num = substr($courseString,4,4);
 		$number = substr($courseString,0,strlen($courseString)-5);
-		
-		
-		
-		
-		
 		
 		
 		
@@ -352,13 +382,13 @@ END;
 			
 		
 			
-			print "<font size=4><b>".$number."</b> </font>\n";
+			print "<font size=3 color='red'>#</font>\n";
 			return $can;
 			//$canId =& $can->getId();
 
 			//return $canId->getIdString();
 		}else{
-			print " ";
+			
 			
 			$row = $res->getCurrentRow();
 			//$the_index = $row['id'];
@@ -366,12 +396,93 @@ END;
 			$id =& $idManager->getId($row['id']);
 			$can =& $cm->getCanonicalCourse($id);
 			
-			print "<font size=4>".$number." </font>\n";
+			print "<font size=3>#</font>\n";
 			
 			return $can;
 			
 
 		}		
+	}
+	
+	function &_getCourseOffering(&$can,&$term,$courseString ){
+		
+		
+		
+				
+		//$num = substr($courseString,4,4);
+		$number = substr($courseString,0,strlen($courseString)-5);
+		$termId =& $term->getId();
+		
+		
+		$dbHandler =& Services::getService("DBHandler");
+		$query=& new SelectQuery;
+		$query->addTable('cm_offer');
+		$query->addWhere("number='".addslashes($number)."'");
+		$query->addWhere("fk_cm_term='".addslashes($termId->getIdString())."'");
+		$query->addColumn('id');
+		$res=& $dbHandler->query($query);
+
+		
+		
+		
+		if($res->getNumberOfRows()==0){
+		
+			$deftype =& new Type("Coursemanagement","edu.middlebury","default");
+			
+			
+			$offer =& $can->createCourseOffering($number,$number,"",$termId,$deftype,$deftype,$deftype);	
+				
+			
+			
+			print "<font size=3 color='red'>#</font>\n";
+			
+			return $offer;
+		}else{
+			print " ";
+			
+			$row = $res->getCurrentRow();
+			$cm =& Services::getService("CourseManagement");
+			$idManager =& Services::getService("Id");
+			$id =& $idManager->getId($row['id']);
+			$offer =& $cm->getCourseOffering($id);
+			
+			print "<font size=3>#</font>\n";
+			
+			return $offer;
+			
+
+		}		
+	}
+	
+	function &_getCourseSection(&$offer,$ldapName){
+		
+		$sections =& $offer->getCourseSections();
+		
+		$number = substr($ldapName,0,strlen($ldapName)-4);
+		
+		while($sections->hasNextCourseSection()){
+			$section =& $sections->nextCourseSection();
+			if($section->getNumber()==$number){
+				$cm =& Services::getService("CourseManagement");
+				print "<font size=3>#</font>\n";			
+				return $section;
+			}
+			
+		}
+		
+			
+			$deftype =& new Type("Coursemanagement","edu.middlebury","default");
+			
+			if(strcasecmp($number[strlen($number)-1],'T')<0){
+				$stattype =& new Type("Coursemanagement","edu.middlebury","Main");
+							
+			}else{
+				$stattype =& new Type("Coursemanagement","edu.middlebury","Auxiliary");
+			
+			}		
+			$section =& $offer->createCourseSection($number,$number,"",$deftype,$stattype,$loc = "");		
+			print "<font size=3 color='red'>#</font>\n";
+			return $offer;	
 	}
 	
 	/**
