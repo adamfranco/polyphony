@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcanonicalcourses.act.php,v 1.1 2006/07/18 20:24:59 jwlee100 Exp $
+ * @version $Id: searchcanonicalcourses.act.php,v 1.2 2006/07/18 20:30:21 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -89,8 +89,9 @@ class suck_it_upAction
 		print <<<END
 		<form action='$self' method='post'>
 			<div>
-		
-			<p align='center'><select name='$term_name'>
+			<input type='text' name='search_title'>
+			<input type='text' name='search_number'>
+			<select name='type'>
 		END;
 		
 		$searchTypes =& $agentManager->getAgentSearchTypes();
@@ -115,6 +116,32 @@ class suck_it_upAction
 		}
 		
 		print "\n\t</select>";
+		
+		print <<<END
+			<select name='status_type'>
+		END;
+		
+		$searchTypes =& $agentManager->getAgentSearchTypes();
+		
+		// harmoni->requestContext::$type;
+		$classId =& $idManager->getId("OU=Classes,OU=Groups,DC=middlebury,DC=edu ");
+		$classes =& $agentManager->getGroup($classId);
+		$terms =& $classes->getGroups(false);
+	
+		while ($terms->hasNext()) {
+			$termGroup =& $terms->next();
+			$termName = $termGroup->getDisplayName();
+			$term = $this->_getTerm($termName);
+		
+			$id =& $term->getId();
+			$idString = $id->getIdString();
+			print "\n\t\t<option value='".$idString."'";
+			if ($harmoni->request->get('type') == $idString) {
+				print " selected='selected'";
+			}
+			print ">".$term->getDisplayName()."</option>";
+		}
+		
 		print "\n\t<input type='submit' value='"._("Suck!")."' />";
 		//print "\n\t<a href='".$harmoni->request->quickURL()."'>";
 		print "\n</p>\n</div></form>";
@@ -128,7 +155,8 @@ class suck_it_upAction
 		 * the agent search results
 		 *********************************************************/
 		ob_start();
-		$values = $wizard->getAllValues();
+		$searchTitle = RequestContext::value('title');
+		$searchNumber = RequestContext::value()
 		printpre($values);
 					
 		$courseType =& $courseManager->_indexToType($values['namedescstep']['type'],'can');
