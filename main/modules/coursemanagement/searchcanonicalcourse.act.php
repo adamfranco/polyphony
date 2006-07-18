@@ -1,27 +1,20 @@
 <?php
+
 /**
- * @package concerto.modules.asset
+ * @package polyphony.modules.coursemanagement
  * 
- * @copyright Copyright &copy; 2005, Middlebury College
+ * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcanonicalcourse.act.php,v 1.4 2006/07/18 20:24:59 jwlee100 Exp $
+ * @version $Id: searchcanonicalcourse.act.php,v 1.5 2006/07/18 21:02:22 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
-require_once(HARMONI."/utilities/StatusStars.class.php");
+require_once(HARMONI."GUIManager/Components/Blank.class.php");
 
-/**
- * 
- * 
- * @package concerto.modules.asset
- * 
- * @copyright Copyright &copy; 2005, Middlebury College
- * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- *
- * @version $Id: searchcanonicalcourse.act.php,v 1.4 2006/07/18 20:24:59 jwlee100 Exp $
- */
-class searchcanonicalcourseAction
+
+
+class searchcanonicalcourseAction 
 	extends MainWindowAction
 {
 	/**
@@ -32,25 +25,18 @@ class searchcanonicalcourseAction
 	 * @since 4/26/05
 	 */
 	function isAuthorizedToExecute () {
-		// Check that the user can create an asset here.
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
-		
-		return $authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.add_children"),
-			$idManager->getId("edu.middlebury.coursemanagement")
-		);
-	}
-	
-	/**
-	 * Return the "unauthorized" string to pring
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 4/26/05
-	 */
-	function getUnauthorizedMessage () {
-		return _("You are not authorized to create a SlideShow in this <em>Exhibition</em>.");
+		// Check for authorization
+ 		$authZManager =& Services::getService("AuthZ");
+ 		$idManager =& Services::getService("IdManager");
+ 		if ($authZManager->isUserAuthorized(
+ 			$idManager->getId("edu.middlebury.authorization.view"),
+ 			$idManager->getId("edu.middlebury.coursemanagement")))
+ 		{
+			return TRUE;
+ 		} else {
+ 			
+ 			return FALSE;
+		}
 	}
 	
 	/**
@@ -61,7 +47,7 @@ class searchcanonicalcourseAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		return _("Search a canonical course.");
+		return dgettext("polyphony", "Refresh Canonical Courses by Term");
 	}
 	
 	/**
@@ -72,116 +58,96 @@ class searchcanonicalcourseAction
 	 * @since 4/26/05
 	 */
 	function buildContent () {
-		$harmoni =& Harmoni::instance();
 		$actionRows =& $this->getActionRows();
-		
-		
+		$pageRows =& new Container(new YLayout(), OTHER, 1);
 		$harmoni =& Harmoni::instance();
-		$courseManager =& Services::getService("CourseManagement");
-		$canonicalCourseIterator =& $courseManager->getCanonicalCourses();
 		
-		// Instantiate the wizard, then add our steps.
-		$wizard =& SimpleStepWizard::withDefaultLayout();
-		
-		ob_start();
-		// :: Name and Description ::
-		$step =& $wizard->addStep("namedescstep", new WizardStep());
-		$step->setDisplayName(_("Please enter the information to search for a canonical course:"));
-		
-		// Create the properties.
-		$titleProp =& $step->addComponent("title", new WTextField());
-		$numberProp =& $step->addComponent("number", new WTextField());
-		
-		// Create the type chooser.
-		$select =& new WSelectList();
-		$typename = "can";	
-		$dbHandler =& Services::getService("DBHandler");
-		$query=& new SelectQuery;
-		$query->addTable('cm_'.$typename."_type");
-		$query->addColumn('id');
-		$query->addColumn('keyword');
-		$res=& $dbHandler->query($query);
-		while($res->hasMoreRows()){
-			$row = $res->getCurrentRow();
-			$res->advanceRow();
-			$select->addOption($row['id'],$row['keyword']);
-		}
-		$typeProp =& $step->addComponent("type", $select);
-		/*
-		$typeProp =& $step->addComponent("type", new WTextField());
-		$typeProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-		$typeProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
-		*/
-		$select =& new WSelectList();
-		$typename = "can_stat";	
-		$dbHandler =& Services::getService("DBHandler");
-		$query=& new SelectQuery;
-		$query->addTable('cm_'.$typename."_type");
-		$query->addColumn('id');
-		$query->addColumn('keyword');
-		$res=& $dbHandler->query($query);
-		while($res->hasMoreRows()){
-			$row = $res->getCurrentRow();
-			$res->advanceRow();
-			$select->addOption($row['id'],$row['keyword']);
-		}
-		$typeProp =& $step->addComponent("statusType", $select);
-		/*
-		$statusTypeProp =& $step->addComponent("statusType", new WTextField());
-		$statusTypeProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-		$statusTypeProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
-		*/
-				
-		// Create the step text
-		ob_start();
-		print "\n<font size=+2><h2>"._("Search for Canonical Course")."</h2></font>";
-		print "\n<h2>"._("Title")."</h2>";
-		print "\n"._("The title of this <em>canonical course</em>: ");
-		print "\n<br />[[title]]";
-		print "\n<h2>"._("Number")."</h2>";
-		print "\n"._("The number of this <em>canonical course</em>: ");
-		print "\n<br />[[number]]";
-		print "\n<h2>"._("Type")."</h2>";
-		print "\n"._("The type of this <em>canonical course</em>: ");
-		print "\n<br />[[type]]";
-		print "\n<h2>"._("Status type")."</h2>";
-		print "\n"._("The status type of this <em>canonical course</em>: ");
-		print "\n<br />[[statusType]]";
-		print "\n<div style='width: 400px'> &nbsp; </div>";
-		$step->setContent(ob_get_contents());
-		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);
-		ob_end_clean();
-	}
-				
-	/**
-	 * Save our results. Tearing down and unsetting the Wizard is handled by
-	 * in {@link runWizard()} and does not need to be implemented here.
-	 * 
-	 * @param string $cacheName
-	 * @return boolean TRUE if save was successful and tear-down/cleanup of the
-	 *		Wizard should ensue.
-	 * @access public
-	 * @since 4/28/05
-	 */
-	function search () {
-		// Make sure we have a valid Repository
-		$courseManager =& Services::getService("CourseManagement");
-		$idManager =& Services::getService("Id");
-		$courseManagementId =& $idManager->getId("edu.middlebury.coursemanagement");
+		$harmoni->request->startNamespace("polyphony-agents");
 
+		$agentManager =& Services::getService("Agent");
+		$idManager = Services::getService("Id");
+		$cmm =& Services::getService("CourseManagement");
 		
-		// First, verify that we chose a parent that we can add children to.
-		$authZ =& Services::getService("AuthZ");
-		if ($authZ->isUserAuthorized(
-						$idManager->getId("edu.middlebury.authorization.add_children"), 
-						$courseManagementId))
-		{
-			$values = $wizard->getAllValues();
-			printpre($values);
-						
-			$courseType =& $courseManager->_indexToType($values['namedescstep']['type'],'can');
-			$statusType =& $courseManager->_indexToType($values['namedescstep']['statusType'],'can_stat');
-			
+		
+		
+		
+		
+		/*********************************************************
+		 * the select menu
+		 *********************************************************/
+		// Users header
+		//$actionRows->add(new Heading(_("Select Term"), 2), "100%", null, LEFT, CENTER);
+		
+		ob_start();
+		$self = $harmoni->request->quickURL();
+		
+		$lastTerm = $harmoni->request->get("term_name");
+		$term_name = RequestContext::name("term_name");
+		//$search_type_name = RequestContext::name("search_type");
+		print _("<p align='center'>Select a Term").": </p>";
+		print <<<END
+		<form action='$self' method='post'>
+			<div>
+			<input type='text' name='search_title'>
+			<input type='text' name='search_number'>
+			<select name='search_type'>
+		END;
+		
+		$courseTypes =& $cmm->getCanonicalCourseTypes();
+	
+		while ($courseTypes->hasNext()) {
+			$type = $courseTypes->next();
+				
+			$id =& $type->getId();
+			$idString = $id->getIdString();
+			print "\n\t\t<option value='".$idString."'";
+			if ($harmoni->request->get('type') == $idString) {
+				print " selected='selected'";
+			}
+			print ">".$type->getDisplayName()."</option>";
+		}
+		
+		print "\n\t</select>";
+		
+		print <<<END
+			<select name='search_status'>
+		END;
+		
+		$courseStatusTypes =& $cmm->getCanonicalCourseTypes();
+	
+		while ($courseStatusTypes->hasNext()) {
+			$status = $courseStatusTypes->next();
+				
+			$id =& $status->getId();
+			$idString = $id->getIdString();
+			print "\n\t\t<option value='".$idString."'";
+			if ($harmoni->request->get('type') == $idString) {
+				print " selected='selected'";
+			}
+			print ">".$status->getKeyword()."</option>";
+		}
+		
+		print "\n\t</select>";
+		
+		print "\n\t<input type='submit' value='"._("Suck!")."' />";
+		//print "\n\t<a href='".$harmoni->request->quickURL()."'>";
+		print "\n</p>\n</div></form>";
+		print "\n  <p align='center'>Sucking may take a few minutes</p>";
+		
+		ob_end_clean();
+		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);
+		
+		/*********************************************************
+		 * Canonical course search results
+		 *********************************************************/
+		$pageRows->add(new Heading(_("Canonical course search results ".$term->getDisplayName().""), 2), "100%", null,
+		 			   LEFT, CENTER);
+		ob_start();
+		if ($searchTitle = RequestContext::value('search_title') ||	
+			$searchNumber = RequestContext::value('search_number') ||
+			$searchType = RequestContext::value('search_type') ||
+			$searchStatus = RequestContext::value('search_status')) {
+					
 			print "\n<table border=1>";
 			print "\n\t<tr>";
 			print "\n\t<td>";
@@ -206,13 +172,11 @@ class searchcanonicalcourseAction
 	  			$courseKeyword = $courseType->getKeyword();
 	  			$courseStatusType = $canonicalCourse->getStatus();
 	  			$courseStatusKeyword = $courseStatusType->getKeyword();
-				if ($values['namedescstep']['title'] == $title ||
-					$values['namedescstep']['number'] == $number ||
-					$values['namedescstep']['type'] == $courseKeyword ||
-					$values['namedescstep']['statusType'] == $courseStatusKeyword) {
+				if ($searchTitle == $title || $searchNumber == $number ||
+					$searchType == $courseKeyword || $searchStatus == $courseStatusKeyword) {
 					$description = $canonicalCourse->getDescription();
 					$credits = $canonicalCourse->getCredits();
-					
+				
 					print "<tr>";
 					print "<td>";
 					print $title;
@@ -229,29 +193,17 @@ class searchcanonicalcourseAction
 					print "</tr>";
 				}
 			}
-			RequestContext::sendTo($this->getReturnUrl());
-			exit();
-			return TRUE;
-		} 
-		// If we don't have authorization to add to the picked parent, send us back to
-		// that step.
-		else {
-			return FALSE;
 		}
-	}
+
+		print "Success!";
 	
-	/**
-	 * Return the URL that this action should return to when completed.
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 4/28/05
-	 */
-	function getReturnUrl () {
-		$harmoni =& Harmoni::instance();
-		$url =& $harmoni->request->mkURL("admin", "main");
-		return $url->write();
+		// Create a layout for this group using the GroupPrinter
+		
+		$groupLayout =& new Block(ob_get_contents(), STANDARD_BLOCK);
+		ob_end_clean();
+			
+		$pageRows->add($groupLayout, "100%", null, LEFT, CENTER);	
+		$actionRows->add($pageRows, "100%", null, LEFT, CENTER);	
 	}
 }
-
 ?>

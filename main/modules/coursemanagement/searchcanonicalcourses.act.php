@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcanonicalcourses.act.php,v 1.2 2006/07/18 20:30:21 jwlee100 Exp $
+ * @version $Id: searchcanonicalcourses.act.php,v 1.3 2006/07/18 21:02:22 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -28,8 +28,8 @@ class suck_it_upAction
  		$authZManager =& Services::getService("AuthZ");
  		$idManager =& Services::getService("IdManager");
  		if ($authZManager->isUserAuthorized(
- 					$idManager->getId("edu.middlebury.authorization.view"),
- 					$idManager->getId("edu.middlebury.coursemanagement")))
+ 			$idManager->getId("edu.middlebury.authorization.view"),
+ 			$idManager->getId("edu.middlebury.coursemanagement")))
  		{
 			return TRUE;
  		} else {
@@ -67,7 +67,7 @@ class suck_it_upAction
 
 		$agentManager =& Services::getService("Agent");
 		$idManager = Services::getService("Id");
-		$cm =& Services::getService("CourseManagement");
+		$cmm =& Services::getService("CourseManagement");
 		
 		
 		
@@ -91,159 +91,111 @@ class suck_it_upAction
 			<div>
 			<input type='text' name='search_title'>
 			<input type='text' name='search_number'>
-			<select name='type'>
+			<select name='search_type'>
 		END;
 		
-		$searchTypes =& $agentManager->getAgentSearchTypes();
-		
-		// harmoni->requestContext::$type;
-		$classId =& $idManager->getId("OU=Classes,OU=Groups,DC=middlebury,DC=edu ");
-		$classes =& $agentManager->getGroup($classId);
-		$terms =& $classes->getGroups(false);
+		$courseTypes =& $cmm->getCanonicalCourseTypes();
 	
-		while ($terms->hasNext()) {
-			$termGroup =& $terms->next();
-			$termName = $termGroup->getDisplayName();
-			$term = $this->_getTerm($termName);
-		
-			$id =& $term->getId();
+		while ($courseTypes->hasNext()) {
+			$type = $courseTypes->next();
+				
+			$id =& $type->getId();
 			$idString = $id->getIdString();
 			print "\n\t\t<option value='".$idString."'";
 			if ($harmoni->request->get('type') == $idString) {
 				print " selected='selected'";
 			}
-			print ">".$term->getDisplayName()."</option>";
+			print ">".$type->getDisplayName()."</option>";
 		}
 		
 		print "\n\t</select>";
 		
 		print <<<END
-			<select name='status_type'>
+			<select name='search_status'>
 		END;
 		
-		$searchTypes =& $agentManager->getAgentSearchTypes();
-		
-		// harmoni->requestContext::$type;
-		$classId =& $idManager->getId("OU=Classes,OU=Groups,DC=middlebury,DC=edu ");
-		$classes =& $agentManager->getGroup($classId);
-		$terms =& $classes->getGroups(false);
+		$courseStatusTypes =& $cmm->getCanonicalCourseTypes();
 	
-		while ($terms->hasNext()) {
-			$termGroup =& $terms->next();
-			$termName = $termGroup->getDisplayName();
-			$term = $this->_getTerm($termName);
-		
-			$id =& $term->getId();
+		while ($courseStatusTypes->hasNext()) {
+			$status = $courseStatusTypes->next();
+				
+			$id =& $status->getId();
 			$idString = $id->getIdString();
 			print "\n\t\t<option value='".$idString."'";
 			if ($harmoni->request->get('type') == $idString) {
 				print " selected='selected'";
 			}
-			print ">".$term->getDisplayName()."</option>";
+			print ">".$status->getKeyword()."</option>";
 		}
+		
+		print "\n\t</select>";
 		
 		print "\n\t<input type='submit' value='"._("Suck!")."' />";
 		//print "\n\t<a href='".$harmoni->request->quickURL()."'>";
 		print "\n</p>\n</div></form>";
 		print "\n  <p align='center'>Sucking may take a few minutes</p>";
 		
-		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 		ob_end_clean();
-		
+		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 		
 		/*********************************************************
-		 * the agent search results
+		 * Canonical course search results
 		 *********************************************************/
+		$pageRows->add(new Heading(_("Canonical course search results ".$term->getDisplayName().""), 2), "100%", null,
+		 			   LEFT, CENTER);
 		ob_start();
-		$searchTitle = RequestContext::value('title');
-		$searchNumber = RequestContext::value()
-		printpre($values);
+		if ($searchTitle = RequestContext::value('search_title') ||	
+			$searchNumber = RequestContext::value('search_number') ||
+			$searchType = RequestContext::value('search_type') ||
+			$searchStatus = RequestContext::value('search_status')) {
 					
-		$courseType =& $courseManager->_indexToType($values['namedescstep']['type'],'can');
-		$statusType =& $courseManager->_indexToType($values['namedescstep']['statusType'],'can_stat');
-			
-		print "\n<table border=1>";
-		print "\n\t<tr>";
-		print "\n\t<td>";
-		print "<b>Title</b>";
-		print "\n\t<td>";
-		print "<b>Number</b>";
-		print "\n\t<td>";
-		print "<b>Description</b>";
-		print "\n\t<td>";
-		print "<b>Course Type</b>";
-		print "\n\t<td>";
-		print "<b>Course Status</b>";
-		print "\n\t<td>";
-		print "<b>Credits</b>";
-		print "\n\t</tr>";
-		$canonicalCourseIterator = $courseManager->getCanonicalCourses();
-		while ($canonicalCourseIterator->hasNext()) {
-			$canonicalCourse = $canonicalCourseIterator->next();
-			$title = $canonicalCourse->getTitle();
-	  		$number = $canonicalCourse->getNumber();
-	  		$courseType = $canonicalCourse->getCourseType();
-	  		$courseKeyword = $courseType->getKeyword();
-	  		$courseStatusType = $canonicalCourse->getStatus();
-	  		$courseStatusKeyword = $courseStatusType->getKeyword();
-			if ($values['namedescstep']['title'] == $title ||
-				$values['namedescstep']['number'] == $number ||
-				$values['namedescstep']['type'] == $courseKeyword ||
-				$values['namedescstep']['statusType'] == $courseStatusKeyword) {
-				$description = $canonicalCourse->getDescription();
-				$credits = $canonicalCourse->getCredits();
+			print "\n<table border=1>";
+			print "\n\t<tr>";
+			print "\n\t<td>";
+			print "<b>Title</b>";
+			print "\n\t<td>";
+			print "<b>Number</b>";
+			print "\n\t<td>";
+			print "<b>Description</b>";
+			print "\n\t<td>";
+			print "<b>Course Type</b>";
+			print "\n\t<td>";
+			print "<b>Course Status</b>";
+			print "\n\t<td>";
+			print "<b>Credits</b>";
+			print "\n\t</tr>";
+			$canonicalCourseIterator = $courseManager->getCanonicalCourses();
+			while ($canonicalCourseIterator->hasNext()) {
+				$canonicalCourse = $canonicalCourseIterator->next();
+				$title = $canonicalCourse->getTitle();
+	  			$number = $canonicalCourse->getNumber();
+	  			$courseType = $canonicalCourse->getCourseType();
+	  			$courseKeyword = $courseType->getKeyword();
+	  			$courseStatusType = $canonicalCourse->getStatus();
+	  			$courseStatusKeyword = $courseStatusType->getKeyword();
+				if ($searchTitle == $title || $searchNumber == $number ||
+					$searchType == $courseKeyword || $searchStatus == $courseStatusKeyword) {
+					$description = $canonicalCourse->getDescription();
+					$credits = $canonicalCourse->getCredits();
 				
-				print "<tr>";
-				print "<td>";
-				print $title;
-				print "<td>";
-				print $number;
-				print "<td>";
-				print $description;
-				print "<td>";
-				print $courseKeyword;
-				print "<td>";
-				print $courseStatusKeyword;
-				print "<td>";
-				print $credits;
-				print "</tr>";
+					print "<tr>";
+					print "<td>";
+					print $title;
+					print "<td>";
+					print $number;
+					print "<td>";
+					print $description;
+					print "<td>";
+					print $courseKeyword;
+					print "<td>";
+					print $courseStatusKeyword;
+					print "<td>";
+					print $credits;
+					print "</tr>";
+				}
 			}
 		}
-		if ($termIdString = RequestContext::value('term_name') ) {
-			$classId =& $idManager->getId("OU=Classes,OU=Groups,DC=middlebury,DC=edu ");
-			$classes =& $agentManager->getGroup($classId);
-			$terms =& $classes->getGroups(false);
-			while($terms->hasNext()){
-				$termGroup =& $terms->next();
-				$termName = $termGroup->getDisplayName();
-				$term = $this->_getTerm($termName);
-				$id=& $term->getId();
-		
-			if ($termIdString==$id->getIdString()) {
-				break;
-			}
-		}
-	
-				
- 		$pageRows->add(new Heading(_("Courses Sucked from ".$term->getDisplayName().""), 2), "100%", null, LEFT, CENTER);
 
-		ob_start();	
-		$last = "";
-		$sections =& $termGroup->getGroups(false);
-			
-		while ($sections->hasNext()) {
-			$section =& $sections->next();
-			$sectionName = $section->getDisplayName();	
-			if (substr($sectionName,0,4)=="phed") {
-				continue;	
-			}
-			if(substr($sectionName,0,strlen($sectionName)-5)!=$last){
-				$last=substr($sectionName,0,strlen($sectionName)-5);
-				$canonicalCourseId = $this->_getCanonicalCourse($sectionName);
-			}
-		}
-	
-	
 		print "Success!";
 	
 		// Create a layout for this group using the GroupPrinter
