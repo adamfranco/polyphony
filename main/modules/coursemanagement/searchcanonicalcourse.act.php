@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcanonicalcourse.act.php,v 1.3 2006/07/11 19:01:26 jwlee100 Exp $
+ * @version $Id: searchcanonicalcourse.act.php,v 1.4 2006/07/18 20:24:59 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcanonicalcourse.act.php,v 1.3 2006/07/11 19:01:26 jwlee100 Exp $
+ * @version $Id: searchcanonicalcourse.act.php,v 1.4 2006/07/18 20:24:59 jwlee100 Exp $
  */
 class searchcanonicalcourseAction
 	extends MainWindowAction
@@ -61,7 +61,7 @@ class searchcanonicalcourseAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		return _("Create a canonical course.");
+		return _("Search a canonical course.");
 	}
 	
 	/**
@@ -74,20 +74,8 @@ class searchcanonicalcourseAction
 	function buildContent () {
 		$harmoni =& Harmoni::instance();
 		$actionRows =& $this->getActionRows();
-		$cacheName = "createCanonicalCourseWizard";
-		$this->runWizard ( $cacheName, $actionRows );
-	}
 		
-	/**
-	 * Create a new Wizard for this action. Caching of this Wizard is handled by
-	 * {@link getWizard()} and does not need to be implemented here.
-	 * 
-	 * @return object Wizard
-	 * @access public
-	 * @since 4/28/05
-	 */
-	
-	function &createWizard () {
+		
 		$harmoni =& Harmoni::instance();
 		$courseManager =& Services::getService("CourseManagement");
 		$canonicalCourseIterator =& $courseManager->getCanonicalCourses();
@@ -95,6 +83,7 @@ class searchcanonicalcourseAction
 		// Instantiate the wizard, then add our steps.
 		$wizard =& SimpleStepWizard::withDefaultLayout();
 		
+		ob_start();
 		// :: Name and Description ::
 		$step =& $wizard->addStep("namedescstep", new WizardStep());
 		$step->setDisplayName(_("Please enter the information to search for a canonical course:"));
@@ -160,11 +149,10 @@ class searchcanonicalcourseAction
 		print "\n<br />[[statusType]]";
 		print "\n<div style='width: 400px'> &nbsp; </div>";
 		$step->setContent(ob_get_contents());
+		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 		ob_end_clean();
-		
-		return $wizard;
 	}
-		
+				
 	/**
 	 * Save our results. Tearing down and unsetting the Wizard is handled by
 	 * in {@link runWizard()} and does not need to be implemented here.
@@ -175,9 +163,7 @@ class searchcanonicalcourseAction
 	 * @access public
 	 * @since 4/28/05
 	 */
-	function saveWizard ( $cacheName ) {
-		$wizard =& $this->getWizard($cacheName);
-		
+	function search () {
 		// Make sure we have a valid Repository
 		$courseManager =& Services::getService("CourseManagement");
 		$idManager =& Services::getService("Id");
