@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcanonicalcourse.act.php,v 1.7 2006/07/19 20:08:05 jwlee100 Exp $
+ * @version $Id: searchcanonicalcourse.act.php,v 1.8 2006/07/19 20:24:02 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -75,12 +75,17 @@ class searchcanonicalcourseAction
 		print "<br>Course Type: <select name='search_type'>";
 		print "<option value='' selected='selected'>";
 		
-		$courseTypes =& $cmm->getCourseTypes();
-	
-		while ($courseTypes->hasNext()) {
-			$type = $courseTypes->next();
-			$keyword = $type->getKeyword();
-			print "\n\t\t<option value='".$keyword."'></option>";
+		$typename = "can";	
+		$dbHandler =& Services::getService("DBHandler");
+		$query=& new SelectQuery;
+		$query->addTable('cm_'.$typename."_type");
+		$query->addColumn('id');
+		$keyword = $query->addColumn('keyword');
+		$res=& $dbHandler->query($query);
+		while($res->hasMoreRows()){
+			$row = $res->getCurrentRow();
+			$res->advanceRow();
+			print "<option value='".$keyword."'>";
 		}
 		
 		print "\n\t</select>";
