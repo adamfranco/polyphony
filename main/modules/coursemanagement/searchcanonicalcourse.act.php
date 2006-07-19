@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcanonicalcourse.act.php,v 1.8 2006/07/19 20:24:02 jwlee100 Exp $
+ * @version $Id: searchcanonicalcourse.act.php,v 1.9 2006/07/19 20:54:05 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -70,7 +70,7 @@ class searchcanonicalcourseAction
 		print "<form action='$self' method='post'>
 			<div>
 			Title: <input type='text' name='search_title'>
-			Number: <input type='text' name='search_number'>";
+			<br>Number: <input type='text' name='search_number'>";
 			
 		print "<br>Course Type: <select name='search_type'>";
 		print "<option value='' selected='selected'>";
@@ -81,29 +81,34 @@ class searchcanonicalcourseAction
 		$query->addTable('cm_'.$typename."_type");
 		$query->addColumn('id');
 		$keyword = $query->addColumn('keyword');
-		$res=& $dbHandler->query($query);
+		$res =& $dbHandler->query($query);
 		while($res->hasMoreRows()){
 			$row = $res->getCurrentRow();
 			$res->advanceRow();
-			print "<option value='".$keyword."'>";
+			print "<option value='".$keyword."'></option>";
 		}
 		
 		print "\n\t</select>";
 		
 		print "<br>Course Status Type<select name='search_status'>";
-		print "<option value=''>";
+		print "<option value='' selected='selected'>";
 		
-		$courseStatusTypes =& $cmm->getCourseStatusTypes();
-	
-		while ($courseStatusTypes->hasNext()) {
-			$status = $courseStatusTypes->next();
-			$keyword = $status->getKeyword();
-			print "\n\t\t<option value='".$keyword."'></option>";
+		$typename = "can_stat";	
+		$dbHandler =& Services::getService("DBHandler");
+		$query=& new SelectQuery;
+		$query->addTable('cm_'.$typename."_type");
+		$query->addColumn('id');
+		$keyword = $query->addColumn('keyword');
+		$res =& $dbHandler->query($query);
+		while($res->hasMoreRows()){
+			$row = $res->getCurrentRow();
+			$res->advanceRow();
+			print "<option value='".$keyword."'></option>";
 		}
 		
 		print "\n\t</select>";
 		
-		print "\n\t<input type='submit' value='"._("Search!")."' />";
+		print "\n\t<p><input type='submit' value='"._("Search!")."' />";
 		//print "\n\t<a href='".$harmoni->request->quickURL()."'>";
 		
 		print "\n</p>\n</div></form>";
