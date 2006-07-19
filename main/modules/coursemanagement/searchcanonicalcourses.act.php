@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcanonicalcourses.act.php,v 1.3 2006/07/18 21:02:22 jwlee100 Exp $
+ * @version $Id: searchcanonicalcourses.act.php,v 1.4 2006/07/19 19:07:00 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -57,8 +57,6 @@ class suck_it_upAction
 	 * @since 4/26/05
 	 */
 	function buildContent () {
-		$defaultTextDomain = textdomain("polyphony");
-		
 		$actionRows =& $this->getActionRows();
 		$pageRows =& new Container(new YLayout(), OTHER, 1);
 		$harmoni =& Harmoni::instance();
@@ -102,9 +100,9 @@ class suck_it_upAction
 			$id =& $type->getId();
 			$idString = $id->getIdString();
 			print "\n\t\t<option value='".$idString."'";
-			if ($harmoni->request->get('type') == $idString) {
+			if ($harmoni->request->get('type') == $idString)
 				print " selected='selected'";
-			}
+			
 			print ">".$type->getDisplayName()."</option>";
 		}
 		
@@ -122,9 +120,9 @@ class suck_it_upAction
 			$id =& $status->getId();
 			$idString = $id->getIdString();
 			print "\n\t\t<option value='".$idString."'";
-			if ($harmoni->request->get('type') == $idString) {
+			if ($harmoni->request->get('type') == $idString)
 				print " selected='selected'";
-			}
+			
 			print ">".$status->getKeyword()."</option>";
 		}
 		
@@ -143,6 +141,7 @@ class suck_it_upAction
 		 *********************************************************/
 		$pageRows->add(new Heading(_("Canonical course search results ".$term->getDisplayName().""), 2), "100%", null,
 		 			   LEFT, CENTER);
+		
 		ob_start();
 		if ($searchTitle = RequestContext::value('search_title') ||	
 			$searchNumber = RequestContext::value('search_number') ||
@@ -197,20 +196,12 @@ class suck_it_upAction
 		}
 
 		print "Success!";
-	
-		// Create a layout for this group using the GroupPrinter
 		
 		$groupLayout =& new Block(ob_get_contents(), STANDARD_BLOCK);
 		ob_end_clean();
 			
 		$pageRows->add($groupLayout, "100%", null, LEFT, CENTER);	
-		//}
-		
-		// In order to preserve proper nesting on the HTML output, the checkboxes
-		// are all in the pagerows layout instead of actionrows.
- 		$actionRows->add($pageRows, null, null,CENTER, CENTER);	
- 		
- 		textdomain($defaultTextDomain);
+		$actionRows->add($pageRows, "100%", null, LEFT, CENTER);
 	}
 }
 ?>
