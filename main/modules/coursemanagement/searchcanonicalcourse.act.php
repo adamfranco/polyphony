@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcanonicalcourse.act.php,v 1.6 2006/07/19 19:07:00 jwlee100 Exp $
+ * @version $Id: searchcanonicalcourse.act.php,v 1.7 2006/07/19 20:08:05 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -66,48 +66,38 @@ class searchcanonicalcourseAction
 		
 		ob_start();
 		$self = $harmoni->request->quickURL();
-		print ("<p align='center'>Search for a canonical course by the following criteria").": </p>";
+		print ("<p align='center'><b>Search for a canonical course by the following criteria").": </b></p>";
 		print "<form action='$self' method='post'>
 			<div>
 			Title: <input type='text' name='search_title'>
 			Number: <input type='text' name='search_number'>";
-		/*
-		print "<select name='search_type'>";
+			
+		print "<br>Course Type: <select name='search_type'>";
+		print "<option value='' selected='selected'>";
 		
-		$courseTypes =& $cmm->getCanonicalCourseTypes();
+		$courseTypes =& $cmm->getCourseTypes();
 	
 		while ($courseTypes->hasNext()) {
 			$type = $courseTypes->next();
-				
-			$id =& $type->getId();
-			$idString = $id->getIdString();
-			print "\n\t\t<option value='".$idString."'";
-			if ($harmoni->request->get('type') == $idString)
-				print " selected='selected'";
-			
-			print ">".$type->getDisplayName()."</option>";
+			$keyword = $type->getKeyword();
+			print "\n\t\t<option value='".$keyword."'></option>";
 		}
 		
 		print "\n\t</select>";
 		
-		print "<select name='search_status'>";
+		print "<br>Course Status Type<select name='search_status'>";
+		print "<option value=''>";
 		
-		$courseStatusTypes =& $cmm->getCanonicalCourseTypes();
+		$courseStatusTypes =& $cmm->getCourseStatusTypes();
 	
 		while ($courseStatusTypes->hasNext()) {
 			$status = $courseStatusTypes->next();
-				
-			$id =& $status->getId();
-			$idString = $id->getIdString();
-			print "\n\t\t<option value='".$idString."'";
-			if ($harmoni->request->get('type') == $idString)
-				print " selected='selected'";
-			
-			print ">".$status->getKeyword()."</option>";
+			$keyword = $status->getKeyword();
+			print "\n\t\t<option value='".$keyword."'></option>";
 		}
 		
 		print "\n\t</select>";
-		*/
+		
 		print "\n\t<input type='submit' value='"._("Search!")."' />";
 		//print "\n\t<a href='".$harmoni->request->quickURL()."'>";
 		
@@ -146,13 +136,14 @@ class searchcanonicalcourseAction
 			$canonicalCourse = $canonicalCourseIterator->next();
 			$title = $canonicalCourse->getTitle();
 			$number = $canonicalCourse->getNumber();
-			$courseType = $canonicalCourse->getCourseType();
-			$courseKeyword = $courseType->getKeyword();
+			$cType = $canonicalCourse->getCourseType();
+			$courseType = $cType->getKeyword();
 			$courseStatusType = $canonicalCourse->getStatus();
-			$courseStatusKeyword = $courseStatusType->getKeyword();
-			if ($searchTitle == $title || $searchNumber == $number ||
-				$searchType == $courseKeyword || $searchStatus == $courseStatusKeyword) {
-				  
+			$courseStatus = $courseStatusType->getKeyword();
+			if (($searchTitle == $title || $searchTitle == "") && ($searchNumber == "" || $searchNumber == $number) &&
+				($searchType == $courseType || $searchType == "") && 
+				($searchStatus == "" || $searchStatus == $courseStatus)) 		
+			{
 				$description = $canonicalCourse->getDescription();
 				$credits = $canonicalCourse->getCredits();
 				
@@ -164,9 +155,9 @@ class searchcanonicalcourseAction
 				print "<td>";
 				print $description;
 				print "<td>";
-				print $courseKeyword;
+				print $courseType;
 				print "<td>";
-				print $courseStatusKeyword;
+				print $courseStatus;
 				print "<td>";
 				print $credits;
 				print "</tr>";
