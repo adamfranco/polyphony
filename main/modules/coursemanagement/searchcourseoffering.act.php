@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcourseoffering.act.php,v 1.5 2006/07/19 20:54:05 jwlee100 Exp $
+ * @version $Id: searchcourseoffering.act.php,v 1.6 2006/07/20 16:19:08 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -85,7 +85,7 @@ class searchcourseofferingAction
 		while($res->hasMoreRows()){
 			$row = $res->getCurrentRow();
 			$res->advanceRow();
-			print "<option value='".$keyword."'></option>";
+			print "<option value='".$row['keyword']."'>".$row['keyword']."</option>";
 		}
 		
 		print "\n\t</select>";
@@ -103,7 +103,7 @@ class searchcourseofferingAction
 		while($res->hasMoreRows()){
 			$row = $res->getCurrentRow();
 			$res->advanceRow();
-			print "<option value='".$keyword."'></option>";
+			print "<option value='".$row['keyword']."'>".$row['keyword']."</option>";
 		}
 		
 		print "\n\t</select>";
@@ -157,8 +157,6 @@ class searchcourseofferingAction
 		print "<b>Course Offering Type</b>";
 		print "\n\t<td>";
 		print "<b>Course Offering Status</b>";
-		print "\n\t<td>";
-		print "<b>Term</b>";
 		print "\n\t</tr>";
 		$canonicalCourseIterator = $cmm->getCanonicalCourses();
 		while ($canonicalCourseIterator->hasNext()) {
@@ -172,7 +170,6 @@ class searchcourseofferingAction
 	  			$offeringType = $oType->getKeyword();
 	  			$offeringStatusType = $courseOffering->getStatus();
 	  			$offeringStatus = $offeringStatusType->getKeyword();
-	  			$term = $courseOffering->getTerm();
 				if (($searchTitle == $title || $searchTitle == "") && 
 					($searchNumber == "" || $searchNumber == $number) &&
 					($searchType == $offeringType || $searchType == "") && 
@@ -192,8 +189,6 @@ class searchcourseofferingAction
 					print $offeringType;
 					print "<td>";
 					print $offeringStatus;
-					print "<td>";
-					print $term;
 					print "</tr>";
 				}
 			}

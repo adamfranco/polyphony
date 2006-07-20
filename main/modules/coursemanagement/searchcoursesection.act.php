@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcoursesection.act.php,v 1.2 2006/07/19 20:54:05 jwlee100 Exp $
+ * @version $Id: searchcoursesection.act.php,v 1.3 2006/07/20 16:19:08 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -85,7 +85,7 @@ class searchcoursesectionAction
 		while($res->hasMoreRows()){
 			$row = $res->getCurrentRow();
 			$res->advanceRow();
-			print "<option value='".$keyword."'></option>";
+			print "<option value='".$row['keyword']."'>".$row['keyword']."</option>";
 		}
 		
 		print "\n\t</select>";
@@ -103,7 +103,7 @@ class searchcoursesectionAction
 		while($res->hasMoreRows()){
 			$row = $res->getCurrentRow();
 			$res->advanceRow();
-			print "<option value='".$keyword."'></option>";
+			print "<option value='".$row['keyword']."'>".$row['keyword']."</option>";
 		}
 		
 		print "\n\t</select>";
@@ -162,8 +162,8 @@ class searchcoursesectionAction
 	  				$location = $courseSection->getLocation();
 					if (($searchTitle == $title || $searchTitle == "") && 
 						($searchNumber == "" || $searchNumber == $number) &&
-						($searchType == $offeringType || $searchType == "") && 
-						($searchStatus == "" || $searchStatus == $offeringStatus) ||
+						($searchType == $sectionType || $searchType == "") && 
+						($searchStatus == "" || $searchStatus == $sectionStatus) &&
 						($searchLocation == "" || $searchLocation == $location)) 		
 					{
 						$description = $canonicalCourse->getDescription();

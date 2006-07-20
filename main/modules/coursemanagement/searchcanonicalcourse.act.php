@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcanonicalcourse.act.php,v 1.9 2006/07/19 20:54:05 jwlee100 Exp $
+ * @version $Id: searchcanonicalcourse.act.php,v 1.10 2006/07/20 16:19:08 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -77,15 +77,15 @@ class searchcanonicalcourseAction
 		
 		$typename = "can";	
 		$dbHandler =& Services::getService("DBHandler");
-		$query=& new SelectQuery;
+		$query =& new SelectQuery;
 		$query->addTable('cm_'.$typename."_type");
 		$query->addColumn('id');
-		$keyword = $query->addColumn('keyword');
+		$query->addColumn('keyword');
 		$res =& $dbHandler->query($query);
-		while($res->hasMoreRows()){
+		while ($res->hasMoreRows()) {
 			$row = $res->getCurrentRow();
 			$res->advanceRow();
-			print "<option value='".$keyword."'></option>";
+			print "<option value='".$row['keyword']."'>".$row['keyword']."</option>";
 		}
 		
 		print "\n\t</select>";
@@ -95,15 +95,15 @@ class searchcanonicalcourseAction
 		
 		$typename = "can_stat";	
 		$dbHandler =& Services::getService("DBHandler");
-		$query=& new SelectQuery;
+		$query =& new SelectQuery;
 		$query->addTable('cm_'.$typename."_type");
 		$query->addColumn('id');
-		$keyword = $query->addColumn('keyword');
+		$query->addColumn('keyword');
 		$res =& $dbHandler->query($query);
-		while($res->hasMoreRows()){
+		while ($res->hasMoreRows()) {
 			$row = $res->getCurrentRow();
 			$res->advanceRow();
-			print "<option value='".$keyword."'></option>";
+			print "<option value='".$row['keyword']."'>".$row['keyword']."</option>";
 		}
 		
 		print "\n\t</select>";
@@ -151,8 +151,8 @@ class searchcanonicalcourseAction
 			$courseStatusType = $canonicalCourse->getStatus();
 			$courseStatus = $courseStatusType->getKeyword();
 			if (($searchTitle == $title || $searchTitle == "") && ($searchNumber == "" || $searchNumber == $number) &&
-				($searchType == $courseType || $searchType == "") && 
-				($searchStatus == "" || $searchStatus == $courseStatus)) 		
+				($searchType == "" || $searchType == $courseType) && 
+				($searchStatus == "" || $searchStatus == $courseStatus))		
 			{
 				$description = $canonicalCourse->getDescription();
 				$credits = $canonicalCourse->getCredits();
