@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcourseoffering.act.php,v 1.9 2006/07/20 19:01:30 jwlee100 Exp $
+ * @version $Id: searchcourseoffering.act.php,v 1.10 2006/07/20 19:21:27 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -121,7 +121,7 @@ class searchcourseofferingAction
 		while($res->hasMoreRows()){
 			$row = $res->getCurrentRow();
 			$res->advanceRow();
-			print "\n\t<option value='".$row['id']."'>".$row['name']."</option>";
+			print "\n\t<option value='".$row['name']."'>".$row['name']."</option>";
 		}
 		
 		print "\n\t</select>";
@@ -171,7 +171,7 @@ class searchcourseofferingAction
 	  				$offeringStatusType = $courseOffering->getStatus();
 	  				$offeringStatus = $offeringStatusType->getKeyword();
 	  				$offeringTerm =& $courseOffering->getTerm();
-	  				$term = $offeringTerm->getId();
+	  				$term = $offeringTerm->getDisplayName();
 					if (($searchTitle == $title || $searchTitle == "") && 
 						($searchNumber == "" || $searchNumber == $number) &&
 						($searchType == $offeringType || $searchType == "") && 
