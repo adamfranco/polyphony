@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecourseoffering.act.php,v 1.9 2006/07/20 19:57:37 jwlee100 Exp $
+ * @version $Id: browsecourseoffering.act.php,v 1.10 2006/07/20 20:32:16 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecourseoffering.act.php,v 1.9 2006/07/20 19:57:37 jwlee100 Exp $
+ * @version $Id: browsecourseoffering.act.php,v 1.10 2006/07/20 20:32:16 jwlee100 Exp $
  */
 class browsecourseofferingAction
 	extends MainWindowAction
@@ -130,6 +130,12 @@ class browsecourseofferingAction
 			}			
 		}
 		print "</table>";
+		
+		print "<p><hr>";
+		print "<p><a href='".$harmoni->request->quickURL("coursemanagement","createcourseoffering")."'>";
+		print _("Click here to create a course offering.");
+		print "<p><a href='".$harmoni->request->quickURL("coursemanagement","searchcourseoffering")."'>";
+		print _("Click here to search for course offerings.");
 		
 		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 		ob_end_clean();

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcourseoffering.act.php,v 1.7 2006/07/20 19:57:37 jwlee100 Exp $
+ * @version $Id: createcourseoffering.act.php,v 1.8 2006/07/20 20:32:16 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcourseoffering.act.php,v 1.7 2006/07/20 19:57:37 jwlee100 Exp $
+ * @version $Id: createcourseoffering.act.php,v 1.8 2006/07/20 20:32:16 jwlee100 Exp $
  */
 class createcourseofferingAction
 	extends MainWindowAction
@@ -264,6 +264,13 @@ class createcourseofferingAction
 		print "\n"._("The course grading type of this <em>course offering</em>: ");
 		print "\n<br />[[courseGrade]]";
 		print "\n<div style='width: 400px'> &nbsp; </div>";
+		
+		print "<p><hr>";
+		print "<p><font size=+1><a href='".$harmoni->request->quickURL("coursemanagement","browsecourseoffering")."'>";
+		print _("Click here to browse through all existing course offerings.</font>");
+		print "<p><font size=+1><a href='".$harmoni->request->quickURL("coursemanagement","searchcourseoffering")."'>";
+		print _("Click here to search for course offerings.</font>");
+		
 		$step->setContent(ob_get_contents());
 		ob_end_clean();
 		

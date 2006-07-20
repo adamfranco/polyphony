@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcoursesection.act.php,v 1.5 2006/07/20 19:01:30 jwlee100 Exp $
+ * @version $Id: searchcoursesection.act.php,v 1.6 2006/07/20 20:32:16 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -117,6 +117,12 @@ class searchcoursesectionAction
 		print "\n</p>\n</div></form>";
 		print "\n  <p align='center'><i>Search may take a few minutes.  Please be patient.</i></p>";
 		
+		print "<p><hr>";
+		print "<p><a href='".$harmoni->request->quickURL("coursemanagement","createcoursesection")."'>";
+		print _("Click here to create a course section.");
+		print "<p><a href='".$harmoni->request->quickURL("coursemanagement","browsecoursesection")."'>";
+		print _("Click here to browse through all existing course sections.");
+		
 		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 		ob_end_clean();
 		
@@ -126,7 +132,8 @@ class searchcoursesectionAction
 		$searchStatus = RequestContext::value('search_status');
 		$searchLocation = RequestContext::value('search_location');
 		
-		if ($searchTitle != "" || $searchNumber != "" || $searchType != "" || $searchStatus != "") {
+		if ($searchTitle != "" || $searchNumber != "" || $searchType != "" || $searchStatus != "" ||
+			$searchLocation != "") {
 			$pageRows->add(new Heading("Course section search results", STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 				
 			ob_start();

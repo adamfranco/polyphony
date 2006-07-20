@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcoursesection.act.php,v 1.10 2006/07/20 19:57:37 jwlee100 Exp $
+ * @version $Id: createcoursesection.act.php,v 1.11 2006/07/20 20:32:16 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcoursesection.act.php,v 1.10 2006/07/20 19:57:37 jwlee100 Exp $
+ * @version $Id: createcoursesection.act.php,v 1.11 2006/07/20 20:32:16 jwlee100 Exp $
  */
 class createcoursesectionAction
 	extends MainWindowAction
@@ -208,6 +208,13 @@ class createcoursesectionAction
 		print "\n"._("The location of this <em>course section</em>: ");
 		print "\n<br />[[location]]";
 		print "\n<div style='width: 400px'> &nbsp; </div>";
+		
+		print "<p><hr>";
+		print "<p><font size=+1><a href='".$harmoni->request->quickURL("coursemanagement","browsecoursesection")."'>";
+		print _("Click here to browse through all existing course sections.</font>");
+		print "<p><font size=+1><a href='".$harmoni->request->quickURL("coursemanagement","searchcoursesection")."'>";
+		print _("Click here to search for course sections.</font>");
+		
 		$step->setContent(ob_get_contents());
 		ob_end_clean();
 		

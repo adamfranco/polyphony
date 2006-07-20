@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcanonicalcourse.act.php,v 1.7 2006/07/11 18:03:48 jwlee100 Exp $
+ * @version $Id: createcanonicalcourse.act.php,v 1.8 2006/07/20 20:32:16 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcanonicalcourse.act.php,v 1.7 2006/07/11 18:03:48 jwlee100 Exp $
+ * @version $Id: createcanonicalcourse.act.php,v 1.8 2006/07/20 20:32:16 jwlee100 Exp $
  */
 class createcanonicalcourseAction
 	extends MainWindowAction
@@ -177,10 +177,11 @@ class createcanonicalcourseAction
 		print "\n<br />[[credits]]";
 		print "\n<div style='width: 400px'> &nbsp; </div>";
 		
+		print "<p><hr>";
 		print "<p><font size=+1><a href='".$harmoni->request->quickURL("coursemanagement","browsecanonicalcourse")."'>";
-		print _("Click here to browse through existing canonical courses</font>");
+		print _("Click here to browse through all existing canonical courses.</font>");
 		print "<p><font size=+1><a href='".$harmoni->request->quickURL("coursemanagement","searchcanonicalcourse")."'>";
-		print _("Click here to search for a canonical courses</font>");
+		print _("Click here to search for canonical courses.</font>");
 		$step->setContent(ob_get_contents());
 		ob_end_clean();
 		

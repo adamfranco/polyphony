@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcanonicalcourse.act.php,v 1.13 2006/07/20 19:01:30 jwlee100 Exp $
+ * @version $Id: searchcanonicalcourse.act.php,v 1.14 2006/07/20 20:32:16 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -114,6 +114,11 @@ class searchcanonicalcourseAction
 		
 		print "\n</p>\n</div></form>";
 		print "\n  <p align='center'><i>Search may take a few minutes.  Please be patient.</i></p>";
+		
+		print "<p><hr><p><a href='".$harmoni->request->quickURL("coursemanagement","createcanonicalcourse")."'>";
+		print _("Click here to create a canonical course.");
+		print "<p><a href='".$harmoni->request->quickURL("coursemanagement","browseanonicalcourse")."'>";
+		print _("Click here to browse through all existing canonical courses.");
 		
 		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 		ob_end_clean();
