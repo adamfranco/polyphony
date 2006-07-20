@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcourseoffering.act.php,v 1.11 2006/07/20 19:57:37 jwlee100 Exp $
+ * @version $Id: searchcourseoffering.act.php,v 1.12 2006/07/20 20:12:31 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -109,6 +109,23 @@ class searchcourseofferingAction
 		
 		print "\n\t</select>";
 		
+		print "\n\t<br>Course Offering Grade Type: <select name='search_grade'>";
+		print "\n\t<option value='' selected='selected'>Choose a course grade type</option>";
+				
+		$dbHandler =& Services::getService("DBHandler");
+		$query=& new SelectQuery;
+		$query->addTable('cm_grade_type');
+		$query->addColumn('id');
+		$query->addColumn('keyword');
+		$res =& $dbHandler->query($query);
+		while($res->hasMoreRows()){
+			$row = $res->getCurrentRow();
+			$res->advanceRow();
+			print "\n\t<option value='".$row['keyword']."'>".$row['keyword']."</option>";
+		}
+		
+		print "\n\t</select>";
+		
 		print "\n\t<br>Term: <select name='search_term'>";
 		print "\n\t<option value='' selected='selected'>Choose a term</option>";
 				
@@ -138,9 +155,12 @@ class searchcourseofferingAction
 		$searchNumber = RequestContext::value('search_number');
 		$searchType = RequestContext::value('search_type');
 		$searchStatus = RequestContext::value('search_status');
+		$searchGrade = RequestContext::value('search_grade');
 		$searchTerm = RequestContext::value('search_term');
 		
-		if ($searchTitle != "" || $searchNumber != "" || $searchType != "" || $searchStatus != "") {
+		if ($searchTitle != "" || $searchNumber != "" || $searchType != "" || $searchStatus != "" ||
+			$searchGrade != "" || $searchTerm != "") 
+		{
 			$pageRows->add(new Heading("Course offering search results", STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 			
 			ob_start();
@@ -158,6 +178,8 @@ class searchcourseofferingAction
 			print "\n\t<td>";
 			print "<b>Course Offering Status</b>";
 			print "\n\t<td>";
+			print "<b>Course Grade Type</b>";
+			print "\n\t<td>";
 			print "<b>Term</b>";
 			print "\n\t</tr>";
 			$canonicalCourseIterator = $cmm->getCanonicalCourses();
@@ -170,14 +192,17 @@ class searchcourseofferingAction
 	  				$number = $courseOffering->getNumber();
 	  				$oType = $courseOffering->getOfferingType();
 	  				$offeringType = $oType->getKeyword();
-	  				$offeringStatusType = $courseOffering->getStatus();
+	  				$offeringStatusType =& $courseOffering->getStatus();
 	  				$offeringStatus = $offeringStatusType->getKeyword();
+	  				$offeringGradeType =& $courseOffering->getCourseGradeType();
+	  				$offeringGrade = $offeringGradeType->getKeyword();
 	  				$offeringTerm =& $courseOffering->getTerm();
 	  				$term = $offeringTerm->getDisplayName();
 					if (($searchTitle == $title || $searchTitle == "") && 
 						($searchNumber == "" || $searchNumber == $number) &&
 						($searchType == $offeringType || $searchType == "") && 
 						($searchStatus == "" || $searchStatus == $offeringStatus) &&
+						($searchGrade == "" || $searchGrade == $offeringGrade) &&
 						($searchTerm == "" || $searchTerm == $term)) 		
 					{
 						$description = $canonicalCourse->getDescription();
@@ -194,6 +219,8 @@ class searchcourseofferingAction
 						print $offeringType;
 						print "<td>";
 						print $offeringStatus;
+						print "<td>";
+						print $offeringGrade;
 						print "<td>";
 						print $term;
 						print "</tr>";
