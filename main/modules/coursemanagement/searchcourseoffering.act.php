@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcourseoffering.act.php,v 1.7 2006/07/20 16:36:15 jwlee100 Exp $
+ * @version $Id: searchcourseoffering.act.php,v 1.8 2006/07/20 18:39:10 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -73,7 +73,7 @@ class searchcourseofferingAction
 			<br>Number: <input type='text' name='search_number'>";
 			
 		print "<br>Course Offering Type: <select name='search_type'>";
-		print "<option value='' selected='selected'>";
+		print "<option value='' selected='selected'>Choose a course offering type</option>";
 		
 		$typename = "offer";	
 		$dbHandler =& Services::getService("DBHandler");
@@ -91,7 +91,7 @@ class searchcourseofferingAction
 		print "\n\t</select>";
 		
 		print "<br>Course Offering Status Type<select name='search_status'>";
-		print "<option value='' selected='selected'>";
+		print "<option value='' selected='selected'>Choose a course offering status type</option>";
 		
 		$typename = "offer_stat";	
 		$dbHandler =& Services::getService("DBHandler");

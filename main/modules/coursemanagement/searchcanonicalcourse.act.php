@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcanonicalcourse.act.php,v 1.11 2006/07/20 16:36:15 jwlee100 Exp $
+ * @version $Id: searchcanonicalcourse.act.php,v 1.12 2006/07/20 18:39:10 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -73,7 +73,7 @@ class searchcanonicalcourseAction
 			<br>Number: <input type='text' name='search_number'>";
 			
 		print "<br>Course Type: <select name='search_type'>";
-		print "<option value='' selected='selected'>";
+		print "<option value='' selected='selected'>Choose a course type</option>";
 		
 		$typename = "can";	
 		$dbHandler =& Services::getService("DBHandler");
@@ -91,7 +91,7 @@ class searchcanonicalcourseAction
 		print "\n\t</select>";
 		
 		print "<br>Course Status Type<select name='search_status'>";
-		print "<option value='' selected='selected'>";
+		print "<option value='' selected='selected'>Choose a course status type</option>";
 		
 		$typename = "can_stat";	
 		$dbHandler =& Services::getService("DBHandler");
