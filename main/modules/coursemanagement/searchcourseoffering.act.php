@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcourseoffering.act.php,v 1.8 2006/07/20 18:39:10 jwlee100 Exp $
+ * @version $Id: searchcourseoffering.act.php,v 1.9 2006/07/20 19:01:30 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -66,14 +66,15 @@ class searchcourseofferingAction
 		
 		ob_start();
 		$self = $harmoni->request->quickURL();
-		print ("<p align='center'><b>Search for a course offering by the following criteria").": </b></p>";
-		print "<form action='$self' method='post'>
-			<div>
-			Title: <input type='text' name='search_title'>
-			<br>Number: <input type='text' name='search_number'>";
+		print ("<p align='center'><b><font size=+1>Search for a course offering by the following criteria").": 
+				</font></b></p>";
+		print "\n\t<form action='$self' method='post'>
+			\n\t<div>
+			\n\tTitle: <input type='text' name='search_title'>
+			\n\t<br>Number: <input type='text' name='search_number'>";
 			
-		print "<br>Course Offering Type: <select name='search_type'>";
-		print "<option value='' selected='selected'>Choose a course offering type</option>";
+		print "\n\t<br>Course Offering Type: <select name='search_type'>";
+		print "\n\t<option value='' selected='selected'>Choose a course offering type</option>";
 		
 		$typename = "offer";	
 		$dbHandler =& Services::getService("DBHandler");
@@ -90,8 +91,8 @@ class searchcourseofferingAction
 		
 		print "\n\t</select>";
 		
-		print "<br>Course Offering Status Type<select name='search_status'>";
-		print "<option value='' selected='selected'>Choose a course offering status type</option>";
+		print "\n\t<br>Course Offering Status Type<select name='search_status'>";
+		print "\n\t<option value='' selected='selected'>Choose a course offering status type</option>";
 		
 		$typename = "offer_stat";	
 		$dbHandler =& Services::getService("DBHandler");
@@ -108,30 +109,27 @@ class searchcourseofferingAction
 		
 		print "\n\t</select>";
 		
-		/*
-		print "<br>Term: <select name='search_term'>";
-		print "<option value='' selected='selected'>";
-		
+		print "\n\t<br>Term: <select name='search_term'>";
+		print "\n\t<option value='' selected='selected'>Choose a term</option>";
+				
 		$dbHandler =& Services::getService("DBHandler");
 		$query=& new SelectQuery;
 		$query->addTable('cm_term');
 		$query->addColumn('id');
-		$keyword = $query->addColumn('keyword');
+		$query->addColumn('name');
 		$res =& $dbHandler->query($query);
 		while($res->hasMoreRows()){
 			$row = $res->getCurrentRow();
 			$res->advanceRow();
-			print "<option value='".$keyword."'></option>";
+			print "\n\t<option value='".$row['id']."'>".$row['name']."</option>";
 		}
 		
 		print "\n\t</select>";
-		*/
 		
 		print "\n\t<p><input type='submit' value='"._("Search!")."' />";
-		//print "\n\t<a href='".$harmoni->request->quickURL()."'>";
 		
 		print "\n</p>\n</div></form>";
-		print "\n  <p align='center'>Search may take a few minutes</p>";
+		print "\n  <p align='center'><i>Search may take a few minutes.  Please be patient.</i></p>";
 		
 		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 		ob_end_clean();
@@ -140,6 +138,7 @@ class searchcourseofferingAction
 		$searchNumber = RequestContext::value('search_number');
 		$searchType = RequestContext::value('search_type');
 		$searchStatus = RequestContext::value('search_status');
+		$searchTerm = RequestContext::value('search_term');
 		
 		if ($searchTitle != "" || $searchNumber != "" || $searchType != "" || $searchStatus != "") {
 			$pageRows->add(new Heading("Course offering search results", STANDARD_BLOCK), "100%", null, LEFT, CENTER);
@@ -171,10 +170,13 @@ class searchcourseofferingAction
 	  				$offeringType = $oType->getKeyword();
 	  				$offeringStatusType = $courseOffering->getStatus();
 	  				$offeringStatus = $offeringStatusType->getKeyword();
+	  				$offeringTerm =& $courseOffering->getTerm();
+	  				$term = $offeringTerm->getId();
 					if (($searchTitle == $title || $searchTitle == "") && 
 						($searchNumber == "" || $searchNumber == $number) &&
 						($searchType == $offeringType || $searchType == "") && 
-						($searchStatus == "" || $searchStatus == $offeringStatus)) 		
+						($searchStatus == "" || $searchStatus == $offeringStatus) &&
+						($searchTerm == "" || $searchTerm == $term)) 		
 					{
 						$description = $canonicalCourse->getDescription();
 						$credits = $canonicalCourse->getCredits();

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcoursesection.act.php,v 1.4 2006/07/20 16:36:15 jwlee100 Exp $
+ * @version $Id: searchcoursesection.act.php,v 1.5 2006/07/20 19:01:30 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -66,14 +66,15 @@ class searchcoursesectionAction
 		
 		ob_start();
 		$self = $harmoni->request->quickURL();
-		print ("<p align='center'><b>Search for a course section by the following criteria").": </b></p>";
+		print ("<p align='center'><b><font size=+1>Search for a course section by the following criteria").": 
+				</font></b></p>";
 		print "<form action='$self' method='post'>
 			<div>
 			Title: <input type='text' name='search_title'>
 			<br>Number: <input type='text' name='search_number'>";
 			
 		print "<br>Course Section Type: <select name='search_type'>";
-		print "<option value='' selected='selected'>";
+		print "<option value='' selected='selected'>Choose a course section type</option>";
 		
 		$typename = "section";	
 		$dbHandler =& Services::getService("DBHandler");
@@ -91,7 +92,7 @@ class searchcoursesectionAction
 		print "\n\t</select>";
 		
 		print "<br>Course Section Status Type<select name='search_status'>";
-		print "<option value='' selected='selected'>";
+		print "<option value='' selected='selected'>Choose a course section status type</option>";
 		
 		$typename = "section_stat";	
 		$dbHandler =& Services::getService("DBHandler");
@@ -114,7 +115,7 @@ class searchcoursesectionAction
 		//print "\n\t<a href='".$harmoni->request->quickURL()."'>";
 		
 		print "\n</p>\n</div></form>";
-		print "\n  <p align='center'>Search may take a few minutes</p>";
+		print "\n  <p align='center'><i>Search may take a few minutes.  Please be patient.</i></p>";
 		
 		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 		ob_end_clean();

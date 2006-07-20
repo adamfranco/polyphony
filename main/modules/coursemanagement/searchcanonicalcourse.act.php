@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcanonicalcourse.act.php,v 1.12 2006/07/20 18:39:10 jwlee100 Exp $
+ * @version $Id: searchcanonicalcourse.act.php,v 1.13 2006/07/20 19:01:30 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -66,7 +66,8 @@ class searchcanonicalcourseAction
 		
 		ob_start();
 		$self = $harmoni->request->quickURL();
-		print ("<p align='center'><b>Search for a canonical course by the following criteria").": </b></p>";
+		print ("<p align='center'><b><font size=+1>Search for a canonical course by the following criteria").": 
+				</font></b></p>";
 		print "<form action='$self' method='post'>
 			<div>
 			Title: <input type='text' name='search_title'>
@@ -112,7 +113,7 @@ class searchcanonicalcourseAction
 		//print "\n\t<a href='".$harmoni->request->quickURL()."'>";
 		
 		print "\n</p>\n</div></form>";
-		print "\n  <p align='center'>Search may take a few minutes</p>";
+		print "\n  <p align='center'><i>Search may take a few minutes.  Please be patient.</i></p>";
 		
 		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 		ob_end_clean();
