@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcoursesection.act.php,v 1.3 2006/07/20 16:19:08 jwlee100 Exp $
+ * @version $Id: searchcoursesection.act.php,v 1.4 2006/07/20 16:36:15 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -125,72 +125,74 @@ class searchcoursesectionAction
 		$searchStatus = RequestContext::value('search_status');
 		$searchLocation = RequestContext::value('search_location');
 		
-		$pageRows->add(new Heading("Course section search results", STANDARD_BLOCK), "100%", null, LEFT, CENTER);
-			
-		ob_start();
-					
-		print "\n<table border=1>";
-		print "\n\t<tr>";
-		print "\n\t<td>";
-		print "<b>Title</b>";
-		print "\n\t<td>";
-		print "<b>Number</b>";
-		print "\n\t<td>";
-		print "<b>Description</b>";
-		print "\n\t<td>";
-		print "<b>Course Section Type</b>";
-		print "\n\t<td>";
-		print "<b>Course Section Status</b>";
-		print "\n\t<td>";
-		print "<b>Location</b>";
-		print "\n\t</tr>";
-		$canonicalCourseIterator = $cmm->getCanonicalCourses();
-		while ($canonicalCourseIterator->hasNext()) {
-			$canonicalCourse = $canonicalCourseIterator->next();
-			$courseOfferingIterator = $canonicalCourse->getCourseOfferings();
-			while ($courseOfferingIterator->hasNext()) {
-				$courseOffering =& $courseOfferingIterator->next();
-				$courseSectionIterator =& $courseOffering->getCourseSections();
-				while ($courseSectionIterator->hasNext()) {
-					$courseSection =& $courseSectionIterator->next();
-					$title = $courseSection->getTitle();
-	  				$number = $courseSection->getNumber();
-	  				$sType = $courseSection->getSectionType();
-	  				$sectionType = $sType->getKeyword();
-	  				$sectionStatusType = $courseSection->getStatus();
-	  				$sectionStatus = $sectionStatusType->getKeyword();
-	  				$location = $courseSection->getLocation();
-					if (($searchTitle == $title || $searchTitle == "") && 
-						($searchNumber == "" || $searchNumber == $number) &&
-						($searchType == $sectionType || $searchType == "") && 
-						($searchStatus == "" || $searchStatus == $sectionStatus) &&
-						($searchLocation == "" || $searchLocation == $location)) 		
-					{
-						$description = $canonicalCourse->getDescription();
+		if ($searchTitle != "" || $searchNumber != "" || $searchType != "" || $searchStatus != "") {
+			$pageRows->add(new Heading("Course section search results", STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 				
-						print "<tr>";
-						print "<td>";
-						print $title;
-						print "<td>";
-						print $number;
-						print "<td>";
-						print $description;
-						print "<td>";
-						print $sectionType;
-						print "<td>";
-						print $sectionStatus;
-						print "<td>";
-						print $location;
-						print "</tr>";
+			ob_start();
+						
+			print "\n<table border=1>";
+			print "\n\t<tr>";
+			print "\n\t<td>";
+			print "<b>Title</b>";
+			print "\n\t<td>";
+			print "<b>Number</b>";
+			print "\n\t<td>";
+			print "<b>Description</b>";
+			print "\n\t<td>";
+			print "<b>Course Section Type</b>";
+			print "\n\t<td>";
+			print "<b>Course Section Status</b>";
+			print "\n\t<td>";
+			print "<b>Location</b>";
+			print "\n\t</tr>";
+			$canonicalCourseIterator = $cmm->getCanonicalCourses();
+			while ($canonicalCourseIterator->hasNext()) {
+				$canonicalCourse = $canonicalCourseIterator->next();
+				$courseOfferingIterator = $canonicalCourse->getCourseOfferings();
+				while ($courseOfferingIterator->hasNext()) {
+					$courseOffering =& $courseOfferingIterator->next();
+					$courseSectionIterator =& $courseOffering->getCourseSections();
+					while ($courseSectionIterator->hasNext()) {
+						$courseSection =& $courseSectionIterator->next();
+						$title = $courseSection->getTitle();
+	  					$number = $courseSection->getNumber();
+	  					$sType = $courseSection->getSectionType();
+	  					$sectionType = $sType->getKeyword();
+	  					$sectionStatusType = $courseSection->getStatus();
+	  					$sectionStatus = $sectionStatusType->getKeyword();
+	  					$location = $courseSection->getLocation();
+						if (($searchTitle == $title || $searchTitle == "") && 
+							($searchNumber == "" || $searchNumber == $number) &&
+							($searchType == $sectionType || $searchType == "") && 
+							($searchStatus == "" || $searchStatus == $sectionStatus) &&
+							($searchLocation == "" || $searchLocation == $location)) 		
+						{
+							$description = $canonicalCourse->getDescription();
+					
+							print "<tr>";
+							print "<td>";
+							print $title;
+							print "<td>";
+							print $number;
+							print "<td>";
+							print $description;
+							print "<td>";
+							print $sectionType;
+							print "<td>";
+							print $sectionStatus;
+							print "<td>";
+							print $location;
+							print "</tr>";
+						}
 					}
 				}
 			}
-		}
 		
-		$groupLayout =& new Block(ob_get_contents(), STANDARD_BLOCK);
-		ob_end_clean();
+			$groupLayout =& new Block(ob_get_contents(), STANDARD_BLOCK);
+			ob_end_clean();
 			
-		$pageRows->add($groupLayout, "100%", null, LEFT, CENTER);	
-		$actionRows->add($pageRows, "100%", null, LEFT, CENTER);	
+			$pageRows->add($groupLayout, "100%", null, LEFT, CENTER);	
+			$actionRows->add($pageRows, "100%", null, LEFT, CENTER);	
+		}
 	}
 }

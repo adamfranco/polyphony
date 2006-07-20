@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcanonicalcourse.act.php,v 1.10 2006/07/20 16:19:08 jwlee100 Exp $
+ * @version $Id: searchcanonicalcourse.act.php,v 1.11 2006/07/20 16:36:15 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -122,62 +122,63 @@ class searchcanonicalcourseAction
 		$searchType = RequestContext::value('search_type');
 		$searchStatus = RequestContext::value('search_status');
 		
-		$pageRows->add(new Heading("Canonical course search results", STANDARD_BLOCK), "100%", null, LEFT, CENTER);
-			
-		ob_start();
-					
-		print "\n<table border=1>";
-		print "\n\t<tr>";
-		print "\n\t<td>";
-		print "<b>Title</b>";
-		print "\n\t<td>";
-		print "<b>Number</b>";
-		print "\n\t<td>";
-		print "<b>Description</b>";
-		print "\n\t<td>";
-		print "<b>Course Type</b>";
-		print "\n\t<td>";
-		print "<b>Course Status</b>";
-		print "\n\t<td>";
-		print "<b>Credits</b>";
-		print "\n\t</tr>";
-		$canonicalCourseIterator = $cmm->getCanonicalCourses();
-		while ($canonicalCourseIterator->hasNext()) {
-			$canonicalCourse = $canonicalCourseIterator->next();
-			$title = $canonicalCourse->getTitle();
-			$number = $canonicalCourse->getNumber();
-			$cType = $canonicalCourse->getCourseType();
-			$courseType = $cType->getKeyword();
-			$courseStatusType = $canonicalCourse->getStatus();
-			$courseStatus = $courseStatusType->getKeyword();
-			if (($searchTitle == $title || $searchTitle == "") && ($searchNumber == "" || $searchNumber == $number) &&
-				($searchType == "" || $searchType == $courseType) && 
-				($searchStatus == "" || $searchStatus == $courseStatus))		
-			{
-				$description = $canonicalCourse->getDescription();
-				$credits = $canonicalCourse->getCredits();
+		if ($searchTitle != "" || $searchNumber != "" || $searchType != "" || $searchStatus != "") {
+		  	$pageRows->add(new Heading("Canonical course search results", STANDARD_BLOCK), "100%", null, LEFT, CENTER);
+		  	ob_start();
+		  	
+			print "\n<table border=1>";
+			print "\n\t<tr>";
+			print "\n\t<td>";
+			print "<b>Title</b>";
+			print "\n\t<td>";
+			print "<b>Number</b>";
+			print "\n\t<td>";
+			print "<b>Description</b>";
+			print "\n\t<td>";
+			print "<b>Course Type</b>";
+			print "\n\t<td>";
+			print "<b>Course Status</b>";
+			print "\n\t<td>";
+			print "<b>Credits</b>";
+			print "\n\t</tr>";
+			$canonicalCourseIterator = $cmm->getCanonicalCourses();
+			while ($canonicalCourseIterator->hasNext()) {
+				$canonicalCourse = $canonicalCourseIterator->next();
+				$title = $canonicalCourse->getTitle();
+				$number = $canonicalCourse->getNumber();
+				$cType = $canonicalCourse->getCourseType();
+				$courseType = $cType->getKeyword();
+				$courseStatusType = $canonicalCourse->getStatus();
+				$courseStatus = $courseStatusType->getKeyword();
+				if (($searchTitle == $title || $searchTitle == "") && ($searchNumber == "" || $searchNumber == $number) 
+					&& ($searchType == "" || $searchType == $courseType) && 
+					($searchStatus == "" || $searchStatus == $courseStatus))		
+				{
+					$description = $canonicalCourse->getDescription();
+					$credits = $canonicalCourse->getCredits();
 				
-				print "<tr>";
-				print "<td>";
-				print $title;
-				print "<td>";
-				print $number;
-				print "<td>";
-				print $description;
-				print "<td>";
-				print $courseType;
-				print "<td>";
-				print $courseStatus;
-				print "<td>";
-				print $credits;
-				print "</tr>";
+					print "<tr>";
+					print "<td>";
+					print $title;
+					print "<td>";
+					print $number;
+					print "<td>";
+					print $description;
+					print "<td>";
+					print $courseType;
+					print "<td>";
+					print $courseStatus;
+					print "<td>";
+					print $credits;
+					print "</tr>";
+				}
 			}
-		}
-		
-		$groupLayout =& new Block(ob_get_contents(), STANDARD_BLOCK);
-		ob_end_clean();
 			
-		$pageRows->add($groupLayout, "100%", null, LEFT, CENTER);	
-		$actionRows->add($pageRows, "100%", null, LEFT, CENTER);	
+			$groupLayout =& new Block(ob_get_contents(), STANDARD_BLOCK);
+			ob_end_clean();
+			
+			$pageRows->add($groupLayout, "100%", null, LEFT, CENTER);	
+			$actionRows->add($pageRows, "100%", null, LEFT, CENTER);
+		}	
 	}
 }

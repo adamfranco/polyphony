@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcourseoffering.act.php,v 1.6 2006/07/20 16:19:08 jwlee100 Exp $
+ * @version $Id: searchcourseoffering.act.php,v 1.7 2006/07/20 16:36:15 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -141,63 +141,65 @@ class searchcourseofferingAction
 		$searchType = RequestContext::value('search_type');
 		$searchStatus = RequestContext::value('search_status');
 		
-		$pageRows->add(new Heading("Course offering search results", STANDARD_BLOCK), "100%", null, LEFT, CENTER);
+		if ($searchTitle != "" || $searchNumber != "" || $searchType != "" || $searchStatus != "") {
+			$pageRows->add(new Heading("Course offering search results", STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 			
-		ob_start();
+			ob_start();
 					
-		print "\n<table border=1>";
-		print "\n\t<tr>";
-		print "\n\t<td>";
-		print "<b>Title</b>";
-		print "\n\t<td>";
-		print "<b>Number</b>";
-		print "\n\t<td>";
-		print "<b>Description</b>";
-		print "\n\t<td>";
-		print "<b>Course Offering Type</b>";
-		print "\n\t<td>";
-		print "<b>Course Offering Status</b>";
-		print "\n\t</tr>";
-		$canonicalCourseIterator = $cmm->getCanonicalCourses();
-		while ($canonicalCourseIterator->hasNext()) {
-			$canonicalCourse = $canonicalCourseIterator->next();
-			$courseOfferingIterator = $canonicalCourse->getCourseOfferings();
-			while ($courseOfferingIterator->hasNext()) {
-				$courseOffering =& $courseOfferingIterator->next();
-				$title = $courseOffering->getTitle();
-	  			$number = $courseOffering->getNumber();
-	  			$oType = $courseOffering->getOfferingType();
-	  			$offeringType = $oType->getKeyword();
-	  			$offeringStatusType = $courseOffering->getStatus();
-	  			$offeringStatus = $offeringStatusType->getKeyword();
-				if (($searchTitle == $title || $searchTitle == "") && 
-					($searchNumber == "" || $searchNumber == $number) &&
-					($searchType == $offeringType || $searchType == "") && 
-					($searchStatus == "" || $searchStatus == $offeringStatus)) 		
-				{
-					$description = $canonicalCourse->getDescription();
-					$credits = $canonicalCourse->getCredits();
-				
-					print "<tr>";
-					print "<td>";
-					print $title;
-					print "<td>";
-					print $number;
-					print "<td>";
-					print $description;
-					print "<td>";
-					print $offeringType;
-					print "<td>";
-					print $offeringStatus;
-					print "</tr>";
+			print "\n<table border=1>";
+			print "\n\t<tr>";
+			print "\n\t<td>";
+			print "<b>Title</b>";
+			print "\n\t<td>";
+			print "<b>Number</b>";
+			print "\n\t<td>";
+			print "<b>Description</b>";
+			print "\n\t<td>";
+			print "<b>Course Offering Type</b>";
+			print "\n\t<td>";
+			print "<b>Course Offering Status</b>";
+			print "\n\t</tr>";
+			$canonicalCourseIterator = $cmm->getCanonicalCourses();
+			while ($canonicalCourseIterator->hasNext()) {
+				$canonicalCourse = $canonicalCourseIterator->next();
+				$courseOfferingIterator = $canonicalCourse->getCourseOfferings();
+				while ($courseOfferingIterator->hasNext()) {
+					$courseOffering =& $courseOfferingIterator->next();
+					$title = $courseOffering->getTitle();
+	  				$number = $courseOffering->getNumber();
+	  				$oType = $courseOffering->getOfferingType();
+	  				$offeringType = $oType->getKeyword();
+	  				$offeringStatusType = $courseOffering->getStatus();
+	  				$offeringStatus = $offeringStatusType->getKeyword();
+					if (($searchTitle == $title || $searchTitle == "") && 
+						($searchNumber == "" || $searchNumber == $number) &&
+						($searchType == $offeringType || $searchType == "") && 
+						($searchStatus == "" || $searchStatus == $offeringStatus)) 		
+					{
+						$description = $canonicalCourse->getDescription();
+						$credits = $canonicalCourse->getCredits();
+					
+						print "<tr>";
+						print "<td>";
+						print $title;
+						print "<td>";
+						print $number;
+						print "<td>";
+						print $description;
+						print "<td>";
+						print $offeringType;
+						print "<td>";
+						print $offeringStatus;
+						print "</tr>";
+					}
 				}
 			}
-		}
 		
-		$groupLayout =& new Block(ob_get_contents(), STANDARD_BLOCK);
-		ob_end_clean();
+			$groupLayout =& new Block(ob_get_contents(), STANDARD_BLOCK);
+			ob_end_clean();
 			
-		$pageRows->add($groupLayout, "100%", null, LEFT, CENTER);	
-		$actionRows->add($pageRows, "100%", null, LEFT, CENTER);	
+			$pageRows->add($groupLayout, "100%", null, LEFT, CENTER);	
+			$actionRows->add($pageRows, "100%", null, LEFT, CENTER);
+		}	
 	}
 }
