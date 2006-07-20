@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecoursesection.act.php,v 1.7 2006/07/11 15:00:12 jwlee100 Exp $
+ * @version $Id: browsecoursesection.act.php,v 1.8 2006/07/20 19:57:37 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecoursesection.act.php,v 1.7 2006/07/11 15:00:12 jwlee100 Exp $
+ * @version $Id: browsecoursesection.act.php,v 1.8 2006/07/20 19:57:37 jwlee100 Exp $
  */
 class browsecoursesectionAction
 	extends MainWindowAction
@@ -86,40 +86,24 @@ class browsecoursesectionAction
 		print "\n<table border=1>";
 		print "\n\t<tr>";
 		print "\n\t<td>";
-		print "Title: ";
+		print "<b>Title</b>";
 		print "\n\t<td>";
-		print "Number: ";
+		print "<b>Number</b>";
 		print "\n\t<td>";
-		print "Description: ";
+		print "<b>Description</b>";
 		print "\n\t<td>";
-		print "Section type: ";
+		print "<b>Section type</b>";
 		print "\n\t<td>";
-		print "Section status: ";
+		print "<b>Section status</b>";
 		print "\n\t<td>";
+		print "<b>Location</b>";
 		print "</tr>";
 		
 		while ($canonicalCourseIterator->hasNext()) {
 		  	$canonicalCourse =& $canonicalCourseIterator->next();
-		  	$title = $canonicalCourse->getTitle();
-	  		$number = $canonicalCourse->getNumber();
-	  		$description = $canonicalCourse->getDescription();
-	  		$courseType = $canonicalCourse->getCourseType();
-	  		$courseKeyword = $courseType->getKeyword();
-	  		$courseStatusType = $canonicalCourse->getStatus();
-	  		$courseStatusKeyword = $courseStatusType->getKeyword();
-	  		$credits = $canonicalCourse->getCredits();
-	  		
 	  		$courseOfferingIterator =& $canonicalCourse->getCourseOfferings();
 			while ($courseOfferingIterator->hasNext()) {
 				$courseOffering =& $courseOfferingIterator->next();
-				$title = $courseOffering->getTitle();
-	  			$number = $courseOffering->getNumber();
-	  			$description = $courseOffering->getDescription();
-	  			$offeringType = $courseOffering->getOfferingType();
-	  			$offeringKeyword = $offeringType->getKeyword();
-	  			$offeringStatusType = $courseOffering->getStatus();
-	  			$offeringStatusKeyword = $offeringStatusType->getKeyword();
-
 				$courseSectionIterator =& $courseOffering->getCourseSections();
 				while ($courseSectionIterator->hasNext()) {
 					$courseSection =& $courseSectionIterator->next();

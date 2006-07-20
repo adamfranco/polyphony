@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecourseoffering.act.php,v 1.8 2006/07/11 15:00:12 jwlee100 Exp $
+ * @version $Id: browsecourseoffering.act.php,v 1.9 2006/07/20 19:57:37 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecourseoffering.act.php,v 1.8 2006/07/11 15:00:12 jwlee100 Exp $
+ * @version $Id: browsecourseoffering.act.php,v 1.9 2006/07/20 19:57:37 jwlee100 Exp $
  */
 class browsecourseofferingAction
 	extends MainWindowAction
@@ -85,29 +85,22 @@ class browsecourseofferingAction
 		
 		print "\n\t<tr>";
 		print "\n\t<td>";
-		print "Title: ";
+		print "<b>Title </b>";
 		print "\n\t<td>";
-		print "Number: ";
+		print "<b>Number </b>";
 		print "\n\t<td>";
-		print "Description: ";
+		print "<b>Description </b>";
 		print "\n\t<td>";
-		print "Offering type: ";
+		print "<b>Offering type </b>";
 		print "\n\t<td>";
-		print "Offering status: ";
+		print "<b>Offering status </b>";
+		print "\n\t<td>";
+		print "<b>Term </b>";
 		print "\n\t</tr>";
 		
 		while ($canonicalCourseIterator->hasNext()) {
 		  	$canonicalCourse =& $canonicalCourseIterator->next();
-		  	$title = $canonicalCourse->getTitle();
-	  		$number = $canonicalCourse->getNumber();
-	  		$description = $canonicalCourse->getDescription();
-	  		$courseType = $canonicalCourse->getCourseType();
-	  		$courseKeyword = $courseType->getKeyword();
-	  		$courseStatusType = $canonicalCourse->getStatus();
-	  		$courseStatusKeyword = $courseStatusType->getKeyword();
-	  		$credits = $canonicalCourse->getCredits();
-			
-			$courseOfferingIterator =& $canonicalCourse->getCourseOfferings();
+		  	$courseOfferingIterator =& $canonicalCourse->getCourseOfferings();
 			while ($courseOfferingIterator->hasNext()) {
 				$courseOffering =& $courseOfferingIterator->next();
 				$title = $courseOffering->getTitle();
@@ -117,6 +110,8 @@ class browsecourseofferingAction
 	  			$offeringKeyword = $offeringType->getKeyword();
 	  			$offeringStatusType = $courseOffering->getStatus();
 	  			$offeringStatusKeyword = $offeringStatusType->getKeyword();
+	  			$offeringTerm = $courseOffering->getTerm();
+	  			$term = $offeringTerm->getDisplayName();
 	  			
 	  			print "\n\t<tr>";
 				print "\n\t<td>";
@@ -129,6 +124,8 @@ class browsecourseofferingAction
 				print $offeringKeyword;
 				print "\n\t<td>";
 				print $offeringStatusKeyword;
+				print "\n\t<td>";
+				print $term;
 				print "</tr>";
 			}			
 		}

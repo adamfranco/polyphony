@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcourseoffering.act.php,v 1.10 2006/07/20 19:21:27 jwlee100 Exp $
+ * @version $Id: searchcourseoffering.act.php,v 1.11 2006/07/20 19:57:37 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -157,6 +157,8 @@ class searchcourseofferingAction
 			print "<b>Course Offering Type</b>";
 			print "\n\t<td>";
 			print "<b>Course Offering Status</b>";
+			print "\n\t<td>";
+			print "<b>Term</b>";
 			print "\n\t</tr>";
 			$canonicalCourseIterator = $cmm->getCanonicalCourses();
 			while ($canonicalCourseIterator->hasNext()) {
@@ -192,6 +194,8 @@ class searchcourseofferingAction
 						print $offeringType;
 						print "<td>";
 						print $offeringStatus;
+						print "<td>";
+						print $term;
 						print "</tr>";
 					}
 				}

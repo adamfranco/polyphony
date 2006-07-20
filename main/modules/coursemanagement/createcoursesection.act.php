@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcoursesection.act.php,v 1.9 2006/07/11 15:33:42 jwlee100 Exp $
+ * @version $Id: createcoursesection.act.php,v 1.10 2006/07/20 19:57:37 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcoursesection.act.php,v 1.9 2006/07/11 15:33:42 jwlee100 Exp $
+ * @version $Id: createcoursesection.act.php,v 1.10 2006/07/20 19:57:37 jwlee100 Exp $
  */
 class createcoursesectionAction
 	extends MainWindowAction
@@ -210,84 +210,6 @@ class createcoursesectionAction
 		print "\n<div style='width: 400px'> &nbsp; </div>";
 		$step->setContent(ob_get_contents());
 		ob_end_clean();
-		
-		ob_start();
-		$courseManagementManager =& Services::getService("CourseManagement");
-		$canonicalCourseIterator =& $courseManagementManager->getCanonicalCourses();
-		
-		print "\n<table border=1>";
-		print "\n\t<tr>";
-		print "\n\t<td>";
-		print "Title: ";
-		print "\n\t<td>";
-		print "Number: ";
-		print "\n\t<td>";
-		print "Description: ";
-		print "\n\t<td>";
-		print "Section type: ";
-		print "\n\t<td>";
-		print "Section status: ";
-		print "\n\t<td>";
-		print "</tr>";
-		
-		while ($canonicalCourseIterator->hasNext()) {
-		  	$canonicalCourse =& $canonicalCourseIterator->next();
-		  	$title = $canonicalCourse->getTitle();
-	  		$number = $canonicalCourse->getNumber();
-	  		$description = $canonicalCourse->getDescription();
-	  		$courseType = $canonicalCourse->getCourseType();
-	  		$courseKeyword = $courseType->getKeyword();
-	  		$courseStatusType = $canonicalCourse->getStatus();
-	  		$courseStatusKeyword = $courseStatusType->getKeyword();
-	  		$credits = $canonicalCourse->getCredits();
-	  		
-	  		$courseOfferingIterator =& $canonicalCourse->getCourseOfferings();
-			while ($courseOfferingIterator->hasNext()) {
-				$courseOffering =& $courseOfferingIterator->next();
-				$title = $courseOffering->getTitle();
-	  			$number = $courseOffering->getNumber();
-	  			$description = $courseOffering->getDescription();
-	  			$offeringType = $courseOffering->getOfferingType();
-	  			$offeringKeyword = $offeringType->getKeyword();
-	  			$offeringStatusType = $courseOffering->getStatus();
-	  			$offeringStatusKeyword = $offeringStatusType->getKeyword();
-
-				$courseSectionIterator =& $courseOffering->getCourseSections();
-				while ($courseSectionIterator->hasNext()) {
-					$courseSection =& $courseSectionIterator->next();
-					$title = $courseSection->getTitle();
-	  				$number = $courseSection->getNumber();
-	  				$description = $courseSection->getDescription();
-	  				$sectionType = $courseSection->getSectionType();
-	  				$sectionKeyword = $sectionType->getKeyword();
-	  				$sectionStatusType = $courseSection->getStatus();
-	  				$sectionStatusKeyword = $sectionStatusType->getKeyword();
-	  				$sectionLocation = $courseSection->getLocation();
-	  			
-	  				print "\n\t<tr>";
-					print "\n\t<td>";
-					print "Title: ";
-					print $title;
-					print "\n\t<td>";
-					print "Number: ";
-					print $number;
-					print "\n\t<td>";
-					print "Description: ";
-					print $description;
-					print "\n\t<td>";
-					print "Course offering type: ";
-					print $sectionKeyword;
-					print "\n\t<td>";
-					print "Course offering status: ";
-					print $sectionStatusKeyword;
-					print "\n\t<td>";
-					print "Course offering grade: ";
-					print $sectionLocation;
-					print "</tr>";
-				}
-			}
-		}
-		print "</table>";
 		
 		return $wizard;
 	}
