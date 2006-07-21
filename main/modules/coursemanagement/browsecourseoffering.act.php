@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecourseoffering.act.php,v 1.10 2006/07/20 20:32:16 jwlee100 Exp $
+ * @version $Id: browsecourseoffering.act.php,v 1.11 2006/07/21 19:54:42 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browsecourseoffering.act.php,v 1.10 2006/07/20 20:32:16 jwlee100 Exp $
+ * @version $Id: browsecourseoffering.act.php,v 1.11 2006/07/21 19:54:42 jwlee100 Exp $
  */
 class browsecourseofferingAction
 	extends MainWindowAction
@@ -113,9 +113,16 @@ class browsecourseofferingAction
 	  			$offeringTerm = $courseOffering->getTerm();
 	  			$term = $offeringTerm->getDisplayName();
 	  			
-	  			print "\n\t<tr>";
-				print "\n\t<td>";
-				print $title;
+				$courseId =& $courseOffering->getId();
+				$courseIdString = $courseId->getIdString();
+		
+				$harmoni->history->markReturnURL("polyphony/coursemanagement/printroster");
+				$link = $harmoni->request->quickURL("coursemanagement", "printroster", 
+													array("courseId"=>$courseIdString));
+						
+				print "<tr>";
+				print "<td>";
+				print "<a href='$link'>".$title."</a>";
 				print "\n\t<td>";
 				print $number;
 				print "\n\t<td>";

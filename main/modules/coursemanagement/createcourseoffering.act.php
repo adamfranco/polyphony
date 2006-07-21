@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcourseoffering.act.php,v 1.8 2006/07/20 20:32:16 jwlee100 Exp $
+ * @version $Id: createcourseoffering.act.php,v 1.9 2006/07/21 19:54:42 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcourseoffering.act.php,v 1.8 2006/07/20 20:32:16 jwlee100 Exp $
+ * @version $Id: createcourseoffering.act.php,v 1.9 2006/07/21 19:54:42 jwlee100 Exp $
  */
 class createcourseofferingAction
 	extends MainWindowAction
@@ -221,7 +221,7 @@ class createcourseofferingAction
 		$typename = "grade";	
 		$dbHandler =& Services::getService("DBHandler");
 		$query=& new SelectQuery;
-		$query->addTable('cm_'.$typename."_type");
+		$query->addTable('gr_'.$typename."_type");
 		$query->addColumn('id');
 		$query->addColumn('keyword');
 		$res=& $dbHandler->query($query);

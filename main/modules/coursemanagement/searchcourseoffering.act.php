@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcourseoffering.act.php,v 1.14 2006/07/21 15:47:51 jwlee100 Exp $
+ * @version $Id: searchcourseoffering.act.php,v 1.15 2006/07/21 19:54:42 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -114,7 +114,7 @@ class searchcourseofferingAction
 				
 		$dbHandler =& Services::getService("DBHandler");
 		$query=& new SelectQuery;
-		$query->addTable('cm_grade_type');
+		$query->addTable('gr_grade_type');
 		$query->addColumn('id');
 		$query->addColumn('keyword');
 		$res =& $dbHandler->query($query);

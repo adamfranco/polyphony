@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcanonicalcourse.act.php,v 1.15 2006/07/21 15:47:51 jwlee100 Exp $
+ * @version $Id: searchcanonicalcourse.act.php,v 1.16 2006/07/21 19:54:42 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -46,7 +46,7 @@ class searchcanonicalcourseAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		return dgettext("polyphony", "Search Canonical Courses by Term");
+		return dgettext("polyphony", "Search Canonical Courses");
 	}
 	
 	/**
