@@ -1,24 +1,24 @@
 <?php
 /**
 * @since 7/20/05
- * @package polyphony.library.repository_importer
+ * @package Polyphony.RepositoryImporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabAssetIterator.class.php,v 1.9 2006/06/26 12:51:45 adamfranco Exp $
+ * @version $Id: TabAssetIterator.class.php,v 1.8.4.1 2006/07/21 15:19:42 adamfranco Exp $
  */ 
 
 /**
 * <##>
  * 
  * @since 7/20/05
- * @package polyphony.library.repository_importer
+ * @package Polyphony.RepositoryImporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabAssetIterator.class.php,v 1.9 2006/06/26 12:51:45 adamfranco Exp $
+ * @version $Id: TabAssetIterator.class.php,v 1.8.4.1 2006/07/21 15:19:42 adamfranco Exp $
  */
 class TabAssetIterator 
 extends HarmoniIterator 
@@ -70,6 +70,7 @@ extends HarmoniIterator
 					$item =& new AgentNodeEntryItem("TabImporter Error",
 						"There are no assets to import in: $srcDir/metadata.txt.");
 					$log->appendLogWithTypes($item, $formatType, $priorityType);
+				}
 			}
 			fclose($meta);
 				$this->_current = 0;
