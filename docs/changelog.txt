@@ -3,6 +3,17 @@
 Name: Polyphony ChangeLog
 
 
+v. 0.6.1 (2006-07-21)
+----------------------------------------------------
+		
+	* Bug Fix: Importer: Fixed default types. (Adam Franco)
+		
+	* New feature: Importer: Adding the Files-Only repository importer to allow the importing of files with no metadata. (Adam Franco)
+		
+	* Bug Fix: Importer: Fixed a parse error. (Adam Franco)
+		
+	* New feature: Wizard: Adding new WComponentCollection class that can wrap other components. (Adam Franco)
+	
 v. 0.6.0 (2006-06-16)
 ----------------------------------------------------
 		

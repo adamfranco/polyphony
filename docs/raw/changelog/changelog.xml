@@ -4,12 +4,26 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.56 2006/06/16 15:44:59 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.56.2.1 2006/07/21 20:12:42 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
+	<version number="0.6.1" date="2006-07-21">
+		<fix author='adam'>
+			Importer: Fixed default types.
+		</fix>
+		<new author='adam'>
+			Importer: Adding the Files-Only repository importer to allow the importing of files with no metadata.
+		</new>
+		<fix author='adam'>
+			Importer: Fixed a parse error.
+		</fix>
+		<new author='adam'>
+			Wizard: Adding new WComponentCollection class that can wrap other components.
+		</new>
+	</version>
 	<version number="0.6.0" date="2006-06-16">
 		<change author='adam'>
 			Basket/Selection images are now show bordered placeholders before 
