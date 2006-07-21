@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 7/20/05
- * @package polyphony.library.repository_importer
+ * @package polyphony.repositoryImporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.27 2006/06/26 12:51:45 adamfranco Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.26.4.1 2006/07/21 15:22:39 adamfranco Exp $
  */ 
 require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -17,12 +17,12 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * #insertion#
  * 
  * @since 7/20/05
- * @package polyphony.library.repository_importer
+ * @package polyphony.repositoryImporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.27 2006/06/26 12:51:45 adamfranco Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.26.4.1 2006/07/21 15:22:39 adamfranco Exp $
  */
 class RepositoryImporter {
 	
@@ -72,6 +72,10 @@ class RepositoryImporter {
 	 * @since 7/20/05
 	 */
 	function decompress () {
+		$statusStars = new StatusStars(_("Decompressing archive"));
+		$statusStars->initializeStatistics(4);
+		$statusStars->updateStatistics();
+		
 		$dearchiver =& new Dearchiver();
 		$worked = $dearchiver->uncompressFile($this->_filepath,
 			dirname($this->_filepath));
@@ -93,7 +97,10 @@ class RepositoryImporter {
 				$log->appendLogWithTypes($item,	$formatType, $priorityType);
 			}
 		}
-		unset($dearchiver);	
+		unset($dearchiver);
+		$statusStars->updateStatistics();
+		$statusStars->updateStatistics();
+		$statusStars->updateStatistics();
 	}
 
 	/**
@@ -124,6 +131,10 @@ class RepositoryImporter {
 	function &assetBuildingIteration (&$assetIterator, &$parent, &$buildOrderedSet) {
 		$setManager =& Services::getService("Sets");
 		$assetInfoIterator =& $this->getAllAssetsInfoIterator($assetIterator);
+		
+		$statusStars = new StatusStars(_("Creating Assets"));
+		$statusStars->initializeStatistics($assetInfoIterator->count());
+		
 		if (!$assetInfoIterator)
 			return $assetInfoIterator; // false
 		if ($buildOrderedSet)
@@ -137,6 +148,8 @@ class RepositoryImporter {
 				$parent->addAsset($child->getId());
 			if ($buildOrderedSet)
 				$set->addItem($child->getId());
+			
+			$statusStars->updateStatistics();
 		}
 		unset($assetInfoIterator);
 		$true = true;
