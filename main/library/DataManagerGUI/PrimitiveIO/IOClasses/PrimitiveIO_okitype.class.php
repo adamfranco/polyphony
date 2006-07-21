@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_okitype.class.php,v 1.6 2005/10/17 20:43:53 adamfranco Exp $
+ * @version $Id: PrimitiveIO_okitype.class.php,v 1.6.4.1 2006/07/21 18:10:35 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_okitype.class.php,v 1.6 2005/10/17 20:43:53 adamfranco Exp $
+ * @version $Id: PrimitiveIO_okitype.class.php,v 1.6.4.1 2006/07/21 18:10:35 adamfranco Exp $
  */
 class PrimitiveIO_okitype extends WizardComponentWithChildren {
 	var $_domain;
@@ -62,26 +62,6 @@ class PrimitiveIO_okitype extends WizardComponentWithChildren {
 	 **/
 	function setValueFromSObject(&$value) {
 		$this->setValue($value);
-	}
-
-	/**
-	 * Tells the wizard component to update itself - this may include getting
-	 * form post data or validation - whatever this particular component wants to
-	 * do every pageload. 
-	 * @param string $fieldName The field name to use when outputting form data or
-	 * similar parameters/information.
-	 * @access public
-	 * @return boolean - TRUE if everything is OK
-	 */
-	function update ($fieldName) {
-		$ok = true;
-		$children =& $this->getChildren();
-		foreach(array_keys($children) as $key) {
-			$child =& $children[$key];
-			if (!$child->update($fieldName."_".$key)) $ok = false;
-		}
-
-		return $ok;
 	}
 
 	/**
