@@ -1,12 +1,12 @@
 <?php
 /**
 * @since 7/20/05
- * @package polyphony.library.repository_importer
+ * @package polyphony.repositoryImporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.19 2006/06/26 12:51:45 adamfranco Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.18.4.1 2006/07/21 19:52:56 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -16,12 +16,12 @@ require_once(DOMIT);
 * <##>
  * 
  * @since 7/20/05
- * @package polyphony.library.repository_importer
+ * @package polyphony.repositoryImporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.19 2006/06/26 12:51:45 adamfranco Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.18.4.1 2006/07/21 19:52:56 adamfranco Exp $
  */
 class ExifRepositoryImporter
 	extends RepositoryImporter
@@ -63,14 +63,17 @@ class ExifRepositoryImporter
 			$assetInfo['displayName'] = $array['RecData'];
 			else $assetInfo['displayName'] = "";
 		}
-
-		$assetInfo['type'] = "";
-		if ($assetInfo['type'] == "")
-		$assetInfo['type'] = new HarmoniType("Asset Types", "edu.middlebury.concerto",
-		"Generic Asset");
+		
+		$mime =& Services::getService("MIME");
+		$mimeType = $mime->getMimeTypeForFileName(basename($input));
+		$generalType = substr($mimeType, 0, strpos($mimeType, '/'));
+		
+		if ($generalType == "application" || !$generalType)
+			$assetInfo['type'] =& new HarmoniType("Asset Types", "edu.middlebury",
+				"Generic Asset");
 		else
-		$assetInfo['type'] = new HarmoniType("Asset Types", "edu.middlebury.concerto",
-		$assetInfo['type']);
+			$assetInfo['type'] =& new HarmoniType("Asset Types", "edu.middlebury",
+				ucfirst($generalType));
 
 		return $assetInfo;
 	}

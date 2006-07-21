@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: FilesOnlyRepositoryImporter.class.php,v 1.1.2.1 2006/07/21 15:22:39 adamfranco Exp $
+ * @version $Id: FilesOnlyRepositoryImporter.class.php,v 1.1.2.2 2006/07/21 19:52:56 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: FilesOnlyRepositoryImporter.class.php,v 1.1.2.1 2006/07/21 15:22:39 adamfranco Exp $
+ * @version $Id: FilesOnlyRepositoryImporter.class.php,v 1.1.2.2 2006/07/21 19:52:56 adamfranco Exp $
  */
 class FilesOnlyRepositoryImporter
 	extends RepositoryImporter
@@ -58,11 +58,11 @@ class FilesOnlyRepositoryImporter
 		$generalType = substr($mimeType, 0, strpos($mimeType, '/'));
 		
 		if ($generalType == "application" || !$generalType)
-			$assetInfo['type'] =& new HarmoniType("Asset Types", "edu.middlebury.concerto",
+			$assetInfo['type'] =& new HarmoniType("Asset Types", "edu.middlebury",
 				"Generic Asset");
 		else
-			$assetInfo['type'] =& new HarmoniType("Asset Types", "edu.middlebury.concerto",
-				$generalType);
+			$assetInfo['type'] =& new HarmoniType("Asset Types", "edu.middlebury",
+				ucfirst($generalType));
 
 		return $assetInfo;
 	}
