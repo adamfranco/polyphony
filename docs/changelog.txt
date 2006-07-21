@@ -13,6 +13,8 @@ v. 0.6.1 (2006-07-21)
 	* Bug Fix: Importer: Fixed a parse error. (Adam Franco)
 		
 	* New feature: Wizard: Adding new WComponentCollection class that can wrap other components. (Adam Franco)
+		
+	* Bug Fix: FileDownloading: Now adds filenames appropriately or 'Untitled' even if the file doesn't have a name. (Adam Franco)
 	
 v. 0.6.0 (2006-06-16)
 ----------------------------------------------------
