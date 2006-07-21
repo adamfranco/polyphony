@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.9 2006/02/13 22:29:51 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.9.4.1 2006/07/21 21:23:53 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.9 2006/02/13 22:29:51 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.9.4.1 2006/07/21 21:23:53 adamfranco Exp $
  */
 class viewfileAction 
 	extends MainWindowAction
@@ -146,8 +146,15 @@ class viewfileAction
 			// Otherwise, just send the original file
 			else {
 				header("Content-Type: ".$parts['MIME_TYPE']->getValue());
-				header('Content-Disposition: attachment; filename="'.
-							$parts['FILE_NAME']->getValue().'"');
+				
+				$filename = $parts['FILE_NAME']->getValue();
+				if (!ereg("[^\\w]", $filename)) {
+					$mime =& Services::getService("MIME");
+					$extension = $mime->getExtensionForMIMEType($parts['MIME_TYPE']->getValue());
+					$filename = _("Untitled").".".$extension;
+				}
+				
+				header('Content-Disposition: attachment; filename="'.$filename.'"');
 			
 				print $parts['FILE_DATA']->getValue();
 			}
@@ -173,7 +180,7 @@ class viewfileAction
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.9 2006/02/13 22:29:51 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.9.4.1 2006/07/21 21:23:53 adamfranco Exp $
  */
 class RepositoryImageCache {
 	
@@ -236,10 +243,12 @@ class RepositoryImageCache {
 		$mime =& Services::getService("MIME");
 		
 		$extension = $mime->getExtensionForMIMEType($this->getCachedMimeType());
-		if (ereg("^.+\.".$extension."$", $this->_parts['FILE_NAME']->getValue())) {
+		if (eregi("^.+\.".$extension."$", $this->_parts['FILE_NAME']->getValue())) {
 			return $this->_parts['FILE_NAME']->getValue();
-		} else {
+		} else if (ereg("^[^\\w]+$", $this->_parts['FILE_NAME']->getValue())) {
 			return $this->_parts['FILE_NAME']->getValue().".".$extension;
+		} else {
+			return _("Untitled").".".$extension;
 		}
 	}
 	

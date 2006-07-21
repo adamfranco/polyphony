@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.56.2.1 2006/07/21 20:12:42 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.56.2.2 2006/07/21 21:23:52 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -23,6 +23,10 @@
 		<new author='adam'>
 			Wizard: Adding new WComponentCollection class that can wrap other components.
 		</new>
+		<fix author='adam'>
+			FileDownloading: Now adds filenames appropriately or 'Untitled' even 
+			if the file doesn't have a name.
+		</fix>
 	</version>
 	<version number="0.6.0" date="2006-06-16">
 		<change author='adam'>

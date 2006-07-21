@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.8 2006/02/09 20:16:52 cws-midd Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.8.4.1 2006/07/21 21:23:53 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.8 2006/02/09 20:16:52 cws-midd Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.8.4.1 2006/07/21 21:23:53 adamfranco Exp $
  */
 class viewthumbnailAction 
 	extends MainWindowAction
@@ -125,8 +125,11 @@ class viewthumbnailAction
 				$mime =& Services::getService("MIME");
 				$extension = $mime->getExtensionForMIMEType(
 									$parts['THUMBNAIL_MIME_TYPE']->getValue());
+				$filename = $parts['FILE_NAME']->getValue();
+				if (!$filename)
+					$filename = _("Untitled");
  				header('Content-Disposition: attachment; filename="'.
- 					$parts['FILE_NAME']->getValue().".".$extension.'"');
+ 					$filename.".".$extension.'"');
 			
 				print $parts['THUMBNAIL_DATA']->getValue();
 			}
