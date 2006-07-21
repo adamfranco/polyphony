@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WComponentCollection.class.php,v 1.1.2.1 2006/07/21 18:11:56 adamfranco Exp $
+ * @version $Id: WComponentCollection.class.php,v 1.1.2.2 2006/07/21 19:10:12 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WComponentCollection.class.php,v 1.1.2.1 2006/07/21 18:11:56 adamfranco Exp $
+ * @version $Id: WComponentCollection.class.php,v 1.1.2.2 2006/07/21 19:10:12 adamfranco Exp $
  */
 class WComponentCollection
 	extends WizardComponentWithChildren
@@ -47,6 +47,22 @@ class WComponentCollection
 	function getMarkup ($fieldName) {
 		return Wizard::parseText($this->_contentText, $this->getChildren(), $fieldName."_");
 	}
+	
+	/**
+     * Set the value of the child components
+     * 
+     * @param array $value
+	 * @access public
+	 * @return void
+     */
+    function setValue ($value) {
+		ArgumentValidator::validate($value, ArrayValidatorRule::getRule());
+    	$children =& $this->getChildren();
+    	foreach (array_keys($children) as $key) {
+    		if (isset($value[$key]))
+				$children[$key]->setValue($value[$key]);
+		}
+    }
 	
 }
 

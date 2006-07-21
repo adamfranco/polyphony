@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectOrNew.class.php,v 1.4 2006/06/05 20:25:36 adamfranco Exp $
+ * @version $Id: WSelectOrNew.class.php,v 1.4.2.1 2006/07/21 19:10:12 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectOrNew.class.php,v 1.4 2006/06/05 20:25:36 adamfranco Exp $
+ * @version $Id: WSelectOrNew.class.php,v 1.4.2.1 2006/07/21 19:10:12 adamfranco Exp $
  */
 class WSelectOrNew
 	extends WizardComponentWithChildren 
@@ -121,8 +121,6 @@ class WSelectOrNew
     function &setNewComponent ( &$input ) {
     	ArgumentValidator::validate($input,
     		ExtendsValidatorRule::getRule("WizardComponent"));
-		ArgumentValidator::validate($input, 
-			HasMethodsValidatorRule::getRule("addOnChange"));
 		
 		$this->_new =& $input;
 		$this->_new->setParent($this);
