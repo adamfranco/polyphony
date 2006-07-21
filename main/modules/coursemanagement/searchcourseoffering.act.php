@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcourseoffering.act.php,v 1.13 2006/07/20 20:32:16 jwlee100 Exp $
+ * @version $Id: searchcourseoffering.act.php,v 1.14 2006/07/21 15:47:51 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -92,7 +92,7 @@ class searchcourseofferingAction
 		print "\n\t</select>";
 		
 		print "\n\t<br>Course Offering Status Type<select name='search_status'>";
-		print "\n\t<option value='' selected='selected'>Choose a course offering status type</option>";
+		print "\n\t<option value=''>Choose a course offering status type</option>";
 		
 		$typename = "offer_stat";	
 		$dbHandler =& Services::getService("DBHandler");
@@ -170,9 +170,12 @@ class searchcourseofferingAction
 			$pageRows->add(new Heading("Course offering search results", STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 			
 			ob_start();
-					
+			
+			print "<p>Click on the title of the course to see the course roster.</p>";
+			
+			print "<p>";
 			print "\n<table border=1>";
-			print "\n\t<tr>";
+			print "\n\t<tr align=center>";
 			print "\n\t<td>";
 			print "<b>Title</b>";
 			print "\n\t<td>";
@@ -180,7 +183,7 @@ class searchcourseofferingAction
 			print "\n\t<td>";
 			print "<b>Description</b>";
 			print "\n\t<td>";
-			print "<b>Course Offering Type</b>";
+			print "<b>Course Offering Type></b>";
 			print "\n\t<td>";
 			print "<b>Course Offering Status</b>";
 			print "\n\t<td>";
@@ -213,10 +216,17 @@ class searchcourseofferingAction
 					{
 						$description = $canonicalCourse->getDescription();
 						$credits = $canonicalCourse->getCredits();
-					
+						
+						$courseId =& $courseOffering->getId();
+						$courseIdString = $courseId->getIdString();
+		
+						$harmoni->history->markReturnURL("polyphony/coursemanagement/printroster");
+						$link = $harmoni->request->quickURL("coursemanagement", "printroster", 
+															array("courseId"=>$courseIdString));
+						
 						print "<tr>";
 						print "<td>";
-						print $title;
+						print "<a href='$link'>".$title."</a>";
 						print "<td>";
 						print $number;
 						print "<td>";

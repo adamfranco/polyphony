@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcanonicalcourse.act.php,v 1.14 2006/07/20 20:32:16 jwlee100 Exp $
+ * @version $Id: searchcanonicalcourse.act.php,v 1.15 2006/07/21 15:47:51 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -133,7 +133,7 @@ class searchcanonicalcourseAction
 		  	ob_start();
 		  	
 			print "\n<table border=1>";
-			print "\n\t<tr>";
+			print "\n\t<tr align=center>";
 			print "\n\t<td>";
 			print "<b>Title</b>";
 			print "\n\t<td>";
