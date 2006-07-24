@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifAssetIterator.class.php,v 1.3.4.1 2006/07/21 15:21:23 adamfranco Exp $
+ * @version $Id: ExifAssetIterator.class.php,v 1.3.4.2 2006/07/24 20:06:55 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifAssetIterator.class.php,v 1.3.4.1 2006/07/21 15:21:23 adamfranco Exp $
+ * @version $Id: ExifAssetIterator.class.php,v 1.3.4.2 2006/07/24 20:06:55 adamfranco Exp $
  */
 
 class ExifAssetIterator
@@ -81,7 +81,7 @@ class ExifAssetIterator
 		);
 		$dir = opendir($dirName);
 		while($file = readdir($dir)) {
-			if ($file != "." && $file != ".." && !in_array($file, $toIgnore)) {
+			if (ereg('^[^\.]', $file) && !in_array($file, $toIgnore)) {
 				if (!is_dir($file))
 					$this->_assetList[] = $dirName.$file;
 // 				else

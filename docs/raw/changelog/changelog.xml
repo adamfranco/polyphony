@@ -4,12 +4,18 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.56.2.2 2006/07/21 21:23:52 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.56.2.3 2006/07/24 20:06:54 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
+	<version number="0.6.2" date="The future">
+		<fix author='adam'>
+			Importer: Now ignores and doesn't import files beginning with periods, 
+			which are usually hidden files.
+		</fix>
+	</version>
 	<version number="0.6.1" date="2006-07-21">
 		<fix author='adam'>
 			Importer: Fixed default types.
