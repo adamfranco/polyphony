@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: suck_by_agent.act.php,v 1.3 2006/07/14 19:40:20 sporktim Exp $
+ * @version $Id: suck_by_agent.act.php,v 1.4 2006/07/29 06:34:59 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -115,7 +115,7 @@ END;
 		
 		
 		/*********************************************************
-		 * the agent links
+		 * The dropdown menu
 		 *********************************************************/
 		
 		 
@@ -200,23 +200,22 @@ END;
 		
 		
 		$agentManager =& Services::getService("Agent");
-			$idManager = Services::getService("Id");
-		$classId =& $idManager->getId("OU=Classes,OU=Groups,DC=middlebury,DC=edu ");
-		$classes =& $agentManager->getGroup($classId);
+		$idManager = Services::getService("Id");
+		//$classId =& $idManager->getId("OU=Classes,OU=Groups,DC=middlebury,DC=edu ");
+		//$classes =& $agentManager->getGroup($classId);
 		
 		
 		$agentId =& $agent->getId();
 		$agentIdString = $agentId->getIdString();
 		
 		//display agent info	
+		
+	
 		print "<h3>Classes for User: ".$agent->getDisplayName()."</h3>";
+	
 		
 		
 		
-		
-		
-		// Groups
-		//print "<h3>Classes</h3>";
 		$agentManager =& Services::getService("Agent");
 		$groups =& $agentManager->getGroupsBySearch($agentId, 
 					new Type(	"Agent & Group Search", 
@@ -240,16 +239,19 @@ END;
 				continue;	
 			}
 			
-			//filter out gym
-			if(substr($name,0,4)=="phed"){
+			//filter out gym--actually, that's not fair, is it?
+			//if(substr($name,0,4)=="phed"){
+			//
+			//	continue;	
+			//}
 			
-				continue;	
-			}
-			
-			
-			print "\n\t<br> ".$group->getDisplayName()." ";
-			$this->_figureOut($group->getDisplayName());
-			print "</br>";
+	
+			//print "\n\t<br> ".$group->getDisplayName()." ";
+		
+			suck_by_agentAction::_figureOut($group->getDisplayName(),$agentId);
+	
+			//print "</br>";
+	
 			
 			
 			
@@ -272,13 +274,25 @@ END;
 	/**
 	 *Given a string, figure out if ets a term from the three letter name, creating it if necesary
 	 **/
-	function _figureOut($ldapName){
-		$term =& $this->_getTerm(substr($ldapName,strlen($ldapName)-3,3));
-		$can =& $this->_getCanonicalCourse($ldapName);
+	function _figureOut($ldapName,$agentId){
 		
-		$offer =& $this->_getCourseOffering($can, $term,$ldapName);
-		$section =&  $this->_getCourseSection($offer,$ldapName);
 		
+		$term =& suck_by_agentAction::_getTerm(substr($ldapName,strlen($ldapName)-3,3));
+		$can =& suck_by_agentAction::_getCanonicalCourse($ldapName);		
+		$offer =& suck_by_agentAction::_getCourseOffering($can, $term,$ldapName);
+		$section =&  suck_by_agentAction::_getCourseSection($offer,$ldapName);
+		
+		$dbManager =& Services::getService("DatabaseManager");
+		$query=& new SelectQuery;
+		$query->addTable('cm_enroll');
+		$query->addWhere("fk_cm_section='".addslashes($section->_id->getIdString())."'");
+		$query->addWhere("fk_student_id='".addslashes($agentId->getIdString())."'");
+		//I don't need Id, but I need to select something for the query to work
+		$query->addColumn('id');//@TODO select count instead
+		$res=& $dbManager->query($query);
+		if($res->getNumberOfRows()==0){
+			$section->addStudent($agentId, $p = new Type("EnrollmentStatusType","edu.middlebury","LDAP"));
+		}
 	}
 	
 	
@@ -306,15 +320,13 @@ END;
 		$year = '20'.substr($termName,1,2);
 		$name = $season." ".$year;
 		
-		$termType =& new Type("Coursemanagement","edu.middlebury",$season);
+	
 		
-		$index = $cm->_typeToIndex('term',$termType);
 		
 		$dbHandler =& Services::getService("DBHandler");
 		$query=& new SelectQuery;
 		$query->addTable('cm_term');
 		$query->addWhere("name='".addslashes($name)."'");
-		$query->addWhere("fk_cm_term_type='".addslashes($index)."'");
 		$query->addColumn('id');
 		$res=& $dbHandler->query($query);
 
@@ -322,16 +334,12 @@ END;
 
 		if($res->getNumberOfRows()==0){
 			
-			
+			$termType =& new Type("TermType","edu.middlebury",$season);
 			
 			$term =& $cm->createTerm($termType,$arr=array());
 			$term->updateDisplayName($name);
 			
 			return $term;
-			//$termId =& $term->getId();
-
-			//return $termId->getIdString();
-			
 		}else{
 				
 			$row = $res->getCurrentRow();
@@ -375,14 +383,14 @@ END;
 			
 			$dept =  substr($courseString,0,strlen($courseString)-9);
 			
-			$type =& new Type("Coursemanagement","edu.middlebury",$dept);
-			$stattype =& new Type("Coursemanagement","edu.middlebury","default");
+			$type =& new Type("CanonicalCourseType","edu.middlebury",$dept);
+			$stattype =& new Type("CanonicalCourseStatusType","edu.middlebury","LDAP");
 			
 			$can =& $cm->createCanonicalCourse($number,$number,"",$type,$stattype,1);
 			
 		
 			
-			print "<font size=3 color='red'>#</font>\n";
+			//print "<font size=3 color='red'>#</font>\n";
 			return $can;
 			//$canId =& $can->getId();
 
@@ -396,7 +404,7 @@ END;
 			$id =& $idManager->getId($row['id']);
 			$can =& $cm->getCanonicalCourse($id);
 			
-			print "<font size=3>#</font>\n";
+		//	print "<font size=3>#</font>\n";
 			
 			return $can;
 			
@@ -427,18 +435,20 @@ END;
 		
 		if($res->getNumberOfRows()==0){
 		
-			$deftype =& new Type("Coursemanagement","edu.middlebury","default");
+			$deftype1 =& new Type("CourseOfferingType","edu.middlebury","LDAP");
+			$deftype2 =& new Type("CourseOfferingStatusType","edu.middlebury","LDAP");
+			$deftype3 =& new Type("GradeType","edu.middlebury","LDAP");
 			
 			
-			$offer =& $can->createCourseOffering($number,$number,"",$termId,$deftype,$deftype,$deftype);	
+			$offer =& $can->createCourseOffering($number,$number,"",$termId,$deftype1,$deftype2,$deftype3);	
 				
 			
 			
-			print "<font size=3 color='red'>#</font>\n";
+		//	print "<font size=3 color='red'>#</font>\n";
 			
 			return $offer;
 		}else{
-			print " ";
+			//print " ";
 			
 			$row = $res->getCurrentRow();
 			$cm =& Services::getService("CourseManagement");
@@ -446,7 +456,7 @@ END;
 			$id =& $idManager->getId($row['id']);
 			$offer =& $cm->getCourseOffering($id);
 			
-			print "<font size=3>#</font>\n";
+			//print "<font size=3>#</font>\n";
 			
 			return $offer;
 			
@@ -464,25 +474,25 @@ END;
 			$section =& $sections->nextCourseSection();
 			if($section->getNumber()==$number){
 				$cm =& Services::getService("CourseManagement");
-				print "<font size=3>#</font>\n";			
+				//print "<font size=3>#</font>\n";			
 				return $section;
 			}
 			
 		}
 		
 			
-			$deftype =& new Type("Coursemanagement","edu.middlebury","default");
+			$deftype =& new Type("CourseSectionStatusType","edu.middlebury","LDAP");
 			
 			if(strcasecmp($number[strlen($number)-1],'T')<0){
-				$stattype =& new Type("Coursemanagement","edu.middlebury","Main");
+				$stattype =& new Type("CourseSectionType","edu.middlebury","Main");
 							
 			}else{
-				$stattype =& new Type("Coursemanagement","edu.middlebury","Auxiliary");
+				$stattype =& new Type("CourseSectionType","edu.middlebury","Auxiliary");
 			
 			}		
 			$section =& $offer->createCourseSection($number,$number,"",$deftype,$stattype,$loc = "");		
-			print "<font size=3 color='red'>#</font>\n";
-			return $offer;	
+			//print "<font size=3 color='red'>#</font>\n";
+			return $section;	
 	}
 	
 	/**

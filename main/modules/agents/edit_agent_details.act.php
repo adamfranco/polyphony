@@ -6,12 +6,12 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.15 2006/02/28 19:00:38 adamfranco Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.16 2006/07/29 06:34:59 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
 require_once(HARMONI."GUIManager/Components/Blank.class.php");
-
+require_once(POLYPHONY."/main/modules/coursemanagement/suck_by_agent.act.php");
 /**
  * This action will allow for the modification of group Membership.
  *
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.15 2006/02/28 19:00:38 adamfranco Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.16 2006/07/29 06:34:59 sporktim Exp $
  */
 class edit_agent_detailsAction 
 	extends MainWindowAction
@@ -62,7 +62,15 @@ class edit_agent_detailsAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		return dgettext("polyphony", "Agent Details");
+		$harmoni =& Harmoni::instance();
+		$harmoni->request->startNamespace("polyphony-agents");
+		$harmoni->request->passthrough("agentId");
+		$agentIdString = $harmoni->request->get("agentId");
+		$idManager =& Services::getService("Id");
+		$agentId =& $idManager->getId($agentIdString);
+		$agentManager =& Services::getService("Agent");
+		$agent =& $agentManager->getAgent($agentId);
+		return dgettext("polyphony", $agent->getDisplayName());
 	}
 	
 	/**
@@ -104,6 +112,7 @@ class edit_agent_detailsAction
 		
 		$actionFunctions = array(
 			"edit_agent_detailsAction::viewAgentDetails",
+			"edit_agent_detailsAction::advancedViewAgentDetails",
 			"edit_agent_detailsAction::confirmClearProperties",
 			"edit_agent_detailsAction::clearProperties",
 			"edit_agent_detailsAction::confirmDeleteAgent",
@@ -142,6 +151,100 @@ class edit_agent_detailsAction
 	 * @since 7/19/05
 	 */
 	function viewAgentDetails(&$agent){
+		
+		suck_by_agentAction::refreshAgentDetails($agent);
+		
+		$agentId =& $agent->getId();
+		$agentIdString = $agentId->getIdString();
+		
+		//display agent info	
+		print "\n<h3>".$agent->getDisplayName()."</h3>";
+		print "\n<table><tr><td>";
+		print "\n<table bgcolor='#AAAAAA' cellspacing='1' cellpadding='3'>";
+				/*<tr bgcolor='#DDDDDD'>
+				<td>
+				Property
+				</td>
+				<td>
+				Value
+				</td>
+				</tr>";*/
+		
+		$propertiesArray = edit_agent_detailsAction::_getUsableProperties($agent);
+		
+		//show the uneditable list of properties and their types and values
+		//foreach($propertiesArray as $key=>$property){
+		//		print "<tr bgcolor='#FFFFFF'>
+		//			<td>$key</td>
+		//			<td>".$property['value']."</td>
+		//			<td>".$property['type']."</td>
+		//			</tr>";
+		//		
+		//}
+		
+		edit_agent_detailsAction::_printRowFromPropertiesArray($propertiesArray,"name", "Name:");
+		edit_agent_detailsAction::_printRowFromPropertiesArray($propertiesArray,"username", "Username:");
+		edit_agent_detailsAction::_printRowFromPropertiesArray($propertiesArray,"email", "Email address:");
+		edit_agent_detailsAction::_printRowFromPropertiesArray($propertiesArray,"department","Department:");
+		
+			
+		
+		print "\n</table>";
+		print "\n</td><td>";
+		//actions menu
+		$harmoni =& Harmoni::instance();
+		$url =& $harmoni->request->mkURL();
+
+		print "<ul>
+				<li><a href='".$url->write("furtherAction","edit_agent_detailsAction::editAgent")."'>Edit agent</a></li>
+				<li><a href='";
+		$harmoni->request->startNamespace("polyphony-authorizations");
+		print $harmoni->request->quickURL("authorization","edit_authorizations",
+					array("agentId" => $agentId->getIdString()));
+		$harmoni->request->endNamespace();
+
+		print "'>Edit authorizations</a></li>
+				<li><a href='".$url->write("furtherAction","edit_agent_detailsAction::confirmClearProperties")."'>Clear properties</a></li>
+				<li><a href='".$url->write("furtherAction","edit_agent_detailsAction::confirmDeleteAgent")."'>Delete agent</a></li>
+				<li><a href='".$url->write("furtherAction","edit_agent_detailsAction::advancedViewAgentDetails")."'>Advanced View</a></li>
+				</ul>";
+		print "\n</td></tr></table>";
+		
+		
+		
+		
+		
+		
+		
+		print "<h3>Classes:</h3>";
+		
+		//sort the courses by term and the terms by date
+		
+		$cm =& Services::getService("CourseManagement");
+		$offerings =& $cm->getCourseOfferings($agentId);
+		
+		
+		
+		edit_agent_detailsAction::printCourseOfferings($offerings);
+		
+	
+		
+		
+	}
+	
+
+	
+	/**
+	 * shows all the details of the agent's properties and gives menu of actions
+	 * 
+	 * @param object Agent $agent
+	 * @return void
+	 * @access public
+	 * @since 7/19/05
+	 */
+	function advancedViewAgentDetails(&$agent){
+		
+		
 		
 		$agentId =& $agent->getId();
 		$agentIdString = $agentId->getIdString();
@@ -539,4 +642,121 @@ class edit_agent_detailsAction
 		
 		return $propertiesArray;	
 	}
+	
+	/***
+	 * Tries to print a key value pair from the propertiesArray 
+	 * from getUsableProperties in a table.
+	 * It ignores type, and uses an alias for the key
+	 */
+			
+	function _printRowFromPropertiesArray($propertiesArray, $key, $keyAlias){
+		print "\n\t<tr>";
+		print "\n\t\t<td>".$keyAlias."</td>";
+		print "\n\t\t<td>";
+		if(array_key_exists($key,$propertiesArray)){
+			print $propertiesArray[$key]['value'];	
+		}
+		print "</td>";
+		print "\n\t</tr>";
+	}
+	
+		
+	/***
+	 * Print the course offering
+	 */
+			
+	function _printOffering($offering, $term){
+		
+		
+		
+		if(!is_null($term)){
+			//print "\n</table>";
+			print "\n\t<tr>";
+			print "\n<td><hr></td>";
+			print "\n<td><hr></td>";
+			print "\n\t\t</tr>";
+			print "\n\t<tr>";
+			print "\n\t\t<td><h4>";
+			print $term->getDisplayName();
+			print "</h4</td>";		
+		
+		}else{
+			print "\n\t<tr>";
+			print "\n\t\t<td>";
+			
+			print "</td>";		
+		}
+		
+		$harmoni =& Harmoni::instance();
+		$id =& $offering->getId();
+		print "\n\t\t<td>";
+		print "\n<a href='".$harmoni->request->quickURL("coursemanagement","edit_offering_details", array("offeringId"=>$id->getIdString()))."'>";
+		print $offering->getDisplayName()."</a>";		
+		print "\n - <a href=\"Javascript:alert('"._("Id:").'\n\t'.addslashes($id->getIdString())."')\">"._("Id")."</a>";
+		print "</td>";
+		//print "\n\t\t<td>";
+		//$term =& $offering->getTerm();
+		//print $term->getDisplayName();
+		//print "</td>";		
+		print "\n\t</tr>";
+		
+		
+		
+	}
+	
+	function printCourseOfferings(&$offerings){
+		
+		$offerings2 = array();
+		$courseNum = 0;	
+		
+		
+		
+		
+		while($offerings->hasNextCourseOffering()){
+
+		
+			
+			$offering =& $offerings->nextCourseOffering();
+			$term =& $offering->getTerm();
+			$schedule =& $term->getSchedule();
+			if($schedule->hasNextScheduleItem()){
+				$item1 =& $schedule->nextScheduleItem();
+				$offerings2[$item1->getStart()+$courseNum] =&  $offering;
+	
+			}else{
+				$offerings2[$courseNum] =& $offering;
+				
+			}
+			$courseNum++;
+	
+		}
+		
+		krsort($offerings2);
+		
+			print "\n<table cellpadding=6>";
+		
+	$harmoni =& Harmoni::instance();
+		$harmoni->request->startNamespace("polyphony-agents");
+	
+	
+		$lastTermId = null;
+		foreach($offerings2 as 	$offering){
+						
+			$term=$offering->getTerm();
+			$termId =& $term->getId();
+			if(!is_null($lastTermId)&&$termId->isEqual($lastTermId)){
+				edit_agent_detailsAction::_printOffering($offering,null);
+			}else{
+				edit_agent_detailsAction::_printOffering($offering,$term);
+			}
+			$lastTermId =& $termId;
+			
+		}
+		
+		
+		
+		print "\n</table>";
+	}
+	
+	
 }
