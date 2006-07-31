@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.16 2006/07/29 06:34:59 sporktim Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.17 2006/07/31 14:57:53 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/modules/coursemanagement/suck_by_agent.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.16 2006/07/29 06:34:59 sporktim Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.17 2006/07/31 14:57:53 sporktim Exp $
  */
 class edit_agent_detailsAction 
 	extends MainWindowAction
@@ -216,7 +216,7 @@ class edit_agent_detailsAction
 		
 		
 		
-		print "<h3>Classes:</h3>";
+		print "<h2>Classes:</h2>";
 		
 		//sort the courses by term and the terms by date
 		
@@ -671,10 +671,7 @@ class edit_agent_detailsAction
 		
 		if(!is_null($term)){
 			//print "\n</table>";
-			print "\n\t<tr>";
-			print "\n<td><hr></td>";
-			print "\n<td><hr></td>";
-			print "\n\t\t</tr>";
+			
 			print "\n\t<tr>";
 			print "\n\t\t<td><h4>";
 			print $term->getDisplayName();
@@ -734,19 +731,93 @@ class edit_agent_detailsAction
 		krsort($offerings2);
 		
 			print "\n<table cellpadding=6>";
+			
+			//chrono will keep track of whether this semester is in the past, present or future.
+			//lastChrono will keep track of the last value of Chrono, so we know when a change occured.
+			$chrono = -1;
+			//-1 is not started
+			//0 means that we've seen at least one course
+			//1 means we've seen the present term
+			//2 means we've seen a past term.
+			$lastChrono = -1;
+			
+			
+			
+			$cm =& Services::getService("CourseManagement");
+			
+			
+			$time = time();
+			$currentTermIterator =& $cm->getTermsByDate($time);
+			
+
+			if($currentTermIterator->hasNextTerm()){
+				$term =& $currentTermIterator->nextTerm();
+				$schedule =& $term->getSchedule();
+				if($schedule->hasNextScheduleItem()){
+					$item =& $schedule->nextScheduleItem();
+					$currSemesterStart = $item->getStart();	
+
+
+				}else{
 		
-	$harmoni =& Harmoni::instance();
+					$currSemesterStart=$time;
+				}
+			}else{
+		
+				$currSemesterStart=$time;
+			}
+			
+		
+		$harmoni =& Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-agents");
 	
 	
 		$lastTermId = null;
-		foreach($offerings2 as 	$offering){
+		foreach($offerings2 as 	$start=>$offering){
+			
+		
+			
 						
 			$term=$offering->getTerm();
 			$termId =& $term->getId();
 			if(!is_null($lastTermId)&&$termId->isEqual($lastTermId)){
 				edit_agent_detailsAction::_printOffering($offering,null);
 			}else{
+				
+				
+				
+			if($start>$time){
+				$chrono=0;
+			}else{
+				$chrono=2;
+				if($start>=$currSemesterStart){
+					$chrono=1;
+				}
+			}
+			
+		
+			
+			if($chrono!=$lastChrono){
+				if($chrono==0){
+					$string = "Future Terms";
+				}elseif($chrono==1){
+					$string = "Present Term";
+				}elseif($chrono==2){
+					$string = "Past Terms";
+				}
+				
+				print "\n</table>";
+				print "\n<hr>";
+				print "<h2>".$string."</h2>";
+				print "\n<table cellpadding=6>";
+			}else{
+				print "\n\t<tr>";
+				print "\n<td>&nbsp</td>";
+				print "\n<td><hr></td>";
+				print "\n\t\t</tr>";
+			}
+			$lastChrono =$chrono;
+				
 				edit_agent_detailsAction::_printOffering($offering,$term);
 			}
 			$lastTermId =& $termId;

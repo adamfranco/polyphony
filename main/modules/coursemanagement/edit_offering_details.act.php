@@ -11,7 +11,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_offering_details.act.php,v 1.1 2006/07/29 06:36:41 sporktim Exp $
+ * @version $Id: edit_offering_details.act.php,v 1.2 2006/07/31 14:57:57 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -140,11 +140,23 @@ class edit_offering_detailsAction
 		$offeringIdString = $offeringId->getIdString();
 		
 		//display offering info	
-		print "\n<h3>".$offering->getDisplayName()."</h3>";
+		//print "\n<h3>".$offering->getDisplayName()."</h3>";
+		
+		
+		
+		
+		
 		print "\n<table><tr><td>";
-		print "\n<table bgcolor='#AAAAAA' cellspacing='1' cellpadding='3'>";
+		
+		//print "\n<table bgcolor='#AAAAAA' cellspacing='1' cellpadding='3'>";
 
-		print "\n\t<tr>";
+		//print "\n\t<tr><td>";
+				
+		$term =& $offering->getTerm();
+		print "\n<h1>".$offering->getDisplayName()." - ".$term->getDisplayName()."</h1>";
+
+		/*
+		
 		print "\n\t\t<td>Display Name</td>";
 		print "\n\t\t<td>";
 		print $offering->getDisplayName();
@@ -161,10 +173,15 @@ class edit_offering_detailsAction
 		print "\n\t\t<td>";
 		$term =& $offering->getTerm();
 		print $term->getDisplayName();
-				
-		print "</td>";	
-		print "\n\t</tr>";			
-		print "\n</table>";
+		*/		
+		//print "</td>";	
+		//print "\n\t</tr>";			
+		//print "\n</table>";
+		
+		
+		
+		
+		
 		print "\n</td><td>";
 		
 
@@ -180,17 +197,17 @@ class edit_offering_detailsAction
 		
 		
 		$actionRows =& $this->getActionRows();
-		$actionRows->add(new Block(ob_get_contents(),2),"100%", null, CENTER, TOP);
-		ob_end_clean();
+		//$actionRows->add(new Block(ob_get_contents(),2),"100%", null, CENTER, TOP);
+		//ob_end_clean();
 
-		ob_start();
+		//ob_start();
 		
 		//$actionRows =& $this->getActionRows();
 		//$pageRows =& new Container(new YLayout(), OTHER, 1);
 		
 		$sections =& $offering->getCourseSections();
 		
-		print "<h2>Sections:</h2>";
+		//print "<h2>Sections:</h2>";
 		
 		
 		while($sections->hasNextCourseSection()){

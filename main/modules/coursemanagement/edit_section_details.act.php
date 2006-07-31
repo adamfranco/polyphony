@@ -11,7 +11,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_section_details.act.php,v 1.1 2006/07/29 06:36:41 sporktim Exp $
+ * @version $Id: edit_section_details.act.php,v 1.2 2006/07/31 14:57:57 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -141,8 +141,12 @@ class edit_section_detailsAction
 
 		
 		//display offering info	
-		print "\n<h3>".$section->getDisplayName()."</h3>";
+		
 		print "\n<table><tr><td>";
+		
+		print "\n<h2>".$section->getDisplayName()."</h2>";
+		
+		/*
 		print "\n<table bgcolor='#AAAAAA' cellspacing='1' cellpadding='3'>";
 
 		print "\n\t<tr>";
@@ -159,6 +163,8 @@ class edit_section_detailsAction
 		print "\n\t</tr>";
 		
 		print "</table>";
+		
+		*/
 		print "</td><td>";
 	
 		
@@ -216,6 +222,7 @@ class edit_section_detailsAction
 			
 		}
 
+		print "</tr></table>";
 
 		
 	}
@@ -251,7 +258,7 @@ class edit_section_detailsAction
 		return;
 	}
 	
-	
+	/*
 			
 	function _printAgent($agent){
 		
@@ -290,6 +297,6 @@ class edit_section_detailsAction
 		
 		
 		
-	}
+	}*/
 	
 }

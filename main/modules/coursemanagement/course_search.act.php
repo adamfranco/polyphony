@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: course_search.act.php,v 1.1 2006/07/29 06:36:41 sporktim Exp $
+* @version $Id: course_search.act.php,v 1.2 2006/07/31 14:57:54 sporktim Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -90,13 +90,13 @@ extends MainWindowAction
 		print "\n\t<form action='$self' method='post'>
 			\n\t<div>";
 
-	
+		print "<table>";
 	
 		
-		print "\n\t<br>Number: <input type='text' name='search_number' value=".$searchNumber.">";
+		print "\n\t<tr><td>Number: </td><td><input type='text' name='search_number' value=".$searchNumber."></td>";
 	
 
-		print "\n\t<br>Term: <select name='search_term'>";
+		print "\n\t<tr><td>Term: </td><td><select name='search_term'>";
 		print "\n\t<option value=''";
 		
 		if($searchTerm==""){
@@ -132,8 +132,8 @@ extends MainWindowAction
 			}
 			print ">".$term->getDisplayName()."</option>";
 		}
-		print "\n\t</select>";
-		
+		print "\n\t</select></td></tr>";
+		print "\n</table>";
 	
 
 		print "\n\t<p><input type='submit' value='"._("Search!")."' />";
@@ -157,7 +157,7 @@ extends MainWindowAction
 			$pageRows->add(new Heading("Canonical course search results", STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 		  	ob_start();
 
-			print "<p>Click on a title for more information.</p>";
+			print "<p><h2>Search Results</h2></p>";
 			
 			
 			$dbHandler =& Services::getService("DBHandler");
