@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStyleCollection.class.php,v 1.1 2006/06/02 16:00:28 cws-midd Exp $
+ * @version $Id: WStyleCollection.class.php,v 1.2 2006/08/01 17:30:37 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStyleCollection.class.php,v 1.1 2006/06/02 16:00:28 cws-midd Exp $
+ * @version $Id: WStyleCollection.class.php,v 1.2 2006/08/01 17:30:37 adamfranco Exp $
  */
 class WStyleCollection extends WRepeatableComponentCollection {
 		
@@ -75,8 +75,10 @@ class WStyleCollection extends WRepeatableComponentCollection {
 	 * @since 6/2/06
 	 */
 	function _addSP (&$SP, $removable = 'true') {
-		$this->_collections
+		$this->_collections[get_class($SP)] =& new WStyleProperty($SP);
 	}
+	
+	
 }
 
 ?>
