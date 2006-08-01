@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.12 2006/06/13 21:23:04 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.13.2.1 2006/08/01 19:00:54 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.12 2006/06/13 21:23:04 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.13.2.1 2006/08/01 19:00:54 adamfranco Exp $
  */
 class browseAction 
 	extends MainWindowAction
@@ -307,7 +307,6 @@ END;
 		</tr>";
 				$resultPrinter =& new TableIteratorResultPrinter($entries, $headRow,
 										20, "printLogRow", 1);
-				
 				print $resultPrinter->getTable();
 			}
 			
@@ -525,13 +524,16 @@ function printLogRow ( &$entry ) {
 	$agentIds =& $item->getAgentIds(true);
 	while ($agentIds->hasNext()) {
 		$agentId =& $agentIds->next();
-		$agent =& $agentManager->getAgent($agentId);
-		print "<a href='";
-		print $harmoni->request->quickURL("logs", "browse",
-				array(	"agent_id" => $agentId->getIdString()));
-		print "'>";
-		print $agent->getDisplayName();
-		print "</a>";
+		if ($agentManager->isAgent($agentId) || $agentManager->isGroup($agentId)) {
+			$agent =& $agentManager->getAgent($agentId);
+			print "<a href='";
+			print $harmoni->request->quickURL("logs", "browse",
+					array(	"agent_id" => $agentId->getIdString()));
+			print "'>";
+			print $agent->getDisplayName();
+			print "</a>";
+		} else
+			print _("Id: ").$agentId->getIdString();
 		if ($agentIds->hasNext())
 			print ", <br/>";
 	}
