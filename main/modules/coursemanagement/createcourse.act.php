@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcourse.act.php,v 1.1 2006/07/31 20:04:33 jwlee100 Exp $
+ * @version $Id: createcourse.act.php,v 1.2 2006/08/02 19:59:36 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcourse.act.php,v 1.1 2006/07/31 20:04:33 jwlee100 Exp $
+ * @version $Id: createcourse.act.php,v 1.2 2006/08/02 19:59:36 jwlee100 Exp $
  */
 class createcourseAction
 	extends MainWindowAction
@@ -101,20 +101,22 @@ class createcourseAction
 		
 		ob_start();
 		$self = $harmoni->request->quickURL();
-		print ("<p align='center'><b><font size=+1>Search for a canonical course by the following criteria").": 
+		print ("<p align='center'><b><font size=+1>What would you like to search for?")." 
 				</font></b></p>";
 		print "<form action='$self' method='post'>
-			<div>
-			Title: <input type='text' name='search_option'>
-			<br>Number: <input type='text' name='search_number'>";
+			<div>";
 			
 		print "<br>Course Type: <select name='search_option'>";
 		print "<option value='canonicalcourse' selected='selected'>Canonical course</option>";
 		print "<option value='courseoffering'>Course offering</option>";
 		print "<option value='coursesection'>Course section</option>";
-		print "\n\t<p><input type='submit' value='"._("Submit")."' />";
-		
 		print "\n\t</select>";
+		
+		print "\n\t<p><input type='submit' value='"._("Submit!")."' />";
+		print "</form>";
+				
+		$step->setContent(ob_get_contents());
+		ob_end_clean();
 		
 		$searchOption = RequestContext::value('search_option');
 		
@@ -325,7 +327,7 @@ class createcourseAction
 			
 			$step->setContent(ob_get_contents());
 			ob_end_clean();
-		} else {
+		} else if ($searchOption == 'coursesection') {
 			$select =& new WSelectList();
 			$dbHandler =& Services::getService("DBHandler");
 			$query=& new SelectQuery;
