@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: searchcoursesection.act.php,v 1.7 2006/07/21 15:47:51 jwlee100 Exp $
+ * @version $Id: searchcoursesection.act.php,v 1.8 2006/08/02 20:57:53 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -176,10 +176,17 @@ class searchcoursesectionAction
 							($searchLocation == "" || $searchLocation == $location)) 		
 						{
 							$description = $canonicalCourse->getDescription();
-					
+							
+							$courseId =& $courseSection->getId();
+							$courseIdString = $courseId->getIdString();
+							
+							$harmoni->history->markReturnURL("polyphony/coursemanagement/printroster");
+							$link = $harmoni->request->quickURL("coursemanagement", "printroster", 
+																array("courseId"=>$courseIdString));
+						
 							print "<tr>";
 							print "<td>";
-							print $title;
+							print "<a href='$link'>".$title."</a>";
 							print "<td>";
 							print $number;
 							print "<td>";

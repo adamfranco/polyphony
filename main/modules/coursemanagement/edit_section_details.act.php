@@ -11,7 +11,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_section_details.act.php,v 1.2 2006/07/31 14:57:57 sporktim Exp $
+ * @version $Id: edit_section_details.act.php,v 1.3 2006/08/02 20:57:53 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -176,9 +176,19 @@ class edit_section_detailsAction
 
 		print "<ul>
 				<li><a href='".$url->write("furtherAction","edit_section_detailsAction::editOffering")."'>Edit section</a></li>
-				<li><a href='".$url->write("furtherAction","edit_section_detailsAction::deleteOffering")."'>Delete section</a></li>
-				<li><a href='".$url->write("furtherAction","edit_section_detailsAction::deleteOffering")."'>Add student</a></li>
-				<li><a href='".$url->write("furtherAction","edit_section_detailsAction::deleteOffering")."'>Delete student</a></li>
+				<li><a href='".$url->write("furtherAction","edit_section_detailsAction::deleteOffering")."'>Delete section</a></li>";
+				
+		$courseId =& $section->getId();
+		$courseIdString = $courseId->getIdString();
+		
+		$harmoni->history->markReturnURL("polyphony/coursemanagement/addstudent");
+		$link1 = $harmoni->request->quickURL("coursemanagement", "addstudent", 
+													 array("courseId"=>$courseIdString));
+		print 	"<li><a href='$link'>Add student</a></li>";
+				$harmoni->history->markReturnURL("polyphony/coursemanagement/deletestudent");
+				$link2 = $harmoni->request->quickURL("coursemanagement", "deletestudent", 
+													 array("courseId"=>$courseIdString));
+		print	"<li><a href='$link2'>Delete student</a></li>
 				</ul>";
 		print "\n</td></tr></table>";
 		
@@ -256,6 +266,10 @@ class edit_section_detailsAction
 		print "<a href='".$harmoni->history->getReturnURL("polyphony/coursemanagement/edit_offering_details")."'>Go Back</a>";
 		
 		return;
+	}
+	
+	function addStudent(&$section) {
+		
 	}
 	
 	/*

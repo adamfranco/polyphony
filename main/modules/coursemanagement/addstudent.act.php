@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: printroster.act.php,v 1.2 2006/08/02 20:57:53 jwlee100 Exp $
+ * @version $Id: addstudent.act.php,v 1.1 2006/08/02 20:59:56 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
