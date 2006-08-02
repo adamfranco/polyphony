@@ -3,6 +3,11 @@
 Name: Polyphony ChangeLog
 
 
+v. 0.6.2 (2006-08-02)
+----------------------------------------------------
+		
+	* Bug Fix: Importer: Now ignores and doesn't import files beginning with periods, which are usually hidden files. (Adam Franco)
+	
 v. 0.6.1 (2006-07-21)
 ----------------------------------------------------
 		
