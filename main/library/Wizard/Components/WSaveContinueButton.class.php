@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveContinueButton.class.php,v 1.3 2006/07/14 19:40:19 sporktim Exp $
+ * @version $Id: WSaveContinueButton.class.php,v 1.4 2006/08/02 23:47:46 sporktim Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveContinueButton.class.php,v 1.3 2006/07/14 19:40:19 sporktim Exp $
+ * @version $Id: WSaveContinueButton.class.php,v 1.4 2006/08/02 23:47:46 sporktim Exp $
  */
  
  require_once(POLYPHONY."/main/library/Wizard/Components/WLogicButton.class.php");
@@ -34,8 +34,8 @@ class WSaveContinueButton extends WLogicButton {
 	 * @access public
 	 * @since 5/31/06
 	 */
-	function WSaveContinueButton () {
-		parent::withLogicAndLabel(new WSaveContinueLogic(), 'Save Changes and Continue');
+	function WSaveContinueButton () {		
+		$this->setLogicAndLabel(new WSaveContinueLogic(), 'Save Changes and Continue');
 	}
 	
 	/**

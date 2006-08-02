@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: LogicStepWizard.class.php,v 1.3 2006/07/14 19:40:18 sporktim Exp $
+ * @version $Id: LogicStepWizard.class.php,v 1.4 2006/08/02 23:47:45 sporktim Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: LogicStepWizard.class.php,v 1.3 2006/07/14 19:40:18 sporktim Exp $
+ * @version $Id: LogicStepWizard.class.php,v 1.4 2006/08/02 23:47:45 sporktim Exp $
  */
  
  require_once(POLYPHONY."/main/library/Wizard/StepWizard.abstract.php");
@@ -49,13 +49,18 @@ class LogicStepWizard extends StepWizard {
 		$this->_cancelContinueButton =& new WCancelContinueButton();
 		$this->_cancelButton =& new WCancelButton();
 		$this->_saveButton =& new WSaveButton();
-		
 		$this->addComponent('_steps', $this->_stepContainer);
-		$this->_stepContainer->addComponent('_saveContinue', $this->_saveContinueButton);
-		$this->_stepContainer->addComponent('_cancelContinue', $this->_saveContinueButton);
+		//$this->_stepContainer->addComponent('_saveContinue', $this->_saveContinueButton);
+		//$this->_stepContainer->addComponent('_cancelContinue', $this->_cancelContinueButton);
+		$this->addComponent('_saveContinue', $this->_saveContinueButton);
+		$this->addComponent('_cancelContinue', $this->_cancelContinueButton);
 		$this->addComponent('_cancel', $this->_cancelButton);
 		$this->addComponent('_save', $this->_saveButton);
+		
+		print "LogicStepWizard";
 	}
+	
+	
 	
 	/**
 	 * Returns a new LogicStepWizard with the layout defined as passed. The layout
@@ -86,6 +91,29 @@ class LogicStepWizard extends StepWizard {
 	function update ($fieldName) {
 		return $this->_stepContainer->update($fieldName."__steps");
 	}
+	
+	
+	function &withDefaultLayout ($pre = '') {
+		return parent::withText($pre . 
+				"<div>\n" .
+				"<table width='100%' border='0' cellpadding='0' cellspacing='2'>\n" .
+				"<tr>\n" .
+				"<td align='left' width='50%'>\n" .
+				"[[_cancel]]<br/>\n" .
+				"[[_cancelContinue]]" .
+				"</td>\n" .
+				"<td align='right' width='50%'>\n" .
+				"[[_save]]<br/>\n" .
+				"[[_saveContinue]]" .
+				"</td></tr></table>" .
+				"</div>\n" .
+				"<hr/>\n" .
+				"<div>\n" .
+				"[[_steps]]" .
+				"</div>\n", "LogicStepWizard");
+	}
+	
+	
 }
 
 ?>

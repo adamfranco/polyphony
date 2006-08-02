@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.36 2006/05/02 20:23:59 adamfranco Exp $
+ * @version $Id: polyphony.inc.php,v 1.37 2006/08/02 23:47:43 sporktim Exp $
  */
 
 /**
@@ -22,7 +22,11 @@ define("POLYPHONY", dirname(__FILE__));
  * Include our library classes
  * 
  */
+ 
+
+
 require_once(dirname(__FILE__)."/main/library/Wizard/SimpleStepWizard.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/LogicStepWizard.class.php"); 
 // components:
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WizardStep.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WTextField.class.php");

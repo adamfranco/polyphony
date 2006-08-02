@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: theme_manager2.act.php,v 1.2 2006/07/14 19:40:21 sporktim Exp $
+ * @version $Id: theme_manager2.act.php,v 1.3 2006/08/02 23:47:47 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -13,6 +13,7 @@ require_once(POLYPHONY."/main/library/Wizard/SimpleStepWizard.class.php");
 require_once(POLYPHONY."/main/library/Wizard/Components/WizardStep.class.php");
 require_once(POLYPHONY."/main/library/Wizard/Components/WColorWheel.class.php");
 require_once(POLYPHONY."/main/library/Wizard/LogicStepWizard.class.php");
+
 
 /**
  * 
@@ -22,7 +23,7 @@ require_once(POLYPHONY."/main/library/Wizard/LogicStepWizard.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: theme_manager2.act.php,v 1.2 2006/07/14 19:40:21 sporktim Exp $
+ * @version $Id: theme_manager2.act.php,v 1.3 2006/08/02 23:47:47 sporktim Exp $
  */
 class theme_manager2Action 
 	extends MainWindowAction
@@ -250,7 +251,7 @@ $sp =& new FontSP();
 		print "\n\t\t<td>"._('Choose a style for borders of blocks')."</td>";
 		print "\n\t\t<td>[[block_style]][</td>";
 		print "\n\t</tr>\n</table>";
-		$step->setContent(ob_get_clean());
+		$globalStep->setContent(ob_get_clean());
 		
 	/*********************************************************
 	 * HOME STEP
@@ -307,10 +308,10 @@ $sp =& new FontSP();
 		$menuStep =& $wizard->addStep('menu_step', new WizardStep());
 		
 		// AJAX single edit Collection
-		$menuEditor =& $wizard->addComponent('menu_editor', 
-											new WSingleEditCollection());
+		//$menuEditor =& $wizard->addComponent('menu_editor', 
+		//									new WSingleEditCollection());
 
-		$menuStyles =& $guiManager->getMenuStylesForEditor();
+	//	$menuStyles =& $guiManager->getMenuStylesForEditor();
 		
 		// to populate the SEC:
 			// add component collections, who only get printed when chosen
@@ -333,10 +334,10 @@ $sp =& new FontSP();
 		$blocksStep =& $wizard->addStep('blocks_step', new WizardStep());
 		
 		// AJAX single edit collection
-		$blockEditor =& $wizard->addComponent('block_editor',
-									new WSingleEditCollection());
+		//$blockEditor =& $wizard->addComponent('block_editor',
+		//							new WSingleEditCollection());
 									
-		$blockStyles =& $guiManager->getBlockStylesForEditor();
+	//	$blockStyles =& $guiManager->getBlockStylesForEditor();
 		
 		// same as menu step
 
@@ -361,7 +362,7 @@ $sp =& new FontSP();
 		$saveStyle =& $wizard->addComponent('save_style', new WSelectList());
 		$saveStyle->addOption('new', _('Save as a new Theme'));
 		$saveStyle->addOption('update', _('Save as updated Theme'));
-		if (theme_managerAction::isAuthorizedToTemplate()) {
+		if (theme_manager2Action::isAuthorizedToTemplate()) {
 			$saveStyle->addOption('public', _('Save as new public Theme'));
 			$saveStyle->addOption('delete', _('Remove Theme from system'));
 		}

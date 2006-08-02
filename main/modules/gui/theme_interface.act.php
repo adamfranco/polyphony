@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: theme_interface.act.php,v 1.7 2006/08/01 17:30:38 adamfranco Exp $
+ * @version $Id: theme_interface.act.php,v 1.8 2006/08/02 23:47:47 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WColorWheel.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: theme_interface.act.php,v 1.7 2006/08/01 17:30:38 adamfranco Exp $
+ * @version $Id: theme_interface.act.php,v 1.8 2006/08/02 23:47:47 sporktim Exp $
  */
 class theme_interfaceAction 
 	extends MainWindowAction
@@ -94,6 +94,8 @@ class theme_interfaceAction
 	 * @since 4/26/05
 	 */
 	function buildContent () {
+		print "buildContent";
+		
 		$harmoni =& Harmoni::instance();
 		$guimanager =& Services::getService('GUIManager');
 		$currentTheme =& $guimanager->getTheme();
@@ -115,9 +117,14 @@ class theme_interfaceAction
 	 */
 	function &createWizard () {
 		$harmoni =& Harmoni::instance();
+
+		
+		print "createWizard";
+
 		$guimanager =& Services::getService('GUIManager');		
 
 		$currentTheme =& $guimanager->getTheme();
+
 		
 		// Instantiate the wizard, then add our steps.
 		$wizard =& SimpleStepWizard::withDefaultLayout();

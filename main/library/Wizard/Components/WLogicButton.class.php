@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicButton.class.php,v 1.3 2006/06/26 12:51:46 adamfranco Exp $
+ * @version $Id: WLogicButton.class.php,v 1.4 2006/08/02 23:47:46 sporktim Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicButton.class.php,v 1.3 2006/06/26 12:51:46 adamfranco Exp $
+ * @version $Id: WLogicButton.class.php,v 1.4 2006/08/02 23:47:46 sporktim Exp $
  */
 class WLogicButton extends WEventButton {
 		
@@ -39,7 +39,6 @@ class WLogicButton extends WEventButton {
 	 */
 	function &withLogicAndLabel (&$controller, $label) {
 		$button =& new WLogicButton();
-		
 		$button->setLogicAndLabel($controller, $label);
 		
 		return $button;
@@ -53,7 +52,7 @@ class WLogicButton extends WEventButton {
 	 * @access public
 	 * @since 5/31/06
 	 */
-	function &withLabel (&$controller, $label) {
+	function &withLabel ($label) {
 		$button =& new WLogicButton();
 		
 		$button->setLabel($label);
@@ -73,6 +72,18 @@ class WLogicButton extends WEventButton {
 	function setLogicAndLabel (&$controller, $label) {
 		$this->_logic =& $controller;
 		$this->_label = $label;
+	}
+	
+	/**
+	 * Sets the logic controller for the button
+	 * 
+	 * @param ref object WLogicController $controller
+	 * @return void
+	 * @access public
+	 * @since 7/31/06
+	 */
+	function setLogic (&$controller) {
+		$this->_logic =& $controller;
 	}
 
 	/**
