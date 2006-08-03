@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectOrNew.class.php,v 1.4.2.1 2006/07/21 19:10:12 adamfranco Exp $
+ * @version $Id: WSelectOrNew.class.php,v 1.4.2.2 2006/08/03 17:49:14 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectOrNew.class.php,v 1.4.2.1 2006/07/21 19:10:12 adamfranco Exp $
+ * @version $Id: WSelectOrNew.class.php,v 1.4.2.2 2006/08/03 17:49:14 adamfranco Exp $
  */
 class WSelectOrNew
 	extends WizardComponentWithChildren 
@@ -211,7 +211,16 @@ class WSelectOrNew
 	 * @since 6/2/06
 	 */
 	function isUsingNewValue () {
-		return ($this->_select->getAllValues() == '__NEW_VALUE__' || $this->_select->getAllValues() == '');
+		if ($this->_select->isStartingDisplay())
+			return false;
+		
+		if ($this->_select->getAllValues() == '__NEW_VALUE__')
+			return true;
+		
+		if  ($this->_select->getAllValues() == '')
+			return true;
+			
+		return false;
 	}
 	
 	/**

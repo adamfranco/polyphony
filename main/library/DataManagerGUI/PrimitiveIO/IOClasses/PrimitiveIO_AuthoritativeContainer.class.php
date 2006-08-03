@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.4.2.1 2006/08/03 17:07:08 adamfranco Exp $
+ * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.4.2.2 2006/08/03 17:49:13 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.4.2.1 2006/08/03 17:07:08 adamfranco Exp $
+ * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.4.2.2 2006/08/03 17:49:13 adamfranco Exp $
  */
 class PrimitiveIO_AuthoritativeContainer
 	extends WSelectOrNew
@@ -129,6 +129,9 @@ class PrimitiveIO_AuthoritativeContainer
 	 * @since 6/2/06
 	 */
 	function isUsingNewValue () {
+		if ($this->_select->isStartingDisplay())
+			return false;
+		
 		$newOption =& String::fromString('__NEW_VALUE__');
 		$emptyOption =& String::fromString('');
 // 		print "<pre>"; var_dump($this->_select->getAllValues()); print "</pre>";
