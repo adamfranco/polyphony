@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcoursesection.act.php,v 1.11 2006/07/20 20:32:16 jwlee100 Exp $
+ * @version $Id: createcoursesection.act.php,v 1.12 2006/08/03 20:32:08 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcoursesection.act.php,v 1.11 2006/07/20 20:32:16 jwlee100 Exp $
+ * @version $Id: createcoursesection.act.php,v 1.12 2006/08/03 20:32:08 jwlee100 Exp $
  */
 class createcoursesectionAction
 	extends MainWindowAction
@@ -178,6 +178,45 @@ class createcoursesectionAction
 		$locationProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
 		$locationProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
 		
+		$actionRows =& $this->getActionRows();
+		$pageRows =& new Container(new YLayout(), OTHER, 1);
+		$harmoni =& Harmoni::instance();
+		
+		$cmm =& Services::getService("CourseManagement");
+		$idManager =& Services::getService("Id");
+		$am =& Services::GetService("AgentManager");
+		
+		$courseIdString = RequestContext::value("courseId");
+		$courseId = $idManager->getId($courseIdString);
+		$courseSection = $cmm->getCourseSection($courseId);
+				
+		ob_start();
+				
+		print "\n<table border=1>";
+		print "\n<tr>Name of Student</tr>";
+		
+		$agentType =& new Type("CourseManagement", "edu.middlebury", "student");
+		$properties =& new HarmoniProperties($propertiesType);
+		$agent1 =& $am->createAgent("Gladius", $agentType, $properties);
+		$enrollStatType1 =& new Type("CourseManagement", "edu.middlebury", "attending", "");
+		
+		$roster =& $courseSection->getRoster();
+		while ($roster->hasNext()) {
+			$er =& $iter->next();
+			$agent =& $am->getAgent($er->getStudent());
+			
+			$agentName = $agent->getDisplayName();
+			print "<tr>";
+			print $agentName;
+			print "</tr>";
+		}
+		
+		$groupLayout =& new Block(ob_get_contents(), STANDARD_BLOCK);
+		print "</table>";
+		ob_end_clean();
+		
+		$pageRows->add($groupLayout, "100%", null, LEFT, CENTER);	
+		$actionRows->add($pageRows, "100%", null, LEFT, CENTER);
 		
 		
 		// Create the step text

@@ -11,7 +11,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_section_details.act.php,v 1.3 2006/08/02 20:57:53 jwlee100 Exp $
+ * @version $Id: edit_section_details.act.php,v 1.4 2006/08/03 20:32:08 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -184,7 +184,7 @@ class edit_section_detailsAction
 		$harmoni->history->markReturnURL("polyphony/coursemanagement/addstudent");
 		$link1 = $harmoni->request->quickURL("coursemanagement", "addstudent", 
 													 array("courseId"=>$courseIdString));
-		print 	"<li><a href='$link'>Add student</a></li>";
+		print 	"<li><a href='$link1'>Add student</a></li>";
 				$harmoni->history->markReturnURL("polyphony/coursemanagement/deletestudent");
 				$link2 = $harmoni->request->quickURL("coursemanagement", "deletestudent", 
 													 array("courseId"=>$courseIdString));
