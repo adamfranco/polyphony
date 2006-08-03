@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: LogicStepWizard.class.php,v 1.4 2006/08/02 23:47:45 sporktim Exp $
+ * @version $Id: LogicStepWizard.class.php,v 1.5 2006/08/03 20:51:57 sporktim Exp $
  */ 
 
 /**
@@ -18,13 +18,14 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: LogicStepWizard.class.php,v 1.4 2006/08/02 23:47:45 sporktim Exp $
+ * @version $Id: LogicStepWizard.class.php,v 1.5 2006/08/03 20:51:57 sporktim Exp $
  */
  
  require_once(POLYPHONY."/main/library/Wizard/StepWizard.abstract.php");
  require_once(POLYPHONY."/main/library/Wizard/Components/WLogicStepContainer.class.php");
  require_once(POLYPHONY."/main/library/Wizard/Components/WSaveContinueButton.class.php");
- require_once(POLYPHONY."/main/library/Wizard/Components/WCancelContinueButton.class.php");
+ require_once(POLYPHONY."/main/library/Wizard/Components/WLogicButton.class.php");
+
 
  
  
@@ -34,7 +35,7 @@
 class LogicStepWizard extends StepWizard {
 		
 	var $_saveContinueButton;
-	var $_cancelContinueButton;
+
 	
 	/**
 	 * Constructor
@@ -45,15 +46,15 @@ class LogicStepWizard extends StepWizard {
 	 */
 	function LogicStepWizard () {
 		$this->_stepContainer =& new WLogicStepContainer();
-		$this->_saveContinueButton =& new WSaveContinueButton();
-		$this->_cancelContinueButton =& new WCancelContinueButton();
+		$this->_saveContinueButton =& new WSaveContinueButton($this->_stepContainer);
+		$this->_nextButton =& new WNextStepButton($this->_stepContainer);
 		$this->_cancelButton =& new WCancelButton();
 		$this->_saveButton =& new WSaveButton();
 		$this->addComponent('_steps', $this->_stepContainer);
 		//$this->_stepContainer->addComponent('_saveContinue', $this->_saveContinueButton);
 		//$this->_stepContainer->addComponent('_cancelContinue', $this->_cancelContinueButton);
 		$this->addComponent('_saveContinue', $this->_saveContinueButton);
-		$this->addComponent('_cancelContinue', $this->_cancelContinueButton);
+		$this->addComponent('_next', $this->_nextButton);
 		$this->addComponent('_cancel', $this->_cancelButton);
 		$this->addComponent('_save', $this->_saveButton);
 		
@@ -88,9 +89,18 @@ class LogicStepWizard extends StepWizard {
 	 * @access public
 	 * @since 5/31/06
 	 */
-	function update ($fieldName) {
-		return $this->_stepContainer->update($fieldName."__steps");
-	}
+	/*function update ($fieldName) {
+			
+		$ok =  $this->_stepContainer->update($fieldName."__steps");
+		$this->triggerEvent("edu.middlebury.polyphony.wizard.update", $this);
+		foreach (array_keys($this->_eventsLater) as $key) {
+			$info =& $this->_eventsLater[$key];
+			$this->triggerEvent($info[0], $info[1], $info[2]);
+			unset($this->_eventsLater[$key]);
+		}
+		return $ok;
+		
+	}*/
 	
 	
 	function &withDefaultLayout ($pre = '') {
@@ -100,10 +110,10 @@ class LogicStepWizard extends StepWizard {
 				"<tr>\n" .
 				"<td align='left' width='50%'>\n" .
 				"[[_cancel]]<br/>\n" .
-				"[[_cancelContinue]]" .
+				"[[_save]]" .
 				"</td>\n" .
 				"<td align='right' width='50%'>\n" .
-				"[[_save]]<br/>\n" .
+				"[[_next]]<br/>\n" .
 				"[[_saveContinue]]" .
 				"</td></tr></table>" .
 				"</div>\n" .

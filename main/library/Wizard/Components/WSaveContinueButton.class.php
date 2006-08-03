@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveContinueButton.class.php,v 1.4 2006/08/02 23:47:46 sporktim Exp $
+ * @version $Id: WSaveContinueButton.class.php,v 1.5 2006/08/03 20:51:57 sporktim Exp $
  */ 
 
 /**
@@ -18,14 +18,19 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveContinueButton.class.php,v 1.4 2006/08/02 23:47:46 sporktim Exp $
+ * @version $Id: WSaveContinueButton.class.php,v 1.5 2006/08/03 20:51:57 sporktim Exp $
  */
  
- require_once(POLYPHONY."/main/library/Wizard/Components/WLogicButton.class.php");
- require_once(POLYPHONY."/main/library/Wizard/Components/WSaveContinueLogic.class.php");
+require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php");
 
  
-class WSaveContinueButton extends WLogicButton {
+class WSaveContinueButton extends WEventButton {
+	
+	
+	
+	
+	var $_stepContainer;
+	
 	
 	/**
 	 * constructor
@@ -34,23 +39,35 @@ class WSaveContinueButton extends WLogicButton {
 	 * @access public
 	 * @since 5/31/06
 	 */
-	function WSaveContinueButton () {		
-		$this->setLogicAndLabel(new WSaveContinueLogic(), 'Save Changes and Continue');
+	function WSaveContinueButton (&$stepContainer) {		
+		$this->setEventAndLabel("edu.middlebury.polyphony.wizard.save",'Save Changes and Continue');
+		$this->_stepContainer =& $stepContainer;
 	}
 	
 	/**
-	 * updates itself, if the user clicked then bounce to the next step now
-	 * 
-	 * @param string $fieldName
-	 * @return boolean
+	 * Tells the wizard component to update itself - this may include getting
+	 * form post data or validation - whatever this particular component wants to
+	 * do every pageload. 
+	 * @param string $fieldName The field name to use when outputting form data or
+	 * similar parameters/information.
 	 * @access public
-	 * @since 5/31/06
+	 * @return boolean - TRUE if everything is OK
 	 */
-	function update  ($fieldName) {
-		$val = RequestContext::value($fieldName);
-		if ($val) {
-			$this->_parent->nextStep($this);
+	function update ($fieldName) {
+		parent::update($fieldName);
+		if ($this->getAllValues()) {
+			$this->_stepContainer->nextStep($this);
 		}
+	}
+	
+	
+	/**
+	 * Answers true if this component will be enabled.
+	 * @access public
+	 * @return boolean
+	 */
+	function isEnabled () {
+		return $this->_stepContainer->hasNext();
 	}
 	
 }

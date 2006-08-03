@@ -6,14 +6,14 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WChooseOptionButton.class.php,v 1.1 2005/11/01 19:55:27 adamfranco Exp $
+ * @version $Id: WChooseOptionButton.class.php,v 1.2 2006/08/03 20:51:57 sporktim Exp $
  */
 
 require_once(dirname(__FILE__)."/WEventButton.class.php");
 
 /**
- * This is a base class for any button in a {@link Wizard} that will throw an event when
- * it is activated.
+ * This appears to be an implementation of EventButton that centers around a 
+ * dropdown menu.
  * 
  * @since Jul 20, 2005
  * @package polyphony.library.wizard.components
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/WEventButton.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WChooseOptionButton.class.php,v 1.1 2005/11/01 19:55:27 adamfranco Exp $
+ * @version $Id: WChooseOptionButton.class.php,v 1.2 2006/08/03 20:51:57 sporktim Exp $
  */
 class WChooseOptionButton 
 	extends WEventButton

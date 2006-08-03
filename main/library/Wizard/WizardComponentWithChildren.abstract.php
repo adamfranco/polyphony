@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponentWithChildren.abstract.php,v 1.7 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WizardComponentWithChildren.abstract.php,v 1.8 2006/08/03 20:51:57 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponentWithChildren.abstract.php,v 1.7 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WizardComponentWithChildren.abstract.php,v 1.8 2006/08/03 20:51:57 sporktim Exp $
  * @abstract
  */
 class WizardComponentWithChildren 
@@ -86,9 +86,9 @@ class WizardComponentWithChildren
 		$children =& $this->getChildren();
 		$ok = true;
 		foreach (array_keys($children) as $key) {
-			if (!$children[$key]->validate()) $ok = false;
+			if (!$children[$key]->validate()) return false;
 		}
-		return $ok;
+		return true;
 	}
 	
 	/**

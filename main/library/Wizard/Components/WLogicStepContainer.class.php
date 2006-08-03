@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicStepContainer.class.php,v 1.2 2006/06/26 12:51:47 adamfranco Exp $
+ * @version $Id: WLogicStepContainer.class.php,v 1.3 2006/08/03 20:51:57 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WizardStepContainer.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WizardStepContainer.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicStepContainer.class.php,v 1.2 2006/06/26 12:51:47 adamfranco Exp $
+ * @version $Id: WLogicStepContainer.class.php,v 1.3 2006/08/03 20:51:57 sporktim Exp $
  */
 class WLogicStepContainer extends WizardStepContainer {
 		
@@ -57,10 +57,11 @@ class WLogicStepContainer extends WizardStepContainer {
 	 * @access public
 	 * @return void
 	 */
-	function nextStep (&$button) {
-		$controller =& $button->getLogicRule();
-		
-		$this->addStepsToQueue($controller->getRequiredSteps());
+	function nextStep ($button=null) {
+		if(func_num_args()>0){
+			$controller =& $button->getLogicRule();		
+			$this->addStepsToQueue($controller->getRequiredSteps());
+		}		
 		$oldStep = $this->_currStep;
 		$this->setStep(array_shift($this->_stepQueue));
 

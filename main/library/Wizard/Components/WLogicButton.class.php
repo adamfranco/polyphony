@@ -6,9 +6,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicButton.class.php,v 1.4 2006/08/02 23:47:46 sporktim Exp $
+ * @version $Id: WLogicButton.class.php,v 1.5 2006/08/03 20:51:57 sporktim Exp $
  */ 
 
+ require_once(POLYPHONY."/main/library/Wizard/Components/WLogicRule.class.php");
+ 
 /**
  * Buttons of this class tree are used in logic wizards to control wizard flow.
  * 
@@ -18,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicButton.class.php,v 1.4 2006/08/02 23:47:46 sporktim Exp $
+ * @version $Id: WLogicButton.class.php,v 1.5 2006/08/03 20:51:57 sporktim Exp $
  */
 class WLogicButton extends WEventButton {
 		
@@ -83,6 +85,7 @@ class WLogicButton extends WEventButton {
 	 * @since 7/31/06
 	 */
 	function setLogic (&$controller) {
+		print " (Setting logic for label ".$this->_label.") ";
 		$this->_logic =& $controller;
 	}
 
@@ -119,9 +122,24 @@ class WLogicButton extends WEventButton {
 	function update ($fieldName) {
 		$val = RequestContext::value($fieldName);
 		if ($val) {
-			// @todo not sure what to do here
+			print " (pressed: '".$fieldName."') ";
+			$wizard =& $this->getWizard();
+			$stepContaner =& $wizard->_stepContainer;
+			$stepContaner->nextStep($this);			
 			$this->_pressed = true;
 		}
+	}
+	
+	/**
+	 * Gets the logic controller for the button
+	 * 
+	 * @return ref object WLogicController the controller
+	 * @access public
+	 * @since 7/31/06
+	 */
+	function &getLogicRule () {
+		print "getting logic";
+		return $this->_logic;
 	}
 	
 	/**

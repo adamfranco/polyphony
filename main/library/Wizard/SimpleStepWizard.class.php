@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleStepWizard.class.php,v 1.7 2006/08/02 23:47:45 sporktim Exp $
+ * @version $Id: SimpleStepWizard.class.php,v 1.8 2006/08/03 20:51:57 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/SimpleWizard.class.php");
@@ -28,7 +28,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WStepDisplayBar.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleStepWizard.class.php,v 1.7 2006/08/02 23:47:45 sporktim Exp $
+ * @version $Id: SimpleStepWizard.class.php,v 1.8 2006/08/03 20:51:57 sporktim Exp $
  */
 class SimpleStepWizard extends SimpleWizard {
 	var $_stepContainer;
@@ -52,11 +52,10 @@ class SimpleStepWizard extends SimpleWizard {
 		$this->addComponent("_steps", $this->_stepContainer);
 		$this->addComponent("_save", $this->_saveButton);
 		$this->addComponent("_cancel", $this->_cancelButton);
-		$this->addComponent("_next", $this->_nextButton);
+		$this->addComponent("_next", $this->_nextStepButton);
 		$this->addComponent("_prev", $this->_prevButton);
 		$this->addComponent("_stepsBar", new WStepDisplayBar($this->_stepContainer));
 		
-		print "SimpleStepWizard";
 	}
 	
 	/**
@@ -117,7 +116,6 @@ class SimpleStepWizard extends SimpleWizard {
 	 * @static
 	 */
 	function &withDefaultLayout ($pre = '') {
-		print "with def";
 		return parent::withText($pre . 
 				"<div>\n" .
 				"[[_stepsBar]]" .
@@ -145,7 +143,6 @@ class SimpleStepWizard extends SimpleWizard {
 	 * @return mixed
 	 */
 	function getAllValues () {
-		print "getAllValues";
 		$values = parent::getAllValues();
 		return $values['_steps'];
 	}

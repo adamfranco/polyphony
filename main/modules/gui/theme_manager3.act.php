@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: theme_manager3.act.php,v 1.1 2006/08/02 23:47:47 sporktim Exp $
+ * @version $Id: theme_manager3.act.php,v 1.2 2006/08/03 20:51:57 sporktim Exp $
  */ 
 
 
@@ -19,7 +19,7 @@ include_once(HARMONI."GUIManager/Themes/DobomodeTheme.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: theme_manager3.act.php,v 1.1 2006/08/02 23:47:47 sporktim Exp $
+ * @version $Id: theme_manager3.act.php,v 1.2 2006/08/03 20:51:57 sporktim Exp $
  */
 class theme_manager3Action 
 	extends MainWindowAction
@@ -63,7 +63,7 @@ class theme_manager3Action
 	}	
 	
 	/**
-	 * Return the "unauthorized" string to pring
+	 * Return the "unauthorized" string to pring <em>Note:  I think that's supposed to mean print--Tim</em>
 	 * 
 	 * @return string
 	 * @access public
@@ -97,7 +97,7 @@ class theme_manager3Action
 		$currentTheme =& $guimanager->getTheme();
 
 		$actionRows =& $this->getActionRows();
-		$cacheName = 'theme_interface_wizard43_';// @todo create unique cache name;
+		$cacheName = 'theme_interface_wizard52_';// @todo create unique cache name;
 		
 		$this->runWizard ( $cacheName, $actionRows );
 	}	
@@ -158,9 +158,6 @@ class theme_manager3Action
 		// add buttons... copy to new, update, create from scratch.
 		$copyButton =& $loadStep->addComponent('copy',
 								WLogicButton::withLabel(_('Copy to New...')));
-								
-								
-		
 		$loadButton =& $loadStep->addComponent('load', 
 								WLogicButton::withLabel(_('Load for Edit...')));
 		$newButton =& $loadStep->addComponent('new',
@@ -171,8 +168,7 @@ class theme_manager3Action
 								
 		
 		// create logic for buttons
-		$newThemeRule =& WLogicRule::withSteps(array('dd_step', 'global_step'));
-		
+		$newThemeRule =& WLogicRule::withSteps(array('dd_step', 'global_step','home_step'));		
 		$copyButton->setLogic($newThemeRule);
 		$newButton->setLogic($newThemeRule);
 		$loadButton->setLogic(WLogicRule::withSteps(array('home_step')));
@@ -196,6 +192,222 @@ class theme_manager3Action
 		$loadStep->setContent(ob_get_contents());
 		ob_end_clean();
 		
+		
+		
+		
+		
+		
+		/*********************************************************
+	 * DISPLAYNAME DESCRIPTION STEP
+	 *********************************************************/
+		$ddStep =& $wizard->addStep('dd_step', new WizardStep());
+		
+		// display name and description fields for theme
+		$dName =& $ddStep->addComponent('display_name', new WTextField());
+		$desc =& $ddStep->addComponent('description', new WTextArea());
+		
+		// add markup for step
+		ob_start();
+		print "<table>\n\t<tr>\n\t\t<td>"._('Display Name:')."</td>";
+		print "\n\t\t<td>[[display_name]]</td>\n\t</tr>";
+		print "\n\t<tr>\n\t\t<td>"._('Description')."</td>";
+		print "\n\t\t<td>[[description]]</td>\n\t</tr>";
+		$ddStep->setContent(ob_get_clean());
+		
+	/*********************************************************
+	 * GLOBAL STYLES STEP
+	 *********************************************************/
+		$globalStep =& $wizard->addStep('global_step', new WizardStep());
+		
+		// two style property objects
+		$currentBG =& $guiManager->getGlobalBGColor();
+		$currentFont =& $guiManager->getGlobalFont();
+		
+		// string for the class
+		$currentCollectionClass = $guiManager->getCollectionClass();
+		
+		// @todo handle current BGColor/Font logic (populate wiz)
+		// @todo re-work the global stuff (new vs. old)
+		
+/*		
+// background color and font settings
+$namedColors = array (_("aqua"), _("black"), _('blue'), _('fuchsia'),
+	_('gray'), _('green'), _('lime'), _('maroon'), _('navy'), 
+	_('olive'), _('purple'), _('red'), _('silver'), _('teal'),
+	_('white'), _('yellow'));
+
+// background color
+$bgcolor =& $globalStep->addComponent('global_bgcolor', new WSelectList());
+foreach ($namedColors as $color) {
+	if ($color == 'black' || $color == 'navy' || $color == 'blue')
+		$bgcolor->addOption($color, $color, "background-color:$color; color:white;");
+	else
+		$bgcolor->addOption($color, $color, "background-color:$color;");
+}
+$bgcolor->setValue('white');
+
+$sp =& new FontSP();
+*/
+		$bgcolor =& $globalStep->addComponent('global_bgcolor',
+							$currentBG->getWizardRepresentation());
+		// handle wizard representations of colors differently (color wheel)
+
+		$globalStep->addComponent('global-font',
+							$currentFont->getWizardRepresentation());
+
+		// choose the style of the collections (rounded corners etc)
+		$blockStyle =& $globalStep->addComponent('block_style',
+												 new WRadioList());
+		
+		// get the options for block classes and make radio options
+		$styleClasses = $guiManager->getSupportedStyleCollections();
+		foreach ($styleClasses as $class) {
+			$blockStyle->addOption($class, $class);
+		}
+
+		// add markup for step
+		ob_start();
+		// @todo iframe preview of bgcolor and font (js onChange)
+		print "Global Styles:<br/>";
+		print "Here you can choose a few simple global attributes for your theme.<br/>";
+		print "<table border=2>\n\t<tr>";
+		print "\n\t\t<td>"._('Choose a Background Color for your Theme:')."</td>";
+		print "\n\t\t<td>[[global-bgcolor]]</td>\n\t</tr>";
+		print "\n\t<tr>\n\t\t<td>"._('Choose attributes for your global font style:')."</td>";
+		print "\n\t\t<td>[[global-font]]</td>";
+		print "\n\t</tr>";
+		print "\n\t<tr>";
+		print "\n\t\t<td>"._('Choose a style for borders of blocks')."</td>";
+		print "\n\t\t<td>[[block_style]][</td>";
+		print "\n\t</tr>\n</table>";
+		$globalStep->setContent(ob_get_clean());
+		
+	/*********************************************************
+	 * HOME STEP
+	 *********************************************************/
+		$homeStep =& $wizard->addStep('home_step', new WizardStep());
+		
+		//===== BUTTONS =====//
+			// Quick Manipulation
+			$homeStep->addComponent('quick',
+							WEventButton::withLabel('Quick and Easy Editing'));
+			
+			// D&D
+			$homeStep->addComponent('d_d',
+					WEventButton::withLabel('Display Name and Description'));
+
+			// Global
+			$homeStep->addComponent('global',
+							WEventButton::withLabel('Global Theme Properties'));
+
+			// Menu
+			$homeStep->addComponent('menu',
+							WEventButton::withLabel('Menu Options'));
+
+			// Blocks
+			$homeStep->addComponent('blocks',
+							WEventButton::withLabel('Content Options'));
+
+			// Start Over
+			$homeStep->addComponent('load',
+							WEventButton::withLabel('Back to Beginning'));
+			
+			// Save
+			$homeStep->addComponent('save',
+							WEventButton::withLabel('Save This Theme'));
+							
+		// add markup for step
+		ob_start();
+		// @todo iframe for previewing theme
+		print "\n<table>";
+		print "\n\t<tr>";
+		print "\n\t\t<td colspan='2'>"._('Choose a few simple options for a quick customized theme:')."</td><td colspan='2'>[[quick]]</td>\n\r</tr>";
+		print "\n\t<tr>";
+		print "\n\t\t<td>"._('Edit the Display Name and Description of this theme:')."</td><td>[[d_d]]</td><td>"._('Edit the Global colors, font, and border styles:')."</td><td>[[global]]</td>\n\t</tr>";
+		print "\n\t<tr>";
+		print "\n\t\t<td>"._('Edit the Menu styles with full customization:')."</td><td>[[menu]]</td><td>"._('Edit the Content styles with full customization:')."</td><td>[[blocks]]</td>\n\t</tr>";
+		print "\n\t<tr>";
+		print "\n\t\t<td>"._('Go Back to the beginning and choose a theme to modify:')."</td><td>[[load]]</td><td>"._('Complete Theme modification by saving your theme:')."</td><td>[[save]]</td>\n\t</tr>";
+		print "\n</table>";
+		$homeStep->setContent(ob_get_clean());
+
+	/*********************************************************
+	 * MENU STEP
+	 *********************************************************/
+		$menuStep =& $wizard->addStep('menu_step', new WizardStep());
+		
+		// AJAX single edit Collection
+		//$menuEditor =& $wizard->addComponent('menu_editor', 
+		//									new WSingleEditCollection());
+
+	//	$menuStyles =& $guiManager->getMenuStylesForEditor();
+		
+		// to populate the SEC:
+			// add component collections, who only get printed when chosen
+			// from the drop down list to their left
+		
+		$menuStep->addComponent('home',
+								WEventButton::withLabel('Done with Menus'));
+		
+		// add markup for step
+		ob_start();
+		// @todo iframe for previewing theme
+		print _("Edit the look and feel of menus by choosing a style to edit from the drop down list on the left, and then editing the options that avail themeselves on the right")."<br/>";
+		print "[[menu_editor]]<br/>";
+		print _('Click this button when you are done editing your styles:')."[[home]]";
+		$menuStep->setContent(ob_get_clean());
+		
+	/*********************************************************
+	 * BLOCKS STEP
+	 *********************************************************/
+		$blocksStep =& $wizard->addStep('blocks_step', new WizardStep());
+		
+		// AJAX single edit collection
+		//$blockEditor =& $wizard->addComponent('block_editor',
+		//							new WSingleEditCollection());
+									
+	//	$blockStyles =& $guiManager->getBlockStylesForEditor();
+		
+		// same as menu step
+
+		$menuStep->addComponent('home',
+								WEventButton::withLabel('Done with Content'));
+
+		// add markup for step
+		ob_start();
+		// @todo iframe for previewing theme
+		print _("Edit the look and feel of content areas by choosing a style to edit from the drop down list on the left, and then editing the options that avail themeselves on the right")."<br/>";
+		print "[[block_editor]]<br/>";
+		print _('Click this button when you are done editing your styles:')."[[home]]";
+		$menuStep->setContent(ob_get_clean());
+
+	/*********************************************************
+	 * SAVE STEP
+	 *********************************************************/
+
+		$saveStep =& $wizard->addStep('save_step', new WizardStep());
+		
+		// how do you want to save your theme
+		$saveStyle =& $wizard->addComponent('save_style', new WSelectList());
+		$saveStyle->addOption('new', _('Save as a new Theme'));
+		$saveStyle->addOption('update', _('Save as updated Theme'));
+		if (theme_manager3Action::isAuthorizedToTemplate()) {
+			$saveStyle->addOption('public', _('Save as new public Theme'));
+			$saveStyle->addOption('delete', _('Remove Theme from system'));
+		}
+		
+		$saveStep->addComponent('save', new WSaveButton());
+		
+		ob_start();
+		print _("Here you must choose how to save your Theme.  You can save your work as a new Theme (if you were working on an existant Theme this will leave the original Theme unharmed).  You can also save your work as an updated Theme, which will replace the original Theme you may have loaded (if you have permission to do so).");
+		print "<br/>";
+		print "<table><tr><td>[[save_style]]</td><td>[[save]]</td></tr></table>";
+		$saveStep->setContent(ob_get_clean());
+		
+		
+		
+		
+		
 		return $wizard;
 		
 	}
@@ -214,8 +426,8 @@ class theme_manager3Action
 		$guiManager =& Services::getService("GUI");
 		$wizard =& $this->getWizard($cacheName);
 
-		printpre($wizard->allValues);
-		exit;
+		printpre($wizard->getAllValues());
+		//exit;
 	}
 	
 	/**
@@ -227,6 +439,10 @@ class theme_manager3Action
 	 * @since 6/1/06
 	 */
 	function handleUpdate () {
+		
+		
+		print "UPDATE!";
+		
 		//<##>
 	}
 	
@@ -239,8 +455,8 @@ class theme_manager3Action
 	 */
 	function getReturnUrl () {
 		$harmoni =& Harmoni::instance();
-		$url =& $harmoni->request->mkURLWithPassthrough("user", "main");
-		return $url->write();
+		return $harmoni->request->quickURL("user", "main");
+		//return $url->write();
 	}
 
 

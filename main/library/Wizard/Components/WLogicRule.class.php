@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicRule.class.php,v 1.3 2006/07/14 19:40:19 sporktim Exp $
+ * @version $Id: WLogicRule.class.php,v 1.4 2006/08/03 20:51:57 sporktim Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicRule.class.php,v 1.3 2006/07/14 19:40:19 sporktim Exp $
+ * @version $Id: WLogicRule.class.php,v 1.4 2006/08/03 20:51:57 sporktim Exp $
  */
 class WLogicRule extends WizardComponent {
 		
@@ -54,6 +54,7 @@ class WLogicRule extends WizardComponent {
 	 * @since 5/31/06
 	 */
 	function getRequiredSteps () {
+		print " required steps: ".count($this->_requiredSteps);
 		return $this->_requiredSteps;
 	}
 
