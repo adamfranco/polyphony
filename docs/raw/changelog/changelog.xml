@@ -4,12 +4,18 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.56.2.4 2006/08/02 18:54:22 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.56.2.5 2006/08/03 17:07:07 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
+	<version number="0.6.3" date="2006-08-03">
+		<fix author='adam'>
+			PrimitiveIO: Now doesn't die when users enter data that cannot be
+			made into a valid value object.
+		</fix>
+	</version>
 	<version number="0.6.2" date="2006-08-02">
 		<fix author='adam'>
 			Importer: Now ignores and doesn't import files beginning with periods, 
