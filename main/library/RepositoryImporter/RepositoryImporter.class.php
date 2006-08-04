@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.26.4.1 2006/07/21 15:22:39 adamfranco Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.26.4.2 2006/08/04 18:34:33 adamfranco Exp $
  */ 
 require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.26.4.1 2006/07/21 15:22:39 adamfranco Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.26.4.2 2006/08/04 18:34:33 adamfranco Exp $
  */
 class RepositoryImporter {
 	
@@ -303,13 +303,16 @@ class RepositoryImporter {
 								$entry['parts'][1]));
 					}
 					else if ($imageProcessor->isFormatSupported($mimetype)) {
-						$assetRecord->createPart(
-							$THUMBNAIL_DATA_ID,
-							$imageProcessor->generateThumbnailData($mimetype,
-							file_get_contents($this->_srcDir.$filename)));
-						$assetRecord->createPart(
-							$THUMBNAIL_MIME_TYPE_ID,
-							$imageProcessor->getThumbnailFormat());
+						$thumbData = $imageProcessor->generateThumbnailData($mimetype,
+							file_get_contents($this->_srcDir.$filename));
+						if ($thumbData) {
+							$assetRecord->createPart(
+								$THUMBNAIL_DATA_ID,
+								$thumbData);
+							$assetRecord->createPart(
+								$THUMBNAIL_MIME_TYPE_ID,
+								$imageProcessor->getThumbnailFormat());
+						}
 					}
 					break;
 				}
