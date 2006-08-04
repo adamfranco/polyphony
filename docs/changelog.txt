@@ -3,6 +3,17 @@
 Name: Polyphony ChangeLog
 
 
+v. 0.6.3 (2006-08-04)
+----------------------------------------------------
+		
+	* Bug Fix: Importer: Now doesn't generate null thumbnails for multi-page PDF files. (Adam Franco)
+		
+	* Bug Fix: Basket: Can now view basket contents in viewer. (Adam Franco)
+		
+	* Bug Fix: PrimitiveIO: Now doesn't die when users enter data that cannot be made into a valid value object. (Adam Franco)
+		
+	* Bug Fix: Wizard/PrimitiveIO: Now doesn't show the 'new' field for SelectOrNew components when displaying the starting-text. (Adam Franco)
+	
 v. 0.6.2 (2006-08-02)
 ----------------------------------------------------
 		
