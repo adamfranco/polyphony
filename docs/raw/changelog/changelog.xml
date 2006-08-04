@@ -4,13 +4,16 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.56.2.6 2006/08/03 17:49:13 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.56.2.7 2006/08/04 18:19:49 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
 	<version number="0.6.3" date="2006-08-03">
+		<fix author='adam'>
+			Basket: Can now view basket contents in viewer.
+		</fix>
 		<fix author='adam'>
 			PrimitiveIO: Now doesn't die when users enter data that cannot be
 			made into a valid value object.

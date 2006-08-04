@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 8/5/05
- * @package polyphony.library.basket
+ * @package polyphony.basket
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.12 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.11.2.1 2006/08/04 18:19:49 adamfranco Exp $
  */ 
 
 /**
@@ -14,12 +14,12 @@
  * added and removed from it, as well as its contents viewed.
  * 
  * @since 8/5/05
- * @package polyphony.library.basket
+ * @package polyphony.basket
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.12 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.11.2.1 2006/08/04 18:19:49 adamfranco Exp $
  */
 class Basket 
 	extends OrderedSet
@@ -341,14 +341,33 @@ END;
 		
 		print "\n\t<div id='basket_small_contents' style='text-align: left; min-width: 200px;'>";
 		$this->reset();
+		$i = 0;
 		if ($this->hasNext()) {
 			while ($this->hasNext()) {
 				$id =& $this->next();
 				$thumbnailURL = RepositoryInputOutputModuleManager::getThumbnailUrlForAsset($id);
 				if ($thumbnailURL !== FALSE) {				
 					print "\n\t<div style='border: 1px solid; height: 60px; width: 60px; float: left; text-align: center; vertical-align: middle; padding: 0px; margin: 2px;'>";
-					print "\n\t\t<img src='$thumbnailURL' alt='Thumbnail Image' border='0' style='max-height: 50px; max-width: 50px; vertical-align: middle; margin: 5px;' onload=\"if (this.parentNode) { this.parentNode.style.border='0px'; this.parentNode.style.margin='3px'; } /* Resize images for IE */ if (this.height > 50 || this.width > 50) {this.width = 50;}\" />";
+					
+					//  The image
+					print "\n\t\t<img \n\t\t\tsrc='$thumbnailURL' \n\t\t\talt='Thumbnail Image' border='0'";
+					print " \n\t\t\tstyle='max-height: 50px; max-width: 50px; vertical-align: middle; margin: 5px; cursor: pointer;' ";
+					
+					// border removal
+					print " \n\t\t\tonload=\"if (this.parentNode) { this.parentNode.style.border='0px'; this.parentNode.style.margin='3px'; } /* Resize images for IE */ if (this.height > 50 || this.width > 50) {this.width = 50;}\" ";
+					
+					// Viewer Link
+					print " \n\t\t\tonclick='window.open(";
+					print '"'.VIEWER_URL."?&amp;source=";
+					print urlencode($harmoni->request->quickURL("basket", "browse_xml"));
+					print '&amp;start='.$i.'", ';
+					print '"_blank", ';
+					print '"toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,copyhistory=no,width=600,height=500"';
+					print ");'";
+					print "\n\t\t/>";					
 					print "\n\t</div>";
+					
+					$i++;
 				}
 			}
 		}
