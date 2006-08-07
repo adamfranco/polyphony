@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.13.2.1 2006/08/01 19:00:54 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.13.2.2 2006/08/07 17:54:18 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -14,7 +14,7 @@ require_once(POLYPHONY."/main/library/ResultPrinter/TableIteratorResultPrinter.c
 require_once(HARMONI."GUIManager/Components/Blank.class.php");
 
 /**
- * This action will allow for the modification of group Membership.
+ * This action provides browsing access for logs.
  *
  * @since 11/10/04 
  * 
@@ -23,7 +23,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.13.2.1 2006/08/01 19:00:54 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.13.2.2 2006/08/07 17:54:18 adamfranco Exp $
  */
 class browseAction 
 	extends MainWindowAction
@@ -35,9 +35,7 @@ class browseAction
 	 * @access public
 	 * @since 4/26/05
 	 */
-	function isAuthorizedToExecute () {
-		return true;
-		
+	function isAuthorizedToExecute () {		
 		// Check for authorization
  		$authZManager =& Services::getService("AuthZ");
  		$idManager =& Services::getService("IdManager");
@@ -467,7 +465,22 @@ END;
 		}
 		print "\n\t</select>";
 		
-		print "\n\t<input type='submit' value='Submit'/>";
+		print "\n\t<input type='submit' value='"._("Submit")."'/>";
+		
+		print "\n\t<a href='";
+		print $harmoni->request->quickURL('logs', 'browse', array(
+				'startYear' => $min->year(),
+				'startMonth' => $min->month(),
+				'startDay' => $min->dayOfMonth(),
+				'startHour' => $min->hour(),
+				'endYear' => $max->year(),
+				'endMonth' => $max->month(),
+				'endDay' => $max->dayOfMonth(),
+				'endHour' => $max->hour()
+		));
+		print "'>";
+		print "\n\t\t<input type='button' value='"._("Clear")."' />";
+		print "</a>";
 		print "\n</form>";
 	}
 }
