@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.8.4.2 2006/08/07 15:15:20 adamfranco Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.8.4.3 2006/08/07 16:58:15 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php"
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.8.4.2 2006/08/07 15:15:20 adamfranco Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.8.4.3 2006/08/07 16:58:15 adamfranco Exp $
  */
 class viewthumbnailAction 
 	extends ForceAuthAction
@@ -56,10 +56,33 @@ class viewthumbnailAction
 	 */
 	function getUnauthorizedMessage() {
 		header("Content-Type: image/gif");
-		header('Content-Disposition: attachment; filename="english.gif"');
+		header('Content-Disposition: filename="english.gif"');
 			
 		print file_get_contents(POLYPHONY.'/docs/images/unauthorized/english.gif');
 		exit;
+	}
+	
+	/**
+	 * Answer the HTTP Authentication 'Relm' to present to the user for authentication.
+	 * 
+	 * @return mixed string or null
+	 * @access public
+	 * @since 8/7/06
+	 */
+	function getRelm () {
+		return 'Concerto'; // Override for custom relm.
+	}
+	
+	/**
+	 * Answer the cancel function for this action, to use if the user hits
+	 * the 'cancel' button in the http authentication dialog.
+	 * 
+	 * @return mixed string or null
+	 * @access public
+	 * @since 8/7/06
+	 */
+	function getCancelFunction () {
+		return 'viewthumbnailAction::getUnauthorizedMessage();';
 	}
 	
 	

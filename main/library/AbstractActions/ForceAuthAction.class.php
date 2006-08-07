@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ForceAuthAction.class.php,v 1.1.2.1 2006/08/07 15:15:19 adamfranco Exp $
+ * @version $Id: ForceAuthAction.class.php,v 1.1.2.2 2006/08/07 16:58:15 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -25,7 +25,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ForceAuthAction.class.php,v 1.1.2.1 2006/08/07 15:15:19 adamfranco Exp $
+ * @version $Id: ForceAuthAction.class.php,v 1.1.2.2 2006/08/07 16:58:15 adamfranco Exp $
  */
 class ForceAuthAction 
 	extends Action
@@ -95,7 +95,9 @@ class ForceAuthAction
 		$tokenCollectors = array();
 		$authNTypes =& $authN->getAuthenticationTypes();
 		while ($authNTypes->hasNext()) {
-			$tokenCollectors[serialize($authNTypes->next())] =& new HTTPAuthNamePassTokenCollector();
+			$tokenCollectors[serialize($authNTypes->next())] =& 
+				new HTTPAuthNamePassTokenCollector($this->getRelm(),
+					$this->getCancelFunction());
 		}
 		$configuration->addProperty('token_collectors', $tokenCollectors);
 		$authN->assignConfiguration($configuration);
@@ -127,6 +129,29 @@ class ForceAuthAction
 	 */
 	function isExecutionAuthorized () {
 		throwError(new Error(__CLASS__."::".__FUNCTION__."() must be overridded in child classes."));
+	}
+	
+	/**
+	 * Answer the HTTP Authentication 'Relm' to present to the user for authentication.
+	 * 
+	 * @return mixed string or null
+	 * @access public
+	 * @since 8/7/06
+	 */
+	function getRelm () {
+		return null; // Override for custom relm.
+	}
+	
+	/**
+	 * Answer the cancel function for this action, to use if the user hits
+	 * the 'cancel' button in the http authentication dialog.
+	 * 
+	 * @return mixed string or null
+	 * @access public
+	 * @since 8/7/06
+	 */
+	function getCancelFunction () {
+		return null; // Override for custom functions.
 	}
 }
 
