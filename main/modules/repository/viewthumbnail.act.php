@@ -6,10 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.8.4.1 2006/07/21 21:23:53 adamfranco Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.8.4.2 2006/08/07 15:15:20 adamfranco Exp $
  */ 
 
-require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
+require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
 
 /**
  * Display the file in the specified record.
@@ -23,10 +23,10 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.8.4.1 2006/07/21 21:23:53 adamfranco Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.8.4.2 2006/08/07 15:15:20 adamfranco Exp $
  */
 class viewthumbnailAction 
-	extends MainWindowAction
+	extends ForceAuthAction
 {
 	/**
 	 * Check Authorizations
@@ -35,7 +35,7 @@ class viewthumbnailAction
 	 * @access public
 	 * @since 4/26/05
 	 */
-	function isAuthorizedToExecute () {
+	function isExecutionAuthorized () {
 		$harmoni =& Harmoni::instance();
 		$idManager =& Services::getService("Id");
 		$authZManager =& Services::getService("AuthorizationManager");
@@ -47,17 +47,6 @@ class viewthumbnailAction
 		return $authZManager->isUserAuthorized(
 					$idManager->getId("edu.middlebury.authorization.view"),
 					$assetId);
-	}
-	
-	/**
-	 * Return the heading text for this action, or an empty string.
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 4/26/05
-	 */
-	function getHeadingText () {
-		return dgettext("polyphony", "File Thumbnail");
 	}
 	
 	/**
@@ -81,10 +70,12 @@ class viewthumbnailAction
 	 * @access public
 	 * @since 4/26/05
 	 */
-	function buildContent () {
+	function execute () {
+		if (!$this->isAuthorizedToExecute())
+			$this->getUnauthorizedMessage();
+		
 		$defaultTextDomain = textdomain("polyphony");
 		
-		$actionRows =& $this->getActionRows();
 		$harmoni =& Harmoni::instance();
 		$idManager =& Services::getService("Id");
 		$repositoryManager =& Services::getService("Repository");
