@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: deletestudent.act.php,v 1.1 2006/08/04 16:59:31 jwlee100 Exp $
+ * @version $Id: deletestudent.act.php,v 1.2 2006/08/07 19:15:34 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -79,8 +79,9 @@ class printrosterAction
 				
 		ob_start();
 				
-		print "\n<table border=1>";
-		print "\n<tr>Name of Student</tr>";
+		print "\n<form action='$self' method='post'>";
+		print "\n<select name='student'>";
+		print"<option value=''>Name of Student</option>";
 		
 		$roster =& $courseSection->getRoster();
 		while ($roster->hasNext()) {
@@ -88,16 +89,35 @@ class printrosterAction
 			$agent =& $am->getAgent($er->getStudent());
 			
 			$agentName = $agent->getDisplayName();
-			print "<tr>";
-			print $agentName;
-			print "</tr>";
+			$id =& $agent->getId();
+			print "<option value='$id'>'$agentName'</option>";
 		}
 		
-		$groupLayout =& new Block(ob_get_contents(), STANDARD_BLOCK);
-		print "</table>";
+		print "</select>";
+		print "<input type'submit' value='"._("Delete")."'>";
+		
+		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 		ob_end_clean();
 		
-		$pageRows->add($groupLayout, "100%", null, LEFT, CENTER);	
-		$actionRows->add($pageRows, "100%", null, LEFT, CENTER);	
+		$student = RequestContext::value('student');
+		
+		if ($student != '') {
+		  	ob_start();
+			$studentId = $idManager->getId($student);
+			
+			$agent =& $am->getAgent($studentId);
+			$agentName = $agent->getDisplayName();
+			
+			print "<p>'$agentName' deleted</p>";
+			$courseSection->deleteStudent($studentId);
+			
+			$groupLayout =& new Block(ob_get_contents(), STANDARD_BLOCK);
+			ob_end_clean();
+			
+			$pageRows->add($groupLayout, "100%", null, LEFT, CENTER);	
+			$actionRows->add($pageRows, "100%", null, LEFT, CENTER);
+		} else {
+			print "<p>Please select a student.</p>";
+		}
 	}
 }
