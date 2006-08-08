@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.13.2.2 2006/08/07 17:54:18 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.13.2.3 2006/08/08 19:36:12 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.13.2.2 2006/08/07 17:54:18 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.13.2.3 2006/08/08 19:36:12 adamfranco Exp $
  */
 class browseAction 
 	extends MainWindowAction
@@ -308,6 +308,10 @@ END;
 				print $resultPrinter->getTable();
 			}
 			
+			
+			print "\n\t\t<a href='"
+					.$harmoni->request->quickURL('logs', 'browse_rss')."'>"
+					._("RSS Feed")."</a>";
 			$actionRows->add(new Block(ob_get_clean(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
 		}
  		
