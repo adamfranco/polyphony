@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.1.2.1 2006/08/08 19:36:12 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.1.2.2 2006/08/08 20:26:14 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.1.2.1 2006/08/08 19:36:12 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.1.2.2 2006/08/08 20:26:14 adamfranco Exp $
  */
 class RSSAction
 	extends ForceAuthAction
@@ -53,7 +53,7 @@ class RSSAction
 	 * @access private
 	 * @since 8/7/06
 	 */
-	var $_description = '';
+	var $_description;
 	
 	/**
 	 * @var array $_categories;  
@@ -329,7 +329,10 @@ END;
 		
 		print "\n\t\t<link>".$this->_link."</link>";
 		
-		print "\n\t\t<description>".htmlentities($this->_description->asString())."</description>";
+		if (isset($this->_description))
+			print "\n\t\t<description>".htmlentities($this->_description->asString())."</description>";
+		else
+			print "\n\t\t<description></description>";
 		
 		if (isset($this->_language))
 			print "\n\t\t<language>".$this->_language."</language>";
@@ -352,7 +355,7 @@ END;
 		if (!isset($this->_lastBuildDate) || !is_object($this->_lastBuildDate))
 			$this->_lastBuildDate =& $this->getLatestItemDate();
 			
-		if (!isset($this->_lastBuildDate) || !is_object($this->_lastBuildDate)) {
+		if (isset($this->_lastBuildDate) && is_object($this->_lastBuildDate)) {
 			print "\n\t\t<lastBuildDate>";
 			RSSAction::printRSSTimestamp($this->_lastBuildDate);
 			print "</lastBuildDate>";
@@ -499,7 +502,7 @@ END;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.1.2.1 2006/08/08 19:36:12 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.1.2.2 2006/08/08 20:26:14 adamfranco Exp $
  */
 class RSSItem {
 	
