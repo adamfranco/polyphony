@@ -4,13 +4,16 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.56.2.12 2006/08/07 17:54:18 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.56.2.13 2006/08/08 19:47:23 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
 	<version number="0.6.4" date="The Future">
+		<new author='adam'>
+			Logs: Added RSS feeds of logs.
+		</new>
 		<fix author='adam'>
 			Logs: Now has a button to clear date limits.
 		</fix>
