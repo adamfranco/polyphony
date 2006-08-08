@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 8/4/06
- * @package polyphony.modules
+ * @package polyphony.library.AbstractActions
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ForceAuthAction.class.php,v 1.1.2.2 2006/08/07 16:58:15 adamfranco Exp $
+ * @version $Id: ForceAuthAction.class.php,v 1.1.2.3 2006/08/08 19:35:36 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -20,12 +20,12 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * from another website.
  * 
  * @since 8/4/06
- * @package polyphony.modules
+ * @package polyphony.library.AbstractActions
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ForceAuthAction.class.php,v 1.1.2.2 2006/08/07 16:58:15 adamfranco Exp $
+ * @version $Id: ForceAuthAction.class.php,v 1.1.2.3 2006/08/08 19:35:36 adamfranco Exp $
  */
 class ForceAuthAction 
 	extends Action
