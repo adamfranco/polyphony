@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_rss.act.php,v 1.1.2.2 2006/08/09 18:31:33 adamfranco Exp $
+ * @version $Id: browse_rss.act.php,v 1.1.2.3 2006/08/09 19:48:22 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/RSSAction.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/RSSAction.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_rss.act.php,v 1.1.2.2 2006/08/09 18:31:33 adamfranco Exp $
+ * @version $Id: browse_rss.act.php,v 1.1.2.3 2006/08/09 19:48:22 adamfranco Exp $
  */
 class browse_rssAction 
 	extends RSSAction
@@ -174,7 +174,7 @@ class browse_rssAction
 		$this->setDescription(ob_get_clean());
 		
 		$i = 0;
-		while ($entries->hasNext() && $i < 10) {
+		while ($entries->hasNext() && $i < 30) {
 			$this->addEntry($entries->next());
 			$i++;
 		}
