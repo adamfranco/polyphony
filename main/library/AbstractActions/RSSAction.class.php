@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.1.2.4 2006/08/09 19:31:54 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.1.2.5 2006/08/09 21:38:12 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.1.2.4 2006/08/09 19:31:54 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.1.2.5 2006/08/09 21:38:12 adamfranco Exp $
  */
 class RSSAction
 	extends ForceAuthAction
@@ -502,7 +502,7 @@ END;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.1.2.4 2006/08/09 19:31:54 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.1.2.5 2006/08/09 21:38:12 adamfranco Exp $
  */
 class RSSItem {
 	
@@ -556,6 +556,17 @@ class RSSItem {
 		$this->_description =& HtmlString::fromString(
 								str_replace("&nbsp;", "&#160;", $description));
 		$this->_description->clean();
+	}
+	
+	/**
+	 * Answer the description
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 8/9/06
+	 */
+	function getDescription () {
+		return $this->_description->asString();
 	}
 	
 /*********************************************************
@@ -646,7 +657,7 @@ class RSSItem {
 	}
 	
 	/**
-	 * Optional: Set the category
+	 * Optional: Add a category category
 	 * 
 	 * @param string category
 	 * @return void
@@ -657,9 +668,22 @@ class RSSItem {
 		ArgumentValidator::validate($category, StringValidatorRule::getRule());
 		ArgumentValidator::validate($domain, StringValidatorRule::getRule());
 		
-		if (!isset($this->_categories[$domain]))
-			$this->_categories[$domain] = array();
-		$this->_categories[$domain][] = $category;
+		$this->_categories[] = array('category' => $category, 'domain' => $domain);
+	}
+	
+	/**
+	 * Optional: Add a category to the beginning of the list
+	 * 
+	 * @param string category
+	 * @return void
+	 * @access public
+	 * @since 8/9/06
+	 */
+	function prependCategory ($category, $domain = '_no_domain_') {
+		ArgumentValidator::validate($category, StringValidatorRule::getRule());
+		ArgumentValidator::validate($domain, StringValidatorRule::getRule());
+		
+		array_unshift($this->_categories, array('category' => $category, 'domain' => $domain));
 	}
 	
 	/**
@@ -757,15 +781,15 @@ class RSSItem {
 		}
 		
 		if (count($this->_categories)) {
-			foreach ($this->_categories as $domain => $categories) {
-				foreach ($categories as $category) {
-					if ($domain == '_no_domain_')
-						print "\n\t\t<category>";
-					else
-						print "\n\t\t<category domain='".$domain."'>";
-					
-					print $category."</category>";
-				}
+			foreach ($this->_categories as $categoryArray) {
+				$category = $categoryArray['category'];
+				$domain = $categoryArray['domain'];
+				if ($domain == '_no_domain_')
+					print "\n\t\t<category>";
+				else
+					print "\n\t\t<category domain='".$domain."'>";
+				
+				print $category."</category>";
 			}
 		}
 		
