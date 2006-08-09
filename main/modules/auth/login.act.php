@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login.act.php,v 1.13 2006/01/18 15:42:55 adamfranco Exp $
+ * @version $Id: login.act.php,v 1.13.4.1 2006/08/09 18:05:58 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login.act.php,v 1.13 2006/01/18 15:42:55 adamfranco Exp $
+ * @version $Id: login.act.php,v 1.13.4.1 2006/08/09 18:05:58 adamfranco Exp $
  */
 class loginAction
 	extends Action
@@ -47,6 +47,14 @@ class loginAction
 	 */
 	function &execute ( &$harmoni ) {
 		$harmoni =& Harmoni::instance();
+		
+		// If we are using only cookies, but cookies aren't enabled
+		// (and hence not set), print an error message.
+		if ($harmoni->config->get("sessionUseOnlyCookies")
+			&& !isset($_COOKIE[$harmoni->config->get("sessionName")]))
+		{
+			RequestContext::sendTo($harmoni->request->quickURL('auth', 'cookies_required'));
+		}
 
 		$isAuthenticated = FALSE;
 		$authN =& Services::getService("AuthN");
