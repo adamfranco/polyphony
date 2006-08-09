@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.1.2.3 2006/08/09 18:31:33 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.1.2.4 2006/08/09 19:31:54 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.1.2.3 2006/08/09 18:31:33 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.1.2.4 2006/08/09 19:31:54 adamfranco Exp $
  */
 class RSSAction
 	extends ForceAuthAction
@@ -502,7 +502,7 @@ END;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.1.2.3 2006/08/09 18:31:33 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.1.2.4 2006/08/09 19:31:54 adamfranco Exp $
  */
 class RSSItem {
 	
@@ -512,6 +512,13 @@ class RSSItem {
 	 * @since 8/8/06
 	 */
 	var $_categories = array();
+	
+	/**
+	 * @var array $_enclosures;  
+	 * @access private
+	 * @since 8/9/06
+	 */
+	var $_enclosures;
 	
 	
 /*********************************************************
@@ -687,7 +694,10 @@ class RSSItem {
 	}
 	
 	/**
-	 * Optional: Set the enclosure.
+	 * Optional: Add an enclosure. As of this writing the RSS 2.0 spec does not
+	 * allow multiple enclosures. Some aggregators however, support them anyway
+	 * and the one's I've (Adam) tested in simply ignore the extra enclosures.
+	 * Add multiple enclosures at your own risk.
 	 * 
 	 * @param string $url
 	 * @param integer $length
@@ -696,15 +706,16 @@ class RSSItem {
 	 * @access public
 	 * @since 8/7/06
 	 */
-	function setEnclosure ($url, $length, $mimeType) {
+	function addEnclosure ($url, $length, $mimeType) {
 		ArgumentValidator::validate($url, StringValidatorRule::getRule());
 		ArgumentValidator::validate($length, IntegerValidatorRule::getRule());
 		ArgumentValidator::validate($mimeType, RegexValidatorRule::getRule(
 			'^(text|image|audio|video|application)/.+$'));
 		
-		$this->_enclosureUrl = $url;
-		$this->_enclosureLenth = $length;
-		$this->_enclosureMimeType = $mimeType;
+		$this->_enclosures[] = array(
+			'url' => $url,
+			'length' => $length,
+			'mimeType' => $mimeType);
 	}
 	
 /*********************************************************
@@ -761,14 +772,14 @@ class RSSItem {
 		if (isset($this->_commentsLink))
 			print "\n\t\t<comments>".$this->_commentsLink."</comments>";
 		
-		if (isset($this->_enclosureURL) && isset($this->_enclosureLenth) 
-			&& isset($this->_enclosureMimeType))
-		{
-			print "\n\t\t<enclosure ";
-			print " url='".$this->_enclosureURL."'";
-			print " length='".$this->_enclosureLenth."'";
-			print " type='".$this->_enclosureMimeType."'";			
-			print " />";
+		if (count($this->_enclosures)) {
+			foreach ($this->_enclosures as $enclosure) {
+				print "\n\t\t<enclosure ";
+				print " url='".$enclosure['url']."'";
+				print " length='".$enclosure['length']."'";
+				print " type='".$enclosure['mimeType']."'";			
+				print " />";
+			}
 		}
 			
 		if (isset($this->_guid)) {
