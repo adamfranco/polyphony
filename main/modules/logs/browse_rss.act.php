@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_rss.act.php,v 1.1.2.1 2006/08/08 19:36:47 adamfranco Exp $
+ * @version $Id: browse_rss.act.php,v 1.1.2.2 2006/08/09 18:31:33 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/RSSAction.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/RSSAction.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_rss.act.php,v 1.1.2.1 2006/08/08 19:36:47 adamfranco Exp $
+ * @version $Id: browse_rss.act.php,v 1.1.2.2 2006/08/09 18:31:33 adamfranco Exp $
  */
 class browse_rssAction 
 	extends RSSAction
@@ -142,6 +142,8 @@ class browse_rssAction
 		
 		$this->setTitle($currentLogName." ".$currentPriorityType->getKeyword()." "._("Logs"));
 		$this->setLink($harmoni->request->quickURL('logs', 'browse'));
+		
+		$this->addCategory("Logs");
 		
 		ob_start();
 		print $currentLogName." "._("logs of priority,");

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.1.2.2 2006/08/08 20:26:14 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.1.2.3 2006/08/09 18:31:33 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.1.2.2 2006/08/08 20:26:14 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.1.2.3 2006/08/09 18:31:33 adamfranco Exp $
  */
 class RSSAction
 	extends ForceAuthAction
@@ -502,7 +502,7 @@ END;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.1.2.2 2006/08/08 20:26:14 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.1.2.3 2006/08/09 18:31:33 adamfranco Exp $
  */
 class RSSItem {
 	
@@ -565,7 +565,7 @@ class RSSItem {
 	 * @since 8/7/06
 	 */
 	function setLink ($link, $isGUID = true) {
-		ArgumentValidator::validate($title, StringValidatorRule::getRule());
+		ArgumentValidator::validate($link, StringValidatorRule::getRule());
 		ArgumentValidator::validate($isGUID, BooleanValidatorRule::getRule());
 		
 		$this->_link = $link;
