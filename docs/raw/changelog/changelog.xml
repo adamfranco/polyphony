@@ -4,17 +4,21 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.56.2.14 2006/08/09 18:31:33 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.56.2.15 2006/08/10 20:22:59 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
-	<version number="0.6.4" date="The Future">
+	<version number="0.6.4" date="2006-08-10">
 		<fix author='adam'>
 			Now can force cookie usage to prevent accidental or intentional 
 			session hijacking by the passing of session ids in the url.
 		</fix>
+		<new author='adam'>
+			New abstract action for RSS feeds. Handles some input validation,
+			formatting, and authentication.
+		</new>
 		<new author='adam'>
 			Logs: Added RSS feeds of logs.
 		</new>

@@ -3,7 +3,32 @@
 	h1, h2 {color: #005;}
 	h1 {font-size: 18pt;}
 	li {padding-bottom: 3px;}
-	</style><div style="font-family: Verdana; font-size: 12px;"><h1>Polyphony ChangeLog</h1><h2>Version 0.6.3</h2><h3>2006-08-04</h3><ul>
+	</style><div style="font-family: Verdana; font-size: 12px;"><h1>Polyphony ChangeLog</h1><h2>Version 0.6.4</h2><h3>2006-08-10</h3><ul>
+		<li/> Bug Fix:
+	 
+			Now can force cookie usage to prevent accidental or intentional 
+			session hijacking by the passing of session ids in the url.
+		 (<i>Adam Franco</i>)
+		<li/> New feature:  
+			New abstract action for RSS feeds. Handles some input validation,
+			formatting, and authentication.
+		 (<i>Adam Franco</i>)
+		<li/> New feature:  
+			Logs: Added RSS feeds of logs.
+		 (<i>Adam Franco</i>)
+		<li/> Bug Fix:
+	 
+			Logs: Now has a button to clear date limits.
+		 (<i>Adam Franco</i>)
+		<li/> Bug Fix:
+	 
+			Removed unneeded parameter from file and thumbnail urls.
+		 (<i>Adam Franco</i>)
+		<li/> Change:  
+			File/Thumbnail view: Now forces HTTP authentication for thumbnails 
+			if the user is not authenticated.
+		 (<i>Adam Franco</i>)
+	</ul><br/><h2>Version 0.6.3</h2><h3>2006-08-04</h3><ul>
 		<li/> Bug Fix:
 	 
 			Importer: Now doesn't generate null thumbnails for multi-page PDF files.

@@ -3,6 +3,21 @@
 Name: Polyphony ChangeLog
 
 
+v. 0.6.4 (2006-08-10)
+----------------------------------------------------
+		
+	* Bug Fix: Now can force cookie usage to prevent accidental or intentional session hijacking by the passing of session ids in the url. (Adam Franco)
+		
+	* New feature: New abstract action for RSS feeds. Handles some input validation, formatting, and authentication. (Adam Franco)
+		
+	* New feature: Logs: Added RSS feeds of logs. (Adam Franco)
+		
+	* Bug Fix: Logs: Now has a button to clear date limits. (Adam Franco)
+		
+	* Bug Fix: Removed unneeded parameter from file and thumbnail urls. (Adam Franco)
+		
+	* Change: File/Thumbnail view: Now forces HTTP authentication for thumbnails if the user is not authenticated. (Adam Franco)
+	
 v. 0.6.3 (2006-08-04)
 ----------------------------------------------------
 		
