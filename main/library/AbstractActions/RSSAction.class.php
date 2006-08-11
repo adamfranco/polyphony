@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.1.2.5 2006/08/09 21:38:12 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.1.2.6 2006/08/11 19:18:13 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.1.2.5 2006/08/09 21:38:12 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.1.2.6 2006/08/11 19:18:13 adamfranco Exp $
  */
 class RSSAction
 	extends ForceAuthAction
@@ -94,6 +94,9 @@ class RSSAction
 	function execute () {
 		if (!$this->isAuthorizedToExecute()) {
 			header('HTTP/1.0 401 Unauthorized');
+			$this->setTitle(_("Unauthorized"));
+			$this->setDescription(_("You are not authorized to view this feed."));
+			$this->write();
 			exit;
 		}
 		
@@ -502,7 +505,7 @@ END;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.1.2.5 2006/08/09 21:38:12 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.1.2.6 2006/08/11 19:18:13 adamfranco Exp $
  */
 class RSSItem {
 	
