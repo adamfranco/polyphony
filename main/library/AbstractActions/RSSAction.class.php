@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.1.2.6 2006/08/11 19:18:13 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.1.2.7 2006/08/14 17:59:31 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.1.2.6 2006/08/11 19:18:13 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.1.2.7 2006/08/14 17:59:31 adamfranco Exp $
  */
 class RSSAction
 	extends ForceAuthAction
@@ -324,7 +324,7 @@ class RSSAction
 	function write () {
 		header("Content-Type: text/xml; charset=utf-8");
 		print<<<END
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <rss version="2.0">
 	<channel>
 END;
@@ -505,7 +505,7 @@ END;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.1.2.6 2006/08/11 19:18:13 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.1.2.7 2006/08/14 17:59:31 adamfranco Exp $
  */
 class RSSItem {
 	
