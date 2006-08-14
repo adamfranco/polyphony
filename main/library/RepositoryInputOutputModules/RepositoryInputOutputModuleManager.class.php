@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.13.4.1 2006/08/07 17:26:50 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.13.4.2 2006/08/14 18:00:36 adamfranco Exp $
  */
 
 /**
@@ -21,8 +21,8 @@ require_once(dirname(__FILE__)."/modules/HarmoniFileModule.class.php");
  * appropriate RepositoryInputOutputModule based on their Schema Formats.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.13.4.1 2006/08/07 17:26:50 adamfranco Exp $
- * @since $Date: 2006/08/07 17:26:50 $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.13.4.2 2006/08/14 18:00:36 adamfranco Exp $
+ * @since $Date: 2006/08/14 18:00:36 $
  * @copyright 2004 Middlebury College
  */
 
@@ -245,6 +245,9 @@ class RepositoryInputOutputModuleManager {
 			$asset =& $assetOrId;
 		}
 		
+		if (!$asset)
+			return false;
+		
 		$fileRecord =& RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset(
 							$asset);
 		return RepositoryInputOutputModuleManager::getThumbnailUrlForRecord(
@@ -331,6 +334,9 @@ class RepositoryInputOutputModuleManager {
 		} else {
 			$asset =& $assetOrId;
 		}
+		
+		if (!$asset)
+			return false;
 		
 		$fileRecord =& RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset(
 							$asset);
