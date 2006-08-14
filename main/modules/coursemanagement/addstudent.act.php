@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addstudent.act.php,v 1.2 2006/08/03 20:32:08 jwlee100 Exp $
+ * @version $Id: addstudent.act.php,v 1.3 2006/08/14 18:59:26 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addstudent.act.php,v 1.2 2006/08/03 20:32:08 jwlee100 Exp $
+ * @version $Id: addstudent.act.php,v 1.3 2006/08/14 18:59:26 jwlee100 Exp $
  */
 class addstudentAction
 	extends MainWindowAction
@@ -192,7 +192,7 @@ class addstudentAction
 	 */
 	function getReturnUrl () {
 		$harmoni =& Harmoni::instance();
-		$url =& $harmoni->request->mkURL("coursemanagement", "edit_section_details");
+		$url =& $harmoni->request->mkURL("admin", "main");
 		return $url->write();
 	}
 }
