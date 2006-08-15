@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.13.2.4 2006/08/08 19:47:24 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.13.2.5 2006/08/15 20:46:24 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.13.2.4 2006/08/08 19:47:24 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.13.2.5 2006/08/15 20:46:24 adamfranco Exp $
  */
 class browseAction 
 	extends MainWindowAction
@@ -308,14 +308,25 @@ END;
 				print $resultPrinter->getTable();
 			}
 			
+			if (isset($currentLogName) && isset($currentPriorityType)) {
+				$url = $harmoni->request->quickURL('logs', 'browse_rss',
+						array("log" => $currentLogName,
+							"priority" => Type::typeToString($currentPriorityType)));
+				$title = $currentLogName." ".$currentPriorityType->getKeyword()." "._("Logs");
+				
+				$outputHandler =& $harmoni->getOutputHandler();
+				$outputHandler->setHead($outputHandler->getHead()
+					."\n\t\t<link rel='alternate' type='application/rss+xml'"
+					." title='".$title."' href='".$url."'/>");
+				
+				print "\n\t\t<div style='text-align: right'>";
+				print "\n\t\t<a href='".$url."' style='white-space: nowrap;' title='".$title."'>";
+				print "\n\t\t\t<img src='".POLYPHONY_PATH."main/library/AbstractActions/rss_icon02.png' border='0'/>";
+				print "\n\t\t\t"._("Subscribe to the RSS feed of this log");
+				print "\n\t\t</a>";
+				print "\n\t\t</div>";
+			}
 			
-			print "\n\t\t<div style='text-align: right'>";
-			print "\n\t\t<a href='";
-			print $harmoni->request->quickURL('logs', 'browse_rss')."'>";
-			print "\n\t\t\t<img src='".POLYPHONY_PATH."main/library/AbstractActions/rss_icon02.png' border='0'/>";
-			print "\n\t\t\t"._("Subscribe to the RSS feed of this log");
-			print "\n\t\t</a>";
-			print "\n\t\t</div>";
 			$actionRows->add(new Block(ob_get_clean(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
 		}
  		
