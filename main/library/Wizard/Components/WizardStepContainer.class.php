@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.7 2006/01/18 22:51:59 adamfranco Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.8 2006/08/15 20:51:43 sporktim Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.7 2006/01/18 22:51:59 adamfranco Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.8 2006/08/15 20:51:43 sporktim Exp $
  */
 class WizardStepContainer extends WizardComponent {
 	var $_currStep;
@@ -63,6 +63,8 @@ class WizardStepContainer extends WizardComponent {
 		return $this->_currStep;
 	}
 	
+
+	
 	/**
 	 * Gets the short-name associated with the current step.
 	 * @access public
@@ -83,8 +85,20 @@ class WizardStepContainer extends WizardComponent {
 		$name = preg_replace("/[^a-zA-Z0-9:_-]/", "_", $name);
 		$ind = array_search($name, $this->_stepNames);
 		if ($ind !== false) {
+			$oldStep = $this->_currStep;
 			$this->_currStep = $ind;
+			$wizard =& $this->getWizard();
+			if(!is_null($oldStep)){
+				if($oldStep == $this->_currStep){
+					print "WHY ARE THEY THE SAME?";
+				}
+			$wizard->triggerLater("edu.middlebury.polyphony.wizard.step_changed", $this, array(
+				'from'=>$this->_stepNames[$oldStep], 'to'=>$this->_stepNames[$this->_currStep]));
+			}
+		}else{
+			throwError(new Error("No such step '".$name."'","WizardStepContainer",true));
 		}
+		
 	}
 	
 	/**
@@ -122,7 +136,7 @@ class WizardStepContainer extends WizardComponent {
 		
 		$wizard =& $this->getWizard();
 		$wizard->triggerLater("edu.middlebury.polyphony.wizard.step_changed", $this, array(
-				'from'=>$this->_currStep-1, 'to'=>$this->_currStep));
+				'from'=>$this->_stepNames[$this->_currStep-1], 'to'=>$this->_stepNames[$this->_currStep]));
 	}
 	
 	/**
@@ -138,7 +152,7 @@ class WizardStepContainer extends WizardComponent {
 		
 		$wizard =& $this->getWizard();
 		$wizard->triggerLater("edu.middlebury.polyphony.wizard.step_changed", $this, array(
-				'from'=>$this->_currStep+1, 'to'=>$this->_currStep));
+				'from'=>$this->_stepNames[$this->_currStep+1], 'to'=>$this->_stepNames[$this->_currStep]));
 	}
 	
 	/**

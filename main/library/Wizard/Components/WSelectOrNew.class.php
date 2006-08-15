@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectOrNew.class.php,v 1.4 2006/06/05 20:25:36 adamfranco Exp $
+ * @version $Id: WSelectOrNew.class.php,v 1.5 2006/08/15 20:51:43 sporktim Exp $
  */ 
 
 /**
@@ -18,15 +18,21 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectOrNew.class.php,v 1.4 2006/06/05 20:25:36 adamfranco Exp $
+ * @version $Id: WSelectOrNew.class.php,v 1.5 2006/08/15 20:51:43 sporktim Exp $
  */
 class WSelectOrNew
 	extends WizardComponentWithChildren 
+	//implements ErrorCheckingWizardComponent
 {
 
     var $_select;
     var $_new;
     var $_label;
+    
+    var $_errorRule = null;
+	var $_errorMessage = null;
+	var $_errorStyle = "color: red;";
+	var $_showError;
 		
 	/**
 	 * Constructor
@@ -134,11 +140,12 @@ class WSelectOrNew
 	 * Adds an option to this list.
 	 * @param string $value The short value that represents the displayed text.
 	 * @param string $displayText The text to show to the end user.
+	 * @param string $styles Any styles to pass into the menu option.
 	 * @access public
 	 * @return void
 	 */
-	function addOption ($value, $displayText) {
-		$this->_select->addOption($value, $displayText);
+	function addOption ($value, $displayText, $styles=null) {
+		$this->_select->addOption($value, $displayText, $styles);
 	}
 	
 	/**
@@ -173,7 +180,14 @@ class WSelectOrNew
 	 * @return boolean
 	 */
 	function validate () {
-		return ($this->_select->validate() || $this->_new->validate());
+		if($this->isUsingNewValue()){			
+			$rule =& $this->getErrorRule();
+			if (!$rule) return true;
+			$err = $rule->checkValue($this);		
+			return $err;		
+		}else{
+			return $this->_select->validate();
+		}
 	}
 	
 	/**
@@ -216,6 +230,66 @@ class WSelectOrNew
 		return ($this->_select->getAllValues() == '__NEW_VALUE__' || $this->_select->getAllValues() == '');
 	}
 	
+	
+	
+	/**
+	 * Sets this element's regular expression. Its value must match this to be considered valid.
+	 * @param string $regex
+	 * @access public
+	 * @return void
+	 */
+	function setErrorRule (&$rule) {
+		$this->_errorRule =& $rule;
+	}
+	
+	/**
+	 * Sets the text to be displayed if an error occurs.
+	 * @param string $text
+	 * @access public
+	 * @return void
+	 */
+	function setErrorText ($text) {
+		$this->_errorMessage = $text;
+	}
+	
+	/**
+	 * Sets the CSS style of the error text.
+	 * @param string $style
+	 * @access public
+	 * @return void
+	 */
+	function setErrorStyle ($style) {
+		$this->_errorStyle = $style;
+	}
+	
+	/**
+	 * Returns the error {@link WECRule}.
+	 * @access public
+	 * @return ref object
+	 */
+	function &getErrorRule () {
+		return $this->_errorRule;
+	}
+	
+	/**
+	 * Returns the error text.
+	 * @access public
+	 * @return string
+	 */
+	function getErrorText () {
+		return $this->_errorMessage;
+	}
+	
+	/**
+	 * Returns the error text CSS style.
+	 * @access public
+	 * @return string
+	 */
+	function getErrorStyle () {
+		return $this->_errorStyle;
+	}
+	
+	
 	/**
 	 * Returns a block of XHTML-valid code that contains markup for this specific
 	 * component. 
@@ -228,7 +302,7 @@ class WSelectOrNew
 		$m = "";
 		$m .= "\n\t<div title='".$this->_label."' style='vertical-align: top; padding: 0px; margin: 0px;'>";
 		
-		$newId = RequestContext::name($fieldName."_new");
+		$newId = RequestContext::name($fieldName."_new_container");
 		
 		if ($this->isUsingNewValue())
 			$display = " display: block;";
@@ -246,6 +320,20 @@ class WSelectOrNew
 		$m .= "\n\t\t".$this->_new->getMarkup($fieldName."_new");
 		
 		$m .= "\n\t</div>";
+		
+		$errText = $this->getErrorText();
+		$errRule =& $this->getErrorRule();
+		
+		$errStyle = $this->getErrorStyle();
+		
+		//$todo fix the darn validation
+		if ($errText && $errRule) {
+			//$m .= "\n\t\t<span id='".$fieldName."_error' style=\"padding-left: 10px; $errStyle\">&laquo; $errText</span>";	
+			//$m .= Wizard::getValidationJavascript($fieldName."_new", $errRule, $fieldName."_error", !$this->validate());
+			
+		}
+		
+		
 		return $m;
 	}
 

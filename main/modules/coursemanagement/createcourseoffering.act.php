@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcourseoffering.act.php,v 1.9 2006/07/21 19:54:42 jwlee100 Exp $
+ * @version $Id: createcourseoffering.act.php,v 1.10 2006/08/15 20:51:44 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createcourseoffering.act.php,v 1.9 2006/07/21 19:54:42 jwlee100 Exp $
+ * @version $Id: createcourseoffering.act.php,v 1.10 2006/08/15 20:51:44 sporktim Exp $
  */
 class createcourseofferingAction
 	extends MainWindowAction
@@ -290,13 +290,13 @@ class createcourseofferingAction
 	function saveWizard ( $cacheName ) {
 		$wizard =& $this->getWizard($cacheName);
 		
-		// Make sure we have a valid Repository
+	
 		$courseManager =& Services::getService("CourseManagement");
 		$idManager =& Services::getService("Id");
 		$courseManagementId =& $idManager->getId("edu.middlebury.coursemanagement");
 
 		
-		// First, verify that we chose a parent that we can add children to.
+	
 		$authZ =& Services::getService("AuthZ");
 		if ($authZ->isUserAuthorized(
 						$idManager->getId("edu.middlebury.authorization.add_children"), 

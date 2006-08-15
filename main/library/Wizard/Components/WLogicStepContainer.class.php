@@ -6,13 +6,13 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicStepContainer.class.php,v 1.3 2006/08/03 20:51:57 sporktim Exp $
+ * @version $Id: WLogicStepContainer.class.php,v 1.4 2006/08/15 20:51:43 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WizardStepContainer.class.php");
 
 /**
- * StepContainer that uses logic rules to add steps to its queue
+ * StepContainer that add steps to its stack as the wizard goes along
  * 
  * @since 5/31/06
  * @package polyphony.library.wizard
@@ -20,11 +20,19 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WizardStepContainer.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicStepContainer.class.php,v 1.3 2006/08/03 20:51:57 sporktim Exp $
+ * @version $Id: WLogicStepContainer.class.php,v 1.4 2006/08/15 20:51:43 sporktim Exp $
  */
 class WLogicStepContainer extends WizardStepContainer {
 		
-	var $_stepQueue;
+	var $_stepStack;
+	
+	var $_backNamesStack;
+	var $_backStepsStack;
+	var $_forwardNamesStack;
+	var $_forwardStepsStack;
+	
+	
+	
 	
 	/**
 	 * Constructor
@@ -35,7 +43,12 @@ class WLogicStepContainer extends WizardStepContainer {
 	 */
 	function WLogicStepContainer () {
 		parent::WizardStepContainer();
-		$this->_stepQueue = array();
+		$this->_currStep = null;
+		$this->_stepStack = array();
+		$this->_backNamesStack = array();
+		$this->_backStepsStack = array();
+		$this->_forwardNamesStack = array();
+		$this->_forwardStepsStack = array();
 	}
 	
 	/**
@@ -52,26 +65,147 @@ class WLogicStepContainer extends WizardStepContainer {
 	}
 	
 	/**
-	 * Goes to the next step, if possible.  Via invoking logic class.
+	 * Set the steps for this step container.  Remove forward and backward capability.
+	 *
+	 * @access public
+	 * @param array $arrayOfSteps
+	 * $return void
+	 */
+	function setRequiredSteps($arrayOfSteps) {
+		//steps are listed backwards in a stack.
+		$this->_stepStack = array_reverse($arrayOfSteps);
+		
+	
+		
+		$this->nextStep();		
+
+			//clear forward and back
+		$this->_backNamesStack = array();
+		$this->_backStepsStack = array();
+		$this->_forwardNamesStack = array();
+		$this->_forwardStepsStack = array();	
+	}
+
+	
+	
+	
+	
+	/**
+	 * Goes to the next step, if possible, by popping the next step off the stack.
 	 * @param ref object WLogicButton $button that has logic attached
 	 * @access public
 	 * @return void
 	 */
 	function nextStep ($button=null) {
+		
+		
+		
+		//add this step to the back stacks		
+		if(!is_null($this->_currStep)){
+			array_push($this->_backNamesStack,$this->getCurrentStepName());	
+			
+			
+			array_push($this->_backStepsStack,array_values($this->_stepStack));	
+		}
+		
+		
+		
+		
+		
+		
+		//clear the forward stacks
+		$this->_forwardNamesStack = array();
+		$this->_forwardStepsStack = array();
+
+		//if there is a WLogicButton passed in, add the appropriate steps
+		
 		if(func_num_args()>0){
 			$controller =& $button->getLogicRule();		
-			$this->addStepsToQueue($controller->getRequiredSteps());
-		}		
-		$oldStep = $this->_currStep;
-		$this->setStep(array_shift($this->_stepQueue));
-
-		$wizard =& $this->getWizard();
-		$wizard->triggerLater("edu.middlebury.polyphony.wizard.step_changed", $this, array(
-				'from'=>$oldStep, 'to'=>$this->_currStep));
+			$this->pushSteps($controller->getRequiredSteps());			
+		}
+		
+		$nextStep = array_pop($this->_stepStack);
+		
+		
+		$this->setStep($nextStep);
+		
+		
 	}
+	
+	/**
+	 * Go backward in the history, if possible.  
+	 * @access public
+	 * @return void
+	 */
+	function goBack() {
+		
+			print "2--";
+		
+		//aren't stacks awesome?  This code is so awesome, I'll add my name--Tim
+		
+		
+		
+		//add the current step to back in case we need to return to it
+		array_push($this->_forwardNamesStack,$this->getCurrentStepName());
+		array_push($this->_forwardStepsStack,array_values($this->_stepStack));		
+		
+		//remove and save the values from the back stacks
+		$nextStep = array_pop($this->_backNamesStack);
+		$nextStack =  array_values(array_pop($this->_backStepsStack));
+		
+	
+		//change to the right step
+		$this->setStep($nextStep);
+		$this->_stepStack = $nextStack;
+		
+	
+		
+	}
+	
+	/**
+	 * Go forward in the history, if possible.  
+	 * @access public
+	 * @return void
+	 */
+	function goForward() {
+		//aren't stacks awesome?  This code is so awesome, I'll my name--Tim
+		
+		//add the current step to forward in case we need to return to it
+		array_push($this->_backNamesStack,$this->getCurrentStepName());
+		array_push($this->_backStepsStack,array_values($this->_stepStack));		
+		
+		//remove and save the values from the forward stacks
+		$nextStep = array_pop($this->_forwardNamesStack);
+		$nextStack =  array_values(array_pop($this->_forwardStepsStack));
+		
+		//change to the right step
+		$this->setStep($nextStep);
+		$this->_stepStack = $nextStack;
+	}
+	
+	
+	/**
+	 * Returns if this StepContainer has a next forward step.
+	 * @access public
+	 * @return boolean
+	 */
+	function canGoForward () {
+		return (count($this->_forwardNamesStack) > 0);
+	}
+	
+	/**
+	 * Returns if this StepContainer has a next forward step.
+	 * @access public
+	 * @return boolean
+	 */
+	function canGoBack () {
+		return (count($this->_backNamesStack) > 0);
+	}
+	
 	
 	function previousStep () {
 		// do nothing, can't go back in logic wizard
+		throwError(new Error("A (logic) Wizard nevers goes back on his word! (or his steps)","WLogicStepContainer",true));
 	}
 	
 	/**
@@ -80,25 +214,45 @@ class WLogicStepContainer extends WizardStepContainer {
 	 * @return boolean
 	 */
 	function hasNext () {
-		return (count($this->_stepQueue) > 0)?true:false;
+		return (count($this->_stepStack) > 0)?true:false;
 	}
+	
 	
 	function hasPrevious () {
 		// do nothing, can't go back in logic wizard
+		throwError(new Error("A (logic) Wizard nevers goes back on his word! (or his steps)","WLogicStepContainer",true));
 	}
 	
 	/**
-	 * adds the passed steps to the current step queue if they are not there
+	 * Returns true if this component (and all child components if applicable) have valid values.
+	 * By default, this will just return TRUE.
+	 * 
+	 * @access public
+	 * @return boolean
+	 */
+	function validate () {
+		$step =& $this->_steps[$this->_currStep];
+		return $step->validate();
+	}
+	
+	
+	/**
+	 * adds the passed steps to the current step stack if they are not there
 	 * 
 	 * @param array $steps
 	 * @return void
 	 * @access public
 	 * @since 5/31/06
 	 */
-	function addStepsToQueue ($steps) {
-		$this->_stepQueue = array_unique(
-							array_merge($this->_stepQueue, $steps));
+	function pushSteps ($steps) {
+		$steps = array_reverse($steps);
+		foreach ($steps as $step){
+			array_push($this->_stepStack, $step);
+		}
+		
 	}
+	
+	
 }
 
 ?>

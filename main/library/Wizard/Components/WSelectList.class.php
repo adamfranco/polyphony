@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.14 2006/06/12 15:01:22 adamfranco Exp $
+ * @version $Id: WSelectList.class.php,v 1.15 2006/08/15 20:51:43 sporktim Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.14 2006/06/12 15:01:22 adamfranco Exp $
+ * @version $Id: WSelectList.class.php,v 1.15 2006/08/15 20:51:43 sporktim Exp $
  */
 class WSelectList 
 	extends WizardComponent 
@@ -31,6 +31,7 @@ class WSelectList
 	var $_onchange = '';
 	
 	var $_items = array();
+	var $_styles = array();
 	
 	/**
 	 * Constructor
@@ -83,11 +84,13 @@ class WSelectList
 	 * Adds an option to this list.
 	 * @param string $value The short value that represents the displayed text.
 	 * @param string $displayText The text to show to the end user.
+	 * @param string $styles Any styles to pass into the menu option.
 	 * @access public
 	 * @return void
 	 */
-	function addOption ($value, $displayText) {
+	function addOption ($value, $displayText, $styles = null) {
 		$this->_items[$value] = $displayText;
+		$this->_styles[$value] = $styles;
 	}
 	
 	/**
@@ -199,12 +202,16 @@ class WSelectList
 			$m .= "\n\t\t\t\tdisabled=\"disabled\"";
 		$m .= ">\n";
 		
+		
 		foreach (array_keys($this->_items) as $key) {
 			$disp = $this->_items[$key];
 			$selected = $this->_value==$key?" selected='selected'":"";
-			$val = htmlspecialchars($key, ENT_QUOTES);
-						
-			$m .= "<option value='$val'$selected>".htmlspecialchars($disp)."</option>\n";
+			$val = htmlspecialchars($key, ENT_QUOTES);			
+			if (!is_null($this->_styles[$key]))
+				$style = " style='".$this->_styles[$key]."'";
+			else
+				$style = '';				
+			$m .= "<option value='".$val."'".$selected.$style.">".htmlspecialchars($disp)."</option>\n";
 		}
 		
 		if ($this->_value && !$this->isOption($this->_value)) {

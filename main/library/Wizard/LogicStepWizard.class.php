@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: LogicStepWizard.class.php,v 1.5 2006/08/03 20:51:57 sporktim Exp $
+ * @version $Id: LogicStepWizard.class.php,v 1.6 2006/08/15 20:51:43 sporktim Exp $
  */ 
 
 /**
@@ -18,13 +18,17 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: LogicStepWizard.class.php,v 1.5 2006/08/03 20:51:57 sporktim Exp $
+ * @version $Id: LogicStepWizard.class.php,v 1.6 2006/08/15 20:51:43 sporktim Exp $
  */
  
  require_once(POLYPHONY."/main/library/Wizard/StepWizard.abstract.php");
  require_once(POLYPHONY."/main/library/Wizard/Components/WLogicStepContainer.class.php");
  require_once(POLYPHONY."/main/library/Wizard/Components/WSaveContinueButton.class.php");
+ require_once(POLYPHONY."/main/library/Wizard/Components/WBackButton.class.php");
+ require_once(POLYPHONY."/main/library/Wizard/Components/WForwardButton.class.php");
  require_once(POLYPHONY."/main/library/Wizard/Components/WLogicButton.class.php");
+ require_once(POLYPHONY."/main/library/Wizard/Components/WCallbackButton.class.php");
+ require_once(POLYPHONY."/main/library/Wizard/Components/WDynamicStep.class.php");
 
 
  
@@ -34,7 +38,9 @@
  
 class LogicStepWizard extends StepWizard {
 		
-	var $_saveContinueButton;
+	//var $_saveContinueButton;
+	var $_backButton;
+	var $_forwardButton;
 
 	
 	/**
@@ -46,19 +52,26 @@ class LogicStepWizard extends StepWizard {
 	 */
 	function LogicStepWizard () {
 		$this->_stepContainer =& new WLogicStepContainer();
-		$this->_saveContinueButton =& new WSaveContinueButton($this->_stepContainer);
-		$this->_nextButton =& new WNextStepButton($this->_stepContainer);
+		$this->addComponent('_steps', $this->_stepContainer);
+		
+		
+		//$this->_saveContinueButton =& new WSaveContinueButton($this->_stepContainer);
+		//$this->_nextButton =& new WNextStepButton($this->_stepContainer);
+		$this->_backButton =& new WBackButton($this->_stepContainer);
+		$this->_forwardButton =& new WForwardButton($this->_stepContainer);
 		$this->_cancelButton =& new WCancelButton();
 		$this->_saveButton =& new WSaveButton();
-		$this->addComponent('_steps', $this->_stepContainer);
-		//$this->_stepContainer->addComponent('_saveContinue', $this->_saveContinueButton);
-		//$this->_stepContainer->addComponent('_cancelContinue', $this->_cancelContinueButton);
-		$this->addComponent('_saveContinue', $this->_saveContinueButton);
-		$this->addComponent('_next', $this->_nextButton);
+
+
+		//$this->addComponent('_saveContinue', $this->_saveContinueButton);
+		//$this->addComponent('_next', $this->_nextButton);
+		
+		$this->addComponent('_back', $this->_backButton);
+		$this->addComponent('_forward', $this->_forwardButton);
 		$this->addComponent('_cancel', $this->_cancelButton);
 		$this->addComponent('_save', $this->_saveButton);
 		
-		print "LogicStepWizard";
+
 	}
 	
 	
@@ -80,27 +93,28 @@ class LogicStepWizard extends StepWizard {
 	function &withText ($text) {
 		return parent::withText($text, 'LogicStepWizard');
 	}
-
+	
 	/**
-	 * updates the wizard by updating the current step and allowing the logic to flow
-	 * 
-	 * @param string $fieldName
-	 * @return boolean
+	 * Set the required steps for this wizard
+	 *
 	 * @access public
-	 * @since 5/31/06
+	 * @param array $arrayOfSteps
+	 * $return void
 	 */
-	/*function update ($fieldName) {
-			
-		$ok =  $this->_stepContainer->update($fieldName."__steps");
-		$this->triggerEvent("edu.middlebury.polyphony.wizard.update", $this);
-		foreach (array_keys($this->_eventsLater) as $key) {
-			$info =& $this->_eventsLater[$key];
-			$this->triggerEvent($info[0], $info[1], $info[2]);
-			unset($this->_eventsLater[$key]);
-		}
-		return $ok;
-		
-	}*/
+	function setRequiredSteps($arrayOfSteps) {
+		$this->_stepContainer->setRequiredSteps($arrayOfSteps);
+	}
+	
+	/**
+	 * Get the step container for this wizard
+	 *
+	 * @access public
+	 * $return object WLogicStepContainer
+	 */
+	function &getStepContainer(){
+		return $this->_stepContainer;
+	}
+
 	
 	
 	function &withDefaultLayout ($pre = '') {
@@ -108,14 +122,18 @@ class LogicStepWizard extends StepWizard {
 				"<div>\n" .
 				"<table width='100%' border='0' cellpadding='0' cellspacing='2'>\n" .
 				"<tr>\n" .
-				"<td align='left' width='50%'>\n" .
-				"[[_cancel]]<br/>\n" .
-				"[[_save]]" .
+				"<td align='left' width='33%'>\n" .
+				"[[_back]]\n" .
+				"[[_forward]]" .
 				"</td>\n" .
-				"<td align='right' width='50%'>\n" .
-				"[[_next]]<br/>\n" .
-				"[[_saveContinue]]" .
-				"</td></tr></table>" .
+				"<td align='center' width='34%'>\n" .
+				"[[_save]]\n" .
+				"[[_cancel]]" .
+				"</td>\n" .
+				"<td align='right' width='34%'>\n" .
+				"&nbsp" .
+				"</td>\n" .
+				"</tr></table>" .
 				"</div>\n" .
 				"<hr/>\n" .
 				"<div>\n" .

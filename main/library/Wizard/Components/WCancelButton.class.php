@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCancelButton.class.php,v 1.6 2006/06/07 19:22:35 adamfranco Exp $
+ * @version $Id: WCancelButton.class.php,v 1.7 2006/08/15 20:51:43 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php");
@@ -21,11 +21,14 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCancelButton.class.php,v 1.6 2006/06/07 19:22:35 adamfranco Exp $
+ * @version $Id: WCancelButton.class.php,v 1.7 2006/08/15 20:51:43 sporktim Exp $
  */
 class WCancelButton extends WEventButton {
-	function WCancelButton() {
-		$this->setEventAndLabel("edu.middlebury.polyphony.wizard.cancel", dgettext("polyphony","Cancel"));
+	function WCancelButton($label=null) {
+		if(is_null($label)){
+			$label = dgettext("polyphony", "Cancel");
+		}
+		$this->setEventAndLabel("edu.middlebury.polyphony.wizard.cancel", $label);
 		$this->addOnClick("ignoreValidation(this.form);");
 	}
 

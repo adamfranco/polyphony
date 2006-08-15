@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.37 2006/08/02 23:47:43 sporktim Exp $
+ * @version $Id: polyphony.inc.php,v 1.38 2006/08/15 20:51:42 sporktim Exp $
  */
 
 /**
@@ -49,10 +49,23 @@ require_once(dirname(__FILE__)."/main/library/Wizard/Components/WHiddenField.cla
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WText.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WVerifiedChangeInput.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WChooseOptionButton.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/Components/WMoreOptions.abstract.php");
 
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WAgentBrowser.class.php");
 
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WColorWheel.class.php");
+
+//gui components
+require_once(POLYPHONY."/main/library/GUIWizardComponents/WStyleComponent.class.php");
+require_once(POLYPHONY."/main/library/GUIWizardComponents/WStyleProperty.class.php");
+require_once(POLYPHONY."/main/library/GUIWizardComponents/WStyleCollection.class.php");
+require_once(POLYPHONY."/main/library/GUIWizardComponents/WBlockEditor.class.php");
+require_once(POLYPHONY."/main/library/GUIWizardComponents/WGUIComponent.abstract.php");
+require_once(POLYPHONY."/main/library/GUIWizardComponents/WGUICheckBox.class.php");
+require_once(POLYPHONY."/main/library/GUIWizardComponents/WGUISelectList.class.php");
+require_once(POLYPHONY."/main/library/GUIWizardComponents/WFontEditor.class.php");
+require_once(POLYPHONY."/main/library/GUIWizardComponents/Utilities/WGUIComponentUtility.class.php");
+
 
 // error checking
 require_once(dirname(__FILE__)."/main/library/Wizard/ErrorCheckingRules/WECRegex.class.php");

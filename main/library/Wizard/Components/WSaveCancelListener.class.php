@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveCancelListener.class.php,v 1.3 2005/10/20 18:33:39 cws-midd Exp $
+ * @version $Id: WSaveCancelListener.class.php,v 1.4 2006/08/15 20:51:43 sporktim Exp $
  */ 
 
 /**
@@ -20,11 +20,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveCancelListener.class.php,v 1.3 2005/10/20 18:33:39 cws-midd Exp $
+ * @version $Id: WSaveCancelListener.class.php,v 1.4 2006/08/15 20:51:43 sporktim Exp $
  */
 class WSaveCancelListener 
-	extends WizardComponent 
-	/* implements EventListener */ 
+	extends WizardEventListener 
 {
 	var $_save = false;
 	var $_cancel = false;

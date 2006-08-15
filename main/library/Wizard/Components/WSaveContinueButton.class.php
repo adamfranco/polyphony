@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveContinueButton.class.php,v 1.5 2006/08/03 20:51:57 sporktim Exp $
+ * @version $Id: WSaveContinueButton.class.php,v 1.6 2006/08/15 20:51:43 sporktim Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveContinueButton.class.php,v 1.5 2006/08/03 20:51:57 sporktim Exp $
+ * @version $Id: WSaveContinueButton.class.php,v 1.6 2006/08/15 20:51:43 sporktim Exp $
  */
  
 require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php");
@@ -56,7 +56,7 @@ class WSaveContinueButton extends WEventButton {
 	function update ($fieldName) {
 		parent::update($fieldName);
 		if ($this->getAllValues()) {
-			$this->_stepContainer->nextStep($this);
+			$this->_stepContainer->nextStep();
 		}
 	}
 	

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.class.php,v 1.12 2006/08/03 20:51:57 sporktim Exp $
+ * @version $Id: WEventButton.class.php,v 1.13 2006/08/15 20:51:43 sporktim Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.class.php,v 1.12 2006/08/03 20:51:57 sporktim Exp $
+ * @version $Id: WEventButton.class.php,v 1.13 2006/08/15 20:51:43 sporktim Exp $
  */
 class WEventButton 
 	extends WizardComponent
@@ -117,7 +117,6 @@ class WEventButton
 	function update ($fieldName) {
 		$val = RequestContext::value($fieldName);
 		if ($val) {
-			print "Event triggered!";
 			// trigger the save event on the wizard
 			$wizard =& $this->getWizard();
 			$wizard->triggerLater($this->_event, $wizard);

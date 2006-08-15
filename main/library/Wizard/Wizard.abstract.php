@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.13 2006/01/17 20:06:41 adamfranco Exp $
+ * @version $Id: Wizard.abstract.php,v 1.14 2006/08/15 20:51:43 sporktim Exp $
  */
 
 /*
@@ -15,6 +15,7 @@
 
 require_once(HARMONI."/GUIManager/Components/Block.class.php");
 require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstract.php");
+require_once(POLYPHONY."/main/library/Wizard/Components/WUpdateListener.class.php");
 
 /**
  * The Wizard class provides a system for posting, retrieving, and
@@ -30,7 +31,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.13 2006/01/17 20:06:41 adamfranco Exp $
+ * @version $Id: Wizard.abstract.php,v 1.14 2006/08/15 20:51:43 sporktim Exp $
  * @author Gabe Schine
  * @abstract
  */
@@ -176,6 +177,14 @@ class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 			var errEl = getWizardElement(errorID);
 		//	errEl.style.position = "absolute";
 			errEl.style.visibility = (displayError?"visible":"hidden");
+			
+			
+			
+			//if(element._ruleCheck){
+			//	alert(element.name);
+			//}
+			
+			
 		}
 
 		function getWizardElement(id) {
@@ -191,10 +200,23 @@ class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 			var ok = true;
 			for(var i = 0; i < form.length; i++) {
 				var el = elements[i];
+
+			
+				 //alert(el.name);
+				
+				
+				//getWizardElement(el.name);
+				
+				
+			// var al = "hello "+el._ruleErrorID+"  world  "+elementID+"      "+ rule;
+			// alert(al);
+			
 				if (el._ruleCheck) {
+				   
+					
 					var errID = el._ruleErrorID;
 					var errDiv = getWizardElement(errID);
-					if (!el._ruleCheck(el)) {
+					if (!el._ruleCheck(el)) {						
 						ok = false;
 						// show the error div
 						errDiv.style.visibility = "visible";

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRadioList.class.php,v 1.7 2006/06/05 20:25:36 adamfranco Exp $
+ * @version $Id: WRadioList.class.php,v 1.8 2006/08/15 20:51:43 sporktim Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRadioList.class.php,v 1.7 2006/06/05 20:25:36 adamfranco Exp $
+ * @version $Id: WRadioList.class.php,v 1.8 2006/08/15 20:51:43 sporktim Exp $
  */
 class WRadioList 
 	extends WizardComponent 
@@ -31,6 +31,7 @@ class WRadioList
 	var $_pre;
 	var $_post;
 	var $_value;
+	var $_onchange;
 	var $_style = null;
 	
 	var $_items = array();

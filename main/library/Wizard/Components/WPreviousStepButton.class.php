@@ -6,13 +6,13 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WPreviousStepButton.class.php,v 1.5 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WPreviousStepButton.class.php,v 1.6 2006/08/15 20:51:43 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php");
 
 /**
- * This adds a "Next" button to the wizard and throws the appropriate event.
+ * This adds a "Previous" button to the wizard.
  * 
  * @since Jul 20, 2005
  * @package polyphony.library.wizard.components
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WPreviousStepButton.class.php,v 1.5 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WPreviousStepButton.class.php,v 1.6 2006/08/15 20:51:43 sporktim Exp $
  */
 class WPreviousStepButton extends WEventButton {
 	var $_stepContainer;
@@ -32,7 +32,7 @@ class WPreviousStepButton extends WEventButton {
 	 * @return void
 	 */
 	function WPreviousStepButton (&$stepContainer) {
-		$this->setLabel(dgettext("polyphony", "Previous"));
+		$this->setLabel(_("Previous"));
 		$this->_stepContainer =& $stepContainer;
 	}
 

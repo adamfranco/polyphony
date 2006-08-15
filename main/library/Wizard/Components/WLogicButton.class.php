@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicButton.class.php,v 1.5 2006/08/03 20:51:57 sporktim Exp $
+ * @version $Id: WLogicButton.class.php,v 1.6 2006/08/15 20:51:43 sporktim Exp $
  */ 
 
  require_once(POLYPHONY."/main/library/Wizard/Components/WLogicRule.class.php");
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicButton.class.php,v 1.5 2006/08/03 20:51:57 sporktim Exp $
+ * @version $Id: WLogicButton.class.php,v 1.6 2006/08/15 20:51:43 sporktim Exp $
  */
 class WLogicButton extends WEventButton {
 		
@@ -85,7 +85,6 @@ class WLogicButton extends WEventButton {
 	 * @since 7/31/06
 	 */
 	function setLogic (&$controller) {
-		print " (Setting logic for label ".$this->_label.") ";
 		$this->_logic =& $controller;
 	}
 
@@ -122,7 +121,6 @@ class WLogicButton extends WEventButton {
 	function update ($fieldName) {
 		$val = RequestContext::value($fieldName);
 		if ($val) {
-			print " (pressed: '".$fieldName."') ";
 			$wizard =& $this->getWizard();
 			$stepContaner =& $wizard->_stepContainer;
 			$stepContaner->nextStep($this);			
@@ -138,7 +136,6 @@ class WLogicButton extends WEventButton {
 	 * @since 7/31/06
 	 */
 	function &getLogicRule () {
-		print "getting logic";
 		return $this->_logic;
 	}
 	

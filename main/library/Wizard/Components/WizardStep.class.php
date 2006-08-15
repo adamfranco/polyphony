@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStep.class.php,v 1.1 2005/07/22 15:42:34 gabeschine Exp $
+ * @version $Id: WizardStep.class.php,v 1.2 2006/08/15 20:51:43 sporktim Exp $
  */
 
 require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstract.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStep.class.php,v 1.1 2005/07/22 15:42:34 gabeschine Exp $
+ * @version $Id: WizardStep.class.php,v 1.2 2006/08/15 20:51:43 sporktim Exp $
  * @author Gabe Schine
  */
 class WizardStep extends WizardComponentWithChildren {
@@ -66,7 +66,7 @@ class WizardStep extends WizardComponentWithChildren {
 	function update ($fieldName) {
 		$children =& $this->getChildren();
 		$ok = true;
-		foreach (array_keys($children) as $key) {
+		foreach (array_keys($children) as $key) {			
 			if (!$children[$key]->update($fieldName."_".$key)) {
 				$ok = false;
 			}
