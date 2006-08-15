@@ -4,13 +4,19 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.56.2.15 2006/08/10 20:22:59 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.56.2.16 2006/08/15 17:28:28 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
-	<version number="0.6.4" date="2006-08-10">
+	<version number="0.6.5" date="2006-08-15">
+		<fix author='adam'>
+			Repository: Now returns false instead of throwing an error if the 
+			Asset with the specified id does not exist.
+		</fix>
+	</version>
+	<version number="0.6.4" date="2006-08-11">
 		<fix author='adam'>
 			Now can force cookie usage to prevent accidental or intentional 
 			session hijacking by the passing of session ids in the url.

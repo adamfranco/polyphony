@@ -3,7 +3,12 @@
 Name: Polyphony ChangeLog
 
 
-v. 0.6.4 (2006-08-10)
+v. 0.6.5 (2006-08-15)
+----------------------------------------------------
+		
+	* Bug Fix: Repository: Now returns false instead of throwing an error if the Asset with the specified id does not exist. (Adam Franco)
+	
+v. 0.6.4 (2006-08-11)
 ----------------------------------------------------
 		
 	* Bug Fix: Now can force cookie usage to prevent accidental or intentional session hijacking by the passing of session ids in the url. (Adam Franco)
