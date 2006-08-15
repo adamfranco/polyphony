@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.38 2006/08/15 20:51:42 sporktim Exp $
+ * @version $Id: polyphony.inc.php,v 1.39 2006/08/15 21:15:49 sporktim Exp $
  */
 
 /**
@@ -64,7 +64,7 @@ require_once(POLYPHONY."/main/library/GUIWizardComponents/WGUIComponent.abstract
 require_once(POLYPHONY."/main/library/GUIWizardComponents/WGUICheckBox.class.php");
 require_once(POLYPHONY."/main/library/GUIWizardComponents/WGUISelectList.class.php");
 require_once(POLYPHONY."/main/library/GUIWizardComponents/WFontEditor.class.php");
-require_once(POLYPHONY."/main/library/GUIWizardComponents/Utilities/WGUIComponentUtility.class.php");
+require_once(POLYPHONY."/main/library/GUIWizardComponents/Utilities/GUIComponentUtility.class.php");
 
 
 // error checking

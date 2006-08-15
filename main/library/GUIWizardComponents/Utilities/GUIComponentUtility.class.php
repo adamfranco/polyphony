@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: GUIComponentUtility.class.php,v 1.1 2006/08/15 21:13:52 sporktim Exp $
+* @version $Id: GUIComponentUtility.class.php,v 1.2 2006/08/15 21:15:49 sporktim Exp $
 */
 
 
@@ -20,7 +20,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: GUIComponentUtility.class.php,v 1.1 2006/08/15 21:13:52 sporktim Exp $
+* @version $Id: GUIComponentUtility.class.php,v 1.2 2006/08/15 21:15:49 sporktim Exp $
 */
 
 
@@ -39,7 +39,7 @@ class GUIComponentUtility{
 	
 	
 	
-	function &makeColorArrays($slices, $trisize){
+	function &makeColorArrays($slices, $triSize){
 		$options = array();
 		$styles = array();
 		$options[''] = "Default";
