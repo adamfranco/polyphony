@@ -3,6 +3,11 @@
 Name: Polyphony ChangeLog
 
 
+v. 0.6.6 (2006-08-16)
+----------------------------------------------------
+		
+	* Bug Fix: RSS/Logs: Fixed log RSS feed links when no priority is explicitly chosen. (Adam Franco)
+	
 v. 0.6.5 (2006-08-15)
 ----------------------------------------------------
 		

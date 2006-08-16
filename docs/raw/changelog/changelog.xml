@@ -4,13 +4,13 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.56.2.17 2006/08/15 20:46:24 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.56.2.18 2006/08/16 14:25:43 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
-	<version number="0.6.6" date="2006-08-15">
+	<version number="0.6.6" date="2006-08-16">
 		<fix author='adam'>
 			RSS/Logs: Fixed log RSS feed links when no priority is explicitly chosen.
 		</fix>
