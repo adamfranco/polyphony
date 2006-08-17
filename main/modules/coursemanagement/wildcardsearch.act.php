@@ -6,14 +6,14 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: wildcardsearch.act.php,v 1.1 2006/08/17 15:51:47 jwlee100 Exp $
+ * @version $Id: wildcardsearch.act.php,v 1.2 2006/08/17 18:25:49 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
 require_once(HARMONI."GUIManager/Components/Blank.class.php");
 
 
-class suck_it_upAction 
+class wildcardsearchAction 
 	extends MainWindowAction
 {
 	/**
