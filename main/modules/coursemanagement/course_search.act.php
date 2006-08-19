@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: course_search.act.php,v 1.4 2006/08/19 20:58:04 jwlee100 Exp $
+* @version $Id: course_search.act.php,v 1.5 2006/08/19 21:11:48 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -246,12 +246,12 @@ extends MainWindowAction
 			
 			
 			$len = 0;
-			while($idString[$len+3]!=","){
+			while($idString[$len+3]!=","&&$len<strlen($idString)){
 			 	$len++; 			  
 			}
 			$name = substr($idString,3,$len);
 			
-			print $name."<br />";
+			
 			
 			//filter out semesters
 			
@@ -272,12 +272,14 @@ extends MainWindowAction
 	
 		}
 	
-		$sections = array();
+		$offerings = array();
 	
 		foreach($sections as $section){
+		  
 	    	$offering =& $section->getCourseOffering();
-	    	$offeringName = $offering->getDisplayName();
-	    	print_r($offeringName);
+	    	$offeringId =& $offering->getId();
+			$offerings[$offeringId->getIdString()] =& $offering;
+			
 	    }
 	/*
 			
@@ -291,8 +293,8 @@ extends MainWindowAction
 				$array[] =& $cm->getCourseOffering($id);
 			}*/
 			
-			$offerings =& new HarmoniCourseOfferingIterator($array);		
-			edit_agent_detailsAction::printCourseOfferings($offerings);
+			$iter =& new HarmoniCourseOfferingIterator($offerings);		
+			edit_agent_detailsAction::printCourseOfferings($iter);
 
 
 

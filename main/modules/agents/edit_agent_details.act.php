@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.18 2006/08/19 21:08:41 sporktim Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.19 2006/08/19 21:11:47 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/modules/coursemanagement/suck_by_agent.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.18 2006/08/19 21:08:41 sporktim Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.19 2006/08/19 21:11:47 jwlee100 Exp $
  */
 class edit_agent_detailsAction 
 	extends MainWindowAction
@@ -710,7 +710,7 @@ class edit_agent_detailsAction
 	
 	function printCourseOfferings(&$offerings){
 		
-	
+		$denominator = 60000;
 	
 		//get the offerings and arrange put them in an array and index them according to chronological order
 		$offerings2 = array();
@@ -724,7 +724,7 @@ class edit_agent_detailsAction
 			if($schedule->hasNextScheduleItem()){				
 				$item1 =& $schedule->nextScheduleItem();
 				//@todo It seems that arrays can't be indexed by longs.  Thus I divided by the number of milliseconds in a minute.  This shouldn't be a problem, but it's hacky in a way that kinda bugs me.
-				$index = $item1->getStart()/60000+$courseNum;
+				$index = $item1->getStart()/$denominator+$courseNum;
 				$offerings2[$index] =&  $offering;	
 			}else{
 				//
@@ -755,7 +755,7 @@ class edit_agent_detailsAction
 			$cm =& Services::getService("CourseManagement");
 			
 			
-			$time = time();
+			$time = time()/$denominator;
 			$currentTermIterator =& $cm->getTermsByDate($time);
 			
 
