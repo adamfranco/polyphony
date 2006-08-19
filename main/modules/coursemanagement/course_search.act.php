@@ -6,12 +6,14 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: course_search.act.php,v 1.2 2006/07/31 14:57:54 sporktim Exp $
+* @version $Id: course_search.act.php,v 1.3 2006/08/19 20:37:47 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
 require_once(HARMONI."GUIManager/Components/Blank.class.php");
 require_once(POLYPHONY."/main/modules/agents/edit_agent_details.act.php");
+
+require_once(HARMONI."oki2/agent/AgentSearches/ClassTokenSearch.class.php");
 
 
 class course_searchAction
@@ -145,7 +147,44 @@ extends MainWindowAction
 
 			
 			
+/*
 
+	if ($search_criteria = $harmoni->request->get('search_criteria')) {
+			//$typeParts = explode("::", @html_entity_decode($search_type, ENT_COMPAT, 'UTF-8'));
+			
+		
+			
+			$searchType =& new HarmoniType("Agent & Group Search", "edu.middlebury.harmoni", "TokenSearch");
+			//$searchType =& new HarmoniType("Agent & Group Search", "edu.middlebury.harmoni", "WildcardSearch");
+			$string=	"*".$search_criteria."*";
+			$agents =& $agentManager->getAgentsBySearch($string, $searchType);
+			print "search: " . $search_criteria;
+			
+
+		
+			while ($agents->hasNext()) {
+				$agent =& $agents->next();
+				$id =& $agent->getId();
+
+				
+			
+
+			$harmoni->history->markReturnURL("polyphony/agents/edit_agent_details");
+		
+			print "\n<p align='center'><a href='".$harmoni->request->quickURL("agents","edit_agent_details", array("agentId"=>$id->getIdString()))."'>";
+			print "\n".$agent->getDisplayName()."</a>";
+			print "\n - <a href=\"Javascript:alert('"._("Id:").'\n\t'.addslashes($id->getIdString())."')\">Id</a></p>";
+			}
+			print "\n</div>";
+			
+			$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);	
+			ob_end_clean();
+		
+		
+		}
+
+*/
+		
 		
 
 		if ($searchNumber != "" || $searchTerm != "")
@@ -159,6 +198,15 @@ extends MainWindowAction
 
 			print "<p><h2>Search Results</h2></p>";
 			
+
+
+			$searchType =& new ClassTokenSearch(); 
+		
+			$string = "*".$searchNumber."*";
+			$DNs =& $searchType->getClassDNsBySearch($string);
+			print "search: " . $searchNumber;
+			
+			/*
 			
 			$dbHandler =& Services::getService("DBHandler");
 			$query=& new SelectQuery;
@@ -175,20 +223,59 @@ extends MainWindowAction
 			}
 	
 			
-			$res =& $dbHandler->query($query);
+			$res =& $dbHandler->query($query);*/
+			
+			
 			$array=array();
 			$cm =& Services::getService("CourseManagement");
 			$im =& Services::getService("Id");
 			
 	
-			
-			while($res->hasMoreRows()){
 	
-				$row = $res->getCurrentRow();
-				$res->advanceRow();
+		foreach($DNs as $idString) {			
+			
+			
+
+			if(substr($idString,strlen($idString)-42,42)!=",OU=Classes,OU=Groups,DC=middlebury,DC=edu"){
+				continue;	
+			}
+			
+		 		
+			
+			print $idString."<br />";
+			
+			//filter out semesters
+			
+			/*
+			
+			$name = $group->getDisplayName();
+			if(substr($name,strlen($name)-4,1)!="-"){
+				continue;	
+			}
+			
+			//filter out gym--actually, that's not fair, is it?
+			//if(substr($name,0,4)=="phed"){
+			//
+			//	continue;	
+			//}
+
+			suck_by_agentAction::_figureOut($group->getDisplayName(),$agentId);
+			
+	*/
+		}
+	
+	
+	/*
+			
+			foreach($DNs as $DN){	
+				
+				
+				
+				
+				
 				$id =& $im->getId($row['id']);
 				$array[] =& $cm->getCourseOffering($id);
-			}
+			}*/
 			
 			$offerings =& new HarmoniCourseOfferingIterator($array);		
 			edit_agent_detailsAction::printCourseOfferings($offerings);
