@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: course_search.act.php,v 1.3 2006/08/19 20:37:47 jwlee100 Exp $
+* @version $Id: course_search.act.php,v 1.4 2006/08/19 20:58:04 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -226,10 +226,12 @@ extends MainWindowAction
 			$res =& $dbHandler->query($query);*/
 			
 			
-			$array=array();
+			$sections=array();
 			$cm =& Services::getService("CourseManagement");
 			$im =& Services::getService("Id");
 			
+	
+	
 	
 	
 		foreach($DNs as $idString) {			
@@ -242,13 +244,18 @@ extends MainWindowAction
 			
 		 		
 			
-			print $idString."<br />";
+			
+			$len = 0;
+			while($idString[$len+3]!=","){
+			 	$len++; 			  
+			}
+			$name = substr($idString,3,$len);
+			
+			print $name."<br />";
 			
 			//filter out semesters
 			
-			/*
 			
-			$name = $group->getDisplayName();
 			if(substr($name,strlen($name)-4,1)!="-"){
 				continue;	
 			}
@@ -259,12 +266,19 @@ extends MainWindowAction
 			//	continue;	
 			//}
 
-			suck_by_agentAction::_figureOut($group->getDisplayName(),$agentId);
+			$sections[]=& suck_by_agentAction::_figureOut($name,$agentId = null);
 			
-	*/
+			
+	
 		}
 	
+		$sections = array();
 	
+		foreach($sections as $section){
+	    	$offering =& $section->getCourseOffering();
+	    	$offeringName = $offering->getDisplayName();
+	    	print_r($offeringName);
+	    }
 	/*
 			
 			foreach($DNs as $DN){	

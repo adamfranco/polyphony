@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: suck_by_agent.act.php,v 1.4 2006/07/29 06:34:59 sporktim Exp $
+ * @version $Id: suck_by_agent.act.php,v 1.5 2006/08/19 20:58:04 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -274,13 +274,18 @@ END;
 	/**
 	 *Given a string, figure out if ets a term from the three letter name, creating it if necesary
 	 **/
-	function _figureOut($ldapName,$agentId){
+	function &_figureOut($ldapName,$agentId){
 		
 		
 		$term =& suck_by_agentAction::_getTerm(substr($ldapName,strlen($ldapName)-3,3));
 		$can =& suck_by_agentAction::_getCanonicalCourse($ldapName);		
 		$offer =& suck_by_agentAction::_getCourseOffering($can, $term,$ldapName);
 		$section =&  suck_by_agentAction::_getCourseSection($offer,$ldapName);
+		
+		
+		if($agentId==null){
+		  return $section;		  
+		}
 		
 		$dbManager =& Services::getService("DatabaseManager");
 		$query=& new SelectQuery;
@@ -293,6 +298,7 @@ END;
 		if($res->getNumberOfRows()==0){
 			$section->addStudent($agentId, $p = new Type("EnrollmentStatusType","edu.middlebury","LDAP"));
 		}
+		return $section;
 	}
 	
 	
