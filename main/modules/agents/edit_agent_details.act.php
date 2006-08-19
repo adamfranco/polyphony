@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.20 2006/08/19 21:45:37 sporktim Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.21 2006/08/19 21:52:36 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/modules/coursemanagement/suck_by_agent.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.20 2006/08/19 21:45:37 sporktim Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.21 2006/08/19 21:52:36 sporktim Exp $
  */
 class edit_agent_detailsAction 
 	extends MainWindowAction
@@ -755,7 +755,7 @@ class edit_agent_detailsAction
 			$cm =& Services::getService("CourseManagement");
 			
 			
-			$time = time();
+			$time = time()*1000;
 			$currentTermIterator =& $cm->getTermsByDate($time);
 			$time /= $denominator;
 
@@ -794,9 +794,7 @@ class edit_agent_detailsAction
 			if(!is_null($lastTermId)&&$termId->isEqual($lastTermId)){
 				edit_agent_detailsAction::_printOffering($offering,null);
 			}else{
-				
-				
-				
+									
 			if($start>$time){
 				$chrono=0;
 			}else{
