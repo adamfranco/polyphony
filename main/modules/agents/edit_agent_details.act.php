@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.19 2006/08/19 21:11:47 jwlee100 Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.20 2006/08/19 21:45:37 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/modules/coursemanagement/suck_by_agent.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.19 2006/08/19 21:11:47 jwlee100 Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.20 2006/08/19 21:45:37 sporktim Exp $
  */
 class edit_agent_detailsAction 
 	extends MainWindowAction
@@ -755,9 +755,9 @@ class edit_agent_detailsAction
 			$cm =& Services::getService("CourseManagement");
 			
 			
-			$time = time()/$denominator;
+			$time = time();
 			$currentTermIterator =& $cm->getTermsByDate($time);
-			
+			$time /= $denominator;
 
 			if($currentTermIterator->hasNextTerm()){
 				$term =& $currentTermIterator->nextTerm();

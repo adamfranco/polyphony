@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: course_search.act.php,v 1.5 2006/08/19 21:11:48 jwlee100 Exp $
+* @version $Id: course_search.act.php,v 1.6 2006/08/19 21:45:37 sporktim Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -63,7 +63,7 @@ extends MainWindowAction
 		$cm =& Services::getService("CourseManagement");
 
 		$defaultTextDomain = textdomain("polyphony");
-		
+
 		$actionRows =& $this->getActionRows();
 		$pageRows =& new Container(new YLayout(), OTHER, 1);
 		$harmoni =& Harmoni::instance();
@@ -71,21 +71,21 @@ extends MainWindowAction
 
 		$searchNumber = RequestContext::value('search_number');
 		$searchTerm = RequestContext::value('search_term');
-		
+
 		if(is_null($searchNumber)){
 			$searchNumber="";
 		}
 		if(is_null($searchTerm)){
 			$searchTerm="";
 		}
-	
+
 
 		ob_start();
-		
-			
-		
-			
-		
+
+
+
+
+
 		$self = $harmoni->request->quickURL();
 		print ("<p align='center'><b><font size=+1>Search for courses offering by the following criteria").":
 				</font></b></p>";
@@ -93,18 +93,18 @@ extends MainWindowAction
 			\n\t<div>";
 
 		print "<table>";
-	
-		
+
+
 		print "\n\t<tr><td>Number: </td><td><input type='text' name='search_number' value=".$searchNumber."></td>";
-	
+
 
 		print "\n\t<tr><td>Term: </td><td><select name='search_term'>";
 		print "\n\t<option value=''";
-		
+
 		if($searchTerm==""){
 			print "selected='selected'";
 		}
-		
+
 		print ">Choose a term</option>";
 
 
@@ -123,8 +123,8 @@ extends MainWindowAction
 			}
 
 		}
-	
-		
+
+
 		krsort($terms2);
 		foreach($terms2 as 	$term){
 			$id =& $term->getId();
@@ -135,8 +135,9 @@ extends MainWindowAction
 			print ">".$term->getDisplayName()."</option>";
 		}
 		print "\n\t</select></td></tr>";
+
 		print "\n</table>";
-	
+
 
 		print "\n\t<p><input type='submit' value='"._("Search!")."' />";
 
@@ -145,163 +146,186 @@ extends MainWindowAction
 		$actionRows->add(new Block(ob_get_contents(),2),"100%", null, CENTER, TOP);
 		ob_end_clean();
 
-			
-			
-/*
 
-	if ($search_criteria = $harmoni->request->get('search_criteria')) {
-			//$typeParts = explode("::", @html_entity_decode($search_type, ENT_COMPAT, 'UTF-8'));
-			
-		
-			
-			$searchType =& new HarmoniType("Agent & Group Search", "edu.middlebury.harmoni", "TokenSearch");
-			//$searchType =& new HarmoniType("Agent & Group Search", "edu.middlebury.harmoni", "WildcardSearch");
-			$string=	"*".$search_criteria."*";
-			$agents =& $agentManager->getAgentsBySearch($string, $searchType);
-			print "search: " . $search_criteria;
-			
 
-		
-			while ($agents->hasNext()) {
-				$agent =& $agents->next();
-				$id =& $agent->getId();
+		/*
 
-				
-			
+		if ($search_criteria = $harmoni->request->get('search_criteria')) {
+		//$typeParts = explode("::", @html_entity_decode($search_type, ENT_COMPAT, 'UTF-8'));
 
-			$harmoni->history->markReturnURL("polyphony/agents/edit_agent_details");
-		
-			print "\n<p align='center'><a href='".$harmoni->request->quickURL("agents","edit_agent_details", array("agentId"=>$id->getIdString()))."'>";
-			print "\n".$agent->getDisplayName()."</a>";
-			print "\n - <a href=\"Javascript:alert('"._("Id:").'\n\t'.addslashes($id->getIdString())."')\">Id</a></p>";
-			}
-			print "\n</div>";
-			
-			$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);	
-			ob_end_clean();
-		
-		
+
+
+		$searchType =& new HarmoniType("Agent & Group Search", "edu.middlebury.harmoni", "TokenSearch");
+		//$searchType =& new HarmoniType("Agent & Group Search", "edu.middlebury.harmoni", "WildcardSearch");
+		$string=	"*".$search_criteria."*";
+		$agents =& $agentManager->getAgentsBySearch($string, $searchType);
+		print "search: " . $search_criteria;
+
+
+
+		while ($agents->hasNext()) {
+		$agent =& $agents->next();
+		$id =& $agent->getId();
+
+
+
+
+		$harmoni->history->markReturnURL("polyphony/agents/edit_agent_details");
+
+		print "\n<p align='center'><a href='".$harmoni->request->quickURL("agents","edit_agent_details", array("agentId"=>$id->getIdString()))."'>";
+		print "\n".$agent->getDisplayName()."</a>";
+		print "\n - <a href=\"Javascript:alert('"._("Id:").'\n\t'.addslashes($id->getIdString())."')\">Id</a></p>";
+		}
+		print "\n</div>";
+
+		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);
+		ob_end_clean();
+
+
 		}
 
-*/
-		
-		
+		*/
+
+
 
 		if ($searchNumber != "" || $searchTerm != "")
 		{
-			
-			
-		ob_start();
-			
+
+
+			ob_start();
+
 			$pageRows->add(new Heading("Canonical course search results", STANDARD_BLOCK), "100%", null, LEFT, CENTER);
-		  	ob_start();
+			ob_start();
 
 			print "<p><h2>Search Results</h2></p>";
-			
 
 
-			$searchType =& new ClassTokenSearch(); 
-		
+
+			$searchType =& new ClassTokenSearch();
+
 			$string = "*".$searchNumber."*";
 			$DNs =& $searchType->getClassDNsBySearch($string);
 			print "search: " . $searchNumber;
-			
+
 			/*
-			
+
 			$dbHandler =& Services::getService("DBHandler");
 			$query=& new SelectQuery;
 			$query->addTable('cm_offer');
 			$query->addColumn('id');
-		
+
 			if($searchNumber!=null){
-		
-				$query->addWhere("number like '%".addslashes($searchNumber)."%'");
+
+			$query->addWhere("number like '%".addslashes($searchNumber)."%'");
 			}
 			if($searchTerm!=null){
-	
-				$query->addWhere("fk_cm_term='".addslashes($searchTerm)."'");
+
+			$query->addWhere("fk_cm_term='".addslashes($searchTerm)."'");
 			}
-	
-			
+
+
 			$res =& $dbHandler->query($query);*/
-			
-			
+
+
 			$sections=array();
 			$cm =& Services::getService("CourseManagement");
 			$im =& Services::getService("Id");
-			
-	
-	
-	
-	
-		foreach($DNs as $idString) {			
-			
-			
 
-			if(substr($idString,strlen($idString)-42,42)!=",OU=Classes,OU=Groups,DC=middlebury,DC=edu"){
-				continue;	
-			}
-			
-		 		
-			
-			
-			$len = 0;
-			while($idString[$len+3]!=","&&$len<strlen($idString)){
-			 	$len++; 			  
-			}
-			$name = substr($idString,3,$len);
-			
-			
-			
-			//filter out semesters
-			
-			
-			if(substr($name,strlen($name)-4,1)!="-"){
-				continue;	
-			}
-			
-			//filter out gym--actually, that's not fair, is it?
-			//if(substr($name,0,4)=="phed"){
-			//
-			//	continue;	
-			//}
 
-			$sections[]=& suck_by_agentAction::_figureOut($name,$agentId = null);
+
+
+
+			foreach($DNs as $idString) {
+
+
+
+				if(substr($idString,strlen($idString)-42,42)!=",OU=Classes,OU=Groups,DC=middlebury,DC=edu"){
+					continue;
+				}
+
+
+
+
+				$len = 0;
+				while($idString[$len+3]!=","&&$len<strlen($idString)){
+					$len++;
+				}
+				$name = substr($idString,3,$len);
+
+				
+
+				/*
+				if(!$term somthings $searchTerm){
+				//continue
+				}
+				*/
+
+				//filter out semesters
+
+
+				if(substr($name,strlen($name)-4,1)!="-"){
+					continue;
+				}
+
+				//filter out gym--actually, that's not fair, is it?
+				//if(substr($name,0,4)=="phed"){
+				//
+				//	continue;
+				//}
+
+				$sections[]=& suck_by_agentAction::_figureOut($name,$agentId = null);
+
+
+
+			}
+
+			$offerings = array();
+
+			$termId = null;
+			if($searchTerm != ""){
+					//$term = substr($name, strlen($name)-3,3);
+					$idManager =& Services::getService("Id");
+					$term =& $cm->getTerm($idManager->getId($searchTerm));
+					$termId =& $term->getId();
+			}
 			
-			
-	
-		}
-	
-		$offerings = array();
-	
-		foreach($sections as $section){
-		  
-	    	$offering =& $section->getCourseOffering();
-	    	$offeringId =& $offering->getId();
-			$offerings[$offeringId->getIdString()] =& $offering;
-			
-	    }
-	/*
-			
-			foreach($DNs as $DN){	
+			foreach($sections as $section){
+
+				$offering =& $section->getCourseOffering();
+				
+				$term2 =& $offering->getTerm();
+				$term2Id =& $term2->getId();
+				if(!is_null($termId)&&!$termId->isEqual($term2Id)){
+					continue;
+				}
 				
 				
 				
-				
-				
-				$id =& $im->getId($row['id']);
-				$array[] =& $cm->getCourseOffering($id);
+				$offeringId =& $offering->getId();
+				$offerings[$offeringId->getIdString()] =& $offering;
+
+			}
+			/*
+
+			foreach($DNs as $DN){
+
+
+
+
+
+			$id =& $im->getId($row['id']);
+			$array[] =& $cm->getCourseOffering($id);
 			}*/
-			
-			$iter =& new HarmoniCourseOfferingIterator($offerings);		
+
+			$iter =& new HarmoniCourseOfferingIterator($offerings);
 			edit_agent_detailsAction::printCourseOfferings($iter);
 
 
 
 			$actionRows->add(new Block(ob_get_contents(),2),"100%", null, CENTER, TOP);
-		ob_end_clean();
+			ob_end_clean();
 
-			
+
 		}
 	}
 
