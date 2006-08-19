@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WMoreOptions.abstract.php,v 1.1 2006/08/15 21:12:35 sporktim Exp $
+ * @version $Id: WMoreOptions.abstract.php,v 1.2 2006/08/19 21:08:40 sporktim Exp $
  */
 
 require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstract.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstrac
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WMoreOptions.abstract.php,v 1.1 2006/08/15 21:12:35 sporktim Exp $
+ * @version $Id: WMoreOptions.abstract.php,v 1.2 2006/08/19 21:08:40 sporktim Exp $
  * @author Gabe Schine
  */
 class WMoreOptions extends WizardComponentWithChildren {
@@ -28,8 +28,8 @@ class WMoreOptions extends WizardComponentWithChildren {
 	
 	var $_usingAdvanced;
 	
-	function init($set = false){
-		$this->_usingAdvanced = $set;
+	function init($set = false){		
+		$this->_usingAdvanced = $set;		
 	}
 	
 	
@@ -44,10 +44,13 @@ class WMoreOptions extends WizardComponentWithChildren {
 	 */
 	function update ($fieldName) {
 		
-		$val = RequestContext::value($fieldName."_checkbox");
-		if ($val !== null)
+		
+		$val = RequestContext::value($fieldName."_morecheckbox");
+		if ($val != null)
 		{
-			$this->_usingAdvanced = $val;
+			$this->_usingAdvanced = true;
+		}else{
+			$this->_usingAdvanced = false;
 		}
 					
 		$children =& $this->getChildren();
@@ -61,7 +64,21 @@ class WMoreOptions extends WizardComponentWithChildren {
 		return $ok;
 	}
 	
-	
+	/**
+	 * Returns the values of wizard-components. Should return an array if children are involved,
+	 * otherwise a whatever type of object is expected.
+	 * @access public
+	 * @return mixed
+	 */
+	function getAllValues () {
+		$array = array();
+		$children =& $this->getChildren();
+		foreach(array_keys($children) as $key) {
+			$array[$key] = $children[$key]->getAllValues();
+		}
+		$array["_morecheckbox"] = $this->_usingAdvanced;
+		return $array;
+	}
 	
 	
 	
@@ -135,7 +152,7 @@ class WMoreOptions extends WizardComponentWithChildren {
 	 */
 	function getCheckboxMarkup ($fieldName) {
 		$m ="";
-		$boxId = $fieldName . "_checkbox";		
+		$boxId = $fieldName . "_morecheckbox";		
 		$advancedId = $fieldName."_advancedfield";
 		
 		$checked = $this->isUsingAdvanced()?" checked='checked'":"";		
@@ -150,7 +167,7 @@ class WMoreOptions extends WizardComponentWithChildren {
 			
 			$m .= " \"";
 		}		
-		$m .= "\n\t\t\t\tid='$boxId'$checked.$style />";		
+		$m .= "\n\t\t\t\tid='$boxId' name='$boxId'$checked.$style />";		
 		return $m;
 	}
 	

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.17 2006/07/31 14:57:53 sporktim Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.18 2006/08/19 21:08:41 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/modules/coursemanagement/suck_by_agent.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.17 2006/07/31 14:57:53 sporktim Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.18 2006/08/19 21:08:41 sporktim Exp $
  */
 class edit_agent_detailsAction 
 	extends MainWindowAction
@@ -221,8 +221,10 @@ class edit_agent_detailsAction
 		//sort the courses by term and the terms by date
 		
 		$cm =& Services::getService("CourseManagement");
+		
 		$offerings =& $cm->getCourseOfferings($agentId);
 		
+			
 		
 		
 		edit_agent_detailsAction::printCourseOfferings($offerings);
@@ -687,7 +689,12 @@ class edit_agent_detailsAction
 		$harmoni =& Harmoni::instance();
 		$id =& $offering->getId();
 		print "\n\t\t<td>";
-		print "\n<a href='".$harmoni->request->quickURL("coursemanagement","edit_offering_details", array("offeringId"=>$id->getIdString()))."'>";
+		
+		$url =& new GETMethodURLWriter();
+		$url->setModuleAction("coursemanagement","edit_offering_details");
+		$url->setValue("courseId",$id->getIdString());
+		
+		print "\n<a href='".$url->write()."'>";
 		print $offering->getDisplayName()."</a>";		
 		print "\n - <a href=\"Javascript:alert('"._("Id:").'\n\t'.addslashes($id->getIdString())."')\">"._("Id")."</a>";
 		print "</td>";
@@ -703,31 +710,33 @@ class edit_agent_detailsAction
 	
 	function printCourseOfferings(&$offerings){
 		
+	
+	
+		//get the offerings and arrange put them in an array and index them according to chronological order
 		$offerings2 = array();
+		
+		//note that this variable seperates any courses that start in the same term from being written to the same place in the array.  It's a bit hacky, but shouldn't be a problem unless two terms start within an hour or so of each other.
 		$courseNum = 0;	
-		
-		
-		
-		
-		while($offerings->hasNextCourseOffering()){
-
-		
-			
+		while($offerings->hasNextCourseOffering()){		
 			$offering =& $offerings->nextCourseOffering();
 			$term =& $offering->getTerm();
 			$schedule =& $term->getSchedule();
-			if($schedule->hasNextScheduleItem()){
+			if($schedule->hasNextScheduleItem()){				
 				$item1 =& $schedule->nextScheduleItem();
-				$offerings2[$item1->getStart()+$courseNum] =&  $offering;
-	
+				//@todo It seems that arrays can't be indexed by longs.  Thus I divided by the number of milliseconds in a minute.  This shouldn't be a problem, but it's hacky in a way that kinda bugs me.
+				$index = $item1->getStart()/60000+$courseNum;
+				$offerings2[$index] =&  $offering;	
 			}else{
+				//
 				$offerings2[$courseNum] =& $offering;
 				
 			}
 			$courseNum++;
-	
+
 		}
 		
+		
+		//reverse sort the arrays by keys.  This is the key function. Oops, that was a pun.
 		krsort($offerings2);
 		
 			print "\n<table cellpadding=6>";
@@ -771,6 +780,8 @@ class edit_agent_detailsAction
 		$harmoni =& Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-agents");
 	
+		
+		
 	
 		$lastTermId = null;
 		foreach($offerings2 as 	$start=>$offering){

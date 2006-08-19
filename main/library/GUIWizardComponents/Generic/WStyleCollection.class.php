@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStyleCollection.class.php,v 1.1 2006/08/15 21:12:35 sporktim Exp $
+ * @version $Id: WStyleCollection.class.php,v 1.1 2006/08/19 21:08:39 sporktim Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponentWithChildren.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponentWithChildren.abstrac
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStyleCollection.class.php,v 1.1 2006/08/15 21:12:35 sporktim Exp $
+ * @version $Id: WStyleCollection.class.php,v 1.1 2006/08/19 21:08:39 sporktim Exp $
  */
  
 class WStyleCollection 

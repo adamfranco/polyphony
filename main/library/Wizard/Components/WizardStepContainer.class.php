@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.8 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.9 2006/08/19 21:08:40 sporktim Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.8 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.9 2006/08/19 21:08:40 sporktim Exp $
  */
 class WizardStepContainer extends WizardComponent {
 	var $_currStep;
@@ -81,7 +81,7 @@ class WizardStepContainer extends WizardComponent {
 	 * @access public
 	 * @return void
 	 */
-	function setStep ($name) {
+	function setStep ($name, $context=array()) {
 		$name = preg_replace("/[^a-zA-Z0-9:_-]/", "_", $name);
 		$ind = array_search($name, $this->_stepNames);
 		if ($ind !== false) {
@@ -89,11 +89,9 @@ class WizardStepContainer extends WizardComponent {
 			$this->_currStep = $ind;
 			$wizard =& $this->getWizard();
 			if(!is_null($oldStep)){
-				if($oldStep == $this->_currStep){
-					print "WHY ARE THEY THE SAME?";
-				}
-			$wizard->triggerLater("edu.middlebury.polyphony.wizard.step_changed", $this, array(
-				'from'=>$this->_stepNames[$oldStep], 'to'=>$this->_stepNames[$this->_currStep]));
+				$context['from'] = $this->_stepNames[$oldStep];
+				$context['to'] =$this->_stepNames[$this->_currStep];
+				$wizard->triggerLater("edu.middlebury.polyphony.wizard.step_changed", $this, $context);
 			}
 		}else{
 			throwError(new Error("No such step '".$name."'","WizardStepContainer",true));

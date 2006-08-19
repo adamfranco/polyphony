@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: WFontEditor.class.php,v 1.1 2006/08/15 21:12:35 sporktim Exp $
+* @version $Id: WFontEditor.class.php,v 1.1 2006/08/19 21:08:39 sporktim Exp $
 */
 
 
@@ -20,33 +20,56 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: WFontEditor.class.php,v 1.1 2006/08/15 21:12:35 sporktim Exp $
+* @version $Id: WFontEditor.class.php,v 1.1 2006/08/19 21:08:39 sporktim Exp $
 */
 
 class WFontEditor
 extends WMoreOptions
 {
 
+	
+	
+	var $_callBack;
+	var $_collectionName;
+	var $_thingsToApplyCollectionTo;
 
-	var $_getThemeCallBack;
+	
 
 
-
-
-	function WFontEditor ($callBack, $collectionName, $type, $index) {
-		$this->_getThemeCallBack = $callBack;
+	function WFontEditor ($callBack, $collectionName, $thingsToApplyCollectionTo) {
+		$this->init();
+		
+		
+		$this->_callBack =$callBack;
+		$this->_collectionName =$collectionName;
+		$this->_thingsToApplyCollectionTo = $thingsToApplyCollectionTo;
+		
+		
+		$this->rebuildContent();
+	}
+	
+	/**
+	 * Make everything
+	 */
+	function rebuildContent(){
+		
+		$callBack = $this->_callBack;
+		$collectionName = $this->_collectionName;
+		$thingsToApplyCollectionTo = $this->_thingsToApplyCollectionTo;
+	
 
 
 		//get the theme
-		eval('$theme =& '.$this->_getThemeCallBack."();");
+		eval('$theme =& '.$callBack."();");
 
+		
+		if(!is_object($theme)){
+			return;	
+		}
+		
 
 		//get arrays ready
 		$color = GUIComponentUtility::makeColorArrays(12, 5);
-		
-		
-		//printpre($color);
-		
 		$fonts = GUIComponentUtility::makeFontArray();
 		$fontSize = GUIComponentUtility::makeFontSizeArray();
 
@@ -56,7 +79,9 @@ extends WMoreOptions
 		//first style collection
 		if(!$theme->getStyleCollection($collectionSelector1)){
 			$styleCollection1 =& new StyleCollection($collectionSelector1, $collectionName,"Font Properties", "Font choice with selector ".$collectionName);
-			$theme->addStyleForComponentType($styleCollection1,$type,$index);
+			foreach($thingsToApplyCollectionTo as $arr){
+				$theme->addStyleForComponentType($styleCollection1,$arr['type'],$arr['index']);
+			}
 		}
 
 
@@ -92,22 +117,26 @@ extends WMoreOptions
 	* @return string
 	*/
 	function getMarkup ($fieldName) {
+		
+		//make sure we're current with the theme
+		$this->rebuildContent();
+		
 		$s="";
 
-		$s.="\n<table border='0'>";
+		$s.="\n<table border='1' width='100%'>";
 		$s.="\n\t<tr><td>";
 
 
 
-		$s.="\n<table border='1' width='100%'>";
+		$s.="\n<table border='0'  cellpadding='5' width='100%'>";
 		$s.="\n\t<tr>";
-		$s.="\t\t<td>Text Color:</td>";
+		$s.="\t\t<td>Text Color:";
 		$comp =& $this->getChild($name = 'color');
-		$s.="\t\t<td>".$comp->getMarkup($fieldName."_".$name)."</td>";
+		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";
 
-		$s.="\t\t<td>Text Size:</td>";
+		$s.="\t\t<td>Text Size: ";
 		$comp =& $this->getChild($name = 'fontSize');
-		$s.="\t\t<td>".$comp->getMarkup($fieldName."_".$name)."</td>";
+		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";
 
 		$s.="\t\t<td>More font options: ".$this->getCheckboxMarkup($fieldName)."</td>";
 
@@ -140,11 +169,11 @@ extends WMoreOptions
 	function advancedMarkup ($fieldName) {
 		$s="";
 
-		$s.="\n<table border='1' width='100%'>";
+		$s.="\n<table border='0' width='100%' cellpadding='5'>";
 		$s.="\n\t<tr>";
-		$s.="\t\t<td>Font:</td>";
+		$s.="\t\t<td>Font: ";
 		$comp =& $this->getChild($name = 'font');
-		$s.="\t\t<td>".$comp->getMarkup($fieldName."_".$name)."</td>";
+		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";
 		$comp =& $this->getChild($name = 'boldBox');
 		$s.="\t\t<td>Bold".$comp->getMarkup($fieldName."_".$name)."</td>";
 		$comp =& $this->getChild($name = 'italicsBox');

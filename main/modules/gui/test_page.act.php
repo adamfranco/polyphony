@@ -5,7 +5,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: test_page.act.php,v 1.1 2006/08/15 21:05:26 sporktim Exp $
+* @version $Id: test_page.act.php,v 1.2 2006/08/19 21:08:41 sporktim Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -78,10 +78,10 @@ extends MainWindowAction
 			$guiManager->setTheme($theme);
 
 		}else{
-			print "error 2--no such thing as ".$themeIndex;	
+			print "Could not find any thing at ".$themeIndex;	
 		}
 		}else{
-			print "error 1";
+			print "The theme index was not passed in.";
 		}
 
 		// initialize layouts and theme
@@ -93,6 +93,12 @@ extends MainWindowAction
 		// now create all the containers and components
 		$block1 =& new Container($yLayout, BLOCK, 1);
 
+		
+		$row0 =& new Footer("This the Header, which is likely consistent across pages.", 1);
+
+		$block1->add($row0, "100%", null, CENTER, CENTER);
+		
+		
 		$row1 =& new Container($xLayout, OTHER, 1);
 
 		$header1 =& new Heading("A Harmoni GUI example.<br />Level-1 heading.\n", 1);
@@ -117,13 +123,7 @@ extends MainWindowAction
 
 		$row2 =& new Block("
 			This is some text in a Level-2 text block.
-			<p>Welcome to the <strong>Harmoni Architecture/Framework</strong> web site. The Harmoni Project is a joint effort
-			between PHP Web/Database programmers located at <a href=\"http://et.middlebury.edu/\">Middlebury College's
-			Educational Technology</a> department and the <a href=\"http://www.colleges.org/\">Associated Colleges
-			of the South</a>. The project is built entirely using PHP's OOP (Object Oriented Programming) model, allowing
-			the code to be easily extended and enhanced with no loss of functionality or backward-compatibility. Our
-			programmers also document all their code with <strong>PHPDoc</strong> inline comments to make use of our API's a
-			little easier for you.</p>\n", 2);
+			<p>This is where you would put your <strong>content.</strong> web site. A link might look like <a href=\"http://et.middlebury.edu/\">this</a>.  It is probably important to make this look good. </p>\n", 2);
 
 		$block1->add($row2, "100%", null, CENTER, CENTER);
 
@@ -182,41 +182,7 @@ extends MainWindowAction
 					
 					<p>
 						A short list of the included Services follows:
-					</p>
-					
-					<ul>
-						<li><strong>DBHandler</strong> - an abstraction for database connections to various database backends, including: 
-						<em>MySQL, PostreSQL, Oracle 8/9</em> and (soon) <em>Microsoft SQL Server</em>. Using an object-based Query Model,
-						the same Queries can be sent to multiple databases without changing program code.</li>
-						<li><strong>Authentication</strong> - allows for user authentication across multiple back-ends, completely
-						transparent to your program. Back-ends include, but not limited to: <em>Local Database, LDAP, PAM</em>, planned
-						to include: <em>IMAP, Kerberos, RADIUS, flat file</em> and others.</li>
-						<li><strong>StorageHandler</strong> - allows for file storage across multiple mediums, with advances options including: 
-						transparent backups, unix-like \"mount points\" for extending storage space to new locations.</li>
-						<li><strong>DataManager</strong> - a combination of classes and database tables for efficient storage of meta data
-						sets using customizable (on the fly) schemas. <strong>Very</strong> useful for application upgrades so your end user
-						doesn't need to muck around with database tables, risking data corruption. Also includes optional version-controlled
-						data storage, for those clients who enjoy rolling back to previous versions of their data.</li>
-						<li><strong>ThemeHandler</strong> - a framework for outputting content separated from form, allowing both clients
-						to change the look/feel of your program (if you choose to add that functionality), and allowing you to
-						ignore form while developing your application and fine tune it later when your core functionality is completed.</li>
-						<li><strong>OKI-compliant HierarchyManager</strong> - allows for easy maintenance of complex hierarchy trees, using
-						interfaces provided by the <a href=\"http://www.sourceforge.net/projects/okiproject\">OKI OSIDs</a>.</li>
-						<li><strong>OKI-compliant DigitalRepository</strong> - making use of the OKI HierarchyManager and our DataManager, 
-						provides an implementation of the OKI Digital Repository, allowing for hierarchical meta data/object storage with
-						version control/rollback features.</li>
-						<li><strong>ErrorHandler</strong> - allows for easy tracking and output of program-level and user-level errors.</li>
-						<li>other utilities - a number of useful classes providing convenient access to functionality we find
-						useful. Examples include:
-						<ul>
-				
-							<li>Output Template classes</li>
-							<li>Data containers with on-the-fly data validation (useful for HTML form validation)</li>
-							<li>Micro-timer, useful for timing the efficiency of your code</li>
-							<li>RGB and HTML color class, useful for simple color manipulation (lightening, darkening, value shifting, etc)</li>
-							<li>Simple statistics class</li>
-						</ul></li>
-					</ul>", 2);
+					</p>", 2);
 
 		$stories->add($story2, "100%", null, CENTER, CENTER);
 
@@ -224,70 +190,26 @@ extends MainWindowAction
 
 		$contributors =& new Block("
 				<h2>
-					Contributors
+					Level Three block
 				</h2>
 				
 				<h3>
-					Funding
+					Empahsis
 				</h3>
 				
 				<p>
-					Funding for the Harmoni Project is provided by both <a href=\"http://www.middlebury.edu/\">Middlebury College</a> and
-					<a href=\"http://www.nitle.org/\">The NITLE Foundation</a>. We would all like to extend our deepest
-					gratitude to both organizations for allowing us to continue working on that which we love. And yes, we
-					are all big geeks.
+					This type of block may be useful for emphasizing this and that.  It may not actually be included, but I might as well add it, just for kicks.  Maybe it could look really cool if you used it.
 				</p>
-			
-				<h3>
-					Project Leaders
-				</h3>
-				
-				<div class=\"person\">
-					<strong>Gabe Schine</strong> - Middlebury College and Kenyon College
-				</div>
-				
-				<div class=\"person\">
-					<strong>Eric Jansson</strong> - Associated Colleges of the South
-				</div>
-			
-				<h3>
-					Developers
-				</h3>
-			
-				<div class=\"person\">
-					<strong>Adam Franco</strong> - Middlebury College
-				</div>
-			
-				<div class=\"person\">
-					<strong>Dobromir Radichkov</strong> - Middlebury College
-				</div>
-			
-				<div class=\"person\">
-					<strong>Kylie Verkest</strong> - Associated Colleges of the South
-				</div>
-				
-				<div class=\"person\">
-					<strong>Maksim Ovsjanikov</strong> - Middlebury College
-				</div>", 3);
+			", 3);
 
 		$row3->add($contributors, "250px", null, LEFT, TOP);
 
 		$block1->add($row3, "100%", null, CENTER, CENTER);
 
-		$row4 =& new Footer("Harmoni is Licenced under the GNU General Public License (GPL). Level-1 footer.", 1);
+		$row4 =& new Footer("This the footer, wheich may or may not be similar to the Header", 1);
 
 		$block1->add($row4, "100%", null, CENTER, CENTER);
 
-		$row5 =& new Component("
-	      	\n\n\t\t\t<a href=\"http://validator.w3.org/check/referer\"><img
-	       	\n\n\t\t\tsrc=\"http://www.w3.org/Icons/valid-xhtml11\"
-	        \n\n\t\t\talt=\"Valid XHTML 1.1!\" height=\"31\" width=\"88\" style=\"border: 0;\" /></a>
-	        
-	        \n\n\t\t\t<a href=\"http://jigsaw.w3.org/css-validator/check/referer\"><img
-	       	\n\n\t\t\tsrc=\"http://jigsaw.w3.org/css-validator/images/vcss\"
-	        \n\n\t\t\talt=\"Valid CSS!\" height=\"31\" width=\"88\" style=\"border:0;width:88px;height:31px;\" /></a>", OTHER, 1);
-
-		$block1->add($row5, "100%", null, CENTER, CENTER);
 
 		$actionRows->add($block1, "100%", null, LEFT, CENTER);
 

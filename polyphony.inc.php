@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.39 2006/08/15 21:15:49 sporktim Exp $
+ * @version $Id: polyphony.inc.php,v 1.40 2006/08/19 21:08:38 sporktim Exp $
  */
 
 /**
@@ -56,14 +56,16 @@ require_once(dirname(__FILE__)."/main/library/Wizard/Components/WAgentBrowser.cl
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WColorWheel.class.php");
 
 //gui components
-require_once(POLYPHONY."/main/library/GUIWizardComponents/WStyleComponent.class.php");
-require_once(POLYPHONY."/main/library/GUIWizardComponents/WStyleProperty.class.php");
-require_once(POLYPHONY."/main/library/GUIWizardComponents/WStyleCollection.class.php");
-require_once(POLYPHONY."/main/library/GUIWizardComponents/WBlockEditor.class.php");
+require_once(POLYPHONY."/main/library/GUIWizardComponents/Generic/WStyleComponent.class.php");
+require_once(POLYPHONY."/main/library/GUIWizardComponents/Generic/WStyleProperty.class.php");
+require_once(POLYPHONY."/main/library/GUIWizardComponents/Generic/WStyleCollection.class.php");
 require_once(POLYPHONY."/main/library/GUIWizardComponents/WGUIComponent.abstract.php");
 require_once(POLYPHONY."/main/library/GUIWizardComponents/WGUICheckBox.class.php");
 require_once(POLYPHONY."/main/library/GUIWizardComponents/WGUISelectList.class.php");
-require_once(POLYPHONY."/main/library/GUIWizardComponents/WFontEditor.class.php");
+require_once(POLYPHONY."/main/library/GUIWizardComponents/CollectionEditors/WFontEditor.class.php");
+require_once(POLYPHONY."/main/library/GUIWizardComponents/CollectionEditors/WTextLayoutEditor.class.php");
+require_once(POLYPHONY."/main/library/GUIWizardComponents/CollectionEditors/WBackgroundEditor.class.php");
+require_once(POLYPHONY."/main/library/GUIWizardComponents/CollectionEditors/WMultiCollection.class.php");
 require_once(POLYPHONY."/main/library/GUIWizardComponents/Utilities/GUIComponentUtility.class.php");
 
 

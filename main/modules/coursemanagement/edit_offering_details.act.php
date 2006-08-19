@@ -11,7 +11,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_offering_details.act.php,v 1.2 2006/07/31 14:57:57 sporktim Exp $
+ * @version $Id: edit_offering_details.act.php,v 1.3 2006/08/19 21:08:41 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -35,7 +35,7 @@ class edit_offering_detailsAction
 		$harmoni =& Harmoni::instance();
 		
 		$harmoni->request->startNamespace("polyphony-agents");
-		$offeringIdString = $harmoni->request->get("offeringId");
+		$offeringIdString = $harmoni->request->get("courseId");
 
 		$harmoni->request->endNamespace();
 		
@@ -58,8 +58,8 @@ class edit_offering_detailsAction
 	function getHeadingText () {
 		$harmoni =& Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-agents");
-		$harmoni->request->passthrough("offeringId");
-		$offeringIdString = $harmoni->request->get("offeringId");
+		$harmoni->request->passthrough("courseId");
+		$offeringIdString = $harmoni->request->get("courseId");
 		$idManager =& Services::getService("Id");
 		$offeringId =& $idManager->getId($offeringIdString);
 		$cm =& Services::getService("CourseManagement");
@@ -82,8 +82,8 @@ class edit_offering_detailsAction
 		$harmoni =& Harmoni::instance();
 		
 		$harmoni->request->startNamespace("polyphony-agents");
-		$harmoni->request->passthrough("offeringId");
-		$offeringIdString = $harmoni->request->get("offeringId");
+		$harmoni->request->passthrough("courseId");
+		$offeringIdString = $harmoni->request->get("courseId");
 		$furtherAction = $harmoni->request->get("furtherAction");
 
 		$idManager =& Services::getService("Id");
@@ -115,7 +115,7 @@ class edit_offering_detailsAction
 		// Layout
 		$actionRows->add(new Block(ob_get_contents(),2),"100%", null, CENTER, TOP);
 		ob_end_clean();
-		$harmoni->request->forget("offeringId");
+		$harmoni->request->forget("courseId");
 		$harmoni->request->endNamespace();
 		
 		textdomain($defaultTextDomain);
@@ -290,7 +290,7 @@ class edit_offering_detailsAction
 		$harmoni =& Harmoni::instance();
 		$id =& $offering->getId();
 		print "\n\t\t<td>";
-		print "\n<a href='".$harmoni->request->quickURL("coursemanagement","edit_offering_details", array("offeringId"=>$id->getIdString()))."'>";
+		print "\n<a href='".$harmoni->request->quickURL("coursemanagement","edit_offering_details", array("courseId"=>$id->getIdString()))."'>";
 		print $offering->getDisplayName()."</a>";		
 		print "\n - <a href=\"Javascript:alert('"._("Id:").'\n\t'.addslashes($id->getIdString())."')\">"._("Id")."</a>";
 		print "</td>";

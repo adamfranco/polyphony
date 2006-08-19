@@ -6,14 +6,14 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: deletestudent.act.php,v 1.2 2006/08/07 19:15:34 jwlee100 Exp $
+ * @version $Id: deletestudent.act.php,v 1.3 2006/08/19 21:08:41 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
 require_once(HARMONI."GUIManager/Components/Blank.class.php");
 
 
-class printrosterAction 
+class deletestudentAction 
 	extends MainWindowAction
 {
 	/**
@@ -49,12 +49,12 @@ class printrosterAction
 	  	$cmm =& Services::getService("CourseManagement");
 		$idManager =& Services::getService("Id");
 		
-		$courseIdString = RequestContext::value("courseId");
+		$courseIdString = RequestContext::value("sectionId");
 		$courseId = $idManager->getId($courseIdString);
-		$courseOffering = $cmm->getCourseOffering($courseId);
-		$courseName = $courseOffering->getDisplayName();
+		$courseSection = $cmm->getCourseSection($courseId);
+		$courseName = $courseSection->getDisplayName();
 		
-		return dgettext("polyphony", "Course Offering Enrollment Record");
+		return dgettext("polyphony", "Delete students from ".$courseName);
 	}
 	
 	/**

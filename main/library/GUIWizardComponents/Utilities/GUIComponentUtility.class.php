@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: GUIComponentUtility.class.php,v 1.2 2006/08/15 21:15:49 sporktim Exp $
+* @version $Id: GUIComponentUtility.class.php,v 1.3 2006/08/19 21:08:40 sporktim Exp $
 */
 
 
@@ -20,7 +20,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: GUIComponentUtility.class.php,v 1.2 2006/08/15 21:15:49 sporktim Exp $
+* @version $Id: GUIComponentUtility.class.php,v 1.3 2006/08/19 21:08:40 sporktim Exp $
 */
 
 
@@ -162,17 +162,50 @@ class GUIComponentUtility{
 		return $ret;
 	}
 	
+	function &makeMarginAndPaddingArray(){
+		$arr = array("0px","1px","2px","3px","4px","5px","6px","8px","10px","12px","16px","20px","25px","30px","35px","40px","45px","50px","60px","70px","80px","100px","125px","150px","175px","200px","225px","250px","275px","300px","350px","400px","-0px","-1px","-2px","-3px","-4px","-5px","-6px","-8px","-10px","-12px","-16px","-20px","-25px","-30px","-35px","-40px","-45px","-50px","-60px","-70px","-80px","-100px","-125px","-150px","-175px","-200px","-225px","-250px","-275px","-300px","-350px","-400px","2%","5%","10%","15%","20%","25%","30%","35%","40%","50%","60%","75%","-2%","-5%","-10%","-15%","-20%","-25%","-30%","-35%","-40%","-50%","-60%","-75%","-100%","-125%","-150%","-200%","-250%","-300%","-400%");
+		foreach($arr as $option){
+			$options[$option]=$option;
+		}
+		return $options;
+	}
+	
 	function &makeBorderStyleArrays(){
 		$arr = array("none", "dotted", "dashed", 
 					     "solid", "groove", "ridge", 
 						 "inset", "outset", "double");
 		foreach($arr as $option){
 			$options[$option]=$option;
-			$styles[$option]="border-style: ".$option."; margin 3; padding 3;";
+			$styles[$option]="margin: 6px 3px; padding: 3px; border-style: ".$option.";";
 		}
 		 $ret = array('options'=>$options,'styles'=>$styles);
 		 return $ret;
 	}
+	
+	function &makeSpacingArray(){
+		$arr = array("normal","-5px", "-3px", "-2px","-1px", "0px","1px", "2px","3px","5px", "7px", "10px");   		 
+		foreach($arr as $option){
+			$options[$option]=$option;
+		}
+		 return $options;
+	}
+	
+	function &makeLineSpacingArray(){
+		$options = array("normal","50%","75%","90%","100%","125%","150%","175%","200%","250%");
+		foreach($options as $option){
+			$ret[$option]=$option;
+		}
+		return $ret;
+	}
+	
+	function &makeAlignArray(){
+		$options = array("left","center","right","justified");
+		foreach($options as $option){
+			$ret[$option]=$option;
+		}
+		return $ret;
+	}
+	
 	
 	
 }
