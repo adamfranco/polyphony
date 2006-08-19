@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: wildcardsearch.act.php,v 1.2 2006/08/17 18:25:49 jwlee100 Exp $
+ * @version $Id: wildcardsearch.act.php,v 1.3 2006/08/19 19:52:38 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -91,39 +91,37 @@ class wildcardsearchAction
 			<div>
 		
 			<p align='center'><select name='$term_name'>
-END;
+			END;
 		
 		$searchTypes =& $agentManager->getAgentSearchTypes();
 		
 		
 		$classId =& $idManager->getId("OU=Classes,OU=Groups,DC=middlebury,DC=edu ");
-	$classes =& $agentManager->getGroup($classId);
-	$terms =& $classes->getGroups(false);
+		$classes =& $agentManager->getGroup($classId);
+		$terms =& $classes->getGroups(false);
 	
-	while($terms->hasNext()){
-		$termGroup =& $terms->next();
+		while ($terms->hasNext()) {
+			$termGroup =& $terms->next();
+			
+			$termName = $termGroup->getDisplayName();
+			
+			$term = $this->_getTerm($termName);
 		
-		$termName = $termGroup->getDisplayName();
 		
-		$term = $this->_getTerm($termName);
-		
-		
-		$id =& $term->getId();
-		$idString = $id->getIdString();
-		print "\n\t\t<option value='".$idString."'";
+			$id =& $term->getId();
+			$idString = $id->getIdString();
+			print "\n\t\t<option value='".$idString."'";
 			if ($harmoni->request->get('term_name') == $idString){
 				print " selected='selected'";
 			}
 			print ">".$term->getDisplayName()."</option>";
-		
-		
-	}
-		
-			print "\n\t</select>";
-			print "\n\t<input type='submit' value='"._("Suck!")."' />";
-			//print "\n\t<a href='".$harmoni->request->quickURL()."'>";
+		}	
+				
+		print "\n\t</select>";
+		print "\n\t<input type='submit' value='"._("Suck!")."' />";
+		//print "\n\t<a href='".$harmoni->request->quickURL()."'>";
 		print "\n</p>\n</div></form>";
-			print "\n  <p align='center'>Sucking may take a few minutes</p>";
+		print "\n  <p align='center'>Sucking may take a few minutes</p>";
 		
 		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 		ob_end_clean();
@@ -135,46 +133,38 @@ END;
 		ob_start();
 		if ($termIdString = $harmoni->request->get('term_name') ) {
 			
-
+		$classId =& $idManager->getId("OU=Classes,OU=Groups,DC=middlebury,DC=edu ");
+		$classes =& $agentManager->getGroup($classId);
 	
+		$terms =& $classes->getGroups(false);
+	
+	
+	
+		while ($terms->hasNext()) {
+			$termGroup =& $terms->next();
+			
+			$termName = $termGroup->getDisplayName();
+			
+			$term = $this->_getTerm($termName);
+			$id=& $term->getId();
 		
-	$classId =& $idManager->getId("OU=Classes,OU=Groups,DC=middlebury,DC=edu ");
-	$classes =& $agentManager->getGroup($classId);
-	
-	
-	
-	
-	$terms =& $classes->getGroups(false);
-	
-	
-	
-	while($terms->hasNext()){
-		$termGroup =& $terms->next();
-		
-		$termName = $termGroup->getDisplayName();
-		
-		$term = $this->_getTerm($termName);
-		$id=& $term->getId();
-		
-		if($termIdString==$id->getIdString()){
-			break;
-		
+			if ($termIdString==$id->getIdString()) {
+				break;
+			}
 		}
-		
-	}
 	
 				
- 	$pageRows->add(new Heading(_("Courses Sucked from ".$term->getDisplayName().""), 2), "100%", null, LEFT, CENTER);
+ 		$pageRows->add(new Heading(_("Courses Sucked from ".$term->getDisplayName().""), 2), "100%", null, LEFT, CENTER);
 
 		
-	ob_start();	
+		ob_start();	
 	
 	
-	$last = "";
+		$last = "";
 		
 		$sections =& $termGroup->getGroups(false);
 			
-		while($sections->hasNext()){
+		while ($sections->hasNext()) {
 			
 			
 			
@@ -185,11 +175,11 @@ END;
 			$sectionName = $section->getDisplayName();	
 			
 		
-			if(substr($sectionName,0,4)=="phed"){
+			if (substr($sectionName,0,4) == "phed") {
 			
 				continue;	
 			}
-			if(substr($sectionName,0,strlen($sectionName)-5)!=$last){
+			if (substr($sectionName,0,strlen($sectionName)-5)!= $last) {
 				$last=substr($sectionName,0,strlen($sectionName)-5);
 				$canonicalCourseId = $this->_getCanonicalCourse($sectionName);
 				
@@ -227,7 +217,7 @@ END;
 	/**
 	 *Gets a term from the LDAP name, creating it if necesary
 	 **/
-	function &_getTerm($termName ){
+	function &_getTerm ($termName) {
 		
 		$cm =& Services::getService("CourseManagement");
 		
@@ -252,7 +242,7 @@ END;
 
 
 
-		if($res->getNumberOfRows()==0){
+		if ($res->getNumberOfRows() == 0) {
 			
 			
 			
@@ -264,7 +254,7 @@ END;
 
 			//return $termId->getIdString();
 			
-		}else{
+		} else {
 				
 			$row = $res->getCurrentRow();
 		
@@ -304,7 +294,7 @@ END;
 
 		
 
-		if($res->getNumberOfRows()==0){
+		if ($res->getNumberOfRows() == 0) {
 			
 		
 			
@@ -325,7 +315,7 @@ END;
 			//$canId =& $can->getId();
 
 			//return $canId->getIdString();
-		}else{
+		} else {
 			
 			
 			$row = $res->getCurrentRow();

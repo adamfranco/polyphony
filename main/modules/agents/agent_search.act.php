@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: agent_search.act.php,v 1.1 2006/07/29 06:36:41 sporktim Exp $
+ * @version $Id: agent_search.act.php,v 1.2 2006/08/19 19:52:37 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -112,7 +112,9 @@ class agent_SearchAction
 		
 			
 			$searchType =& new HarmoniType("Agent & Group Search", "edu.middlebury.harmoni", "TokenSearch");
-			$agents =& $agentManager->getAgentsBySearch($search_criteria, $searchType);
+			//$searchType =& new HarmoniType("Agent & Group Search", "edu.middlebury.harmoni", "WildcardSearch");
+			$string=	"*".$search_criteria."*";
+			$agents =& $agentManager->getAgentsBySearch($string, $searchType);
 			print "search: " . $search_criteria;
 			
 
