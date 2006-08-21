@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: course_search.act.php,v 1.8 2006/08/21 19:01:08 jwlee100 Exp $
+* @version $Id: course_search.act.php,v 1.9 2006/08/21 19:34:52 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -68,17 +68,11 @@ extends MainWindowAction
 		$pageRows =& new Container(new YLayout(), OTHER, 1);
 		$harmoni =& Harmoni::instance();
 
-
 		$searchNumber = RequestContext::value('search_number');
-		$searchTerm = RequestContext::value('search_term');
 
 		if(is_null($searchNumber)){
 			$searchNumber="";
 		}
-		if(is_null($searchTerm)){
-			$searchTerm="";
-		}
-
 
 		ob_start();
 
@@ -125,9 +119,9 @@ extends MainWindowAction
 		foreach($terms2 as 	$term){
 			$id =& $term->getId();
 			print "\n\t<option value='".$id->getIdString()."'";
-			if($searchTerm==$id->getIdString()){
+			/*if($searchTerm==$id->getIdString()){
 				print "selected='selected'";
-			}
+			}*/
 			print ">".$term->getDisplayName()."</option>";
 		}
 		print "\n\t</select></td></tr>";
@@ -142,7 +136,11 @@ extends MainWindowAction
 		$actionRows->add(new Block(ob_get_contents(),2),"100%", null, CENTER, TOP);
 		ob_end_clean();
 
-
+		$searchTerm = RequestContext::value('search_term');
+		
+		if(is_null($searchTerm)){
+			$searchTerm="";
+		}
 
 		/*
 
