@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: WBackgroundEditor.class.php,v 1.1 2006/08/19 21:08:39 sporktim Exp $
+* @version $Id: WBackgroundEditor.class.php,v 1.2 2006/08/21 16:25:23 sporktim Exp $
 */
 
 
@@ -20,7 +20,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: WBackgroundEditor.class.php,v 1.1 2006/08/19 21:08:39 sporktim Exp $
+* @version $Id: WBackgroundEditor.class.php,v 1.2 2006/08/21 16:25:23 sporktim Exp $
 */
 
 class WBackgroundEditor
@@ -108,14 +108,16 @@ extends WMoreOptions
 		$this->addComponent('borderColor',$comp);
 		
 		
-		$comp =& new WGUISelectList($callBack, $collectionSelector1,new PaddingTopSP("0px"),"LengthSC",$marginArray,false);
-		$this->addComponent('p_top',$comp);
-		$comp =& new WGUISelectList($callBack, $collectionSelector1,new PaddingBottomSP("0px"),"LengthSC",$marginArray,false);
-		$this->addComponent('p_bottom',$comp);	
-		$comp =& new WGUISelectList($callBack, $collectionSelector1,new PaddingLeftSP("0px"),"LengthSC",$marginArray,false);
-		$this->addComponent('p_left',$comp);	
-		$comp =& new WGUISelectList($callBack, $collectionSelector1,new PaddingRightSP("0px"),"LengthSC",$marginArray,false);
-		$this->addComponent('p_right',$comp);		
+	
+		
+		$comp =& new WGUISelectList($callBack, $collectionSelector1,new MarginTopSP("0px"),"LengthSC",$marginArray,false);
+		$this->addComponent('m_top',$comp);
+		$comp =& new WGUISelectList($callBack, $collectionSelector1,new MarginBottomSP("0px"),"LengthSC",$marginArray,false);
+		$this->addComponent('m_bottom',$comp);	
+		$comp =& new WGUISelectList($callBack, $collectionSelector1,new MarginLeftSP("0px"),"LengthSC",$marginArray,false);
+		$this->addComponent('m_left',$comp);	
+		$comp =& new WGUISelectList($callBack, $collectionSelector1,new MarginRightSP("0px"),"LengthSC",$marginArray,false);
+		$this->addComponent('m_right',$comp);		
 
 		
 
@@ -209,20 +211,22 @@ extends WMoreOptions
 		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";
 		$s.="\n\t</tr><tr>";
 		
-		$s.="\t\t<td>Top Padding: ";
-		$comp =& $this->getChild($name = 'p_top');
+
+		
+		$s.="\t\t<td>Top Margin: ";
+		$comp =& $this->getChild($name = 'm_top');
 		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";		
-		$s.="\t\t<td>Bottom Padding: ";
-		$comp =& $this->getChild($name = 'p_bottom');
+		$s.="\t\t<td>Bottom Margin: ";
+		$comp =& $this->getChild($name = 'm_bottom');
 		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";
 		$s.="\n\t</tr><tr>";
 		
 		
-		$s.="\t\t<td>Left Padding: ";
-		$comp =& $this->getChild($name = 'p_left');
+		$s.="\t\t<td>Left Margin: ";
+		$comp =& $this->getChild($name = 'm_left');
 		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";		
-		$s.="\t\t<td>Right Padding: ";
-		$comp =& $this->getChild($name = 'p_right');
+		$s.="\t\t<td>Right Margin: ";
+		$comp =& $this->getChild($name = 'm_right');
 		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";
 		$s.="\n\t</tr><tr>";
 		

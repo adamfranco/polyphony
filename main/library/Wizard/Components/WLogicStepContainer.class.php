@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicStepContainer.class.php,v 1.4 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WLogicStepContainer.class.php,v 1.5 2006/08/21 16:25:24 sporktim Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WizardStepContainer.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WizardStepContainer.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicStepContainer.class.php,v 1.4 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WLogicStepContainer.class.php,v 1.5 2006/08/21 16:25:24 sporktim Exp $
  */
 class WLogicStepContainer extends WizardStepContainer {
 		
@@ -138,9 +138,6 @@ class WLogicStepContainer extends WizardStepContainer {
 	 * @return void
 	 */
 	function goBack() {
-		
-			print "2--";
-		
 		//aren't stacks awesome?  This code is so awesome, I'll add my name--Tim
 		
 		

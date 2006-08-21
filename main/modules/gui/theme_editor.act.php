@@ -5,7 +5,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: theme_editor.act.php,v 1.1 2006/08/19 21:08:41 sporktim Exp $
+* @version $Id: theme_editor.act.php,v 1.2 2006/08/21 16:25:24 sporktim Exp $
 */
 
 
@@ -21,15 +21,68 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: theme_editor.act.php,v 1.1 2006/08/19 21:08:41 sporktim Exp $
+* @version $Id: theme_editor.act.php,v 1.2 2006/08/21 16:25:24 sporktim Exp $
 */
 
 define("theme_editorAction_wizardId", 'theme_editor_wizard3_');
+
 
 class theme_editorAction
 extends MainWindowAction
 {
 
+	
+	
+/*
+GUI Management Notes:
+
+Things are going well, but there a lot to be done.  The main file is theme_editor.act.php and the GUIWizardComonents folder can be found in polyphony's library.
+
+Here are things that NEED to be done:
+
+    * We need to get default themes that make sense.  Design the themes FOR the theme_editor, USING THE NAMING CONVENTIONS OF THE THEME_EDITOR.  Then we can make sure that we don't have two collections with different names giving conflicting style information.  We should have about five or six.  I beleive that adding something like rounded corners will not be affected by the editor, but be wary of adding images, since they can affect color choices.
+    * We badly need to load and save themes.  There are at least three options--create a new theme, modifiy an old theme, or copy and modify an old theme.  As a hint, the first step (load_step) and this last step (save_step) both have choices on how to save--only one should.  The other hint I can give you is that the saving and loading should be very easy, in theory.  Just use the GUIManager to pull it off.  I think you need to set the current theme)to be the one you want to save, then can the save function.  Be sure that you restore the theme though, or the page will display the new theme--cool, but likely problematic.  Also, don't forget that the wizard has a save button.  I'd say remove this step completely, decide how you are loading in the load step, then use that save.  Actually probably pretty easy.
+
+
+Saving may go something like this:
+
+$oldTheme = $GUIManager->getTheme();
+ $GUIManager->setTheme($themeToSave);
+ $GUIManager->saveTheme();
+$GUIManager->setTheme($oldTheme);
+
+Loading may go something like this:
+
+$oldTheme = $GUIManager->getTheme();
+  $GUIManager->loadTheme($themeIdToLoad);
+  $loadedTheme = $GUIManager->getTheme();
+$GUIManager->setTheme($oldTheme);
+
+
+Here are things that SHOULD be done:
+
+    * There is currently no way to edit the hover style or the links.  This is not very important except when we're editing MENU_LINK either selected or unselected.
+    * The test page was in no way designed for what I'm using it for.  A new test page really ought to be created that does NOT extend MainWindowAction or whatever it's called.  It should show off most of the features that you can edit, if not all, and it should look like a Segue 2 page.
+    * The wizard does not know which button was pressed once it gets to update or step change.  This should be passed in in the context of the stepchange, perhaps.
+
+
+
+
+Here are things that might be nice:
+
+    * There is a color picker for quickly choosing menu themes.  I think it is far too complicated right now, but it could be neat it it was modified to fit the WMoreOptions sort of pattern.  May be more trouble than it's worth.
+    * You can allow people to enter in new values, but then you assume that they understand whatever they are entering.  For example, not many people understand hex values.  If you do that then you should add validation.  The selectornew had some validation problems, but they may be mostly fixed.  Also, the logicwizard and validation is not entirely stable, so watch out.
+    * It would be cool if there was several test pages you could see, and you could flip through them with radio buttons and hitting refresh.  You can add two more files and them add code to the addIFrame method.
+    * You can't currently edit the appearance of bullet lists or numbered lists, but it would be cool.  You'd have to add the StyleComponents to the GUIManager in Harmoni and so forth.
+
+
+Here are some general notes:
+
+    * The regular expressions are not checked.  Specificlly, the color should be able to be specified by rgb(255,0,255) or rgb(100%,0.23%,100%) but I don't think it can right now.
+    * I've had difficulty with logging into concerto--it throws up a prompt box several times and crashes, but it seems only my machine is affected.
+
+
+*/
 
 
 	/**
@@ -369,7 +422,7 @@ extends MainWindowAction
 		$name = "footer";
 		$label = "Footer";		
 		$explanation = "Edit the footer";		
-		$info = "This appears at the very bottom.  It could look like the header for symmetry or could be completely different";
+		$info = "This appears at the very bottom.  It could look like the header for symmetry or could be completely different.  *NOTE TO DEVELOPER* I really think the two should go on the same page.  put the to WMultiCollections in a table, preferably side by side with labels at the top.";
 		$arr = array(array('type'=>FOOTER,'index'=>1));
 		//execute
 		$this->addAnEditingStep($wizard, $name,$arr, $info, true, true, false);
@@ -380,6 +433,68 @@ extends MainWindowAction
 
 
 		print "\n\t</tr><tr>";
+		
+		//options
+		$name = "menu";
+		$label = "Menu";		
+		$explanation = "Edit the Menu appearance:";		
+		$info = "This mostly will change the background of the menu. *NOTE TO DEVELOPER*  This only changes menu level one, so if you guys want menu level two, you'd better add it.";
+		$arr = array(array('type'=>MENU,'index'=>1));
+		//execute
+		$this->addAnEditingStep($wizard, $name,$arr, $info, true, true, false);
+		$button =& WLogicButton::withLabel($label);
+		$homeStep->addComponent($name.'_button',$button);
+		$button->setLogic(WLogicRule::withSteps(array($name.'_step','home_step')));
+		print "\n\t\t<td>"._($explanation)."</td><td>[[".$name."_button]]</td>";
+		
+		
+		//options
+		$name = "menu_heading";
+		$label = "Menu Headings";		
+		$explanation = "Edit the headings inside menus:";		
+		$info = "Menus do not necesarily have menu headings, but if they do, it would be nice if they stood out.  *NOTE TO DEVELOPER* there are four things for the menu, but it should really be condensed.  I think that a WBackGround Editor would be sufficient for the selected and unselected links, and a WFontEditor would probably be sufficient for the heading.  If you didn't use the entire WMultiCollection, it would allow cascading of sensible things to cascade.";
+		$arr = array(array('type'=>MENU_ITEM_HEADING,'index'=>1));
+		//execute
+		$this->addAnEditingStep($wizard, $name,$arr, $info, true, true, false);
+		$button =& WLogicButton::withLabel($label);
+		$homeStep->addComponent($name.'_button',$button);
+		$button->setLogic(WLogicRule::withSteps(array($name.'_step','home_step')));
+		print "\n\t\t<td>"._($explanation)."</td><td>[[".$name."_button]]</td>";
+
+		print "\n\t</tr><tr>";
+		
+		//options
+		$name = "menu_selected";
+		$label = "Selected";		
+		$explanation = "Selected Menu Items";		
+		$info = "This is what the current link probably looks like.   *NOTE TO DEVELOPER* there are four things for the menu, but it should really be condensed.  I think that a WBackGround Editor would be sufficient for the selected and unselected links, and a WFontEditor would probably be sufficient for the heading.  If you didn't use the entire WMultiCollection, it would allow cascading of sensible things to cascade. Also, keep in mind that we don't currently edit those link colors, since it does not apply to link--bad business.";
+		$arr = array(array('type'=>MENU_ITEM_LINK_SELECTED,'index'=>1));
+		//execute
+		$this->addAnEditingStep($wizard, $name,$arr, $info, true, true, false);
+		$button =& WLogicButton::withLabel($label);
+		$homeStep->addComponent($name.'_button',$button);
+		$button->setLogic(WLogicRule::withSteps(array($name.'_step','home_step')));
+		print "\n\t\t<td>"._($explanation)."</td><td>[[".$name."_button]]</td>";
+		
+	
+		
+		//options
+		$name = "menu_unselected";
+		$label = "Unselected";		
+		$explanation = "Unselected Menu Items";		
+		$info = "This is what the NON-current links probably looks like. *NOTE TO DEVELOPER* there are four things for the menu, but it should really be condensed.  I think that a WBackGround Editor would be sufficient for the selected and unselected links, and a WFontEditor would probably be sufficient for the heading.  If you didn't use the entire WMultiCollection, it would allow cascading of sensible things to cascade. Also, keep in mind that we don't currently edit those link colors, since it does not apply to link--bad business.";
+		$arr = array(array('type'=>MENU_ITEM_LINK_UNSELECTED,'index'=>1));
+		//execute
+		$this->addAnEditingStep($wizard, $name,$arr, $info, true, true, false);
+		$button =& WLogicButton::withLabel($label);
+		$homeStep->addComponent($name.'_button',$button);
+		$button->setLogic(WLogicRule::withSteps(array($name.'_step','home_step')));
+		print "\n\t\t<td>"._($explanation)."</td><td>[[".$name."_button]]</td>";
+
+
+		print "\n\t</tr><tr>";
+		
+	
 
 		print "\n\t\t<td>"._('Go Back to the beginning and choose a theme to modify:')."</td><td>[[load]]</td><td>&nbsp;</td>\n\t</tr>";
 		print "\n</table>";
@@ -415,7 +530,7 @@ extends MainWindowAction
 		$saveStep->addComponent('quit', new WCancelButton("Quit"));
 
 		ob_start();
-		print _("This is not really edited from Shubert's old code, so if you're the one implementing save, that's too bad--not done.  This is really not very liekly to help much.  As a hint, the first step (load_step) and this last step should not both be here.  Choose one or the other.  The other hint I can give you is that the saving and loading should be very easy, in theory.  Just use the GUIManager to pull it off.  I think you need to set the current theme to be the one you want to save, then can the save function.  Be sure that you restore the theme though, or the page will display the new theme--cool, but likely problematic.  Also, don't forget that the wizard has a save button.  I'd say remove this step completely, decide how you are loading in the load step, then use that save.  Actually probably pretty easy.
+		print _("*NOTE TO DEVELOPER* This is not really edited from Shubert's old code, so if you're the one implementing save, that's too bad--not done.  This is really not very liekly to help much.  As a hint, the first step (load_step) and this last step should not both be here.  Choose one or the other.  The other hint I can give you is that the saving and loading should be very easy, in theory.  Just use the GUIManager to pull it off.  I think you need to set the current theme to be the one you want to save, then can the save function.  Be sure that you restore the theme though, or the page will display the new theme--cool, but likely problematic.  Also, don't forget that the wizard has a save button.  I'd say remove this step completely, decide how you are loading in the load step, then use that save.  Actually probably pretty easy.
 		
 		<p> Here's the old text:</p>
 		
