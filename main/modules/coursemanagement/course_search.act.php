@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: course_search.act.php,v 1.7 2006/08/21 18:56:37 jwlee100 Exp $
+* @version $Id: course_search.act.php,v 1.8 2006/08/21 19:01:08 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -281,8 +281,9 @@ extends MainWindowAction
 			if($searchTerm != ""){
 					//$term = substr($name, strlen($name)-3,3);
 					$idManager =& Services::getService("Id");
-					$term =& $cm->getTerm($idManager->getId($searchTerm));
-					$termId =& $term->getId();
+					// $term =& $cm->getTerm($idManager->getId($searchTerm));
+					// $termId =& $term->getId();
+					$termId =& $idManager->getId($searchTerm);
 			}
 			
 			foreach($sections as $section){
