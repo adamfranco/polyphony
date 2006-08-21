@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: course_search.act.php,v 1.6 2006/08/19 21:45:37 sporktim Exp $
+* @version $Id: course_search.act.php,v 1.7 2006/08/21 18:56:37 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -100,11 +100,7 @@ extends MainWindowAction
 
 		print "\n\t<tr><td>Term: </td><td><select name='search_term'>";
 		print "\n\t<option value=''";
-
-		if($searchTerm==""){
-			print "selected='selected'";
-		}
-
+		print "selected='selected'";
 		print ">Choose a term</option>";
 
 
