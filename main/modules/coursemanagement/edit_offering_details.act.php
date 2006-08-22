@@ -11,7 +11,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_offering_details.act.php,v 1.3 2006/08/19 21:08:41 sporktim Exp $
+ * @version $Id: edit_offering_details.act.php,v 1.4 2006/08/22 15:56:28 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -353,7 +353,7 @@ class edit_offering_detailsAction
 			$agentIterator =& $group->getMembers(false);
 			
 			
-			while($agentIterator->hasNextAgent()){
+			while($agentIterator->hasNext()){
 				$agent = $agentIterator->nextAgent();
 				$agentId =& $agent->getId(); 
 				
