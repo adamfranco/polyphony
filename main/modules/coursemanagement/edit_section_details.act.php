@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: edit_section_details.act.php,v 1.11 2006/08/23 23:19:30 jwlee100 Exp $
+* @version $Id: edit_section_details.act.php,v 1.12 2006/08/23 23:45:38 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -436,21 +436,32 @@ extends MainWindowAction
 		$usersId =& $idManager->getId("edu.middlebury.agents.users");
 		
 		$enrollmentStatusType =& new Type("EnrollmentStatusType", "edu.middlebury", $searchType);
+		
+		// Search the record to see if student is already enrolled.
+		$studentPresent = 0;
 		$roster =& $section->getRoster();
-		$section->addStudent($agentId, $enrollmentStatusType);
+		while ($roster->hasNextEnrollmentRecord()) {
+			$record = $roster->nextEnrollmentRecord();
+			$studentId =& $record->getStudent();
+			$idString = $studentId->getIdString();
+			
+			if ($idString == $agentIdString) {
+				$studentPresent = 1;
+				break;
+			}
+		}
 		
-		ob_start();
-		
+		// Add student to record if student is not enrolled; otherwise, print a message stating that he/she is enrolled.
 		$agentName = $agent->getDisplayName();
 		$courseName = $section->getDisplayName();
-		print "<p><center>$agentName added to $courseName.</center></p>";
+		if ($studentPresent == 0) {
+			$section->addStudent($agentId, $enrollmentStatusType);
+			print "<p><center>$agentName added to $courseName.</center></p>";
+		} else {
+		  	print "<p><center>$agentName is already enrolled in $courseName.</center></p>";
+		}
 		
-		$url =& new GETMethodURLWriter();
-		$url->setModuleAction("coursemanagement","edit_offering_details");
-		$offering =& $section->getCourseOffering();
-		$offeringId =& $offering->getId();
-		$url->setValue("courseId",$offeringId->getIdString());
-		print "<p><a href='".$url->write()."'>Click here to return to Course Offering.</a></p>";
+		print "<hr>";
 		
 		$url =& new GETMethodURLWriter();
 		$url->setModuleAction("coursemanagement","edit_section_details");
@@ -458,6 +469,13 @@ extends MainWindowAction
 		$url->setValue("courseId",$sectionId->getIdString());
 		$url->setValue("furtherAction","edit_section_detailsAction::searchStudentToAdd");
 		print "<p><a href='".$url->write()."'>Click here to add another student.</a></p>";
+		
+		$url =& new GETMethodURLWriter();
+		$url->setModuleAction("coursemanagement","edit_offering_details");
+		$offering =& $section->getCourseOffering();
+		$offeringId =& $offering->getId();
+		$url->setValue("courseId",$offeringId->getIdString());
+		print "<p><a href='".$url->write()."'>Click here to return to Course Offering.</a></p>";
 		
 		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);	
 		ob_end_clean();
@@ -479,8 +497,22 @@ extends MainWindowAction
 		$agent =& $am->getAgent($studentId);
 		$agentName = $agent->getDisplayName();
 			
-		print "<p>'$agentName' deleted</p>";
+		print "<p><center>'$agentName' has been deleted.</center></p>";
 		$section->removeStudent($studentId);
+		$roster =& $section->getRoster();
+		
+		print "\n<hr>\n";
+
+		if ($roster->hasNextEnrollmentRecord()) {
+			$url =& new GETMethodURLWriter();
+			$url->setModuleAction("coursemanagement","edit_section_details");
+			$sectionId =& $section->getId();
+			$url->setValue("courseId",$sectionId->getIdString());
+			$url->setValue("furtherAction","edit_section_detailsAction::chooseStudentToRemove");
+			print "<p><a href='".$url->write()."'>Click here to delete another student</a></p>";
+		} else {
+			print "<p><i>No students are enrolled in this course.</i></p>";
+		}
 
 		$url =& new GETMethodURLWriter();
 		$url->setModuleAction("coursemanagement","edit_offering_details");
@@ -488,13 +520,6 @@ extends MainWindowAction
 		$offeringId =& $offering->getId();
 		$url->setValue("courseId",$offeringId->getIdString());
 		print "<p><a href='".$url->write()."'>Click here to return to Course Offering</a></p>";
-		
-		$url =& new GETMethodURLWriter();
-		$url->setModuleAction("coursemanagement","edit_section_details");
-		$sectionId =& $section->getId();
-		$url->setValue("courseId",$sectionId->getIdString());
-		$url->setValue("furtherAction","edit_section_detailsAction::chooseStudentToRemove");
-		print "<p><a href='".$url->write()."'>Click here to delete another student</a></p>";
 	}
 	
 	function chooseStudentToRemove(&$section) {
@@ -522,36 +547,52 @@ extends MainWindowAction
 		$i = 1;
 		
 		$roster =& $section->getRoster();
-		while ($roster->hasNextEnrollmentRecord()) {
+		if (!$roster->hasNextEnrollmentRecord()) {
+			print "<p>No students are enrolled in this class.</p>";
 			
+			$courseId = $section->getId();
+			$courseIdString = $courseId->getIdString();
+			$harmoni->history->markReturnURL("polyphony/coursemanagement/edit_section_details");
+			$link1 = $harmoni->request->quickURL("coursemanagement", "edit_section_details",
+			array("courseId"=>$courseIdString, "furtherAction"=>"edit_section_detailsAction::searchStudentToAdd"));
+			print "<p><a href='$link1'>Click here to add a student.</a></p>";
 			
-			$er =& $roster->nextEnrollmentRecord();
-			$agent =& $am->getAgent($er->getStudent());
+			$url =& new GETMethodURLWriter();
+			$url->setModuleAction("coursemanagement","edit_offering_details");
+			$offering =& $section->getCourseOffering();
+			$offeringId =& $offering->getId();
+			$url->setValue("courseId",$offeringId->getIdString());
+			print "<p><a href='".$url->write()."'>Click here to return to Course Offering</a></p>";
+		} else {
+			while ($roster->hasNextEnrollmentRecord()) {
+				$er =& $roster->nextEnrollmentRecord();
+				$agent =& $am->getAgent($er->getStudent());
 			
-			$agentName = $agent->getDisplayName();
-			$id =& $agent->getId();
+				$agentName = $agent->getDisplayName();
+				$id =& $agent->getId();
+				
+				$self = $harmoni->request->quickURL("coursemanagement", "edit_section_details", 
+				array("furtherAction"=>"edit_section_detailsAction::removeStudent","agentId"=>$id->getIdString()));
 			
-			$self = $harmoni->request->quickURL("coursemanagement", "edit_section_details", 
-			array("furtherAction"=>"edit_section_detailsAction::removeStudent","agentId"=>$id->getIdString()));
+				print "<p>";
+				print "<form action='$self' method='post'>";
+				print "<u>$agentName</u>";
+				print "\n\t<input type='submit' value='"._("Remove")."' />";
+				print "</form></p>";
 			
-			print "<p>";
-			print "<form action='$self' method='post'>";
-			print "<u>$agentName</u>";
-			print "\n\t<input type='submit' value='"._("Remove")."' />";
-			print "</form></p>";
+				/*
+				print "<td><a href='".$harmoni->request->quickURL("coursemanagement", "edit_section_details", 
+				array("furtherAction"=>"edit_section_detailsAction::removeStudent","agentId"=>$id->getIdString()))."'>
+				Remove ".$agentName."</a></td>";
+				*/
+				
+				if ($i%4 == 0) {
+					print "</tr><tr>";	
+				}
+				$i++;
 			
-			/*
-			print "<td><a href='".$harmoni->request->quickURL("coursemanagement", "edit_section_details", 
-			array("furtherAction"=>"edit_section_detailsAction::removeStudent","agentId"=>$id->getIdString()))."'>
-			Remove ".$agentName."</a></td>";
-			*/
-			
-			if($i%4 == 0){
-				print "</tr><tr>";	
+				//print "<option value='".$id."'>".$agentName."</option>";
 			}
-			$i++;
-			
-			//print "<option value='".$id."'>".$agentName."</option>";
 		}
 		
 		print "</td></table>";
