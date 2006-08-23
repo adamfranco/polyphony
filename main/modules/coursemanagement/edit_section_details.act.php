@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: edit_section_details.act.php,v 1.8 2006/08/23 14:59:15 jwlee100 Exp $
+* @version $Id: edit_section_details.act.php,v 1.9 2006/08/23 15:28:43 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -322,16 +322,22 @@ extends MainWindowAction
 		
 		ob_start();
 		$self = $harmoni->request->quickURL("coursemanagement", "edit_section_details", 
-			array("search_criteria", "furtherAction"=>"edit_section_detailsAction::chooseStudentToAdd"));
-		print _("Search For Users").": ";
+			array("search_criteria", "search_type", "furtherAction"=>"edit_section_detailsAction::chooseStudentToAdd"));
+		print _("Please enter the name of a student to search and add and select the type of registration (regular student or auditing).")."";
 		
 		$lastCriteria = $harmoni->request->get("search_criteria");
 		$search_criteria_name = RequestContext::name("search_criteria");
+		$last_type_name = $harmoni->request->get("search_type");
 		$search_type_name = RequestContext::name("search_type");
 		
 		print "<form action='$self' method='post'>
 			<div>
 			<input type='text' name='$search_criteria_name' value='$lastCriteria' />";
+			
+			print "<select name='$search_type_name'>";
+			print "<option value='student' selected='selected'>Student</option>";
+			print "<option value='auditing'>Auditing</option>";
+			print "</select>";
 
 			print "\n\t<input type='submit' value='"._("Search")."' />";
 			print "\n\t<a href='".$harmoni->request->quickURL()."'>";
@@ -360,7 +366,9 @@ extends MainWindowAction
 	  
 		$lastCriteria = $harmoni->request->get("search_criteria");
 		$search_criteria_name = RequestContext::name("search_criteria");
+		$last_type_name = $harmoni->request->get("search_type");
 		$search_type_name = RequestContext::name("search_type");
+		
 		/*********************************************************
 		 * the agent search results
 		 *********************************************************/
@@ -391,7 +399,7 @@ extends MainWindowAction
 
 			$harmoni->history->markReturnURL("polyphony/coursemanagement/edit_section_details");
 		
-			print "\n<p align='center'><a href='".$harmoni->request->quickURL("coursemanagement", "edit_section_details", array("agentId"=>$id->getIdString(), "furtherAction"=>"edit_section_detailsAction::addStudent"))."'>";
+			print "\n<p align='center'><a href='".$harmoni->request->quickURL("coursemanagement", "edit_section_details", array("agentId"=>$id->getIdString(), "search_type"=>$search_type_name, "furtherAction"=>"edit_section_detailsAction::addStudent"))."'>";
 			print "\n".$agent->getDisplayName()."</a>";
 			print "\n - <a href=\"Javascript:alert('"._("Id:").'\n\t'.addslashes($id->getIdString())."')\">Id</a></p>";
 			}
@@ -412,13 +420,14 @@ extends MainWindowAction
 		$am =& Services::GetService("AgentManager");
 		
 		$agentIdString = RequestContext::value("agentId");
+		$searchType = RequestContext::value("search_type");
 		$agentId = $idManager->getId($agentIdString);
 		$agent =& $am->getAgent($agentId);
 		
 		$everyoneId =& $idManager->getId("edu.middlebury.agents.everyone");
 		$usersId =& $idManager->getId("edu.middlebury.agents.users");
 		
-		$enrollmentStatusType =& new Type("EnrollmentStatusType", "edu.middlebury", "attending");
+		$enrollmentStatusType =& new Type("EnrollmentStatusType", "edu.middlebury", $searchType);
 		$section->addStudent($agentId, $enrollmentStatusType);
 		
 		ob_start();
