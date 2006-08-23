@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: edit_section_details.act.php,v 1.9 2006/08/23 15:28:43 jwlee100 Exp $
+* @version $Id: edit_section_details.act.php,v 1.10 2006/08/23 16:11:43 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -317,13 +317,14 @@ extends MainWindowAction
 		/*********************************************************
 		 * the agent search form
 		 *********************************************************/
-		// Users header
-		$actionRows->add(new Heading(_("Users"), 2), "100%", null, LEFT, CENTER);
+		// Search header
+		$sectionName = $section->getDisplayName();
+		$actionRows->add(new Heading(_("Search for students to add to this course."), 2), "100%", null, LEFT, CENTER);
 		
 		ob_start();
 		$self = $harmoni->request->quickURL("coursemanagement", "edit_section_details", 
-			array("search_criteria", "search_type", "furtherAction"=>"edit_section_detailsAction::chooseStudentToAdd"));
-		print _("Please enter the name of a student to search and add and select the type of registration (regular student or auditing).")."";
+			array("search_criteria", "search_type", "furtherAction"=>"edit_section_detailsAction::searchStudentToAdd"));
+		print _("<p>Please enter a student's name to search and add and select the type of registration (regular student or auditing).</p>")."";
 		
 		$lastCriteria = $harmoni->request->get("search_criteria");
 		$search_criteria_name = RequestContext::name("search_criteria");
@@ -346,28 +347,6 @@ extends MainWindowAction
 		
 		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 		ob_end_clean();
-	}
-		
-	function chooseStudentToAdd(&$section) {
-	  	$actionRows =& $this->getActionRows();
-		$pageRows =& new Container(new YLayout(), OTHER, 1);
-		$harmoni =& Harmoni::instance();
-		
-		$cmm =& Services::getService("CourseManagement");
-		$idManager =& Services::getService("Id");
-		$am =& Services::GetService("AgentManager");
-		
-		$courseIdString = RequestContext::value("courseId");
-		$courseId = $idManager->getId($courseIdString);
-		$courseSection = $cmm->getCourseSection($courseId);
-		
-		$everyoneId =& $idManager->getId("edu.middlebury.agents.everyone");
-		$usersId =& $idManager->getId("edu.middlebury.agents.users");
-	  
-		$lastCriteria = $harmoni->request->get("search_criteria");
-		$search_criteria_name = RequestContext::name("search_criteria");
-		$last_type_name = $harmoni->request->get("search_type");
-		$search_type_name = RequestContext::name("search_type");
 		
 		/*********************************************************
 		 * the agent search results
@@ -388,26 +367,27 @@ extends MainWindowAction
 			print "<p]><font size=+1>Search results</font></p>";
 			print "Click on a student's name to add for the course, <b>$displayName</b>.";
 			
-
-		
 			while ($agents->hasNext()) {
 				$agent =& $agents->next();
 				$id =& $agent->getId();
-
-				
-			
-
-			$harmoni->history->markReturnURL("polyphony/coursemanagement/edit_section_details");
+				$harmoni->history->markReturnURL("polyphony/coursemanagement/edit_section_details");
 		
-			print "\n<p align='center'><a href='".$harmoni->request->quickURL("coursemanagement", "edit_section_details", array("agentId"=>$id->getIdString(), "search_type"=>$search_type_name, "furtherAction"=>"edit_section_detailsAction::addStudent"))."'>";
-			print "\n".$agent->getDisplayName()."</a>";
-			print "\n - <a href=\"Javascript:alert('"._("Id:").'\n\t'.addslashes($id->getIdString())."')\">Id</a></p>";
+				print "\n<p align='center'><a href='".$harmoni->request->quickURL("coursemanagement", 
+				"edit_section_details", array("agentId"=>$id->getIdString(), "search_type"=>$search_type_name, 
+				"furtherAction"=>"edit_section_detailsAction::addStudent"))."'>";
+				
+				print "\n".$agent->getDisplayName()."</a>";
 			}
 			print "\n</div>";
+		} else {
+			print "<p>Please enter a name to search and add to the class.</p>";
 			
-			$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);	
-			ob_end_clean();
+			$link = $harmoni->request->quickURL("coursemanagement", "edit_section_details", 
+			array("furtherAction"=>"edit_section_detailsAction::viewSectionDetails"));
+			print "<p>Otherwise, click <a href=$link>here</a> to return to viewing section details.</p>";
 		}
+		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);
+		ob_end_clean();
 	}
 	
 	function addStudent(&$section) {
@@ -436,12 +416,19 @@ extends MainWindowAction
 		$courseName = $section->getDisplayName();
 		print "<p><center>$agentName added to $courseName.</center></p>";
 		
-		$link1 = $harmoni->request->quickURL("coursemanagement", "edit_section_details", 
-			array("furtherAction"=>"edit_section_detailsAction::searchStudentToAdd"));
-		print "<p><a href=$link1>Click here to search other students to add.</a></p>";
-		$link2 = $harmoni->request->quickURL("coursemanagement", "edit_section_details", 
-			array("furtherAction"=>"edit_section_detailsAction::viewSectionDetails"));
-		print "<p><a href=$link2>Click here to return to section details.</a></p>";
+		$url =& new GETMethodURLWriter();
+		$url->setModuleAction("coursemanagement","edit_offering_details");
+		$offering =& $section->getCourseOffering();
+		$offeringId =& $offering->getId();
+		$url->setValue("courseId",$offeringId->getIdString());
+		print "<p><a href='".$url->write()."'>Click here to return to Course Offering.</a></p>";
+		
+		$url =& new GETMethodURLWriter();
+		$url->setModuleAction("coursemanagement","edit_section_details");
+		$sectionId =& $section->getId();
+		$url->setValue("courseId",$sectionId->getIdString());
+		$url->setValue("furtherAction","edit_section_detailsAction::searchStudentToAdd");
+		print "<p><a href='".$url->write()."'>Click here to add another student.</a></p>";
 		
 		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);	
 		ob_end_clean();
@@ -471,14 +458,14 @@ extends MainWindowAction
 		$offering =& $section->getCourseOffering();
 		$offeringId =& $offering->getId();
 		$url->setValue("courseId",$offeringId->getIdString());
-		print "<br /><a href='".$url->write()."'> Back to Course Offering</a>";
+		print "<p><a href='".$url->write()."'>Click here to return to Course Offering</a></p>";
 		
 		$url =& new GETMethodURLWriter();
 		$url->setModuleAction("coursemanagement","edit_section_details");
 		$sectionId =& $section->getId();
 		$url->setValue("courseId",$sectionId->getIdString());
 		$url->setValue("furtherAction","edit_section_detailsAction::chooseStudentToRemove");
-		print "<br /><a href='".$url->write()."'> Delete another student</a>";
+		print "<p><a href='".$url->write()."'>Click here to delete another student</a></p>";
 	}
 	
 	function chooseStudentToRemove(&$section) {
