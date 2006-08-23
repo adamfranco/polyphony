@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: edit_section_details.act.php,v 1.7 2006/08/22 20:48:15 jwlee100 Exp $
+* @version $Id: edit_section_details.act.php,v 1.8 2006/08/23 14:59:15 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -418,7 +418,7 @@ extends MainWindowAction
 		$everyoneId =& $idManager->getId("edu.middlebury.agents.everyone");
 		$usersId =& $idManager->getId("edu.middlebury.agents.users");
 		
-		$enrollStatusType =& new Type("EnrollmentStatusType", "edu.middlebury", "attending");
+		$enrollmentStatusType =& new Type("EnrollmentStatusType", "edu.middlebury", "attending");
 		$section->addStudent($agentId, $enrollmentStatusType);
 		
 		ob_start();
@@ -427,11 +427,11 @@ extends MainWindowAction
 		$courseName = $section->getDisplayName();
 		print "<p><center>$agentName added to $courseName.</center></p>";
 		
-		$link1 = $harmoni->request->quickURL("coursemangaement", "edit_section_details", 
-			array("courseId"=>$courseIdString, "furtherAction"=>"edit_section_detailsAction::searchStudentsToAdd"));
+		$link1 = $harmoni->request->quickURL("coursemanagement", "edit_section_details", 
+			array("furtherAction"=>"edit_section_detailsAction::searchStudentToAdd"));
 		print "<p><a href=$link1>Click here to search other students to add.</a></p>";
-		$link2 = $harmoni->request->quickURL("coursemangaement", "edit_section_details", 
-			array("courseId"=>$courseIdString, "furtherAction"=>"edit_section_detailsAction::viewSectionDetails"));
+		$link2 = $harmoni->request->quickURL("coursemanagement", "edit_section_details", 
+			array("furtherAction"=>"edit_section_detailsAction::viewSectionDetails"));
 		print "<p><a href=$link2>Click here to return to section details.</a></p>";
 		
 		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);	
