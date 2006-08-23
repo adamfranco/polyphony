@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: edit_section_details.act.php,v 1.10 2006/08/23 16:11:43 jwlee100 Exp $
+* @version $Id: edit_section_details.act.php,v 1.11 2006/08/23 23:19:30 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -328,18 +328,22 @@ extends MainWindowAction
 		
 		$lastCriteria = $harmoni->request->get("search_criteria");
 		$search_criteria_name = RequestContext::name("search_criteria");
+		
 		$last_type_name = $harmoni->request->get("search_type");
 		$search_type_name = RequestContext::name("search_type");
+		
 		
 		print "<form action='$self' method='post'>
 			<div>
 			<input type='text' name='$search_criteria_name' value='$lastCriteria' />";
 			
+			
 			print "<select name='$search_type_name'>";
 			print "<option value='student' selected='selected'>Student</option>";
 			print "<option value='auditing'>Auditing</option>";
 			print "</select>";
-
+			
+	
 			print "\n\t<input type='submit' value='"._("Search")."' />";
 			print "\n\t<a href='".$harmoni->request->quickURL()."'>";
 			print "<input type='button' value='"._("Clear")."' /></a>";
@@ -372,11 +376,35 @@ extends MainWindowAction
 				$id =& $agent->getId();
 				$harmoni->history->markReturnURL("polyphony/coursemanagement/edit_section_details");
 		
+				/*		
 				print "\n<p align='center'><a href='".$harmoni->request->quickURL("coursemanagement", 
 				"edit_section_details", array("agentId"=>$id->getIdString(), "search_type"=>$search_type_name, 
 				"furtherAction"=>"edit_section_detailsAction::addStudent"))."'>";
 				
 				print "\n".$agent->getDisplayName()."</a>";
+								
+				$lastType = "student";
+				$search_type_name = RequestContext::value("search_type");
+				*/
+				
+				$idString = $id->getIdString();
+				$self = $harmoni->request->quickURL("coursemanagement", 
+				"edit_section_details", array("agentId"=>$idString, "search_type"=>$search_type_name, 
+				"furtherAction"=>"edit_section_detailsAction::addStudent"));
+				
+				print "<p>";
+				print "<form action='$self' method='post'>";
+				print "\n<u>".$agent->getDisplayName()."</u>";
+				
+				/*
+				print "<select name='search_type' value=$lastType>";
+				print "<option value='student' selected='selected'>Student</option>";
+				print "<option value='auditing'>Auditing</option>";
+				print "</select>";
+				*/
+				
+				print "\n\t<input type='submit' value='"._("Add")."' />";
+				print "</form></p>";				
 			}
 			print "\n</div>";
 		} else {
@@ -408,6 +436,7 @@ extends MainWindowAction
 		$usersId =& $idManager->getId("edu.middlebury.agents.users");
 		
 		$enrollmentStatusType =& new Type("EnrollmentStatusType", "edu.middlebury", $searchType);
+		$roster =& $section->getRoster();
 		$section->addStudent($agentId, $enrollmentStatusType);
 		
 		ob_start();
@@ -502,9 +531,20 @@ extends MainWindowAction
 			$agentName = $agent->getDisplayName();
 			$id =& $agent->getId();
 			
+			$self = $harmoni->request->quickURL("coursemanagement", "edit_section_details", 
+			array("furtherAction"=>"edit_section_detailsAction::removeStudent","agentId"=>$id->getIdString()));
 			
+			print "<p>";
+			print "<form action='$self' method='post'>";
+			print "<u>$agentName</u>";
+			print "\n\t<input type='submit' value='"._("Remove")."' />";
+			print "</form></p>";
 			
-			print "<td><a href='".$harmoni->request->quickURL("coursemanagement", "edit_section_details", array("furtherAction"=>"edit_section_detailsAction::removeStudent","agentId"=>$id->getIdString()))."'>Remove ".$agentName."</a></td>";
+			/*
+			print "<td><a href='".$harmoni->request->quickURL("coursemanagement", "edit_section_details", 
+			array("furtherAction"=>"edit_section_detailsAction::removeStudent","agentId"=>$id->getIdString()))."'>
+			Remove ".$agentName."</a></td>";
+			*/
 			
 			if($i%4 == 0){
 				print "</tr><tr>";	
