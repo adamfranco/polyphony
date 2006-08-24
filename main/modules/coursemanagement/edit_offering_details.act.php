@@ -11,7 +11,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_offering_details.act.php,v 1.4 2006/08/22 15:56:28 jwlee100 Exp $
+ * @version $Id: edit_offering_details.act.php,v 1.5 2006/08/24 14:42:49 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -94,9 +94,6 @@ class edit_offering_detailsAction
 		
 		ob_start();
 		
-		
-		print "<div style='margin-left: 15px'>";
-		
 		if (!$furtherAction) $furtherAction = "edit_offering_detailsAction::viewOfferingDetails";
 		
 		$actionFunctions = array(
@@ -110,7 +107,7 @@ class edit_offering_detailsAction
 			eval($furtherAction.'($offering);');
 		}
 		
-		print "</div>";
+		
 		
 		// Layout
 		$actionRows->add(new Block(ob_get_contents(),2),"100%", null, CENTER, TOP);
@@ -144,7 +141,7 @@ class edit_offering_detailsAction
 		
 		
 		
-		
+		print "<div style='margin-left: 15px'>";
 		
 		print "\n<table><tr><td>";
 		
@@ -195,6 +192,7 @@ class edit_offering_detailsAction
 				</ul>";
 		print "\n</td></tr></table>";
 		
+		print "</div>";
 		
 		$actionRows =& $this->getActionRows();
 		//$actionRows->add(new Block(ob_get_contents(),2),"100%", null, CENTER, TOP);

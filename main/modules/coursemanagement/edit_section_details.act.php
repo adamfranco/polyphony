@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: edit_section_details.act.php,v 1.14 2006/08/24 14:11:27 jwlee100 Exp $
+* @version $Id: edit_section_details.act.php,v 1.15 2006/08/24 14:42:49 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -234,32 +234,34 @@ extends MainWindowAction
 
 
 
-		print "<table cellpadding=20>";
-		$column = 0;
+		print "<table>";
 		print "\t<tr>";
-		while($enrollmentRecordIterator->hasNextEnrollmentRecord()){
+		$column = 0;
+		if (!$enrollmentRecordIterator->hasNextEnrollmentRecord()) {
+			print "<td></td>";
+		} else {
+			while ($enrollmentRecordIterator->hasNextEnrollmentRecord()) {
+				if ($column == 4) {
+					$column = 0;
+					print "\n\t</tr><tr>";
+				}
+				$column++;
+	
+				$er =& $enrollmentRecordIterator->nextEnrollmentRecord();
+				$id =& $er->getStudent();
+				$member =& $am->getAgent($id);
+	
 
-			if($column==4){
-				$column=0;
-				print "\n\t<tr></tr>";
+				$harmoni =& Harmoni::instance();
+
+				$harmoni->history->markReturnURL("polyphony/agents/edit_agent_details");
+
+				print "\n<td><a href='".$harmoni->request->quickURL("agents", "edit_agent_details", 
+																	array("agentId"=>$id->getIdString()))."'>";
+				print "\n".$member->getDisplayName()."</a>";
+				print "\n - <a href=\"Javascript:alert('"._("Id:").'\n\t'.addslashes($id->getIdString())."')\">Id</a>
+					  </td>";
 			}
-			$column++;
-
-			$er =& $enrollmentRecordIterator->nextEnrollmentRecord();
-			$id =& $er->getStudent();
-			$member =& $am->getAgent($id);
-
-
-			$harmoni =& Harmoni::instance();
-
-			$harmoni->history->markReturnURL("polyphony/agents/edit_agent_details");
-
-			print "\n<td><a href='".$harmoni->request->quickURL("agents","edit_agent_details", array("agentId"=>$id->getIdString()))."'>";
-			print "\n".$member->getDisplayName()."</a>";
-			print "\n - <a href=\"Javascript:alert('"._("Id:").'\n\t'.addslashes($id->getIdString())."')\">Id</a></td>";
-
-
-
 		}
 
 		print "</tr></table>";
