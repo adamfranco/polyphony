@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: course_search.act.php,v 1.9 2006/08/21 19:34:52 jwlee100 Exp $
+* @version $Id: course_search.act.php,v 1.10 2006/08/24 14:11:27 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -71,7 +71,7 @@ extends MainWindowAction
 		$searchNumber = RequestContext::value('search_number');
 
 		if(is_null($searchNumber)){
-			$searchNumber="";
+			$searchNumber = "";
 		}
 
 		ob_start();
@@ -81,15 +81,14 @@ extends MainWindowAction
 
 
 		$self = $harmoni->request->quickURL();
-		print ("<p align='center'><b><font size=+1>Search for courses offering by the following criteria").":
-				</font></b></p>";
+		print ("<h2>Search for courses offering by the following criteria:</h2>")."";
 		print "\n\t<form action='$self' method='post'>
 			\n\t<div>";
 
 		print "<table>";
 
 
-		print "\n\t<tr><td>Number: </td><td><input type='text' name='search_number' value=".$searchNumber."></td>";
+		print "\n\t<tr><td>Number: </td><td><input type='text' name='search_number' value='".$searchNumber."'/></td></tr>";
 
 
 		print "\n\t<tr><td>Term: </td><td><select name='search_term'>";
@@ -129,8 +128,9 @@ extends MainWindowAction
 		print "\n</table>";
 
 
-		print "\n\t<p><input type='submit' value='"._("Search!")."' />";
-
+		print "\n\t<p><input type='submit' value='"._("Search!")."'/></p>";
+		
+		print "\n\t</div></form>";
 
 		//$actionRows =& $this->getActionRows();
 		$actionRows->add(new Block(ob_get_contents(),2),"100%", null, CENTER, TOP);

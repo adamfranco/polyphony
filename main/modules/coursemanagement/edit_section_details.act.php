@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: edit_section_details.act.php,v 1.13 2006/08/24 13:36:33 jwlee100 Exp $
+* @version $Id: edit_section_details.act.php,v 1.14 2006/08/24 14:11:27 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -384,6 +384,11 @@ extends MainWindowAction
 				print "\n".$agent->getDisplayName()."</a>";
 				*/				
 				$last_type_name = $harmoni->request->get("search_type");
+				$search_type = RequestContext::name("search_type");
+				
+				if(is_null($search_type)){
+					$search_type = "";
+				}
 				
 				$idString = $id->getIdString();
 				$self = $harmoni->request->quickURL("coursemanagement", 
@@ -395,7 +400,7 @@ extends MainWindowAction
 				print "\n<u>".$agent->getDisplayName()."</u>";
 				
 				
-				print "<select name='".RequestContext::name("search_type")."' value=$last_type_name>";
+				print "<select name='".$search_type."' value=$last_type_name>";
 				print "<option value='student' selected='selected'>Student</option>";
 				print "<option value='auditing'>Auditing</option>";
 				print "</select>";
