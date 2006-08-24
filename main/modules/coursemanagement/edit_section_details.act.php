@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: edit_section_details.act.php,v 1.15 2006/08/24 14:42:49 jwlee100 Exp $
+* @version $Id: edit_section_details.act.php,v 1.16 2006/08/24 17:43:13 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -188,10 +188,12 @@ extends MainWindowAction
 		
 		print "<ul>";
 		
-		$link1 = $harmoni->request->quickURL("coursemanagement", "edit_section_details", array("courseId"=>$courseIdString, "furtherAction"=>"edit_section_detailsAction::editSectionDetails"));				
+		$link1 = $harmoni->request->quickURL("coursemanagement", "edit_section_details", 
+		array("courseId"=>$courseIdString, "furtherAction"=>"edit_section_detailsAction::editSectionDetails"));				
 		print "<li><a href='".$link1."'>Edit section</a></li>";
 		
-		$link2 = $harmoni->request->quickURL("coursemanagement", "edit_section_details", array("courseId"=>$courseIdString, "furtherAction"=>"edit_section_detailsAction::deleteSection"));				
+		$link2 = $harmoni->request->quickURL("coursemanagement", "edit_section_details", 
+		array("courseId"=>$courseIdString, "furtherAction"=>"edit_section_detailsAction::deleteSection"));				
 		print "<li><a href='".$link2."'>Delete section</a></li>";
 		
 		
@@ -370,7 +372,7 @@ extends MainWindowAction
 			$string = "*".$search_criteria."*";
 			$agents =& $am->getAgentsBySearch($string, $searchType);
 			$displayName = $section->getDisplayName();
-			print "<p]><font size=+1>Search results</font></p>";
+			print "<p><font size=+1>Search results</font></p>";
 			print "Click on a student's name to add for the course, <b>$displayName</b>.";
 			
 			while ($agents->hasNext()) {
@@ -417,7 +419,7 @@ extends MainWindowAction
 			
 			$link = $harmoni->request->quickURL("coursemanagement", "edit_section_details", 
 			array("furtherAction"=>"edit_section_detailsAction::viewSectionDetails"));
-			print "<p>Otherwise, click <a href=$link>here</a> to return to viewing section details.</p>";
+			print "<p>Otherwise, click <a href='$link'>here</a> to return to viewing section details.</p>";
 		}
 		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 		ob_end_clean();
@@ -441,6 +443,10 @@ extends MainWindowAction
 		$usersId =& $idManager->getId("edu.middlebury.agents.users");
 		
 		$enrollmentStatusType =& new Type("EnrollmentStatusType", "edu.middlebury", $searchType);
+		
+		ob_start();
+		
+		print "<div>";
 		
 		// Search the record to see if student is already enrolled.
 		$studentPresent = 0;
