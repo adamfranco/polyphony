@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: edit_section_details.act.php,v 1.12 2006/08/23 23:45:38 jwlee100 Exp $
+* @version $Id: edit_section_details.act.php,v 1.13 2006/08/24 13:36:33 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -328,21 +328,21 @@ extends MainWindowAction
 		
 		$lastCriteria = $harmoni->request->get("search_criteria");
 		$search_criteria_name = RequestContext::name("search_criteria");
-		
+		/*
 		$last_type_name = $harmoni->request->get("search_type");
 		$search_type_name = RequestContext::name("search_type");
-		
+		*/
 		
 		print "<form action='$self' method='post'>
 			<div>
 			<input type='text' name='$search_criteria_name' value='$lastCriteria' />";
 			
-			
+			/*
 			print "<select name='$search_type_name'>";
 			print "<option value='student' selected='selected'>Student</option>";
 			print "<option value='auditing'>Auditing</option>";
 			print "</select>";
-			
+			*/		
 	
 			print "\n\t<input type='submit' value='"._("Search")."' />";
 			print "\n\t<a href='".$harmoni->request->quickURL()."'>";
@@ -382,26 +382,24 @@ extends MainWindowAction
 				"furtherAction"=>"edit_section_detailsAction::addStudent"))."'>";
 				
 				print "\n".$agent->getDisplayName()."</a>";
-								
-				$lastType = "student";
-				$search_type_name = RequestContext::value("search_type");
-				*/
+				*/				
+				$last_type_name = $harmoni->request->get("search_type");
 				
 				$idString = $id->getIdString();
 				$self = $harmoni->request->quickURL("coursemanagement", 
-				"edit_section_details", array("agentId"=>$idString, "search_type"=>$search_type_name, 
+				"edit_section_details", array("agentId"=>$idString, "search_type", 
 				"furtherAction"=>"edit_section_detailsAction::addStudent"));
 				
 				print "<p>";
 				print "<form action='$self' method='post'>";
 				print "\n<u>".$agent->getDisplayName()."</u>";
 				
-				/*
-				print "<select name='search_type' value=$lastType>";
+				
+				print "<select name='".RequestContext::name("search_type")."' value=$last_type_name>";
 				print "<option value='student' selected='selected'>Student</option>";
 				print "<option value='auditing'>Auditing</option>";
 				print "</select>";
-				*/
+				
 				
 				print "\n\t<input type='submit' value='"._("Add")."' />";
 				print "</form></p>";				
@@ -476,6 +474,8 @@ extends MainWindowAction
 		$offeringId =& $offering->getId();
 		$url->setValue("courseId",$offeringId->getIdString());
 		print "<p><a href='".$url->write()."'>Click here to return to Course Offering.</a></p>";
+		
+		print "</div>";
 		
 		$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);	
 		ob_end_clean();
