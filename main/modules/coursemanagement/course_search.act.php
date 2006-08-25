@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: course_search.act.php,v 1.10 2006/08/24 14:11:27 jwlee100 Exp $
+* @version $Id: course_search.act.php,v 1.11 2006/08/25 19:15:37 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -81,7 +81,7 @@ extends MainWindowAction
 
 
 		$self = $harmoni->request->quickURL();
-		print ("<h2>Search for courses offering by the following criteria:</h2>")."";
+		print ("<h2>Search for course offerings by the following criteria:</h2>")."";
 		print "\n\t<form action='$self' method='post'>
 			\n\t<div>";
 
