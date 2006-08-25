@@ -11,13 +11,13 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: createcourse.act.php,v 1.3 2006/08/25 20:11:42 jwlee100 Exp $
+* @version $Id: createcourse.act.php,v 1.4 2006/08/25 20:38:18 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
 require_once(HARMONI."GUIManager/Components/Blank.class.php");
 
-class edit_section_rosterAction
+class createcourseAction
 extends MainWindowAction
 {
 	/**
@@ -82,31 +82,29 @@ extends MainWindowAction
 		$harmoni->request->startNamespace("polyphony-agents");
 		$harmoni->request->passthrough("courseId");
 		
-		$sectionIdString = $harmoni->request->get("courseId");
-		$sectionId =& $idManager->getId($sectionIdString);
 		$cm =& Services::getService("CourseManagement");
-		$section =& $cm->getCourseSection($sectionId);
-
-		
+				
 		// Process any changes
-		if (RequestContext::value("agentIdToAdd") && RequestContext::value("status"))
-			$this->addStudent($section, RequestContext::value("agentIdToAdd"), 
-										RequestContext::value("status"));
+		if (RequestContext::value("courseToAdd") && RequestContext::value("courseNumber") &&
+			RequestContext::value("courseType") && RequestContext::value("courseStatus") &&
+			RequestContext::value("courseTerm"))
+			$this->addCourse(RequestContext::value("courseToAdd"), RequestContext::value("courseNumber"),
+							 RequestContext::value("courseDescription") && RequestContext::value("courseType"), 				
+							 RequestContext::value("courseStatus"), RequestContext::value("courseTerm"));
 		
-		if (RequestContext::value("agentIdToRemove"))
-			$this->removeStudent($section, RequestContext::value("agentIdToRemove"));
+		if (RequestContext::value("courseIdToRemove"))
+			$this->removeCourse($section, RequestContext::value("courseIdToRemove"));
 		
 		
 		// Print out our search and memebers
 		$actionRows =& $this->getActionRows();
 		$sectionName = $section->getDisplayName();
 		
-		$actionRows->add(new Heading(_("Edit roster for $sectionName."), 2), "100%", null, LEFT, CENTER);
+		$actionRows->add(new Heading(_("Add or remove courses."), 2), "100%", null, LEFT, CENTER);
 		
 		$actionRows->add($this->getAddForm($section), "100%", null, LEFT, CENTER);
-		$actionRows->add($this->getMembers($section), "100%", null, LEFT, CENTER);
+		$actionRows->add($this->getCourses($section), "100%", null, LEFT, CENTER);
 		
-		$harmoni->request->forget("courseId");
 		$harmoni->request->endNamespace();
 
 		textdomain($defaultTextDomain);
