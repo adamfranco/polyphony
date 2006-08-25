@@ -1,544 +1,306 @@
 <?php
+
 /**
- * @package concerto.modules.asset
- * 
- * @copyright Copyright &copy; 2005, Middlebury College
- * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- *
- * @version $Id: createcourse.act.php,v 1.2 2006/08/02 19:59:36 jwlee100 Exp $
- */ 
+* This action is the central page for viewing and modifying course section information.
+*
+* @package polyphony.modules.coursemanagement
+*
+*
+* @since 7/28/06
+*
+* @copyright Copyright &copy; 2006, Middlebury College
+* @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+*
+* @version $Id: createcourse.act.php,v 1.3 2006/08/25 20:11:42 jwlee100 Exp $
+*/
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
-require_once(HARMONI."/utilities/StatusStars.class.php");
+require_once(HARMONI."GUIManager/Components/Blank.class.php");
 
-/**
- * 
- * 
- * @package concerto.modules.asset
- * 
- * @copyright Copyright &copy; 2005, Middlebury College
- * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- *
- * @version $Id: createcourse.act.php,v 1.2 2006/08/02 19:59:36 jwlee100 Exp $
- */
-class createcourseAction
-	extends MainWindowAction
+class edit_section_rosterAction
+extends MainWindowAction
 {
 	/**
-	 * Check Authorizations
-	 * 
-	 * @return boolean
-	 * @access public
-	 * @since 4/26/05
-	 */
+	* Check Authorizations
+	*
+	* @return boolean
+	* @access public
+	* @since 4/26/05
+	*/
 	function isAuthorizedToExecute () {
-		// Check that the user can create an asset here.
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
-		
-		return $authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.add_children"),
-			$idManager->getId("edu.middlebury.coursemanagement")
-		);
+		// Check for authorization
+		$authZManager =& Services::getService("AuthZ");
+		$idManager =& Services::getService("IdManager");
+		$harmoni =& Harmoni::instance();
+
+		$harmoni->request->startNamespace("polyphony-agents");
+		$sectionIdString = $harmoni->request->get("courseId");
+
+		$harmoni->request->endNamespace();
+
+		if ($authZManager->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"),
+			$idManager->getId($sectionIdString)))
+		{
+			return TRUE;
+		} else
+		return FALSE;
 	}
-	
+
 	/**
-	 * Return the "unauthorized" string to pring
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 4/26/05
-	 */
-	function getUnauthorizedMessage () {
-		return _("You are not authorized to create a SlideShow in this <em>Exhibition</em>.");
-	}
-	
-	/**
-	 * Return the heading text for this action, or an empty string.
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 4/26/05
-	 */
+	* Return the heading text for this action, or an empty string.
+	*
+	* @return string
+	* @access public
+	* @since 4/26/05
+	*/
 	function getHeadingText () {
-		return _("Create a canonical course.");
+		$harmoni =& Harmoni::instance();
+		$harmoni->request->startNamespace("polyphony-agents");
+		$harmoni->request->passthrough("courseId");
+		$sectionIdString = $harmoni->request->get("courseId");
+		$idManager =& Services::getService("Id");
+		$sectionId =& $idManager->getId($sectionIdString);
+		$cm =& Services::getService("CourseManagement");
+		$section =& $cm->getCourseSection($sectionId);
+		return dgettext("polyphony", $section->getDisplayName());
 	}
-	
+
 	/**
-	 * Build the content for this action
-	 * 
-	 * @return void
-	 * @access public
-	 * @since 4/26/05
-	 */
+	* Build the content for this action
+	*
+	* @return void
+	* @access public
+	* @since 4/26/05
+	*/
 	function buildContent () {
+		$defaultTextDomain = textdomain("polyphony");
+		
+		$idManager =& Services::getService("Id");
 		$harmoni =& Harmoni::instance();
+
+		$harmoni->request->startNamespace("polyphony-agents");
+		$harmoni->request->passthrough("courseId");
+		
+		$sectionIdString = $harmoni->request->get("courseId");
+		$sectionId =& $idManager->getId($sectionIdString);
+		$cm =& Services::getService("CourseManagement");
+		$section =& $cm->getCourseSection($sectionId);
+
+		
+		// Process any changes
+		if (RequestContext::value("agentIdToAdd") && RequestContext::value("status"))
+			$this->addStudent($section, RequestContext::value("agentIdToAdd"), 
+										RequestContext::value("status"));
+		
+		if (RequestContext::value("agentIdToRemove"))
+			$this->removeStudent($section, RequestContext::value("agentIdToRemove"));
+		
+		
+		// Print out our search and memebers
 		$actionRows =& $this->getActionRows();
-		$cacheName = "createCanonicalCourseWizard";
-		$this->runWizard ( $cacheName, $actionRows );
+		$sectionName = $section->getDisplayName();
+		
+		$actionRows->add(new Heading(_("Edit roster for $sectionName."), 2), "100%", null, LEFT, CENTER);
+		
+		$actionRows->add($this->getAddForm($section), "100%", null, LEFT, CENTER);
+		$actionRows->add($this->getMembers($section), "100%", null, LEFT, CENTER);
+		
+		$harmoni->request->forget("courseId");
+		$harmoni->request->endNamespace();
+
+		textdomain($defaultTextDomain);
 	}
+
+	/***************************FUNCTIONS***************************************/
+
+	/*********************************************************
+	* the wild card search form to add students
+    *********************************************************/
 		
-	/**
-	 * Create a new Wizard for this action. Caching of this Wizard is handled by
-	 * {@link getWizard()} and does not need to be implemented here.
-	 * 
-	 * @return object Wizard
-	 * @access public
-	 * @since 4/28/05
-	 */
-	
-	function &createWizard () {
+
+	function &getAddForm(&$section) {
 		$harmoni =& Harmoni::instance();
-		$courseManager =& Services::getService("CourseManagement");
-		$canonicalCourseIterator =& $courseManager->getCanonicalCourses();
 		
-		// Instantiate the wizard, then add our steps.
-		$wizard =& SimpleStepWizard::withDefaultLayout();
-		
-		// :: Name and Description ::
-		$step =& $wizard->addStep("namedescstep", new WizardStep());
-		$step->setDisplayName(_("Please enter the information about a canonical course:"));
+		$cmm =& Services::getService("CourseManagement");
+		$idManager =& Services::getService("Id");
+		$am =& Services::GetService("AgentManager");
+
+		$offering =& $section->getCourseOffering();
+		$offeringId = $offering->getId();
+		$courseIdString = $offeringId->getIdString();
 		
 		ob_start();
-		$self = $harmoni->request->quickURL();
-		print ("<p align='center'><b><font size=+1>What would you like to search for?")." 
-				</font></b></p>";
+		$link1 = $harmoni->request->quickURL("coursemanagement", "edit_offering_details", 
+											array("courseId"=>$courseIdString));
+		
+		print "<p><a href='$link1'>Return to course offering details.</a></p>";
+		
+		print _("<p>Please enter a student's name to search and add.</p>")."";
+		
+		// Search header
+		$self = $harmoni->request->quickURL("coursemanagement", "edit_section_roster", 
+			array("search_criteria", "search_type"));
+		
+		$lastCriteria = $harmoni->request->get("search_criteria");
+		$search_criteria_name = RequestContext::name("search_criteria");
+		
+		if (is_null($search_criteria_name)) 
+			$search_criteria_name = "";
+		
 		print "<form action='$self' method='post'>
-			<div>";
-			
-		print "<br>Course Type: <select name='search_option'>";
-		print "<option value='canonicalcourse' selected='selected'>Canonical course</option>";
-		print "<option value='courseoffering'>Course offering</option>";
-		print "<option value='coursesection'>Course section</option>";
-		print "\n\t</select>";
-		
-		print "\n\t<p><input type='submit' value='"._("Submit!")."' />";
-		print "</form>";
-				
-		$step->setContent(ob_get_contents());
-		ob_end_clean();
-		
-		$searchOption = RequestContext::value('search_option');
-		
-		if ($searchOption == 'canonicalcourse') {
-			$titleProp =& $step->addComponent("coursetitle", new WTextField());
-			$titleProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-			$titleProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
-		
-			// Create the properties.		
-			$numberProp =& $step->addComponent("coursenumber", new WTextField());
-			$numberProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-			$numberProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
-		
-			$descriptionProp =& $step->addComponent("coursedescription", WTextArea::withRowsAndColumns(10,30));
-		
-			// Create the type chooser.
-			$select =& new WSelectList();
-			$typename = "can";	
-			$dbHandler =& Services::getService("DBHandler");
-			$query=& new SelectQuery;
-			$query->addTable('cm_'.$typename."_type");
-			$query->addColumn('id');
-			$query->addColumn('keyword');
-			$res=& $dbHandler->query($query);
-			while($res->hasMoreRows()){
-				$row = $res->getCurrentRow();
-				$res->advanceRow();
-				$select->addOption($row['id'],$row['keyword']);
-			}
-			$typeProp =& $step->addComponent("coursetype", $select);
-			/*
-			$typeProp =& $step->addComponent("type", new WTextField());
-			$typeProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-			$typeProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
-			*/
-			$select =& new WSelectList();
-			$typename = "can_stat";	
-			$dbHandler =& Services::getService("DBHandler");
-			$query=& new SelectQuery;
-			$query->addTable('cm_'.$typename."_type");
-			$query->addColumn('id');
-			$query->addColumn('keyword');
-			$res=& $dbHandler->query($query);
-			while($res->hasMoreRows()){
-				$row = $res->getCurrentRow();
-				$res->advanceRow();
-				$select->addOption($row['id'],$row['keyword']);
-			}
-			$typeProp =& $step->addComponent("coursestatustype", $select);
-			/*
-			$statusTypeProp =& $step->addComponent("statusType", new WTextField());
-			$statusTypeProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-			$statusTypeProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
-			*/
-			$creditsProp =& $step->addComponent("coursecredits", new WTextField());
-			$creditsProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-			$creditsProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
-					
-			// Create the step text
-			ob_start();
-			print "\n<font size=+2><h2>"._("Canonical Course")."</h2></font>";
-			print "\n<h2>"._("Title")."</h2>";
-			print "\n"._("The title of this <em>canonical course</em>: ");
-			print "\n<br />[[coursetitle]]";
-			print "\n<h2>"._("Number")."</h2>";
-			print "\n"._("The number of this <em>canonical course</em>: ");
-			print "\n<br />[[coursenumber]]";
-			print "\n<h2>"._("Description")."</h2>";
-			print "\n"._("The number of this <em>canonical course</em>: ");
-			print "\n<br />[[coursedescription]]";
-			print "\n<h2>"._("Type")."</h2>";
-			print "\n"._("The type of this <em>canonical course</em>: ");
-			print "\n<br />[[coursetype]]";
-			print "\n<h2>"._("Status type")."</h2>";
-			print "\n"._("The status type of this <em>canonical course</em>: ");
-			print "\n<br />[[coursestatustype]]";
-			print "\n<h2>"._("Credits")."</h2>";
-			print "\n"._("The status type of this <em>canonical course</em>: ");
-			print "\n<br />[[coursecredits]]";
-			print "\n<div style='width: 400px'> &nbsp; </div>";
-			$step->setContent(ob_get_contents());
-			ob_end_clean();
-		} else if ($searchOption == 'courseoffering') {
-			$select =& new WSelectList();
-			$dbHandler =& Services::getService("DBHandler");
-			$query=& new SelectQuery;
-			$query->addTable('cm_can');
-			$query->addColumn('id');
-			$query->addColumn('title');
-			$query->addColumn('number');
-			$query->addOrderBy('number');
-			$res=& $dbHandler->query($query);
-			//$select->addOption("1","There");
-			while($res->hasMoreRows()){
-				$row = $res->getCurrentRow();
-				$res->advanceRow();
-				$select->addOption($row['id'],$row['number']." ".$row['title']);
-			}
-			//$select->addOption("2","Here");
-			$canonicalCourse =& $step->addComponent("courseid", $select);
-			
-			$descriptionProp =& $step->addComponent("offeringdescription", WTextArea::withRowsAndColumns(10,30));
-		
-			$select =& new WSelectList();
+			<div>
+			<input type='text' name='$search_criteria_name' value='$lastCriteria' />";	
 	
-			$dbHandler =& Services::getService("DBHandler");
-			$query=& new SelectQuery;
-			$query->addTable('cm_term');
-			$query->addColumn('id');
-			$query->addColumn('name');
-			$res=& $dbHandler->query($query);
-			while($res->hasMoreRows()){
-				$row = $res->getCurrentRow();
-				$res->advanceRow();
-				$select->addOption($row['id'],$row['name']);
-			}
-			$termProp =& $step->addComponent("offeringterm", $select);
-			/*$termProp =& $step->addComponent("term", new WTextField());
-			$termProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-			$termProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));*/
-			
+			print "\n\t<input type='submit' value='"._("Search")."' />";
+			print "\n\t<a href='".$harmoni->request->quickURL()."'>";
+			print "<input type='button' value='"._("Clear")."' /></a>";
+		print "\n</div>\n</form>\n";
 		
-			$select =& new WSelectList();
-			$typename = "offer";	
-			$dbHandler =& Services::getService("DBHandler");
-			$query=& new SelectQuery;
-			$query->addTable('cm_'.$typename."_type");
-			$query->addColumn('id');
-			$query->addColumn('keyword');
-			$res=& $dbHandler->query($query);
-			while($res->hasMoreRows()){
-				$row = $res->getCurrentRow();
-				$res->advanceRow();
-				$select->addOption($row['id'],$row['keyword']);
-			}
-			$typeProp =& $step->addComponent("offeringtype", $select);
-			/*$typeProp =& $step->addComponent("type", new WTextField());
-			$typeProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-			$typeProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));*/
+		// Agent search results		
+		if ($search_criteria = $harmoni->request->get('search_criteria')) {
+			$searchType =& new HarmoniType("Agent & Group Search", "edu.middlebury.harmoni", "TokenSearch");
+			$string = "*".$search_criteria."*";
+			$agents =& $am->getAgentsBySearch($string, $searchType);
+			$displayName = $section->getDisplayName();
+			print "\n<hr/><p><h3>Search results</h3></p>";
+			print "Click on a student's name to add for the course, <strong>$displayName</strong>.";
 			
-			$select =& new WSelectList();
-			$typename = "offer_stat";	
-			$dbHandler =& Services::getService("DBHandler");
-			$query=& new SelectQuery;
-			$query->addTable('cm_'.$typename."_type");
-			$query->addColumn('id');
-			$query->addColumn('keyword');
-			$res=& $dbHandler->query($query);
-			while($res->hasMoreRows()){
-				$row = $res->getCurrentRow();
-				$res->advanceRow();
-				$select->addOption($row['id'],$row['keyword']);
-			}
-			$statusTypeProp =& $step->addComponent("offeringstatustype", $select);
-			/*
-			$statusTypeProp =& $step->addComponent("statusType", new WTextField());
-			$statusTypeProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-			$statusTypeProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
-			*/
-	
-			$select =& new WSelectList();
-			$typename = "grade";	
-			$dbHandler =& Services::getService("DBHandler");
-			$query=& new SelectQuery;
-			$query->addTable('gr_'.$typename."_type");
-			$query->addColumn('id');
-			$query->addColumn('keyword');
-			$res=& $dbHandler->query($query);
-			while($res->hasMoreRows()){
-				$row = $res->getCurrentRow();
-				$res->advanceRow();
-				$select->addOption($row['id'],$row['keyword']);
-			}
-			$courseGradeProp =& $step->addComponent("offeringcoursegrade", $select);
-			/*
-			$courseGradeProp =& $step->addComponent("courseGrade", new WTextField());
-			$courseGradeProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-			$courseGradeProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
-			*/
-			// Create the step text
-			ob_start();
-			print "\n<font size=+2><h2>"._("Course Offering")."</h2></font>";
-			//print "\n<h2>"._("Title")."</h2>";
-			//print "\n"._("The title of this <em>course offering</em>: ");
-			//print "\n<br />[[title]]";
-			//print "\n<h2>"._("Number")."</h2>";
-			//print "\n"._("The number of this <em>course offering</em>: ");
-			//print "\n<br />[[number]]";
-			print "\n<h2>"._("Canonical Course")."</h2>";
-			print "\n"._("The course for which you want to make an <em>offering</em>: ");
-			print "\n<br />[[courseid]]";
-			//print "\n<h2>"._("Description")."</h2>";
-			//print "\n"._("The description of this <em>course offering</em>: ");
-			//print "\n<br />[[description]]";
-			print "\n<h2>"._("Term")."</h2>";
-			print "\n"._("The term of this <em>course offering</em>: ");
-			print "\n<br />[[offeringterm]]";
-			print "\n<h2>"._("Type")."</h2>";
-			print "\n"._("The type of this <em>course offering</em>: ");
-			print "\n<br />[[offeringtype]]";
-			print "\n<h2>"._("Status type")."</h2>";
-			print "\n"._("The status type of this <em>course offering</em>: ");
-			print "\n<br />[[offeringstatustype]]";
-			print "\n<h2>"._("Course Grading Type")."</h2>";
-			print "\n"._("The course grading type of this <em>course offering</em>: ");
-			print "\n<br />[[offeringcoursegrade]]";
-			print "\n<div style='width: 400px'> &nbsp; </div>";
-			
-			$step->setContent(ob_get_contents());
-			ob_end_clean();
-		} else if ($searchOption == 'coursesection') {
-			$select =& new WSelectList();
-			$dbHandler =& Services::getService("DBHandler");
-			$query=& new SelectQuery;
-			$query->addTable('cm_offer');
-			$query->addColumn('id');
-			$query->addColumn('title');
-			$query->addColumn('number');
-			$query->addOrderBy('number');
-			$res=& $dbHandler->query($query);
-			//$select->addOption("1","There");
-			while($res->hasMoreRows()){
-				$row = $res->getCurrentRow();
-				$res->advanceRow();
-				$select->addOption($row['id'],$row['number']." ".$row['title']);
-			}
-			//$select->addOption("2","Here");
-			$canonicalCourse =& $step->addComponent("offeringid", $select);
+			while ($agents->hasNext()) {
+				$agent =& $agents->next();
+				$id =& $agent->getId();
+				$harmoni->history->markReturnURL("polyphony/coursemanagement/edit_section_details");
+		
+				$last_status_name = $harmoni->request->get("status");
+				$status = RequestContext::name("status");
 				
-			$descriptionProp =& $step->addComponent("sectiondescription", WTextArea::withRowsAndColumns(10,30));
-			
-			$select =& new WSelectList();
-		
-			$dbHandler =& Services::getService("DBHandler");
-			$query=& new SelectQuery;
-			$query->addTable('cm_term');
-			$query->addColumn('id');
-			$query->addColumn('name');
-			$res=& $dbHandler->query($query);
-			while($res->hasMoreRows()){
-				$row = $res->getCurrentRow();
-				$res->advanceRow();
-				$select->addOption($row['id'],$row['name']);
-			}
-			$termProp =& $step->addComponent("sectionterm", $select);
-			
-			
-			$select =& new WSelectList();
-			$typename = "section";	
-			$dbHandler =& Services::getService("DBHandler");
-			$query=& new SelectQuery;
-			$query->addTable('cm_'.$typename."_type");
-			$query->addColumn('id');
-			$query->addColumn('keyword');
-			$res=& $dbHandler->query($query);
-			while($res->hasMoreRows()){
-				$row = $res->getCurrentRow();
-				$res->advanceRow();
-				$select->addOption($row['id'],$row['keyword']);
-			}
-			$typeProp =& $step->addComponent("sectiontype", $select);
-		
-			
-			
-			$select =& new WSelectList();
-			$typename = "section_stat";	
-			$dbHandler =& Services::getService("DBHandler");
-			$query=& new SelectQuery;
-			$query->addTable('cm_'.$typename."_type");
-			$query->addColumn('id');
-			$query->addColumn('keyword');
-			$res=& $dbHandler->query($query);
-			while($res->hasMoreRows()){
-				$row = $res->getCurrentRow();
-				$res->advanceRow();
-				$select->addOption($row['id'],$row['keyword']);
-			}
-			$statusTypeProp =& $step->addComponent("sectionstatustype", $select);
-		
-			// Text box for location
-			$locationProp =& $step->addComponent("sectionlocation", new WTextField());
-			$locationProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
-			$locationProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
+				if (is_null($status)) 
+					$status = "";
 				
-			// Create the step text
-			ob_start();
-			print "\n<font size=+2><h2>"._("Course Section")."</h2></font>";
-			//print "\n<h2>"._("Title")."</h2>";
-			//print "\n"._("The title of this <em>course section</em>: ");
-			//print "\n<br />[[title]]";
-			//print "\n<h2>"._("Number")."</h2>";
-			//print "\n"._("The number of this <em>course section</em>: ");
-			//print "\n<br />[[number]]";
-			print "\n<h2>"._("Course Section")."</h2>";
-			print "\n"._("The course for which you want to make a <em>section</em>: ");
-			print "\n<br />[[offeringid]]";
-			//print "\n<h2>"._("Description")."</h2>";
-			//print "\n"._("The description of this <em>course section</em>: ");
-			//print "\n<br />[[description]]";
-			print "\n<h2>"._("Term")."</h2>";
-			print "\n"._("The term of this <em>course section</em>: ");
-			print "\n<br />[[sectionterm]]";
-			print "\n<h2>"._("Section Type")."</h2>";
-			print "\n"._("The type of this <em>course section</em>: ");
-			print "\n<br />[[sectiontype]]";
-			print "\n<h2>"._("Status type")."</h2>";
-			print "\n"._("The status type of this <em>course sectiong</em>: ");
-			print "\n<br />[[sectionstatustype]]";
-			print "\n<h2>"._("Location")."</h2>";
-			print "\n"._("The location of this <em>course section</em>: ");
-			print "\n<br />[[sectionlocation]]";
-			print "\n<div style='width: 400px'> &nbsp; </div>";
-					
-			$step->setContent(ob_get_contents());
-			ob_end_clean();
-		}
-		
-		return $wizard;
-	}
-		
-	/**
-	 * Save our results. Tearing down and unsetting the Wizard is handled by
-	 * in {@link runWizard()} and does not need to be implemented here.
-	 * 
-	 * @param string $cacheName
-	 * @return boolean TRUE if save was successful and tear-down/cleanup of the
-	 *		Wizard should ensue.
-	 * @access public
-	 * @since 4/28/05
-	 */
-	function saveWizard ( $cacheName ) {
-		$wizard =& $this->getWizard($cacheName);
-		
-		// Make sure we have a valid Repository
-		$courseManager =& Services::getService("CourseManagement");
-		$idManager =& Services::getService("Id");
-		$courseManagementId =& $idManager->getId("edu.middlebury.coursemanagement");
+											
+				$idString = $id->getIdString();
+				$self = $harmoni->request->quickURL("coursemanagement", "edit_section_roster", 
+													array("agentIdToAdd"=>$idString, "status"=>$status, 
+													"search_criteria"=>RequestContext::value("search_criteria")));
+				
+				print "<p>";
+				print "<form action='$self' method='post'>";
+				print "\n<u>".$agent->getDisplayName()."</u>";
+				
+				/* Search the record to see if student is already enrolled. */
+				$studentPresent = 0;							// To check later whether student is enrolled or not
+				$roster =& $section->getRoster();
+				while ($roster->hasNextEnrollmentRecord()) {
+					$record = $roster->nextEnrollmentRecord();
+					$studentId =& $record->getStudent();
 
-		
-		// First, verify that we chose a parent that we can add children to.
-		$authZ =& Services::getService("AuthZ");
-		if ($authZ->isUserAuthorized(
-						$idManager->getId("edu.middlebury.authorization.add_children"), 
-						$courseManagementId))
-		{
-			$values = $wizard->getAllValues();
-			printpre($values);  
-		
-			$searchoption = RequestContext::value('search_option');
-			if ($searchoption == 'canonicalcourse') {
-				$values = $wizard->getAllValues();
-				printpre($values);
-			
-				$courseType =& $courseManager->_indexToType($values['namedescstep']['type'],'can');
-				$statusType =& $courseManager->_indexToType($values['namedescstep']['statusType'],'can_stat');
-			
-				/*$courseType =& new Type($values['namedescstep']['title'], $values['namedescstep']['number'], 
-			    						  $values['namedescstep']['type']);
-				$statusType =& new Type($values['namedescstep']['title'], $values['namedescstep']['number'], 
-										$values['namedescstep']['statusType']);*/
-				$canonicalCourseA =& $courseManager->createCanonicalCourse($values['namedescstep']['title'], 
-																		   $values['namedescstep']['number'], 	
-																		   $values['namedescstep']['description'], 
-																		   $courseType, $statusType, 
-																		   $values['namedescstep']['credits']);
-			} else if ($searchoption == 'courseoffering') {
-				$termId =& $idManager->getId($values['namedescstep']['term']); 
-          	
-				$courseType =& $courseManager->_indexToType($values['namedescstep']['type'],'offer');
-				$statusType =& $courseManager->_indexToType($values['namedescstep']['statusType'],'offer_stat');
-				$courseGradeType =& $courseManager->_indexToType($values['namedescstep']['courseGrade'],'grade');
-			
-				$id =& $idManager->getId($values['namedescstep']['courseid']);   
-				$canonicalCourse =& $courseManager->getCanonicalCourse($id);														   
-																		   
-				$courseOffering =& $canonicalCourse->createCourseOffering($canonicalCourse->getTitle(), 
-		    															  $canonicalCourse->getNumber(),
-																	      $canonicalCourse->getDescription(),	
-																	      //$values['namedescstep']['description'], 
-																	      $termId, $courseType, $statusType, 
-																	      $courseGradeType);
-			} else {
-				$termId =& $idManager->getId($values['namedescstep']['term']); 
-          	
-          		$sectionType =& $courseManager->_indexToType($values['namedescstep']['type'],'section');
-				$statusType =& $courseManager->_indexToType($values['namedescstep']['statusType'],'section_stat');
-				$courseGradeType =& $courseManager->_indexToType($values['namedescstep']['courseGrade'],'grade');
-				$location =& $values['namedescstep']['location'];
-			
-				$id =& $idManager->getId($values['namedescstep']['courseid']);   
-				$courseOffering =& $courseManager->getCanonicalCourse($id);														   
-																	   
-				$courseOffering =& $canonicalCourse->createCourseOffering($canonicalCourse->getTitle(), 
-																		  $canonicalCourse->getNumber(),
-																		  $canonicalCourse->getDescription(),	
-																		  $sectionType, $statusType, 
-																		  $location);	
+					if ($id->isEqual($studentId))
+						$studentPresent = 1;					// Set to student already being enrolled
+				}
+				
+				if ($studentPresent == 0) {
+				  	print "<select name='".$status."' value='".$last_status_name."'>";
+					print "<option value='Student' selected='selected'>Student</option>";
+					print "<option value='Auditing'>Auditing</option>";
+					print "</select>";
+				  	print "\n\t<input type='submit' value='"._("Add")."' />";
+				}
+				print "</form></p>";		
 			}
-			
-			RequestContext::sendTo($this->getReturnUrl());
-			exit();
-			return TRUE;
 		}
-		// If we don't have authorization to add to the picked parent, send us back to
-		// that step.
-		else {
-			return FALSE;
+		$output =& new Block(ob_get_clean(), STANDARD_BLOCK);
+		return $output;
+	}
+	
+	/***********************************************************************************
+	* Members to remove																   *		
+	************************************************************************************/
+	function &getMembers(&$section) {
+	  	$harmoni =& Harmoni::instance();
+	  
+	  	$cmm =& Services::getService("CourseManagement");
+		$idManager =& Services::getService("Id");
+		$am =& Services::GetService("AgentManager");
+	  	
+	  	ob_start();
+		print "\n<h4>Members</h4>";
+		
+		$roster =& $section->getRoster();
+		if (!$roster->hasNextEnrollmentRecord()) {
+			print "<p>No students are enrolled in this class.</p>";
+		} else {
+			while ($roster->hasNextEnrollmentRecord()) {
+				$er =& $roster->nextEnrollmentRecord();
+				$agent =& $am->getAgent($er->getStudent());
+			
+				$agentName = $agent->getDisplayName();
+				$id =& $agent->getId();
+				$idString = $id->getIdString();
+				
+				$self = $harmoni->request->quickURL("coursemanagement", "edit_section_roster", 
+													array("agentIdToRemove"=>$idString,
+														  "search_criteria"=>RequestContext::value("search_criteria")));
+			
+				print "<form action='$self' method='post'>";
+				print "\n<a href='".$harmoni->request->quickURL("agents", "edit_agent_details", 
+																array("agentId"=>$id->getIdString()))."'>";
+				print "\n".$agent->getDisplayName()."</a>";
+				
+				$statusType =& $er->getStatus();
+				$status = $statusType->getKeyword();
+				
+				print "&nbsp;&nbsp;&nbsp;$status&nbsp;&nbsp;&nbsp;";
+
+				print "\n\t<input type='submit' value='"._("Remove")."' />";
+				print "\n</form>\n";
+			}
+		}
+		
+		$output =& new Block(ob_get_clean(), STANDARD_BLOCK);
+		return $output;
+	}
+	
+	function addStudent(&$section, $agentIdString, $status) {
+		$actionRows =& $this->getActionRows();
+		$pageRows =& new Container(new YLayout(), OTHER, 1);
+		$harmoni =& Harmoni::instance();
+		
+		$cmm =& Services::getService("CourseManagement");
+		$idManager =& Services::getService("Id");
+		$am =& Services::GetService("AgentManager");
+		
+		$agentId =& $idManager->getId($agentIdString);
+		$agent =& $am->getAgent($agentId);
+		
+		$everyoneId =& $idManager->getId("edu.middlebury.agents.everyone");
+		$usersId =& $idManager->getId("edu.middlebury.agents.users");
+		
+		/* Search the record to see if student is already enrolled. */
+		$studentPresent = 0;							// To check later whether student is enrolled or not
+		$roster =& $section->getRoster();
+		while ($roster->hasNextEnrollmentRecord()) {
+			$record = $roster->nextEnrollmentRecord();
+			$studentId =& $record->getStudent();
+
+			if ($agentId->isEqual($studentId))
+				$studentPresent = 1;					// Set to student already being enrolled
+		}
+				
+		if ($studentPresent == 0) {
+		  	$enrollmentStatusType =& new Type("EnrollmentStatusType", "edu.middlebury", $status);
+			$section->addStudent($agentId, $enrollmentStatusType);
 		}
 	}
 	
-	/**
-	 * Return the URL that this action should return to when completed.
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 4/28/05
-	 */
-	function getReturnUrl () {
+	function removeStudent(&$section, $agentIdString) {
 		$harmoni =& Harmoni::instance();
-		$url =& $harmoni->request->mkURL("admin", "main");
-		return $url->write();
+		$harmoni->request->startNamespace("polyphony-agents");
+		$harmoni->request->passthrough("agentId");
+		
+		$idManager =& Services::getService("Id");
+		$am =& Services::GetService("AgentManager");
+		
+		$agentId =& $idManager->getId($agentIdString);
+		$section->removeStudent($agentId);
 	}
 }
-
-?>
