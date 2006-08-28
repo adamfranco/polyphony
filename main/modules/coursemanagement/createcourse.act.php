@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: createcourse.act.php,v 1.7 2006/08/28 20:28:47 jwlee100 Exp $
+* @version $Id: createcourse.act.php,v 1.8 2006/08/28 20:48:30 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -29,22 +29,14 @@ extends MainWindowAction
 	*/
 	function isAuthorizedToExecute () {
 		// Check for authorization
-		$authZManager =& Services::getService("AuthZ");
-		$idManager =& Services::getService("IdManager");
-		$harmoni =& Harmoni::instance();
-
-		$harmoni->request->startNamespace("polyphony-agents");
-		$sectionIdString = $harmoni->request->get("courseId");
-
-		$harmoni->request->endNamespace();
-
-		if ($authZManager->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.modify"),
-			$idManager->getId($sectionIdString)))
-		{
-			return TRUE;
-		} else
-		return FALSE;
+		// Check that the user can create an asset here.
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+		
+		return $authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.add_children"),
+			$idManager->getId("edu.middlebury.coursemanagement")
+		);
 	}
 
 	/**
@@ -55,15 +47,7 @@ extends MainWindowAction
 	* @since 4/26/05
 	*/
 	function getHeadingText () {
-		$harmoni =& Harmoni::instance();
-		$harmoni->request->startNamespace("polyphony-agents");
-		$harmoni->request->passthrough("courseId");
-		$sectionIdString = $harmoni->request->get("courseId");
-		$idManager =& Services::getService("Id");
-		$sectionId =& $idManager->getId($sectionIdString);
-		$cm =& Services::getService("CourseManagement");
-		$section =& $cm->getCourseSection($sectionId);
-		return dgettext("polyphony", $section->getDisplayName());
+		return _("Add or remove a course offering.");
 	}
 
 	/**
@@ -100,7 +84,6 @@ extends MainWindowAction
 		
 		// Print out our search and memebers
 		$actionRows =& $this->getActionRows();
-		$sectionName = $section->getDisplayName();
 		
 		$actionRows->add(new Heading(_("Add or remove courses."), 2), "100%", null, LEFT, CENTER);
 		
@@ -125,30 +108,14 @@ extends MainWindowAction
 		$cmm =& Services::getService("CourseManagement");
 		$idManager =& Services::getService("Id");
 		$am =& Services::GetService("AgentManager");
-
-		$offering =& $section->getCourseOffering();
-		$offeringId = $offering->getId();
-		$courseIdString = $offeringId->getIdString();
 		
 		ob_start();
-		$link1 = $harmoni->request->quickURL("coursemanagement", "course_search");
 		
-		print "<p><a href='$link1'>Click here to search for existing courses and add sections.</a></p>";
-		
-		print _("<p>Please enter the following information about .</p>")."";
+		print _("<h4>Please enter the following information to add a course.</h4>")."";
 		
 		// Search header
 		$self = $harmoni->request->quickURL("coursemanagement", "createcourse", 
 			array("courseTitle", "courseNumber", "courseDescription", "courseType", "courseStatus", "courseTerm"));
-		
-		/*
-		if (RequestContext::value("courseTitle") && RequestContext::value("courseNumber") &&
-			RequestContext::value("courseType") && RequestContext::value("courseStatus") &&
-			RequestContext::value("courseTerm"))
-			$this->addCourse(RequestContext::value("courseTitle"), RequestContext::value("courseNumber"),
-							 RequestContext::value("courseDescription") && RequestContext::value("courseType"), 				
-							 RequestContext::value("courseStatus"), RequestContext::value("courseTerm"));
-		*/
 		
 		$last_title = $harmoni->request->get("courseTitle");
 		$course_title = RequestContext::name("courseTitle");
@@ -180,11 +147,11 @@ extends MainWindowAction
 			<br />Course Term: <input type='text' name='$course_term' value='$last_term' />
 			<br />Course Credits: <input type='text' name='$course_credits' value='$last_credits' />";		
 	
-			print "\n\t<input type='submit' value='"._("Search")."' />";
+			print "\n\t<input type='submit' value='"._("Add")."' />";
 			print "\n\t<a href='".$harmoni->request->quickURL()."'>";
 			print "<input type='button' value='"._("Clear")."' /></a>";
 		print "\n</div>\n</form>\n";
-		}
+		
 		$output =& new Block(ob_get_clean(), STANDARD_BLOCK);
 		return $output;
 	}
@@ -200,15 +167,14 @@ extends MainWindowAction
 		$am =& Services::GetService("AgentManager");
 	  	
 	  	ob_start();
-		print "\n<h4>Members</h4>";
-				
-		print "<form action='$self' method='post'>";
+		print "\n<h4>Existing course offerings.  Please click on a course offering to edit its details (e.g. add a section).</h4>";
+		
 		$canonicalCourseIterator =& $cmm->getCanonicalCourses();
 		if (!$canonicalCourseIterator->hasNextCanonicalCourse()) {
 			print "<p>No course offerings are present.</p>";
 		} else {
 			while ($canonicalCourseIterator->hasNextCanonicalCourse()) {
-			  	$canonicalCourse =& $canonicalCourseIterator->$nextCanonicalCourse();
+			  	$canonicalCourse =& $canonicalCourseIterator->nextCanonicalCourse();
 				$courseOfferingIterator =& $canonicalCourse->getCourseOfferings();
 				while ($courseOfferingIterator->hasNextCourseOffering()) {
 				  	$courseOffering =& $courseOfferingIterator->nextCourseOffering();
@@ -216,15 +182,20 @@ extends MainWindowAction
 					$idString = $id->getIdString();
 					$canonicalCourseId = $canonicalCourse->getId();
 					$canonicalCourseIdString = $canonicalCourseId->getIdString();
+					$courseName = $courseOffering->getDisplayName();
+					
+					// Get term
+					$courseTerm =& $courseOffering->getTerm();
+					$courseTermName = $courseTerm->getDisplayName();
 				
-					print $self = $harmoni->request->quickURL("coursemanagement", "createcourse", 
-			   												  array("courseIdToRemove"=>$idString,
-																 	"canonicalCourseId=>$canonicalCourseIdString");
+					$self = $harmoni->request->quickURL("coursemanagement", "createcourse", 
+			   											array("courseIdToRemove"=>$idString,
+														"canonicalCourseId=>$canonicalCourseIdString"));
 			
 					print "<form action='$self' method='post'>";
-					print "\n<a href='".$harmoni->request->quickURL("agents", "edit_offering_details", 
+					print "\n<a href='".$harmoni->request->quickURL("coursemanagement", "edit_offering_details", 
 																	array("courseId"=>$idString))."'>";
-					print "\n".$courseOffering->getDisplayName()."</a>";
+					print "\n".$courseName."</a>&nbsp;&nbsp;&nbsp;".$courseTermName."&nbsp;&nbsp;&nbsp;";
 				
 					print "\n\t<input type='submit' value='"._("Remove")."' />";
 					print "\n</form>\n";
@@ -254,7 +225,6 @@ extends MainWindowAction
 		$usersId =& $idManager->getId("edu.middlebury.agents.users");
 		
 		$canonicalCourseIterator =& $cmm->getCanonicalCourses();
-		$courseFound = 
 		
 		$courseType =& new Type("CourseManagement", "edu.middlebury", $type);
 		$courseStatus =& new Type("CourseManagement", "edu.middlebury", $status);
