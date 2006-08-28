@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: createcourse.act.php,v 1.4 2006/08/25 20:38:18 jwlee100 Exp $
+* @version $Id: createcourse.act.php,v 1.5 2006/08/28 18:03:26 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -85,10 +85,10 @@ extends MainWindowAction
 		$cm =& Services::getService("CourseManagement");
 				
 		// Process any changes
-		if (RequestContext::value("courseToAdd") && RequestContext::value("courseNumber") &&
+		if (RequestContext::value("courseTitle") && RequestContext::value("courseNumber") &&
 			RequestContext::value("courseType") && RequestContext::value("courseStatus") &&
 			RequestContext::value("courseTerm"))
-			$this->addCourse(RequestContext::value("courseToAdd"), RequestContext::value("courseNumber"),
+			$this->addCourse(RequestContext::value("courseTitle"), RequestContext::value("courseNumber"),
 							 RequestContext::value("courseDescription") && RequestContext::value("courseType"), 				
 							 RequestContext::value("courseStatus"), RequestContext::value("courseTerm"));
 		
@@ -113,7 +113,7 @@ extends MainWindowAction
 	/***************************FUNCTIONS***************************************/
 
 	/*********************************************************
-	* the wild card search form to add students
+	* The form to add information for adding courses
     *********************************************************/
 		
 
@@ -129,82 +129,54 @@ extends MainWindowAction
 		$courseIdString = $offeringId->getIdString();
 		
 		ob_start();
-		$link1 = $harmoni->request->quickURL("coursemanagement", "edit_offering_details", 
-											array("courseId"=>$courseIdString));
+		$link1 = $harmoni->request->quickURL("coursemanagement", "course_search");
 		
-		print "<p><a href='$link1'>Return to course offering details.</a></p>";
+		print "<p><a href='$link1'>Click here to search for existing courses and add sections.</a></p>";
 		
-		print _("<p>Please enter a student's name to search and add.</p>")."";
+		print _("<p>Please enter the following information about .</p>")."";
 		
 		// Search header
-		$self = $harmoni->request->quickURL("coursemanagement", "edit_section_roster", 
-			array("search_criteria", "search_type"));
+		$self = $harmoni->request->quickURL("coursemanagement", "createcourse", 
+			array("courseTitle", "courseNumber", "courseDescription", "courseType", "courseStatus", "courseTerm"));
 		
-		$lastCriteria = $harmoni->request->get("search_criteria");
-		$search_criteria_name = RequestContext::name("search_criteria");
+		/*
+		if (RequestContext::value("courseTitle") && RequestContext::value("courseNumber") &&
+			RequestContext::value("courseType") && RequestContext::value("courseStatus") &&
+			RequestContext::value("courseTerm"))
+			$this->addCourse(RequestContext::value("courseTitle"), RequestContext::value("courseNumber"),
+							 RequestContext::value("courseDescription") && RequestContext::value("courseType"), 				
+							 RequestContext::value("courseStatus"), RequestContext::value("courseTerm"));
+		*/
 		
-		if (is_null($search_criteria_name)) 
-			$search_criteria_name = "";
+		$last_title = $harmoni->request->get("courseTitle");
+		$course_title = RequestContext::name("courseTitle");
+		$last_number = $harmoni->request->get("courseNumber");
+		$course_number = RequestContext::name("courseNumber");
+		$last_description = $harmoni->request->get("courseDescription");
+		$course_description = RequestContext::name("courseDescription");
+		$last_type = $harmoni->request->get("courseType");
+		$course_type = RequestContext::name("courseType");
+		$last_status = $harmoni->request->get("courseStatus");
+		$course_status = RequestContext::name("courseStatus");
+		$last_term = $harmoni->request->get("courseTerm");
+		$course_term = RequestContext::name("courseTerm");
+		
+		if (is_null($course_title)) 
+			$course_title = "";
 		
 		print "<form action='$self' method='post'>
 			<div>
-			<input type='text' name='$search_criteria_name' value='$lastCriteria' />";	
+			<input type='text' name='$course_title' value='$last_title' />	
+			<input type='text' name='$course_number' value='$last_number' />
+			<input type='text' name='$course_description' value='$last_description' />
+			<input type='text' name='$course_type' value='$last_type' />
+			<input type='text' name='$course_status' value='$last_status' />
+			<input type='text' name='$course_term' value='$last_term' />";		
 	
 			print "\n\t<input type='submit' value='"._("Search")."' />";
 			print "\n\t<a href='".$harmoni->request->quickURL()."'>";
 			print "<input type='button' value='"._("Clear")."' /></a>";
 		print "\n</div>\n</form>\n";
-		
-		// Agent search results		
-		if ($search_criteria = $harmoni->request->get('search_criteria')) {
-			$searchType =& new HarmoniType("Agent & Group Search", "edu.middlebury.harmoni", "TokenSearch");
-			$string = "*".$search_criteria."*";
-			$agents =& $am->getAgentsBySearch($string, $searchType);
-			$displayName = $section->getDisplayName();
-			print "\n<hr/><p><h3>Search results</h3></p>";
-			print "Click on a student's name to add for the course, <strong>$displayName</strong>.";
-			
-			while ($agents->hasNext()) {
-				$agent =& $agents->next();
-				$id =& $agent->getId();
-				$harmoni->history->markReturnURL("polyphony/coursemanagement/edit_section_details");
-		
-				$last_status_name = $harmoni->request->get("status");
-				$status = RequestContext::name("status");
-				
-				if (is_null($status)) 
-					$status = "";
-				
-											
-				$idString = $id->getIdString();
-				$self = $harmoni->request->quickURL("coursemanagement", "edit_section_roster", 
-													array("agentIdToAdd"=>$idString, "status"=>$status, 
-													"search_criteria"=>RequestContext::value("search_criteria")));
-				
-				print "<p>";
-				print "<form action='$self' method='post'>";
-				print "\n<u>".$agent->getDisplayName()."</u>";
-				
-				/* Search the record to see if student is already enrolled. */
-				$studentPresent = 0;							// To check later whether student is enrolled or not
-				$roster =& $section->getRoster();
-				while ($roster->hasNextEnrollmentRecord()) {
-					$record = $roster->nextEnrollmentRecord();
-					$studentId =& $record->getStudent();
-
-					if ($id->isEqual($studentId))
-						$studentPresent = 1;					// Set to student already being enrolled
-				}
-				
-				if ($studentPresent == 0) {
-				  	print "<select name='".$status."' value='".$last_status_name."'>";
-					print "<option value='Student' selected='selected'>Student</option>";
-					print "<option value='Auditing'>Auditing</option>";
-					print "</select>";
-				  	print "\n\t<input type='submit' value='"._("Add")."' />";
-				}
-				print "</form></p>";		
-			}
 		}
 		$output =& new Block(ob_get_clean(), STANDARD_BLOCK);
 		return $output;
@@ -258,7 +230,7 @@ extends MainWindowAction
 		return $output;
 	}
 	
-	function addStudent(&$section, $agentIdString, $status) {
+	function addCourse(&$section, $agentIdString, $status) {
 		$actionRows =& $this->getActionRows();
 		$pageRows =& new Container(new YLayout(), OTHER, 1);
 		$harmoni =& Harmoni::instance();
@@ -273,21 +245,25 @@ extends MainWindowAction
 		$everyoneId =& $idManager->getId("edu.middlebury.agents.everyone");
 		$usersId =& $idManager->getId("edu.middlebury.agents.users");
 		
-		/* Search the record to see if student is already enrolled. */
-		$studentPresent = 0;							// To check later whether student is enrolled or not
-		$roster =& $section->getRoster();
-		while ($roster->hasNextEnrollmentRecord()) {
-			$record = $roster->nextEnrollmentRecord();
-			$studentId =& $record->getStudent();
-
-			if ($agentId->isEqual($studentId))
-				$studentPresent = 1;					// Set to student already being enrolled
-		}
-				
-		if ($studentPresent == 0) {
-		  	$enrollmentStatusType =& new Type("EnrollmentStatusType", "edu.middlebury", $status);
-			$section->addStudent($agentId, $enrollmentStatusType);
-		}
+		$sectionType =& $courseManager->_indexToType($values['namedescstep']['type'],'section');
+		$statusType =& $courseManager->_indexToType($values['namedescstep']['statusType'],'section_stat');
+		$courseGradeType =& $courseManager->_indexToType($values['namedescstep']['courseGrade'],'grade');
+		$location =& $values['namedescstep']['location'];
+			
+		/*$canonicalCourse =& $courseManager->createCanonicalCourse($values['namedescstep']['title'], 
+																   $values['namedescstep']['number'], 	
+																   $values['namedescstep']['description'], 
+																   $courseType, $statusType, 
+																   $values['namedescstep']['credits']);*/
+																	   
+		$id =& $idManager->getId($values['namedescstep']['courseid']);   
+		$courseOffering =& $courseManager->getCanonicalCourse($id);														   
+																   
+		$courseOffering =& $canonicalCourse->createCourseOffering($canonicalCourse->getTitle(), 
+																  $canonicalCourse->getNumber(),
+																  $canonicalCourse->getDescription(),	
+																  $sectionType, $statusType, 
+																  $location);
 	}
 	
 	function removeStudent(&$section, $agentIdString) {
