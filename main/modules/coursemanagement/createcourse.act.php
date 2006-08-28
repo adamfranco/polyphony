@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: createcourse.act.php,v 1.5 2006/08/28 18:03:26 jwlee100 Exp $
+* @version $Id: createcourse.act.php,v 1.6 2006/08/28 18:38:12 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -87,10 +87,11 @@ extends MainWindowAction
 		// Process any changes
 		if (RequestContext::value("courseTitle") && RequestContext::value("courseNumber") &&
 			RequestContext::value("courseType") && RequestContext::value("courseStatus") &&
-			RequestContext::value("courseTerm"))
+			RequestContext::value("courseTerm") && RequestContext::value("courseCredits"))
 			$this->addCourse(RequestContext::value("courseTitle"), RequestContext::value("courseNumber"),
 							 RequestContext::value("courseDescription") && RequestContext::value("courseType"), 				
-							 RequestContext::value("courseStatus"), RequestContext::value("courseTerm"));
+							 RequestContext::value("courseStatus"), RequestContext::value("courseTerm"), 
+							 RequestContext::value("courseCredits"));
 		
 		if (RequestContext::value("courseIdToRemove"))
 			$this->removeCourse($section, RequestContext::value("courseIdToRemove"));
@@ -160,18 +161,21 @@ extends MainWindowAction
 		$course_status = RequestContext::name("courseStatus");
 		$last_term = $harmoni->request->get("courseTerm");
 		$course_term = RequestContext::name("courseTerm");
+		$last_credits = $harmoni->request->get("courseCredits");
+		$course_credits = RequestContext::name("courseCredits");
 		
 		if (is_null($course_title)) 
 			$course_title = "";
 		
 		print "<form action='$self' method='post'>
 			<div>
-			<input type='text' name='$course_title' value='$last_title' />	
-			<input type='text' name='$course_number' value='$last_number' />
-			<input type='text' name='$course_description' value='$last_description' />
-			<input type='text' name='$course_type' value='$last_type' />
-			<input type='text' name='$course_status' value='$last_status' />
-			<input type='text' name='$course_term' value='$last_term' />";		
+			<br />Course Title: <input type='text' name='$course_title' value='$last_title' />	
+			<br />Course Number: <input type='text' name='$course_number' value='$last_number' />
+			<br />Course Description: <input type='text' name='$course_description' value='$last_description' />
+			<br />Course Type: <input type='text' name='$course_type' value='$last_type' />
+			<br />Course Status: <input type='text' name='$course_status' value='$last_status' />
+			<br />Course Term: <input type='text' name='$course_term' value='$last_term' />
+			<br />Course Credits: <input type='text' name='$course_credits' value='$last_credits' />";		
 	
 			print "\n\t<input type='submit' value='"._("Search")."' />";
 			print "\n\t<a href='".$harmoni->request->quickURL()."'>";
@@ -230,7 +234,9 @@ extends MainWindowAction
 		return $output;
 	}
 	
-	function addCourse(&$section, $agentIdString, $status) {
+	function addCourse($courseTitle, $courseNumber, $courseDescription, $courseType, $courseStatus,
+					   $courseTerm, $credits) {
+					     
 		$actionRows =& $this->getActionRows();
 		$pageRows =& new Container(new YLayout(), OTHER, 1);
 		$harmoni =& Harmoni::instance();
@@ -245,16 +251,13 @@ extends MainWindowAction
 		$everyoneId =& $idManager->getId("edu.middlebury.agents.everyone");
 		$usersId =& $idManager->getId("edu.middlebury.agents.users");
 		
-		$sectionType =& $courseManager->_indexToType($values['namedescstep']['type'],'section');
-		$statusType =& $courseManager->_indexToType($values['namedescstep']['statusType'],'section_stat');
-		$courseGradeType =& $courseManager->_indexToType($values['namedescstep']['courseGrade'],'grade');
-		$location =& $values['namedescstep']['location'];
-			
-		/*$canonicalCourse =& $courseManager->createCanonicalCourse($values['namedescstep']['title'], 
-																   $values['namedescstep']['number'], 	
-																   $values['namedescstep']['description'], 
-																   $courseType, $statusType, 
-																   $values['namedescstep']['credits']);*/
+		$canonicalCourseIterator =& $cmm->getCanonicalCourses();
+		
+		$canonicalCourse =& $cmm->createCanonicalCourse($values['namedescstep']['title'], 
+								   					    $values['namedescstep']['number'], 	
+														$values['namedescstep']['description'], 
+														$courseType, $statusType, 
+														$values['namedescstep']['credits']);
 																	   
 		$id =& $idManager->getId($values['namedescstep']['courseid']);   
 		$courseOffering =& $courseManager->getCanonicalCourse($id);														   
