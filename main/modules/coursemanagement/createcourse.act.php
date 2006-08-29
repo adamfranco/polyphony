@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: createcourse.act.php,v 1.9 2006/08/29 17:18:46 jwlee100 Exp $
+* @version $Id: createcourse.act.php,v 1.10 2006/08/29 19:21:34 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -72,11 +72,11 @@ extends MainWindowAction
 		if (RequestContext::value("courseTitle") && RequestContext::value("courseNumber") &&
 			RequestContext::value("courseType") && RequestContext::value("courseStatus") &&
 			RequestContext::value("courseTerm") && RequestContext::value("courseCredits") &&
-			RequestContext::value("courseLocation"))
+			RequestContext::value("courseGradeType"))
 			$this->addCourse(RequestContext::value("courseTitle"), RequestContext::value("courseNumber"),
 							 RequestContext::value("courseDescription"), RequestContext::value("courseType"), 				
 							 RequestContext::value("courseStatus"), RequestContext::value("courseTerm"), 
-							 RequestContext::value("courseCredits"), RequestContext::value("courseLocation"));
+							 RequestContext::value("courseCredits"), RequestContext::value("courseGradeType"));
 		
 		if (RequestContext::value("courseIdToRemove") && RequestContext::value("canonicalCourseId"))
 			$this->removeCourse(RequestContext::value("courseIdToRemove"), RequestContext::value("canonicalCourseId"));
@@ -110,7 +110,7 @@ extends MainWindowAction
 		$am =& Services::GetService("AgentManager");
 		
 		ob_start();
-		
+			
 		print _("<h4>Please enter the following information to add a course.</h4>")."";
 		
 		// Search header
@@ -133,8 +133,8 @@ extends MainWindowAction
 		$course_term = RequestContext::name("courseTerm");
 		$last_credits = $harmoni->request->get("courseCredits");
 		$course_credits = RequestContext::name("courseCredits");
-		$last_location = $harmoni->request->get("courseLocation");
-		$course_location = RequestContext::name("courseLocation");
+		$last_grade_type = $harmoni->request->get("courseGradeType");
+		$course_grade_type = RequestContext::name("courseGradeType");
 		
 		if (is_null($course_title)) 
 			$course_title = "";
@@ -146,7 +146,7 @@ extends MainWindowAction
 			<p>Course Description: <br/><textarea name='$course_description' value='$last_description'></textarea></p>";
 		
 		// Print select function for terms
-		print "<p>Course Type: <br/><select name='$course_term' value='$last_term'>";
+		print "<p>Course Term: <br/><select name='$course_term' value='$last_term'>";
 			$terms =& $cmm->getTerms();
 			while ($terms->hasNextTerm()) {
 				$term =& $terms->nextTerm();
@@ -159,12 +159,15 @@ extends MainWindowAction
 		print "<p>Course Type: <br/><input type='text' name='$course_type' value='$last_type' /></p>
 			<p>Course Status: <br/><input type='text' name='$course_status' value='$last_status' /></p>
 			<p>Course Credits: <br/><input type='text' name='$course_credits' value='$last_credits' /></p>		
-			<p>Course Location: <br/><input type='text' name='$course_location' value='$last_location' /></p>";	
+			<p>Course Location: <br/><input type='text' name='$course_grade_type' value='$last_grade_type' /></p>";	
 	
 			print "\n\t<input type='submit' value='"._("Add")."' />";
 			print "\n\t<a href='".$harmoni->request->quickURL()."'>";
 			print "<input type='button' value='"._("Clear")."' /></a>";
 		print "\n</div>\n</form>\n";
+		
+		$link = $harmoni->request->quickURL("coursemanagement", "course_search");
+		print _("<h4><a href='$link'>Click here to search for courses.</a></h4>")."";
 		
 		$output =& new Block(ob_get_clean(), STANDARD_BLOCK);
 		return $output;
@@ -223,7 +226,7 @@ extends MainWindowAction
 	
 	// Add a course offering
 	function addCourse($courseTitle, $courseNumber, $courseDescription, $type, $status,
-					   $courseTerm, $credits, $location) {
+					   $courseTerm, $credits, $courseGradeType) {
 					     
 		$actionRows =& $this->getActionRows();
 		$pageRows =& new Container(new YLayout(), OTHER, 1);
@@ -246,12 +249,13 @@ extends MainWindowAction
 		
 		$offeringType =& new Type("CourseManagement", "edu.middlebury", $type);
 		$offeringStatus =& new Type("CourseManagement", "edu.middlebury", $status);
+		$offeringGradeType =& new Type("CourseManagement", "edu.middlebury", $courseGradeType);
 		
 		$termId =& $idManager->getId($courseTerm);
 															   
-		$courseOffering =& $canonicalCourse->createCourseOffering($courseTitle, $courseNumber(),
+		$courseOffering =& $canonicalCourse->createCourseOffering($courseTitle, $courseNumber,
 																  $courseDescription, $termId, $offeringType, 
-																  $offeringStatus, $location);
+																  $offeringStatus, $offeringGradeType);
 	}
 	
 	// Remove the course offering
