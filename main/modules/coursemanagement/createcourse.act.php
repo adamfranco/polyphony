@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: createcourse.act.php,v 1.8 2006/08/28 20:48:30 jwlee100 Exp $
+* @version $Id: createcourse.act.php,v 1.9 2006/08/29 17:18:46 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -68,13 +68,13 @@ extends MainWindowAction
 		
 		$cm =& Services::getService("CourseManagement");
 				
-		// Process any changes
+		// Process any changes and add or remove courses as necessary
 		if (RequestContext::value("courseTitle") && RequestContext::value("courseNumber") &&
 			RequestContext::value("courseType") && RequestContext::value("courseStatus") &&
 			RequestContext::value("courseTerm") && RequestContext::value("courseCredits") &&
 			RequestContext::value("courseLocation"))
 			$this->addCourse(RequestContext::value("courseTitle"), RequestContext::value("courseNumber"),
-							 RequestContext::value("courseDescription") && RequestContext::value("courseType"), 				
+							 RequestContext::value("courseDescription"), RequestContext::value("courseType"), 				
 							 RequestContext::value("courseStatus"), RequestContext::value("courseTerm"), 
 							 RequestContext::value("courseCredits"), RequestContext::value("courseLocation"));
 		
@@ -82,7 +82,7 @@ extends MainWindowAction
 			$this->removeCourse(RequestContext::value("courseIdToRemove"), RequestContext::value("canonicalCourseId"));
 		
 		
-		// Print out our search and memebers
+		// Print out the add form and course list
 		$actionRows =& $this->getActionRows();
 		
 		$actionRows->add(new Heading(_("Add or remove courses."), 2), "100%", null, LEFT, CENTER);
@@ -123,6 +123,8 @@ extends MainWindowAction
 		$course_number = RequestContext::name("courseNumber");
 		$last_description = $harmoni->request->get("courseDescription");
 		$course_description = RequestContext::name("courseDescription");
+		$last_term = $harmoni->request->get("courseTerm");
+		$course_term = RequestContext::name("courseTerm");
 		$last_type = $harmoni->request->get("courseType");
 		$course_type = RequestContext::name("courseType");
 		$last_status = $harmoni->request->get("courseStatus");
@@ -131,21 +133,33 @@ extends MainWindowAction
 		$course_term = RequestContext::name("courseTerm");
 		$last_credits = $harmoni->request->get("courseCredits");
 		$course_credits = RequestContext::name("courseCredits");
-		$last_credits = $harmoni->request->get("courseLocation");
-		$course_credits = RequestContext::name("courseLocation");
+		$last_location = $harmoni->request->get("courseLocation");
+		$course_location = RequestContext::name("courseLocation");
 		
 		if (is_null($course_title)) 
 			$course_title = "";
 		
 		print "<form action='$self' method='post'>
 			<div>
-			<br />Course Title: <input type='text' name='$course_title' value='$last_title' />	
-			<br />Course Number: <input type='text' name='$course_number' value='$last_number' />
-			<br />Course Description: <input type='text' name='$course_description' value='$last_description' />
-			<br />Course Type: <input type='text' name='$course_type' value='$last_type' />
-			<br />Course Status: <input type='text' name='$course_status' value='$last_status' />
-			<br />Course Term: <input type='text' name='$course_term' value='$last_term' />
-			<br />Course Credits: <input type='text' name='$course_credits' value='$last_credits' />";		
+			<p>Course Title: <br/><input type='text' name='$course_title' value='$last_title' /></p>
+			<p>Course Number: <br/><input type='text' name='$course_number' value='$last_number' /></p>
+			<p>Course Description: <br/><textarea name='$course_description' value='$last_description'></textarea></p>";
+		
+		// Print select function for terms
+		print "<p>Course Type: <br/><select name='$course_term' value='$last_term'>";
+			$terms =& $cmm->getTerms();
+			while ($terms->hasNextTerm()) {
+				$term =& $terms->nextTerm();
+				$termId =& $term->getId();
+				$termIdString =& $termId->getIdString();
+				print "<option value='$termIdString'>".$term->getDisplayName()."</option>";
+			}
+		print "</select></p>";
+			
+		print "<p>Course Type: <br/><input type='text' name='$course_type' value='$last_type' /></p>
+			<p>Course Status: <br/><input type='text' name='$course_status' value='$last_status' /></p>
+			<p>Course Credits: <br/><input type='text' name='$course_credits' value='$last_credits' /></p>		
+			<p>Course Location: <br/><input type='text' name='$course_location' value='$last_location' /></p>";	
 	
 			print "\n\t<input type='submit' value='"._("Add")."' />";
 			print "\n\t<a href='".$harmoni->request->quickURL()."'>";
@@ -207,6 +221,7 @@ extends MainWindowAction
 		return $output;
 	}
 	
+	// Add a course offering
 	function addCourse($courseTitle, $courseNumber, $courseDescription, $type, $status,
 					   $courseTerm, $credits, $location) {
 					     
@@ -216,10 +231,6 @@ extends MainWindowAction
 		
 		$cmm =& Services::getService("CourseManagement");
 		$idManager =& Services::getService("Id");
-		$am =& Services::GetService("AgentManager");
-		
-		$agentId =& $idManager->getId($agentIdString);
-		$agent =& $am->getAgent($agentId);
 		
 		$everyoneId =& $idManager->getId("edu.middlebury.agents.everyone");
 		$usersId =& $idManager->getId("edu.middlebury.agents.users");
@@ -230,19 +241,20 @@ extends MainWindowAction
 		$courseStatus =& new Type("CourseManagement", "edu.middlebury", $status);
 		
 		$canonicalCourse =& $cmm->createCanonicalCourse($courseTitle, $courseNumber, $courseDescription, 
-														$courseType, $statusType, $courseCredits);
+														$courseType, $courseStatus, $credits);
 																	      											   
 		
-		$sectionType =& new Type("CourseManagement", "edu.middlebury", $type);
-		$sectionStatus =& new Type("CourseManagement", "edu.middlebury", $status);
+		$offeringType =& new Type("CourseManagement", "edu.middlebury", $type);
+		$offeringStatus =& new Type("CourseManagement", "edu.middlebury", $status);
+		
+		$termId =& $idManager->getId($courseTerm);
 															   
-		$courseOffering =& $canonicalCourse->createCourseOffering($canonicalCourse->getTitle(), 
-																  $canonicalCourse->getNumber(),
-																  $canonicalCourse->getDescription(),	
-																  $sectionType, $sectionStatus, 
-																  $location);
+		$courseOffering =& $canonicalCourse->createCourseOffering($courseTitle, $courseNumber(),
+																  $courseDescription, $termId, $offeringType, 
+																  $offeringStatus, $location);
 	}
 	
+	// Remove the course offering
 	function removeCourse($courseOfferingIdString, $canonicalCourseIdString) {
 		$harmoni =& Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-agents");
