@@ -11,7 +11,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_offering_details.act.php,v 1.5 2006/08/24 14:42:49 jwlee100 Exp $
+ * @version $Id: edit_offering_details.act.php,v 1.6 2006/08/29 20:40:12 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -185,10 +185,13 @@ class edit_offering_detailsAction
 		//actions menu
 		$harmoni =& Harmoni::instance();
 		$url =& $harmoni->request->mkURL();
-
+		
+		$link = $harmoni->request->quickURL("coursemanagement", "createcoursesection", 
+								   array("offeringId=>$offeringIdString"));
 		print "<ul>
 				<li><a href='".$url->write("furtherAction","edit_offering_detailsAction::editOffering")."'>Edit Offering</a></li>
 				<li><a href='".$url->write("furtherAction","edit_offering_detailsAction::deleteOffering")."'>Delete Offering</a></li>
+				<li><a href='".$link."'>Add a course section</a></li>
 				</ul>";
 		print "\n</td></tr></table>";
 		

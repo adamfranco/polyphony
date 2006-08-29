@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: createcourse.act.php,v 1.10 2006/08/29 19:21:34 jwlee100 Exp $
+* @version $Id: createcourse.act.php,v 1.11 2006/08/29 20:40:12 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -174,7 +174,7 @@ extends MainWindowAction
 	}
 	
 	/***********************************************************************************
-	* List of all courses																   *		
+	* List of all existing course offerings														   *		
 	************************************************************************************/
 	function &getCourses(&$section) {
 	  	$harmoni =& Harmoni::instance();
@@ -272,11 +272,12 @@ extends MainWindowAction
 		
 		// Delete course offering
 		$canonicalCourse =& $cmm->getCanonicalCourse($canonicalCourseId);
-		$canonicalCourse->removeCourseOffering($courseOfferingId);
+		$canonicalCourse->deleteCourseOffering($courseOfferingId);
 		
 		$courseOfferingIterator =& $canonicalCourse->getCourseOfferings();
 		
+		// If no course offerings left, remove the canonical course, too.
 		if (!$courseOfferingIterator->hasNextCourseOffering)
-			$cmm->removeCanonicalCourse($canonicalCourseId);
+			$cmm->deleteCanonicalCourse($canonicalCourseId);
 	}
 }
