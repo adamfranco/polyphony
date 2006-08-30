@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: course_search.act.php,v 1.11 2006/08/25 19:15:37 jwlee100 Exp $
+* @version $Id: course_search.act.php,v 1.12 2006/08/30 18:24:38 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -78,7 +78,9 @@ extends MainWindowAction
 
 
 
-
+		/***************************************************************************************************
+		 * The following performs a wild-card search through LDAP and sucks the courses into the database. *
+		 ***************************************************************************************************/
 
 		$self = $harmoni->request->quickURL();
 		print ("<h2>Search for course offerings by the following criteria:</h2>")."";
@@ -323,7 +325,12 @@ extends MainWindowAction
 
 		}
 	}
-
-
-
 }
+
+/*Once we can connect to BannerWeb sometime in the future, it would be ideal to change this so that it sucks the
+  courses out of BannerWeb instead of LDAP.  The question would be whether the wild card search can be done on
+  BannerWeb with the addition of asterisks before and after the search query, as we have been able to do on LDAP.
+  
+  The term search does not quite work.  My speculation is that somehow the terms that are sucked by LDAP cannot be 
+  searched directly on our own database.
+*/
