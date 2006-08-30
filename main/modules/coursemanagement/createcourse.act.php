@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: createcourse.act.php,v 1.12 2006/08/30 13:49:22 jwlee100 Exp $
+* @version $Id: createcourse.act.php,v 1.13 2006/08/30 15:59:02 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -70,9 +70,9 @@ extends MainWindowAction
 				
 		// Process any changes and add or remove courses as necessary
 		if (RequestContext::value("courseTitle") && RequestContext::value("courseNumber") &&
-			RequestContext::value("courseType") && RequestContext::value("courseStatus") &&
-			RequestContext::value("courseTerm") && RequestContext::value("courseCredits") &&
-			RequestContext::value("courseGradeType"))
+			RequestContext::value("courseDescription") && RequestContext::value("courseType") && 
+			RequestContext::value("courseStatus") && RequestContext::value("courseTerm") && 
+			RequestContext::value("courseCredits") && RequestContext::value("courseGradeType"))
 			$this->addCourse(RequestContext::value("courseTitle"), RequestContext::value("courseNumber"),
 							 RequestContext::value("courseDescription"), RequestContext::value("courseType"), 				
 							 RequestContext::value("courseStatus"), RequestContext::value("courseTerm"), 
@@ -165,7 +165,7 @@ extends MainWindowAction
 		print "<p>Course Type: <br/><input type='text' name='$course_type' value='$last_type' /></p>
 			<p>Course Status: <br/><input type='text' name='$course_status' value='$last_status' /></p>
 			<p>Course Credits: <br/><input type='text' name='$course_credits' value='$last_credits' /></p>		
-			<p>Course Location: <br/><input type='text' name='$course_grade_type' value='$last_grade_type' /></p>";	
+			<p>Course Grade Type: <br/><input type='text' name='$course_grade_type' value='$last_grade_type' /></p>";	
 	
 			print "\n\t<input type='submit' value='"._("Add")."' />";
 			print "\n\t<a href='".$harmoni->request->quickURL()."'>";
@@ -263,10 +263,23 @@ extends MainWindowAction
 		$courseType =& new Type("CourseManagement", "edu.middlebury", $type);
 		$courseStatus =& new Type("CourseManagement", "edu.middlebury", $status);
 		
-		$canonicalCourse =& $cmm->createCanonicalCourse($courseTitle, $courseNumber, $courseDescription, 
-														$courseType, $courseStatus, $credits);
-																	      											   
+		/* Check for existing canonical course with the same title and number. */
+		$coursePresent = 0;
+		$canonicalCourseIterator =& $cmm->getCanonicalCourses();
+		while ($canonicalCourseIterator->hasNextCanonicalCourse()) {
+			$canonicalCourse =& $canonicalCourseIterator->nextCanonicalCourse();
+			if ($canonicalCourse->getTitle() == $courseTitle && $canonicalCourse->getNumber() == $courseNumber) {
+				$coursePresent = 1;
+				break;
+			}
+		}
 		
+		/*If existing canonical course with the same title and number does not exist, create a new canonical course.*/
+		if ($coursePresent == 0) {
+			$canonicalCourse =& $cmm->createCanonicalCourse($courseTitle, $courseNumber, $courseDescription, 
+															$courseType, $courseStatus, $credits);
+		}
+											      											   
 		$offeringType =& new Type("CourseManagement", "edu.middlebury", $type);
 		$offeringStatus =& new Type("CourseManagement", "edu.middlebury", $status);
 		$offeringGradeType =& new Type("CourseManagement", "edu.middlebury", $courseGradeType);

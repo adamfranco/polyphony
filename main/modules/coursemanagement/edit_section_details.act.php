@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: edit_section_details.act.php,v 1.17 2006/08/25 19:15:37 jwlee100 Exp $
+* @version $Id: edit_section_details.act.php,v 1.18 2006/08/30 15:59:02 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -234,11 +234,11 @@ extends MainWindowAction
 	* offers a confirmation screen for deleting an entire offering
 	*/
 
-	function confirmDeleteOffering(&$offering){
+	function confirmDeleteSection(&$section){
 		$harmoni =& Harmoni::instance();
 		$url =& $harmoni->request->mkURL();
-		print "Do you really want to delete ".$offering->getDisplayName()."?<br />";
-		print "<form action='".$url->write("furtherAction","edit_offering_detailsAction::deleteOffering")."' method='post'><input type='submit' value='Delete' /></form><input type='button' value='Cancel' onclick='history.back()' />";
+		print "Do you really want to delete ".$section->getDisplayName()."?<br />";
+		print "<form action='".$url->write("furtherAction","edit_offering_detailsAction::deleteSection")."' method='post'><input type='submit' value='Delete' /></form><input type='button' value='Cancel' onclick='history.back()' />";
 		return;
 	}
 
@@ -246,10 +246,10 @@ extends MainWindowAction
 	* Handles the actual deletion of an offering
 	*/
 
-	function deleteOffering(&$offering){
+	function deleteSection(&$section){
 		//$cm =& Services::getService("CourseManagement");
-		$can =&  $offering->getCanonicalCourse();
-		$can->deleteCourseOffering($offering->getId());
+		$offering =& $section->getCourseOffering();
+		$offering->deleteCourseSection($section->getId());
 
 		$harmoni =& Harmoni::instance();
 		print "Offering deleted.<br />";

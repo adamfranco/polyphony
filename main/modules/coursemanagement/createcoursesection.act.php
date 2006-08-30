@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: createcoursesection.act.php,v 1.14 2006/08/30 13:49:22 jwlee100 Exp $
+* @version $Id: createcoursesection.act.php,v 1.15 2006/08/30 15:59:02 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -177,7 +177,14 @@ extends MainWindowAction
 		$sectionType =& new Type("CourseManagement", "edu.middlebury", $type);
 		$sectionStatus =& new Type("CourseManagement", "edu.middlebury", $status);
 		
-		$offering->createCourseSection($offering->getTitle(), $offering->getNumber(), $offering->getDescription(),
-									   $sectionType, $sectionStatus, $sectionLocation);
+		$section =& $offering->createCourseSection($offering->getTitle(), $offering->getNumber(), 
+												   $offering->getDescription(), $sectionType, 
+												   $sectionStatus, $sectionLocation);
+		
+		// Update display name with the section type
+		$displayName = $section->getDisplayName();
+		
+		$newDisplayName = $displayName.$type;
+		$section->updateDisplayName($newDisplayName);
 	}
 }
