@@ -11,7 +11,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_offering_details.act.php,v 1.8 2006/08/30 19:56:05 jwlee100 Exp $
+ * @version $Id: edit_offering_details.act.php,v 1.9 2006/08/30 20:20:53 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -388,6 +388,7 @@ class edit_offering_detailsAction
 	}
 }
 
-/*I know that this action has multiple furtherActions (subactions) but I thought it would help me modularize the design 	  
-  and also it is easier to use subactions to make <a href> links instead of using buttons on the menu.
+/*I know that this action has multiple furtherActions (subactions) but I thought it would help me modularize the design 
+  in editing and deleting a section (and seeing sections within an offering).  I did separate out the editing of the 
+  section roster because that is a whole different process altogether.
 */
