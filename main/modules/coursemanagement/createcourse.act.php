@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: createcourse.act.php,v 1.11 2006/08/29 20:40:12 jwlee100 Exp $
+* @version $Id: createcourse.act.php,v 1.12 2006/08/30 13:49:22 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -87,8 +87,8 @@ extends MainWindowAction
 		
 		$actionRows->add(new Heading(_("Add or remove courses."), 2), "100%", null, LEFT, CENTER);
 		
-		$actionRows->add($this->getAddForm($section), "100%", null, LEFT, CENTER);
-		$actionRows->add($this->getCourses($section), "100%", null, LEFT, CENTER);
+		$actionRows->add($this->getAddForm(), "100%", null, LEFT, CENTER);
+		$actionRows->add($this->getCourses(), "100%", null, LEFT, CENTER);
 		
 		$harmoni->request->endNamespace();
 
@@ -101,8 +101,14 @@ extends MainWindowAction
 	* The form to add information for adding courses
     *********************************************************/
 		
-
-	function &getAddForm(&$section) {
+	/**
+	* Creates the form to add information about the course offering.
+	*
+	* @return void
+	* @access public
+	* @since 8/29/05
+	*/
+	function &getAddForm() {
 		$harmoni =& Harmoni::instance();
 		
 		$cmm =& Services::getService("CourseManagement");
@@ -173,10 +179,14 @@ extends MainWindowAction
 		return $output;
 	}
 	
-	/***********************************************************************************
-	* List of all existing course offerings														   *		
-	************************************************************************************/
-	function &getCourses(&$section) {
+	/**
+	* Prints the list of existing course offerings with the functionality to remove.
+	*
+	* @return void
+	* @access public
+	* @since 8/29/05
+	*/
+	function &getCourses() {
 	  	$harmoni =& Harmoni::instance();
 	  
 	  	$cmm =& Services::getService("CourseManagement");
@@ -224,7 +234,17 @@ extends MainWindowAction
 		return $output;
 	}
 	
-	// Add a course offering
+	/**
+	* Process any changes in the form to add a course offering.
+	*
+	* @param string offering
+	* @param string type
+	* @param string status
+	* &param string location
+	* @return void
+	* @access public
+	* @since 8/29/05
+	*/
 	function addCourse($courseTitle, $courseNumber, $courseDescription, $type, $status,
 					   $courseTerm, $credits, $courseGradeType) {
 					     
@@ -258,7 +278,17 @@ extends MainWindowAction
 																  $offeringStatus, $offeringGradeType);
 	}
 	
-	// Remove the course offering
+	/**
+	* Process any changes in the remove form to delete a course offering.
+	*
+	* @param string offering
+	* @param string type
+	* @param string status
+	* &param string location
+	* @return void
+	* @access public
+	* @since 8/29/05
+	*/
 	function removeCourse($courseOfferingIdString, $canonicalCourseIdString) {
 		$harmoni =& Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-agents");

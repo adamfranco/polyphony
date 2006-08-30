@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: createcoursesection.act.php,v 1.13 2006/08/29 20:40:12 jwlee100 Exp $
+* @version $Id: createcoursesection.act.php,v 1.14 2006/08/30 13:49:22 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -98,7 +98,13 @@ extends MainWindowAction
 	* The form to add information for adding course sections
     *********************************************************/
 		
-
+	/**
+	* Build a form to add information to add course sections.
+	*
+	* @return void
+	* @access public
+	* @since 8/29/05
+	*/
 	function &getAddForm(&$offering) {
 		$harmoni =& Harmoni::instance();
 		
@@ -145,7 +151,17 @@ extends MainWindowAction
 		return $output;
 	}
 	
-	// Add the course section
+	/**
+	* Process any changes in the form to add a section.
+	*
+	* @param string offering
+	* @param string type
+	* @param string status
+	* &param string location
+	* @return void
+	* @access public
+	* @since 8/29/05
+	*/
 	function addSection(&$offering, $type, $status, $location) {
 					     
 		$actionRows =& $this->getActionRows();

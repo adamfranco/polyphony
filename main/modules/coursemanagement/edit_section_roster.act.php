@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: edit_section_roster.act.php,v 1.1 2006/08/25 19:16:13 jwlee100 Exp $
+* @version $Id: edit_section_roster.act.php,v 1.2 2006/08/30 13:49:22 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -118,7 +118,14 @@ extends MainWindowAction
 	* the wild card search form to add students
     *********************************************************/
 		
-
+	/**
+	* Creates and prints the wild card agent search form to add students to the course section.
+	*
+	* @param object section
+	* @return void
+	* @access public
+	* @since 8/24/05
+	*/
 	function &getAddForm(&$section) {
 		$harmoni =& Harmoni::instance();
 		
@@ -212,9 +219,14 @@ extends MainWindowAction
 		return $output;
 	}
 	
-	/***********************************************************************************
-	* Members to remove																   *		
-	************************************************************************************/
+	/**
+	* Prints the list of existing members for the section and a form to remove.
+	*
+	* @param string section
+	* @return void
+	* @access public
+	* @since 8/24/05
+	*/
 	function &getMembers(&$section) {
 	  	$harmoni =& Harmoni::instance();
 	  
@@ -260,6 +272,16 @@ extends MainWindowAction
 		return $output;
 	}
 	
+	/**
+	* Process any changes in the add form to add a student.
+	*
+	* @param object section
+	* @param string agentIdString
+	* @param string status
+	* @return void
+	* @access public
+	* @since 8/29/05
+	*/
 	function addStudent(&$section, $agentIdString, $status) {
 		$actionRows =& $this->getActionRows();
 		$pageRows =& new Container(new YLayout(), OTHER, 1);
@@ -292,6 +314,15 @@ extends MainWindowAction
 		}
 	}
 	
+	/**
+	* Process any changes in the form to remove a section.
+	*
+	* @param object section
+	* @param string agentIdString
+	* @return void
+	* @access public
+	* @since 8/29/05
+	*/	
 	function removeStudent(&$section, $agentIdString) {
 		$harmoni =& Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-agents");
