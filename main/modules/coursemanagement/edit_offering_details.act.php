@@ -11,7 +11,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_offering_details.act.php,v 1.7 2006/08/30 15:59:02 jwlee100 Exp $
+ * @version $Id: edit_offering_details.act.php,v 1.8 2006/08/30 19:56:05 jwlee100 Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -261,7 +261,10 @@ class edit_offering_detailsAction
 		
 		$harmoni =& Harmoni::instance();
 		print "Offering deleted.<br />";
-		print "<a href='".$harmoni->history->getReturnURL("polyphony/coursemanagement/edit_offering_details")."'>Go Back</a>";
+		$link1 = $harmoni->request->quickURL("coursemanagement", "coursesearch");
+		print "<p><a href='".$link1."'>Go back to course search.</a></p>";
+		$link2 = $harmoni->request->quickURL("coursemanagement", "createcourse");
+		print "<p><a href='".$link2."'>Go back to creating courses.</a></p>";
 		
 		return;
 	}
@@ -293,7 +296,7 @@ class edit_offering_detailsAction
 		$harmoni =& Harmoni::instance();
 		$id =& $offering->getId();
 		print "\n\t\t<td>";
-		print "\n<a href='".$harmoni->request->quickURL("coursemanagement","edit_offering_details", array("courseId"=>$id->getIdString()))."'>";
+		print "\n<a href='".$harmoni->request->quickURL("coursemanagement", "edit_offering_details", array("courseId"=>$id->getIdString()))."'>";
 		print $offering->getDisplayName()."</a>";		
 		print "\n - <a href=\"Javascript:alert('"._("Id:").'\n\t'.addslashes($id->getIdString())."')\">"._("Id")."</a>";
 		print "</td>";
@@ -384,3 +387,7 @@ class edit_offering_detailsAction
 		
 	}
 }
+
+/*I know that this action has multiple furtherActions (subactions) but I thought it would help me modularize the design 	  
+  and also it is easier to use subactions to make <a href> links instead of using buttons on the menu.
+*/
