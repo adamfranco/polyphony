@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: edit_section_details.act.php,v 1.18 2006/08/30 15:59:02 jwlee100 Exp $
+* @version $Id: edit_section_details.act.php,v 1.19 2006/08/30 17:53:51 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -243,17 +243,23 @@ extends MainWindowAction
 	}
 
 	/***
-	* Handles the actual deletion of an offering
+	* Handles the actual deletion of a section
 	*/
-
 	function deleteSection(&$section){
 		//$cm =& Services::getService("CourseManagement");
+		$idManager =& Services::getService("Id");
+		
 		$offering =& $section->getCourseOffering();
 		$offering->deleteCourseSection($section->getId());
+		
+		$offeringId =& $offering->getId();
+		$offeringIdString = $offeringId->getIdString();
 
 		$harmoni =& Harmoni::instance();
-		print "Offering deleted.<br />";
-		print "<a href='".$harmoni->history->getReturnURL("polyphony/coursemanagement/edit_offering_details")."'>Go Back</a>";
+		print "Section deleted.<br />";
+		$link = $harmoni->request->quickURL("coursemanagement", "edit_offering_details", 
+											 array("courseId"=>$offeringIdString));
+		print "<a href='".$link."'>Go Back</a>";
 
 		return;
 	}

@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: createcoursesection.act.php,v 1.15 2006/08/30 15:59:02 jwlee100 Exp $
+* @version $Id: createcoursesection.act.php,v 1.16 2006/08/30 17:53:51 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -73,6 +73,7 @@ extends MainWindowAction
 		$cm =& Services::getService("CourseManagement");
 		
 		$offering =& $cmm->getCourseOffering($courseId);
+		$offeringName = $offering->getDisplayName();
 				
 		// Process any changes and add or remove courses as necessary
 		if (RequestContext::value("sectionType") && RequestContext::value("sectionStatus") &&
@@ -83,7 +84,7 @@ extends MainWindowAction
 		// Print out the add form and course list
 		$actionRows =& $this->getActionRows();
 		
-		$actionRows->add(new Heading(_("Add or remove courses."), 2), "100%", null, LEFT, CENTER);
+		$actionRows->add(new Heading(_("Add or remove course sections in ".$offeringName."."), 2), "100%", null, LEFT, CENTER);
 		
 		$actionRows->add($this->getAddForm($offering), "100%", null, LEFT, CENTER);
 		
@@ -118,7 +119,7 @@ extends MainWindowAction
 		$offeringId =& $offering->getId();
 		$offeringIdString = $offeringId->getIdString();
 		
-		print _("<h3>".$offeringName."</h3>")."";
+		print _("<h3>Course offering: ".$offeringName."</h3>")."";
 		print _("<h4>Please enter the following information to add a course section in ".$offeringName.".</h4>")."";
 		
 		// Search header
@@ -186,5 +187,9 @@ extends MainWindowAction
 		
 		$newDisplayName = $displayName.$type;
 		$section->updateDisplayName($newDisplayName);
+		
+		ob_start();
+		print "<h3>Section ".$newDisplayName." added.</h3>";
+		$actionRows->add(new Block(ob_get_clean(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 	}
 }

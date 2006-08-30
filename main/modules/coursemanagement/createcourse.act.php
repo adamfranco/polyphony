@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: createcourse.act.php,v 1.13 2006/08/30 15:59:02 jwlee100 Exp $
+* @version $Id: createcourse.act.php,v 1.14 2006/08/30 17:53:51 jwlee100 Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -78,8 +78,8 @@ extends MainWindowAction
 							 RequestContext::value("courseStatus"), RequestContext::value("courseTerm"), 
 							 RequestContext::value("courseCredits"), RequestContext::value("courseGradeType"));
 		
-		if (RequestContext::value("courseIdToRemove") && RequestContext::value("canonicalCourseId"))
-			$this->removeCourse(RequestContext::value("courseIdToRemove"), RequestContext::value("canonicalCourseId"));
+		if (RequestContext::value("courseIdToRemove"))
+			$this->removeCourse(RequestContext::value("courseIdToRemove"));
 		
 		
 		// Print out the add form and course list
@@ -216,8 +216,7 @@ extends MainWindowAction
 					$courseTermName = $courseTerm->getDisplayName();
 				
 					$self = $harmoni->request->quickURL("coursemanagement", "createcourse", 
-			   											array("courseIdToRemove"=>$idString,
-														"canonicalCourseId=>$canonicalCourseIdString"));
+			   											array("courseIdToRemove"=>$idString));
 			
 					print "<form action='$self' method='post'>";
 					print "\n<a href='".$harmoni->request->quickURL("coursemanagement", "edit_offering_details", 
@@ -302,7 +301,7 @@ extends MainWindowAction
 	* @access public
 	* @since 8/29/05
 	*/
-	function removeCourse($courseOfferingIdString, $canonicalCourseIdString) {
+	function removeCourse($courseOfferingIdString) {
 		$harmoni =& Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-agents");
 		$harmoni->request->passthrough("agentId");
@@ -311,16 +310,18 @@ extends MainWindowAction
 		$cmm =& Services::getService("CourseManagement");
 		
 		$courseOfferingId =& $idManager->getId($courseOfferingIdString);
-		$canonicalCourseId =& $idManager->getId($canonicalcourseIdString);
+		
+		$courseOffering =& $cmm->getCourseOffering($courseOfferingId);
+		$canonicalCourse =& $courseOffering->getCanonicalCourse();
+		$canonicalCourseId =& $canonicalCourse->getId();
 		
 		// Delete course offering
-		$canonicalCourse =& $cmm->getCanonicalCourse($canonicalCourseId);
 		$canonicalCourse->deleteCourseOffering($courseOfferingId);
 		
+		// If no course offerings left, remove the canonical course, too.	
 		$courseOfferingIterator =& $canonicalCourse->getCourseOfferings();
-		
-		// If no course offerings left, remove the canonical course, too.
-		if (!$courseOfferingIterator->hasNextCourseOffering)
+	
+		if (!$courseOfferingIterator->hasNextCourseOffering())
 			$cmm->deleteCanonicalCourse($canonicalCourseId);
 	}
 }
