@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.11.4.1 2006/08/04 18:19:50 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.11.4.2 2006/09/18 20:30:51 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.11.4.1 2006/08/04 18:19:50 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.11.4.2 2006/09/18 20:30:51 adamfranco Exp $
  */
 class viewAction 
 	extends MainWindowAction
@@ -93,7 +93,7 @@ class viewAction
 		// print the results
 		//***********************************
 		$resultPrinter =& new IteratorResultPrinter($basket, 3, 6, "printAssetShort");
-		$resultLayout =& $resultPrinter->getLayout($harmoni, "viewAction::canView");
+		$resultLayout =& $resultPrinter->getLayout("viewAction::canView");
 		$actionRows->add($resultLayout, "100%", null, LEFT, CENTER);
 		$harmoni->request->endNamespace();
 	}
