@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.22.4.1 2006/09/18 20:30:50 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.22.4.2 2006/09/19 19:58:42 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.22.4.1 2006/09/18 20:30:50 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.22.4.2 2006/09/19 19:58:42 adamfranco Exp $
  */
 
 class ArrayResultPrinter 
@@ -91,6 +91,17 @@ class ArrayResultPrinter
 		$this->_resultLayout->setRenderDirection($direction);
 	}
 	
+	/**
+	 * Set the tdStyles
+	 * 
+	 * @param string $tdStyles
+	 * @return void
+	 * @access public
+	 * @since 9/18/06
+	 */
+	function setTdStyles ($tdStyles) {
+		$this->_resultLayout->setTdStyles($tdStyles);
+	}
 	
 	/**
 	 * Returns a layout of the Results

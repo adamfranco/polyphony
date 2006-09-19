@@ -1,24 +1,24 @@
 <?php
 /**
  * @since 12/7/05
- * @package polyphony.library.resultprinter
+ * @package polyphony.resultprinter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ResultPrinter.abstract.php,v 1.4 2006/06/26 12:51:45 adamfranco Exp $
+ * @version $Id: ResultPrinter.abstract.php,v 1.3.4.1 2006/09/19 19:58:42 adamfranco Exp $
  */ 
 
 /**
  * This abstract class provides common methods for child classes
  * 
  * @since 12/7/05
- * @package polyphony.library.resultprinter
+ * @package polyphony.resultprinter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ResultPrinter.abstract.php,v 1.4 2006/06/26 12:51:45 adamfranco Exp $
+ * @version $Id: ResultPrinter.abstract.php,v 1.3.4.1 2006/09/19 19:58:42 adamfranco Exp $
  */
 class ResultPrinter {
 
@@ -30,12 +30,22 @@ class ResultPrinter {
 	 * @since 5/11/06
 	 */
 	function getStartingNumber () {
+		if (isset($this->_namespace) && is_string($this->_namespace)) {
+			$harmoni =& Harmoni::instance();
+			$harmoni->request->startNamespace($this->_namespace);
+		}
+		
 		if (RequestContext::value('starting_number'))
-			return RequestContext::value('starting_number');
+			$num = RequestContext::value('starting_number');
 		else if (isset($this->_startingNumber))
-			return $this->_startingNumber;
+			$num = $this->_startingNumber;
 		else
-			return 1;
+			$num = 1;
+			
+		if (isset($this->_namespace) && is_string($this->_namespace))
+			$harmoni->request->endNamespace();
+		
+		return $num;
 	}
 	
 	/**
@@ -61,6 +71,20 @@ class ResultPrinter {
 	function startingNumberParam () {
 		return RequestContext::name('starting_number');
 	}
+	
+	/**
+	 * Set the namespace to use for page links, this is to limit conflict with
+	 * other result printers on the page.
+	 * 
+	 * @param string $namespace
+	 * @return void
+	 * @access public
+	 * @since 9/18/06
+	 */
+	function setNamespace ($namespace) {
+		ArgumentValidator::validate($namespace, StringValidatorRule::getRule());
+		$this->_namespace = $namespace;
+	}
 		
 	/**
 	 * Return a string containing HTML links to other pages of the iterator.
@@ -75,6 +99,9 @@ class ResultPrinter {
 	function getPageLinks ($startingNumber, $numItems) {
 		if ($numItems > $this->_pageSize) {
 			$harmoni =& Harmoni::instance();
+			
+			if (isset($this->_namespace) && is_string($this->_namespace))
+				$harmoni->request->startNamespace($this->_namespace);
 			
 			ob_start();
 			print "\n<table width='100%'>";
@@ -192,6 +219,10 @@ class ResultPrinter {
 			
 			$html = ob_get_contents();
 			ob_end_clean();
+			
+			if (isset($this->_namespace) && is_string($this->_namespace))
+				$harmoni->request->endNamespace();
+			
 			return $html;
 		} else {
 			return "";
