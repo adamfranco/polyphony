@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.22.4.2 2006/09/19 19:58:42 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.22.4.3 2006/09/19 20:25:45 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.22.4.2 2006/09/19 19:58:42 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.22.4.3 2006/09/19 20:25:45 adamfranco Exp $
  */
 
 class ArrayResultPrinter 
@@ -65,6 +65,13 @@ class ArrayResultPrinter
 		}
 		
 		$this->_resultLayout =& new TableLayout($this->_numColumns);
+		
+		$this->_linksStyleCollection =& new StyleCollection(
+			"*.result_page_links", 
+			"result_page_links", 
+			"Result Page Links", 
+			"Links to other pages of results.");
+// 		$this->_linksStyleCollection->addSP(new MarginTopSP("10px"));
 	}
 	
 	/**
@@ -101,6 +108,18 @@ class ArrayResultPrinter
 	 */
 	function setTdStyles ($tdStyles) {
 		$this->_resultLayout->setTdStyles($tdStyles);
+	}
+	
+	/**
+	 * Add style properties to the links
+	 * 
+	 * @param object StyleProperty $styleProperty
+	 * @return void
+	 * @access public
+	 * @since 9/19/06
+	 */
+	function addLinksStyleProperty ($styleProperty) {
+		$this->_linksStyleCollection->addSP($styleProperty);
 	}
 	
 	/**
@@ -212,9 +231,7 @@ class ArrayResultPrinter
 			$pageLinkBlock =& new Block($linksHTML, BACKGROUND_BLOCK);
 			$container->add($pageLinkBlock, "100%", null, CENTER, CENTER);
 			
-			$styleCollection =& new StyleCollection("*.result_page_links", "result_page_links", "Result Page Links", "Links to other pages of results.");
-			$styleCollection->addSP(new MarginTopSP("10px"));
-			$pageLinkBlock->addStyle($styleCollection);
+			$pageLinkBlock->addStyle($this->_linksStyleCollection);
 		}
 		
 		$container->add($resultContainer, "100%", null, LEFT, CENTER);
