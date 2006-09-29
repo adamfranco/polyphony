@@ -4,12 +4,17 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.56.2.18 2006/08/16 14:25:43 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.56.2.19 2006/09/29 17:11:43 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
+	<version number="0.6.7" date="The Future">
+		<fix author='adam'>
+			Wizard: Now can handle cache names that contain periods.
+		</fix>
+	</version>
 	<version number="0.6.6" date="2006-08-16">
 		<fix author='adam'>
 			RSS/Logs: Fixed log RSS feed links when no priority is explicitly chosen.
