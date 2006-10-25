@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.13.2.5 2006/08/15 20:46:24 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.13.2.6 2006/10/25 22:39:45 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.13.2.5 2006/08/15 20:46:24 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.13.2.6 2006/10/25 22:39:45 adamfranco Exp $
  */
 class browseAction 
 	extends MainWindowAction
@@ -321,7 +321,7 @@ END;
 				
 				print "\n\t\t<div style='text-align: right'>";
 				print "\n\t\t<a href='".$url."' style='white-space: nowrap;' title='".$title."'>";
-				print "\n\t\t\t<img src='".POLYPHONY_PATH."main/library/AbstractActions/rss_icon02.png' border='0'/>";
+				print "\n\t\t\t<img src='".POLYPHONY_PATH."icons/rss_icon02.png' border='0'/>";
 				print "\n\t\t\t"._("Subscribe to the RSS feed of this log");
 				print "\n\t\t</a>";
 				print "\n\t\t</div>";
