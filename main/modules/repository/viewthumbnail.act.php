@@ -6,10 +6,12 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.8.4.4 2006/08/07 17:27:14 adamfranco Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.8.4.5 2006/11/08 20:44:41 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
+require_once(POLYPHONY."/main/library/RepositoryInputOutputModules/RepositoryInputOutputModuleManager.class.php");
+
 
 /**
  * Display the file in the specified record.
@@ -23,7 +25,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php"
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.8.4.4 2006/08/07 17:27:14 adamfranco Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.8.4.5 2006/11/08 20:44:41 adamfranco Exp $
  */
 class viewthumbnailAction 
 	extends ForceAuthAction
@@ -105,14 +107,24 @@ class viewthumbnailAction
 		
 		$harmoni->request->startNamespace("polyphony-repository");
 		
-		$repositoryId =& $idManager->getId(RequestContext::value("repository_id"));
 		$assetId =& $idManager->getId(RequestContext::value("asset_id"));
-		$recordId =& $idManager->getId(RequestContext::value("record_id"));
-
+		if (RequestContext::value("repository_id")) {
+			$repositoryId =& $idManager->getId(RequestContext::value("repository_id"));
+			$repository =& $repositoryManager->getRepository($repositoryId);
+			$asset =& $repository->getAsset($assetId);
+		} else {
+			$repositoryManager =& Services::getService("RepositoryManager");
+			$asset =& $repositoryManager->getAsset($assetId);
+		}
+		
 		// Get the requested record.
-		$repository =& $repositoryManager->getRepository($repositoryId);
-		$asset =& $repository->getAsset($assetId);
-		$record =& $asset->getRecord($recordId);
+		if (RequestContext::value("record_id")) {
+			$recordId =& $idManager->getId(RequestContext::value("record_id"));
+			$record =& $asset->getRecord($recordId);
+		} else {
+			$record =& RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset($asset);
+		}
+		
 				
 		// Make sure that the structure is the right one.
 		$structure =& $record->getRecordStructure();
