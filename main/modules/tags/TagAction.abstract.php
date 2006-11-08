@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.1.2.1 2006/11/08 20:45:55 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.1.2.2 2006/11/08 21:59:34 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.1.2.1 2006/11/08 20:45:55 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.1.2.2 2006/11/08 21:59:34 adamfranco Exp $
  */
 class TagAction 
 	extends MainWindowAction
@@ -47,14 +47,17 @@ class TagAction
 	function buildContent () {
 		$defaultTextDomain = textdomain("polyphony");
 		$actionRows =& $this->getActionRows();
-		ob_start();
+		
 		$harmoni =& Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-tags");
 		
+		$actionRows->add(new Block($this->getTagMenu(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
+		
+		ob_start();
 		print $this->getTagCloud($this->getTags(), $this->getViewAction());
+		$actionRows->add(new Block(ob_get_clean(), HIGHLIT_BLOCK), "100%", null, LEFT, TOP);
 		
 		
-		$actionRows->add(new Block(ob_get_clean(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
 		$harmoni->request->endNamespace();
 		textdomain($defaultTextDomain);
 	}
@@ -123,6 +126,38 @@ class TagAction
 	 */
 	function &getTags () {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.");
+	}
+	
+	/**
+	 * Answer a menu for the tagging system
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 11/8/06
+	 */
+	function getTagMenu () {
+		$harmoni =& Harmoni::instance();
+		
+		ob_start();
+		$tagManager =& Services::getService("Tagging");
+		if ($currentUserIdString = $tagManager->getCurrentUserIdString()) {
+			if ($harmoni->getCurrentAction() == 'tags.user' 
+				&& RequestContext::value('agent_id') == $currentUserIdString) 
+			{
+				print ""._("your tags")." &nbsp; ";
+			} else {
+				$url = $harmoni->request->quickURL('tags', 'user', 
+					array('agent_id' => $tagManager->getCurrentUserIdString()));
+				print "<a href='".$url."'>"._("your tags")."</a> &nbsp; ";
+			}
+		}
+		if ($harmoni->getCurrentAction() == 'tags.all') {
+			print _("all tags");
+		} else {
+			$url = $harmoni->request->quickURL('tags', 'all');
+			print "<a href='".$url."'>"._("all tags")."</a> ";
+		}
+		return ob_get_clean();
 	}
 }
 

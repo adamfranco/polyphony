@@ -6,10 +6,12 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.1.2.1 2006/11/08 20:45:55 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.1.2.2 2006/11/08 21:59:34 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
+require_once(dirname(__FILE__)."/TagAction.abstract.php");
+
 
 /**
  * <##>
@@ -20,7 +22,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.1.2.1 2006/11/08 20:45:55 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.1.2.2 2006/11/08 21:59:34 adamfranco Exp $
  */
 class viewAction 
 	extends MainWindowAction
@@ -65,6 +67,8 @@ class viewAction
 // 		ob_start();
 		$harmoni =& Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-tags");
+		
+		$actionRows->add(new Block(TagAction::getTagMenu(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
 		
 		$items =& $this->getItems();
 		$resultPrinter =& new IteratorResultPrinter($items, 1, 5, 
@@ -132,8 +136,14 @@ function &printItem ( &$item, $viewAction) {
 		print "<a href='".$url."'>".$tag->getValue()."</a> ";
 	}
 	print "</p>";
+	print "\n\t<p><strong>"._('System').":</strong> ";
+	if ($item->getSystem() == ARBITRARY_URL)
+		print _("The Internet");
+	else
+		print ucFirst($item->getSystem());
+	print "</p>";
 	
-	$component = & new Block(ob_get_clean(), STANDARD_BLOCK);
+	$component = & new Block(ob_get_clean(), EMPHASIZED_BLOCK);
 	return $component;
 }
 
