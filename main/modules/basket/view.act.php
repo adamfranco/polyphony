@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.11.4.2 2006/09/18 20:30:51 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.11.4.3 2006/11/09 16:27:53 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.11.4.2 2006/09/18 20:30:51 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.11.4.3 2006/11/09 16:27:53 adamfranco Exp $
  */
 class viewAction 
 	extends MainWindowAction
@@ -183,14 +183,14 @@ function printAssetShort(&$assetId, $num) {
 	print "\n | <a href='";
 	print $harmoni->request->quickURL("basket", "up", array('asset_id' => $assetId->getIdString()));
 	print "' title='". _('move up')."'>";
-// 	print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/arrowleft.png' width='25px' border='0' alt='"._("Move Up")."' />";
+// 	print "<img src='".POLYPHONY_PATH."/icons/basket/arrowleft.png' width='25px' border='0' alt='"._("Move Up")."' />";
 	print "&lt;--";
 	print "</a>";
 	
 	print "\n | <a href='";
 	print $harmoni->request->quickURL("basket", "down", array('asset_id' => $assetId->getIdString()));
 	print "' title='". _('move down')."'>";
-// 	print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/arrowright.png' width='25px' border='0'  alt='"._("Move Down")."'  />";
+// 	print "<img src='".POLYPHONY_PATH."/icons/basket/arrowright.png' width='25px' border='0'  alt='"._("Move Down")."'  />";
 	print "--&gt;";
 	print "</a>";
 	

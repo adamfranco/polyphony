@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.11.2.1 2006/08/04 18:19:49 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.11.2.2 2006/11/09 16:27:53 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.11.2.1 2006/08/04 18:19:49 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.11.2.2 2006/11/09 16:27:53 adamfranco Exp $
  */
 class Basket 
 	extends OrderedSet
@@ -120,7 +120,7 @@ class Basket
 		ob_start();
 		$harmoni =& Harmoni::instance();
 		
-		$placeHolderUrl = POLYPHONY_PATH."/main/library/Basket/icons/1x1.png";
+		$placeHolderUrl = POLYPHONY_PATH."/icons/1x1.png";
 		
 		$harmoni->request->startNamespace("basket");
 		$addBasketURL = str_replace("&amp;", "&", 
