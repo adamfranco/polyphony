@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectOrNew.class.php,v 1.4.2.2 2006/08/03 17:49:14 adamfranco Exp $
+ * @version $Id: WSelectOrNew.class.php,v 1.4.2.3 2006/11/13 21:55:19 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectOrNew.class.php,v 1.4.2.2 2006/08/03 17:49:14 adamfranco Exp $
+ * @version $Id: WSelectOrNew.class.php,v 1.4.2.3 2006/11/13 21:55:19 adamfranco Exp $
  */
 class WSelectOrNew
 	extends WizardComponentWithChildren 
@@ -242,7 +242,7 @@ class WSelectOrNew
 		else
 			$display = " display: none;";
 		
-		$this->_select->addOnChange("var newField = getElementFromDocument('$newId'); if (this.value == '__NEW_VALUE__') { newField.style.display = 'block'; } else { newField.style.display = 'none'; }");
+		$this->_select->addOnChange("var newField = document.get_element_by_id('$newId'); if (this.value == '__NEW_VALUE__') { newField.style.display = 'block'; } else { newField.style.display = 'none'; }");
 		
 		$m .= "\n\t\t".$this->_select->getMarkup($fieldName."_select");
 		

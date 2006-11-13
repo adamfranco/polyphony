@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.11.2.2 2006/11/09 16:27:53 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.11.2.3 2006/11/13 21:55:19 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.11.2.2 2006/11/09 16:27:53 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.11.2.3 2006/11/13 21:55:19 adamfranco Exp $
  */
 class Basket 
 	extends OrderedSet
@@ -158,8 +158,8 @@ class Basket
 			
 		
 		// Get the basket element
-		var basketElement = getElementFromDocument('basket_small');
-		var basketContentsElement = getElementFromDocument('basket_small_contents');
+		var basketElement = document.get_element_by_id('basket_small');
+		var basketContentsElement = document.get_element_by_id('basket_small_contents');
 		
 		// Add placeholders to the basket
 		for (var i = 0; i < idArray.length; i++) {
@@ -222,7 +222,7 @@ class Basket
 				if (req.readyState == 4) {
 					// only if we get a good load should we continue.
 					if (req.status == 200) {
-						var basketElement = getElementFromDocument('basket_small');
+						var basketElement = document.get_element_by_id('basket_small');
 						basketElement.innerHTML = req.responseText;
 						Basket.removeBorders();
 					} else {
@@ -283,29 +283,10 @@ class Basket
 	 */
 	Basket.removeBorders = function () {
 		if (!Basket.removeBoardersForCompletedImages(
-					getElementFromDocument('basket_small_contents')))
+					document.get_element_by_id('basket_small_contents')))
 		{
 			window.setTimeout('Basket.removeBorders()', 100);
 		}
-	}
-	
-	/**
-	 * Answer the element of the document by id.
-	 * 
-	 * @param string id
-	 * @return object The html element
-	 * @access public
-	 * @since 8/25/05
-	 */
-	function getElementFromDocument(id) {
-		// Gecko, KHTML, Opera, IE6+
-		if (document.getElementById) {
-			return document.getElementById(id);
-		}
-		// IE 4-5
-		if (document.all) {
-			return document.all[id];
-		}			
 	}
 	
 // ]]>

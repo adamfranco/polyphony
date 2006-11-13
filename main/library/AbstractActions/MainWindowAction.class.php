@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MainWindowAction.class.php,v 1.10.4.1 2006/08/08 19:35:36 adamfranco Exp $
+ * @version $Id: MainWindowAction.class.php,v 1.10.4.2 2006/11/13 21:55:18 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/WizardAction.class.php");
@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MainWindowAction.class.php,v 1.10.4.1 2006/08/08 19:35:36 adamfranco Exp $
+ * @version $Id: MainWindowAction.class.php,v 1.10.4.2 2006/11/13 21:55:18 adamfranco Exp $
  */
 class MainWindowAction 
 	extends WizardAction {
@@ -99,15 +99,22 @@ class MainWindowAction
 			$pageTitle .= ": ".$headingText;
 		}
 		
-		// Set the page title
+		// Set the page title and other new header items
 		$outputHandler =& $harmoni->getOutputHandler();
-		$outputHandler->setHead(
-			// Remove any existing title tags from the head text
-			preg_replace("/<title>[^<]*<\/title>/", "", $outputHandler->getHead())
-			//Add our new title
-			."\n\t\t<title>"
-			.strip_tags(preg_replace("/<(\/)?(em|i|b|strong)>/", "*", $pageTitle))
-			."</title>");
+		ob_start();
+		
+		// Remove any existing title tags from the head text
+		print preg_replace("/<title>[^<]*<\/title>/", "", $outputHandler->getHead());
+		
+		//Add our new title
+		print "\n\t\t<title>";
+		print strip_tags(preg_replace("/<(\/)?(em|i|b|strong)>/", "*", $pageTitle));
+		print "</title>";
+		
+		// Add our common Harmoni javascript libraries
+		require(POLYPHONY_DIR."/main/library/Harmoni.js.inc.php");
+		
+		$outputHandler->setHead(ob_get_clean());
 		
 		// Pass content generation off to our child classes
 		$this->buildContent();
