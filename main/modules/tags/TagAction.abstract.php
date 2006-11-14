@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.1.2.6 2006/11/14 22:35:08 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.1.2.7 2006/11/14 23:51:41 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.1.2.6 2006/11/14 22:35:08 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.1.2.7 2006/11/14 23:51:41 adamfranco Exp $
  */
 class TagAction 
 	extends MainWindowAction
@@ -74,7 +74,7 @@ class TagAction
 	 * @access public
 	 * @since 11/7/06
 	 */
-	function getTagCloud ($tags, $viewAction = 'view', $styles = null) {
+	function getTagCloud ($tags, $viewAction = 'view', $styles = null, $additionalParams = null) {
 		ob_start();
 		if ($tags->hasNext()) {
 			$harmoni =& Harmoni::instance();
@@ -113,6 +113,10 @@ class TagAction
 				$parameters = array();
 				if (RequestContext::value('agent_id'))
 					$parameters['agent_id'] = RequestContext::value('agent_id');
+				if (is_array($additionalParams) && count($additionalParams)) {
+					foreach ($additionalParams as $name => $value)
+						$parameters[$name] = $value;
+				}
 				$parameters["tag"] = $tag->getValue();
 				$url = $harmoni->request->quickURL('tags', $viewAction, $parameters);
 				print "\n\t<a rel='tag' href='".$url."' ";
@@ -144,10 +148,10 @@ class TagAction
 	 * @since 11/14/06
 	 * @static
 	 */
-	function getTagCloudDiv ($tags, $viewAction = 'view', $styles = null) {
+	function getTagCloudDiv ($tags, $viewAction = 'view', $styles = null, $additionalParams = null) {
 		ob_start();
 		print "\n<div style='text-align: justify'>";
-		print TagAction::getTagCloud($tags, $viewAction, $styles);
+		print TagAction::getTagCloud($tags, $viewAction, $styles, $additionalParams);
 		print "\n</div>";
 		return ob_get_clean();
 	}
@@ -165,10 +169,10 @@ class TagAction
 	 * @since 11/14/06
 	 * @static
 	 */
-	function getTagCloudForItem (&$item, $viewAction = 'view', $styles = null) {
+	function getTagCloudForItem (&$item, $viewAction = 'view', $styles = null, $additionalParams = null) {
 		ob_start();
 		print "\n<div>";
-		print TagAction::getTagCloud($item->getTags(), $viewAction, $styles);
+		print TagAction::getTagCloud($item->getTags(), $viewAction, $styles, $additionalParams);
 		print "\n\t<a onclick=\"";
 		print "this.viewAction = '".$viewAction."'; ";
 		print "Tagger.run('".$item->getIdString()."', '".$item->getSystem()."', this);";
@@ -177,6 +181,34 @@ class TagAction
 		print _("+Tag")."</a>";
 		print "\n</div>";
 		return ob_get_clean();
+	}
+	
+	/**
+	 * Answer the tag cloud for the assets in a repository
+	 * 
+	 * @param object Repository $repository
+	 * @return string
+	 * @access public
+	 * @since 11/14/06
+	 * @static
+	 */
+	function getTagCloudForRepository ( &$repository, $system, $viewAction = 'viewRepository', $styles = null) {
+		if (!is_object($repository))
+			return "";
+		
+		$repositoryId =& $repository->getId();
+		$tagManager =& Services::getService('Tagging');
+		$items = array();
+		$assets =& $repository->getAssets();
+		while($assets->hasNext()) {
+			$asset =& $assets->next();
+			$items[] =& TaggedItem::forId($asset->getId(), $system);
+		}
+		return TagAction::getTagCloudDiv($tagManager->getTagsForItems(
+						new HarmoniIterator($items)), 
+					$viewAction, $styles, 
+					array('repository_id' => $repositoryId->getIdString(),
+						'system' => $system));
 	}
 	
 	/**
