@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.1.2.5 2006/11/14 22:31:44 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.1.2.6 2006/11/14 22:35:08 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.1.2.5 2006/11/14 22:31:44 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.1.2.6 2006/11/14 22:35:08 adamfranco Exp $
  */
 class TagAction 
 	extends MainWindowAction
@@ -117,9 +117,11 @@ class TagAction
 				$url = $harmoni->request->quickURL('tags', $viewAction, $parameters);
 				print "\n\t<a rel='tag' href='".$url."' ";
 				print " title=\"";
-				print str_replace('%2', $tag->getValue(),
-						str_replace('%1', $tag->getOccurances(), 
-							_("View (%1) items tagged with '%2'")));
+// 				print str_replace('%2', $tag->getValue(),
+// 						str_replace('%1', $tag->getOccurances(), 
+// 							_("View (%1) items tagged with '%2'")));
+				print str_replace('%1', $tag->getValue(),
+							_("View items tagged with '%1'"));
 				print "\" style='".$style."'>";
 				print $tag->getValue()."</a> ";
 			}

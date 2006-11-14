@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.3 2006/11/14 22:31:43 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.4 2006/11/14 22:35:08 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.3 2006/11/14 22:31:43 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.4 2006/11/14 22:35:08 adamfranco Exp $
  */
 function Tagger ( itemId, system, positionElement ) {
 	if ( arguments.length > 0 ) {
@@ -437,7 +437,8 @@ function Tagger ( itemId, system, positionElement ) {
 				var element = document.createElement('a');
 				element.innerHTML = tags[i].value;
 				element.setAttribute('rel', 'tag');
- 				element.setAttribute('title', "View (" + tags[i].occurances + ") Items tagged with '" + tags[i].value + "'");
+// 				element.setAttribute('title', "View (" + tags[i].occurances + ") Items tagged with '" + tags[i].value + "'");
+ 				element.setAttribute('title', "View items tagged with '" + tags[i].value + "'");
 				element.setAttribute('href', 
 						Harmoni.quickUrl('tags', this.positionElement.viewAction, 
 							{'tag': tags[i].value}, 'polyphony-tags'));
@@ -584,7 +585,7 @@ function Tagger ( itemId, system, positionElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.3 2006/11/14 22:31:43 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.4 2006/11/14 22:35:08 adamfranco Exp $
  */
 function Tag ( value, occurances ) {
 	if ( arguments.length > 0 ) {
