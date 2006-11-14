@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.1 2006/11/13 21:55:16 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.2 2006/11/14 20:29:12 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.1 2006/11/13 21:55:16 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.2 2006/11/14 20:29:12 adamfranco Exp $
  */
 function Tagger ( itemId, system, positionElement ) {
 	if ( arguments.length > 0 ) {
@@ -78,7 +78,7 @@ function Tagger ( itemId, system, positionElement ) {
 		this.panel.tagger = this;
 		
 		
-		this.panel.setAttribute('class', 'tagging_panel');
+		this.panel.className = 'tagging_panel';
 		this.panel.id = "tagger_" + this.itemId;
 		
 // 		this.panel.style.height = this.panelHeight + 'px';
@@ -105,11 +105,10 @@ function Tagger ( itemId, system, positionElement ) {
 		
 		// Top bar
 		this.topBar = document.createElement("div");
+		this.topBar.className = 'topbar container';
 		this.panel.appendChild(this.topBar);
-		this.topBar.style.borderBottom = '1px solid #555';
-		this.topBar.style.padding = '3px';
-		var html = "<div style='float: left; font-weight: bold;'>Add Tags</div>";
-		html += "<div style='text-align: right'></div>";
+		var html = "<div class='title'>Add Tags</div>";
+		html += "<div class='close'></div>";
 		this.topBar.innerHTML = html;
 		
 		var topRight = this.topBar.childNodes[1];
@@ -124,35 +123,35 @@ function Tagger ( itemId, system, positionElement ) {
 		// Other's tags
 		this.tagRow = document.createElement("div");
 		this.panel.appendChild(this.tagRow);
-		this.tagRow.style.padding = '3px';
+		this.tagRow.className = 'container';
 		
 		var element = document.createElement("div");
+		element.className = 'heading';
 		this.tagRow.appendChild(element);
-		element.style.fontWeight = 'bold';
 		element.innerHTML = "Others' Tags on this item:";
 		
 		
 		this.othersTagsArea = document.createElement("div");
-		this.othersTagsArea.style.marginBottom = '5px';
+		this.othersTagsArea.className = 'tag_area';
 		this.tagRow.appendChild(this.othersTagsArea);
-		this.othersTagsArea.innerHTML = "loading...";
+		this.othersTagsArea.innerHTML = "<div class='loading'>loading...</div>";
 		this.loadTagsNotByUser(this.othersTagsArea);
 		
 		
 		// User's tags on this item
 		var element = document.createElement("div");
 		this.tagRow.appendChild(element);
-		element.style.fontWeight = 'bold';
+		element.className = 'heading';
 		element.innerHTML = "Your Tags on this item:";
 		
 		this.currentTagsArea = document.createElement("div");
-		this.currentTagsArea.style.marginBottom = '5px';
+		this.currentTagsArea.className = 'tag_area';
 		this.tagRow.appendChild(this.currentTagsArea);
+		this.currentTagsArea.innerHTML = "<div class='loading'>loading...</div>";
 		this.loadCurrentTags(this.currentTagsArea);
 		
 		this.newTagForm = document.createElement("form");
 		this.tagRow.appendChild(this.newTagForm);
-		this.newTagForm.style.marginBottom = '5px';
 		
 		this.newTagField = document.createElement("input");
 		this.newTagField.type = 'text';
@@ -175,13 +174,13 @@ function Tagger ( itemId, system, positionElement ) {
 		// All users's tags
 		var element = document.createElement("div");
 		this.tagRow.appendChild(element);
-		element.style.fontWeight = 'bold';
+		element.className = 'heading';
 		element.innerHTML = "All of your Tags:";
 		
 		this.usersTagsArea = document.createElement("div");
-		this.usersTagsArea.style.marginBottom = '5px';
+		this.usersTagsArea.className = 'tag_area';
 		this.tagRow.appendChild(this.usersTagsArea);
-		this.usersTagsArea.innerHTML = "loading...";
+		this.usersTagsArea.innerHTML = "<div class='loading'>loading...</div>";
 		this.loadAllUserTags(this.usersTagsArea);
 		
 	}
@@ -511,7 +510,7 @@ function Tagger ( itemId, system, positionElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.1 2006/11/13 21:55:16 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.2 2006/11/14 20:29:12 adamfranco Exp $
  */
 function Tag ( value, occurances ) {
 	if ( arguments.length > 0 ) {

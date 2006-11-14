@@ -1,0 +1,45 @@
+div.tagging_panel {
+	background-color: #FFFFBB;
+	border: 1px solid #555;
+	color: #000;
+}
+
+.tagging_panel a {
+	color: #00F;
+}
+
+.tagging_panel .topbar {
+	border-bottom: 1px solid #555;
+	
+}
+
+.tagging_panel .container {
+	padding: 3px;
+}
+
+.tagging_panel .title {
+	float: left; 
+	font-weight: bold;
+}
+
+.tagging_panel .close {
+	text-align: right;
+}
+
+.tagging_panel .heading {
+	font-weight: bold;
+}
+
+.tagging_panel .tag_area {
+	margin-bottom: 10px;
+}
+
+.tagging_panel form {
+	margin-bottom: 10px;
+}
+
+.tagging_panel .loading {
+	font-size: small;
+	color: red;
+	text-align: center;
+}

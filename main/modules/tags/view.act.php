@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.1.2.2 2006/11/08 21:59:34 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.1.2.3 2006/11/14 20:29:14 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/TagAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.1.2.2 2006/11/08 21:59:34 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.1.2.3 2006/11/14 20:29:14 adamfranco Exp $
  */
 class viewAction 
 	extends MainWindowAction
@@ -72,7 +72,7 @@ class viewAction
 		
 		$items =& $this->getItems();
 		$resultPrinter =& new IteratorResultPrinter($items, 1, 5, 
-									"printItem", $this->getViewAction());
+									'getTaggedItemComponent', $this->getViewAction());
 		$resultLayout =& $resultPrinter->getLayout("canViewItem");		
 // 		$resultLayout =& $resultPrinter->getLayout();		
 		$actionRows->add($resultLayout, "100%", null, LEFT, CENTER);
@@ -90,7 +90,6 @@ class viewAction
 	 * @since 11/8/06
 	 */
 	function &getItems () {
-// 		$tagManager =& Services::getService("Tagging");
 		$tag =& new Tag(RequestContext::value('tag'));
 		return $tag->getItems();
 	}
@@ -105,19 +104,51 @@ class viewAction
 	function getViewAction () {
 		return 'view';
 	}
+	
+	/**
+	 * Answer the item-printing callback function
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 11/14/06
+	 */
+	function getItemPrintingCallback () {
+		
+	}
+}
+
+/**
+ * Answer the tagged item GUI component
+ * 
+ * @param <##>
+ * @return <##>
+ * @access public
+ * @since 11/14/06
+ */
+function getTaggedItemComponent ( &$item, $viewAction) {
+	if (defined('POLYPHONY_TAGGEDITEM_PRINTING_CALLBACK'))
+		$printFunction = POLYPHONY_TAGGEDITEM_PRINTING_CALLBACK;
+	else
+		$printFunction = 'printTaggedItem';
+	
+	ob_start();
+	
+	$printFunction($item, $viewAction);
+	
+	$component = & new Block(ob_get_clean(), EMPHASIZED_BLOCK);
+	return $component;
 }
 
 /**
  * Print out an Item
  * 
  * @param object $item
- * @return object GuiComponent
+ * @param string $viewAction The action to choose when clicking on a tag.
+ * @return string
  * @access public
  * @since 11/8/06
  */
-function &printItem ( &$item, $viewAction) {
-	ob_start();
-	
+function printTaggedItem ( &$item, $viewAction) {	
 	print "\n\t<a href='".$item->getUrl()."'>";
 	if ($item->getThumbnailUrl())
 		print "\n\t\t<img src='".$item->getThumbnailUrl()."' style='border: 0px; float: right;' />";
@@ -142,9 +173,6 @@ function &printItem ( &$item, $viewAction) {
 	else
 		print ucFirst($item->getSystem());
 	print "</p>";
-	
-	$component = & new Block(ob_get_clean(), EMPHASIZED_BLOCK);
-	return $component;
 }
 
 // Callback function for checking authorizations
