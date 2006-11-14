@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.1.2.4 2006/11/13 22:09:14 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.1.2.5 2006/11/14 22:31:44 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.1.2.4 2006/11/13 22:09:14 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.1.2.5 2006/11/14 22:31:44 adamfranco Exp $
  */
 class TagAction 
 	extends MainWindowAction
@@ -66,14 +66,19 @@ class TagAction
 	 * answer the tag cloud html
 	 * 
 	 * @param object Iterator $tags
+	 * @param optional string $viewAction The action to use when clicking on a tag. 
+	 *							 Usually view or viewuser
+	 * @param optional array $styles An array of style-strings to use for various 
+	 *						levels of of tag occurrances.
 	 * @return string
 	 * @access public
 	 * @since 11/7/06
 	 */
-	function getTagCloud ($tags, $viewAction = 'view') {
+	function getTagCloud ($tags, $viewAction = 'view', $styles = null) {
 		ob_start();
 		if ($tags->hasNext()) {
 			$harmoni =& Harmoni::instance();
+			$harmoni->request->startNamespace("polyphony-tags");
 			$tagArray = array();
 			$tag = $tags->next();
 			$tagArray[] =& $tag;
@@ -88,15 +93,16 @@ class TagAction
 					$maxFreq = $tag->getOccurances();
 			}
 			
-			$styles = array(
-				"font-size: 75%;",
-				"font-size: 100%;",
-				"font-size: 125%;",
-				"font-size: 150%;"
-			);
+			if (!is_array($styles))
+				$styles = array(
+					"font-size: 75%;",
+					"font-size: 100%;",
+					"font-size: 125%;",
+					"font-size: 150%;"
+				);
+			
 			$incrementSize = ceil(($maxFreq - $minFreq)/count($styles));
 			
-			print "\n<div style='text-align: justify'>";
 			for ($key=0; $key < count($tagArray); $key++) {
 				$tag =& $tagArray[$key];
 				$group = 0;
@@ -104,16 +110,70 @@ class TagAction
 					$style = $styles[$group];
 					$group++;
 				}
-				$parameters = array("tag" => $tag->getValue());
+				$parameters = array();
 				if (RequestContext::value('agent_id'))
 					$parameters['agent_id'] = RequestContext::value('agent_id');
+				$parameters["tag"] = $tag->getValue();
 				$url = $harmoni->request->quickURL('tags', $viewAction, $parameters);
-				print "\n\t<a href='".$url."' title='".$tag->getOccurances()." ocurrances' style='".$style."'>";
+				print "\n\t<a rel='tag' href='".$url."' ";
+				print " title=\"";
+				print str_replace('%2', $tag->getValue(),
+						str_replace('%1', $tag->getOccurances(), 
+							_("View (%1) items tagged with '%2'")));
+				print "\" style='".$style."'>";
 				print $tag->getValue()."</a> ";
 			}
-			print "\n</div>";
+			$harmoni->request->endNamespace();
 		}
 		
+		return ob_get_clean();
+	}
+	
+	/**
+	 * Answer a div element with the tag cloud html
+	 * 
+	 * @param object Iterator $tags
+	 * @param optional string $viewAction The action to use when clicking on a tag. 
+	 *							 Usually view or viewuser
+	 * @param optional array $styles An array of style-strings to use for various 
+	 *						levels of of tag occurrances.
+	 * @return string
+	 * @access public
+	 * @since 11/14/06
+	 * @static
+	 */
+	function getTagCloudDiv ($tags, $viewAction = 'view', $styles = null) {
+		ob_start();
+		print "\n<div style='text-align: justify'>";
+		print TagAction::getTagCloud($tags, $viewAction, $styles);
+		print "\n</div>";
+		return ob_get_clean();
+	}
+	
+	/**
+	 * Print the tag cloud and tagging link for an item
+	 * 
+	 * @param object TaggedItem $item
+	 * @param optional string $viewAction The action to use when clicking on a tag. 
+	 *							 Usually view or viewuser
+	 * @param optional array $styles An array of style-strings to use for various 
+	 *						levels of of tag occurrances.
+	 * @return string
+	 * @access public
+	 * @since 11/14/06
+	 * @static
+	 */
+	function getTagCloudForItem (&$item, $viewAction = 'view', $styles = null) {
+		ob_start();
+		print "\n<div>";
+		print TagAction::getTagCloud($item->getTags(), $viewAction, $styles);
+		print "\n\t<a onclick=\"";
+		print "this.viewAction = '".$viewAction."'; ";
+		print "Tagger.run('".$item->getIdString()."', '".$item->getSystem()."', this);";
+		print "\" title='"._("Add Tags to this Item")."'";
+		print " style='font-weight: bold;'>";
+		print _("+Tag")."</a>";
+		print "\n</div>";
 		return ob_get_clean();
 	}
 	

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.2 2006/11/14 20:29:12 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.3 2006/11/14 22:31:43 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.2 2006/11/14 20:29:12 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.3 2006/11/14 22:31:43 adamfranco Exp $
  */
 function Tagger ( itemId, system, positionElement ) {
 	if ( arguments.length > 0 ) {
@@ -116,7 +116,7 @@ function Tagger ( itemId, system, positionElement ) {
 		topRight.appendChild(cancel);
 		var panel = this.panel;	// define a variable for panel that will be in the
 								// scope of the onclick.
-		cancel.onclick = function () {panel.style.display = 'none'}
+		cancel.onclick = function () {panel.tagger.reloadSourceCloud(); panel.style.display = 'none'}
 		cancel.innerHTML = 'Close';
 		
 		
@@ -406,6 +406,80 @@ function Tagger ( itemId, system, positionElement ) {
 	}
 	
 	/**
+	 * Reload the source tag cloud that was in place before tag editing started
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 11/14/06
+	 */
+	Tagger.prototype.reloadSourceCloud = function (tags) {
+		if (tags) {
+			// Remove the existing tags. They will be siblings of the position
+			// element with rel="tag"
+			var container = this.positionElement.parentNode;
+			var current = container.firstChild;
+			var toRemove = new Array();
+			while (current) {
+				if (current.nodeType == 1) {
+					if (current.getAttribute('rel') == 'tag') {
+						toRemove.push(current);
+					}
+				} else
+					toRemove.push(current);
+					
+				current = current.nextSibling;
+			}
+			for (var i = 0; i < toRemove.length; i++)
+				container.removeChild(toRemove[i]);
+			
+			// Add in new tags
+			for (var i = 0; i < tags.length; i++) {
+				var element = document.createElement('a');
+				element.innerHTML = tags[i].value;
+				element.setAttribute('rel', 'tag');
+ 				element.setAttribute('title', "View (" + tags[i].occurances + ") Items tagged with '" + tags[i].value + "'");
+				element.setAttribute('href', 
+						Harmoni.quickUrl('tags', this.positionElement.viewAction, 
+							{'tag': tags[i].value}, 'polyphony-tags'));
+				container.insertBefore(element, this.positionElement);
+				container.insertBefore(document.createTextNode(' '), this.positionElement);
+			}
+		
+		} else {
+			// Get the new tags and re-call this method with the tags
+			var req = Harmoni.createRequest();
+			var url = Harmoni.quickUrl('tags', 'getTags', 
+							{'item_id': this.itemId, 'system': this.system}, 
+							'polyphony-tags');
+			if (req) {
+				// Define a variable to point at this Tagger that will be in the
+				// scope of the request-processing function, since 'this' will (at that
+				// point) be that function.
+				var tagger = this;
+	
+				req.onreadystatechange = function () {
+					// only if req shows "loaded"
+					if (req.readyState == 4) {
+						// only if we get a good load should we continue.
+						if (req.status == 200) {
+							tagger.reloadSourceCloud(tagger.getTagsFromXml(req.responseXML));
+						} else {
+							alert("There was a problem retrieving the XML data:\n" +
+								req.statusText);
+						}
+					}
+				} 
+				
+				req.open("GET", url, true);
+				req.send(null);
+				
+			} else {
+				alert("Error: Unable to execute AJAX request. \nPlease upgrade your browser.");
+			}
+		}
+	}
+	
+	/**
 	 * Answer an array of Tags as defined in the xml document
 	 * 
 	 * 		<response>
@@ -510,7 +584,7 @@ function Tagger ( itemId, system, positionElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.2 2006/11/14 20:29:12 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.3 2006/11/14 22:31:43 adamfranco Exp $
  */
 function Tag ( value, occurances ) {
 	if ( arguments.length > 0 ) {
