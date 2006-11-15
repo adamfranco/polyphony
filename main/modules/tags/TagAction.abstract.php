@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.1.2.7 2006/11/14 23:51:41 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.1.2.8 2006/11/15 18:08:54 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.1.2.7 2006/11/14 23:51:41 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.1.2.8 2006/11/15 18:08:54 adamfranco Exp $
  */
 class TagAction 
 	extends MainWindowAction
@@ -94,14 +94,11 @@ class TagAction
 			}
 			
 			if (!is_array($styles))
-				$styles = array(
-					"font-size: 75%;",
-					"font-size: 100%;",
-					"font-size: 125%;",
-					"font-size: 150%;"
-				);
+				$styles = TagAction::getDefaultStyles();
 			
 			$incrementSize = ceil(($maxFreq - $minFreq)/count($styles));
+			if (!$incrementSize)
+				$incrementSize = 1;
 			
 			for ($key=0; $key < count($tagArray); $key++) {
 				$tag =& $tagArray[$key];
@@ -133,6 +130,23 @@ class TagAction
 		}
 		
 		return ob_get_clean();
+	}
+	
+	/**
+	 * Answer the default styles for the Tag cloud
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 11/15/06
+	 * @static
+	 */
+	function getDefaultStyles () {
+		return array(
+					"font-size: 75%;",
+					"font-size: 100%;",
+					"font-size: 125%;",
+					"font-size: 150%;"
+				);
 	}
 	
 	/**
@@ -173,8 +187,34 @@ class TagAction
 		ob_start();
 		print "\n<div>";
 		print TagAction::getTagCloud($item->getTags(), $viewAction, $styles, $additionalParams);
+		
 		print "\n\t<a onclick=\"";
 		print "this.viewAction = '".$viewAction."'; ";
+		// register the styles with the tagger
+		if (!is_array($styles))
+			$styles = TagAction::getDefaultStyles();
+		print "this.styles = new Array(); ";
+		foreach ($styles as $style) {
+			$styleStrings = explode(";", $style);
+			print "this.styles.push({";
+			foreach ($styleStrings as $styleString) {
+				if (preg_match('/([a-z0-9\-]+):\s?([a-z0-9\-\s%]+)/i', $styleString, $matches)) 
+				{
+					// Reformat the style name for javascript
+					$styleName = trim($matches[1]);
+					$styleNameParts = explode('-', $styleName);
+					$styleName = $styleNameParts[0];
+					for ($i = 1; $i < count($styleNameParts); $i++)
+						$styleName .= ucfirst($styleNameParts[$i]);
+					
+					
+					$styleValue = trim($matches[2]);
+					print "'".$styleName."': '".$styleValue."', ";
+				}
+			}
+			print "}); ";
+		}
+		
 		print "Tagger.run('".$item->getIdString()."', '".$item->getSystem()."', this);";
 		print "\" title='"._("Add Tags to this Item")."'";
 		print " style='font-weight: bold;'>";

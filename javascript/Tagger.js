@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.4 2006/11/14 22:35:08 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.5 2006/11/15 18:08:53 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.4 2006/11/14 22:35:08 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.5 2006/11/15 18:08:53 adamfranco Exp $
  */
 function Tagger ( itemId, system, positionElement ) {
 	if ( arguments.length > 0 ) {
@@ -432,16 +432,45 @@ function Tagger ( itemId, system, positionElement ) {
 			for (var i = 0; i < toRemove.length; i++)
 				container.removeChild(toRemove[i]);
 			
+			// Return if we don't have any new tags
+			if (!tags.length)
+				return;
+			
+			// Determine the StyleGroup increment size;
+			var styles = this.positionElement.styles;
+			var minFreq, maxFreq;
+			minFreq = maxFreq = tags[0].occurances;
+			for (var i = 1; i < tags.length; i++) {
+				if (tags[i].occurances < minFreq)
+					minFreq = tags[i].occurances;
+				if (tags[i].occurances > maxFreq)
+					maxFreq = tags[i].occurances;
+			}
+			var incrementSize = Math.ceil((maxFreq - minFreq)/styles.length);
+			if (!incrementSize)
+				incrementSize = 1;
+			
 			// Add in new tags
 			for (var i = 0; i < tags.length; i++) {
 				var element = document.createElement('a');
 				element.innerHTML = tags[i].value;
 				element.setAttribute('rel', 'tag');
-// 				element.setAttribute('title', "View (" + tags[i].occurances + ") Items tagged with '" + tags[i].value + "'");
  				element.setAttribute('title', "View items tagged with '" + tags[i].value + "'");
 				element.setAttribute('href', 
 						Harmoni.quickUrl('tags', this.positionElement.viewAction, 
 							{'tag': tags[i].value}, 'polyphony-tags'));
+				
+				// styles for the cloud
+				var group = 0;
+				for (var o = 0; o < tags[i].occurances && group < styles.length; o = o + incrementSize) {
+					var currentStyle = styles[group];
+					group++;
+				}
+				for (var styleName in currentStyle) {
+					element.style[styleName] = currentStyle[styleName];
+				}
+				
+				// insert the tag
 				container.insertBefore(element, this.positionElement);
 				container.insertBefore(document.createTextNode(' '), this.positionElement);
 			}
@@ -585,7 +614,7 @@ function Tagger ( itemId, system, positionElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.4 2006/11/14 22:35:08 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.5 2006/11/15 18:08:53 adamfranco Exp $
  */
 function Tag ( value, occurances ) {
 	if ( arguments.length > 0 ) {
