@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.5 2006/11/15 18:08:53 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.6 2006/11/16 21:30:30 adamfranco Exp $
  */
 
 /**
@@ -17,11 +17,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.5 2006/11/15 18:08:53 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.6 2006/11/16 21:30:30 adamfranco Exp $
  */
-function Tagger ( itemId, system, positionElement ) {
+function Tagger ( itemId, system, positionElement, containerElement ) {
 	if ( arguments.length > 0 ) {
-		this.init( itemId, system, positionElement );
+		this.init( itemId, system, positionElement, containerElement );
 	}
 }
 
@@ -34,10 +34,11 @@ function Tagger ( itemId, system, positionElement ) {
 	 * @access public
 	 * @since 11/9/06
 	 */
-	Tagger.prototype.init = function ( itemId, system, positionElement ) {
+	Tagger.prototype.init = function ( itemId, system, positionElement, containerElement ) {
 		this.itemId = itemId;
 		this.system = system;
 		this.positionElement = positionElement;
+		this.containerElement = containerElement;
 		
 		this.panelHeight = 200;
 		this.panelWidth = 300;
@@ -53,14 +54,14 @@ function Tagger ( itemId, system, positionElement ) {
 	 * @access public
 	 * @since 11/9/06
 	 */
-	Tagger.run = function ( itemId, system, positionElement ) {
+	Tagger.run = function ( itemId, system, positionElement, containerElement ) {
 		var panel;
 		if (panel = document.get_element_by_id('tagger_' + itemId)) {
 			panel.style.display = 'block';
 			// update any tags added through other taggers
 			panel.tagger.writeTagCloud(document.allUserTags, panel.tagger.usersTagsArea, 'add');
 		} else {
-			var tagger = new Tagger(itemId, system, positionElement);
+			var tagger = new Tagger(itemId, system, positionElement, containerElement);
 			tagger.createPanel();
 		}
 	}
@@ -416,7 +417,7 @@ function Tagger ( itemId, system, positionElement ) {
 		if (tags) {
 			// Remove the existing tags. They will be siblings of the position
 			// element with rel="tag"
-			var container = this.positionElement.parentNode;
+			var container = this.containerElement;
 			var current = container.firstChild;
 			var toRemove = new Array();
 			while (current) {
@@ -431,6 +432,10 @@ function Tagger ( itemId, system, positionElement ) {
 			}
 			for (var i = 0; i < toRemove.length; i++)
 				container.removeChild(toRemove[i]);
+			
+			var elementToInsertBefore = null;
+			if (container.firstChild)
+				elementToInsertBefore = container.firstChild;
 			
 			// Return if we don't have any new tags
 			if (!tags.length)
@@ -471,8 +476,13 @@ function Tagger ( itemId, system, positionElement ) {
 				}
 				
 				// insert the tag
-				container.insertBefore(element, this.positionElement);
-				container.insertBefore(document.createTextNode(' '), this.positionElement);
+				if (elementToInsertBefore) {
+					container.insertBefore(element, elementToInsertBefore);
+					container.insertBefore(document.createTextNode(' '), elementToInsertBefore);
+				} else {
+					container.appendChild(element);
+					container.appendChild(document.createTextNode(' '));
+				}
 			}
 		
 		} else {
@@ -614,7 +624,7 @@ function Tagger ( itemId, system, positionElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.5 2006/11/15 18:08:53 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.6 2006/11/16 21:30:30 adamfranco Exp $
  */
 function Tag ( value, occurances ) {
 	if ( arguments.length > 0 ) {

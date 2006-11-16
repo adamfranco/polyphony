@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.1.2.8 2006/11/15 18:08:54 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.1.2.9 2006/11/16 21:30:34 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.1.2.8 2006/11/15 18:08:54 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.1.2.9 2006/11/16 21:30:34 adamfranco Exp $
  */
 class TagAction 
 	extends MainWindowAction
@@ -188,7 +188,8 @@ class TagAction
 		print "\n<div>";
 		print TagAction::getTagCloud($item->getTags(), $viewAction, $styles, $additionalParams);
 		
-		print "\n\t<a onclick=\"";
+		print "\n\t<span> &nbsp; ";
+		print "\n\t\t<a onclick=\"";
 		print "this.viewAction = '".$viewAction."'; ";
 		// register the styles with the tagger
 		if (!is_array($styles))
@@ -215,10 +216,11 @@ class TagAction
 			print "}); ";
 		}
 		
-		print "Tagger.run('".$item->getIdString()."', '".$item->getSystem()."', this);";
+		print "Tagger.run('".$item->getIdString()."', '".$item->getSystem()."', this, this.parentNode.parentNode);";
 		print "\" title='"._("Add Tags to this Item")."'";
 		print " style='font-weight: bold;'>";
 		print _("+Tag")."</a>";
+		print "\n\t</span>";
 		print "\n</div>";
 		return ob_get_clean();
 	}
