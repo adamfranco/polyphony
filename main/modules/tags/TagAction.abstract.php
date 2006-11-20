@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.1.2.9 2006/11/16 21:30:34 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.1.2.10 2006/11/20 22:24:51 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.1.2.9 2006/11/16 21:30:34 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.1.2.10 2006/11/20 22:24:51 adamfranco Exp $
  */
 class TagAction 
 	extends MainWindowAction
@@ -54,7 +54,7 @@ class TagAction
 		$actionRows->add(new Block($this->getTagMenu(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
 		
 		ob_start();
-		print $this->getTagCloud($this->getTags(), $this->getViewAction());
+		print $this->getTagCloudDiv($this->getTags(), $this->getViewAction());
 		$actionRows->add(new Block(ob_get_clean(), HIGHLIT_BLOCK), "100%", null, LEFT, TOP);
 		
 		
@@ -75,6 +75,18 @@ class TagAction
 	 * @since 11/7/06
 	 */
 	function getTagCloud ($tags, $viewAction = 'view', $styles = null, $additionalParams = null) {
+	
+		if (!defined('TAGGING_JS_LOADED')) {
+			// Add the tagging manager script to the header
+			$harmoni =& Harmoni::instance();
+			$outputHandler =& $harmoni->getOutputHandler();
+			$outputHandler->setHead($outputHandler->getHead()
+				."\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."javascript/Tagger.js'></script>"
+				."\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."javascript/quicksort.js'></script>"
+				."\n\t\t<link rel='stylesheet' type='text/css' href='".POLYPHONY_PATH."javascript/Tagger.css' />");
+			define('TAGGING_JS_LOADED', true);
+		}
+		
 		ob_start();
 		if ($tags->hasNext()) {
 			$harmoni =& Harmoni::instance();
@@ -121,8 +133,9 @@ class TagAction
 // 				print str_replace('%2', $tag->getValue(),
 // 						str_replace('%1', $tag->getOccurances(), 
 // 							_("View (%1) items tagged with '%2'")));
-				print str_replace('%1', $tag->getValue(),
-							_("View items tagged with '%1'"));
+				print str_replace('%2', $tag->getOccurances(), 
+						str_replace('%1', $tag->getValue(),
+							_("View items tagged with '%1'. ")."("._("Frequency").": %2)"));
 				print "\" style='".$style."'>";
 				print $tag->getValue()."</a> ";
 			}
@@ -166,6 +179,15 @@ class TagAction
 		ob_start();
 		print "\n<div style='text-align: justify'>";
 		print TagAction::getTagCloud($tags, $viewAction, $styles, $additionalParams);
+		print "\n\t<div style='margin-top: 5px;'>"._('Sort: ');
+		print "\n\t\t<a onclick='var cloud = new TagCloud(this.parentNode.parentNode); cloud.orderAlpha(); this.parentNode.sortOrder=\"alpha\";'>";
+		print _('alpha');
+		print "</a>";
+		print " | ";
+		print "\n\t\t<a onclick='if (this.parentNode.sortOrder != \"freq\") { var cloud = new TagCloud(this.parentNode.parentNode); cloud.orderFreq(); this.parentNode.sortOrder=\"freq\";}'>";
+		print _('freq');
+		print "</a>";
+		print "\n\t</div>";
 		print "\n</div>";
 		return ob_get_clean();
 	}

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.6 2006/11/16 21:30:30 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.7 2006/11/20 22:24:49 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.6 2006/11/16 21:30:30 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.7 2006/11/20 22:24:49 adamfranco Exp $
  */
 function Tagger ( itemId, system, positionElement, containerElement ) {
 	if ( arguments.length > 0 ) {
@@ -624,7 +624,7 @@ function Tagger ( itemId, system, positionElement, containerElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.6 2006/11/16 21:30:30 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.7 2006/11/20 22:24:49 adamfranco Exp $
  */
 function Tag ( value, occurances ) {
 	if ( arguments.length > 0 ) {
@@ -655,4 +655,99 @@ function Tag ( value, occurances ) {
 		this.value = this.value.toString();
 		
 		this.occurances = occurances;
+	}
+	
+
+/**
+ * This object represents a tag cloud. It can reorder the tag cloud based on item
+ * frequency or alphabetically
+ * 
+ * @since 11/20/06
+ * @package polyphony.tagging
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: Tagger.js,v 1.1.2.7 2006/11/20 22:24:49 adamfranco Exp $
+ */
+function TagCloud ( container ) {
+	if ( arguments.length > 0 ) {
+		this.init( container );
+	}
+}
+
+	/**
+	 * Initialize this object
+	 * 
+	 * @param DOM_Element container
+	 * @return void
+	 * @access public
+	 * @since 11/20/06
+	 */
+	TagCloud.prototype.init = function ( container ) {
+		this.container = container;
+	}
+	
+	/**
+	 * Order the tag cloud in alphabetical order.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 11/20/06
+	 */
+	TagCloud.prototype.orderAlpha = function () {
+		var elements = new Array();
+		var keys = new Array();
+		var item = this.container.firstChild;
+		var positionElement = null;
+		
+		while (item) {
+			if (item.nodeName == 'A' && item.getAttribute && item.getAttribute('rel') == 'tag') {
+				elements[item.text] = item;
+				keys.push(item.text);
+				
+			} else if (item.nodeType == 1 && !positionElement) {
+				positionElement = item;
+			}
+			item = item.nextSibling;
+		}
+		
+		quick_sort(keys);
+		for (var i = 0; i < keys.length; i++) {
+			this.container.insertBefore(elements[keys[i]], positionElement);
+			this.container.insertBefore(document.createTextNode(' '), positionElement);
+		}
+	}
+		
+	/**
+	 * Order the tag cloud in frequency order.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 11/20/06
+	 */
+	TagCloud.prototype.orderFreq = function () {
+		
+		var elements = new Array();
+		var relation = new Array();
+		var item = this.container.firstChild;
+		var positionElement = null;
+		
+		while (item) {
+			if (item.nodeName == 'A' && item.getAttribute && item.getAttribute('rel') == 'tag' && item.text) {
+				elements[item.text] = item;
+				var matches = item.getAttribute('title').match( /\(.+: ([0-9]+)\)/ );
+				relation.push({'key': item.text, 'value': Math.round(matches[1])});
+			} else if (item.nodeType == 1 && !positionElement) {
+				positionElement = item;
+			}
+			item = item.nextSibling;
+		}
+
+		quick_sortValue(relation);
+		
+		for (var i = relation.length - 1; i >= 0; i--) {
+			this.container.insertBefore(elements[relation[i].key], positionElement);
+			this.container.insertBefore(document.createTextNode(' '), positionElement);
+		}		
 	}
