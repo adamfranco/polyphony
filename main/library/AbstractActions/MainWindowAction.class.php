@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MainWindowAction.class.php,v 1.10.4.2 2006/11/13 21:55:18 adamfranco Exp $
+ * @version $Id: MainWindowAction.class.php,v 1.10.4.3 2006/11/21 14:53:45 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/WizardAction.class.php");
@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MainWindowAction.class.php,v 1.10.4.2 2006/11/13 21:55:18 adamfranco Exp $
+ * @version $Id: MainWindowAction.class.php,v 1.10.4.3 2006/11/21 14:53:45 adamfranco Exp $
  */
 class MainWindowAction 
 	extends WizardAction {
@@ -68,12 +68,12 @@ class MainWindowAction
 	 * components of the screen as well as authorization, delegating the various
 	 * parts to descendent classes.
 	 * 
-	 * @param object Harmoni $harmoni
 	 * @return mixed
 	 * @access public
 	 * @since 4/25/05
 	 */
-	function &execute ( &$harmoni ) {
+	function &execute () {
+		$harmoni =& Harmoni::instance();
 		$pageTitle = $harmoni->config->get('programTitle');
 		
 		
