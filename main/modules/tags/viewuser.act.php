@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewuser.act.php,v 1.1.2.1 2006/11/08 20:45:55 adamfranco Exp $
+ * @version $Id: viewuser.act.php,v 1.1.2.2 2006/11/21 14:54:45 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/view.act.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/view.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewuser.act.php,v 1.1.2.1 2006/11/08 20:45:55 adamfranco Exp $
+ * @version $Id: viewuser.act.php,v 1.1.2.2 2006/11/21 14:54:45 adamfranco Exp $
  */
 class viewuserAction 
 	extends viewAction
@@ -37,6 +37,31 @@ class viewuserAction
 	}
 	
 	/**
+	 * Execute this action
+	 * 
+	 * @return mixed
+	 * @access public
+	 * @since 11/21/06
+	 */
+	function &execute () {
+		// @todo check authorization to view a given user's tags.
+		$idManager =& Services::getService('Id');		
+		$harmoni =& Harmoni::instance();
+		$harmoni->request->startNamespace("polyphony-tags");
+		
+		if (RequestContext::value('agent_id')) {
+			$this->agentId =& $idManager->getId(RequestContext::value('agent_id'));
+		} else {
+			$tagManager =& Services::getService('Tagging');	
+			$this->agentId =& $tagManager->getCurrentUserId();
+		}
+		
+		$harmoni->request->endNamespace();
+		
+		return parent::execute();
+	}
+	
+	/**
 	 * Return the heading text for this action, or an empty string.
 	 * 
 	 * @return string
@@ -49,14 +74,12 @@ class viewuserAction
 		$harmoni->request->startNamespace("polyphony-tags");
 		$heading = str_replace('%1', RequestContext::value('tag'), $heading);
 
-		$idManager =& Services::getService('Id');
-		$agentManager =& Services::getService('Agent');
-		if ($agentManager->isAgent($idManager->getId(RequestContext::value('agent_id')))) {
-			$agent =& $agentManager->getAgent(
-						$idManager->getId(RequestContext::value('agent_id')));
+		$agentManager =& Services::getService('Agent');			
+		if ($agentManager->isAgent($this->agentId)) {
+			$agent =& $agentManager->getAgent($this->agentId);
 			$heading = str_replace('%2', $agent->getDisplayName(), $heading);
 		} else
-			$heading = str_replace('%2', RequestContext::value('agent_id'), $heading);
+			$heading = str_replace('%2', $this->agentId->getIdString(), $heading);
 
 		$harmoni->request->endNamespace();
 		return $heading;
@@ -73,7 +96,7 @@ class viewuserAction
 // 		$tagManager =& Services::getService("Tagging");
 		$tag =& new Tag(RequestContext::value('tag'));
 		$idManager =& Services::getService('Id');
-		return $tag->getItemsForAgent($idManager->getId(RequestContext::value('agent_id')));
+		return $tag->getItemsForAgent($this->agentId);
 	}
 	
 	/**
