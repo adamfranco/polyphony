@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE ExifImportSchema PUBLIC "- //Middlebury College//EXIF Import Schema//EN" "http://harmoni.sf.net/dtds/polyphony/1.0/ExifImportSchema.dtd">
+<!DOCTYPE ExifImportSchema PUBLIC "- //Middlebury College//EXIF Import Schema//EN" "http://harmoni.sf.net/dtds/harmoni/1.0/ExifImportSchema.dtd">
 <ExifImportSchema>
 	<recordStructure>
 		<id/>
-		<name>ExampleExifRecordStructure</name>
+		<name>Dublin Core</name>
 		<partStructure>
 			<id/>
 			<name>Title</name>
@@ -13,23 +13,72 @@
 		</partStructure>
 		<partStructure>
 			<id/>
-			<name>Author</name>
+			<name>Creator</name>
 			<value>
 				<exifElement>By-Line (Author)</exifElement>
 			</value>
 		</partStructure>
 		<partStructure>
 			<id/>
-			<name>Date</name>
+			<name>Subject</name>
 			<value>
-				<exifElement>Date Created</exifElement>
+				<exifElement>Keywords</exifElement>
 			</value>
 		</partStructure>
 		<partStructure>
 			<id/>
-			<name>Date of Import</name>
+			<name>Description</name>
 			<value>
-				<text>January 17, 2002</text>
+				<exifElement>Caption/Abstract</exifElement>
+			</value>
+		</partStructure>
+		<partStructure>
+			<id/>
+			<name>Date</name>
+			<value>
+				<exifElement>Date and Time of Original</exifElement>
+			</value>
+		</partStructure>
+		<partStructure>
+			<id/>
+			<name>Type</name>
+			<value>
+				<text>Image</text>
+			</value>
+		</partStructure>
+		<partStructure>
+			<id/>
+			<name>Format</name>
+			<value>
+				<exifElement>Pixel X Dimension</exifElement>
+				<text> by </text>
+				<exifElement>Pixel Y Dimension</exifElement>
+			</value>
+		<partStructure>
+			<id/>
+			<name>Source</name>
+			<value>
+				<exifElement>Source</exifElement>
+			</value>
+		</partStructure>
+		<partStructure>
+			<id/>
+			<name>Rights</name>
+			<value>
+				<exifElement>Copyright Notice</exifElement>
+			</value>
+		</partStructure>
+		<partStructure>
+			<id/>
+			<name>Coverage</name>
+			<value>
+				<exifElement>City</exifElement>
+			</value>
+			<value>
+				<exifElement>Province/State</exifElement>
+			</value>
+			<value>
+				<exifElement>Country/Primary Location Name</exifElement>
 			</value>
 		</partStructure>
 	</recordStructure>

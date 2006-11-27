@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.18.4.1 2006/07/21 19:52:56 adamfranco Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.18.4.2 2006/11/27 20:27:49 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -21,7 +21,7 @@ require_once(DOMIT);
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.18.4.1 2006/07/21 19:52:56 adamfranco Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.18.4.2 2006/11/27 20:27:49 adamfranco Exp $
  */
 class ExifRepositoryImporter
 	extends RepositoryImporter
@@ -54,15 +54,23 @@ class ExifRepositoryImporter
 		$headerData = get_jpeg_header_data($input);
 		$photoshopIRB = get_Photoshop_IRB($headerData);
 		$this->_photoshopIPTC = get_Photoshop_IPTC($photoshopIRB);
-
+		
+// 		printpre($this->_photoshopIPTC);
+		$assetInfo['description'] = "";
+		$assetInfo['displayName'] = "";
 		foreach ($this->_photoshopIPTC as $array) {
-			if($array['RecName'] == "description")
-			$assetInfo['description'] = $array['RecData'];
-			else $assetInfo['description'] = "";
-			if($array['RecName'] == "Object Name (Title)")
-			$assetInfo['displayName'] = $array['RecData'];
-			else $assetInfo['displayName'] = "";
+			switch ($array['RecName']) {
+				case 'Caption/Abstract':
+				case 'description':
+					$assetInfo['description'] = $array['RecData'];
+					break;
+				case "Object Name (Title)":
+				case "title":
+					$assetInfo['displayName'] = $array['RecData'];
+			}
 		}
+// 		printpre($assetInfo);
+// 		exit;
 		
 		$mime =& Services::getService("MIME");
 		$mimeType = $mime->getMimeTypeForFileName(basename($input));
@@ -182,9 +190,10 @@ class ExifRepositoryImporter
 								return false;
 							}
 							$partStructuresArray[] = $matchedId;
-							$valueArray = array();
+							$repeatableValueArray = array();
 							foreach($ivaluesArray as $ivalueField){
 								if($ivalueField->nodeName == "value"){
+									$valueArray = array();
 									$ivaluesChildren = $ivalueField->childNodes;
 									foreach($ivaluesChildren as $ivalue) {
 										if($ivalue->nodeName == "exifElement")
@@ -192,10 +201,10 @@ class ExifRepositoryImporter
 										if($ivalue->nodeName == "text")
 										$valueArray[]="text::".$ivalue->getText();
 									}
+									$repeatableValueArray[] = $valueArray;
 								}
-								
 							}							
-							$valuesPreFinal[$matchedId->getIdString()] = $valueArray;
+							$valuesPreFinal[$matchedId->getIdString()] = $repeatableValueArray;
 						}
 						$this->_valuesFinal[$matchedSchema->getIdString()] = $valuesPreFinal;
 					}
@@ -208,8 +217,8 @@ class ExifRepositoryImporter
 
 		$headerData = get_jpeg_header_data($input);
 
-		$fileMetaData1 =& $this->extractPhotoshopMetaData();
-		$fileMetaData2 =& $this->extractExifMetaData($input);
+		$fileMetaData1 = $this->extractPhotoshopMetaData();
+		$fileMetaData2 = $this->extractExifMetaData($input);
 		$fileMetaData = array_merge($fileMetaData1, $fileMetaData2);
 		$recordListElement['structureId'] =& $this->_fileStructureId;
 		$recordListElement['partStructureIds'] =& $this->_fileNamePartIds;
@@ -220,25 +229,61 @@ class ExifRepositoryImporter
 			$parts = array();
 			$recordListElement['structureId'] = $structureId;
 			$recordListElement['partStructureIds'] = $this->_partsFinal[$structureId->getIdString()];
-			$partValuesArray =& $this->_valuesFinal[$structureId->getIdString()];
-			foreach($partValuesArray as $key=>$partsArray){
-				$data = "";
-				foreach($partsArray as $part){
-					$checkExifField = explode("::", $part);
-					if($checkExifField[0] == "exif"){
-						if(isset($fileMetaData[$checkExifField[1]]))
-							$data .= $fileMetaData[$checkExifField[1]];
-					}
-					else 
-						$data .= $checkExifField[1];
-				}
-				$parts[] = $this->getPartObject($structureId, $idManager->getId($key), $data);
 			
+			$partValuesArray =& $this->_valuesFinal[$structureId->getIdString()];
+			foreach($partValuesArray as $key=>$repeatablePartsArray){
+				$partValues = array();
+				foreach($repeatablePartsArray as $partsComponentsArray) {
+					// If we have a single entry in the value field, create 
+					// multiple part values for any repeated source values.
+					if (count($partsComponentsArray) == 1) {
+						$checkExifField = explode("::", $partsComponentsArray[0]);
+						// An Exif Value
+						if($checkExifField[0] == "exif") {
+							if(isset($fileMetaData[$checkExifField[1]])) {
+								//multi-valued source values
+								if (is_array($fileMetaData[$checkExifField[1]])) {
+									foreach($fileMetaData[$checkExifField[1]] as $sourceValue)
+										$partValues[] = $this->getPartObject($structureId, $idManager->getId($key), $sourceValue);
+								} 
+								// Single-valued source values
+								else
+									$partValues[] = $this->getPartObject($structureId, $idManager->getId($key), $fileMetaData[$checkExifField[1]]);
+							}
+						}
+						// Text/other data
+						else 
+							$partValues[] = $this->getPartObject($structureId, $idManager->getId($key), $checkExifField[1]);
+					} 
+					// If we are concatenating several fields, concatanate
+					// any repeated source values
+					else {
+						$data = "";
+						foreach($partsComponentsArray as $partComponent){
+							$checkExifField = explode("::", $partComponent);
+							// An Exif Value
+							if($checkExifField[0] == "exif"){
+								if(isset($fileMetaData[$checkExifField[1]])) {
+									if (is_array($fileMetaData[$checkExifField[1]]))
+										$data .= implode(", ", $fileMetaData[$checkExifField[1]]);
+									else
+										$data .= $fileMetaData[$checkExifField[1]];
+								}
+							}
+							// Text/other data
+							else 
+								$data .= $checkExifField[1];
+						}
+						$partValues[] = $this->getPartObject($structureId, $idManager->getId($key), $data);
+					}
+				}
+				$parts[] = $partValues;
 			}
 			$recordListElement['parts'] = $parts;
 			$recordList[] = $recordListElement;
 		}
-		//printpre($recordList);
+// 		printpre($recordList);
+// 		exit;
 		return $recordList;
 	}
 
@@ -278,9 +323,29 @@ class ExifRepositoryImporter
 
 		if($this->_photoshopIPTC) {
 			foreach ($this->_photoshopIPTC as $array) {
-				if(isset($results[$array['RecName']]))
-					$results[$array['RecName']] = $results[$array['RecName']].", ".$array['RecData'];
-				else $results[$array['RecName']] = $array['RecData'];
+				switch ($array['RecName']) {
+					case 'Province/State':
+					case 'Country/Primary Location Name':
+						$values = explode(", ", $array['RecData']);
+						$results[$array['RecName']] = $values[0];
+						break;
+					default:
+						// build an array if multiple values exist
+						if(isset($results[$array['RecName']])) {
+							// if it is not already an array, create an array and add
+							// the current value.
+							if (!is_array($results[$array['RecName']])) {
+								$tmp = $results[$array['RecName']];
+								$results[$array['RecName']] = array();
+								$results[$array['RecName']][] = $tmp;
+							}
+							
+							$results[$array['RecName']][] = $array['RecData'];
+							
+						// Just use the string
+						} else 
+							$results[$array['RecName']] = $array['RecData'];					
+				}
 			}
 		}
 		return $results;
@@ -309,7 +374,8 @@ class ExifRepositoryImporter
 				$exifArray = $metadataArray[0]['34665']['Data'][0];
 				if (is_array($exifArray)) {
 					foreach ($exifArray as $array) {
-						$results[$array['Tag Name']] = $array['Text Value'];
+						if ($array['Tag Name'] && $array['Text Value'])
+							$results[$array['Tag Name']] = $array['Text Value'];
 					}
 				}
 			}
@@ -327,7 +393,8 @@ class ExifRepositoryImporter
 	 * @since 7/20/05
 	 */
 	function &getChildAssetList (&$input) {
-		return null;
+		$null = null;
+		return $null;
 	}
 }
 

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.26.4.2 2006/08/04 18:34:33 adamfranco Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.26.4.3 2006/11/27 20:27:49 adamfranco Exp $
  */ 
 require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.26.4.2 2006/08/04 18:34:33 adamfranco Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.26.4.3 2006/11/27 20:27:49 adamfranco Exp $
  */
 class RepositoryImporter {
 	
@@ -282,7 +282,12 @@ class RepositoryImporter {
 
 			foreach ($entry['partStructureIds'] as $id) {
 				if(!($entry['structureId']->isEqual($FILE_ID))) {
-					$assetRecord->createPart($id, $entry['parts'][$j]);
+					if (is_array($entry['parts'][$j])) {
+						for ($k = 0; $k < count($entry['parts'][$j]); $k++)
+							$assetRecord->createPart($id, $entry['parts'][$j][$k]);
+					} else {
+						$assetRecord->createPart($id, $entry['parts'][$j]);
+					}
 					$j++;
 				}
 				else if ($entry['structureId']->isEqual($FILE_ID)) {
@@ -344,6 +349,7 @@ class RepositoryImporter {
 		$type = $partStructure->getType();
 		$typeString = $type->getKeyword();
 		switch($typeString) {
+			case "shortstring":
 			case "string":
 				$obj =& String::withValue($part);
 				return $obj;
@@ -354,10 +360,6 @@ class RepositoryImporter {
 				break;
 			case "boolean":
 				$obj =& Boolean::withValue($part);
-				return $obj;
-				break;
-			case "shortstring":
-				$obj =& ShortString::withValue($part);
 				return $obj;
 				break;
 			case "float":
