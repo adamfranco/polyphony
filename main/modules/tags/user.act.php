@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: user.act.php,v 1.1.2.1 2006/11/08 20:45:55 adamfranco Exp $
+ * @version $Id: user.act.php,v 1.1.2.2 2006/11/27 22:40:42 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/TagAction.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/TagAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: user.act.php,v 1.1.2.1 2006/11/08 20:45:55 adamfranco Exp $
+ * @version $Id: user.act.php,v 1.1.2.2 2006/11/27 22:40:42 adamfranco Exp $
  */
 class userAction 
 	extends TagAction
@@ -51,12 +51,18 @@ class userAction
 		
 		$idManager =& Services::getService('Id');
 		$agentManager =& Services::getService('Agent');
-		if ($agentManager->isAgent($idManager->getId(RequestContext::value('agent_id')))) {
-			$agent =& $agentManager->getAgent(
-						$idManager->getId(RequestContext::value('agent_id')));
+		$tagManager =& Services::getService("Tagging");
+		
+		if (RequestContext::value('agent_id'))
+			$agentId =& $idManager->getId(RequestContext::value('agent_id'));
+		else
+			$agentId =& $tagManager->getCurrentUserId();
+		
+		if ($agentManager->isAgent($agentId)) {
+			$agent =& $agentManager->getAgent($agentId);
 			$heading = str_replace('%1', $agent->getDisplayName(), $heading);
 		} else		
-			$heading = str_replace('%1', RequestContext::value('agent_id'), $heading);
+			$heading = str_replace('%1', $agentId->getIdString(), $heading);
 		$harmoni->request->endNamespace();
 		return $heading;
 	}
@@ -71,7 +77,13 @@ class userAction
 	function &getTags () {
 		$tagManager =& Services::getService("Tagging");
 		$idManager =& Services::getService("Id");
-		$tags =& $tagManager->getTagsByAgent($idManager->getId(RequestContext::value('agent_id')));
+		
+		if (RequestContext::value('agent_id'))
+			$agentId =& $idManager->getId(RequestContext::value('agent_id'));
+		else
+			$agentId =& $tagManager->getCurrentUserId();
+		
+		$tags =& $tagManager->getTagsByAgent($agentId);
 // 		printpre($tags);
 		return $tags;
 	}

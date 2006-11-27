@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.1.2.10 2006/11/20 22:24:51 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.1.2.11 2006/11/27 22:40:42 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.1.2.10 2006/11/20 22:24:51 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.1.2.11 2006/11/27 22:40:42 adamfranco Exp $
  */
 class TagAction 
 	extends MainWindowAction
@@ -300,7 +300,7 @@ class TagAction
 		$tagManager =& Services::getService("Tagging");
 		if ($currentUserIdString = $tagManager->getCurrentUserIdString()) {
 			if ($harmoni->getCurrentAction() == 'tags.user' 
-				&& RequestContext::value('agent_id') == $currentUserIdString) 
+				&& (!RequestContext::value('agent_id') || RequestContext::value('agent_id') == $currentUserIdString)) 
 			{
 				print ""._("your tags")." &nbsp; ";
 			} else {
@@ -318,12 +318,53 @@ class TagAction
 		
 		if (RequestContext::value('tag')) {
 			if ($harmoni->getCurrentAction() == 'tags.viewuser' 
-				&& RequestContext::value('agent_id') == $currentUserIdString) 
+				&& (!RequestContext::value('agent_id') || RequestContext::value('agent_id') == $currentUserIdString)) 
 			{
 				$url = $harmoni->request->quickURL('tags', 'view', 
 					array('agent_id' => $tagManager->getCurrentUserIdString(),
 					'tag' => RequestContext::value('tag')));
 				print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("items tagged '%1' by everyone"))."</a> &nbsp; ";
+				
+				print " | &nbsp; ";
+				
+				if (!defined('TAGGING_JS_LOADED')) {
+					// Add the tagging manager script to the header
+					$harmoni =& Harmoni::instance();
+					$outputHandler =& $harmoni->getOutputHandler();
+					$outputHandler->setHead($outputHandler->getHead()
+						."\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."javascript/Tagger.js'></script>"
+						."\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."javascript/quicksort.js'></script>"
+						."\n\t\t<link rel='stylesheet' type='text/css' href='".POLYPHONY_PATH."javascript/Tagger.css' />");
+					define('TAGGING_JS_LOADED', true);
+				}
+
+				
+				print "<a onclick=\"TagRenameDialog.run(new Tag('".RequestContext::value('tag')."'), this);\">"._("rename")."</a> &nbsp; ";
+				
+				
+				print "<a onclick=\"";
+				print "if (confirm('"._('Are you sure you want to delete all of your instances of this tag?')."')) { ";
+				print 	"var req = Harmoni.createRequest(); ";
+				print	"var url = Harmoni.quickUrl('tags', 'deleteUser', {'tag': '".RequestContext::value('tag')."'}, 'polyphony-tags'); ";
+				print 	"if (req) { ";
+				print		"req.onreadystatechange = function () { ";
+				print 			"if (req.readyState == 4) { ";
+				print				"if (req.status == 200) { ";
+				print					"alert('"._('Tag successfully deleted.')."'); ";
+				print					"window.location =  Harmoni.quickUrl('tags', 'user', null, 'polyphony-tags'); ";
+				print				"} else { ";
+				print					"alert('There was a problem retrieving the XML data: ' + req.statusText); ";
+				print 				"} ";
+				print			"} ";
+				print 		"}; ";
+				print		"req.open('GET', url, true); ";
+				print 		"req.send(null); ";
+				print	"} else { ";
+				print 		"alert('Error: Unable to execute AJAX request. Please upgrade your browser.'); ";
+				print 	"} ";
+				print "} ";
+				print "\">"._("delete")."</a> &nbsp; ";
+				
 			} else {
 				$url = $harmoni->request->quickURL('tags', 'viewuser', 
 					array('agent_id' => $tagManager->getCurrentUserIdString(),

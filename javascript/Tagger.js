@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.8 2006/11/27 14:55:28 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.9 2006/11/27 22:40:41 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.8 2006/11/27 14:55:28 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.9 2006/11/27 22:40:41 adamfranco Exp $
  */
 function Tagger ( itemId, system, positionElement, containerElement ) {
 	if ( arguments.length > 0 ) {
@@ -628,7 +628,7 @@ function Tagger ( itemId, system, positionElement, containerElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.8 2006/11/27 14:55:28 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.9 2006/11/27 22:40:41 adamfranco Exp $
  */
 function Tag ( value, occurances ) {
 	if ( arguments.length > 0 ) {
@@ -672,7 +672,7 @@ function Tag ( value, occurances ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.8 2006/11/27 14:55:28 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.9 2006/11/27 22:40:41 adamfranco Exp $
  */
 function TagCloud ( container ) {
 	if ( arguments.length > 0 ) {
@@ -753,5 +753,175 @@ function TagCloud ( container ) {
 		for (var i = relation.length - 1; i >= 0; i--) {
 			this.container.insertBefore(elements[relation[i].key], positionElement);
 			this.container.insertBefore(document.createTextNode(' '), positionElement);
+		}		
+	}
+
+
+/**
+ * A dialog for renaming and deleting tags
+ * 
+ * @since 11/27/06
+ * @package polyphony.tagging
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: Tagger.js,v 1.1.2.9 2006/11/27 22:40:41 adamfranco Exp $
+ */
+function TagRenameDialog ( tag, positionElement ) {
+	if ( arguments.length > 0 ) {
+		this.init( tag, positionElement );
+	}
+}
+
+	/**
+	 * Initialize and run the Tagger
+	 * 
+	 * @param string itemId
+	 * @param string system
+	 * @param object positionElement
+	 * @return void
+	 * @access public
+	 * @since 11/27/06
+	 */
+	TagRenameDialog.run = function (tag, positionElement ) {
+		var panel;
+		if (panel = document.get_element_by_id("tag_rename_" + tag.value)) {
+			panel.style.display = 'block';
+		} else {
+			var tagger = new TagRenameDialog(tag, positionElement );
+		}
+	}
+
+	/**
+	 * Initialize the object
+	 * 
+	 * @param object tag
+	 * @param object positionElement
+	 * @return void
+	 * @access public
+	 * @since 11/27/06
+	 */
+	TagRenameDialog.prototype.init = function ( tag, positionElement ) {
+		this.origTag = tag;
+		this.positionElement = positionElement;
+		this.panelHeight = 200;
+		this.panelWidth = 300;
+		
+		
+		this.panel = document.createElement("div");		
+		
+		this.panel.className = 'tagging_panel';
+		this.panel.id = "tag_rename_" + this.origTag.value;
+		
+// 		this.panel.style.height = this.panelHeight + 'px';
+		this.panel.style.width = this.panelWidth + 'px';
+		this.panel.style.position = 'absolute';
+		this.panel.style.overflow = 'auto';
+		
+		var top = (Tagger.getOffsetTop(this.positionElement) 
+						- Math.round(this.panelHeight / 2) 
+						+ Math.round(this.positionElement.offsetHeight / 2));
+		if (top < 5)
+			top = 5;
+		
+		var left = (Tagger.getOffsetLeft(this.positionElement) 
+						- Math.round(this.panelWidth / 2) 
+						+ Math.round(this.positionElement.offsetWidth / 2));
+		if (left < 5)
+			left = 5;
+		this.panel.style.top = top + "px";
+		this.panel.style.left = left + "px";
+		
+		document.body.appendChild(this.panel);
+		
+		
+		// Top bar
+		this.topBar = document.createElement("div");
+		this.topBar.className = 'topbar container';
+		this.panel.appendChild(this.topBar);
+		var html = "<div class='title'>Rename '" + this.origTag.value +  "'</div>";
+		html += "<div class='close'></div>";
+		this.topBar.innerHTML = html;
+		
+		var topRight = this.topBar.childNodes[1];
+		var cancel = document.createElement("a");
+		topRight.appendChild(cancel);
+		var panel = this.panel;	// define a variable for panel that will be in the
+								// scope of the onclick.
+		cancel.onclick = function () {panel.style.display = 'none'}
+		cancel.innerHTML = 'Close';
+		
+		
+		// rename form
+		this.renameForm = document.createElement("form");
+		this.renameForm.className = 'container';
+		this.panel.appendChild(this.renameForm);
+		
+		var text = document.createElement("div");
+		text.innerHTML = "All tags you have created with the name '" + this.origTag.value +  "' will be renamed. <br/>Others' tags will not be changed. <br/><br/><strong>New Tag name:</strong>";
+		this.renameForm.appendChild(text);
+		
+		this.newTagField = document.createElement("input");
+		this.newTagField.type = 'text';
+		this.renameForm.appendChild(this.newTagField);
+		
+		this.newTagSubmit = document.createElement("input");
+		this.newTagSubmit.type = 'submit';
+		this.newTagSubmit.value = 'Rename';
+		this.renameForm.appendChild(this.newTagSubmit);
+		
+		var tagRenameDialog = this;
+		this.renameForm.onsubmit = function () {
+			tagRenameDialog.rename(tagRenameDialog.newTagField.value);
+			tagRenameDialog.renameForm.style.textDecoration = 'blink';
+			tagRenameDialog.renameForm.style.textAlign = 'center';
+			tagRenameDialog.renameForm.innerHTML = 'working...';
+			return false;
+		}
+	}
+	
+	/**
+	 * Rename a Tag
+	 * 
+	 * @param string newTagValue
+	 * @return void
+	 * @access public
+	 * @since 11/27/06
+	 */
+	TagRenameDialog.prototype.rename = function (newTagValue) {
+		var newTag = new Tag(newTagValue, 1);
+		
+		// Get the new tags and re-call this method with the tags
+		var req = Harmoni.createRequest();
+		var url = Harmoni.quickUrl('tags', 'renameUser', 
+						{'tag': this.origTag.value, 'newTag': newTag.value}, 
+						'polyphony-tags');
+		if (req) {
+			// Define a variable to point at this Tagger that will be in the
+			// scope of the request-processing function, since 'this' will (at that
+			// point) be that function.
+			var tagRenameDialog = this;
+
+			req.onreadystatechange = function () {
+				// only if req shows "loaded"
+				if (req.readyState == 4) {
+					// only if we get a good load should we continue.
+					if (req.status == 200) {
+// 						alert('All occurances of tag ' + tagRenameDialog.origTag.value + ' have been renamed to ' + newTag.value);
+						window.location =  Harmoni.quickUrl('tags', 'viewuser', 
+							{'tag': newTag.value}, 'polyphony-tags');
+					} else {
+						alert("There was a problem retrieving the XML data:\n" +
+							req.statusText);
+					}
+				}
+			} 
+			
+			req.open("GET", url, true);
+			req.send(null);
+			
+		} else {
+			alert("Error: Unable to execute AJAX request. \nPlease upgrade your browser.");
 		}		
 	}
