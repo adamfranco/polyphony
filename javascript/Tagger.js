@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.7 2006/11/20 22:24:49 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.8 2006/11/27 14:55:28 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.7 2006/11/20 22:24:49 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.8 2006/11/27 14:55:28 adamfranco Exp $
  */
 function Tagger ( itemId, system, positionElement, containerElement ) {
 	if ( arguments.length > 0 ) {
@@ -60,9 +60,13 @@ function Tagger ( itemId, system, positionElement, containerElement ) {
 			panel.style.display = 'block';
 			// update any tags added through other taggers
 			panel.tagger.writeTagCloud(document.allUserTags, panel.tagger.usersTagsArea, 'add');
+			
+			panel.tagger.newTagField.focus();
 		} else {
 			var tagger = new Tagger(itemId, system, positionElement, containerElement);
 			tagger.createPanel();
+			
+			tagger.newTagField.focus();
 		}
 	}
 	
@@ -272,9 +276,9 @@ function Tagger ( itemId, system, positionElement, containerElement ) {
 			
 			var tagger = this;
 			if (operation == 'add')
-				tagElement.onclick = function () {tagger.addTag(this.text);}
+				tagElement.onclick = function () {tagger.addTag(this.text); tagger.newTagField.focus();}
 			else if (operation == 'remove')
-				tagElement.onclick = function () {tagger.removeTag(this.text);}
+				tagElement.onclick = function () {tagger.removeTag(this.text); tagger.newTagField.focus();}
 			
 			element.appendChild(tagElement);
 			element.appendChild(document.createTextNode(' '));
@@ -624,7 +628,7 @@ function Tagger ( itemId, system, positionElement, containerElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.7 2006/11/20 22:24:49 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.8 2006/11/27 14:55:28 adamfranco Exp $
  */
 function Tag ( value, occurances ) {
 	if ( arguments.length > 0 ) {
@@ -668,7 +672,7 @@ function Tag ( value, occurances ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.7 2006/11/20 22:24:49 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.8 2006/11/27 14:55:28 adamfranco Exp $
  */
 function TagCloud ( container ) {
 	if ( arguments.length > 0 ) {
