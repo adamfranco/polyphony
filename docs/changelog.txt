@@ -3,6 +3,19 @@
 Name: Polyphony ChangeLog
 
 
+v. 0.6.8 (2006-11-28)
+----------------------------------------------------
+		
+	* Bug Fix: ResultPrinter: Now doesn't overrun the end of the array when authorizations are checked. (Adam Franco)
+		
+	* New feature: Tagging: Support for Tagging. (Adam Franco)
+		
+	* New feature: Help: Adding action to allow viewing of exif data in images. (Adam Franco)
+		
+	* New feature: Javascript: Added a common Javascript library. (Adam Franco)
+		
+	* Bug Fix: Importing: Updating the Exif importer to support multi-valued fields such as keywords. (Adam Franco)
+	
 v. 0.6.7 (2006-10-25)
 ----------------------------------------------------
 		

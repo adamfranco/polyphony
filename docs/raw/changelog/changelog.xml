@@ -4,12 +4,31 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.56.2.20 2006/10/25 22:41:37 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.56.2.21 2006/11/28 22:20:32 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
+	<version number="0.6.8" date="2006-11-28">
+		<fix author='adam'>
+			ResultPrinter: Now doesn't overrun the end of the array when 
+			authorizations are checked.
+		</fix>
+		<new author='adam'>
+			Tagging: Support for Tagging.
+		</new>
+		<new author='adam'>
+			Help: Adding action to allow viewing of exif data in images.
+		</new>
+		<new author='adam'>
+			Javascript: Added a common Javascript library.
+		</new>
+		<fix author='adam'>
+			Importing: Updating the Exif importer to support multi-valued fields 
+			such as keywords.
+		</fix>
+	</version>
 	<version number="0.6.7" date="2006-10-25">
 		<fix author='adam'>
 			Wizard: Now can handle cache names that contain periods.
