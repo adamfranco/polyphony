@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.1.2.11 2006/11/27 22:40:42 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.1.2.12 2006/11/28 20:40:54 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.1.2.11 2006/11/27 22:40:42 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.1.2.12 2006/11/28 20:40:54 adamfranco Exp $
  */
 class TagAction 
 	extends MainWindowAction
@@ -92,6 +92,7 @@ class TagAction
 			$harmoni =& Harmoni::instance();
 			$harmoni->request->startNamespace("polyphony-tags");
 			$tagArray = array();
+			$occArray = array();
 			$tag = $tags->next();
 			$tagArray[] =& $tag;
 			$minFreq = $maxFreq = $tag->getOccurances();
@@ -99,6 +100,7 @@ class TagAction
 			while ($tags->hasNext()) {
 				$tag =& $tags->next();
 				$tagArray[] =& $tag;
+				$occArray[] = $tag->getOccurances();
 				if ($tag->getOccurances() < $minFreq)
 					$minFreq = $tag->getOccurances();
 				if ($tag->getOccurances() > $maxFreq)
@@ -107,15 +109,26 @@ class TagAction
 			
 			if (!is_array($styles))
 				$styles = TagAction::getDefaultStyles();
+				
+			// First Try to get a meaningful Standard Deviation
+			$incrementSize = TagAction::deviation($occArray);	
 			
-			$incrementSize = ceil(($maxFreq - $minFreq)/count($styles));
+			// If there are only two results, try this method
+			if (!$incrementSize)
+				$incrementSize = ceil(($maxFreq - $minFreq)/count($styles));
+			
+			// If we still don't have an increment size, use 1
 			if (!$incrementSize)
 				$incrementSize = 1;
+			
+// 			printpre(TagAction::average($occArray));
+// 			printpre($incrementSize);
 			
 			for ($key=0; $key < count($tagArray); $key++) {
 				$tag =& $tagArray[$key];
 				$group = 0;
-				for ($i=0; $i < $tag->getOccurances() && $group < count($styles); $i = $i + $incrementSize) {
+				$style = $styles[0];
+				for ($i=$minFreq; $i < $tag->getOccurances() && $group < count($styles); $i = $i + $incrementSize) {
 					$style = $styles[$group];
 					$group++;
 				}
@@ -130,6 +143,7 @@ class TagAction
 				$url = $harmoni->request->quickURL('tags', $viewAction, $parameters);
 				print "\n\t<a rel='tag' href='".$url."' ";
 				print " title=\"";
+// 				print $group." ";
 // 				print str_replace('%2', $tag->getValue(),
 // 						str_replace('%1', $tag->getOccurances(), 
 // 							_("View (%1) items tagged with '%2'")));
@@ -269,7 +283,7 @@ class TagAction
 			$items[] =& TaggedItem::forId($asset->getId(), $system);
 		}
 		return TagAction::getTagCloudDiv($tagManager->getTagsForItems(
-						new HarmoniIterator($items)), 
+						new HarmoniIterator($items), TAG_SORT_ALFA, 100), 
 					$viewAction, $styles, 
 					array('repository_id' => $repositoryId->getIdString(),
 						'system' => $system));
@@ -374,6 +388,35 @@ class TagAction
 		}
 		
 		return ob_get_clean();
+	}
+	
+	/*********************************************************
+	 * From PHP.net:
+	 * mightymrj at hotmail dot com
+	 * 23-May-2006 12:52
+	 * Here's a couple functions I made that easily calculate the standard deviation. 
+	 *********************************************************/
+	function average($array){
+		if (!count($array))
+			return 0;
+		
+	 	$sum  = array_sum($array);
+		$count = count($array);
+	
+		return $sum/$count;
+	}
+	
+	//The average function can be use independantly but the deviation function uses the average function.
+	function deviation ($array) {
+		if (!count($array))
+			return 0;
+		
+	   $avg = TagAction::average($array);
+	   foreach ($array as $value) {
+		   $variance[] = pow($value-$avg, 2);
+	   }
+	   $deviation = sqrt(TagAction::average($variance));
+	   return $deviation;
 	}
 }
 
