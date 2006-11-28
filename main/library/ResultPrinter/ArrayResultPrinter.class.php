@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.22.4.3 2006/09/19 20:25:45 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.22.4.4 2006/11/28 21:46:56 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.22.4.3 2006/09/19 20:25:45 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.22.4.4 2006/11/28 21:46:56 adamfranco Exp $
  */
 
 class ArrayResultPrinter 
@@ -162,12 +162,11 @@ class ArrayResultPrinter
 			
 			// print up to $this->_pageSize items
 			$pageItems = 0;
-			while ($numItems < $endingNumber && $numItems < count($this->_array)) {
+			while ($numItems < $endingNumber && $numItems < count($this->_array) && current($this->_array)) {
 				$item =& $this->_array[key($this->_array)];
 				next($this->_array);
 				
 				// Only Act if this item isn't to be filtered.
-				
 				eval($shouldPrintEval);
 				if ($shouldPrint) {
 					$numItems++;
@@ -210,6 +209,8 @@ class ArrayResultPrinter
 				if (!$item) break;
 				next($this->_array);
 				// Ignore this if it should be filtered.
+				if (!is_object($item))
+					var_dump($item);
 				eval($shouldPrintEval);
 				if ($shouldPrint)
 					$numItems++;
