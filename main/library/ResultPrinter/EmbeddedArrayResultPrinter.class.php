@@ -1,11 +1,11 @@
 <?php
 /**
- * @package polyphony.library.resultprinter
+ * @package polyphony.resultprinter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.9 2006/06/26 12:51:45 adamfranco Exp $
+ * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.8.4.1 2006/11/28 21:59:08 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -13,12 +13,12 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
 /**
  * Print out an Array of items in rows and columns in a TABLE HTML element.
  *
- * @package polyphony.library.resultprinter
+ * @package polyphony.resultprinter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.9 2006/06/26 12:51:45 adamfranco Exp $
+ * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.8.4.1 2006/11/28 21:59:08 adamfranco Exp $
  */
 
 class EmbeddedArrayResultPrinter 
@@ -266,7 +266,7 @@ class EmbeddedArrayResultPrinter
 					$numItems++;
 			}	
 		} else {
-			$markup .= $this->createTDElement("<ul><li>"._("No items are availible.")."</li></ul>\n", $this->_numColumns);
+			$markup .= $this->createTDElement("<ul><li>"._("No items are available.")."</li></ul>\n", $this->_numColumns);
 		}	
 	
 		$markup .= "</tr>\n";

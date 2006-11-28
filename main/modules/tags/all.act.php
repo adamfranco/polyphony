@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: all.act.php,v 1.1.2.3 2006/11/27 23:02:55 adamfranco Exp $
+ * @version $Id: all.act.php,v 1.1.2.4 2006/11/28 21:59:09 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/TagAction.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/TagAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: all.act.php,v 1.1.2.3 2006/11/27 23:02:55 adamfranco Exp $
+ * @version $Id: all.act.php,v 1.1.2.4 2006/11/28 21:59:09 adamfranco Exp $
  */
 class allAction 
 	extends TagAction
@@ -57,7 +57,7 @@ class allAction
 	 */
 	function &getTags () {
 		$tagManager =& Services::getService("Tagging");
-		$tags =& $tagManager->getTags();
+		$tags =& $tagManager->getTags(TAG_SORT_ALFA, 100);
 // 		printpre($tags);
 		return $tags;
 	}

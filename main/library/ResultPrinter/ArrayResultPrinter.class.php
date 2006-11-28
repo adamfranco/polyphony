@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.22.4.4 2006/11/28 21:46:56 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.22.4.5 2006/11/28 21:59:08 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.22.4.4 2006/11/28 21:46:56 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.22.4.5 2006/11/28 21:59:08 adamfranco Exp $
  */
 
 class ArrayResultPrinter 
@@ -216,7 +216,7 @@ class ArrayResultPrinter
 					$numItems++;
 			}	
 		} else {
-			$text =& new Block("<ul><li>"._("No items are availible.")."</li></ul>", STANDARD_BLOCK);
+			$text =& new Block("<ul><li>"._("No items are available.")."</li></ul>", STANDARD_BLOCK);
 			$resultContainer->add($text, null, null, CENTER, CENTER);
 		}		
 		

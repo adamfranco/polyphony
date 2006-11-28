@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.26.4.1 2006/09/18 20:30:50 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.26.4.2 2006/11/28 21:59:08 adamfranco Exp $
  */
  
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."GUIManager/StyleProperties/MarginTopSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.26.4.1 2006/09/18 20:30:50 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.26.4.2 2006/11/28 21:59:08 adamfranco Exp $
  */
 
 class IteratorResultPrinter 
@@ -168,7 +168,7 @@ class IteratorResultPrinter
 					$numItems++;
 			}	
 		} else {
-			$text =& new Block("<ul><li>"._("No items are availible.")."</li></ul>", STANDARD_BLOCK);
+			$text =& new Block("<ul><li>"._("No items are available.")."</li></ul>", STANDARD_BLOCK);
 			$resultContainer->add($text, null, null, CENTER, CENTER);
 		}		
 		

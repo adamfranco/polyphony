@@ -1,11 +1,11 @@
 <?php
 /**
- * @package polyphony.library.resultprinter
+ * @package polyphony.resultprinter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TableIteratorResultPrinter.class.php,v 1.14 2006/06/26 12:51:45 adamfranco Exp $
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.13.2.1 2006/11/28 21:59:08 adamfranco Exp $
  */
  
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -14,12 +14,12 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * Print out an Iterator of items in rows and columns of TEXT_BLOCK widgets 
  * spread over multiple pages.
  *
- * @package polyphony.library.resultprinter
+ * @package polyphony.resultprinter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TableIteratorResultPrinter.class.php,v 1.14 2006/06/26 12:51:45 adamfranco Exp $
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.13.2.1 2006/11/28 21:59:08 adamfranco Exp $
  */
 
 class TableIteratorResultPrinter 
@@ -144,7 +144,7 @@ class TableIteratorResultPrinter
 			
 			$rows = ob_get_clean();
 		} else {
-			$rows = "\n\t<tr>\n\t\t<td colspan='".$this->_numColumns."'>"._("No items are availible.")."</td>\n\t</tr>";
+			$rows = "\n\t<tr>\n\t\t<td colspan='".$this->_numColumns."'>"._("No items are available.")."</td>\n\t</tr>";
 		}		
 		
 /*********************************************************
