@@ -5,8 +5,12 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.9 2006/11/27 22:40:41 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.10 2006/11/29 18:59:27 adamfranco Exp $
  */
+
+Tagger.prototype = new Panel();
+Tagger.prototype.constructor = Tagger;
+Tagger.superclass = Panel.prototype;
 
 /**
  * Tagger is a library for generating an ajax tagging interface.
@@ -17,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.9 2006/11/27 22:40:41 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.10 2006/11/29 18:59:27 adamfranco Exp $
  */
 function Tagger ( itemId, system, positionElement, containerElement ) {
 	if ( arguments.length > 0 ) {
@@ -37,126 +41,45 @@ function Tagger ( itemId, system, positionElement, containerElement ) {
 	Tagger.prototype.init = function ( itemId, system, positionElement, containerElement ) {
 		this.itemId = itemId;
 		this.system = system;
-		this.positionElement = positionElement;
 		this.containerElement = containerElement;
 		
-		this.panelHeight = 200;
-		this.panelWidth = 300;
-	}
-	
-	/**
-	 * Initialize and run the Tagger
-	 * 
-	 * @param string itemId
-	 * @param string system
-	 * @param object positionElement
-	 * @return void
-	 * @access public
-	 * @since 11/9/06
-	 */
-	Tagger.run = function ( itemId, system, positionElement, containerElement ) {
-		var panel;
-		if (panel = document.get_element_by_id('tagger_' + itemId)) {
-			panel.style.display = 'block';
-			// update any tags added through other taggers
-			panel.tagger.writeTagCloud(document.allUserTags, panel.tagger.usersTagsArea, 'add');
+		TagRenameDialog.superclass.init.call(this, 
+								"Add Tags",
+								200,
+								300,
+								positionElement);
+		
+		
+		
 			
-			panel.tagger.newTagField.focus();
-		} else {
-			var tagger = new Tagger(itemId, system, positionElement, containerElement);
-			tagger.createPanel();
-			
-			tagger.newTagField.focus();
-		}
-	}
-	
-	/**
-	 * Create a panel for doing the tagging. This will be absolutely positioned
-	 * such that it is over the position element passed in launching it.
-	 * 
-	 * @return void
-	 * @access public
-	 * @since 11/9/06
-	 */
-	Tagger.prototype.createPanel = function () {
-		this.panel = document.createElement("div");
-		this.panel.tagger = this;
-		
-		
-		this.panel.className = 'tagging_panel';
-		this.panel.id = "tagger_" + this.itemId;
-		
-// 		this.panel.style.height = this.panelHeight + 'px';
-		this.panel.style.width = this.panelWidth + 'px';
-		this.panel.style.position = 'absolute';
-		this.panel.style.overflow = 'auto';
-		
-		var top = (Tagger.getOffsetTop(this.positionElement) 
-						- Math.round(this.panelHeight / 2) 
-						+ Math.round(this.positionElement.offsetHeight / 2));
-		if (top < 5)
-			top = 5;
-		
-		var left = (Tagger.getOffsetLeft(this.positionElement) 
-						- Math.round(this.panelWidth / 2) 
-						+ Math.round(this.positionElement.offsetWidth / 2));
-		if (left < 5)
-			left = 5;
-		this.panel.style.top = top + "px";
-		this.panel.style.left = left + "px";
-		
-		document.body.appendChild(this.panel);
-		
-		
-		// Top bar
-		this.topBar = document.createElement("div");
-		this.topBar.className = 'topbar container';
-		this.panel.appendChild(this.topBar);
-		var html = "<div class='title'>Add Tags</div>";
-		html += "<div class='close'></div>";
-		this.topBar.innerHTML = html;
-		
-		var topRight = this.topBar.childNodes[1];
-		var cancel = document.createElement("a");
-		topRight.appendChild(cancel);
-		var panel = this.panel;	// define a variable for panel that will be in the
-								// scope of the onclick.
-		cancel.onclick = function () {panel.tagger.reloadSourceCloud(); panel.style.display = 'none'}
-		cancel.innerHTML = 'Close';
-		
-		
 		// Other's tags
-		this.tagRow = document.createElement("div");
-		this.panel.appendChild(this.tagRow);
-		this.tagRow.className = 'container';
-		
 		var element = document.createElement("div");
 		element.className = 'heading';
-		this.tagRow.appendChild(element);
+		this.contentElement.appendChild(element);
 		element.innerHTML = "Others' Tags on this item:";
 		
 		
 		this.othersTagsArea = document.createElement("div");
 		this.othersTagsArea.className = 'tag_area';
-		this.tagRow.appendChild(this.othersTagsArea);
+		this.contentElement.appendChild(this.othersTagsArea);
 		this.othersTagsArea.innerHTML = "<div class='loading'>loading...</div>";
 		this.loadTagsNotByUser(this.othersTagsArea);
 		
 		
 		// User's tags on this item
 		var element = document.createElement("div");
-		this.tagRow.appendChild(element);
+		this.contentElement.appendChild(element);
 		element.className = 'heading';
 		element.innerHTML = "Your Tags on this item:";
 		
 		this.currentTagsArea = document.createElement("div");
 		this.currentTagsArea.className = 'tag_area';
-		this.tagRow.appendChild(this.currentTagsArea);
+		this.contentElement.appendChild(this.currentTagsArea);
 		this.currentTagsArea.innerHTML = "<div class='loading'>loading...</div>";
 		this.loadCurrentTags(this.currentTagsArea);
 		
 		this.newTagForm = document.createElement("form");
-		this.tagRow.appendChild(this.newTagForm);
+		this.contentElement.appendChild(this.newTagForm);
 		
 		this.newTagField = document.createElement("input");
 		this.newTagField.type = 'text';
@@ -178,46 +101,62 @@ function Tagger ( itemId, system, positionElement, containerElement ) {
 		
 		// All users's tags
 		var element = document.createElement("div");
-		this.tagRow.appendChild(element);
+		this.contentElement.appendChild(element);
 		element.className = 'heading';
 		element.innerHTML = "All of your Tags:";
 		
 		this.usersTagsArea = document.createElement("div");
 		this.usersTagsArea.className = 'tag_area';
-		this.tagRow.appendChild(this.usersTagsArea);
+		this.contentElement.appendChild(this.usersTagsArea);
 		this.usersTagsArea.innerHTML = "<div class='loading'>loading...</div>";
 		this.loadAllUserTags(this.usersTagsArea);
 		
+		
+		
+		this.newTagField.focus();
 	}
 	
 	/**
-	 * Recursively add up the offsets of the parent elements.
+	 * Initialize and run the Tagger
 	 * 
-	 * @param object element
-	 * @return integer
+	 * @param string itemId
+	 * @param string system
+	 * @param object positionElement
+	 * @return void
 	 * @access public
 	 * @since 11/9/06
+	 * @static
 	 */
-	Tagger.getOffsetTop = function ( element ) {
-		if (element.offsetParent)
-			return element.offsetTop + Tagger.getOffsetTop(element.offsetParent);
-		else
-			return element.offsetTop;
+	Tagger.run = function ( itemId, system, positionElement, containerElement ) {
+		if (positionElement.panel) {
+			positionElement.panel.open();
+		} else {
+			var tagger = new Tagger(itemId, system, positionElement, containerElement);
+		}
 	}
 	
 	/**
-	 * Recursively add up the offsets of the parent elements.
+	 * Actions to take when reopening the panel
 	 * 
-	 * @param object element
-	 * @return integer
+	 * @return void
 	 * @access public
-	 * @since 11/9/06
+	 * @since 11/29/06
 	 */
-	Tagger.getOffsetLeft = function ( element ) {
-		if (element.offsetParent)
-			return element.offsetLeft + Tagger.getOffsetLeft(element.offsetParent);
-		else
-			return element.offsetLeft;
+	Tagger.prototype.onOpen = function () {
+		// update any tags added through other taggers
+		this.writeTagCloud(document.allUserTags, this.usersTagsArea, 'add');
+		this.newTagField.focus();
+	}
+	
+	/**
+	 * Actions to take when closing the panel
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 11/29/06
+	 */
+	Tagger.prototype.onClose = function () {
+		this.reloadSourceCloud();
 	}
 	
 	/**
@@ -628,7 +567,7 @@ function Tagger ( itemId, system, positionElement, containerElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.9 2006/11/27 22:40:41 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.10 2006/11/29 18:59:27 adamfranco Exp $
  */
 function Tag ( value, occurances ) {
 	if ( arguments.length > 0 ) {
@@ -672,7 +611,7 @@ function Tag ( value, occurances ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.9 2006/11/27 22:40:41 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.10 2006/11/29 18:59:27 adamfranco Exp $
  */
 function TagCloud ( container ) {
 	if ( arguments.length > 0 ) {
@@ -757,6 +696,12 @@ function TagCloud ( container ) {
 	}
 
 
+
+
+TagRenameDialog.prototype = new Panel();
+TagRenameDialog.prototype.constructor = TagRenameDialog;
+TagRenameDialog.superclass = Panel.prototype;
+
 /**
  * A dialog for renaming and deleting tags
  * 
@@ -766,7 +711,7 @@ function TagCloud ( container ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.9 2006/11/27 22:40:41 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.10 2006/11/29 18:59:27 adamfranco Exp $
  */
 function TagRenameDialog ( tag, positionElement ) {
 	if ( arguments.length > 0 ) {
@@ -785,9 +730,8 @@ function TagRenameDialog ( tag, positionElement ) {
 	 * @since 11/27/06
 	 */
 	TagRenameDialog.run = function (tag, positionElement ) {
-		var panel;
-		if (panel = document.get_element_by_id("tag_rename_" + tag.value)) {
-			panel.style.display = 'block';
+		if (positionElement.panel) {
+			positionElement.panel.open();
 		} else {
 			var tagger = new TagRenameDialog(tag, positionElement );
 		}
@@ -804,59 +748,17 @@ function TagRenameDialog ( tag, positionElement ) {
 	 */
 	TagRenameDialog.prototype.init = function ( tag, positionElement ) {
 		this.origTag = tag;
-		this.positionElement = positionElement;
-		this.panelHeight = 200;
-		this.panelWidth = 300;
 		
-		
-		this.panel = document.createElement("div");		
-		
-		this.panel.className = 'tagging_panel';
-		this.panel.id = "tag_rename_" + this.origTag.value;
-		
-// 		this.panel.style.height = this.panelHeight + 'px';
-		this.panel.style.width = this.panelWidth + 'px';
-		this.panel.style.position = 'absolute';
-		this.panel.style.overflow = 'auto';
-		
-		var top = (Tagger.getOffsetTop(this.positionElement) 
-						- Math.round(this.panelHeight / 2) 
-						+ Math.round(this.positionElement.offsetHeight / 2));
-		if (top < 5)
-			top = 5;
-		
-		var left = (Tagger.getOffsetLeft(this.positionElement) 
-						- Math.round(this.panelWidth / 2) 
-						+ Math.round(this.positionElement.offsetWidth / 2));
-		if (left < 5)
-			left = 5;
-		this.panel.style.top = top + "px";
-		this.panel.style.left = left + "px";
-		
-		document.body.appendChild(this.panel);
-		
-		
-		// Top bar
-		this.topBar = document.createElement("div");
-		this.topBar.className = 'topbar container';
-		this.panel.appendChild(this.topBar);
-		var html = "<div class='title'>Rename '" + this.origTag.value +  "'</div>";
-		html += "<div class='close'></div>";
-		this.topBar.innerHTML = html;
-		
-		var topRight = this.topBar.childNodes[1];
-		var cancel = document.createElement("a");
-		topRight.appendChild(cancel);
-		var panel = this.panel;	// define a variable for panel that will be in the
-								// scope of the onclick.
-		cancel.onclick = function () {panel.style.display = 'none'}
-		cancel.innerHTML = 'Close';
+		TagRenameDialog.superclass.init.call(this, 
+								"Rename '" + this.origTag.value +  "'",
+								200,
+								300,
+								positionElement);
 		
 		
 		// rename form
 		this.renameForm = document.createElement("form");
-		this.renameForm.className = 'container';
-		this.panel.appendChild(this.renameForm);
+		this.contentElement.appendChild(this.renameForm);
 		
 		var text = document.createElement("div");
 		text.innerHTML = "All tags you have created with the name '" + this.origTag.value +  "' will be renamed. <br/>Others' tags will not be changed. <br/><br/><strong>New Tag name:</strong>";
