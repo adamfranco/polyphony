@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.1.2.12 2006/11/28 20:40:54 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.1.2.13 2006/11/29 17:04:21 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.1.2.12 2006/11/28 20:40:54 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.1.2.13 2006/11/29 17:04:21 adamfranco Exp $
  */
 class TagAction 
 	extends MainWindowAction
@@ -74,19 +74,7 @@ class TagAction
 	 * @access public
 	 * @since 11/7/06
 	 */
-	function getTagCloud ($tags, $viewAction = 'view', $styles = null, $additionalParams = null) {
-	
-		if (!defined('TAGGING_JS_LOADED')) {
-			// Add the tagging manager script to the header
-			$harmoni =& Harmoni::instance();
-			$outputHandler =& $harmoni->getOutputHandler();
-			$outputHandler->setHead($outputHandler->getHead()
-				."\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."javascript/Tagger.js'></script>"
-				."\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."javascript/quicksort.js'></script>"
-				."\n\t\t<link rel='stylesheet' type='text/css' href='".POLYPHONY_PATH."javascript/Tagger.css' />");
-			define('TAGGING_JS_LOADED', true);
-		}
-		
+	function getTagCloud ($tags, $viewAction = 'view', $styles = null, $additionalParams = null) {		
 		ob_start();
 		if ($tags->hasNext()) {
 			$harmoni =& Harmoni::instance();

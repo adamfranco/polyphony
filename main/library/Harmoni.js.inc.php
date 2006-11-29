@@ -1,58 +1,32 @@
+<?php
+/**
+ * This file includes a number of static javascript files and writes a Harmoni
+ * javascript class that dynamically adapts to changes in the configuration
+ * of the RequestContext url writer. 
+ *
+ * @since 11/29/06
+ * @package polyphony.javascript
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: Harmoni.js.inc.php,v 1.1.2.2 2006/11/29 17:04:20 adamfranco Exp $
+ */ 
+
+	// Additional Files
+	print "\n\t\t\t<script type='text/javascript' src='".POLYPHONY_PATH."javascript/common.js'></script>";
+	print "\n\t\t\t<script type='text/javascript' src='".POLYPHONY_PATH."javascript/Tagger.js'></script>";
+	print "\n\t\t\t<script type='text/javascript' src='".POLYPHONY_PATH."javascript/quicksort.js'></script>";
+	print "\n\t\t\t<link rel='stylesheet' type='text/css' href='".POLYPHONY_PATH."javascript/Tagger.css' />";
+
+?>
+
 			
 			<script type='text/javascript'>
 			// <![CDATA[
 			
 			/**
-			 * Add a method to string to allow it to replace all occurances
-			 * of an expression
-			 * 
-			 * @param RegExp regExp
-			 * @param string replaceValue
-			 * @return String
-			 * @access public
-			 * @since 11/10/06
-			 */
-			String.prototype.replaceAll = function (regExp, replaceValue) {
-				var newString = this;
-				var matches;
-				while (matches = newString.match(regExp)) {
- 					newString = newString.replace(regExp, replaceValue);
-				}
-				return newString;
-			}
-			
-			/**
-			 * Replace '&amp;' in URLs with '&'
-			 * 
-			 * @return string
-			 * @access public
-			 * @since 6/12/06
-			 */
-			String.prototype.urlDecodeAmpersands = function () {
-				return this.replaceAll(/&amp;/, '&');
-			}
-			
-			/**
-			 * Answer the element of the document by id.
-			 * 
-			 * @param string id
-			 * @return object The html element
-			 * @access public
-			 * @since 8/25/05
-			 */
-			document.get_element_by_id = function (id) {
-				// Gecko, KHTML, Opera, IE6+
-				if (document.getElementById) {
-					return document.getElementById(id);
-				}
-				// IE 4-5
-				if (document.all) {
-					return document.all[id];
-				}			
-			}
-			
-			/**
-			 * A Class for harmoni related static methods
+			 * A Class for harmoni related static methods.
 			 * 
 			 * @access public
 			 * @since 11/10/06
@@ -132,4 +106,4 @@
 			
 			// ]]>
 			</script>
-			
+
