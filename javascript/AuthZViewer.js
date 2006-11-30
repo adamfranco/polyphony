@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AuthZViewer.js,v 1.1.2.1 2006/11/30 15:25:52 adamfranco Exp $
+ * @version $Id: AuthZViewer.js,v 1.1.2.2 2006/11/30 18:49:56 adamfranco Exp $
  */
 
 AuthZViewer.prototype = new Panel();
@@ -21,7 +21,7 @@ AuthZViewer.superclass = Panel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AuthZViewer.js,v 1.1.2.1 2006/11/30 15:25:52 adamfranco Exp $
+ * @version $Id: AuthZViewer.js,v 1.1.2.2 2006/11/30 18:49:56 adamfranco Exp $
  */
 function AuthZViewer ( qualifierId, positionElement ) {
 	if ( arguments.length > 0 ) {
@@ -40,7 +40,7 @@ function AuthZViewer ( qualifierId, positionElement ) {
 	AuthZViewer.prototype.init = function ( qualifierId, positionElement ) {
 		AuthZViewer.superclass.init.call(this, 
 								"Authorizations",
-								100,
+								15,
 								300,
 								positionElement);
 		
@@ -131,9 +131,10 @@ function AuthZViewer ( qualifierId, positionElement ) {
 			html += "<table border='0'>"
 			for (var i = 0; i < agents.length; i++) {
 				html += "<tr>";
-				html += "<th>" + agents[i].getAttribute('displayName') + "</th>";
-				html += "<td>";
+				html += "<td style='font-weight: bold; border-top: 1px dotted;'>" + agents[i].getAttribute('displayName') + "</td>";
+				html += "<td style='border-top: 1px dotted;'>";
 				var azs = agents[i].getElementsByTagName('authorization');
+				var azStrings = new Array();
 				for (var j = 0; j < azs.length; j++) {
 					var azFunctions = azs[j].getElementsByTagName('function');
 					var azFunction = azFunctions[0];
@@ -145,20 +146,19 @@ function AuthZViewer ( qualifierId, positionElement ) {
 					var azFunctionTypeKeywords = azFunctionType.getElementsByTagName('keyword');
 					var azFunctionTypeKeyword = azFunctionTypeKeywords[0].firstChild.nodeValue;
 					
-					if (azFunctionTypeDomain == 'Authorization' &&
-						(azFunctionTypeKeyword == 'View/Use' || 
-							azFunctionTypeKeyword == 'Editing'))
+					if (azFunctionTypeDomain == 'Authorization' 
+						&& (azFunctionTypeKeyword == 'View/Use' || 
+							azFunctionTypeKeyword == 'Editing')
+						&& !azStrings.elementExists(azFunction.getAttribute('referenceName')))
 					{
-						html += "<span style='white-space: nowrap;'>";
-						html += azFunction.getAttribute('referenceName');
-						if (j < (azs.length - 1))
-							html += ", ";
-						html += "</span>";
-					} else {
-						
-					}
-					
+						azStrings.push(azFunction.getAttribute('referenceName'));
+					}	
 				}
+				azStrings.sort();
+				html += "<div>";
+				html += azStrings.join("</div><div>");
+				html += "</div>";
+				
 				html += "</td>";
 				html += "</tr>";
 			}

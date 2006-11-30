@@ -8,7 +8,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: common.js,v 1.1.2.1 2006/11/29 17:04:05 adamfranco Exp $
+ * @version $Id: common.js,v 1.1.2.2 2006/11/30 18:49:57 adamfranco Exp $
  */
 
 /**
@@ -39,6 +39,23 @@ String.prototype.replaceAll = function (regExp, replaceValue) {
  */
 String.prototype.urlDecodeAmpersands = function () {
 	return this.replaceAll(/&amp;/, '&');
+}
+
+/**
+ * Search the array and return true if the passed parameter is an element.
+ * 
+ * @param mixed value
+ * @return boolean
+ * @access public
+ * @since 11/30/06
+ */
+Array.prototype.elementExists = function (value) {
+	for (var i = 0; i < this.length; i++) {
+		if (this[i] == value)
+			return true;
+	}
+	
+	return false;
 }
 
 /**
