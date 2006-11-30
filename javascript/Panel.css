@@ -43,3 +43,11 @@ div.panel {
 	color: red;
 	text-align: center;
 }
+
+.panel th {
+	vertical-align: top;
+}
+
+.panel td {
+	vertical-align: top;
+}

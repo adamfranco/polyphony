@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Harmoni.js.inc.php,v 1.1.2.3 2006/11/29 18:59:33 adamfranco Exp $
+ * @version $Id: Harmoni.js.inc.php,v 1.1.2.4 2006/11/30 15:25:53 adamfranco Exp $
  */ 
 
 	// Additional Files
@@ -18,6 +18,7 @@
 	print "\n\t\t\t<script type='text/javascript' src='".POLYPHONY_PATH."javascript/Panel.js'></script>";
 	print "\n\t\t\t<link rel='stylesheet' type='text/css' href='".POLYPHONY_PATH."javascript/Panel.css' />";
 	print "\n\t\t\t<script type='text/javascript' src='".POLYPHONY_PATH."javascript/Tagger.js'></script>";
+	print "\n\t\t\t<script type='text/javascript' src='".POLYPHONY_PATH."javascript/AuthZViewer.js'></script>";
 	print "\n\t\t\t<script type='text/javascript' src='".POLYPHONY_PATH."javascript/quicksort.js'></script>";
 
 ?>
