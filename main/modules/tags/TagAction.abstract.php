@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.1.2.13 2006/11/29 17:04:21 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.1.2.14 2006/11/30 16:40:51 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.1.2.13 2006/11/29 17:04:21 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.1.2.14 2006/11/30 16:40:51 adamfranco Exp $
  */
 class TagAction 
 	extends MainWindowAction
@@ -222,6 +222,7 @@ class TagAction
 		foreach ($styles as $style) {
 			$styleStrings = explode(";", $style);
 			print "this.styles.push({";
+			$started = false;
 			foreach ($styleStrings as $styleString) {
 				if (preg_match('/([a-z0-9\-]+):\s?([a-z0-9\-\s%]+)/i', $styleString, $matches)) 
 				{
@@ -234,7 +235,9 @@ class TagAction
 					
 					
 					$styleValue = trim($matches[2]);
-					print "'".$styleName."': '".$styleValue."', ";
+					if ($started)
+						print ", ";
+					print "'".$styleName."': '".$styleValue."'";
 				}
 			}
 			print "}); ";

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.10 2006/11/29 18:59:27 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.11 2006/11/30 16:40:47 adamfranco Exp $
  */
 
 Tagger.prototype = new Panel();
@@ -21,7 +21,7 @@ Tagger.superclass = Panel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.10 2006/11/29 18:59:27 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.11 2006/11/30 16:40:47 adamfranco Exp $
  */
 function Tagger ( itemId, system, positionElement, containerElement ) {
 	if ( arguments.length > 0 ) {
@@ -215,9 +215,15 @@ function Tagger ( itemId, system, positionElement, containerElement ) {
 			
 			var tagger = this;
 			if (operation == 'add')
-				tagElement.onclick = function () {tagger.addTag(this.text); tagger.newTagField.focus();}
+				tagElement.onclick = function () {
+					tagger.addTag(this.innerHTML); 
+					tagger.newTagField.focus();
+				}
 			else if (operation == 'remove')
-				tagElement.onclick = function () {tagger.removeTag(this.text); tagger.newTagField.focus();}
+				tagElement.onclick = function () {
+					tagger.removeTag(this.innerHTML); 
+					tagger.newTagField.focus();
+				}
 			
 			element.appendChild(tagElement);
 			element.appendChild(document.createTextNode(' '));
@@ -567,7 +573,7 @@ function Tagger ( itemId, system, positionElement, containerElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.10 2006/11/29 18:59:27 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.11 2006/11/30 16:40:47 adamfranco Exp $
  */
 function Tag ( value, occurances ) {
 	if ( arguments.length > 0 ) {
@@ -585,7 +591,10 @@ function Tag ( value, occurances ) {
 	 * @since 11/10/06
 	 */
 	Tag.prototype.init = function ( value, occurances ) {
+		if (!value)
+			alert("Value=" + value);
 		this.value = value.toLowerCase();
+		
 		// drop any quotes
 		this.value = this.value.replaceAll(/['"]/, '');
 		// convert any non-allowed characters to underscores
@@ -611,7 +620,7 @@ function Tag ( value, occurances ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.10 2006/11/29 18:59:27 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.11 2006/11/30 16:40:47 adamfranco Exp $
  */
 function TagCloud ( container ) {
 	if ( arguments.length > 0 ) {
@@ -646,8 +655,8 @@ function TagCloud ( container ) {
 		
 		while (item) {
 			if (item.nodeName == 'A' && item.getAttribute && item.getAttribute('rel') == 'tag') {
-				elements[item.text] = item;
-				keys.push(item.text);
+				elements[item.innerHTML] = item;
+				keys.push(item.innerHTML);
 				
 			} else if (item.nodeType == 1 && !positionElement) {
 				positionElement = item;
@@ -677,10 +686,10 @@ function TagCloud ( container ) {
 		var positionElement = null;
 		
 		while (item) {
-			if (item.nodeName == 'A' && item.getAttribute && item.getAttribute('rel') == 'tag' && item.text) {
-				elements[item.text] = item;
+			if (item.nodeName == 'A' && item.getAttribute && item.getAttribute('rel') == 'tag' && item.innerHTML) {
+				elements[item.innerHTML] = item;
 				var matches = item.getAttribute('title').match( /\(.+: ([0-9]+)\)/ );
-				relation.push({'key': item.text, 'value': Math.round(matches[1])});
+				relation.push({'key': item.innerHTML, 'value': Math.round(matches[1])});
 			} else if (item.nodeType == 1 && !positionElement) {
 				positionElement = item;
 			}
@@ -711,7 +720,7 @@ TagRenameDialog.superclass = Panel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.1.2.10 2006/11/29 18:59:27 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.1.2.11 2006/11/30 16:40:47 adamfranco Exp $
  */
 function TagRenameDialog ( tag, positionElement ) {
 	if ( arguments.length > 0 ) {

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AuthZPrinter.abstract.php,v 1.1.2.1 2006/11/30 15:25:53 adamfranco Exp $
+ * @version $Id: AuthZPrinter.abstract.php,v 1.1.2.2 2006/11/30 16:40:50 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AuthZPrinter.abstract.php,v 1.1.2.1 2006/11/30 15:25:53 adamfranco Exp $
+ * @version $Id: AuthZPrinter.abstract.php,v 1.1.2.2 2006/11/30 16:40:50 adamfranco Exp $
  */
 class AuthZPrinter {
 		
@@ -55,7 +55,7 @@ class AuthZPrinter {
 				$idManager->getId("edu.middlebury.authorization.view"), 
 				$qualifierId))
 		{
-			print "\n<img src='".POLYPHONY_PATH."/icons/view_institute.gif' alt='".("Instition-Viewable")."' title='".("Instition-Viewable")."' ".$onclick."/> ";
+			print "\n<img src='".POLYPHONY_PATH."/icons/view_institute.gif' alt='".("Institution-Viewable")."' title='".("Institution-Viewable")."' ".$onclick."/> ";
 		} else {
 			print "\n<img src='".POLYPHONY_PATH."/icons/view_limited.gif' alt='".("Viewable by some people")."' title='".("Viewable by some people")."' ".$onclick."/> ";
 		}
