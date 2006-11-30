@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.11 2006/05/22 20:46:41 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.12 2006/11/30 22:02:43 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.11 2006/05/22 20:46:41 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.12 2006/11/30 22:02:43 adamfranco Exp $
  */
 class viewAction 
 	extends MainWindowAction
@@ -93,7 +93,7 @@ class viewAction
 		// print the results
 		//***********************************
 		$resultPrinter =& new IteratorResultPrinter($basket, 3, 6, "printAssetShort");
-		$resultLayout =& $resultPrinter->getLayout($harmoni, "viewAction::canView");
+		$resultLayout =& $resultPrinter->getLayout("viewAction::canView");
 		$actionRows->add($resultLayout, "100%", null, LEFT, CENTER);
 		$harmoni->request->endNamespace();
 	}
@@ -133,8 +133,6 @@ function printAssetShort(&$assetId, $num) {
 	if ($_SESSION["show_thumbnail"] == 'true') {
 		$thumbnailURL = RepositoryInputOutputModuleManager::getThumbnailUrlForAsset($asset);
 		if ($thumbnailURL !== FALSE) {
-			$xmlModule = 'collection';
-			$xmlAssetIdString = $assetId->getIdString();
 			$xmlStart = $num - 1;
 			
 			$thumbSize = $_SESSION["thumbnail_size"]."px";
@@ -144,10 +142,8 @@ function printAssetShort(&$assetId, $num) {
 			print "\n\t<a style='cursor: pointer;'";
 			print " onclick='Javascript:window.open(";
 			print '"'.VIEWER_URL."?&amp;source=";
-			$params["asset_id"] = $xmlAssetIdString;
-			print urlencode($harmoni->request->quickURL($xmlModule, "browse_outline_xml", $params));
+			print urlencode($harmoni->request->quickURL("basket", "browse_xml"));
 			print '&amp;start='.$xmlStart.'", ';
-	// 		print '"'.preg_replace("/[^a-z0-9]/i", '_', $assetId->getIdString()).'", ';
 			print '"_blank", ';
 			print '"toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,copyhistory=no,width=600,height=500"';
 			print ")'>";
@@ -187,14 +183,14 @@ function printAssetShort(&$assetId, $num) {
 	print "\n | <a href='";
 	print $harmoni->request->quickURL("basket", "up", array('asset_id' => $assetId->getIdString()));
 	print "' title='". _('move up')."'>";
-// 	print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/arrowleft.png' width='25px' border='0' alt='"._("Move Up")."' />";
+// 	print "<img src='".POLYPHONY_PATH."/icons/basket/arrowleft.png' width='25px' border='0' alt='"._("Move Up")."' />";
 	print "&lt;--";
 	print "</a>";
 	
 	print "\n | <a href='";
 	print $harmoni->request->quickURL("basket", "down", array('asset_id' => $assetId->getIdString()));
 	print "' title='". _('move down')."'>";
-// 	print "<img src='".POLYPHONY_PATH."/main/library/Basket/icons/arrowright.png' width='25px' border='0'  alt='"._("Move Down")."'  />";
+// 	print "<img src='".POLYPHONY_PATH."/icons/basket/arrowright.png' width='25px' border='0'  alt='"._("Move Down")."'  />";
 	print "--&gt;";
 	print "</a>";
 	

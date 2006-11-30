@@ -6,10 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.9 2006/02/13 22:29:51 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.10 2006/11/30 22:02:45 adamfranco Exp $
  */ 
 
-require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
+require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
 
 /**
  * Display the file in the specified record.
@@ -23,10 +23,10 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.9 2006/02/13 22:29:51 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.10 2006/11/30 22:02:45 adamfranco Exp $
  */
 class viewfileAction 
-	extends MainWindowAction
+	extends ForceAuthAction
 {
 	/**
 	 * Check Authorizations
@@ -35,7 +35,7 @@ class viewfileAction
 	 * @access public
 	 * @since 4/26/05
 	 */
-	function isAuthorizedToExecute () {
+	function isExecutionAuthorized () {
 		$harmoni =& Harmoni::instance();
 		$idManager =& Services::getService("Id");
 		$authZManager =& Services::getService("AuthorizationManager");
@@ -50,27 +50,39 @@ class viewfileAction
 	}
 	
 	/**
-	 * Return the heading text for this action, or an empty string.
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 4/26/05
-	 */
-	function getHeadingText () {
-		return dgettext("polyphony", "View File");
-	}
-	
-	/**
 	 * Return a junk image that says you can't view the file
 	 *
 	 * @since 12/22/05
 	 */
 	function getUnauthorizedMessage() {
 		header("Content-Type: image/gif");
-		header('Content-Disposition: attachment; filename="english.gif"');
+		header('Content-Disposition: filename="english.gif"');
 			
 		print file_get_contents(POLYPHONY.'/docs/images/unauthorized/english.gif');
 		exit;
+	}
+	
+	/**
+	 * Answer the HTTP Authentication 'Relm' to present to the user for authentication.
+	 * 
+	 * @return mixed string or null
+	 * @access public
+	 * @since 8/7/06
+	 */
+	function getRelm () {
+		return 'Concerto'; // Override for custom relm.
+	}
+	
+	/**
+	 * Answer the cancel function for this action, to use if the user hits
+	 * the 'cancel' button in the http authentication dialog.
+	 * 
+	 * @return mixed string or null
+	 * @access public
+	 * @since 8/7/06
+	 */
+	function getCancelFunction () {
+		return 'viewfileAction::getUnauthorizedMessage();';
 	}
 	
 	/**
@@ -80,10 +92,12 @@ class viewfileAction
 	 * @access public
 	 * @since 4/26/05
 	 */
-	function buildContent () {
+	function execute () {
+		if (!$this->isAuthorizedToExecute())
+			$this->getUnauthorizedMessage();
+		
 		$defaultTextDomain = textdomain("polyphony");
 		
-		$actionRows =& $this->getActionRows();
 		$harmoni =& Harmoni::instance();
 		$idManager =& Services::getService("Id");
 		$repositoryManager =& Services::getService("Repository");
@@ -146,8 +160,15 @@ class viewfileAction
 			// Otherwise, just send the original file
 			else {
 				header("Content-Type: ".$parts['MIME_TYPE']->getValue());
-				header('Content-Disposition: attachment; filename="'.
-							$parts['FILE_NAME']->getValue().'"');
+				
+				$filename = $parts['FILE_NAME']->getValue();
+				if (!ereg("[^\\w]", $filename)) {
+					$mime =& Services::getService("MIME");
+					$extension = $mime->getExtensionForMIMEType($parts['MIME_TYPE']->getValue());
+					$filename = _("Untitled").".".$extension;
+				}
+				
+				header('Content-Disposition: attachment; filename="'.$filename.'"');
 			
 				print $parts['FILE_DATA']->getValue();
 			}
@@ -173,7 +194,7 @@ class viewfileAction
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.9 2006/02/13 22:29:51 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.10 2006/11/30 22:02:45 adamfranco Exp $
  */
 class RepositoryImageCache {
 	
@@ -236,10 +257,12 @@ class RepositoryImageCache {
 		$mime =& Services::getService("MIME");
 		
 		$extension = $mime->getExtensionForMIMEType($this->getCachedMimeType());
-		if (ereg("^.+\.".$extension."$", $this->_parts['FILE_NAME']->getValue())) {
+		if (eregi("^.+\.".$extension."$", $this->_parts['FILE_NAME']->getValue())) {
 			return $this->_parts['FILE_NAME']->getValue();
-		} else {
+		} else if (ereg("^[^\\w]+$", $this->_parts['FILE_NAME']->getValue())) {
 			return $this->_parts['FILE_NAME']->getValue().".".$extension;
+		} else {
+			return _("Untitled").".".$extension;
 		}
 	}
 	

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TableIteratorResultPrinter.class.php,v 1.14 2006/06/26 12:51:45 adamfranco Exp $
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.15 2006/11/30 22:02:40 adamfranco Exp $
  */
  
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TableIteratorResultPrinter.class.php,v 1.14 2006/06/26 12:51:45 adamfranco Exp $
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.15 2006/11/30 22:02:40 adamfranco Exp $
  */
 
 class TableIteratorResultPrinter 
@@ -144,7 +144,7 @@ class TableIteratorResultPrinter
 			
 			$rows = ob_get_clean();
 		} else {
-			$rows = "\n\t<tr>\n\t\t<td colspan='".$this->_numColumns."'>"._("No items are availible.")."</td>\n\t</tr>";
+			$rows = "\n\t<tr>\n\t\t<td colspan='".$this->_numColumns."'>"._("No items are available.")."</td>\n\t</tr>";
 		}		
 		
 /*********************************************************

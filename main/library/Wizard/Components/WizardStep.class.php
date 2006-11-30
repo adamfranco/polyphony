@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStep.class.php,v 1.2 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WizardStep.class.php,v 1.3 2006/11/30 22:02:41 adamfranco Exp $
  */
 
 require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstract.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStep.class.php,v 1.2 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WizardStep.class.php,v 1.3 2006/11/30 22:02:41 adamfranco Exp $
  * @author Gabe Schine
  */
 class WizardStep extends WizardComponentWithChildren {
@@ -52,27 +52,6 @@ class WizardStep extends WizardComponentWithChildren {
 	 */
 	function setContent ($content) {
 		$this->_contentText = $content;
-	}
-
-	/**
-	 * Tells the wizard component to update itself - this may include getting
-	 * form post data or validation - whatever this particular component wants to
-	 * do every pageload. 
-	 * @param string $fieldName The field name to use when outputting form data or
-	 * similar parameters/information.
-	 * @access public
-	 * @return boolean - TRUE if everything is OK
-	 */
-	function update ($fieldName) {
-		$children =& $this->getChildren();
-		$ok = true;
-		foreach (array_keys($children) as $key) {			
-			if (!$children[$key]->update($fieldName."_".$key)) {
-				$ok = false;
-			}
-		}
-		
-		return $ok;
 	}
 	
 	/**

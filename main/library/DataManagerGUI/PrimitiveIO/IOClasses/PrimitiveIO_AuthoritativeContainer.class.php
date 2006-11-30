@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.4 2006/06/05 20:25:35 adamfranco Exp $
+ * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.5 2006/11/30 22:02:39 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.4 2006/06/05 20:25:35 adamfranco Exp $
+ * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.5 2006/11/30 22:02:39 adamfranco Exp $
  */
 class PrimitiveIO_AuthoritativeContainer
 	extends WSelectOrNew
@@ -129,9 +129,15 @@ class PrimitiveIO_AuthoritativeContainer
 	 * @since 6/2/06
 	 */
 	function isUsingNewValue () {
+		if ($this->_select->isStartingDisplay())
+			return false;
+		
 		$newOption =& String::fromString('__NEW_VALUE__');
 		$emptyOption =& String::fromString('');
-		return ($newOption->isEqualTo($this->_select->getAllValues()) || $emptyOption->isEqualTo($this->_select->getAllValues()));
+// 		print "<pre>"; var_dump($this->_select->getAllValues()); print "</pre>";
+		return (!$this->_select->getAllValues() 
+				|| $newOption->isEqualTo($this->_select->getAllValues()) 
+				|| $emptyOption->isEqualTo($this->_select->getAllValues()));
 	}
 	
 	/**
@@ -147,8 +153,10 @@ class PrimitiveIO_AuthoritativeContainer
 		$this->_select->update($fieldName."_select");
 		$this->_new->update($fieldName."_new");
 		$newValue =& $this->_new->getAllValues();
-		if ($this->isUsingNewValue() && $newValue->asString())
+		if ($this->isUsingNewValue() && is_object($newValue) && $newValue->asString())
 			$this->setValue($this->_new->getAllValues());
+		
+		return true;
 	}	
 }
 

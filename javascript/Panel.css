@@ -1,0 +1,54 @@
+div.panel {
+	background-color: #FFFFBB;
+	border: 1px solid #555;
+	color: #000;
+}
+
+.panel a {
+	color: #00F;
+}
+
+.panel .topbar {
+	border-bottom: 1px solid #555;
+	padding: 3px;
+}
+
+.panel .container {
+	padding: 5px;
+}
+
+.panel .title {
+	vertical-align: top; 
+	font-weight: bold;
+}
+
+.panel .close {
+	vertical-align: top;
+	text-align: right;
+}
+
+.panel .heading {
+	font-weight: bold;
+}
+
+.panel .tag_area {
+	margin-bottom: 10px;
+}
+
+.panel form {
+	margin-bottom: 10px;
+}
+
+.panel .loading {
+	font-size: small;
+	color: red;
+	text-align: center;
+}
+
+.panel th {
+	vertical-align: top;
+}
+
+.panel td {
+	vertical-align: top;
+}

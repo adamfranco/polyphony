@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_authorizations.act.php,v 1.22 2006/07/07 19:15:46 jwlee100 Exp $
+ * @version $Id: browse_authorizations.act.php,v 1.23 2006/11/30 22:02:43 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_authorizations.act.php,v 1.22 2006/07/07 19:15:46 jwlee100 Exp $
+ * @version $Id: browse_authorizations.act.php,v 1.23 2006/11/30 22:02:43 adamfranco Exp $
  */
 class browse_authorizationsAction 
 	extends MainWindowAction
@@ -36,7 +36,17 @@ class browse_authorizationsAction
 	 * @since 4/26/05
 	 */
 	function isAuthorizedToExecute () {
-		return TRUE;
+		$authN =& Services::getService("AuthN");
+		$idM =& Services::getService("Id");
+		$authTypes =& $authN->getAuthenticationTypes();
+		while ($authTypes->hasNext()) {
+			$authType =& $authTypes->next();
+			$id =& $authN->getUserId($authType);
+			if (!$id->isEqual($idM->getId('edu.middlebury.agents.anonymous'))) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -99,7 +109,7 @@ class browse_authorizationsAction
 // 					$idManager->getId("edu.middlebury.authorization.view"),
 // 					$qualifier->getId())) {
 					ob_start();
-					HierarchyPrinter::sprintNode($qualifier, $harmoni,
+					HierarchyPrinter::printNode($qualifier, $harmoni,
 										2,
 										"browse_authorizationsAction::printQualifier",
 										"browse_authorizationsAction::hasChildQualifiers",

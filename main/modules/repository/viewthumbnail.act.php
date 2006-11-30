@@ -6,10 +6,12 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.8 2006/02/09 20:16:52 cws-midd Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.9 2006/11/30 22:02:45 adamfranco Exp $
  */ 
 
-require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
+require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
+require_once(POLYPHONY."/main/library/RepositoryInputOutputModules/RepositoryInputOutputModuleManager.class.php");
+
 
 /**
  * Display the file in the specified record.
@@ -23,10 +25,10 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.8 2006/02/09 20:16:52 cws-midd Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.9 2006/11/30 22:02:45 adamfranco Exp $
  */
 class viewthumbnailAction 
-	extends MainWindowAction
+	extends ForceAuthAction
 {
 	/**
 	 * Check Authorizations
@@ -35,7 +37,7 @@ class viewthumbnailAction
 	 * @access public
 	 * @since 4/26/05
 	 */
-	function isAuthorizedToExecute () {
+	function isExecutionAuthorized () {
 		$harmoni =& Harmoni::instance();
 		$idManager =& Services::getService("Id");
 		$authZManager =& Services::getService("AuthorizationManager");
@@ -50,27 +52,39 @@ class viewthumbnailAction
 	}
 	
 	/**
-	 * Return the heading text for this action, or an empty string.
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 4/26/05
-	 */
-	function getHeadingText () {
-		return dgettext("polyphony", "File Thumbnail");
-	}
-	
-	/**
 	 * Return a junk image that says you can't view the file
 	 *
 	 * @since 12/22/05
 	 */
 	function getUnauthorizedMessage() {
 		header("Content-Type: image/gif");
-		header('Content-Disposition: attachment; filename="english.gif"');
+		header('Content-Disposition: filename="english.gif"');
 			
 		print file_get_contents(POLYPHONY.'/docs/images/unauthorized/english.gif');
 		exit;
+	}
+	
+	/**
+	 * Answer the HTTP Authentication 'Relm' to present to the user for authentication.
+	 * 
+	 * @return mixed string or null
+	 * @access public
+	 * @since 8/7/06
+	 */
+	function getRelm () {
+		return 'Concerto'; // Override for custom relm.
+	}
+	
+	/**
+	 * Answer the cancel function for this action, to use if the user hits
+	 * the 'cancel' button in the http authentication dialog.
+	 * 
+	 * @return mixed string or null
+	 * @access public
+	 * @since 8/7/06
+	 */
+	function getCancelFunction () {
+		return 'viewthumbnailAction::getUnauthorizedMessage();';
 	}
 	
 	
@@ -81,24 +95,36 @@ class viewthumbnailAction
 	 * @access public
 	 * @since 4/26/05
 	 */
-	function buildContent () {
+	function execute () {
+		if (!$this->isAuthorizedToExecute())
+			$this->getUnauthorizedMessage();
+		
 		$defaultTextDomain = textdomain("polyphony");
 		
-		$actionRows =& $this->getActionRows();
 		$harmoni =& Harmoni::instance();
 		$idManager =& Services::getService("Id");
 		$repositoryManager =& Services::getService("Repository");
 		
 		$harmoni->request->startNamespace("polyphony-repository");
 		
-		$repositoryId =& $idManager->getId(RequestContext::value("repository_id"));
 		$assetId =& $idManager->getId(RequestContext::value("asset_id"));
-		$recordId =& $idManager->getId(RequestContext::value("record_id"));
-
+		if (RequestContext::value("repository_id")) {
+			$repositoryId =& $idManager->getId(RequestContext::value("repository_id"));
+			$repository =& $repositoryManager->getRepository($repositoryId);
+			$asset =& $repository->getAsset($assetId);
+		} else {
+			$repositoryManager =& Services::getService("RepositoryManager");
+			$asset =& $repositoryManager->getAsset($assetId);
+		}
+		
 		// Get the requested record.
-		$repository =& $repositoryManager->getRepository($repositoryId);
-		$asset =& $repository->getAsset($assetId);
-		$record =& $asset->getRecord($recordId);
+		if (RequestContext::value("record_id")) {
+			$recordId =& $idManager->getId(RequestContext::value("record_id"));
+			$record =& $asset->getRecord($recordId);
+		} else {
+			$record =& RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset($asset);
+		}
+		
 				
 		// Make sure that the structure is the right one.
 		$structure =& $record->getRecordStructure();
@@ -125,8 +151,11 @@ class viewthumbnailAction
 				$mime =& Services::getService("MIME");
 				$extension = $mime->getExtensionForMIMEType(
 									$parts['THUMBNAIL_MIME_TYPE']->getValue());
- 				header('Content-Disposition: attachment; filename="'.
- 					$parts['FILE_NAME']->getValue().".".$extension.'"');
+				$filename = $parts['FILE_NAME']->getValue();
+				if (!$filename)
+					$filename = _("Untitled");
+ 				header('Content-Disposition: filename="'.
+ 					$filename.".".$extension.'"');
 			
 				print $parts['THUMBNAIL_DATA']->getValue();
 			}
@@ -190,7 +219,7 @@ class viewthumbnailAction
 					$imageName = $typeImages[$typeParts[0]];
 				}
 				
- 				header('Content-Disposition: attachment; filename="'.$imageName.'"');
+ 				header('Content-Disposition: filename="'.$imageName.'"');
 				
 				print file_get_contents(dirname(__FILE__)."/icons/".$imageName);
 			}

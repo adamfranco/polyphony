@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.39 2006/02/28 21:32:49 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.40 2006/11/30 22:02:43 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.39 2006/02/28 21:32:49 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.40 2006/11/30 22:02:43 adamfranco Exp $
  */
 class choose_agentAction 
 	extends MainWindowAction
@@ -37,7 +37,17 @@ class choose_agentAction
 	 * @since 4/26/05
 	 */
 	function isAuthorizedToExecute () {
-		return TRUE;
+		$authN =& Services::getService("AuthN");
+		$idM =& Services::getService("Id");
+		$authTypes =& $authN->getAuthenticationTypes();
+		while ($authTypes->hasNext()) {
+			$authType =& $authTypes->next();
+			$id =& $authN->getUserId($authType);
+			if (!$id->isEqual($idM->getId('edu.middlebury.agents.anonymous'))) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**

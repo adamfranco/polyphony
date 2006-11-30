@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.12 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.13 2006/11/30 22:02:38 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.12 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.13 2006/11/30 22:02:38 adamfranco Exp $
  */
 class Basket 
 	extends OrderedSet
@@ -120,7 +120,7 @@ class Basket
 		ob_start();
 		$harmoni =& Harmoni::instance();
 		
-		$placeHolderUrl = POLYPHONY_PATH."/main/library/Basket/icons/1x1.png";
+		$placeHolderUrl = POLYPHONY_PATH."/icons/1x1.png";
 		
 		$harmoni->request->startNamespace("basket");
 		$addBasketURL = str_replace("&amp;", "&", 
@@ -158,8 +158,8 @@ class Basket
 			
 		
 		// Get the basket element
-		var basketElement = getElementFromDocument('basket_small');
-		var basketContentsElement = getElementFromDocument('basket_small_contents');
+		var basketElement = document.get_element_by_id('basket_small');
+		var basketContentsElement = document.get_element_by_id('basket_small_contents');
 		
 		// Add placeholders to the basket
 		for (var i = 0; i < idArray.length; i++) {
@@ -222,7 +222,7 @@ class Basket
 				if (req.readyState == 4) {
 					// only if we get a good load should we continue.
 					if (req.status == 200) {
-						var basketElement = getElementFromDocument('basket_small');
+						var basketElement = document.get_element_by_id('basket_small');
 						basketElement.innerHTML = req.responseText;
 						Basket.removeBorders();
 					} else {
@@ -283,29 +283,10 @@ class Basket
 	 */
 	Basket.removeBorders = function () {
 		if (!Basket.removeBoardersForCompletedImages(
-					getElementFromDocument('basket_small_contents')))
+					document.get_element_by_id('basket_small_contents')))
 		{
 			window.setTimeout('Basket.removeBorders()', 100);
 		}
-	}
-	
-	/**
-	 * Answer the element of the document by id.
-	 * 
-	 * @param string id
-	 * @return object The html element
-	 * @access public
-	 * @since 8/25/05
-	 */
-	function getElementFromDocument(id) {
-		// Gecko, KHTML, Opera, IE6+
-		if (document.getElementById) {
-			return document.getElementById(id);
-		}
-		// IE 4-5
-		if (document.all) {
-			return document.all[id];
-		}			
 	}
 	
 // ]]>
@@ -341,14 +322,33 @@ END;
 		
 		print "\n\t<div id='basket_small_contents' style='text-align: left; min-width: 200px;'>";
 		$this->reset();
+		$i = 0;
 		if ($this->hasNext()) {
 			while ($this->hasNext()) {
 				$id =& $this->next();
 				$thumbnailURL = RepositoryInputOutputModuleManager::getThumbnailUrlForAsset($id);
 				if ($thumbnailURL !== FALSE) {				
 					print "\n\t<div style='border: 1px solid; height: 60px; width: 60px; float: left; text-align: center; vertical-align: middle; padding: 0px; margin: 2px;'>";
-					print "\n\t\t<img src='$thumbnailURL' alt='Thumbnail Image' border='0' style='max-height: 50px; max-width: 50px; vertical-align: middle; margin: 5px;' onload=\"if (this.parentNode) { this.parentNode.style.border='0px'; this.parentNode.style.margin='3px'; } /* Resize images for IE */ if (this.height > 50 || this.width > 50) {this.width = 50;}\" />";
+					
+					//  The image
+					print "\n\t\t<img \n\t\t\tsrc='$thumbnailURL' \n\t\t\talt='Thumbnail Image' border='0'";
+					print " \n\t\t\tstyle='max-height: 50px; max-width: 50px; vertical-align: middle; margin: 5px; cursor: pointer;' ";
+					
+					// border removal
+					print " \n\t\t\tonload=\"if (this.parentNode) { this.parentNode.style.border='0px'; this.parentNode.style.margin='3px'; } /* Resize images for IE */ if (this.height > 50 || this.width > 50) {this.width = 50;}\" ";
+					
+					// Viewer Link
+					print " \n\t\t\tonclick='window.open(";
+					print '"'.VIEWER_URL."?&amp;source=";
+					print urlencode($harmoni->request->quickURL("basket", "browse_xml"));
+					print '&amp;start='.$i.'", ';
+					print '"_blank", ';
+					print '"toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,copyhistory=no,width=600,height=500"';
+					print ");'";
+					print "\n\t\t/>";					
 					print "\n\t</div>";
+					
+					$i++;
 				}
 			}
 		}

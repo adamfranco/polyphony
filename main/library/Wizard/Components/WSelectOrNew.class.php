@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectOrNew.class.php,v 1.5 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WSelectOrNew.class.php,v 1.6 2006/11/30 22:02:41 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectOrNew.class.php,v 1.5 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WSelectOrNew.class.php,v 1.6 2006/11/30 22:02:41 adamfranco Exp $
  */
 class WSelectOrNew
 	extends WizardComponentWithChildren 
@@ -127,8 +127,6 @@ class WSelectOrNew
     function &setNewComponent ( &$input ) {
     	ArgumentValidator::validate($input,
     		ExtendsValidatorRule::getRule("WizardComponent"));
-		ArgumentValidator::validate($input, 
-			HasMethodsValidatorRule::getRule("addOnChange"));
 		
 		$this->_new =& $input;
 		$this->_new->setParent($this);
@@ -227,7 +225,16 @@ class WSelectOrNew
 	 * @since 6/2/06
 	 */
 	function isUsingNewValue () {
-		return ($this->_select->getAllValues() == '__NEW_VALUE__' || $this->_select->getAllValues() == '');
+		if ($this->_select->isStartingDisplay())
+			return false;
+		
+		if ($this->_select->getAllValues() == '__NEW_VALUE__')
+			return true;
+		
+		if  ($this->_select->getAllValues() == '')
+			return true;
+			
+		return false;
 	}
 	
 	
@@ -309,7 +316,7 @@ class WSelectOrNew
 		else
 			$display = " display: none;";
 		
-		$this->_select->addOnChange("var newField = getElementFromDocument('$newId'); if (this.value == '__NEW_VALUE__') { newField.style.display = 'block'; } else { newField.style.display = 'none'; }");
+		$this->_select->addOnChange("var newField = document.get_element_by_id('$newId'); if (this.value == '__NEW_VALUE__') { newField.style.display = 'block'; } else { newField.style.display = 'none'; }");
 		
 		$m .= "\n\t\t".$this->_select->getMarkup($fieldName."_select");
 		

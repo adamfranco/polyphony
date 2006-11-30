@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.27 2006/06/26 12:51:45 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.28 2006/11/30 22:02:40 adamfranco Exp $
  */
  
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."GUIManager/StyleProperties/MarginTopSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.27 2006/06/26 12:51:45 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.28 2006/11/30 22:02:40 adamfranco Exp $
  */
 
 class IteratorResultPrinter 
@@ -49,23 +49,46 @@ class IteratorResultPrinter
 		ArgumentValidator::validate($callbackFunction, new StringValidatorRule);
 		
 		$this->_iterator =& $iterator;
-		$this->_numColumns =& $numColumns;
-		$this->_pageSize =& $numResultsPerPage;
-		$this->_callbackFunction =& $callbackFunction;
+		$this->_numColumns = $numColumns;
+		$this->_pageSize = $numResultsPerPage;
+		$this->_callbackFunction = $callbackFunction;
 		
 		$this->_callbackParams = array();
 		$args = func_get_args();
 		for ($i=4; $i<count($args); $i++) {
 			$this->_callbackParams[] =& $args[$i];
 		}
+		
+		$this->_resultLayout =& new TableLayout($this->_numColumns);
 	}
 	
-	
+	/**
+	 * Set the direction of component rendering from the default of Left-Right/Top-Bottom.
+	 * Allowed values:
+	 *		Left-Right/Top-Bottom
+	 *		Top-Bottom/Left-Right
+	 * 		Right-Left/Top-Bottom
+	 *		Top-Bottom/Right-Left
+	 *
+	 * The other possible directions, listed below, are not implemented due to
+	 * lack of utility:
+	 *		Left-Right/Bottom-Top
+	 *		Bottom-Top/Left-Right
+	 *		Right-Left/Bottom-Top
+	 *		Bottom-Top/Right-Left
+	 * 
+	 * @param string $direction
+	 * @return void
+	 * @access public
+	 * @since 8/18/06
+	 */
+	function setRenderDirection ($direction) {
+		$this->_resultLayout->setRenderDirection($direction);
+	}
 	
 	/**
 	 * Returns a layout of the Results
 	 * 
-	 * @param object Harmoni $harmoni The Harmoni object containing context data.
 	 * @param optional string $shouldPrintFunction The name of a function that will
 	 *		return a boolean specifying whether or not to filter a given result.
 	 *		If null, all results are printed.
@@ -73,18 +96,18 @@ class IteratorResultPrinter
 	 * @access public
 	 * @date 8/5/04
 	 */
-	function &getLayout (& $harmoni, $shouldPrintFunction = NULL) {
+	function &getLayout ($shouldPrintFunction = NULL) {
 		$defaultTextDomain = textdomain("polyphony");
 		
 		$startingNumber = $this->getStartingNumber();
 		
 		$yLayout =& new YLayout();
-		$layout =& new Container($yLayout,OTHER,1);
+		$container =& new Container($yLayout,OTHER,1);
 		
 		
 		$endingNumber = $startingNumber+$this->_pageSize-1;
 		$numItems = 0;
-		$resultLayout =& new Container(new TableLayout($this->_numColumns), OTHER, 1);
+		$resultContainer =& new Container($this->_resultLayout, OTHER, 1);		
 		
 		if ($this->_iterator->hasNext()) {
 			
@@ -117,7 +140,7 @@ class IteratorResultPrinter
 					
 					$itemLayout = call_user_func_array(
 						$this->_callbackFunction, $params);
-					$resultLayout->add($itemLayout, 
+					$resultContainer->add($itemLayout, 
 						floor(100/$this->_numColumns)."%", 
 						"100%", 
 						CENTER, TOP);
@@ -145,8 +168,8 @@ class IteratorResultPrinter
 					$numItems++;
 			}	
 		} else {
-			$text =& new Block("<ul><li>"._("No items are availible.")."</li></ul>", STANDARD_BLOCK);
-			$resultLayout->add($text, null, null, CENTER, CENTER);
+			$text =& new Block("<ul><li>"._("No items are available.")."</li></ul>", STANDARD_BLOCK);
+			$resultContainer->add($text, null, null, CENTER, CENTER);
 		}		
 		
 /*********************************************************
@@ -159,22 +182,22 @@ class IteratorResultPrinter
 			
 			// Add the links to the page
 			$pageLinkBlock =& new Block($linksHTML, BACKGROUND_BLOCK);
-			$layout->add($pageLinkBlock, "100%", null, CENTER, CENTER);
+			$container->add($pageLinkBlock, "100%", null, CENTER, CENTER);
 			
 			$styleCollection =& new StyleCollection("*.result_page_links", "result_page_links", "Result Page Links", "Links to other pages of results.");
 			$styleCollection->addSP(new MarginTopSP("10px"));
 			$pageLinkBlock->addStyle($styleCollection);
 		}
 		
-		$layout->add($resultLayout, "100%", null, LEFT, CENTER);
+		$container->add($resultContainer, "100%", null, LEFT, CENTER);
 		
 		if ($numItems > $this->_pageSize) {
-			$layout->add($pageLinkBlock, null, null, CENTER, CENTER);
+			$container->add($pageLinkBlock, null, null, CENTER, CENTER);
 		}
 		
 		
 		textdomain($defaultTextDomain);
-		return $layout;
+		return $container;
 	}	
 	
 }

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.13 2006/05/18 15:34:42 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.14 2006/11/30 22:02:40 adamfranco Exp $
  */
 
 /**
@@ -21,8 +21,8 @@ require_once(dirname(__FILE__)."/modules/HarmoniFileModule.class.php");
  * appropriate RepositoryInputOutputModule based on their Schema Formats.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.13 2006/05/18 15:34:42 adamfranco Exp $
- * @since $Date: 2006/05/18 15:34:42 $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.14 2006/11/30 22:02:40 adamfranco Exp $
+ * @since $Date: 2006/11/30 22:02:40 $
  * @copyright 2004 Middlebury College
  */
 
@@ -245,6 +245,9 @@ class RepositoryInputOutputModuleManager {
 			$asset =& $assetOrId;
 		}
 		
+		if (!$asset)
+			return false;
+		
 		$fileRecord =& RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset(
 							$asset);
 		return RepositoryInputOutputModuleManager::getThumbnailUrlForRecord(
@@ -293,13 +296,6 @@ class RepositoryInputOutputModuleManager {
 		$mimeTypePart =& $mimeTypeParts->next();
 		$mimeType = $mimeTypePart->getValue();
 		
-		// If we have a thumbnail with a valid mime type, print a link to that.
-		$filename = ereg_replace("\.[^\.]+$", "", $filename);
-		if (!is_null($mimeType)) {
-			$mime =& Services::getService("MIME");
-			$filename .= ".".$mime->getExtensionForMIMEType($mimeType);
-		}
-		
 		
 		$harmoni =& Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-repository");
@@ -308,8 +304,7 @@ class RepositoryInputOutputModuleManager {
 			array(
 				"repository_id" => $repositoryId->getIdString(),
 				"asset_id" => $assetId->getIdString(),
-				"record_id" => $fileRecordId->getIdString(),
-				"thumbnail_name" => $filename));
+				"record_id" => $fileRecordId->getIdString()));
 		
 		
 		$harmoni->request->endNamespace();
@@ -339,6 +334,9 @@ class RepositoryInputOutputModuleManager {
 		} else {
 			$asset =& $assetOrId;
 		}
+		
+		if (!$asset)
+			return false;
 		
 		$fileRecord =& RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset(
 							$asset);
@@ -378,13 +376,7 @@ class RepositoryInputOutputModuleManager {
 		if ($fileRecord === FALSE)
 			return FALSE;
 		
-		$fileRecordId =& $fileRecord->getId();
-		
-		
-		$filenameParts =& $fileRecord->getPartsByPartStructure(
-			$idManager->getId("FILE_NAME"));
-		$filenamePart =& $filenameParts->next();
-		$filename = $filenamePart->getValue();		
+		$fileRecordId =& $fileRecord->getId();	
 		
 		
 		$harmoni =& Harmoni::instance();
@@ -394,8 +386,7 @@ class RepositoryInputOutputModuleManager {
 				array(
 					"repository_id" => $repositoryId->getIdString(),
 					"asset_id" => $assetId->getIdString(),
-					"record_id" => $fileRecordId->getIdString(),
-					"file_name" => $filename));
+					"record_id" => $fileRecordId->getIdString()));
 		
 		
 		$harmoni->request->endNamespace();

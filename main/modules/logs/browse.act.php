@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.12 2006/06/13 21:23:04 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.14 2006/11/30 22:02:44 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -14,7 +14,7 @@ require_once(POLYPHONY."/main/library/ResultPrinter/TableIteratorResultPrinter.c
 require_once(HARMONI."GUIManager/Components/Blank.class.php");
 
 /**
- * This action will allow for the modification of group Membership.
+ * This action provides browsing access for logs.
  *
  * @since 11/10/04 
  * 
@@ -23,7 +23,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.12 2006/06/13 21:23:04 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.14 2006/11/30 22:02:44 adamfranco Exp $
  */
 class browseAction 
 	extends MainWindowAction
@@ -35,9 +35,7 @@ class browseAction
 	 * @access public
 	 * @since 4/26/05
 	 */
-	function isAuthorizedToExecute () {
-		return true;
-		
+	function isAuthorizedToExecute () {		
 		// Check for authorization
  		$authZManager =& Services::getService("AuthZ");
  		$idManager =& Services::getService("IdManager");
@@ -307,8 +305,26 @@ END;
 		</tr>";
 				$resultPrinter =& new TableIteratorResultPrinter($entries, $headRow,
 										20, "printLogRow", 1);
-				
 				print $resultPrinter->getTable();
+			}
+			
+			if (isset($currentLogName) && isset($currentPriorityType)) {
+				$url = $harmoni->request->quickURL('logs', 'browse_rss',
+						array("log" => $currentLogName,
+							"priority" => Type::typeToString($currentPriorityType)));
+				$title = $currentLogName." ".$currentPriorityType->getKeyword()." "._("Logs");
+				
+				$outputHandler =& $harmoni->getOutputHandler();
+				$outputHandler->setHead($outputHandler->getHead()
+					."\n\t\t<link rel='alternate' type='application/rss+xml'"
+					." title='".$title."' href='".$url."'/>");
+				
+				print "\n\t\t<div style='text-align: right'>";
+				print "\n\t\t<a href='".$url."' style='white-space: nowrap;' title='".$title."'>";
+				print "\n\t\t\t<img src='".POLYPHONY_PATH."icons/rss_icon02.png' border='0'/>";
+				print "\n\t\t\t"._("Subscribe to the RSS feed of this log");
+				print "\n\t\t</a>";
+				print "\n\t\t</div>";
 			}
 			
 			$actionRows->add(new Block(ob_get_clean(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
@@ -468,7 +484,22 @@ END;
 		}
 		print "\n\t</select>";
 		
-		print "\n\t<input type='submit' value='Submit'/>";
+		print "\n\t<input type='submit' value='"._("Submit")."'/>";
+		
+		print "\n\t<a href='";
+		print $harmoni->request->quickURL('logs', 'browse', array(
+				'startYear' => $min->year(),
+				'startMonth' => $min->month(),
+				'startDay' => $min->dayOfMonth(),
+				'startHour' => $min->hour(),
+				'endYear' => $max->year(),
+				'endMonth' => $max->month(),
+				'endDay' => $max->dayOfMonth(),
+				'endHour' => $max->hour()
+		));
+		print "'>";
+		print "\n\t\t<input type='button' value='"._("Clear")."' />";
+		print "</a>";
 		print "\n</form>";
 	}
 }
@@ -525,13 +556,16 @@ function printLogRow ( &$entry ) {
 	$agentIds =& $item->getAgentIds(true);
 	while ($agentIds->hasNext()) {
 		$agentId =& $agentIds->next();
-		$agent =& $agentManager->getAgent($agentId);
-		print "<a href='";
-		print $harmoni->request->quickURL("logs", "browse",
-				array(	"agent_id" => $agentId->getIdString()));
-		print "'>";
-		print $agent->getDisplayName();
-		print "</a>";
+		if ($agentManager->isAgent($agentId) || $agentManager->isGroup($agentId)) {
+			$agent =& $agentManager->getAgent($agentId);
+			print "<a href='";
+			print $harmoni->request->quickURL("logs", "browse",
+					array(	"agent_id" => $agentId->getIdString()));
+			print "'>";
+			print $agent->getDisplayName();
+			print "</a>";
+		} else
+			print _("Id: ").$agentId->getIdString();
 		if ($agentIds->hasNext())
 			print ", <br/>";
 	}

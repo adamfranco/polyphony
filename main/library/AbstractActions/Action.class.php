@@ -1,23 +1,23 @@
 <?php
 /**
- * @package polyphony.modules
+ * @package polyphony.library.AbstractActions
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Action.class.php,v 1.6 2006/01/18 15:42:55 adamfranco Exp $
+ * @version $Id: Action.class.php,v 1.7 2006/11/30 22:02:37 adamfranco Exp $
  */ 
 
 /**
  * This class is the most simple abstraction of an action. It provides a structure
  * for common methods
  * 
- * @package polyphony.modules
+ * @package polyphony.library.AbstractActions
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Action.class.php,v 1.6 2006/01/18 15:42:55 adamfranco Exp $
+ * @version $Id: Action.class.php,v 1.7 2006/11/30 22:02:37 adamfranco Exp $
  * @since 4/28/05
  */
 class Action {
@@ -71,12 +71,11 @@ class Action {
 	/**
 	 * Execute this action.
 	 * 
-	 * @param object Harmoni $harmoni
 	 * @return mixed
 	 * @access public
 	 * @since 4/25/05
 	 */
-	function &execute ( &$harmoni ) {
+	function &execute () {
 		throwError(new Error(__CLASS__."::".__FUNCTION__."() must be overridden in child classes."));
 	}
 	

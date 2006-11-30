@@ -354,7 +354,15 @@ function drawRing(n,on,angle) {
 
 // Action handling
 
-function getElementFromDocument(id) {
+/**
+ * Answer the element of the document by id.
+ * 
+ * @param string id
+ * @return object The html element
+ * @access public
+ * @since 8/25/05
+ */
+document.get_element_by_id = function (id) {
 	// Gecko, KHTML, Opera, IE6+
 	if (document.getElementById) {
 		return document.getElementById(id);
@@ -405,7 +413,7 @@ function getEvent(e) {
 function moveHue(e) {
 	var a,x,y;
 	getEvent(e);
-	var innernode = getElementFromDocument('wheelarea');
+	var innernode = document.get_element_by_id('wheelarea');
 	var parentnode = innernode.offsetParent;
 	offsetArray = getScrollXY();
 	if(document.all){// IE
@@ -614,7 +622,7 @@ function endDrag() { dragging = false }
 function displayValues(){
 	var i,j;
 	var buff=usedColors+';';
-	var div = getElementFromDocument('display');
+	var div = document.get_element_by_id('display');
 
 	for(i=0;i<usedColors;i++){
 		for(j=0;j<4;j++){

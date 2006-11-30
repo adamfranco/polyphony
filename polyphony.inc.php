@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.40 2006/08/19 21:08:38 sporktim Exp $
+ * @version $Id: polyphony.inc.php,v 1.41 2006/11/30 22:02:34 adamfranco Exp $
  */
 
 /**
@@ -50,9 +50,8 @@ require_once(dirname(__FILE__)."/main/library/Wizard/Components/WText.class.php"
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WVerifiedChangeInput.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WChooseOptionButton.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WMoreOptions.abstract.php");
-
+require_once(dirname(__FILE__)."/main/library/Wizard/Components/WComponentCollection.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WAgentBrowser.class.php");
-
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WColorWheel.class.php");
 
 //gui components
@@ -79,6 +78,8 @@ require_once(dirname(__FILE__)."/main/library/ResultPrinter/ArrayResultPrinter.c
 require_once(dirname(__FILE__)."/main/library/ResultPrinter/EmbeddedArrayResultPrinter.class.php");
 
 require_once(dirname(__FILE__)."/main/library/Basket/Basket.class.php");
+
+require_once(dirname(__FILE__)."/main/library/AuthZPrinter.abstract.php");
 
 
 require_once(dirname(__FILE__)."/main/library/RepositoryInputOutputModules/RepositoryInputOutputModuleManager.class.php");

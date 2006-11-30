@@ -4,12 +4,129 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.56 2006/06/16 15:44:59 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.57 2006/11/30 22:02:35 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
+	<version number="0.6.9" date="2006-11-30">
+		<fix author='adam'>
+			Tagging: Fixed IE javascript errors.
+		</fix>
+		<new author='adam'>
+			AuthZ: Added icon and popup display of Authorizations
+		</new>
+		<change author='adam'>
+			Moved all polyphony javascript into the centrally-loaded place.
+		</change>
+		<change author='adam'>
+			Refactored javascript classes and created a general purpose Panel class
+			for use with pop-up content.
+		</change>
+	</version>
+	<version number="0.6.8" date="2006-11-28">
+		<fix author='adam'>
+			ResultPrinter: Now doesn't overrun the end of the array when 
+			authorizations are checked.
+		</fix>
+		<new author='adam'>
+			Tagging: Support for Tagging.
+		</new>
+		<new author='adam'>
+			Help: Adding action to allow viewing of exif data in images.
+		</new>
+		<new author='adam'>
+			Javascript: Added a common Javascript library.
+		</new>
+		<fix author='adam'>
+			Importing: Updating the Exif importer to support multi-valued fields 
+			such as keywords.
+		</fix>
+	</version>
+	<version number="0.6.7" date="2006-10-25">
+		<fix author='adam'>
+			Wizard: Now can handle cache names that contain periods.
+		</fix>
+		<change author='adam'>
+			Icons have now been moved to their own directory for easier access
+			when keeping polyphony installed in a non-web-accessible directory.
+		</change>
+	</version>
+	<version number="0.6.6" date="2006-08-16">
+		<fix author='adam'>
+			RSS/Logs: Fixed log RSS feed links when no priority is explicitly chosen.
+		</fix>
+	</version>
+	<version number="0.6.5" date="2006-08-15">
+		<fix author='adam'>
+			Repository: Now returns false instead of throwing an error if the 
+			Asset with the specified id does not exist.
+		</fix>
+	</version>
+	<version number="0.6.4" date="2006-08-11">
+		<fix author='adam'>
+			Now can force cookie usage to prevent accidental or intentional 
+			session hijacking by the passing of session ids in the url.
+		</fix>
+		<new author='adam'>
+			New abstract action for RSS feeds. Handles some input validation,
+			formatting, and authentication.
+		</new>
+		<new author='adam'>
+			Logs: Added RSS feeds of logs.
+		</new>
+		<fix author='adam'>
+			Logs: Now has a button to clear date limits.
+		</fix>
+		<fix author='adam'>
+			Removed unneeded parameter from file and thumbnail urls.
+		</fix>
+		<change author='adam'>
+			File/Thumbnail view: Now forces HTTP authentication for thumbnails 
+			if the user is not authenticated.
+		</change>
+	</version>
+	<version number="0.6.3" date="2006-08-04">
+		<fix author='adam'>
+			Importer: Now doesn't generate null thumbnails for multi-page PDF files.
+		</fix>
+		<fix author='adam'>
+			Basket: Can now view basket contents in viewer.
+		</fix>
+		<fix author='adam'>
+			PrimitiveIO: Now doesn't die when users enter data that cannot be
+			made into a valid value object.
+		</fix>
+		<fix author='adam'>
+			Wizard/PrimitiveIO: Now doesn't show the 'new' field for SelectOrNew
+			components when displaying the starting-text.
+		</fix>
+	</version>
+	<version number="0.6.2" date="2006-08-02">
+		<fix author='adam'>
+			Importer: Now ignores and doesn't import files beginning with periods, 
+			which are usually hidden files.
+		</fix>
+	</version>
+	<version number="0.6.1" date="2006-07-21">
+		<fix author='adam'>
+			Importer: Fixed default types.
+		</fix>
+		<new author='adam'>
+			Importer: Adding the Files-Only repository importer to allow the importing of files with no metadata.
+		</new>
+		<fix author='adam'>
+			Importer: Fixed a parse error.
+		</fix>
+		<new author='adam'>
+			Wizard: Adding new WComponentCollection class that can wrap other components.
+		</new>
+		<fix author='adam'>
+			FileDownloading: Now adds filenames appropriately or 'Untitled' even 
+			if the file doesn't have a name.
+		</fix>
+	</version>
 	<version number="0.6.0" date="2006-06-16">
 		<change author='adam'>
 			Basket/Selection images are now show bordered placeholders before 

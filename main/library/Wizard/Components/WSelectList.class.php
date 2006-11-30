@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.15 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WSelectList.class.php,v 1.16 2006/11/30 22:02:41 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.15 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WSelectList.class.php,v 1.16 2006/11/30 22:02:41 adamfranco Exp $
  */
 class WSelectList 
 	extends WizardComponent 
@@ -65,6 +65,20 @@ class WSelectList
 		$this->setValue('_starting_display');
 	}
 	
+	/**
+	 * Return True if the select list is on the starting display, rather than 
+	 * a real value
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 8/3/06
+	 */
+	function isStartingDisplay () {
+		if ($this->_value == '_starting_display')
+			return true;
+		else
+			return false;
+	}
 	
 	/**
 	 * Sets the value of this radio button group.

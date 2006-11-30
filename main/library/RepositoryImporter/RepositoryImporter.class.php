@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.27 2006/06/26 12:51:45 adamfranco Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.28 2006/11/30 22:02:39 adamfranco Exp $
  */ 
 require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.27 2006/06/26 12:51:45 adamfranco Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.28 2006/11/30 22:02:39 adamfranco Exp $
  */
 class RepositoryImporter {
 	
@@ -72,6 +72,10 @@ class RepositoryImporter {
 	 * @since 7/20/05
 	 */
 	function decompress () {
+		$statusStars = new StatusStars(_("Decompressing archive"));
+		$statusStars->initializeStatistics(4);
+		$statusStars->updateStatistics();
+		
 		$dearchiver =& new Dearchiver();
 		$worked = $dearchiver->uncompressFile($this->_filepath,
 			dirname($this->_filepath));
@@ -93,7 +97,10 @@ class RepositoryImporter {
 				$log->appendLogWithTypes($item,	$formatType, $priorityType);
 			}
 		}
-		unset($dearchiver);	
+		unset($dearchiver);
+		$statusStars->updateStatistics();
+		$statusStars->updateStatistics();
+		$statusStars->updateStatistics();
 	}
 
 	/**
@@ -124,6 +131,10 @@ class RepositoryImporter {
 	function &assetBuildingIteration (&$assetIterator, &$parent, &$buildOrderedSet) {
 		$setManager =& Services::getService("Sets");
 		$assetInfoIterator =& $this->getAllAssetsInfoIterator($assetIterator);
+		
+		$statusStars = new StatusStars(_("Creating Assets"));
+		$statusStars->initializeStatistics($assetInfoIterator->count());
+		
 		if (!$assetInfoIterator)
 			return $assetInfoIterator; // false
 		if ($buildOrderedSet)
@@ -137,6 +148,8 @@ class RepositoryImporter {
 				$parent->addAsset($child->getId());
 			if ($buildOrderedSet)
 				$set->addItem($child->getId());
+			
+			$statusStars->updateStatistics();
 		}
 		unset($assetInfoIterator);
 		$true = true;
@@ -269,7 +282,12 @@ class RepositoryImporter {
 
 			foreach ($entry['partStructureIds'] as $id) {
 				if(!($entry['structureId']->isEqual($FILE_ID))) {
-					$assetRecord->createPart($id, $entry['parts'][$j]);
+					if (is_array($entry['parts'][$j])) {
+						for ($k = 0; $k < count($entry['parts'][$j]); $k++)
+							$assetRecord->createPart($id, $entry['parts'][$j][$k]);
+					} else {
+						$assetRecord->createPart($id, $entry['parts'][$j]);
+					}
 					$j++;
 				}
 				else if ($entry['structureId']->isEqual($FILE_ID)) {
@@ -290,13 +308,16 @@ class RepositoryImporter {
 								$entry['parts'][1]));
 					}
 					else if ($imageProcessor->isFormatSupported($mimetype)) {
-						$assetRecord->createPart(
-							$THUMBNAIL_DATA_ID,
-							$imageProcessor->generateThumbnailData($mimetype,
-							file_get_contents($this->_srcDir.$filename)));
-						$assetRecord->createPart(
-							$THUMBNAIL_MIME_TYPE_ID,
-							$imageProcessor->getThumbnailFormat());
+						$thumbData = $imageProcessor->generateThumbnailData($mimetype,
+							file_get_contents($this->_srcDir.$filename));
+						if ($thumbData) {
+							$assetRecord->createPart(
+								$THUMBNAIL_DATA_ID,
+								$thumbData);
+							$assetRecord->createPart(
+								$THUMBNAIL_MIME_TYPE_ID,
+								$imageProcessor->getThumbnailFormat());
+						}
 					}
 					break;
 				}
@@ -328,6 +349,7 @@ class RepositoryImporter {
 		$type = $partStructure->getType();
 		$typeString = $type->getKeyword();
 		switch($typeString) {
+			case "shortstring":
 			case "string":
 				$obj =& String::withValue($part);
 				return $obj;
@@ -338,10 +360,6 @@ class RepositoryImporter {
 				break;
 			case "boolean":
 				$obj =& Boolean::withValue($part);
-				return $obj;
-				break;
-			case "shortstring":
-				$obj =& ShortString::withValue($part);
 				return $obj;
 				break;
 			case "float":

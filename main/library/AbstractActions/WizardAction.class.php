@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 4/28/05
- * @package polyphony.modules
+ * @package polyphony.library.AbstractActions
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardAction.class.php,v 1.12 2006/08/03 20:51:56 sporktim Exp $
+ * @version $Id: WizardAction.class.php,v 1.13 2006/11/30 22:02:38 adamfranco Exp $
  */ 
  
  require_once(dirname(__FILE__)."/Action.class.php");
@@ -45,12 +45,12 @@
  *	</code>
  *
  * @since 4/28/05
- * @package polyphony.modules
+ * @package polyphony.library.AbstractActions
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardAction.class.php,v 1.12 2006/08/03 20:51:56 sporktim Exp $
+ * @version $Id: WizardAction.class.php,v 1.13 2006/11/30 22:02:38 adamfranco Exp $
  */
 class WizardAction 
 	extends Action
@@ -116,6 +116,8 @@ class WizardAction
 	 * @since 4/28/05
 	 */
 	function closeWizard ( $cacheName ) {
+		$cacheName = $this->cleanCacheName($cacheName);
+		
 		$wizard =& $this->getWizard($cacheName);
 		$wizard = NULL;
 		unset ($_SESSION[$cacheName]);
@@ -158,10 +160,12 @@ class WizardAction
 	 * @since 4/28/05
 	 */
 	function runWizard ( $cacheName, &$container) {
+		$cacheName = $this->cleanCacheName($cacheName);
+		
 		$wizard =& $this->getWizard($cacheName);
 		$harmoni =& Harmoni::instance();
 		// tell the wizard to GO
-
+		
 		$wizard->go();
 		
 		$listener =& $wizard->getChild("_savecancel_");
@@ -174,8 +178,9 @@ class WizardAction
 			$this->cancelWizard($cacheName);	
 		}
 		
-		if (isset($_SESSION[$cacheName])) 
+		if (isset($_SESSION[$cacheName])) {
 			$container->add($wizard->getLayout($harmoni), null, null, CENTER, TOP);
+		}
 	}
 	
 	/**
@@ -188,10 +193,8 @@ class WizardAction
 	 * @since 4/28/05
 	 */
 	function &getWizard ( $cacheName ) {
-		// The browser will translate '.'s into '_'s, resulting in a miss-match,
-		// so swap these now.
-		$cacheName = str_replace(".", "_", $cacheName);
-		
+		$cacheName = $this->cleanCacheName($cacheName);
+				
 		// Create the wizard if it doesn't exist.
 		 if (!isset($_SESSION[$cacheName])) {
 		 	$wizard =& $this->createWizard();
@@ -201,6 +204,20 @@ class WizardAction
 		 }
 		 
 		 return $_SESSION[$cacheName];
+	}
+	
+	/**
+	 * Clean the cacheName
+	 * 
+	 * @param string $cacheName
+	 * @return string
+	 * @access public
+	 * @since 9/28/06
+	 */
+	function cleanCacheName ($cacheName) {
+		// The browser will translate '.'s into '_'s, resulting in a miss-match,
+		// so swap these now.
+		return str_replace(".", "_", $cacheName);
 	}
 }
 

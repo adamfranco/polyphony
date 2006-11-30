@@ -1,11 +1,11 @@
 <?php
 /**
- * @package polyphony.modules
+ * @package polyphony.library.AbstractActions
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MainWindowAction.class.php,v 1.10 2006/01/18 15:42:55 adamfranco Exp $
+ * @version $Id: MainWindowAction.class.php,v 1.11 2006/11/30 22:02:37 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/WizardAction.class.php");
@@ -27,12 +27,12 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * a structure for accessing various parts of this main window, as well as delegating
  * the implementation of some methods to decendent classes.
  * 
- * @package polyphony.modules
+ * @package polyphony.library.AbstractActions
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MainWindowAction.class.php,v 1.10 2006/01/18 15:42:55 adamfranco Exp $
+ * @version $Id: MainWindowAction.class.php,v 1.11 2006/11/30 22:02:37 adamfranco Exp $
  */
 class MainWindowAction 
 	extends WizardAction {
@@ -68,12 +68,12 @@ class MainWindowAction
 	 * components of the screen as well as authorization, delegating the various
 	 * parts to descendent classes.
 	 * 
-	 * @param object Harmoni $harmoni
 	 * @return mixed
 	 * @access public
 	 * @since 4/25/05
 	 */
-	function &execute ( &$harmoni ) {
+	function &execute () {
+		$harmoni =& Harmoni::instance();
 		$pageTitle = $harmoni->config->get('programTitle');
 		
 		
@@ -99,15 +99,22 @@ class MainWindowAction
 			$pageTitle .= ": ".$headingText;
 		}
 		
-		// Set the page title
+		// Set the page title and other new header items
 		$outputHandler =& $harmoni->getOutputHandler();
-		$outputHandler->setHead(
-			// Remove any existing title tags from the head text
-			preg_replace("/<title>[^<]*<\/title>/", "", $outputHandler->getHead())
-			//Add our new title
-			."\n\t\t<title>"
-			.strip_tags(preg_replace("/<(\/)?(em|i|b|strong)>/", "*", $pageTitle))
-			."</title>");
+		ob_start();
+		
+		// Remove any existing title tags from the head text
+		print preg_replace("/<title>[^<]*<\/title>/", "", $outputHandler->getHead());
+		
+		//Add our new title
+		print "\n\t\t<title>";
+		print strip_tags(preg_replace("/<(\/)?(em|i|b|strong)>/", "*", $pageTitle));
+		print "</title>";
+		
+		// Add our common Harmoni javascript libraries
+		require(POLYPHONY_DIR."/main/library/Harmoni.js.inc.php");
+		
+		$outputHandler->setHead(ob_get_clean());
 		
 		// Pass content generation off to our child classes
 		$this->buildContent();

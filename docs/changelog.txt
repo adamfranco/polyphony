@@ -3,6 +3,91 @@
 Name: Polyphony ChangeLog
 
 
+v. 0.6.9 (2006-11-30)
+----------------------------------------------------
+		
+	* Bug Fix: Tagging: Fixed IE javascript errors. (Adam Franco)
+		
+	* New feature: AuthZ: Added icon and popup display of Authorizations (Adam Franco)
+		
+	* Change: Moved all polyphony javascript into the centrally-loaded place. (Adam Franco)
+		
+	* Change: Refactored javascript classes and created a general purpose Panel class for use with pop-up content. (Adam Franco)
+	
+v. 0.6.8 (2006-11-28)
+----------------------------------------------------
+		
+	* Bug Fix: ResultPrinter: Now doesn't overrun the end of the array when authorizations are checked. (Adam Franco)
+		
+	* New feature: Tagging: Support for Tagging. (Adam Franco)
+		
+	* New feature: Help: Adding action to allow viewing of exif data in images. (Adam Franco)
+		
+	* New feature: Javascript: Added a common Javascript library. (Adam Franco)
+		
+	* Bug Fix: Importing: Updating the Exif importer to support multi-valued fields such as keywords. (Adam Franco)
+	
+v. 0.6.7 (2006-10-25)
+----------------------------------------------------
+		
+	* Bug Fix: Wizard: Now can handle cache names that contain periods. (Adam Franco)
+		
+	* Change: Icons have now been moved to their own directory for easier access when keeping polyphony installed in a non-web-accessible directory. (Adam Franco)
+	
+v. 0.6.6 (2006-08-16)
+----------------------------------------------------
+		
+	* Bug Fix: RSS/Logs: Fixed log RSS feed links when no priority is explicitly chosen. (Adam Franco)
+	
+v. 0.6.5 (2006-08-15)
+----------------------------------------------------
+		
+	* Bug Fix: Repository: Now returns false instead of throwing an error if the Asset with the specified id does not exist. (Adam Franco)
+	
+v. 0.6.4 (2006-08-11)
+----------------------------------------------------
+		
+	* Bug Fix: Now can force cookie usage to prevent accidental or intentional session hijacking by the passing of session ids in the url. (Adam Franco)
+		
+	* New feature: New abstract action for RSS feeds. Handles some input validation, formatting, and authentication. (Adam Franco)
+		
+	* New feature: Logs: Added RSS feeds of logs. (Adam Franco)
+		
+	* Bug Fix: Logs: Now has a button to clear date limits. (Adam Franco)
+		
+	* Bug Fix: Removed unneeded parameter from file and thumbnail urls. (Adam Franco)
+		
+	* Change: File/Thumbnail view: Now forces HTTP authentication for thumbnails if the user is not authenticated. (Adam Franco)
+	
+v. 0.6.3 (2006-08-04)
+----------------------------------------------------
+		
+	* Bug Fix: Importer: Now doesn't generate null thumbnails for multi-page PDF files. (Adam Franco)
+		
+	* Bug Fix: Basket: Can now view basket contents in viewer. (Adam Franco)
+		
+	* Bug Fix: PrimitiveIO: Now doesn't die when users enter data that cannot be made into a valid value object. (Adam Franco)
+		
+	* Bug Fix: Wizard/PrimitiveIO: Now doesn't show the 'new' field for SelectOrNew components when displaying the starting-text. (Adam Franco)
+	
+v. 0.6.2 (2006-08-02)
+----------------------------------------------------
+		
+	* Bug Fix: Importer: Now ignores and doesn't import files beginning with periods, which are usually hidden files. (Adam Franco)
+	
+v. 0.6.1 (2006-07-21)
+----------------------------------------------------
+		
+	* Bug Fix: Importer: Fixed default types. (Adam Franco)
+		
+	* New feature: Importer: Adding the Files-Only repository importer to allow the importing of files with no metadata. (Adam Franco)
+		
+	* Bug Fix: Importer: Fixed a parse error. (Adam Franco)
+		
+	* New feature: Wizard: Adding new WComponentCollection class that can wrap other components. (Adam Franco)
+		
+	* Bug Fix: FileDownloading: Now adds filenames appropriately or 'Untitled' even if the file doesn't have a name. (Adam Franco)
+	
 v. 0.6.0 (2006-06-16)
 ----------------------------------------------------
 		
