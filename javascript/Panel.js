@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Panel.js,v 1.1.2.2 2006/11/30 17:40:03 adamfranco Exp $
+ * @version $Id: Panel.js,v 1.1.2.3 2006/11/30 17:56:13 adamfranco Exp $
  */
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Panel.js,v 1.1.2.2 2006/11/30 17:40:03 adamfranco Exp $
+ * @version $Id: Panel.js,v 1.1.2.3 2006/11/30 17:56:13 adamfranco Exp $
  */
 function Panel ( title, height, width, positionElement, classNames ) {
 	if ( arguments.length > 0 ) {
@@ -106,22 +106,21 @@ function Panel ( title, height, width, positionElement, classNames ) {
 		this.mainElement.style.top = top + "px";
 		this.mainElement.style.left = left + "px";
 		
-		document.body.appendChild(this.mainElement);
-		
 		// Top bar
-		this.topBar = document.createElement("table");
+		this.topBar = this.mainElement.appendChild(document.createElement("table"));
 		this.topBar.className = 'topbar';
 		this.topBar.style.width = '100%';
-		this.mainElement.appendChild(this.topBar);
-		var row1 = this.topBar.appendChild(document.createElement('tr'));
+		
+		var tbody = this.topBar.appendChild(document.createElement('tbody'));
+		var row1 = tbody.appendChild(document.createElement('tr'));
+		
 		var topLeft = row1.appendChild(document.createElement('td'));
 		topLeft.className = 'title';
 		topLeft.innerHTML = this.title;
 		
 		var topRight = row1.appendChild(document.createElement('td'));
 		topRight.className = 'close';
-		var cancel = document.createElement("a");
-		topRight.appendChild(cancel);
+		var cancel = topRight.appendChild(document.createElement("a"));
 		var panel = this;	// define a variable for panel that will be in the
 							// scope of the onclick.
 		cancel.onclick = function () {panel.close();}
@@ -131,6 +130,8 @@ function Panel ( title, height, width, positionElement, classNames ) {
 		this.contentElement = document.createElement("div");
 		this.mainElement.appendChild(this.contentElement);
 		this.contentElement.className = 'container';
+		
+		document.body.appendChild(this.mainElement);
 	}
 	
 	/**
