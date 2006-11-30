@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Panel.js,v 1.1.2.1 2006/11/29 18:59:53 adamfranco Exp $
+ * @version $Id: Panel.js,v 1.1.2.2 2006/11/30 17:40:03 adamfranco Exp $
  */
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Panel.js,v 1.1.2.1 2006/11/29 18:59:53 adamfranco Exp $
+ * @version $Id: Panel.js,v 1.1.2.2 2006/11/30 17:40:03 adamfranco Exp $
  */
 function Panel ( title, height, width, positionElement, classNames ) {
 	if ( arguments.length > 0 ) {
@@ -109,14 +109,17 @@ function Panel ( title, height, width, positionElement, classNames ) {
 		document.body.appendChild(this.mainElement);
 		
 		// Top bar
-		this.topBar = document.createElement("div");
-		this.topBar.className = 'topbar container';
+		this.topBar = document.createElement("table");
+		this.topBar.className = 'topbar';
+		this.topBar.style.width = '100%';
 		this.mainElement.appendChild(this.topBar);
-		var html = "<div class='title'>" + this.title + "</div>";
-		html += "<div class='close'></div>";
-		this.topBar.innerHTML = html;
+		var row1 = this.topBar.appendChild(document.createElement('tr'));
+		var topLeft = row1.appendChild(document.createElement('td'));
+		topLeft.className = 'title';
+		topLeft.innerHTML = this.title;
 		
-		var topRight = this.topBar.childNodes[1];
+		var topRight = row1.appendChild(document.createElement('td'));
+		topRight.className = 'close';
 		var cancel = document.createElement("a");
 		topRight.appendChild(cancel);
 		var panel = this;	// define a variable for panel that will be in the

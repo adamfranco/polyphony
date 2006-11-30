@@ -10,19 +10,20 @@ div.panel {
 
 .panel .topbar {
 	border-bottom: 1px solid #555;
-	
-}
-
-.panel .container {
 	padding: 3px;
 }
 
+.panel .container {
+	padding: 5px;
+}
+
 .panel .title {
-	float: left; 
+	vertical-align: top; 
 	font-weight: bold;
 }
 
 .panel .close {
+	vertical-align: top;
 	text-align: right;
 }
 
