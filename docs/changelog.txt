@@ -3,6 +3,17 @@
 Name: Polyphony ChangeLog
 
 
+v. 0.6.9 (2006-11-30)
+----------------------------------------------------
+		
+	* Bug Fix: Tagging: Fixed IE javascript errors. (Adam Franco)
+		
+	* New feature: AuthZ: Added icon and popup display of Authorizations (Adam Franco)
+		
+	* Change: Moved all polyphony javascript into the centrally-loaded place. (Adam Franco)
+		
+	* Change: Refactored javascript classes and created a general purpose Panel class for use with pop-up content. (Adam Franco)
+	
 v. 0.6.8 (2006-11-28)
 ----------------------------------------------------
 		

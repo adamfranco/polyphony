@@ -4,12 +4,27 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.56.2.21 2006/11/28 22:20:32 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.56.2.22 2006/11/30 19:01:30 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
+	<version number="0.6.9" date="2006-11-30">
+		<fix author='adam'>
+			Tagging: Fixed IE javascript errors.
+		</fix>
+		<new author='adam'>
+			AuthZ: Added icon and popup display of Authorizations
+		</new>
+		<change author='adam'>
+			Moved all polyphony javascript into the centrally-loaded place.
+		</change>
+		<change author='adam'>
+			Refactored javascript classes and created a general purpose Panel class
+			for use with pop-up content.
+		</change>
+	</version>
 	<version number="0.6.8" date="2006-11-28">
 		<fix author='adam'>
 			ResultPrinter: Now doesn't overrun the end of the array when 
