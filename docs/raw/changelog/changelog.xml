@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.58 2006/12/01 17:18:05 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.59 2006/12/01 17:53:01 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -17,6 +17,9 @@
 			trunk include implementations of the CourseManagement and Scheduling
 			OSIDs as well as some GUI-theme-management work.
 		</important>
+		<fix author='adam'>
+			Install: Fixed warnings in partstructure install.
+		</fix>
 		<new author='tim'>
 			GUI theme management interfaces.
 		</new>

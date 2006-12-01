@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.27 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: XMLImporter.class.php,v 1.28 2006/12/01 17:53:01 adamfranco Exp $
  *
  * @author Christopher W. Shubert
  */ 
@@ -27,7 +27,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.27 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: XMLImporter.class.php,v 1.28 2006/12/01 17:53:01 adamfranco Exp $
  */
 class XMLImporter {
 
@@ -365,35 +365,37 @@ class XMLImporter {
 	 */
 	function relegateChildren (&$topImporter) {				
 		foreach ($this->_node->childNodes as $element) {
-			foreach ($this->_childImporterList as $importer) {
-				if (!is_subclass_of(new $importer($this->_existingArray),
-						'XMLImporter')) {
-					$this->addError("Class, '$class', is not a subclass of 'XMLImporter'.");
-					// log error
-					if (Services::serviceRunning("Logging")) {
-						$loggingManager =& Services::getService("Logging");
-						$log =& $loggingManager->getLogForWriting("Harmoni");
-						$formatType =& new Type("logging", "edu.middlebury",
-							"AgentsAndNodes",
-							"A format in which the acting Agent[s] and the target nodes affected are specified.");
-						$priorityType =& new Type("logging", "edu.middlebury",
-							"Error","Events involving critical system errors.");
-						$item =& new AgentNodeEntryItem("XMLImporter Error",
-							"Class, '$class' is not a subclass of 'XMLImporter'.");
-						$log->appendLogWithTypes($item, $formatType, 
-							$priorityType);
+			if (is_array($this->_childImporterList)) {
+				foreach ($this->_childImporterList as $importer) {
+					if (!is_subclass_of(new $importer($this->_existingArray),
+							'XMLImporter')) {
+						$this->addError("Class, '$class', is not a subclass of 'XMLImporter'.");
+						// log error
+						if (Services::serviceRunning("Logging")) {
+							$loggingManager =& Services::getService("Logging");
+							$log =& $loggingManager->getLogForWriting("Harmoni");
+							$formatType =& new Type("logging", "edu.middlebury",
+								"AgentsAndNodes",
+								"A format in which the acting Agent[s] and the target nodes affected are specified.");
+							$priorityType =& new Type("logging", "edu.middlebury",
+								"Error","Events involving critical system errors.");
+							$item =& new AgentNodeEntryItem("XMLImporter Error",
+								"Class, '$class' is not a subclass of 'XMLImporter'.");
+							$log->appendLogWithTypes($item, $formatType, 
+								$priorityType);
+						}
+						break;
 					}
-					break;
-				}
-				eval('$result = '.$importer.'::isImportable($element);');
-				if ($result) {
-					$imp =& new $importer($this->_existingArray);
-					$imp->import($topImporter, $element, $this->_type, $this->_object);
-					// used for bubbling errors to the top...
-					if ($imp->hasErrors())
-						foreach($imp->getErrors() as $error)
-							$this->addError($error);
-					unset($imp);
+					eval('$result = '.$importer.'::isImportable($element);');
+					if ($result) {
+						$imp =& new $importer($this->_existingArray);
+						$imp->import($topImporter, $element, $this->_type, $this->_object);
+						// used for bubbling errors to the top...
+						if ($imp->hasErrors())
+							foreach($imp->getErrors() as $error)
+								$this->addError($error);
+						unset($imp);
+					}
 				}
 			}
 			if ($topImporter->_granule == $element->nodeName)
