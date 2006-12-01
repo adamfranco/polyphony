@@ -3,6 +3,19 @@
 Name: Polyphony ChangeLog
 
 
+v. 0.7.0 (2006-12-01)
+----------------------------------------------------
+		
+	**** IMPORTANT *** Change: Polyphony 0.7.0 is a merging of Polyphony 0.6.9 with work done on the Polyphony trunk by Tim and John over the summer. The additions on the trunk include implementations of the CourseManagement and Scheduling OSIDs as well as some GUI-theme-management work. (Adam Franco)
+		
+	* New feature: GUI theme management interfaces. (Tim Bahls)
+		
+	* New feature: Wizard: new logic wizard and components to support theme management. (Tim Bahls)
+		
+	* Change: AgentEditing: Updates to interface for agent editing. (Tim Bahls)
+		
+	* New feature: CourseManagement: Interfaces for managing courses and membership. (John Lee)
+	
 v. 0.6.9 (2006-11-30)
 ----------------------------------------------------
 		
