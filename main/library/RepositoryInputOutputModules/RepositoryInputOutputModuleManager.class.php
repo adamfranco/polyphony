@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.14 2006/11/30 22:02:40 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.15 2006/12/04 21:10:11 adamfranco Exp $
  */
 
 /**
@@ -21,8 +21,8 @@ require_once(dirname(__FILE__)."/modules/HarmoniFileModule.class.php");
  * appropriate RepositoryInputOutputModule based on their Schema Formats.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.14 2006/11/30 22:02:40 adamfranco Exp $
- * @since $Date: 2006/11/30 22:02:40 $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.15 2006/12/04 21:10:11 adamfranco Exp $
+ * @since $Date: 2006/12/04 21:10:11 $
  * @copyright 2004 Middlebury College
  */
 
@@ -420,33 +420,79 @@ class RepositoryInputOutputModuleManager {
 		$idManager =& Services::getService("IdManager");
 		$assetId =& $asset->getId();
 		
-		$imageProcessor =& Services::getService("ImageProcessor");
-		$fileRecords =& $asset->getRecordsByRecordStructure($idManager->getId("FILE"));
-		while ($fileRecords->hasNextRecord()) {
-			$record =& $fileRecords->nextRecord();
-			if (!isset($fileRecord)) {
-				$fileRecord =& $record;
+		// Check the cache
+		if (!isset($GLOBALS['__RepositoryThumbRecordCache']))
+			$GLOBALS['__RepositoryThumbRecordCache'] = array();
+		
+		if (!isset($GLOBALS['__RepositoryThumbRecordCache'][$assetId->getIdString()])) {		
+			$imageProcessor =& Services::getService("ImageProcessor");
+			$fileRecords =& $asset->getRecordsByRecordStructure($idManager->getId("FILE"));
+			while ($fileRecords->hasNextRecord()) {
+				$record =& $fileRecords->nextRecord();
+				if (!isset($fileRecord)) {
+					$fileRecord =& $record;
+				}
+				
+				$mimeTypeParts =& $record->getPartsByPartStructure(
+					$idManager->getId("MIME_TYPE"));
+				$mimeTypePart =& $mimeTypeParts->next();
+				$mimeType = $mimeTypePart->getValue();
+				
+				// If this record is supported by the image processor, then use it
+				// to generate a thumbnail instead of the default icons.
+				if ($imageProcessor->isFormatSupported($mimeType)) {
+					$fileRecord =& $record;
+					break;	
+				}
 			}
 			
-			$mimeTypeParts =& $record->getPartsByPartStructure(
-				$idManager->getId("MIME_TYPE"));
-			$mimeTypePart =& $mimeTypeParts->next();
-			$mimeType = $mimeTypePart->getValue();
-			
-			// If this record is supported by the image processor, then use it
-			// to generate a thumbnail instead of the default icons.
-			if ($imageProcessor->isFormatSupported($mimeType)) {
-				$fileRecord =& $record;
-				break;	
+			if (!isset($fileRecord))
+				$GLOBALS['__RepositoryThumbRecordCache'][$assetId->getIdString()] = FALSE;
+			 else
+				$GLOBALS['__RepositoryThumbRecordCache'][$assetId->getIdString()] =& $fileRecord;
+		}
+		
+		return $GLOBALS['__RepositoryThumbRecordCache'][$assetId->getIdString()];
+	}
+	
+	/**
+	 * Answer true if the Asset or AssetId has a thumbnail rather than a default Icon
+	 * 
+	 * @param mixed object Asset Id $assetOrID
+	 * @return boolean
+	 * @access public
+	 * @since 12/4/06
+	 */
+	function hasThumbnailNotIcon ( &$assetOrId ) {
+		$idManager =& Services::getService("IdManager");
+		
+		$record =& RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset($assetOrId);
+		
+		if (!$record)
+			return FALSE;
+		
+		// Make sure that the structure is the right one.
+		$structure =& $record->getRecordStructure();
+		$fileId =& $idManager->getId('FILE');
+		if (!$fileId->isEqual($structure->getId())) {
+			return FALSE;
+		} else {
+			// Get the parts for the record.
+			$partIterator =& $record->getParts();
+			$parts = array();
+			while($partIterator->hasNext()) {
+				$part =& $partIterator->next();
+				$partStructure =& $part->getPartStructure();
+				$partStructureId =& $partStructure->getId();
+				$parts[$partStructureId->getIdString()] =& $part;
 			}
+			
+			// If we have a thumbnail, print that.
+			if ($parts['THUMBNAIL_MIME_TYPE']->getValue())
+				return TRUE;
+			else
+				return FALSE;
 		}
-		
-		if (!isset($fileRecord)) {
-			$false = FALSE;
-			return $false;
-		}
-		
-		return $fileRecord;
 	}
 }
 
