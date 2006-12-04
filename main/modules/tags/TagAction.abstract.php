@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.2 2006/11/30 22:02:46 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.3 2006/12/04 21:08:48 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.2 2006/11/30 22:02:46 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.3 2006/12/04 21:08:48 adamfranco Exp $
  */
 class TagAction 
 	extends MainWindowAction
@@ -322,13 +322,16 @@ class TagAction
 		}
 		
 		if (RequestContext::value('tag')) {
-			if ($harmoni->getCurrentAction() == 'tags.viewuser' 
-				&& (!RequestContext::value('agent_id') || RequestContext::value('agent_id') == $currentUserIdString)) 
-			{
+			if ($harmoni->getCurrentAction() != 'tags.view') {
 				$url = $harmoni->request->quickURL('tags', 'view', 
 					array('agent_id' => $tagManager->getCurrentUserIdString(),
 					'tag' => RequestContext::value('tag')));
 				print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("items tagged '%1' by everyone"))."</a> &nbsp; ";
+			}
+		
+			if ($harmoni->getCurrentAction() == 'tags.viewuser' 
+				&& (!RequestContext::value('agent_id') || RequestContext::value('agent_id') == $currentUserIdString)) 
+			{
 				
 				print " | &nbsp; ";
 				

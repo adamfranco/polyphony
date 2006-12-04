@@ -6,11 +6,13 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewRepository.act.php,v 1.2 2006/11/30 22:02:47 adamfranco Exp $
+ * @version $Id: viewRepository.act.php,v 1.3 2006/12/04 21:08:48 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
 require_once(dirname(__FILE__)."/TagAction.abstract.php");
+require_once(dirname(__FILE__)."/view.act.php");
+
 
 
 /**
@@ -22,7 +24,7 @@ require_once(dirname(__FILE__)."/TagAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewRepository.act.php,v 1.2 2006/11/30 22:02:47 adamfranco Exp $
+ * @version $Id: viewRepository.act.php,v 1.3 2006/12/04 21:08:48 adamfranco Exp $
  */
 class viewRepositoryAction 
 	extends MainWindowAction
@@ -68,7 +70,11 @@ class viewRepositoryAction
 		$actionRows =& $this->getActionRows();
 // 		ob_start();
 		$harmoni =& Harmoni::instance();
+		
+		$harmoni->request->passthrough('collection_id');
 		$harmoni->request->startNamespace("polyphony-tags");
+		$harmoni->request->passthrough('repository_id');
+		$harmoni->request->passthrough('system');
 		
 		$actionRows->add(new Block(TagAction::getTagMenu(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
 		
@@ -80,8 +86,12 @@ class viewRepositoryAction
 		$actionRows->add($resultLayout, "100%", null, LEFT, CENTER);
 		
 // 		$actionRows->add(new Block(ob_get_clean(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
+		$harmoni->request->forget('repository_id');
+		$harmoni->request->forget('system');
 		$harmoni->request->endNamespace();
 		textdomain($defaultTextDomain);
+		$harmoni->request->passthrough('collection_id');
+		
 	}
 	
 	/**
@@ -113,7 +123,7 @@ class viewRepositoryAction
 	 * @since 11/8/06
 	 */
 	function getViewAction () {
-		return 'view';
+		return 'viewRepository';
 	}
 	
 	/**
@@ -134,80 +144,6 @@ class viewRepositoryAction
 		return $this->_repository;
 	}
 	
-}
-
-/**
- * Answer the tagged item GUI component
- * 
- * @param <##>
- * @return <##>
- * @access public
- * @since 11/14/06
- */
-function getTaggedItemComponent ( &$item, $viewAction) {
-	if (defined('POLYPHONY_TAGGEDITEM_PRINTING_CALLBACK'))
-		$printFunction = POLYPHONY_TAGGEDITEM_PRINTING_CALLBACK;
-	else
-		$printFunction = 'printTaggedItem';
-	
-	ob_start();
-	
-	$printFunction($item, $viewAction);
-	
-	$component = & new Block(ob_get_clean(), EMPHASIZED_BLOCK);
-	return $component;
-}
-
-/**
- * Print out an Item
- * 
- * @param object $item
- * @param string $viewAction The action to choose when clicking on a tag.
- * @return string
- * @access public
- * @since 11/8/06
- */
-function printTaggedItem ( &$item, $viewAction) {	
-	print "\n\t<a href='".$item->getUrl()."'>";
-	if ($item->getThumbnailUrl())
-		print "\n\t\t<img src='".$item->getThumbnailUrl()."' style='border: 0px; float: right;' />";
-	print "\n\t\t<strong>".$item->getDisplayName()."</strong>";
-	print "\n\t</a>";
-	print "\n\t<p>".$item->getDescription()."</p>";
-	print "\n\t<p><strong>"._('Tags').":</strong> ";
-	$tags =& $item->getTags();
-	$harmoni =& Harmoni::instance();
-	while ($tags->hasNext()) {
-		$tag =& $tags->next();
-		$parameters = array("tag" => $tag->getValue());
-		if (RequestContext::value('agent_id'))
-			$parameters['agent_id'] = RequestContext::value('agent_id');
-		$url = $harmoni->request->quickURL('tags', $viewAction, $parameters);
-		print "<a href='".$url."'>".$tag->getValue()."</a> ";
-	}
-	print "</p>";
-	print "\n\t<p><strong>"._('System').":</strong> ";
-	if ($item->getSystem() == ARBITRARY_URL)
-		print _("The Internet");
-	else
-		print ucFirst($item->getSystem());
-	print "</p>";
-}
-
-// Callback function for checking authorizations
-function canViewItem( &$item ) {
-	if ($item->getSystem() == ARBITRARY_URL)
-		return true;
-	
-	$authZ =& Services::getService("AuthZ");
-	$idManager =& Services::getService("Id");
-	if ($authZ->isUserAuthorized($idManager->getId("edu.middlebury.authorization.access"), $item->getId())
-		|| $authZ->isUserAuthorized($idManager->getId("edu.middlebury.authorization.view"), $item->getId()))
-	{
-		return TRUE;
-	} else {
-		return FALSE;
-	}
 }
 
 ?>

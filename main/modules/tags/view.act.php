@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.2 2006/11/30 22:02:47 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.3 2006/12/04 21:08:48 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/TagAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.2 2006/11/30 22:02:47 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.3 2006/12/04 21:08:48 adamfranco Exp $
  */
 class viewAction 
 	extends MainWindowAction
@@ -152,20 +152,23 @@ function printTaggedItem ( &$item, $viewAction) {
 	print "\n\t<a href='".$item->getUrl()."'>";
 	if ($item->getThumbnailUrl())
 		print "\n\t\t<img src='".$item->getThumbnailUrl()."' style='border: 0px; float: right;' />";
-	print "\n\t\t<strong>".$item->getDisplayName()."</strong>";
+	if ($item->getDisplayName())
+		print "\n\t\t<strong>".$item->getDisplayName()."</strong>";
+	else
+		print "\n\t\t<strong>"._('untitled')."</strong>";
 	print "\n\t</a>";
 	print "\n\t<p>".$item->getDescription()."</p>";
-	print "\n\t<p><strong>"._('Tags').":</strong> ";
-	$tags =& $item->getTags();
-	$harmoni =& Harmoni::instance();
-	while ($tags->hasNext()) {
-		$tag =& $tags->next();
-		$parameters = array("tag" => $tag->getValue());
-		if (RequestContext::value('agent_id'))
-			$parameters['agent_id'] = RequestContext::value('agent_id');
-		$url = $harmoni->request->quickURL('tags', $viewAction, $parameters);
-		print "<a href='".$url."'>".$tag->getValue()."</a> ";
-	}
+	
+	// Tags
+	print "\n\t<p style='text-align: justify;'>";
+	print "\n\t<strong>"._('Tags').":</strong> ";
+	print TagAction::getTagCloudForItem($item, $viewAction,
+			array(	'font-size: 90%;',
+					'font-size: 100%;',
+					'font-size: 110%;',
+			));
+	print "\n\t</p>";
+	
 	print "</p>";
 	print "\n\t<p><strong>"._('System').":</strong> ";
 	if ($item->getSystem() == ARBITRARY_URL)
