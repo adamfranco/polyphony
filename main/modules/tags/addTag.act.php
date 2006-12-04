@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addTag.act.php,v 1.2 2006/11/30 22:02:46 adamfranco Exp $
+ * @version $Id: addTag.act.php,v 1.3 2006/12/04 19:54:08 adamfranco Exp $
  */ 
  
 require_once(dirname(__FILE__)."/TagXmlAction.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/TagXmlAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addTag.act.php,v 1.2 2006/11/30 22:02:46 adamfranco Exp $
+ * @version $Id: addTag.act.php,v 1.3 2006/12/04 19:54:08 adamfranco Exp $
  */
 class addTagAction
 	extends TagXmlAction
@@ -46,7 +46,10 @@ class addTagAction
 		
 		// Add the tag
 		$tag = new Tag($tagValue);
-		$tag->tagItem($item);
+		if (!$tag->getValue())
+			$this->error(_("Cannot tag with an empty value."));
+		else
+			$tag->tagItem($item);
 		
 		// send the new tag list
 		$this->writeXmlResponse($item->getUserTags());

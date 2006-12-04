@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.2 2006/11/30 22:02:36 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.3 2006/12/04 19:54:08 adamfranco Exp $
  */
 
 Tagger.prototype = new Panel();
@@ -21,7 +21,7 @@ Tagger.superclass = Panel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.2 2006/11/30 22:02:36 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.3 2006/12/04 19:54:08 adamfranco Exp $
  */
 function Tagger ( itemId, system, positionElement, containerElement ) {
 	if ( arguments.length > 0 ) {
@@ -482,6 +482,7 @@ function Tagger ( itemId, system, positionElement, containerElement ) {
 	 * @since 11/10/06
 	 */
 	Tagger.prototype.getTagsFromXml = function (xmldoc) {
+		this.displayErrors(xmldoc);
 		var tags = new Array();
 		var tagNodes = xmldoc.getElementsByTagName('tag');
 		for (var i = 0; i < tagNodes.length; i++) {
@@ -494,6 +495,27 @@ function Tagger ( itemId, system, positionElement, containerElement ) {
 	}
 	
 	/**
+	 * Display any errors that are written to the xml doc.
+	 * 
+	 * @param object xmldoc
+	 * @return void
+	 * @access public
+	 * @since 12/4/06
+	 */
+	Tagger.prototype.displayErrors = function (xmldoc) {
+		var errorString = "The following errors occured:";
+		var hasErrors = false;
+		var errorNodes = xmldoc.getElementsByTagName('error');
+		for (var i = 0; i < errorNodes.length; i++) {
+			hasErrors = true;			
+			errorString += "\n\tError: " + errorNodes[i].firstChild.nodeValue;
+		}
+		
+		if (hasErrors)
+			alert(errorString);
+	}
+	
+	/**
 	 * Add a tag.
 	 * 
 	 * @param string value
@@ -503,6 +525,20 @@ function Tagger ( itemId, system, positionElement, containerElement ) {
 	 */
 	Tagger.prototype.addTag = function (value) {
 		var newTag = new Tag(value, 1);
+		
+		if (!newTag.value)
+			return;
+		
+		// If the current tags haven't loaded, wait a moment and then try again.
+		if (!this.currentTags) {
+			var tagger = this;
+			window.setTimeout(
+				function () {
+					tagger.addTag(value);
+				},
+				500);
+			return;
+		}
 		
 		// check to see if it is in the current tags
 		for (var i = 0; i < this.currentTags.length; i++) {
@@ -518,7 +554,24 @@ function Tagger ( itemId, system, positionElement, containerElement ) {
 		var url = Harmoni.quickUrl('tags', 'addTag', 
 						{'item_id': this.itemId, 'system': this.system, 'tag': newTag.value}, 
 						'polyphony-tags');
-		if (req) {			
+		if (req) {
+			// Define a variable to point at this Tagger that will be in the
+			// scope of the request-processing function, since 'this' will (at that
+			// point) be that function.
+			var tagger = this;
+
+			req.onreadystatechange = function () {
+				// only if req shows "loaded"
+				if (req.readyState == 4) {
+					// only if we get a good load should we continue.
+					if (req.status == 200) {
+						tagger.displayErrors(req.responseXML);
+					} else {
+						alert("There was a problem retrieving the XML data:\n" +
+							req.statusText);
+					}
+				}
+			} 
 			req.open("GET", url, true);
 			req.send(null);
 		} else {
@@ -573,7 +626,7 @@ function Tagger ( itemId, system, positionElement, containerElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.2 2006/11/30 22:02:36 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.3 2006/12/04 19:54:08 adamfranco Exp $
  */
 function Tag ( value, occurances ) {
 	if ( arguments.length > 0 ) {
@@ -591,8 +644,6 @@ function Tag ( value, occurances ) {
 	 * @since 11/10/06
 	 */
 	Tag.prototype.init = function ( value, occurances ) {
-		if (!value)
-			alert("Value=" + value);
 		this.value = value.toLowerCase();
 		
 		// drop any quotes
@@ -620,7 +671,7 @@ function Tag ( value, occurances ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.2 2006/11/30 22:02:36 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.3 2006/12/04 19:54:08 adamfranco Exp $
  */
 function TagCloud ( container ) {
 	if ( arguments.length > 0 ) {
@@ -720,7 +771,7 @@ TagRenameDialog.superclass = Panel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.2 2006/11/30 22:02:36 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.3 2006/12/04 19:54:08 adamfranco Exp $
  */
 function TagRenameDialog ( tag, positionElement ) {
 	if ( arguments.length > 0 ) {
