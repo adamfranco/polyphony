@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: getWhoCanDo.act.php,v 1.2 2006/11/30 22:02:43 adamfranco Exp $
+ * @version $Id: getWhoCanDo.act.php,v 1.3 2006/12/04 21:55:33 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__).'/AuthZXmlAction.class.php');
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__).'/AuthZXmlAction.class.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: getWhoCanDo.act.php,v 1.2 2006/11/30 22:02:43 adamfranco Exp $
+ * @version $Id: getWhoCanDo.act.php,v 1.3 2006/12/04 21:55:33 adamfranco Exp $
  */
 class getWhoCanDoAction
 	extends AuthZXmlAction
@@ -65,7 +65,9 @@ class getWhoCanDoAction
 			
 			if ($agent =& $agentMan->getAgentOrGroup($agentId)) {
 				print "\n\t<agent id=\"".$agentId->getIdString()."\"";
-				print " displayName=\"".$agent->getDisplayName()."\">";
+				print " displayName=\"".$agent->getDisplayName()."\"";
+				print " agentOrGroup=\"".((method_exists($agent, 'getMembers'))?"group":"agent")."\"";
+				print ">";
 				
 				// Get the AZs for the agent
 				$azs =& $authZ->getAllAZs($agentId, $null = null, $this->getQualifierId(), true);

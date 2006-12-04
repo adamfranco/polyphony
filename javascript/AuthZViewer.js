@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AuthZViewer.js,v 1.2 2006/11/30 22:02:36 adamfranco Exp $
+ * @version $Id: AuthZViewer.js,v 1.3 2006/12/04 21:55:32 adamfranco Exp $
  */
 
 AuthZViewer.prototype = new Panel();
@@ -21,7 +21,7 @@ AuthZViewer.superclass = Panel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AuthZViewer.js,v 1.2 2006/11/30 22:02:36 adamfranco Exp $
+ * @version $Id: AuthZViewer.js,v 1.3 2006/12/04 21:55:32 adamfranco Exp $
  */
 function AuthZViewer ( qualifierId, positionElement ) {
 	if ( arguments.length > 0 ) {
@@ -79,6 +79,8 @@ function AuthZViewer ( qualifierId, positionElement ) {
 		var url = Harmoni.quickUrl('authorization', 'getWhoCanDo', 
 						{'qualifier_id': this.qualifierId, 'function_id': 'edu.middlebury.authorization.view'}, 
 						'polyphony-authz');
+// 		var newWindow = window.open(url);
+
 		if (req) {
 			// Define a variable to point at this object that will be in the
 			// scope of the request-processing function, since 'this' will (at that
@@ -128,9 +130,14 @@ function AuthZViewer ( qualifierId, positionElement ) {
 		
 		var agents = xmldoc.getElementsByTagName('agent');
 		if (agents.length) {
-			html += "<table border='0'>"
+			
+			var everyoneString = '';
+			var usersString = '';
+			var groupStrings = new Array();
+			var agentStrings = new Array();
+			
 			for (var i = 0; i < agents.length; i++) {
-				html += "<tr>";
+				html = "<tr>";
 				html += "<td style='font-weight: bold; border-top: 1px dotted;'>" + agents[i].getAttribute('displayName') + "</td>";
 				html += "<td style='border-top: 1px dotted;'>";
 				var azs = agents[i].getElementsByTagName('authorization');
@@ -161,7 +168,30 @@ function AuthZViewer ( qualifierId, positionElement ) {
 				
 				html += "</td>";
 				html += "</tr>";
+				
+				if (agents[i].getAttribute('id') == 'edu.middlebury.agents.everyone'
+					|| agents[i].getAttribute('id') == 'edu.middlebury.agents.anonymous')
+				{
+					everyoneString = html;
+				} else if (agents[i].getAttribute('id') == 'edu.middlebury.agents.users') {
+					usersString = html;
+				} else if (agents[i].getAttribute('agentOrGroup') == 'group') {
+					groupStrings.push({'value': agents[i].getAttribute('displayName'), 'string': html});
+				} else {
+					agentStrings.push({'value': agents[i].getAttribute('displayName'), 'string': html});
+				}
 			}
+			
+			quick_sortValue(groupStrings);
+			quick_sortValue(agentStrings);
+			
+			html = "<table border='0'>"
+			html += everyoneString;
+			html += usersString;
+			for (var i = 0; i < groupStrings.length; i++)
+				html += groupStrings[i].string;
+			for (var i = 0; i < agentStrings.length; i++)
+				html += agentStrings[i].string;
 			html += "</table>";
 		} else {
 			html += "No one can view this item.";
