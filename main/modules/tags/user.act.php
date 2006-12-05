@@ -6,10 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: user.act.php,v 1.2 2006/11/30 22:02:47 adamfranco Exp $
+ * @version $Id: user.act.php,v 1.3 2006/12/05 17:44:49 adamfranco Exp $
  */ 
 
-require_once(dirname(__FILE__)."/TagAction.abstract.php");
+require_once(dirname(__FILE__)."/all.act.php");
 
 /**
  * <##>
@@ -20,10 +20,10 @@ require_once(dirname(__FILE__)."/TagAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: user.act.php,v 1.2 2006/11/30 22:02:47 adamfranco Exp $
+ * @version $Id: user.act.php,v 1.3 2006/12/05 17:44:49 adamfranco Exp $
  */
 class userAction 
-	extends TagAction
+	extends allAction
 {
 		
 	/**
@@ -83,7 +83,7 @@ class userAction
 		else
 			$agentId =& $tagManager->getCurrentUserId();
 		
-		$tags =& $tagManager->getTagsByAgent($agentId);
+		$tags =& $tagManager->getTagsByAgent($agentId, TAG_SORT_ALFA, $this->getNumTags());
 // 		printpre($tags);
 		return $tags;
 	}

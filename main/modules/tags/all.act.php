@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: all.act.php,v 1.2 2006/11/30 22:02:46 adamfranco Exp $
+ * @version $Id: all.act.php,v 1.3 2006/12/05 17:44:49 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/TagAction.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/TagAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: all.act.php,v 1.2 2006/11/30 22:02:46 adamfranco Exp $
+ * @version $Id: all.act.php,v 1.3 2006/12/05 17:44:49 adamfranco Exp $
  */
 class allAction 
 	extends TagAction
@@ -57,51 +57,60 @@ class allAction
 	 */
 	function &getTags () {
 		$tagManager =& Services::getService("Tagging");
-		$tags =& $tagManager->getTags(TAG_SORT_ALFA, 100);
+		$tags =& $tagManager->getTags(TAG_SORT_ALFA, $this->getNumTags());
 // 		printpre($tags);
 		return $tags;
 	}
 	
-// 	/**
-// 	 * This just adds an agent list for debugging purposes.
-// 	 * 
-// 	 * @return void
-// 	 * @access public
-// 	 * @since 11/07/06
-// 	 */
-// 	function buildContent () {
-// 		parent::buildContent();
-// 		
-// 		$defaultTextDomain = textdomain("polyphony");
-// 		$actionRows =& $this->getActionRows();
-// 		ob_start();
-// 		$harmoni =& Harmoni::instance();
-// 		$harmoni->request->startNamespace("polyphony-tags");
-// 		
-// 		print "\n\t<h3>Debug: Top Agents</h3>";
-// 		$tagManager =& Services::getService("Tagging");
-// 		$agentManager =& Services::getService('Agent');
-// 		$agentIds =& $tagManager->getAgentIds();
-// 		$i=0;
-// 		while ($agentIds->hasNext() && $i < 10) {
-// 			$agentId =& $agentIds->next();
-// 			
-// 			if ($agentManager->isAgent($agentId)) {
-// 				$agent =& $agentManager->getAgent($agentId);
-// 				$name = $agent->getDisplayName();
-// 			} else
-// 				$name = $agentId->getIdString();
-// 			
-// 			$url = $harmoni->request->quickUrl('tags', 'user', 
-// 				array('agent_id' => $agentId->getIdString()));
-// 			print "\n\t<a href='".$url."'>".$name."</a> ";
-// 		}
-// 		
-// 		
-// 		$actionRows->add(new Block(ob_get_clean(), HIGHLIT_BLOCK), "100%", null, LEFT, TOP);
-// 		$harmoni->request->endNamespace();
-// 		textdomain($defaultTextDomain);
-// 	}
+	/**
+	 * Answer the number of tags to show
+	 * 
+	 * @return integer
+	 * @access public
+	 * @since 12/5/06
+	 */
+	function getNumTags () {
+		if (RequestContext::value('num_tags') !== null)
+			$_SESSION['__NUM_TAGS'] = intval(RequestContext::value('num_tags'));
+		else if (!isset($_SESSION['__NUM_TAGS']))
+			$_SESSION['__NUM_TAGS'] = 100;
+		
+		return $_SESSION['__NUM_TAGS'];
+	}
+	
+	/**
+	 * This just adds an agent list for debugging purposes.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 11/07/06
+	 */
+	function buildContent () {
+		parent::buildContent();
+		
+		$defaultTextDomain = textdomain("polyphony");
+		$actionRows =& $this->getActionRows();
+		ob_start();
+		$harmoni =& Harmoni::instance();
+		$harmoni->request->startNamespace("polyphony-tags");
+		
+		ob_start();
+		print "\n<select name='".RequestContext::name('num_tags')."'";
+		print " onchange=\"";
+		print "var url='".$harmoni->request->quickURL(null, null, array('num_tags' => 'XXXXX'))."'; ";
+		print "window.location = url.replace(/XXXXX/, this.value).urlDecodeAmpersands(); ";
+		print "\">";
+		$options = array(50, 100, 200, 400, 600, 1000, 0);
+		foreach ($options as $option)
+			print "\n\t<option value='".$option."' ".(($option == $this->getNumTags())?" selected='selected'":"").">".(($option)?$option:_('all'))."</option>";
+		print "\n</select>";
+		print str_replace('%1', ob_get_clean(), _("Showing top %1 tags"));
+		
+		
+		$actionRows->add(new Block(ob_get_clean(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
+		$harmoni->request->endNamespace();
+		textdomain($defaultTextDomain);
+	}
 	
 	/**
 	 * Answer the action to use for viewing tags
