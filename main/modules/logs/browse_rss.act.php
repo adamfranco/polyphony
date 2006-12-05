@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_rss.act.php,v 1.2 2006/11/30 22:02:45 adamfranco Exp $
+ * @version $Id: browse_rss.act.php,v 1.3 2006/12/05 20:10:12 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/RSSAction.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/RSSAction.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_rss.act.php,v 1.2 2006/11/30 22:02:45 adamfranco Exp $
+ * @version $Id: browse_rss.act.php,v 1.3 2006/12/05 20:10:12 adamfranco Exp $
  */
 class browse_rssAction 
 	extends RSSAction
@@ -162,7 +162,10 @@ class browse_rssAction
 			print _("Limited to node: ");
 			$id =& $idManager->getId(RequestContext::value('node_id'));
 			$node =& $hierarchyManager->getNode($id);
-			print $node->getDisplayName();
+			if ($node->getDisplayName())
+				print $node->getDisplayName();
+			else
+				print _("Id: ").$nodeId->getIdString();
 			print "</p>";
 		}
 		if (RequestContext::value('category')) {
@@ -194,6 +197,7 @@ class browse_rssAction
 		$rssItem =& $this->addItem(new RSSItem);
 		$harmoni =& Harmoni::instance();
 		$agentManager =& Services::getService("Agent");
+		$hierarchyManager = Services::getService("Hierarchy");
 		
 		$timestamp =& $entry->getTimestamp();
 		$timestamp =& $timestamp->asTimestamp();
@@ -231,6 +235,57 @@ class browse_rssAction
 		}
 		$rssItem->setAuthor($agentList);
 		
+		// Agents with links
+		ob_start();
+		$agentIds =& $item->getAgentIds(true);
+		$authorList = '';
+		while ($agentIds->hasNext()) {
+			$agentId =& $agentIds->next();
+			if ($agentManager->isAgent($agentId) || $agentManager->isGroup($agentId)) {
+				$agent =& $agentManager->getAgent($agentId);
+				print "<a href='";
+				print $harmoni->request->quickURL("logs", "browse",
+						array(	"agent_id" => $agentId->getIdString()));
+				print "'>";
+				print $agent->getDisplayName();
+				print "</a>";
+				$authorList .= $agent->getDisplayName();
+			} else {
+				print _("Id: ").$agentId->getIdString();
+				$authorList .= _("Id: ").$agentId->getIdString();
+			}
+			
+			if ($agentIds->hasNext()) {
+				print ", <br/>";
+				$authorList .= ", ";
+			}
+		}
+		$agentList = ob_get_clean();
+		
+		// Nodes
+		ob_start();
+		$nodeIds =& $item->getNodeIds(true);
+		while ($nodeIds->hasNext()) {
+			$nodeId =& $nodeIds->next();
+			print "<a href='";
+			print $harmoni->request->quickURL("logs", "browse",
+					array(	"node_id" => $nodeId->getIdString()));
+			print "'>";
+			if ($hierarchyManager->nodeExists($nodeId)) {
+				$node =& $hierarchyManager->getNode($nodeId);
+				if ($node->getDisplayName())
+					print $node->getDisplayName();
+				else
+					print _("Id: ").$nodeId->getIdString();
+			} else {
+				print _("Id: ").$nodeId->getIdString();
+			}
+			print "</a>";
+			if ($nodeIds->hasNext())
+				print ", <br/>";
+		}
+		$nodeList = ob_get_clean();
+		
 		
 		// Description text
 		ob_start();
@@ -253,6 +308,9 @@ class browse_rssAction
 		
 		print "\n\t\t\t\t\t<dt style='font-weight: bold;'>"._("Agents: ")."</dt>";
 		print "\n\t\t\t\t\t<dd style='margin-bottom: 20px;'>".$agentList."</dd>";
+		
+		print "\n\t\t\t\t\t<dt style='font-weight: bold;'>"._("Nodes: ")."</dt>";
+		print "\n\t\t\t\t\t<dd style='margin-bottom: 20px;'>".$nodeList."</dd>";
 		
 		print "\n\t\t\t\t\t<dt style='font-weight: bold;'>"._("Backtrace: ")."</dt>";
 		print "\n\t\t\t\t\t<dd style='margin-bottom: 20px;'>".$item->getBacktrace()."</dd>";

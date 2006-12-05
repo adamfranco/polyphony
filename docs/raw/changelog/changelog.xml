@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.61 2006/12/04 21:55:22 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.62 2006/12/05 20:10:11 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -32,6 +32,12 @@
 			AuthZ: Now orders Authorization display in popup with everyone and 
 			institute at the top, then groups, then agents, ordered alphabetically 
 			within each category.
+		</change>
+		<fix author='adam'>
+			Logs: Now prints the node id if there is no display name.
+		</fix>
+		<change author='adam'>
+			Logs: Now prints links back to the logs for agents and nodes in the RSS Feed.
 		</change>
 	</version>
 	<version number="0.7.0" date="2006-12-01">

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.14 2006/11/30 22:02:44 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.15 2006/12/05 20:10:12 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.14 2006/11/30 22:02:44 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.15 2006/12/05 20:10:12 adamfranco Exp $
  */
 class browseAction 
 	extends MainWindowAction
@@ -581,9 +581,12 @@ function printLogRow ( &$entry ) {
 		print "'>";
 		if ($hierarchyManager->nodeExists($nodeId)) {
 			$node =& $hierarchyManager->getNode($nodeId);
-			print $node->getDisplayName();
+			if ($node->getDisplayName())
+				print $node->getDisplayName();
+			else
+				print _("Id: ").$nodeId->getIdString();
 		} else {
-			print $nodeId->getIdString();
+			print _("Id: ").$nodeId->getIdString();
 		}
 		print "</a>";
 		if ($nodeIds->hasNext())
