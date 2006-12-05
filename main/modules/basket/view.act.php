@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.12 2006/11/30 22:02:43 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.13 2006/12/05 19:12:05 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.12 2006/11/30 22:02:43 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.13 2006/12/05 19:12:05 adamfranco Exp $
  */
 class viewAction 
 	extends MainWindowAction
@@ -147,7 +147,7 @@ function printAssetShort(&$assetId, $num) {
 			print '"_blank", ';
 			print '"toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,copyhistory=no,width=600,height=500"';
 			print ")'>";
-			print "\n\t\t<img src='$thumbnailURL' class='thumbnail' alt='Thumbnail Image' border='0' style='max-height: $thumbSize; max-width: $thumbSize;' />";
+			print "\n\t\t<img src='$thumbnailURL' class='thumbnail thumbnail_image' alt='Thumbnail Image' style='max-height: $thumbSize; max-width: $thumbSize;' />";
 			print "\n\t</a>";
 			print "\n</div>";
 			$component =& new UnstyledBlock(ob_get_contents());

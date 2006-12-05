@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.13 2006/11/30 22:02:38 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.14 2006/12/05 19:11:59 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.13 2006/11/30 22:02:38 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.14 2006/12/05 19:11:59 adamfranco Exp $
  */
 class Basket 
 	extends OrderedSet
@@ -331,8 +331,8 @@ END;
 					print "\n\t<div style='border: 1px solid; height: 60px; width: 60px; float: left; text-align: center; vertical-align: middle; padding: 0px; margin: 2px;'>";
 					
 					//  The image
-					print "\n\t\t<img \n\t\t\tsrc='$thumbnailURL' \n\t\t\talt='Thumbnail Image' border='0'";
-					print " \n\t\t\tstyle='max-height: 50px; max-width: 50px; vertical-align: middle; margin: 5px; cursor: pointer;' ";
+					print "\n\t\t<img class='thumbnail_image' \n\t\t\tsrc='$thumbnailURL' \n\t\t\talt='Thumbnail Image'";
+					print " \n\t\t\tstyle='max-height: 50px; max-width: 50px; vertical-align: middle; margin: 5px; cursor: pointer;'";
 					
 					// border removal
 					print " \n\t\t\tonload=\"if (this.parentNode) { this.parentNode.style.border='0px'; this.parentNode.style.margin='3px'; } /* Resize images for IE */ if (this.height > 50 || this.width > 50) {this.width = 50;}\" ";

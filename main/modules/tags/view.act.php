@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.4 2006/12/05 17:44:49 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.5 2006/12/05 19:12:05 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/TagAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.4 2006/12/05 17:44:49 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.5 2006/12/05 19:12:05 adamfranco Exp $
  */
 class viewAction 
 	extends MainWindowAction
@@ -151,7 +151,7 @@ function getTaggedItemComponent ( &$item, $viewAction) {
 function printTaggedItem ( &$item, $viewAction) {	
 	print "\n\t<a href='".$item->getUrl()."'>";
 	if ($item->getThumbnailUrl())
-		print "\n\t\t<img src='".$item->getThumbnailUrl()."' style='border: 1px solid #000; float: right;' />";
+		print "\n\t\t<img src='".$item->getThumbnailUrl()."' style=' float: right;' class='thumbnail_image' />";
 	if ($item->getDisplayName())
 		print "\n\t\t<strong>".$item->getDisplayName()."</strong>";
 	else
