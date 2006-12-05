@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.9 2006/11/30 22:02:45 adamfranco Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.10 2006/12/05 17:53:50 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
@@ -25,7 +25,7 @@ require_once(POLYPHONY."/main/library/RepositoryInputOutputModules/RepositoryInp
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.9 2006/11/30 22:02:45 adamfranco Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.10 2006/12/05 17:53:50 adamfranco Exp $
  */
 class viewthumbnailAction 
 	extends ForceAuthAction
@@ -221,7 +221,7 @@ class viewthumbnailAction
 				
  				header('Content-Disposition: filename="'.$imageName.'"');
 				
-				print file_get_contents(dirname(__FILE__)."/icons/".$imageName);
+				print file_get_contents(POLYPHONY_DIR."/icons/filetypes/".$imageName);
 			}
 		}
 		
