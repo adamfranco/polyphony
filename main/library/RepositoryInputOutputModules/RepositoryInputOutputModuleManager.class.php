@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.15 2006/12/04 21:10:11 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.16 2006/12/06 20:59:20 adamfranco Exp $
  */
 
 /**
@@ -15,14 +15,15 @@
  */
 require_once(dirname(__FILE__)."/modules/DataManagerPrimativesModule.class.php");
 require_once(dirname(__FILE__)."/modules/HarmoniFileModule.class.php");
+require_once(HARMONI."/oki2/shared/MultiIteratorIterator.class.php");
 
 /**
  * The RepositoryInputOutModuleManager is responcible for sending records to the 
  * appropriate RepositoryInputOutputModule based on their Schema Formats.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.15 2006/12/04 21:10:11 adamfranco Exp $
- * @since $Date: 2006/12/04 21:10:11 $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.16 2006/12/06 20:59:20 adamfranco Exp $
+ * @since $Date: 2006/12/06 20:59:20 $
  * @copyright 2004 Middlebury College
  */
 
@@ -355,11 +356,22 @@ class RepositoryInputOutputModuleManager {
 	 * @since 7/22/05
 	 */
 	function getFileUrlForRecord(&$assetOrId, &$fileRecord ) {
+		$idManager =& Services::getService("IdManager");
 		ArgumentValidator::validate($assetOrId, 
 			OrValidatorRule::getRule(
 				ExtendsValidatorRule::getRule("Id"),
 				ExtendsValidatorRule::getRule("Asset")));
 		
+		// Remote Files
+		$recStruct =& $fileRecord->getRecordStructure();
+		$remoteFileId =& $idManager->getId("REMOTE_FILE");
+		if ($remoteFileId->isEqual($recStruct->getId())) {
+			$urlParts =& $fileRecord->getPartsByPartStructure($idManager->getId("FILE_URL"));
+			$urlPart =& $urlParts->next();
+			return $urlPart->getValue();
+		}
+		
+		// Local files
 		$rule =& ExtendsValidatorRule::getRule("Id");
 		if ($rule->check($assetOrId)) {
 			$repositoryManager =& Services::getService("RepositoryManager");
@@ -368,7 +380,7 @@ class RepositoryInputOutputModuleManager {
 			$asset =& $assetOrId;
 		}
 		
-		$idManager =& Services::getService("IdManager");
+		
 		$assetId =& $asset->getId();
 		$repository =& $asset->getRepository();
 		$repositoryId =& $repository->getId();
@@ -426,9 +438,11 @@ class RepositoryInputOutputModuleManager {
 		
 		if (!isset($GLOBALS['__RepositoryThumbRecordCache'][$assetId->getIdString()])) {		
 			$imageProcessor =& Services::getService("ImageProcessor");
-			$fileRecords =& $asset->getRecordsByRecordStructure($idManager->getId("FILE"));
-			while ($fileRecords->hasNextRecord()) {
-				$record =& $fileRecords->nextRecord();
+			$fileRecords =& new MultiIteratorIterator();
+			$fileRecords->addIterator($asset->getRecordsByRecordStructure($idManager->getId("FILE")));
+			$fileRecords->addIterator($asset->getRecordsByRecordStructure($idManager->getId("REMOTE_FILE")));
+			while ($fileRecords->hasNext()) {
+				$record =& $fileRecords->next();
 				if (!isset($fileRecord)) {
 					$fileRecord =& $record;
 				}
@@ -445,6 +459,8 @@ class RepositoryInputOutputModuleManager {
 					break;	
 				}
 			}
+			
+			
 			
 			if (!isset($fileRecord))
 				$GLOBALS['__RepositoryThumbRecordCache'][$assetId->getIdString()] = FALSE;
@@ -474,7 +490,8 @@ class RepositoryInputOutputModuleManager {
 		// Make sure that the structure is the right one.
 		$structure =& $record->getRecordStructure();
 		$fileId =& $idManager->getId('FILE');
-		if (!$fileId->isEqual($structure->getId())) {
+		$remoteFileId =& $idManager->getId('REMOTE_FILE');
+		if (!$fileId->isEqual($structure->getId()) && !$remoteFileId->isEqual($structure->getId())) {
 			return FALSE;
 		} else {
 			// Get the parts for the record.

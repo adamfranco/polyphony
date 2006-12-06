@@ -6,12 +6,13 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetExporter.class.php,v 1.7 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: XMLAssetExporter.class.php,v 1.8 2006/12/06 20:59:19 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Exporter/XMLExporter.class.php");
 require_once(POLYPHONY."/main/library/Exporter/XMLRecordExporter.class.php");
 require_once(POLYPHONY."/main/library/Exporter/XMLFileRecordExporter.class.php");
+require_once(POLYPHONY."/main/library/Exporter/XMLRemoteFileRecordExporter.class.php");
 
 /**
  * Exports into XML for use with the XML Importer
@@ -22,7 +23,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLFileRecordExporter.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetExporter.class.php,v 1.7 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: XMLAssetExporter.class.php,v 1.8 2006/12/06 20:59:19 adamfranco Exp $
  */
 class XMLAssetExporter extends XMLExporter {
 		
@@ -210,6 +211,9 @@ class XMLAssetExporter extends XMLExporter {
 			$rS =& $child->getRecordStructure();
 			if ($rS->getId() == $idManager->getId("FILE")) {
 				$exporter =& new XMLFileRecordExporter($this->_xml, 
+					$this->_fileDir);
+			} else if ($rS->getId() == $idManager->getId("REMOTE_FILE")) {
+				$exporter =& new XMLRemoteFileRecordExporter($this->_xml, 
 					$this->_fileDir);
 			} else 
 				$exporter =& new XMLRecordExporter($this->_xml);

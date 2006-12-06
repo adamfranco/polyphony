@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HarmoniFileModule.class.php,v 1.17 2006/06/05 20:25:36 adamfranco Exp $
+ * @version $Id: HarmoniFileModule.class.php,v 1.18 2006/12/06 20:59:20 adamfranco Exp $
  */
 
 /**
@@ -24,8 +24,8 @@ require_once(HARMONI."Primitives/Numbers/ByteSize.class.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: HarmoniFileModule.class.php,v 1.17 2006/06/05 20:25:36 adamfranco Exp $
- * @since $Date: 2006/06/05 20:25:36 $
+ * @version $Id: HarmoniFileModule.class.php,v 1.18 2006/12/06 20:59:20 adamfranco Exp $
+ * @since $Date: 2006/12/06 20:59:20 $
  * @copyright 2004 Middlebury College
  */
 
@@ -581,11 +581,9 @@ class HarmoniFileModule
 				$mime = Services::getService("MIME");
 				$thumbnailName .= ".".$mime->getExtensionForMIMEType($thumbnailMimeType);
 			}
-			print "\n<img src='".$harmoni->request->quickURL("repository", "viewthumbnail",
-				array(
-					"repository_id" => $repositoryId->getIdString(),
-					"asset_id" => $assetId->getIdString(),
-					"record_id" => $recordId->getIdString()))."'";
+			print "\n<img src='";
+			print RepositoryInputOutputModuleManager::getThumbnailUrlForRecord($assetId, $record);
+			print "'";
 			print " style='border: 0px;'";
 			print " alt='Thumbnail image.'";
 			print " align='left'";
@@ -596,12 +594,9 @@ class HarmoniFileModule
 			$html2 = ob_get_clean();
 
 			ob_start();
-			print "\n<a href='".$harmoni->request->quickURL("repository", "viewfile", 
-				array(
-					"repository_id" => $repositoryId->getIdString(),
-					"asset_id" => $assetId->getIdString(),
-					"record_id" => $recordId->getIdString()))."'";
-			print " target='_blank'>";
+			print "\n<a href='";
+			print RepositoryInputOutputModuleManager::getFileUrlForRecord($assetId, $record);
+			print "' target='_blank'>";
 
 			print "Download This File</a>\n";
 			$downloadlink = ob_get_clean();

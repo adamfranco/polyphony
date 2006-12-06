@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.10 2006/12/05 17:53:50 adamfranco Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.11 2006/12/06 20:59:21 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
@@ -25,7 +25,7 @@ require_once(POLYPHONY."/main/library/RepositoryInputOutputModules/RepositoryInp
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.10 2006/12/05 17:53:50 adamfranco Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.11 2006/12/06 20:59:21 adamfranco Exp $
  */
 class viewthumbnailAction 
 	extends ForceAuthAction
@@ -129,7 +129,10 @@ class viewthumbnailAction
 		// Make sure that the structure is the right one.
 		$structure =& $record->getRecordStructure();
 		$fileId =& $idManager->getId('FILE');
-		if (!$fileId->isEqual($structure->getId())) {
+		$remoteFileId =& $idManager->getId('REMOTE_FILE');
+		if (!$fileId->isEqual($structure->getId()) 
+			&& !$remoteFileId->isEqual($structure->getId())) 
+		{
 			print "The requested record is not of the FILE structure, and therefore cannot be displayed.";
 		} else {
 		

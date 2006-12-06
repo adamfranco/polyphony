@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.10 2006/11/30 22:02:45 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.11 2006/12/06 20:59:21 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php"
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.10 2006/11/30 22:02:45 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.11 2006/12/06 20:59:21 adamfranco Exp $
  */
 class viewfileAction 
 	extends ForceAuthAction
@@ -128,8 +128,15 @@ class viewfileAction
 		
 		// Make sure that the structure is the right one.
 		$structure =& $record->getRecordStructure();
+		$remoteFileId =& $idManager->getId('REMOTE_FILE');
 		$fileId =& $idManager->getId('FILE');
-		if (!$fileId->isEqual($structure->getId())) {
+		
+		if ($remoteFileId->isEqual($structure->getId())) {
+			$urlParts =& $record->getPartsByPartStructure(
+				$idManager->getId("FILE_URL"));
+			$urlPart =& $urlParts->next();
+			header("Location: ".$urlPart->getValue());
+		} else if (!$fileId->isEqual($structure->getId())) {
 			print "The requested record is not of the FILE structure, and therefore cannot be displayed.";
 		} else {
 		
@@ -194,7 +201,7 @@ class viewfileAction
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.10 2006/11/30 22:02:45 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.11 2006/12/06 20:59:21 adamfranco Exp $
  */
 class RepositoryImageCache {
 	
