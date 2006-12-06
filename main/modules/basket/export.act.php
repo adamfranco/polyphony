@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.6 2006/06/26 19:22:42 adamfranco Exp $
+ * @version $Id: export.act.php,v 1.7 2006/12/06 20:58:53 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLAssetExporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.6 2006/06/26 19:22:42 adamfranco Exp $
+ * @version $Id: export.act.php,v 1.7 2006/12/06 20:58:53 adamfranco Exp $
  */
 class exportAction 
 	extends MainWindowAction
@@ -180,7 +180,7 @@ class exportAction
 		// down and dirty compression
 		shell_exec('cd '.str_replace(":", "\:", $file).";".
 		'tar -czf /tmp/'.$properties['filepath'].$properties['compression'].
-		" *");
+		" *".' rm -R '.str_replace(":", "\:", $file).";");
 
 		// give out the archive for download
 		header("Content-type: application/x-gzip");
@@ -188,6 +188,8 @@ class exportAction
 			$properties['filepath'].$properties['compression'].'"');
  		print file_get_contents(
  			"/tmp/".$properties['filepath'].$properties['compression']);
+ 		unlink(
+			"/tmp/".$properties['filepath'].$properties['compression']);
 		exit();
 
 		// never ever even think about returning true :)
