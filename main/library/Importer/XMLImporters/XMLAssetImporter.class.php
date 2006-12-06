@@ -6,12 +6,13 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.17 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.18 2006/12/06 22:17:20 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRecordImporter.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLFileRecordImporter.class.php");
+require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRemoteFileRecordImporter.class.php");
 require_once(HARMONI."Primitives/Chronology/DateAndTime.class.php");
 require_once(HARMONI."/utilities/StatusStars.class.php");
 
@@ -24,7 +25,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.17 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.18 2006/12/06 22:17:20 adamfranco Exp $
  */
 class XMLAssetImporter extends XMLImporter {
 		
@@ -77,8 +78,8 @@ class XMLAssetImporter extends XMLImporter {
 	 */
 	function setupSelf () {
 		$this->_childImporterList = array("XMLAssetImporter", 
-			"XMLRecordImporter", "XMLFileRecordImporter");
-		$this->_childElementList = array("asset", "record", "filerecord");
+			"XMLRecordImporter", "XMLFileRecordImporter", "XMLRemoteFileRecordImporter");
+		$this->_childElementList = array("asset", "record", "filerecord", "remotefilerecord");
 		$this->_info = array();
 	}
 	

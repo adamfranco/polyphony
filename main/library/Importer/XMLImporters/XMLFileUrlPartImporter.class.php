@@ -1,28 +1,30 @@
 <?php
 /**
- * @since 10/10/05
+ * @since 12/6/06
  * @package polyphony.library.importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLMIMEPartImporter.class.php,v 1.12 2006/12/06 22:17:20 adamfranco Exp $
+ * @version $Id: XMLFileUrlPartImporter.class.php,v 1.1 2006/12/06 22:17:20 adamfranco Exp $
  */ 
-require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLFilePartImporter.class.php");
+ 
+require_once(dirname(__FILE__)."/XMLFilePartImporter.class.php");
 
 /**
- * imports the mimetype of a file, how interesting
+ * <##>
  * 
- * @since 10/10/05
+ * @since 12/6/06
  * @package polyphony.library.importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLMIMEPartImporter.class.php,v 1.12 2006/12/06 22:17:20 adamfranco Exp $
+ * @version $Id: XMLFileUrlPartImporter.class.php,v 1.1 2006/12/06 22:17:20 adamfranco Exp $
  */
-class XMLMIMEPartImporter extends XMLFilePartImporter {
-		
+class XMLFileUrlPartImporter
+	extends XMLFilePartImporter
+{
 		
 	/**
 	 * Answer the PartStructureIdString
@@ -32,7 +34,7 @@ class XMLMIMEPartImporter extends XMLFilePartImporter {
 	 * @since 12/6/06
 	 */
 	function getPartStructureIdString () {
-		return 'MIME_TYPE';
+		return 'FILE_URL';
 	}
 	
 	/**
@@ -45,11 +47,12 @@ class XMLMIMEPartImporter extends XMLFilePartImporter {
 	 * @since 10/10/05
 	 */
 	function isImportable (&$element) {
-		if ($element->nodeName == 'mimepart')
+		if ($element->nodeName == 'fileurlpart')
 			return true;
 		else
 			return false;
 	}
+	
 }
 
 ?>
