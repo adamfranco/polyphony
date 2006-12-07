@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.40 2006/11/30 22:02:43 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.41 2006/12/07 17:25:44 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.40 2006/11/30 22:02:43 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.41 2006/12/07 17:25:44 adamfranco Exp $
  */
 class choose_agentAction 
 	extends MainWindowAction
@@ -204,8 +204,11 @@ END;
 		if ($search_criteria && $search_type) {
 			$typeParts = explode("::", $search_type);
 			$searchType =& new HarmoniType($typeParts[0], $typeParts[1], $typeParts[2]);
-			$agents =& $agentManager->getAgentsBySearch($search_criteria, $searchType);
-			
+			$agents =& new MultiIteratorIterator;
+			$agents->addIterator(
+				$agentManager->getGroupsBySearch($search_criteria, $searchType));
+			$agents->addIterator(
+				$agentManager->getAgentsBySearch($search_criteria, $searchType));
 			print <<<END
 		
 		
@@ -240,7 +243,10 @@ END;
 END;
 			while ($agents->hasNext()) {
 				$agent =& $agents->next();
-				$this->printMember($agent);
+				if ($agent->isGroup())
+					$this->printGroup($agent);
+				else
+					$this->printMember($agent);
 				print "<br />";
 			}
 			print "\n</div>";
