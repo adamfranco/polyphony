@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.18 2006/06/26 19:22:42 adamfranco Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.19 2006/12/07 15:13:21 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLPartStructureImpo
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.18 2006/06/26 19:22:42 adamfranco Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.19 2006/12/07 15:13:21 adamfranco Exp $
  */
 class XMLRecordStructureImporter extends XMLImporter {
 		
@@ -153,7 +153,11 @@ class XMLRecordStructureImporter extends XMLImporter {
 	 * @since 10/6/05
 	 */
 	function doSets () {
-		$sets =& Services::getService("Sets");		
+		$sets =& Services::getService("Sets");
+		$idManager =& Services::getService("IdManager");
+		if ($this->_myId->isEqual($idManager->getId(
+				"edu.middlebury.harmoni.repository.asset_content")))
+			return;
 		$set =& $sets->getPersistentSet($this->_parent->getId());
 		if (!$set->isInSet($this->_myId))
 			$set->addItem($this->_myId);
