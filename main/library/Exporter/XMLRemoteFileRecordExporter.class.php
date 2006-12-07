@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRemoteFileRecordExporter.class.php,v 1.1 2006/12/06 22:17:20 adamfranco Exp $
+ * @version $Id: XMLRemoteFileRecordExporter.class.php,v 1.2 2006/12/07 19:13:05 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRemoteFileRecordExporter.class.php,v 1.1 2006/12/06 22:17:20 adamfranco Exp $
+ * @version $Id: XMLRemoteFileRecordExporter.class.php,v 1.2 2006/12/07 19:13:05 adamfranco Exp $
  */
 class XMLRemoteFileRecordExporter {
 		
@@ -59,6 +59,7 @@ class XMLRemoteFileRecordExporter {
 "id=\"".$this->_myId->getIdString()."\">\n".
 "\t\t\t<fileurlpart>".$this->_info['f_url']."</fileurlpart>\n".
 "\t\t\t<filenamepart>".$this->_info['f_name']."</filenamepart>\n".
+"\t\t\t<filesizepart>".$this->_info['f_size']."</filesizepart>\n".
 "\t\t\t<filedimensionspart>\n".
 "\t\t\t\t<width>".$this->_info['f_dime'][0]."</width>\n".
 "\t\t\t\t<height>".$this->_info['f_dime'][1]."</height>\n".
@@ -88,6 +89,7 @@ class XMLRemoteFileRecordExporter {
 		
 		$FILE_URL_ID =& $idManager->getId("FILE_URL");
 		$FILE_NAME_ID =& $idManager->getId("FILE_NAME");
+		$FILE_SIZE_ID =& $idManager->getId("FILE_SIZE");
 		$FILE_DIME_ID =& $idManager->getId("DIMENSIONS");
 		$MIME_TYPE_ID =& $idManager->getId("MIME_TYPE");
 		$THUMB_DATA_ID =& $idManager->getId("THUMBNAIL_DATA");
@@ -109,12 +111,11 @@ class XMLRemoteFileRecordExporter {
 			
 			$this->_info['f_name'] = basename($path);
 		}
-// 		$parts =& $this->_object->getPartsByPartStructure($FILE_DATA_ID);
-// 		if ($parts->count() == 1) {
-// 			$part =& $parts->next();
-// 			fwrite($this->_dataFile, $part->getValue());
-// 			fclose($this->_dataFile);
-// 		}
+		$parts =& $this->_object->getPartsByPartStructure($FILE_SIZE_ID);
+		if ($parts->count() == 1) {
+			$part =& $parts->next();
+			$this->_info['f_size'] = $part->getValue();
+		}
 		$parts =& $this->_object->getPartsByPartStructure($FILE_DIME_ID);
 		if ($parts->count() == 1) {
 			$part =& $parts->next();

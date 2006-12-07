@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordImporter.class.php,v 1.14 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: XMLFileRecordImporter.class.php,v 1.15 2006/12/07 19:13:05 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -28,7 +28,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLFilepathPartImpor
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordImporter.class.php,v 1.14 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: XMLFileRecordImporter.class.php,v 1.15 2006/12/07 19:13:05 adamfranco Exp $
  */
 class XMLFileRecordImporter extends XMLImporter {
 		
@@ -134,7 +134,9 @@ class XMLFileRecordImporter extends XMLImporter {
 		$thumbpath = FALSE;
 		foreach ($this->_node->childNodes as $element) {
 			if ($element->nodeName == "filepathpart")
-				$filepath = TRUE;
+				$filepath = 'filepathpart';
+			if ($element->nodeName == "fileurlpart")
+				$filepath = 'fileurlpart';
 			else if ($element->nodeName == "thumbpathpart")
 				$thumbpath = TRUE;
 			foreach ($this->_childImporterList as $importer) {
@@ -171,7 +173,7 @@ class XMLFileRecordImporter extends XMLImporter {
 			$topImporter->_status->updateStatistics();
 		}
 		if ($filepath && !$thumbpath) {
-			$elements =& $this->_node->getElementsByTagName("filepathpart");
+			$elements =& $this->_node->getElementsByTagName($filepath);
 			$element =& $elements->item(0);
 			$imp =& new XMLThumbpathPartImporter($this->_existingArray);
 			$imp->import($topImporter, $element, $this->_type, $this->_object);

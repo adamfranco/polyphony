@@ -6,11 +6,13 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRemoteFileRecordImporter.class.php,v 1.1 2006/12/06 22:17:21 adamfranco Exp $
+ * @version $Id: XMLRemoteFileRecordImporter.class.php,v 1.2 2006/12/07 19:13:05 adamfranco Exp $
  */ 
  
 require_once(dirname(__FILE__)."/XMLFileRecordImporter.class.php");
 require_once(dirname(__FILE__)."/XMLFileUrlPartImporter.class.php");
+require_once(dirname(__FILE__)."/XMLFileNamePartImporter.class.php");
+require_once(dirname(__FILE__)."/XMLFileSizePartImporter.class.php");
 
 /**
  * <##>
@@ -21,7 +23,7 @@ require_once(dirname(__FILE__)."/XMLFileUrlPartImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRemoteFileRecordImporter.class.php,v 1.1 2006/12/06 22:17:21 adamfranco Exp $
+ * @version $Id: XMLRemoteFileRecordImporter.class.php,v 1.2 2006/12/07 19:13:05 adamfranco Exp $
  */
 class XMLRemoteFileRecordImporter 
 	extends XMLFileRecordImporter
@@ -34,10 +36,16 @@ class XMLRemoteFileRecordImporter
 	 * @since 10/6/05
 	 */
 	function setupSelf () {
-		$this->_childImporterList = array ("XMLFileUrlPartImporter",
-			"XMLMIMEPartImporter", "XMLFileDimensionsPartImporter",
-			"XMLThumbDataPartImporter", "XMLThumbMIMEPartImporter", 
-			"XMLThumbDimensionsPartImporter", "XMLFilepathPartImporter", 
+		$this->_childImporterList = array (
+			"XMLFileUrlPartImporter",
+			"XMLFileNamePartImporter", 
+			"XMLFileSizePartImporter",
+			"XMLMIMEPartImporter", 
+			"XMLFileDimensionsPartImporter",
+			"XMLThumbDataPartImporter", 
+			"XMLThumbMIMEPartImporter", 
+			"XMLThumbDimensionsPartImporter", 
+			"XMLFilepathPartImporter", 
 			"XMLThumbpathPartImporter");
 		$this->_childElementLIst = NULL;
 		$this->_info = array();
