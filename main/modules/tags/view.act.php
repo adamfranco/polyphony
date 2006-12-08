@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.5 2006/12/05 19:12:05 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.6 2006/12/08 18:45:05 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/TagAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.5 2006/12/05 19:12:05 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.6 2006/12/08 18:45:05 adamfranco Exp $
  */
 class viewAction 
 	extends MainWindowAction
@@ -70,6 +70,13 @@ class viewAction
 		
 		$actionRows->add(new Block(TagAction::getTagMenu(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
 		
+		// Related Tags
+		ob_start();
+		print "<h3 style='margin-top: 0px; margin-bottom: 0px;'>"._("Related Tags:")."</h3>";
+		$tag =& $this->getTag();
+		print TagAction::getTagCloudDiv($tag->getRelatedTags(TAG_SORT_FREQ), 'view', 100);
+		$actionRows->add(new Block(ob_get_clean(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
+		
 		$items =& $this->getItems();
 		$resultPrinter =& new IteratorResultPrinter($items, 1, 5, 
 									'getTaggedItemComponent', $this->getViewAction());
@@ -90,8 +97,22 @@ class viewAction
 	 * @since 11/8/06
 	 */
 	function &getItems () {
-		$tag =& new Tag(RequestContext::value('tag'));
+		$tag =& $this->getTag();
 		return $tag->getItems();
+	}
+	
+	/**
+	 * Answer this action's Tag
+	 * 
+	 * @return object Tag
+	 * @access public
+	 * @since 12/8/06
+	 */
+	function &getTag () {
+		if (!isset($this->_tag)) {
+			$this->_tag =& new Tag(RequestContext::value('tag'));
+		}
+		return $this->_tag;
 	}
 	
 	/**
