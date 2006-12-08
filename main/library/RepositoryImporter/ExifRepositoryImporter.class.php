@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.20 2006/11/30 22:02:39 adamfranco Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.21 2006/12/08 16:18:40 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -21,7 +21,7 @@ require_once(DOMIT);
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.20 2006/11/30 22:02:39 adamfranco Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.21 2006/12/08 16:18:40 adamfranco Exp $
  */
 class ExifRepositoryImporter
 	extends RepositoryImporter
@@ -85,6 +85,33 @@ class ExifRepositoryImporter
 
 		return $assetInfo;
 	}
+	
+	/**
+	 * Answer the path of the schema.xml file
+	 * 
+	 * @param string $dirName
+	 * @return string
+	 * @access public
+	 * @since 12/7/06
+	 */
+	function getSchemaPath ($dirName) {
+		$dirName = preg_replace('/\/$/', '', $dirName).'/';
+		if (file_exists($dirName."schema.xml"))
+			return $dirName."schema.xml";
+		
+		$dir = opendir($dirName);
+		while($file = readdir($dir)) {
+			if ($file != '.' && $file != '..' && is_dir($dirName.$file)) {
+				$result = $this->getSchemaPath($dirName.$file);
+				if ($result) {
+					closedir($dir);
+					return $result;
+				}				
+			}
+		}
+		closedir($dir);
+		return false;
+	}
 
 	/**
 	 * get parameters for createRecord
@@ -112,14 +139,21 @@ class ExifRepositoryImporter
 			$this->_fileStructureId), $fileparts);
 		if (!isset($this->_structureId)) {
 			$import =& new DOMIT_Document();
-			if ($import->loadXML($this->_srcDir."schema.xml")) {
+			
+			if (!isset($this->_schemaPath)) {
+				$this->_schemaPath = $this->getSchemaPath($this->_srcDir);
+				if (!$this->_schemaPath)
+					$this->_schemaPath = DEFAULT_EXIF_SCHEMA;
+			}
+			
+			if ($import->loadXML($this->_schemaPath)) {
 				if (!($import->documentElement->hasChildNodes())){
 					$this->addError("There are no schemas defined in : ".
-						$this->_srcDir."schema.xml.");
+						$this->_schemaPath);
 					if (isset($log)) {
 						$item =& new AgentNodeEntryItem("ExifImporter Error",
 							"There are no schemas defined in: ".
-							$this->_srcDir."schema.xml.");
+							$this->_schemaPath);
 						$log->appendLogWithTypes($item, $formatType, 
 							$priorityType);
 					}
@@ -127,10 +161,10 @@ class ExifRepositoryImporter
 				}
 			}
 			else {
-				$this->addError("XML parse failed: ".$this->_srcDir."schema.xml does not exist or contains poorly formed XML.");
+				$this->addError("XML parse failed: ".$this->_schemaPath." does not exist or contains poorly formed XML.");
 				if (isset($log)) {
 					$item =& new AgentNodeEntryItem("ExifImporter DOMIT Error",
-						"XML parse failed: ".$this->_srcDir."schema.xml does not exist or contains poorly formed XML.");
+						"XML parse failed: ".$this->_schemaPath." does not exist or contains poorly formed XML.");
 					$log->appendLogWithTypes($item, $formatType, $priorityType);
 				}
 				return false;
@@ -212,6 +246,7 @@ class ExifRepositoryImporter
 				}
 			}
 		}
+				
 		$recordList = array();
 		$recordListElement = array();
 
@@ -222,7 +257,7 @@ class ExifRepositoryImporter
 		$fileMetaData = array_merge($fileMetaData1, $fileMetaData2);
 		$recordListElement['structureId'] =& $this->_fileStructureId;
 		$recordListElement['partStructureIds'] =& $this->_fileNamePartIds;
-		$recordListElement['parts'] = array(basename($input), "");
+		$recordListElement['parts'] = array($input, "");
 		$recordList[] = $recordListElement;
 		$recordListElement = array();
 		foreach($this->_structureId as $structureId) {

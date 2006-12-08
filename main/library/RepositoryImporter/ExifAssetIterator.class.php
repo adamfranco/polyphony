@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifAssetIterator.class.php,v 1.5 2006/11/30 22:02:39 adamfranco Exp $
+ * @version $Id: ExifAssetIterator.class.php,v 1.6 2006/12/08 16:18:40 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifAssetIterator.class.php,v 1.5 2006/11/30 22:02:39 adamfranco Exp $
+ * @version $Id: ExifAssetIterator.class.php,v 1.6 2006/12/08 16:18:40 adamfranco Exp $
  */
 
 class ExifAssetIterator
@@ -33,7 +33,7 @@ class ExifAssetIterator
 	 * @since 7/20/05
 	 */
 	function ExifAssetIterator ($srcDir) {		
-		$this->_addFiles($srcDir);		
+		$this->_addFiles($srcDir);
 		$this->_current = 0;
 	}
 	
@@ -66,7 +66,7 @@ class ExifAssetIterator
 	}
 	
 	/**
-	 * Add files to our list (recursively?).
+	 * Add files to our list.
 	 * 
 	 * @param string $dirName
 	 * @return void
@@ -74,6 +74,7 @@ class ExifAssetIterator
 	 * @since 7/20/06
 	 */
 	function _addFiles ($dirName) {
+		$dirName = preg_replace('/\/$/', '', $dirName).'/';
 		$toIgnore = array(
 			"schema.xml",
 			"__MACOSX",
@@ -82,10 +83,11 @@ class ExifAssetIterator
 		$dir = opendir($dirName);
 		while($file = readdir($dir)) {
 			if (ereg('^[^\.]', $file) && !in_array($file, $toIgnore)) {
-				if (!is_dir($file))
-					$this->_assetList[] = $dirName.$file;
-// 				else
-// 					$this->_addFiles($file);
+				$path = $dirName.$file;
+				if (!is_dir($path))
+					$this->_assetList[] = $path;
+				else
+					$this->_addFiles($path);
 			}
 		}
 		closedir($dir);

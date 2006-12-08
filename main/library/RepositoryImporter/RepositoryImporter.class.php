@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.28 2006/11/30 22:02:39 adamfranco Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.29 2006/12/08 16:18:40 adamfranco Exp $
  */ 
 require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.28 2006/11/30 22:02:39 adamfranco Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.29 2006/12/08 16:18:40 adamfranco Exp $
  */
 class RepositoryImporter {
 	
@@ -279,7 +279,7 @@ class RepositoryImporter {
 		foreach($recordList as $entry) {
 			$assetRecord =& $asset->createRecord($entry['structureId']);
 			$j = 0;
-
+			printpre("creating record for: "); printpre($entry['structureId']);
 			foreach ($entry['partStructureIds'] as $id) {
 				if(!($entry['structureId']->isEqual($FILE_ID))) {
 					if (is_array($entry['parts'][$j])) {
@@ -292,10 +292,9 @@ class RepositoryImporter {
 				}
 				else if ($entry['structureId']->isEqual($FILE_ID)) {
 					$filename = trim($entry['parts'][0]);
-					$mimetype = $mime->getMIMETypeForFileName($this->_srcDir.
-						$filename);
+					$mimetype = $mime->getMIMETypeForFileName($filename);
 					$assetRecord->createPart($FILE_DATA_ID,
-						file_get_contents($this->_srcDir.$filename));
+						file_get_contents($filename));
 					$assetRecord->createPart($FILE_NAME_ID,
 						basename($filename));
 					$assetRecord->createPart($MIME_TYPE_ID,
@@ -309,7 +308,7 @@ class RepositoryImporter {
 					}
 					else if ($imageProcessor->isFormatSupported($mimetype)) {
 						$thumbData = $imageProcessor->generateThumbnailData($mimetype,
-							file_get_contents($this->_srcDir.$filename));
+							file_get_contents($filename));
 						if ($thumbData) {
 							$assetRecord->createPart(
 								$THUMBNAIL_DATA_ID,

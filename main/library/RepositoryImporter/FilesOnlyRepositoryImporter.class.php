@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: FilesOnlyRepositoryImporter.class.php,v 1.2 2006/11/30 22:02:39 adamfranco Exp $
+ * @version $Id: FilesOnlyRepositoryImporter.class.php,v 1.3 2006/12/08 16:18:40 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: FilesOnlyRepositoryImporter.class.php,v 1.2 2006/11/30 22:02:39 adamfranco Exp $
+ * @version $Id: FilesOnlyRepositoryImporter.class.php,v 1.3 2006/12/08 16:18:40 adamfranco Exp $
  */
 class FilesOnlyRepositoryImporter
 	extends RepositoryImporter
@@ -96,7 +96,7 @@ class FilesOnlyRepositoryImporter
 		$recordListElement = array();
 		$recordListElement['structureId'] =& $this->_fileStructureId;
 		$recordListElement['partStructureIds'] =& $this->_fileNamePartIds;
-		$recordListElement['parts'] = array(basename($input), "");
+		$recordListElement['parts'] = array($input, "");
 		$recordList[] = $recordListElement;
 		$recordListElement = array();
 		//printpre($recordList);
