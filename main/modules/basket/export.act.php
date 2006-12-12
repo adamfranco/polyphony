@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.7 2006/12/06 20:58:53 adamfranco Exp $
+ * @version $Id: export.act.php,v 1.8 2006/12/12 17:18:41 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLAssetExporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.7 2006/12/06 20:58:53 adamfranco Exp $
+ * @version $Id: export.act.php,v 1.8 2006/12/12 17:18:41 adamfranco Exp $
  */
 class exportAction 
 	extends MainWindowAction
@@ -95,8 +95,8 @@ class exportAction
 		$authN =& Services::getService("AuthN");
 		$authTypes =& $authN->getAuthenticationTypes();
 		$uniqueString = "";
-		while($authTypes->hasNextType()) {
-			$authType =& $authTypes->nextType();
+		while($authTypes->hasNext()) {
+			$authType =& $authTypes->next();
 			$uniqueString .= "_".$authN->getUserId($authType);
 		}
 

@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.66 2006/12/08 16:18:39 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.67 2006/12/12 17:18:40 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -47,6 +47,9 @@
 			Tagging: Adding and removing tags from the cache now keeps cache more
 			properly up to date.
 		</fix>
+		<new author='adam'>
+			Tagging: Now displays related tags.
+		</new>
 		<fix author='adam'>
 			Thumbnails: Can now determine if a thumbnail is real or an icon.
 		</fix>
