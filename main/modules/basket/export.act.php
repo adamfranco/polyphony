@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.8 2006/12/12 17:18:41 adamfranco Exp $
+ * @version $Id: export.act.php,v 1.9 2006/12/13 20:17:38 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLAssetExporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.8 2006/12/12 17:18:41 adamfranco Exp $
+ * @version $Id: export.act.php,v 1.9 2006/12/13 20:17:38 adamfranco Exp $
  */
 class exportAction 
 	extends MainWindowAction
@@ -174,25 +174,24 @@ class exportAction
 		// instantiate new exporter
 		$exporter =& XMLAssetExporter::withCompression(
 			$properties['compression']);
-		// export all of concerto to this location
-		$file = $exporter->exportList($this->_exportList);
+			
+		$dir = $exporter->exportList($this->_exportList);
 		
-		// down and dirty compression
-		shell_exec('cd '.str_replace(":", "\:", $file).";".
-		'tar -czf /tmp/'.$properties['filepath'].$properties['compression'].
-		" *".' rm -R '.str_replace(":", "\:", $file).";");
-
-		// give out the archive for download
-		header("Content-type: application/x-gzip");
-		header('Content-Disposition: attachment; filename="'.
-			$properties['filepath'].$properties['compression'].'"');
- 		print file_get_contents(
- 			"/tmp/".$properties['filepath'].$properties['compression']);
- 		unlink(
-			"/tmp/".$properties['filepath'].$properties['compression']);
-		exit();
-
-		// never ever even think about returning true :)
+		$this->_archiveFile = $exporter->compressWithStatus();
+		$this->_archiveFileKey = str_replace('.', '', basename($this->_archiveFile, $properties['compression']));
+		
+// 		printpre($this->_archiveFile);
+		
+		// For security, only files listed in the following array will be allowed
+		// to be downloaded.
+		if (!isset($_SESSION['EXPORTED_FILES']))
+			$_SESSION['EXPORTED_FILES'] = array();
+		
+		
+		$_SESSION['EXPORTED_FILES'][$this->_archiveFileKey] = array(
+			'file' => $this->_archiveFile,
+			'name' => basename($properties['filepath'].$properties['compression']),
+			'mime' => 'application/x-gzip');
 
 		return TRUE;
 	}
@@ -206,7 +205,28 @@ class exportAction
 	 */
 	function getReturnUrl () {
 		$harmoni =& Harmoni::instance();
-		return $harmoni->request->quickURL("basket", "view");
+				
+		$return = $harmoni->request->quickURL("basket", "view");
+		
+		if ($this->_archiveFile) {
+			$harmoni->request->startNamespace('export');
+			$downloadUrl = $harmoni->request->quickURL("export", "getFile",
+					array('file' => urlencode($this->_archiveFileKey)));
+			$harmoni->request->endNamespace();
+			print "<div>"._("Your download should begin momentarily. If it does not, please click the download link below.")."</div>";
+			print "<div style='margin: 10px; margin-left: 20px;'><a href='".$downloadUrl."'>"._("Download")."</a></div>";
+			
+			print "<div style=''><a href='".$return."'>"._("&lt;-- Return")."</a></div>";
+			
+			while(ob_get_level())
+				ob_end_flush();
+			
+			flush();
+			
+			$harmoni->request->sendTo($downloadUrl);
+			exit;
+		} else
+			return $return;
 	}
 }
 

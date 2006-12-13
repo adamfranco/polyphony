@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetExporter.class.php,v 1.8 2006/12/06 20:59:19 adamfranco Exp $
+ * @version $Id: XMLAssetExporter.class.php,v 1.9 2006/12/13 20:17:37 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Exporter/XMLExporter.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLRemoteFileRecordExporter.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetExporter.class.php,v 1.8 2006/12/06 20:59:19 adamfranco Exp $
+ * @version $Id: XMLAssetExporter.class.php,v 1.9 2006/12/13 20:17:37 adamfranco Exp $
  */
 class XMLAssetExporter extends XMLExporter {
 		
@@ -152,10 +152,15 @@ class XMLAssetExporter extends XMLExporter {
 		unset($listOfRS, $idListRS);
 		
 		// export the assets
+		$this->_status = new StatusStars(_("Exporting all Assets in the Collection"));
+		$this->_status->initializeStatistics(count($idList), 100);
+		
 		foreach ($idList as $assetId) {
 			$asset =& $repositoryManager->getAsset($assetId);
 			
 			$this->export($asset);
+			
+			$this->_status->updateStatistics();	
 		}
 		fwrite($this->_xml, "</repository>");
 		fclose($this->_xml);

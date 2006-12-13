@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryExporter.class.php,v 1.10 2006/12/13 15:29:31 adamfranco Exp $
+ * @version $Id: XMLRepositoryExporter.class.php,v 1.11 2006/12/13 20:17:37 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Exporter/XMLExporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLAssetExporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryExporter.class.php,v 1.10 2006/12/13 15:29:31 adamfranco Exp $
+ * @version $Id: XMLRepositoryExporter.class.php,v 1.11 2006/12/13 20:17:37 adamfranco Exp $
  */
 class XMLRepositoryExporter extends XMLExporter {
 		
@@ -72,7 +72,7 @@ class XMLRepositoryExporter extends XMLExporter {
 	 * @access public
 	 * @since 10/31/05
 	 */
-	function &withDir($tmpDir,$file, $class = 'XMLRepositoryExporter') {
+	function &withDir($tmpDir, $class = 'XMLRepositoryExporter') {
 		$exporter =& new $class;
 		$exporter->_tmpDir = $tmpDir;
 		return $exporter;
@@ -172,7 +172,7 @@ class XMLRepositoryExporter extends XMLExporter {
 		} else
 			$children =& $this->_object->getAssets();
 		
-		$this->_status = new StatusStars(_("Exporting all Assets in the Collection"));
+		$this->_status = new StatusStars(str_replace('%1', $this->_object->getDisplayName(), _("Exporting all Assets in the Collection, '%1'")));
 		$this->_status->initializeStatistics($children->count(), 100);
 		
 		while ($children->hasNext()) {

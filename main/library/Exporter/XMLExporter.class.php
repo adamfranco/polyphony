@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLExporter.class.php,v 1.10 2006/12/13 15:29:31 adamfranco Exp $
+ * @version $Id: XMLExporter.class.php,v 1.11 2006/12/13 20:17:37 adamfranco Exp $
  */ 
 
 require_once("Archive/Tar.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLRepositoryExporter.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLExporter.class.php,v 1.10 2006/12/13 15:29:31 adamfranco Exp $
+ * @version $Id: XMLExporter.class.php,v 1.11 2006/12/13 20:17:37 adamfranco Exp $
  */
 class XMLExporter {
 		
@@ -139,7 +139,6 @@ class XMLExporter {
 	 */
 	function exportRepositories () {
 		$rm =& Services::getService("Repository");
-		$file = fopen("/tmp/memoryUsage.txt", "w");
 		$children =& $rm->getRepositories();
 		while ($children->hasNext()) {
 			$child =& $children->next();
@@ -148,7 +147,7 @@ class XMLExporter {
 			fwrite($this->_xml, "\t<repositoryfile>".$childId->getIdString().
 				"/metadata.xml</repositoryfile>\n");
 			
-			$exporter =& XMLRepositoryExporter::withDir($this->_tmpDir, $file);
+			$exporter =& XMLRepositoryExporter::withDir($this->_tmpDir);
 			
 			$exporter->export($childId); // ????
 			unset($exporter);
@@ -168,17 +167,17 @@ class XMLExporter {
 		
 		// Get the number of files in the directory and initialize the status stars
 		$status = new StatusStars(_("Compressing the archive"));
-		$numFiles = numFiles($this->_tmpDir);
+		$numFiles = $this->numFiles($this->_tmpDir);
 		$status->initializeStatistics($numFiles);
 		$filesSeen = 1;
 		
 		
-		$PID = run_in_background(
+		$PID = $this->run_in_background(
 			'tar -v -czf /tmp/'.$archiveBaseName.$this->_compression.
 			" -C ".str_replace(":", "\:", $this->_tmpDir)." . ",
 			0, str_replace(":", "\:", $this->_tmpDir)."-compress_status");
 		
-		while(is_process_running($PID))	{
+		while($this->is_process_running($PID))	{
 			$lines = count(file($this->_tmpDir."-compress_status"));
 			for ($i = $filesSeen; $i < $lines; $i++) {
 				$status->updateStatistics();
@@ -197,6 +196,73 @@ class XMLExporter {
 		shell_exec('rm -R '.str_replace(":", "\:", $this->_tmpDir));
 		
 		return '/tmp/'.$archiveBaseName.$this->_compression;
+	}
+	
+	/**
+	 * Run linux command in background and return the PID created by the OS
+	 *
+	 * Posted to PHP.net by jesuse.gonzalez@venalum.com.ve on 15-Jul-2005 11:34
+	 * Addition of output file parameter and inclusion into this class by Adam Franco
+	 * 
+	 * @param string $Command
+	 * @param integer $Priority
+	 * @param string $outputFile
+	 * @return integer
+	 * @access public
+	 * @since 12/13/06
+	 */
+	function run_in_background($Command, $Priority = 0, $outputFile = '/dev/null')
+	{
+	   if($Priority)
+		   $PID = shell_exec("nohup nice -n $Priority $Command > $outputFile & echo $!");
+	   else
+		   $PID = shell_exec("nohup $Command > $outputFile & echo $!");
+	   return($PID);
+	}
+	
+	/**
+	 * Verifies if a process is running in linux
+	 *
+	 * Posted to PHP.net by jesuse.gonzalez@venalum.com.ve on 15-Jul-2005 11:34
+	 * Inclusion into this class by Adam Franco.
+	 * 
+	 * @param integer $PID
+	 * @return boolean
+	 * @access public
+	 * @since 12/13/06
+	 */
+	function is_process_running($PID)
+	{
+	   exec("ps $PID", $ProcessState);
+	   return(count($ProcessState) >= 2);
+	}
+	
+	/**
+	 * Return the number of files in a directory (recursively) including the directory
+	 * its self;
+	 * 
+	 * @param string $dir
+	 * @return integer
+	 * @access public
+	 * @since 12/12/06
+	 */
+	function numFiles ($dir) {
+		$numFiles = 1;
+		if (is_dir($dir)) {
+			if ($dh = opendir($dir)) {
+				while (($file = readdir($dh)) !== false) {
+					if ($file != "." && $file != "..") {
+						if (is_dir($dir."/".$file))
+							$numFiles = $numFiles + $this->numFiles($dir."/".$file);
+						else
+							$numFiles++;
+					}
+				}
+				closedir($dh);
+			}
+		}
+		
+		return $numFiles;
 	}
 }
 ?>
