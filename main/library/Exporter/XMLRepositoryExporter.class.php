@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryExporter.class.php,v 1.9 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: XMLRepositoryExporter.class.php,v 1.10 2006/12/13 15:29:31 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Exporter/XMLExporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLAssetExporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryExporter.class.php,v 1.9 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: XMLRepositoryExporter.class.php,v 1.10 2006/12/13 15:29:31 adamfranco Exp $
  */
 class XMLRepositoryExporter extends XMLExporter {
 		
@@ -113,11 +113,12 @@ class XMLRepositoryExporter extends XMLExporter {
 		fwrite($this->_xml,
 "\t</type>\n");
 		
-	// ===== CHILD CLASSES ARE EXPORTED HERE ===== //
+	// ===== CHILD CLASSES ARE EXPORTED HERE ===== //		
 		foreach ($this->_childElementList as $child) {
 			$exportFn = "export".ucfirst($child);
-			if (method_exists($this, $exportFn))
+			if (method_exists($this, $exportFn)) {
 				$this->$exportFn();
+			}
 		}
 
 	// ===== CLOSE SELF XML ===== //
@@ -170,10 +171,15 @@ class XMLRepositoryExporter extends XMLExporter {
 				$rootSearchType, $searchProperties = NULL);
 		} else
 			$children =& $this->_object->getAssets();
+		
+		$this->_status = new StatusStars(_("Exporting all Assets in the Collection"));
+		$this->_status->initializeStatistics($children->count(), 100);
+		
 		while ($children->hasNext()) {
 			$child =& $children->next();
 			$exporter =& XMLAssetExporter::withDir($this->_xml, $this->_repDir);
 			$exporter->export($child);
+			$this->_status->updateStatistics();	
 		}
 			unset($exporter);
 	}

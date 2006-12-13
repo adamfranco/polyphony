@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLExporter.class.php,v 1.9 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: XMLExporter.class.php,v 1.10 2006/12/13 15:29:31 adamfranco Exp $
  */ 
 
 require_once("Archive/Tar.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLRepositoryExporter.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLExporter.class.php,v 1.9 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: XMLExporter.class.php,v 1.10 2006/12/13 15:29:31 adamfranco Exp $
  */
 class XMLExporter {
 		
@@ -125,7 +125,7 @@ class XMLExporter {
 	function setupXML ($dir) {
 		$this->_xml = fopen($dir."/metadata.xml", "w");
 		fwrite($this->_xml, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-}
+	}
 	
 	/**
 	 * Exporter of repositories
@@ -153,6 +153,50 @@ class XMLExporter {
 			$exporter->export($childId); // ????
 			unset($exporter);
 		}
+	}
+	
+	/**
+	 * Compress a directory with status stars. Return the resulting file path
+	 * 
+	 * @return string the new archive path.
+	 * @static
+	 * @access public
+	 * @since 12/12/06
+	 */
+	function compressWithStatus () {
+		$archiveBaseName = "export_".md5(time()." ".rand());
+		
+		// Get the number of files in the directory and initialize the status stars
+		$status = new StatusStars(_("Compressing the archive"));
+		$numFiles = numFiles($this->_tmpDir);
+		$status->initializeStatistics($numFiles);
+		$filesSeen = 1;
+		
+		
+		$PID = run_in_background(
+			'tar -v -czf /tmp/'.$archiveBaseName.$this->_compression.
+			" -C ".str_replace(":", "\:", $this->_tmpDir)." . ",
+			0, str_replace(":", "\:", $this->_tmpDir)."-compress_status");
+		
+		while(is_process_running($PID))	{
+			$lines = count(file($this->_tmpDir."-compress_status"));
+			for ($i = $filesSeen; $i < $lines; $i++) {
+				$status->updateStatistics();
+				$filesSeen++;
+			}
+			sleep(1);
+		}
+		// Finish off any last statistics
+		for ($i = $filesSeen; $i <= $numFiles; $i++)
+			$status->updateStatistics();
+		
+		// Remove our status file
+		unlink($this->_tmpDir."-compress_status");
+		
+		// Remove the source directory
+		shell_exec('rm -R '.str_replace(":", "\:", $this->_tmpDir));
+		
+		return '/tmp/'.$archiveBaseName.$this->_compression;
 	}
 }
 ?>
