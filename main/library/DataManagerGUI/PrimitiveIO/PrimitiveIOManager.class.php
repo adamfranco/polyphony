@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIOManager.class.php,v 1.10 2006/12/06 20:59:18 adamfranco Exp $
+ * @version $Id: PrimitiveIOManager.class.php,v 1.11 2006/12/14 15:21:58 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIOManager.class.php,v 1.10 2006/12/06 20:59:18 adamfranco Exp $
+ * @version $Id: PrimitiveIOManager.class.php,v 1.11 2006/12/14 15:21:58 adamfranco Exp $
  * @author Gabe Schine
  */
 class PrimitiveIOManager {
@@ -68,7 +68,7 @@ class PrimitiveIOManager {
 		$partStructType =& $partStruct->getType();		
 		// get the datamanager data type
 		$dataType = $partStructType->getKeyword();
-		printpre($dataType);
+// 		printpre($dataType);
 		
 		$authoritativeValues =& $partStruct->getAuthoritativeValues();
 		if ($authoritativeValues->hasNext()) {
