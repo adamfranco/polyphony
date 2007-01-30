@@ -8,7 +8,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: common.js,v 1.3 2007/01/24 18:31:05 adamfranco Exp $
+ * @version $Id: common.js,v 1.4 2007/01/30 15:46:07 adamfranco Exp $
  */
 
 /**
@@ -97,7 +97,7 @@ String.prototype.wordWrap = function(maxLength, breakWith, cutWords){
  * | Authors:   Stuart Wigley <stuartwigley@yahoo.co.uk>                     |
  * |            Randolph Fielding <gator4life@cinci.rr.com>                  |
  * +-------------------------------------------------------------------------+
- * $Id: common.js,v 1.3 2007/01/24 18:31:05 adamfranco Exp $
+ * $Id: common.js,v 1.4 2007/01/30 15:46:07 adamfranco Exp $
  *
  *
  * Replaces a small group of characters in this string defined in the HTML
@@ -187,4 +187,58 @@ document.getOffsetLeft = function (element) {
 		offset = offset + document.getOffsetLeft(element.offsetParent);	
 		
 	return offset;
+}
+
+/**
+ * Answer the inner height in pixels of the window in a cross-browser way
+ * 
+ * @return integer
+ * @access public
+ * @since 1/26/07
+ */
+window.getInnerHeight = function () {
+	// Non-IE
+	if (typeof( window.innerHeight ) == 'number')
+		return window.innerHeight;
+	
+	// IE 6+ in 'strict-mode'
+	if (document.documentElement 
+		&& (document.documentElement.clientHeight || document.documentElement.clientWidth)) 
+	{
+		return document.documentElement.clientHeight;
+	}
+	
+	if (document.body && (document.body.clientWidth || document.body.clientHeight)) 
+	{
+		return document.body.clientHeight;
+	}
+	
+	throw new Error("Height of the window could not be determined. Browser may be too old.");
+}
+
+/**
+ * Answer the inner width in pixels of the window in a cross-browser way
+ * 
+ * @return integer
+ * @access public
+ * @since 1/26/07
+ */
+window.getInnerWidth = function () {
+	// Non-IE
+	if (typeof( window.innerWidth ) == 'number')
+		return window.innerWidth;
+	
+	// IE 6+ in 'strict-mode'
+	if (document.documentElement 
+		&& (document.documentElement.clientHeight || document.documentElement.clientWidth)) 
+	{
+		return document.documentElement.clientWidth;
+	}
+	
+	if (document.body && (document.body.clientWidth || document.body.clientHeight)) 
+	{
+		return document.body.clientWidth;
+	}
+	
+	throw new Error("Width of the window could not be determined. Browser may be too old.");
 }
