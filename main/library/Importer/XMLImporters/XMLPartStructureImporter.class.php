@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureImporter.class.php,v 1.20 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: XMLPartStructureImporter.class.php,v 1.21 2007/01/30 20:45:18 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureImporter.class.php,v 1.20 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: XMLPartStructureImporter.class.php,v 1.21 2007/01/30 20:45:18 adamfranco Exp $
  */
 class XMLPartStructureImporter extends XMLImporter {
 		
@@ -94,13 +94,39 @@ class XMLPartStructureImporter extends XMLImporter {
 			$this->_object =& $this->_parent->getPartStructure($this->_myId);
 			$this->update();
 		} else if ($this->validate($this->_info['type'])) {
+			// If we an id specified for this global Record Structure make use
+			// it. This is to allow for pre-defined ids of important RecordStructures
+			// like Dublin Core
+			if ($this->_node->hasAttribute("id") && $this->_node->getAttribute("id")) {
+				
+				$parentId =& $this->_parent->getId();
+				// Escape any regular expression special characters
+				$parentIdStringTerm = preg_replace('/[\/()\[\]\.\+\?\^\$]/',
+										'\\\\$0', $parentId->getIdString());
+										
+				// If the id already is prepended with the record structure
+				// Id, strip off the record structure id as it will be appended
+				// later.
+				if (preg_match('/^'.$parentIdStringTerm.'\.(.+)$/', 
+					$this->_node->getAttribute("id"), $matches))
+				{
+					$id = $idManager->getId($matches[1]);
+				}
+				// use the specified Id.
+				else {
+					$id = $idManager->getId($this->_node->getAttribute("id"));
+				}
+			} else 
+				$id = null;
+			
 			$this->_object =&
 				$this->_parent->createPartStructure(
 				$this->_info['name'], $this->_info['description'],
 				$this->_info['type'], 
 				(($this->_info['isMandatory'] == "TRUE")?true:false),
 				(($this->_info['isRepeatable'] == "TRUE")?true:false), 
-				(($this->_info['isPopulated'] == "TRUE")?true:false));
+				(($this->_info['isPopulated'] == "TRUE")?true:false),
+				$id);
 			$this->_myId =& $this->_object->getId();
 		}
 		else {

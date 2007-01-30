@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.19 2006/12/07 15:13:21 adamfranco Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.20 2007/01/30 20:45:18 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLPartStructureImpo
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.19 2006/12/07 15:13:21 adamfranco Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.20 2007/01/30 20:45:18 adamfranco Exp $
  */
 class XMLRecordStructureImporter extends XMLImporter {
 		
@@ -116,6 +116,7 @@ class XMLRecordStructureImporter extends XMLImporter {
 		$idManager =& Services::getService("IdManager");
 		
 		$this->getNodeInfo();
+				
 		// make/find object
 		$foundId = $this->RSExists();
 		if ($foundId != false) {
@@ -125,10 +126,19 @@ class XMLRecordStructureImporter extends XMLImporter {
 				$this->update();
 		} else if ($this->_node->hasAttribute("isGlobal") && 
 					($this->_node->getAttribute("isGlobal") == "TRUE")) {
+			
+			// If we an id specified for this global Record Structure make use
+			// it. This is to allow for pre-defined ids of important RecordStructures
+			// like Dublin Core
+			if ($this->_node->hasAttribute("id") && $this->_node->getAttribute("id")) {
+				$id = $idManager->getId($this->_node->getAttribute("id"));
+			} else 
+				$id = null;
+			
 			$this->_object =&
 				$this->_parent->createRecordStructure(
 				$this->_info['name'], $this->_info['description'],
-				$this->_info['format'], "", "", true);
+				$this->_info['format'], "", $id, true);
 			$this->_myId = $this->_object->getId();
 		} else {
 			$this->_object =& $this->_parent->createRecordStructure(
