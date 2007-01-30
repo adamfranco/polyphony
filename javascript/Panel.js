@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Panel.js,v 1.2 2006/11/30 22:02:36 adamfranco Exp $
+ * @version $Id: Panel.js,v 1.3 2007/01/30 15:46:57 adamfranco Exp $
  */
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Panel.js,v 1.2 2006/11/30 22:02:36 adamfranco Exp $
+ * @version $Id: Panel.js,v 1.3 2007/01/30 15:46:57 adamfranco Exp $
  */
 function Panel ( title, height, width, positionElement, classNames ) {
 	if ( arguments.length > 0 ) {
@@ -31,12 +31,21 @@ function Panel ( title, height, width, positionElement, classNames ) {
 	/**
 	 * Initialize this panel
 	 * 
+	 * @param string 	title
+	 * @param integer	height
+	 * @param integer	width
 	 * @param optional DOM_Element positionElement
+	 *		A unique element that this panel is associated with. An element can 
+	 *		only have one panel associated with it, which will be cached with 
+	 *		this element.
+	 * @param string	classNames	Names of CSS classes to apply to the panel.
 	 * @return void
 	 * @access public
 	 * @since 11/29/06
 	 */
-	Panel.prototype.init = function ( title, height, width, positionElement, classNames ) {
+	Panel.prototype.init = function ( title, height, width, positionElement, 
+		classNames ) 
+	{
 		this.positionElement = positionElement;
 		this.positionElement.panel = this;
 		
@@ -92,19 +101,8 @@ function Panel ( title, height, width, positionElement, classNames ) {
 		this.mainElement.style.position = 'absolute';
 		this.mainElement.style.overflow = 'auto';
 		
-		var top = (Panel.getOffsetTop(this.positionElement) 
-						- Math.round(this.height / 2) 
-						+ Math.round(this.positionElement.offsetHeight / 2));
-		if (top < 5)
-			top = 5;
-		
-		var left = (Panel.getOffsetLeft(this.positionElement) 
-						- Math.round(this.width / 2) 
-						+ Math.round(this.positionElement.offsetWidth / 2));
-		if (left < 5)
-			left = 5;
-		this.mainElement.style.top = top + "px";
-		this.mainElement.style.left = left + "px";
+		this.mainElement.style.top = this.getTop() + "px";
+		this.mainElement.style.left = this.getLeft() + "px";
 		
 		// Top bar
 		this.topBar = this.mainElement.appendChild(document.createElement("table"));
@@ -135,6 +133,42 @@ function Panel ( title, height, width, positionElement, classNames ) {
 	}
 	
 	/**
+	 * Answer the number of pixels from the top of the screen to position the
+	 * panel.
+	 * 
+	 * @return integer
+	 * @access public
+	 * @since 1/26/07
+	 */
+	Panel.prototype.getTop = function () {
+		var top = (Panel.getOffsetTop(this.positionElement) 
+						- Math.round(this.height / 2) 
+						+ Math.round(this.positionElement.offsetHeight / 2));
+		if (top < 5)
+			top = 5;
+		
+		return top;
+	}
+	
+	/**
+	 * Answer the number of pixels from the left of the screen to position the
+	 * panel.
+	 * 
+	 * @return integer
+	 * @access public
+	 * @since 1/26/07
+	 */
+	Panel.prototype.getLeft = function () {
+		var left = (Panel.getOffsetLeft(this.positionElement) 
+						- Math.round(this.width / 2) 
+						+ Math.round(this.positionElement.offsetWidth / 2));
+		if (left < 5)
+			left = 5;
+		
+		return left;
+	}
+	
+	/**
 	 * Close the panel. Override the onClose() method of this object to add other
 	 * actions to do on close.
 	 * 
@@ -162,6 +196,42 @@ function Panel ( title, height, width, positionElement, classNames ) {
 		if (this.onOpen) {
 			this.onOpen();
 		}
+	}
+	
+	/**
+	 * Reposition the main element based on the rendered height
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 1/26/07
+	 */
+	Panel.prototype.centerOnHeight = function () {
+		this.height = this.mainElement.offsetHeight;
+		this.mainElement.style.top = this.getTop() + "px";
+	}
+	
+	/**
+	 * Reposition the main element based on the rendered width
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 1/26/07
+	 */
+	Panel.prototype.centerOnWidth = function () {
+		this.width = this.mainElement.offsetWidth;
+		this.mainElement.style.left = this.getLeft() + "px";
+	}
+	
+	/**
+	 * Reposition the main element based on the rendered height and width
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 1/26/07
+	 */
+	Panel.prototype.center = function () {
+		this.centerOnHeight();
+		this.centerOnWidth();
 	}
 
 	/**

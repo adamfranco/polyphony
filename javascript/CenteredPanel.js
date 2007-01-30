@@ -1,0 +1,188 @@
+/**
+ * @since 1/26/07
+ * @package polyphony.javascript
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: CenteredPanel.js,v 1.1 2007/01/30 15:46:57 adamfranco Exp $
+ */
+
+CenteredPanel.prototype = new Panel();
+CenteredPanel.prototype.constructor = CenteredPanel;
+CenteredPanel.superclass = Panel.prototype;
+
+/**
+ * The centered panel is a panel that is centered on the browser window rather 
+ * than a particular element.
+ * 
+ * @since 1/26/07
+ * @package polyphony.javascript
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: CenteredPanel.js,v 1.1 2007/01/30 15:46:57 adamfranco Exp $
+ */
+function CenteredPanel ( title, height, width, callingElement, classNames ) {
+	if ( arguments.length > 0 ) {
+		this.init( title, height, width, callingElement, classNames );
+	}
+}
+
+	/**
+	 * Initialize this object
+	 * 
+	 * @param string 	title
+	 * @param integer	height
+	 * @param integer	width
+	 * @param object DOM_Element	callingElement 
+	 *		A unique element that this panel is associated with. An element can 
+	 *		only have one panel associated with it, which will be cached with 
+	 *		this element.
+	 * @param string	classNames	Names of CSS classes to apply to the panel.
+	 * @return void
+	 * @access public
+	 * @since 1/26/07
+	 */
+	CenteredPanel.prototype.init = function (  title, height, width, 
+		callingElement,	classNames ) 
+	{
+		AuthZViewer.superclass.init.call(this, 
+								title,
+								height,
+								width,
+								callingElement,
+								classNames);
+	}
+	
+	/**
+	 * Initialize and run this Panel
+	 * 
+	 * @param string 	title
+	 * @param integer	height
+	 * @param integer	width
+	 * @param object DOM_Element	callingElement 
+	 *		A unique element that this panel is associated with. An element can 
+	 *		only have one panel associated with it, which will be cached with 
+	 *		this element.
+	 * @param string	classNames	Names of CSS classes to apply to the panel.
+	 * @return object CenteredPanel
+	 * @static
+	 * @access public
+	 * @since 1/26/07
+	 */
+	CenteredPanel.run = function ( title, height, width, 
+		callingElement, classNames ) 
+	{
+		if (positionElement.panel) {
+			var panel = positionElement.panel;
+			panel.open();
+			
+		} else {
+			var panel = new CenteredPanel( title, height, width, callingElement,
+				classNames );
+		}
+		
+		if (panel.onOpen) {
+			panel.onOpen();
+		}
+		
+		return panel;
+	}
+	
+	/**
+	 * Answer the number of pixels from the top of the screen to position the
+	 * panel.
+	 * 
+	 * @return integer
+	 * @access public
+	 * @since 1/26/07
+	 */
+	CenteredPanel.prototype.getTop = function () {
+		try {
+			var top = Math.round(window.getInnerHeight() / 2) - Math.round(this.height / 2);
+		} catch (error) {
+			var top = 5;
+		}
+		
+		if (top < 5)
+			top = 5;
+		
+		return top;
+	}
+	
+	/**
+	 * Answer the number of pixels from the left of the screen to position the
+	 * panel.
+	 * 
+	 * @return integer
+	 * @access public
+	 * @since 1/26/07
+	 */
+	CenteredPanel.prototype.getLeft = function () {
+		try {
+			var left = Math.round(window.getInnerWidth() / 2) - Math.round(this.width / 2);
+		} catch (error) {
+			var left = 5;
+		}
+		
+		if (left < 5)
+			left = 5;
+		
+		return left;
+	}
+	
+	/**
+	 * Create the panel elements
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 1/26/07
+	 */
+	CenteredPanel.prototype.createElements = function () {
+		CenteredPanel.superclass.createElements.call(this);
+		
+		this.mainElement.style.zIndex = '100';
+		
+		this.screen = document.createElement("div");
+		this.screen.style.zIndex = '99';
+		this.screen.style.position = 'absolute';
+		this.screen.style.top = '0px';
+		this.screen.style.left = '0px';
+		this.screen.style.width = '100%';
+		this.screen.style.height = window.getInnerHeight() + 'px';
+		this.screen.style.backgroundColor = '#AAA';
+		this.screen.style.filter = "alpha(opacity=70)";
+		this.screen.style.MozOpacity = ".70";
+		this.screen.style.opacity = ".70";
+		document.body.appendChild(this.screen);
+		
+		var panel = this;
+		window.onresize = function () {
+			panel.center();
+			panel.screen.style.height = window.getInnerHeight() + 'px';
+		}
+	}
+	
+	/**
+	 * Actions to execute on open
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 1/26/07
+	 */
+	CenteredPanel.prototype.onOpen = function () {
+		this.screen.style.display = 'block';
+	}
+	
+	/**
+	 * Actions to execute on close
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 1/26/07
+	 */
+	CenteredPanel.prototype.onClose = function () {
+		this.screen.style.display = 'none';
+	}
