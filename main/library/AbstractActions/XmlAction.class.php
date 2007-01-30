@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlAction.class.php,v 1.2 2006/11/30 22:02:38 adamfranco Exp $
+ * @version $Id: XmlAction.class.php,v 1.3 2007/01/30 15:45:09 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY_DIR.'/main/library/AbstractActions/Action.class.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR.'/main/library/AbstractActions/Action.class.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlAction.class.php,v 1.2 2006/11/30 22:02:38 adamfranco Exp $
+ * @version $Id: XmlAction.class.php,v 1.3 2007/01/30 15:45:09 adamfranco Exp $
  */
 class XmlAction
 	extends Action
@@ -78,7 +78,7 @@ END;
 	 */
 	function error ($message) {
 		$this->start();
-		print "\n\t<error>".$message."</error>";
+		print "\n\t<error><![CDATA[".str_replace(']]>', '}}>', $message)."]]></error>";
 		$this->end();
 	}
 }
