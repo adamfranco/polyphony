@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CenteredPanel.js,v 1.1 2007/01/30 15:46:57 adamfranco Exp $
+ * @version $Id: CenteredPanel.js,v 1.2 2007/02/09 21:54:44 adamfranco Exp $
  */
 
 CenteredPanel.prototype = new Panel();
@@ -22,7 +22,7 @@ CenteredPanel.superclass = Panel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CenteredPanel.js,v 1.1 2007/01/30 15:46:57 adamfranco Exp $
+ * @version $Id: CenteredPanel.js,v 1.2 2007/02/09 21:54:44 adamfranco Exp $
  */
 function CenteredPanel ( title, height, width, callingElement, classNames ) {
 	if ( arguments.length > 0 ) {
@@ -134,6 +134,23 @@ function CenteredPanel ( title, height, width, callingElement, classNames ) {
 	}
 	
 	/**
+	 * Answer the height of the screen that maskes the background. This will be
+	 * the larger of the document height or the window height
+	 * 
+	 * @return int
+	 * @access public
+	 * @since 2/2/07
+	 */
+	CenteredPanel.prototype.getScreenHeight = function () {
+		if (window.getInnerHeight() > document.height) {
+			return window.getInnerHeight();
+		} else {
+			return document.height;
+			
+		}
+	}
+	
+	/**
 	 * Create the panel elements
 	 * 
 	 * @return void
@@ -151,7 +168,7 @@ function CenteredPanel ( title, height, width, callingElement, classNames ) {
 		this.screen.style.top = '0px';
 		this.screen.style.left = '0px';
 		this.screen.style.width = '100%';
-		this.screen.style.height = window.getInnerHeight() + 'px';
+		this.screen.style.height = this.getScreenHeight() + 'px';
 		this.screen.style.backgroundColor = '#AAA';
 		this.screen.style.filter = "alpha(opacity=70)";
 		this.screen.style.MozOpacity = ".70";
@@ -161,7 +178,7 @@ function CenteredPanel ( title, height, width, callingElement, classNames ) {
 		var panel = this;
 		window.onresize = function () {
 			panel.center();
-			panel.screen.style.height = window.getInnerHeight() + 'px';
+			panel.screen.style.height = panel.getScreenHeight() + 'px';
 		}
 	}
 	
