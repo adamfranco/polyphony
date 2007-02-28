@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.24 2006/11/30 22:02:40 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.25 2007/02/28 21:34:29 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.24 2006/11/30 22:02:40 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.25 2007/02/28 21:34:29 adamfranco Exp $
  */
 
 class ArrayResultPrinter 
@@ -65,6 +65,7 @@ class ArrayResultPrinter
 		}
 		
 		$this->_resultLayout =& new TableLayout($this->_numColumns);
+		$this->_resultLayout->printEmptyCells = false;
 		
 		$this->_linksStyleCollection =& new StyleCollection(
 			"*.result_page_links", 
