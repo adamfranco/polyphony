@@ -116,13 +116,6 @@
 		</partStructure>
 		<partStructure>
 			<id/>
-			<name>Date</name>
-			<value>
-				<exifElement>Date and Time of Original</exifElement>
-			</value>
-		</partStructure>
-		<partStructure>
-			<id/>
 			<name>Type</name>
 			<value>
 				<text>Image</text>

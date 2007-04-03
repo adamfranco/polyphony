@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.30 2007/04/03 16:50:55 adamfranco Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.31 2007/04/03 17:26:32 adamfranco Exp $
  */ 
 require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.30 2007/04/03 16:50:55 adamfranco Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.31 2007/04/03 17:26:32 adamfranco Exp $
  */
 class RepositoryImporter {
 	
@@ -66,14 +66,16 @@ class RepositoryImporter {
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function import () {
+	function import ($decompress = true) {
 		$drManager =& Services::getService("RepositoryManager");
 		$this->_destinationRepository =& $drManager->getRepository(
 			$this->_repositoryId);
 		$this->_srcDir = dirname($this->_filepath)."/";
-		$this->decompress();
-		if ($this->hasErrors())
-			return;
+		if ($decompress) {
+			$this->decompress();
+			if ($this->hasErrors())
+				return;
+		}
 		$this->parse();
 	}
 	

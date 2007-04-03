@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.21 2006/12/08 16:18:40 adamfranco Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.22 2007/04/03 17:26:32 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -21,7 +21,7 @@ require_once(DOMIT);
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.21 2006/12/08 16:18:40 adamfranco Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.22 2007/04/03 17:26:32 adamfranco Exp $
  */
 class ExifRepositoryImporter
 	extends RepositoryImporter
@@ -211,7 +211,7 @@ class ExifRepositoryImporter
 									$ivaluesArray[1]->getText(),
 									$matchedSchema);
 							if ($matchedId == false) {
-								$this->addError("Part ".$ivaluesArray[1].
+								$this->addError("Part ".$ivaluesArray[1]->getText().
 									" does not exist.");
 								if (isset($log)) {
 									$item =& new AgentNodeEntryItem(
