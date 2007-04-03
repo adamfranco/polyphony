@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.16 2006/06/26 19:22:42 adamfranco Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.17 2007/04/03 16:50:55 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRecordStructureIm
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.16 2006/06/26 19:22:42 adamfranco Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.17 2007/04/03 16:50:55 adamfranco Exp $
  */
 class XMLRepositoryImporter extends XMLImporter {
 		
@@ -105,6 +105,27 @@ class XMLRepositoryImporter extends XMLImporter {
 			return true;
 		else
 			return false;
+	}
+	
+	/**
+	 * Answer the parent for the importer
+	 * 
+	 * @param string $importerClass
+	 * @return object
+	 * @access public
+	 * @since 4/3/07
+	 */
+	function &getParentForImporter ( $importer) {
+		if ($importer == "XMLAssetImporter") {
+			if ($this->_parent)
+				$parent =& $this->_parent;
+			else
+				$parent =& $this->_object;
+		} else {
+			$parent =& $this->_object;
+		}
+		
+		return $parent;
 	}
 	
 	/**

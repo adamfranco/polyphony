@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.29 2006/12/08 16:18:40 adamfranco Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.30 2007/04/03 16:50:55 adamfranco Exp $
  */ 
 require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.29 2006/12/08 16:18:40 adamfranco Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.30 2007/04/03 16:50:55 adamfranco Exp $
  */
 class RepositoryImporter {
 	
@@ -42,6 +42,19 @@ class RepositoryImporter {
 		$this->_dieOnError = $dieOnError;
 		$this->_errors = array();
 		$this->_goodAssetIds = array();
+		$this->_root = null;
+	}
+	
+	/**
+	 * Set An asset that will the parent of imported assets
+	 * 
+	 * @param object Asset
+	 * @return void
+	 * @access public
+	 * @since 4/2/07
+	 */
+	function setParent (&$asset) {
+		$this->_root =& $asset;
 	}
 	
 	/**
@@ -115,9 +128,9 @@ class RepositoryImporter {
 		$assetIterator =& new $iteratorClass($this->_srcDir, $this);
 		if ($this->hasErrors())
 			return;
-		$null = null;
+		
 		$false = false;
-		$this->assetBuildingIteration($assetIterator, $null, $false);
+		$this->assetBuildingIteration($assetIterator, $this->_root, $false);
 		unset($assetIterator);
 	}
 

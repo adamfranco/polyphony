@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStepDisplayBar.class.php,v 1.2 2005/08/10 17:52:05 adamfranco Exp $
+ * @version $Id: WStepDisplayBar.class.php,v 1.3 2007/04/03 16:50:55 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
@@ -20,16 +20,18 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStepDisplayBar.class.php,v 1.2 2005/08/10 17:52:05 adamfranco Exp $
+ * @version $Id: WStepDisplayBar.class.php,v 1.3 2007/04/03 16:50:55 adamfranco Exp $
  */
 class WStepDisplayBar 
 	extends WizardComponent 
 {
 	var $_stepContainer;
+// 	var $_event = "'edu.middlebury.polyphony.wizard.step_changed";
 	
 	/**
 	 * Constructor
 	 * @param ref object $stepContainer A {@link WizardStepContainer} object.
+	 * @param optional string $event
 	 * @access public
 	 * @return void
 	 */
@@ -47,6 +49,11 @@ class WStepDisplayBar
 	 * @return boolean - TRUE if everything is OK
 	 */
 	function update ($fieldName) {
+		$val = RequestContext::value($fieldName);
+		if ($val !== '' && $val !== null) {
+			// advance the step!
+			$this->_stepContainer->setStepByKey($val);
+		}
 	}
 	
 	/**
@@ -68,20 +75,37 @@ class WStepDisplayBar
 	 * @return string
 	 */
 	function getMarkup ($fieldName) {
-		$m = "<div>";
+		ob_start();
+		print "<div>";
+		print "<input type='hidden' name='".$fieldName."' value=''/>";
+		
 		$steps = $this->_stepContainer->getSteps();
 		$currStep = $this->_stepContainer->getCurrentStep();
 		$a = array();
 		foreach (array_keys($steps) as $stepKey) {
-			$s = '';
-			if ($stepKey == $currStep) $s .= "<b>";
-			$s .= ($stepKey+1).". ".$steps[$stepKey]->getDisplayName();
-			if ($stepKey == $currStep) $s .= "</b>";
-			$a[] = $s;
+			ob_start();
+			if ($stepKey == $currStep) 
+				print "<b>";
+			else {
+				print "<a href='#' onclick=\"";
+				print "var input = this.parentNode.firstChild; ";
+				print "input.value = '".$stepKey."'; ";
+				print "input.form.submit(); ";
+				print "return false; \">";
+			}
+			
+			print ($stepKey+1).". ".$steps[$stepKey]->getDisplayName();
+			
+			if ($stepKey == $currStep) 
+				print "</b>";
+			else
+				print "</a>";
+			
+			$a[] = ob_get_clean();
 		}
-		$m .= implode("\n&raquo;\n", $a);
-		$m .= "</div>";
-		return $m;
+		print implode("\n&raquo;\n", $a);
+		print "</div>";
+		return ob_get_clean();
 	}
 }
 

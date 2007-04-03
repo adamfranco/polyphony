@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.9 2006/08/19 21:08:40 sporktim Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.10 2007/04/03 16:50:55 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.9 2006/08/19 21:08:40 sporktim Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.10 2007/04/03 16:50:55 adamfranco Exp $
  */
 class WizardStepContainer extends WizardComponent {
 	var $_currStep;
@@ -97,6 +97,19 @@ class WizardStepContainer extends WizardComponent {
 			throwError(new Error("No such step '".$name."'","WizardStepContainer",true));
 		}
 		
+	}
+	
+	/**
+	 * Set the step to the one given by key
+	 * 
+	 * @param integer $key
+	 * @return void
+	 * @access public
+	 * @since 4/2/07
+	 */
+	function setStepByKey ($key, $context=array()) {
+		$name = $this->_stepNames[$key];
+		$this->setStep($name, $context);
 	}
 	
 	/**

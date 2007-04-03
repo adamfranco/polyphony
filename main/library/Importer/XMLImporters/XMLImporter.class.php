@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.28 2006/12/01 17:53:01 adamfranco Exp $
+ * @version $Id: XMLImporter.class.php,v 1.29 2007/04/03 16:50:55 adamfranco Exp $
  *
  * @author Christopher W. Shubert
  */ 
@@ -27,7 +27,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.28 2006/12/01 17:53:01 adamfranco Exp $
+ * @version $Id: XMLImporter.class.php,v 1.29 2007/04/03 16:50:55 adamfranco Exp $
  */
 class XMLImporter {
 
@@ -48,6 +48,9 @@ class XMLImporter {
 	 	$this->setupSelf();		// gives the importer knowledge about itself
 	 	$this->_errors = array();	// end-user friendly error handling
 	 	$this->_existingArray =& $existingArray;
+	 	
+	 	$this->_parent = null; 	// A parent for the child importers to use other
+	 							// than our object.
  	}
 
 	/**
@@ -117,6 +120,20 @@ class XMLImporter {
 			"hierarchy", "group", "agent");
 		$this->_info = array();	// stores information about importing element
 
+	}
+	
+	/**
+	 * Set the parent of the child objects to be imported if it will be different
+	 * from our object. This is used in importing assets into a repository, but
+	 * under an asset in that repository
+	 * 
+	 * @param object $parent
+	 * @return void
+	 * @access public
+	 * @since 4/3/07
+	 */
+	function setParent ( &$parent ) {
+		$this->_parent =& $parent;
 	}
 
 /*********************************************************
@@ -389,7 +406,7 @@ class XMLImporter {
 					eval('$result = '.$importer.'::isImportable($element);');
 					if ($result) {
 						$imp =& new $importer($this->_existingArray);
-						$imp->import($topImporter, $element, $this->_type, $this->_object);
+						$imp->import($topImporter, $element, $this->_type, $this->getParentForImporter($importer));
 						// used for bubbling errors to the top...
 						if ($imp->hasErrors())
 							foreach($imp->getErrors() as $error)
@@ -401,6 +418,22 @@ class XMLImporter {
 			if ($topImporter->_granule == $element->nodeName)
 				$topImporter->_status->updateStatistics();
 		}
+	}
+	
+	/**
+	 * Answer the parent for the importer. This allows importers such as the 
+	 * XMLRepositoryImporter to switch and import assets underneith another asset
+	 * rather than just under themselves.
+	 * 
+	 * @param string $importerClass
+	 * @return object
+	 * @access public
+	 * @since 4/3/07
+	 */
+	function &getParentForImporter ( $importer) {
+		$parent =& $this->_object;
+		
+		return $parent;
 	}
 	
 	/**
