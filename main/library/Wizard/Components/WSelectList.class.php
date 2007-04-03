@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.16 2006/11/30 22:02:41 adamfranco Exp $
+ * @version $Id: WSelectList.class.php,v 1.17 2007/04/03 18:07:41 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.16 2006/11/30 22:02:41 adamfranco Exp $
+ * @version $Id: WSelectList.class.php,v 1.17 2007/04/03 18:07:41 adamfranco Exp $
  */
 class WSelectList 
 	extends WizardComponent 
@@ -32,6 +32,7 @@ class WSelectList
 	
 	var $_items = array();
 	var $_styles = array();
+	var $_disabled = array();
 	
 	/**
 	 * Constructor
@@ -105,6 +106,21 @@ class WSelectList
 	function addOption ($value, $displayText, $styles = null) {
 		$this->_items[$value] = $displayText;
 		$this->_styles[$value] = $styles;
+	}
+	
+	/**
+	 * Add a disabled option to this list.
+	 * 
+	 * @param string $value The short value that represents the displayed text.
+	 * @param string $displayText The text to show to the end user.
+	 * @param string $styles Any styles to pass into the menu option.
+	 * @return void
+	 * @access public
+	 * @since 4/3/07
+	 */
+	function addDisabledOption ($value, $displayText, $styles = null) {
+		$this->addOption($value, $displayText, $styles);
+		$this->_disabled[$value] = true;
 	}
 	
 	/**
@@ -225,7 +241,11 @@ class WSelectList
 				$style = " style='".$this->_styles[$key]."'";
 			else
 				$style = '';				
-			$m .= "<option value='".$val."'".$selected.$style.">".htmlspecialchars($disp)."</option>\n";
+			$m .= "<option value='".$val."'".$selected;
+			if (isset($this->_disabled[$val]) && $this->_disabled[$val]) {
+				$m .= " disabled='disabled'";
+			}
+			$m .= $style.">".htmlspecialchars($disp)."</option>\n";
 		}
 		
 		if ($this->_value && !$this->isOption($this->_value)) {
