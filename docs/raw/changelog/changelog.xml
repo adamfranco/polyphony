@@ -4,13 +4,13 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.72 2007/04/03 18:07:40 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.73 2007/04/05 15:56:21 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
-	<version number="0.8.1" date="The Future">
+	<version number="0.8.1" date="2007-04-05">
 		<change author='adam'>
 			Wizards: Now steps can be accessed out-of-order via links.
 		</change>
