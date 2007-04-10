@@ -3,6 +3,11 @@
 Name: Polyphony ChangeLog
 
 
+v. 0.8.2 (2007-04-10)
+----------------------------------------------------
+		
+	* Bug Fix: Fixed a few bugs that prevented the basket from running in PHP 5. (Adam Franco)
+	
 v. 0.8.1 (2007-04-05)
 ----------------------------------------------------
 		
