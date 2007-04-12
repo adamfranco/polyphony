@@ -4,12 +4,18 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.74 2007/04/10 19:23:25 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.75 2007/04/12 15:44:08 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
+	<version number="0.8.3" date="The Future">
+		<fix author='adam'>	
+			Converting all short tags (&lt;?) to the full tags (&lt;?php) for 
+			compatibility with more PHP configurations.
+		</fix>
+	</version>
 	<version number="0.8.2" date="2007-04-10">
 		<fix author='adam'>
 			Fixed a few bugs that prevented the basket from running in PHP 5.
