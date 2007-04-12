@@ -1,4 +1,4 @@
-<?
+<?php
 
 /**
  * process_authorizations.act.php
@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: process_authorizations.act.php,v 1.12 2005/09/08 20:48:53 gabeschine Exp $
+ * @version $Id: process_authorizations.act.php,v 1.13 2007/04/12 15:37:35 adamfranco Exp $
  */
 
 class process_authorizationsAction {

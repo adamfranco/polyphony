@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  *
  * @package polyphony.library.wizard
@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.14 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: Wizard.abstract.php,v 1.15 2007/04/12 15:37:35 adamfranco Exp $
  */
 
 /*
@@ -31,7 +31,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WUpdateListener.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.14 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: Wizard.abstract.php,v 1.15 2007/04/12 15:37:35 adamfranco Exp $
  * @author Gabe Schine
  * @abstract
  */
