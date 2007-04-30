@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Panel.js,v 1.3 2007/01/30 15:46:57 adamfranco Exp $
+ * @version $Id: Panel.js,v 1.4 2007/04/30 19:49:28 adamfranco Exp $
  */
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Panel.js,v 1.3 2007/01/30 15:46:57 adamfranco Exp $
+ * @version $Id: Panel.js,v 1.4 2007/04/30 19:49:28 adamfranco Exp $
  */
 function Panel ( title, height, width, positionElement, classNames ) {
 	if ( arguments.length > 0 ) {
@@ -206,7 +206,7 @@ function Panel ( title, height, width, positionElement, classNames ) {
 	 * @since 1/26/07
 	 */
 	Panel.prototype.centerOnHeight = function () {
-		this.height = this.mainElement.offsetHeight;
+		this.height = this.mainElement.offsetHeight;		
 		this.mainElement.style.top = this.getTop() + "px";
 	}
 	

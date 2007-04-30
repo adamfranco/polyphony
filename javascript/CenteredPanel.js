@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CenteredPanel.js,v 1.2 2007/02/09 21:54:44 adamfranco Exp $
+ * @version $Id: CenteredPanel.js,v 1.3 2007/04/30 19:49:28 adamfranco Exp $
  */
 
 CenteredPanel.prototype = new Panel();
@@ -22,7 +22,7 @@ CenteredPanel.superclass = Panel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CenteredPanel.js,v 1.2 2007/02/09 21:54:44 adamfranco Exp $
+ * @version $Id: CenteredPanel.js,v 1.3 2007/04/30 19:49:28 adamfranco Exp $
  */
 function CenteredPanel ( title, height, width, callingElement, classNames ) {
 	if ( arguments.length > 0 ) {
@@ -101,13 +101,15 @@ function CenteredPanel ( title, height, width, callingElement, classNames ) {
 	 */
 	CenteredPanel.prototype.getTop = function () {
 		try {
-			var top = Math.round(window.getInnerHeight() / 2) - Math.round(this.height / 2);
+			var height = Math.min(window.getInnerHeight(), this.height);
+			var top = Math.round(height / 2) - Math.round(height / 2);
+			top = top + window.pageYOffset;
 		} catch (error) {
 			var top = 5;
 		}
 		
-		if (top < 5)
-			top = 5;
+		if (top - window.pageYOffset < 5)
+			top = top + 5;
 		
 		return top;
 	}
@@ -122,13 +124,14 @@ function CenteredPanel ( title, height, width, callingElement, classNames ) {
 	 */
 	CenteredPanel.prototype.getLeft = function () {
 		try {
-			var left = Math.round(window.getInnerWidth() / 2) - Math.round(this.width / 2);
+			var width = Math.min(window.getInnerWidth(), this.width);
+			var left = Math.round(width / 2) - Math.round(width / 2);
 		} catch (error) {
 			var left = 5;
 		}
 		
-		if (left < 5)
-			left = 5;
+		if (left -  - window.pageXOffset < 5)
+			left = left + 5;
 		
 		return left;
 	}
@@ -191,6 +194,8 @@ function CenteredPanel ( title, height, width, callingElement, classNames ) {
 	 */
 	CenteredPanel.prototype.onOpen = function () {
 		this.screen.style.display = 'block';
+		this.centerOnHeight();
+		this.centerOnWidth();
 	}
 	
 	/**

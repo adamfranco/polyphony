@@ -8,7 +8,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: common.js,v 1.5 2007/02/21 22:08:34 adamfranco Exp $
+ * @version $Id: common.js,v 1.6 2007/04/30 19:49:28 adamfranco Exp $
  */
 
 /**
@@ -97,7 +97,7 @@ String.prototype.wordWrap = function(maxLength, breakWith, cutWords){
  * | Authors:   Stuart Wigley <stuartwigley@yahoo.co.uk>                     |
  * |            Randolph Fielding <gator4life@cinci.rr.com>                  |
  * +-------------------------------------------------------------------------+
- * $Id: common.js,v 1.5 2007/02/21 22:08:34 adamfranco Exp $
+ * $Id: common.js,v 1.6 2007/04/30 19:49:28 adamfranco Exp $
  *
  *
  * Replaces a small group of characters in this string defined in the HTML
@@ -811,4 +811,35 @@ function loadScript(url) {
 	e.src = url;
 	e.type="text/javascript";
 	document.getElementsByTagName("head")[0].appendChild(e);
+}
+
+/**
+ * 
+ * 
+ * @param <##>
+ * @return <##>
+ * @access public
+ * @since 4/30/07
+ */
+function isValidMouseOut (source, event) {
+	
+// 	var debug = '';
+// 	for (var key in event) {
+// 		debug += "\n" + key + "\t" + event[key];
+// 	}
+// 	alert(debug);
+// 	
+
+	// IE sometimes doesn't include a target in the event.
+	if (!event.target) {
+		return true;
+	}
+	
+	// opened SELECT menus in dialogs also trigger invalid mouse-out events
+	// in Firefox
+	if (event.target.nodeName == "SELECT" && event.target.nodeName == "OPTION") {
+		return false;
+	}
+	
+	return true;
 }
