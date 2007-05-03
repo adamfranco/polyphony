@@ -8,7 +8,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: common.js,v 1.6 2007/04/30 19:49:28 adamfranco Exp $
+ * @version $Id: common.js,v 1.7 2007/05/03 20:56:12 adamfranco Exp $
  */
 
 /**
@@ -97,7 +97,7 @@ String.prototype.wordWrap = function(maxLength, breakWith, cutWords){
  * | Authors:   Stuart Wigley <stuartwigley@yahoo.co.uk>                     |
  * |            Randolph Fielding <gator4life@cinci.rr.com>                  |
  * +-------------------------------------------------------------------------+
- * $Id: common.js,v 1.6 2007/04/30 19:49:28 adamfranco Exp $
+ * $Id: common.js,v 1.7 2007/05/03 20:56:12 adamfranco Exp $
  *
  *
  * Replaces a small group of characters in this string defined in the HTML
@@ -170,6 +170,26 @@ document.get_element_by_id = function (id) {
 }
 
 /**
+ * Answer offset of an element from the top of the document.
+ * 
+ * @param string id
+ * @return object The html element
+ * @access public
+ * @since 5/3/07
+ */
+document.getOffsetTop = function (element) {
+	var offset = 0;
+	
+	if (element.offsetTop)
+		offset = offset + element.offsetTop;
+	
+	if (element.offsetParent)
+		offset = offset + document.getOffsetTop(element.offsetParent);	
+		
+	return offset;
+}
+
+/**
  * Answer offset of an element from the left side of the document.
  * 
  * @param string id
@@ -187,6 +207,42 @@ document.getOffsetLeft = function (element) {
 		offset = offset + document.getOffsetLeft(element.offsetParent);	
 		
 	return offset;
+}
+
+/**
+ * Answer the height of the document
+ * 
+ * @return integer
+ * @access public
+ * @since 5/3/07
+ */
+document.getHeight = function () {
+	if (typeof( document.height ) == 'number')
+		return document.height;
+	
+	// IE
+	if (document.body && typeof( document.body.offsetHeight ) == 'number')
+		return document.body.offsetHeight;
+	
+	throw new Error("Undefined Height");
+}
+
+/**
+ * Answer the width of the document
+ * 
+ * @return integer
+ * @access public
+ * @since 5/3/07
+ */
+document.getWidth = function () {
+	if (typeof( document.width ) == 'number')
+		return document.width;
+	
+	// IE
+	if (document.body && typeof( document.body.offsetWidth ) == 'number')
+		return document.body.offsetWidth;
+	
+	throw new Error("Undefined Width");
 }
 
 /**
@@ -241,6 +297,54 @@ window.getInnerWidth = function () {
 	}
 	
 	throw new Error("Width of the window could not be determined. Browser may be too old.");
+}
+
+/**
+ * Answer the amount of scroll in the vertical direction.
+ * 
+ * @return integer
+ * @access public
+ * @since 5/3/07
+ */
+window.getScrollY = function () {
+	// Non-IE
+	if (typeof( window.pageYOffset ) == 'number')
+		return window.pageYOffset;
+	
+	// Some IE
+	else if (document.body && document.body.scrollTop)
+		return document.body.scrollTop;
+	
+	// IE 6 - standards complient mode
+	else if (document.documentElement && document.documentElement.scrollTop)
+		return document.documentElement.scrollTop;
+	
+	else
+		return 0;
+}
+
+/**
+ * Answer the amount of scroll in the horizontal direction.
+ * 
+ * @return integer
+ * @access public
+ * @since 5/3/07
+ */
+window.getScrollX = function () {
+	// Non-IE
+	if (typeof( window.pageXOffset ) == 'number')
+		return window.pageXOffset;
+	
+	// Some IE
+	else if (document.body && document.body.scrollLeft)
+		return document.body.scrollLeft;
+	
+	// IE 6 - standards complient mode
+	else if (document.documentElement && document.documentElement.scrollLeft)
+		return document.documentElement.scrollLeft;
+	
+	else
+		return 0;
 }
 
 

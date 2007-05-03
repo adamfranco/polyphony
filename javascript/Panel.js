@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Panel.js,v 1.4 2007/04/30 19:49:28 adamfranco Exp $
+ * @version $Id: Panel.js,v 1.5 2007/05/03 20:56:12 adamfranco Exp $
  */
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Panel.js,v 1.4 2007/04/30 19:49:28 adamfranco Exp $
+ * @version $Id: Panel.js,v 1.5 2007/05/03 20:56:12 adamfranco Exp $
  */
 function Panel ( title, height, width, positionElement, classNames ) {
 	if ( arguments.length > 0 ) {
@@ -53,8 +53,8 @@ function Panel ( title, height, width, positionElement, classNames ) {
 		this.height = height;
 		this.width = width;
 		this.classNames = classNames;
-		
 		this.createElements();
+		
 	}
 	
 	/**
@@ -100,7 +100,6 @@ function Panel ( title, height, width, positionElement, classNames ) {
 		this.mainElement.style.width = this.width + 'px';
 		this.mainElement.style.position = 'absolute';
 		this.mainElement.style.overflow = 'auto';
-		
 		this.mainElement.style.top = this.getTop() + "px";
 		this.mainElement.style.left = this.getLeft() + "px";
 		
@@ -108,7 +107,7 @@ function Panel ( title, height, width, positionElement, classNames ) {
 		this.topBar = this.mainElement.appendChild(document.createElement("table"));
 		this.topBar.className = 'topbar';
 		this.topBar.style.width = '100%';
-		
+
 		var tbody = this.topBar.appendChild(document.createElement('tbody'));
 		var row1 = tbody.appendChild(document.createElement('tr'));
 		
@@ -141,7 +140,7 @@ function Panel ( title, height, width, positionElement, classNames ) {
 	 * @since 1/26/07
 	 */
 	Panel.prototype.getTop = function () {
-		var top = (Panel.getOffsetTop(this.positionElement) 
+		var top = (document.getOffsetTop(this.positionElement) 
 						- Math.round(this.height / 2) 
 						+ Math.round(this.positionElement.offsetHeight / 2));
 		if (top < 5)
@@ -159,7 +158,7 @@ function Panel ( title, height, width, positionElement, classNames ) {
 	 * @since 1/26/07
 	 */
 	Panel.prototype.getLeft = function () {
-		var left = (Panel.getOffsetLeft(this.positionElement) 
+		var left = (document.getOffsetLeft(this.positionElement) 
 						- Math.round(this.width / 2) 
 						+ Math.round(this.positionElement.offsetWidth / 2));
 		if (left < 5)
@@ -232,34 +231,4 @@ function Panel ( title, height, width, positionElement, classNames ) {
 	Panel.prototype.center = function () {
 		this.centerOnHeight();
 		this.centerOnWidth();
-	}
-
-	/**
-	 * Recursively add up the offsets of the parent elements.
-	 * 
-	 * @param object element
-	 * @return integer
-	 * @access public
-	 * @since 11/9/06
-	 */
-	Panel.getOffsetTop = function ( element ) {
-		if (element.offsetParent)
-			return element.offsetTop + Panel.getOffsetTop(element.offsetParent);
-		else
-			return element.offsetTop;
-	}
-	
-	/**
-	 * Recursively add up the offsets of the parent elements.
-	 * 
-	 * @param object element
-	 * @return integer
-	 * @access public
-	 * @since 11/9/06
-	 */
-	Panel.getOffsetLeft = function ( element ) {
-		if (element.offsetParent)
-			return element.offsetLeft + Panel.getOffsetLeft(element.offsetParent);
-		else
-			return element.offsetLeft;
 	}

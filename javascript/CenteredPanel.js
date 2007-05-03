@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CenteredPanel.js,v 1.4 2007/05/03 18:44:19 adamfranco Exp $
+ * @version $Id: CenteredPanel.js,v 1.5 2007/05/03 20:56:12 adamfranco Exp $
  */
 
 CenteredPanel.prototype = new Panel();
@@ -22,7 +22,7 @@ CenteredPanel.superclass = Panel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CenteredPanel.js,v 1.4 2007/05/03 18:44:19 adamfranco Exp $
+ * @version $Id: CenteredPanel.js,v 1.5 2007/05/03 20:56:12 adamfranco Exp $
  */
 function CenteredPanel ( title, height, width, callingElement, classNames ) {
 	if ( arguments.length > 0 ) {
@@ -48,7 +48,7 @@ function CenteredPanel ( title, height, width, callingElement, classNames ) {
 	CenteredPanel.prototype.init = function (  title, height, width, 
 		callingElement,	classNames ) 
 	{
-		AuthZViewer.superclass.init.call(this, 
+		CenteredPanel.superclass.init.call(this, 
 								title,
 								height,
 								width,
@@ -103,14 +103,13 @@ function CenteredPanel ( title, height, width, callingElement, classNames ) {
 		try {
 			var height = Math.min(window.getInnerHeight(), this.height);
 			var top = Math.round(window.getInnerHeight() / 2) - Math.round(height / 2);
-			top = top + window.pageYOffset;
+			top = top + window.getScrollY();
 		} catch (error) {
 			var top = 5;
 		}
 		
-		if (top - window.pageYOffset < 5)
+		if (top - window.getScrollY() < 5)
 			top = top + 5;
-		
 		return top;
 	}
 	
@@ -126,11 +125,12 @@ function CenteredPanel ( title, height, width, callingElement, classNames ) {
 		try {
 			var width = Math.min(window.getInnerWidth(), this.width);
 			var left = Math.round(window.getInnerWidth() / 2) - Math.round(width / 2);
+			left = left + window.getScrollX();
 		} catch (error) {
 			var left = 5;
 		}
 		
-		if (left -  - window.pageXOffset < 5)
+		if (left - window.getScrollX() < 5)
 			left = left + 5;
 		
 		return left;
@@ -145,10 +145,10 @@ function CenteredPanel ( title, height, width, callingElement, classNames ) {
 	 * @since 2/2/07
 	 */
 	CenteredPanel.prototype.getScreenHeight = function () {
-		if (window.getInnerHeight() > document.height) {
+		if (window.getInnerHeight() > document.getHeight()) {
 			return window.getInnerHeight();
 		} else {
-			return document.height;
+			return document.getHeight();
 			
 		}
 	}
@@ -183,6 +183,7 @@ function CenteredPanel ( title, height, width, callingElement, classNames ) {
 			panel.center();
 			panel.screen.style.height = panel.getScreenHeight() + 'px';
 		}
+		
 	}
 	
 	/**
