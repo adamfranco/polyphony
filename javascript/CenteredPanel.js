@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CenteredPanel.js,v 1.3 2007/04/30 19:49:28 adamfranco Exp $
+ * @version $Id: CenteredPanel.js,v 1.4 2007/05/03 18:44:19 adamfranco Exp $
  */
 
 CenteredPanel.prototype = new Panel();
@@ -22,7 +22,7 @@ CenteredPanel.superclass = Panel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CenteredPanel.js,v 1.3 2007/04/30 19:49:28 adamfranco Exp $
+ * @version $Id: CenteredPanel.js,v 1.4 2007/05/03 18:44:19 adamfranco Exp $
  */
 function CenteredPanel ( title, height, width, callingElement, classNames ) {
 	if ( arguments.length > 0 ) {
@@ -102,7 +102,7 @@ function CenteredPanel ( title, height, width, callingElement, classNames ) {
 	CenteredPanel.prototype.getTop = function () {
 		try {
 			var height = Math.min(window.getInnerHeight(), this.height);
-			var top = Math.round(height / 2) - Math.round(height / 2);
+			var top = Math.round(window.getInnerHeight() / 2) - Math.round(height / 2);
 			top = top + window.pageYOffset;
 		} catch (error) {
 			var top = 5;
@@ -125,7 +125,7 @@ function CenteredPanel ( title, height, width, callingElement, classNames ) {
 	CenteredPanel.prototype.getLeft = function () {
 		try {
 			var width = Math.min(window.getInnerWidth(), this.width);
-			var left = Math.round(width / 2) - Math.round(width / 2);
+			var left = Math.round(window.getInnerWidth() / 2) - Math.round(width / 2);
 		} catch (error) {
 			var left = 5;
 		}
