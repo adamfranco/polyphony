@@ -4,13 +4,21 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.75 2007/04/12 15:44:08 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.76 2007/05/15 16:54:33 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
 	<version number="0.8.3" date="The Future">
+		<new author='adam'>
+			Wizard: Now supports [[fieldname:xxxxxxx]] syntax to allow locating
+			of input elements by custom javascript.
+		</new>
+		<new author='adam'>
+			Wizard: Wizard steps can now return their raw content/markup, allowing appending
+			and prepending of additional content/markup.
+		</new>
 		<fix author='adam'>	
 			Converting all short tags (&lt;?) to the full tags (&lt;?php) for 
 			compatibility with more PHP configurations.

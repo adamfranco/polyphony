@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.15 2007/04/12 15:37:35 adamfranco Exp $
+ * @version $Id: Wizard.abstract.php,v 1.16 2007/05/15 16:53:55 adamfranco Exp $
  */
 
 /*
@@ -31,7 +31,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WUpdateListener.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.15 2007/04/12 15:37:35 adamfranco Exp $
+ * @version $Id: Wizard.abstract.php,v 1.16 2007/05/15 16:53:55 adamfranco Exp $
  * @author Gabe Schine
  * @abstract
  */
@@ -272,7 +272,16 @@ END;
 	 	// to though each of the matches and get the required string
 	 	$workingText = $text;
 	 	foreach ($matches[0] as $match) {
-	 		if (preg_match("/\[{2}([^|]*)\]{2}/", $match, $parts)) {
+	 		if (preg_match("/\[{2}fieldname:([^|]*)\]{2}/", $match, $parts)) {
+	 			$propName = $parts[1];
+	 			// fieldname:xxxx 
+	 			if (isset($components[$propName])) {
+					$markup = $prepend.$propName;
+	 			} else {
+	 				$msg = sprintf(dgettext("polyphony", "WIZARD ERROR: could not find a component to match with fieldname:<i>%s</i>!"), $propName);
+	 				$markup = "<span style='color: red; font-weight: 900;'>$msg</span>";
+	 			}
+	 		} else if (preg_match("/\[{2}([^|]*)\]{2}/", $match, $parts)) {
 	 			$propName = $parts[1];
 	 			if (isset($components[$propName])) {
 					$markup = $components[$propName]->getMarkup($prepend.$propName);
