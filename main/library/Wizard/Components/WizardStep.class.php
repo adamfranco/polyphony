@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStep.class.php,v 1.3 2006/11/30 22:02:41 adamfranco Exp $
+ * @version $Id: WizardStep.class.php,v 1.4 2007/05/15 16:54:24 adamfranco Exp $
  */
 
 require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstract.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStep.class.php,v 1.3 2006/11/30 22:02:41 adamfranco Exp $
+ * @version $Id: WizardStep.class.php,v 1.4 2007/05/15 16:54:24 adamfranco Exp $
  * @author Gabe Schine
  */
 class WizardStep extends WizardComponentWithChildren {
@@ -52,6 +52,18 @@ class WizardStep extends WizardComponentWithChildren {
 	 */
 	function setContent ($content) {
 		$this->_contentText = $content;
+	}
+	
+	/**
+	 * Answer the  step's conent text. Useful for appending new properties to the
+	 * step
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 5/11/07
+	 */
+	function getContent () {
+		return $this->_contentText;
 	}
 	
 	/**
