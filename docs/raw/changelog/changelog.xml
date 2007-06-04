@@ -4,13 +4,20 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.77 2007/06/04 16:50:38 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.78 2007/06/04 19:43:28 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
 	<version number="0.8.3" date="The Future">
+		<new author='adam'>
+			Wizard: Adding a single-step wizard for small wizards.
+		</new>
+		<new author='adam'>
+			Wizard: Can now access the save and cancel buttons, allowing for 
+			changing of labels.
+		</new>
 		<new author='adam'>
 			Wizard: Adding an optional 'extendedHtml' parameter to allow radio 
 			buttons to have additional HTML attached after the label.
