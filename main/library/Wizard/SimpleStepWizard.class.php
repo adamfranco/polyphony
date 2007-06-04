@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleStepWizard.class.php,v 1.9 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: SimpleStepWizard.class.php,v 1.10 2007/06/04 19:38:13 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/SimpleWizard.class.php");
@@ -28,7 +28,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WStepChangedListener.cla
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleStepWizard.class.php,v 1.9 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: SimpleStepWizard.class.php,v 1.10 2007/06/04 19:38:13 adamfranco Exp $
  */
 class SimpleStepWizard extends SimpleWizard {
 	var $_stepContainer;
@@ -145,6 +145,28 @@ class SimpleStepWizard extends SimpleWizard {
 	function getAllValues () {
 		$values = parent::getAllValues();
 		return $values['_steps'];
+	}
+	
+	/**
+	 * Answer the 'Save' button to allow modification of its label and properties.
+	 * 
+	 * @return object WSaveButton
+	 * @access public
+	 * @since 6/4/07
+	 */
+	function &getSaveButton () {
+		return $this->_saveButton;
+	}
+	
+	/**
+	 * Answer the 'Cancel' button to allow modification of its label and properties.
+	 * 
+	 * @return object WSaveButton
+	 * @access public
+	 * @since 6/4/07
+	 */
+	function &getCancelButton () {
+		return $this->_cancelButton;
 	}
 }
 
