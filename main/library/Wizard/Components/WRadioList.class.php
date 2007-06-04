@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRadioList.class.php,v 1.8 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WRadioList.class.php,v 1.9 2007/06/04 16:50:39 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRadioList.class.php,v 1.8 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WRadioList.class.php,v 1.9 2007/06/04 16:50:39 adamfranco Exp $
  */
 class WRadioList 
 	extends WizardComponent 
@@ -35,6 +35,7 @@ class WRadioList
 	var $_style = null;
 	
 	var $_items = array();
+	var $_extendedHtml = array();
 	
 	/**
 	 * Virtual constructor - creates this object with the specified layout.
@@ -101,12 +102,14 @@ class WRadioList
 	 * Adds a radio option to this list.
 	 * @param string $value The short value that represents the displayed text.
 	 * @param optional string $displayText The text to show to the end user. Defaults to $value.
+	 * @param optional string $extendedHtml Text to add to the item after the display text.
 	 * @access public
 	 * @return void
 	 */
-	function addOption ($value, $displayText = null) {
+	function addOption ($value, $displayText = null, $extendedHtml = null) {
 		if ($displayText == null) $displayText = $value;
 		$this->_items[$value] = $displayText;
+		$this->_extendedHtml[$value] = $extendedHtml;
 	}
 	
 	/**
@@ -156,6 +159,7 @@ class WRadioList
 		}
 		foreach (array_keys($this->_items) as $key) {
 			$disp = $this->_items[$key];
+			$extendedHtml = $this->_extendedHtml[$key];
 			$checked = $this->_value==$key?" checked":"";
 			$val = htmlspecialchars($key, ENT_QUOTES);
 			
@@ -171,7 +175,7 @@ class WRadioList
 			if ($this->_onchange)
 				$javascript .= " ".str_replace("\"", "\\\"", $this->_onchange)."; ";
 			
-			$s[] = "<label onmousedown=\"$javascript\" style='cursor: pointer;'$style><input type='radio' name='$name' id='$id' value='$val'$checked /> $disp</label>";
+			$s[] = "<label onmousedown=\"$javascript\" style='cursor: pointer;'$style><input type='radio' name='$name' id='$id' value='$val'$checked /> $disp</label>".$extendedHtml;
 		}
 		
 		$m .= $this->_eachPre;
