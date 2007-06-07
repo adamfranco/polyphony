@@ -4,13 +4,16 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.78 2007/06/04 19:43:28 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.79 2007/06/07 19:39:38 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
 	<version number="0.8.3" date="The Future">
+		<new author='adam'>
+			Wizard: Added new wizard component, 'SaveWithChoiceButtonList'.
+		</new>
 		<new author='adam'>
 			Wizard: Adding a single-step wizard for small wizards.
 		</new>
