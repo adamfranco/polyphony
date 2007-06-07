@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: StepWizard.abstract.php,v 1.2 2006/06/26 12:51:46 adamfranco Exp $
+ * @version $Id: StepWizard.abstract.php,v 1.3 2007/06/07 19:38:34 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/SimpleWizard.class.php");
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WStepDisplayBar.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: StepWizard.abstract.php,v 1.2 2006/06/26 12:51:46 adamfranco Exp $
+ * @version $Id: StepWizard.abstract.php,v 1.3 2007/06/07 19:38:34 adamfranco Exp $
  */
 class StepWizard extends SimpleWizard {
 		
@@ -63,7 +63,17 @@ class StepWizard extends SimpleWizard {
 		$this->_stepContainer->setStep($name);
 	}
 // @todo passing the class of the step wizard to the parent classes!!
-
+	
+	/**
+	 * Answer the name of the current step
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 6/5/07
+	 */
+	function getCurrentStepName () {
+		return $this->_stepContainer->getCurrentStepName();
+	}
 	
 	/**
 	 * Returns the values of wizard-components. Should return an array if children are involved,
