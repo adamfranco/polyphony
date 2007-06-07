@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRadioList.class.php,v 1.9 2007/06/04 16:50:39 adamfranco Exp $
+ * @version $Id: WRadioList.class.php,v 1.10 2007/06/07 19:37:54 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRadioList.class.php,v 1.9 2007/06/04 16:50:39 adamfranco Exp $
+ * @version $Id: WRadioList.class.php,v 1.10 2007/06/07 19:37:54 adamfranco Exp $
  */
 class WRadioList 
 	extends WizardComponent 
@@ -160,7 +160,7 @@ class WRadioList
 		foreach (array_keys($this->_items) as $key) {
 			$disp = $this->_items[$key];
 			$extendedHtml = $this->_extendedHtml[$key];
-			$checked = $this->_value==$key?" checked":"";
+			$checked = $this->_value==$key?" checked='checked'":"";
 			$val = htmlspecialchars($key, ENT_QUOTES);
 			
 			$javascript = '';
