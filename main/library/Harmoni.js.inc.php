@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Harmoni.js.inc.php,v 1.2 2006/11/30 22:02:37 adamfranco Exp $
+ * @version $Id: Harmoni.js.inc.php,v 1.3 2007/07/20 19:12:46 adamfranco Exp $
  */ 
 
 	// Additional Files
@@ -104,6 +104,36 @@
 				}
 				
 				return newUrl;
+			}
+			
+			/**
+			 * Answer a namespaced form fieldname
+			 * 
+			 * @param string action
+			 * @param optional array parameters
+			 * @return string
+			 * @access public
+			 * @since 7/12/07
+			 */
+			Harmoni.fieldName = function (name, namespace) {
+				<?php 
+					$harmoni =& Harmoni::instance();
+					$fieldName = RequestContext::name('xxFIELDNAMExx');
+					print "\n\t\t\t\tvar normalFieldName = '".$fieldName."';";
+					
+					$harmoni->request->startNameSpace('xxNAMESPACExx');
+					$fieldName = RequestContext::name('xxFIELDNAMExx');
+					$harmoni->request->endNameSpace();
+					print "\n\t\t\t\tvar namespacedFieldName = '".$fieldName."';";
+				?>
+				var debug = '';
+				if (namespace) {
+					var fieldName = namespacedFieldName.replaceAll(/xxNAMESPACExx/, namespace);
+					debug += "\nnamespaced";
+				} else
+					var fieldName = normalFieldName;
+								
+				return fieldName.replaceAll(/xxFIELDNAMExx/, name);
 			}
 			
 			// ]]>
