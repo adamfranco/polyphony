@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_membership.act.php,v 1.35 2006/02/28 21:32:49 adamfranco Exp $
+ * @version $Id: group_membership.act.php,v 1.36 2007/08/22 14:51:48 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_membership.act.php,v 1.35 2006/02/28 21:32:49 adamfranco Exp $
+ * @version $Id: group_membership.act.php,v 1.36 2007/08/22 14:51:48 adamfranco Exp $
  */
 class group_membershipAction 
 	extends MainWindowAction
@@ -478,7 +478,7 @@ END;
 			decendentGroups['$idString'] = new Array (
 
 END;
-		$groups =& $group->getGroups(TRUE);
+		$groups =& $group->getGroups(false);
 		$i = 0;
 		while($groups->hasNext()) {
 			$child =& $groups->next();
@@ -524,8 +524,8 @@ END;
 END;
 		$agents =& $group->getMembers(FALSE);
 		$i = 0;
-		while($agents->hasNextAgent()) {
-			$child =& $agents->nextAgent();
+		while($agents->hasNext()) {
+			$child =& $agents->next();
 			$childId =& $child->getId();
 			print (($i)?",\n\t\t\t\t":"\t\t\t\t")."'".$childId->getIdString()."'";
 			$i++;
