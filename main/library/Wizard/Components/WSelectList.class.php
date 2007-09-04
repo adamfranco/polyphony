@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.17 2007/04/03 18:07:41 adamfranco Exp $
+ * @version $Id: WSelectList.class.php,v 1.18 2007/09/04 20:28:08 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectList.class.php,v 1.17 2007/04/03 18:07:41 adamfranco Exp $
+ * @version $Id: WSelectList.class.php,v 1.18 2007/09/04 20:28:08 adamfranco Exp $
  */
 class WSelectList 
 	extends WizardComponent 
@@ -132,7 +132,7 @@ class WSelectList
 	 * @since 4/28/06
 	 */
 	function isOption ($value) {
-		$rule =& StringValidatorRule::getRule();
+		$rule = StringValidatorRule::getRule();
 		if ($rule->check($value))
 			return array_key_exists($value, $this->_items);
 		else

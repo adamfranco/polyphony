@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AuthZXmlAction.class.php,v 1.2 2006/11/30 22:02:42 adamfranco Exp $
+ * @version $Id: AuthZXmlAction.class.php,v 1.3 2007/09/04 20:28:11 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY_DIR.'/main/library/AbstractActions/XmlAction.class.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR.'/main/library/AbstractActions/XmlAction.class.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AuthZXmlAction.class.php,v 1.2 2006/11/30 22:02:42 adamfranco Exp $
+ * @version $Id: AuthZXmlAction.class.php,v 1.3 2007/09/04 20:28:11 adamfranco Exp $
  */
 class AuthZXmlAction
 	extends XmlAction
@@ -47,10 +47,10 @@ class AuthZXmlAction
 	 * @access public
 	 * @since 11/29/06
 	 */
-	function &getQualifierId () {
+	function getQualifierId () {
 		if (!isset($this->_qualifierId)) {
-			$idManager =& Services::getService("Id");
-			$harmoni =& Harmoni::instance();
+			$idManager = Services::getService("Id");
+			$harmoni = Harmoni::instance();
 			$harmoni->request->startNamespace("polyphony-authz");
 			
 			if (!RequestContext::value('qualifier_id'))
@@ -71,10 +71,10 @@ class AuthZXmlAction
 	 * @access public
 	 * @since 11/29/06
 	 */
-	function &getFunctionId () {
+	function getFunctionId () {
 		if (!isset($this->_functionId)) {
-			$idManager =& Services::getService("Id");
-			$harmoni =& Harmoni::instance();
+			$idManager = Services::getService("Id");
+			$harmoni = Harmoni::instance();
 			$harmoni->request->startNamespace("polyphony-authz");
 			
 			if (!RequestContext::value('function_id'))
@@ -95,10 +95,10 @@ class AuthZXmlAction
 	 * @access public
 	 * @since 11/29/06
 	 */
-	function &getAgentId () {
+	function getAgentId () {
 		if (!isset($this->_agentId)) {
-			$idManager =& Services::getService("Id");
-			$harmoni =& Harmoni::instance();
+			$idManager = Services::getService("Id");
+			$harmoni = Harmoni::instance();
 			$harmoni->request->startNamespace("polyphony-authz");
 			
 			if (!RequestContext::value('agent_id'))

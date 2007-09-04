@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveButton.class.php,v 1.3 2005/08/03 17:38:42 gabeschine Exp $
+ * @version $Id: WSaveButton.class.php,v 1.4 2007/09/04 20:28:08 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveButton.class.php,v 1.3 2005/08/03 17:38:42 gabeschine Exp $
+ * @version $Id: WSaveButton.class.php,v 1.4 2007/09/04 20:28:08 adamfranco Exp $
  */
 class WSaveButton extends WEventButton {
 	function WSaveButton() {
@@ -36,8 +36,8 @@ class WSaveButton extends WEventButton {
 	 * @access public
 	 * @since 7/27/05
 	 */
-	function &withLabel($label) {
-		$button =& new WSaveButton();
+	function withLabel($label) {
+		$button = new WSaveButton();
 		$button->setLabel($label);
 		return $button;
 	}

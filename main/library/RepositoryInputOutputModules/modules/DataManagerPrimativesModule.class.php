@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DataManagerPrimativesModule.class.php,v 1.11 2006/06/05 21:44:11 adamfranco Exp $
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.12 2007/09/04 20:28:02 adamfranco Exp $
  */
 
 /**
@@ -24,8 +24,8 @@ require_once(POLYPHONY."/main/library/DataManagerGUI/PrimitiveIO/inc.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: DataManagerPrimativesModule.class.php,v 1.11 2006/06/05 21:44:11 adamfranco Exp $
- * @since $Date: 2006/06/05 21:44:11 $
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.12 2007/09/04 20:28:02 adamfranco Exp $
+ * @since $Date: 2007/09/04 20:28:02 $
  * @copyright 2004 Middlebury College
  */
 
@@ -56,23 +56,23 @@ class DataManagerPrimativesModule
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function createWizardStepsForPartStructures ( & $record, & $wizard, & $partStructures ) {
+	function createWizardStepsForPartStructures ( $record, $wizard, $partStructures ) {
 		ArgumentValidator::validate($record, ExtendsValidatorRule::getRule("RecordInterface"));
 		ArgumentValidator::validate($wizard, ExtendsValidatorRule::getRule("Wizard"));
 		ArgumentValidator::validate($partStructures, ArrayValidatorRuleWithRule::getRule(ExtendsValidatorRule::getRule("PartStructure")));
 		
-		$recordStructure =& $record->getRecordStructure();
-		$recordStructureId =& $recordStructure->getId();
+		$recordStructure =$record->getRecordStructure();
+		$recordStructureId =$recordStructure->getId();
 		
 		/* build an interface for editing this record! */
 		$m = '';
 
-		$step =& $wizard->addStep("record", new WizardStep());
+		$step =$wizard->addStep("record", new WizardStep());
 		$step->setDisplayName(dgettext("polyphony","Edit Record"));
 		
 		// Go through each of the PartStructures and create a component for it
 		foreach (array_keys($partStructures) as $key) {
-			$partStructure =& $partStructures[$key];
+			$partStructure =$partStructures[$key];
 			$m .= $this->_addComponentForPartStructure($step, $record, $partStructure);
 			$m .= "<br/>";
 		}
@@ -91,17 +91,17 @@ class DataManagerPrimativesModule
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function createWizardSteps ( & $record, & $wizard ) {
+	function createWizardSteps ( $record, $wizard ) {
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
 		
-		$recordStructure =& $record->getRecordStructure();
-		$recordStructureId =& $recordStructure->getId();
+		$recordStructure =$record->getRecordStructure();
+		$recordStructureId =$recordStructure->getId();
 		
 		// Get all the partStrucutres
-		$partStructureIterator =& $recordStructure->getPartStructures();
+		$partStructureIterator =$recordStructure->getPartStructures();
 		$partStructures = array();
 		while($partStructureIterator->hasNext()) {
-			$partStructures[] =& $partStructureIterator->next();
+			$partStructures[] =$partStructureIterator->next();
 		}
 		
 		$this->createWizardStepsForPartStructures($record, $wizard, $partStructures);
@@ -116,42 +116,42 @@ class DataManagerPrimativesModule
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function updateFromWizard ( & $record, & $wizard ) {
-		$recordStructure =& $record->getRecordStructure();
-		$recordStructureId =& $recordStructure->getId();
+	function updateFromWizard ( $record, $wizard ) {
+		$recordStructure =$record->getRecordStructure();
+		$recordStructureId =$recordStructure->getId();
 		
-		$properties =& $wizard->getAllValues();
-		$values =& $properties["record"];
+		$properties =$wizard->getAllValues();
+		$values =$properties["record"];
 		
 		// Delete the old parts
-		$parts =& $record->getParts();
+		$parts =$record->getParts();
 		while ($parts->hasNext()) {
-			$part =& $parts->next();
-			$partId =& $part->getId();
+			$part =$parts->next();
+			$partId =$part->getId();
 			$record->deletePart($partId);
 		}
-		$parts =& $record->getParts();
+		$parts =$record->getParts();
 		if ($parts->hasNext()) print "have a part!!!"; // debug
 		
 		// Go through each of the partStructures and save any values as parts.
 		$partStructures = $recordStructure->getPartStructures();
 		while ($partStructures->hasNext()) {
-			$partStructure =& $partStructures->next();
-			$partStructureId =& $partStructure->getId();
-			$partStructureType = & $partStructure->getType();
-			$valueObjClass =& $partStructureType->getKeyword();
+			$partStructure =$partStructures->next();
+			$partStructureId =$partStructure->getId();
+			$partStructureType =  $partStructure->getType();
+			$valueObjClass =$partStructureType->getKeyword();
 			$id = str_replace(".","_",$partStructureId->getIdString());
 			
 			if ($partStructure->isRepeatable()) {
 				// Add a part for each property
 				foreach (array_keys($values[$id]) as $valueIndex) {
-					$value =& $values[$id][$valueIndex]["value"];
-					$newPart =& $record->createPart($partStructureId, $value);
+					$value =$values[$id][$valueIndex]["value"];
+					$newPart =$record->createPart($partStructureId, $value);
 				}
 			} else {
 				// Add a part for the property
-				$value =& $values[$id];
-				$newPart =& $record->createPart($partStructureId, $value);
+				$value =$values[$id];
+				$newPart =$record->createPart($partStructureId, $value);
 			}
 		}
 	}
@@ -164,17 +164,17 @@ class DataManagerPrimativesModule
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function generateDisplay ( & $repositoryId, & $assetId, & $record ) {
+	function generateDisplay ( $repositoryId, $assetId, $record ) {
 		ArgumentValidator::validate($repositoryId, new ExtendsValidatorRule("Id"));
 		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
 		
 		// Get all the partstructures
-		$recordStructure =& $record->getRecordStructure();
-		$partStructureIterator =& $recordStructure->getPartStructures();
+		$recordStructure =$record->getRecordStructure();
+		$partStructureIterator =$recordStructure->getPartStructures();
 		$partStructures = array();
 		while($partStructureIterator->hasNext()) {
-			$partStructures[] =& $partStructureIterator->next();
+			$partStructures[] =$partStructureIterator->next();
 		}
 		
 		return $this->generateDisplayForPartStructure($asset, $record, $partStructures);
@@ -189,34 +189,34 @@ class DataManagerPrimativesModule
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function generateDisplayForPartStructures ( &$repositoryId, & $assetId, & $record, & $partStructures ) {
+	function generateDisplayForPartStructures ( $repositoryId, $assetId, $record, $partStructures ) {
 		ArgumentValidator::validate($repositoryId, new ExtendsValidatorRule("Id"));
 		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
 		ArgumentValidator::validate($partStructures, new ArrayValidatorRuleWithRule(new ExtendsValidatorRule("PartStructure")));
 
-		$partIterator =& $record->getParts();
+		$partIterator =$record->getParts();
 		$parts = array();
 		while($partIterator->hasNext()) {
-			$part =& $partIterator->next();
-			$partStructure =& $part->getPartStructure();
-			$partStructureId =& $partStructure->getId();
+			$part =$partIterator->next();
+			$partStructure =$part->getPartStructure();
+			$partStructureId =$partStructure->getId();
 			if (!isset($parts[$partStructureId->getIdString()]) || !is_array($parts[$partStructureId->getIdString()]))
 				$parts[$partStructureId->getIdString()] = array();
-			$parts[$partStructureId->getIdString()][] =& $part;
+			$parts[$partStructureId->getIdString()][] =$part;
 		}
 		
 		// print out the parts;
 		ob_start();
 		
 		foreach (array_keys($partStructures) as $key) {
-			$partStructure =& $partStructures[$key];
-			$partStructureId =& $partStructure->getId();
+			$partStructure =$partStructures[$key];
+			$partStructureId =$partStructure->getId();
 			if(isset($parts[$partStructureId->getIdString()])) {	
 				if (is_array($parts[$partStructureId->getIdString()])) {
 					foreach (array_keys($parts[$partStructureId->getIdString()]) as $key) {
-						$part =& $parts[$partStructureId->getIdString()][$key];
-						$value =& $part->getValue();
+						$part =$parts[$partStructureId->getIdString()][$key];
+						$value =$part->getValue();
 					
 						print "\n<strong>".$partStructure->getDisplayName().":</strong> \n";			
 						print $value->asString();
@@ -242,11 +242,11 @@ class DataManagerPrimativesModule
 	 * @access public
 	 * @since 8/30/04
 	 */
-	function _addComponentForPartStructure (& $wizardStep, & $record, & $partStructure) {
+	function _addComponentForPartStructure ($wizardStep, $record, $partStructure) {
 		
-		$partStructureId =& $partStructure->getId();
-		$partStructureType =& $partStructure->getType();
-		$parts =& $record->getPartsByPartStructure($partStructureId);
+		$partStructureId =$partStructure->getId();
+		$partStructureType =$partStructure->getType();
+		$parts =$record->getPartsByPartStructure($partStructureId);
 		
 		// get the display name
 		$name = $partStructure->getDisplayName();
@@ -258,14 +258,14 @@ class DataManagerPrimativesModule
 		$dataType = $partStructureType->getKeyword();
 		
 		// get the correct component for this data type
-		$component =& PrimitiveIOManager::createComponent($dataType);
+		$component = PrimitiveIOManager::createComponent($dataType);
 		if (!$component) return '';
 		
 		$m = '';
 		
 		if ($partStructure->isRepeatable()) {
 			// replace $component with a wrapper.
-			$mult =& new WRepeatableComponentCollection();
+			$mult = new WRepeatableComponentCollection();
 			$mult->setElementLayout("[[value]]");
 			
 			$mult->addComponent("value", $component);
@@ -275,15 +275,15 @@ class DataManagerPrimativesModule
 			$mult->setRemoveLabel(dgettext("polyphony", "Remove ")
 				.$partStructure->getDisplayName());
 			
-			$component =& $mult;
+			$component =$mult;
 			
 			$m = "<table border='0'><tr><td valign='top'><b>$name</b>:</td><td valign='top'>[[$id]]</td></tr></table>";
 			
 			// set our values
 			while($parts->hasNext()) {
-				$part =& $parts->next();
+				$part =$parts->next();
 				$collection = array();
-				$collection['value'] =& $part->getValue();
+				$collection['value'] =$part->getValue();
 				$component->addValueCollection($collection);
 				unset($collection);
 			}
@@ -292,8 +292,8 @@ class DataManagerPrimativesModule
 			
 			// set the default value.
 			if ($parts->hasNext()) {
-				$part =& $parts->next();
-				$value =& $part->getValue();
+				$part =$parts->next();
+				$value =$part->getValue();
 				$component->setValue($value);
 			}
 		}
@@ -309,7 +309,7 @@ class DataManagerPrimativesModule
 			
 			// default Works for most part types
 			default:
-				$property =& $step->createProperty(strval($partStructureId->getIdString()),
+				$property =$step->createProperty(strval($partStructureId->getIdString()),
 									new AlwaysTrueValidatorRule,
 									$partStructure->isMandatory());
 				
@@ -337,11 +337,11 @@ class DataManagerPrimativesModule
 				
 				// If we have parts, load their values as the defaults.
 				while ($parts->hasNext()) {
-					$part =& $parts->next();
-					$currentPartStructure =& $part->getPartStructure();
+					$part =$parts->next();
+					$currentPartStructure =$part->getPartStructure();
 					
 					if ($partStructureId->isEqual($currentPartStructure->getId())) {
-						$valueObj =& $part->getValue();
+						$valueObj =$part->getValue();
 						$property->setValue($valueObj->asString());
 						if ($partStructure->isRepeatable()) {
 							$step->saveCurrentPropertiesAsNewSet();

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: getWhoCanDo.act.php,v 1.3 2006/12/04 21:55:33 adamfranco Exp $
+ * @version $Id: getWhoCanDo.act.php,v 1.4 2007/09/04 20:28:11 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__).'/AuthZXmlAction.class.php');
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__).'/AuthZXmlAction.class.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: getWhoCanDo.act.php,v 1.3 2006/12/04 21:55:33 adamfranco Exp $
+ * @version $Id: getWhoCanDo.act.php,v 1.4 2007/09/04 20:28:11 adamfranco Exp $
  */
 class getWhoCanDoAction
 	extends AuthZXmlAction
@@ -35,9 +35,9 @@ class getWhoCanDoAction
 	 */
 	function isAuthorizedToExecute () {
 		// Check that the user can access this collection
-		$authZ =& Services::getService("AuthZ");
+		$authZ = Services::getService("AuthZ");
 
-		$idManager =& Services::getService("Id");
+		$idManager = Services::getService("Id");
 		if (!$this->getQualifierId())
 			return false;
 		return $authZ->isUserAuthorized(
@@ -54,32 +54,32 @@ class getWhoCanDoAction
 	 */
 	function buildContent () {
 		
-		$authZ =& Services::getService("AuthZ");
-		$agentMan =& Services::getService("Agent");
+		$authZ = Services::getService("AuthZ");
+		$agentMan = Services::getService("Agent");
 		
-		$agentIds =& $authZ->getWhoCanDo($this->getFunctionId(), $this->getQualifierId());
+		$agentIds =$authZ->getWhoCanDo($this->getFunctionId(), $this->getQualifierId());
 		
 		$this->start();
 		while ($agentIds->hasNext()) {
-			$agentId =& $agentIds->next();
+			$agentId =$agentIds->next();
 			
-			if ($agent =& $agentMan->getAgentOrGroup($agentId)) {
+			if ($agent =$agentMan->getAgentOrGroup($agentId)) {
 				print "\n\t<agent id=\"".$agentId->getIdString()."\"";
 				print " displayName=\"".$agent->getDisplayName()."\"";
 				print " agentOrGroup=\"".((method_exists($agent, 'getMembers'))?"group":"agent")."\"";
 				print ">";
 				
 				// Get the AZs for the agent
-				$azs =& $authZ->getAllAZs($agentId, $null = null, $this->getQualifierId(), true);
+				$azs =$authZ->getAllAZs($agentId, $null = null, $this->getQualifierId(), true);
 				while ($azs->hasNext()) {
-					$az =& $azs->next();
+					$az =$azs->next();
 					print "\n\t\t<authorization>";
-					$function =& $az->getFunction();
-					$functionId =& $function->getId();
+					$function =$az->getFunction();
+					$functionId =$function->getId();
 					print "\n\t\t\t<function id=\"".$functionId->getIdString()."\" ";
 					print "referenceName=\"".$function->getReferenceName()."\">";
 					print "\n\t\t\t\t<description>".$function->getDescription()."</description>";
-					$functionType =& $function->getFunctionType();
+					$functionType =$function->getFunctionType();
 					print "\n\t\t\t\t<type>";
 					print "\n\t\t\t\t\t<domain>".$functionType->getDomain()."</domain>";
 					print "\n\t\t\t\t\t<authority>".$functionType->getAuthority()."</authority>";

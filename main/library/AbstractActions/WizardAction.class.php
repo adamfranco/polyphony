@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardAction.class.php,v 1.13 2006/11/30 22:02:38 adamfranco Exp $
+ * @version $Id: WizardAction.class.php,v 1.14 2007/09/04 20:27:57 adamfranco Exp $
  */ 
  
  require_once(dirname(__FILE__)."/Action.class.php");
@@ -33,8 +33,8 @@
  *	 * @since 4/26/05
  *	 *&#109;
  *	function buildContent () {
- *		$centerPane =& $this->getCenterPane();
- *		$assetId =& $this->getAssetId();
+ *		$centerPane =$this->getCenterPane();
+ *		$assetId =$this->getAssetId();
  *		$cacheName = 'edit_asset_wizard_'.$assetId->getIdString();
  *		
  *		$this->runWizard ( $cacheName, $centerPane );
@@ -50,7 +50,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardAction.class.php,v 1.13 2006/11/30 22:02:38 adamfranco Exp $
+ * @version $Id: WizardAction.class.php,v 1.14 2007/09/04 20:27:57 adamfranco Exp $
  */
 class WizardAction 
 	extends Action
@@ -64,7 +64,7 @@ class WizardAction
 	 * @access public
 	 * @since 4/28/05
 	 */
-	function &createWizard () {
+	function createWizard () {
 		throwError(new Error(__CLASS__."::".__FUNCTION__."() must be overridded in child classes."));
 	}
 	
@@ -118,7 +118,7 @@ class WizardAction
 	function closeWizard ( $cacheName ) {
 		$cacheName = $this->cleanCacheName($cacheName);
 		
-		$wizard =& $this->getWizard($cacheName);
+		$wizard =$this->getWizard($cacheName);
 		$wizard = NULL;
 		unset ($_SESSION[$cacheName]);
 		unset ($wizard);
@@ -142,8 +142,8 @@ class WizardAction
 	 *	 * @since 4/26/05
 	 *	 *&#109;
 	 *	function buildContent () {
-	 *		$centerPane =& $this->getCenterPane();
-	 *		$assetId =& $this->getAssetId();
+	 *		$centerPane =$this->getCenterPane();
+	 *		$assetId =$this->getAssetId();
 	 *		$cacheName = 'edit_asset_wizard_'.$assetId->getIdString();
 	 *		
 	 *		$this->runWizard ( $cacheName, $centerPane );
@@ -159,16 +159,16 @@ class WizardAction
 	 * @access public
 	 * @since 4/28/05
 	 */
-	function runWizard ( $cacheName, &$container) {
+	function runWizard ( $cacheName, $container) {
 		$cacheName = $this->cleanCacheName($cacheName);
 		
-		$wizard =& $this->getWizard($cacheName);
-		$harmoni =& Harmoni::instance();
+		$wizard =$this->getWizard($cacheName);
+		$harmoni = Harmoni::instance();
 		// tell the wizard to GO
 		
 		$wizard->go();
 		
-		$listener =& $wizard->getChild("_savecancel_");
+		$listener =$wizard->getChild("_savecancel_");
 		
 		if ($listener->isSaveRequested()) {
 			if ($this->saveWizard($cacheName))
@@ -192,15 +192,15 @@ class WizardAction
 	 * @access public
 	 * @since 4/28/05
 	 */
-	function &getWizard ( $cacheName ) {
+	function getWizard ( $cacheName ) {
 		$cacheName = $this->cleanCacheName($cacheName);
 				
 		// Create the wizard if it doesn't exist.
 		 if (!isset($_SESSION[$cacheName])) {
-		 	$wizard =& $this->createWizard();
+		 	$wizard =$this->createWizard();
 		 	$wizard->addComponent("_savecancel_", new WSaveCancelListener());
 		 	$wizard->setIdString($cacheName);
-		 	$_SESSION[$cacheName] =& $wizard;
+		 	$_SESSION[$cacheName] =$wizard;
 		 }
 		 
 		 return $_SESSION[$cacheName];

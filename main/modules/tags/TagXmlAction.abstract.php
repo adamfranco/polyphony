@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagXmlAction.abstract.php,v 1.2 2006/11/30 22:02:46 adamfranco Exp $
+ * @version $Id: TagXmlAction.abstract.php,v 1.3 2007/09/04 20:28:14 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY_DIR.'/main/library/AbstractActions/XmlAction.class.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR.'/main/library/AbstractActions/XmlAction.class.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagXmlAction.abstract.php,v 1.2 2006/11/30 22:02:46 adamfranco Exp $
+ * @version $Id: TagXmlAction.abstract.php,v 1.3 2007/09/04 20:28:14 adamfranco Exp $
  */
 class TagXmlAction
 	extends XmlAction
@@ -45,10 +45,10 @@ class TagXmlAction
 	 * @access public
 	 * @since 11/10/06
 	 */
-	function writeXmlResponse ( &$tags ) {
+	function writeXmlResponse ( $tags ) {
 		$this->start();
 		while ($tags->hasNext()) {
-			$tag =& $tags->next();
+			$tag =$tags->next();
 			print "\n\t<tag value='".$tag->getValue()."' occurances='".$tag->getOccurances()."'/>";
 		}
 		$this->end();

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextInput.abstract.php,v 1.8 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WTextInput.abstract.php,v 1.9 2007/09/04 20:28:08 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingWizardComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingWizardComponent.abstra
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextInput.abstract.php,v 1.8 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WTextInput.abstract.php,v 1.9 2007/09/04 20:28:08 adamfranco Exp $
  */
 class WTextInput
 	extends ErrorCheckingWizardComponent 
@@ -90,7 +90,7 @@ class WTextInput
 	 * @return boolean
 	 */
 	function validate () {
-		$rule =& $this->getErrorRule();
+		$rule =$this->getErrorRule();
 		if (!$rule) return true;
 		$err = $rule->checkValue($this);
 		if (!$err){

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: agent_search.act.php,v 1.3 2006/08/19 20:37:47 jwlee100 Exp $
+ * @version $Id: agent_search.act.php,v 1.4 2007/09/04 20:28:10 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -25,8 +25,8 @@ class agent_SearchAction
 	 */
 	function isAuthorizedToExecute () {
 		// Check for authorization
- 		$authZManager =& Services::getService("AuthZ");
- 		$idManager =& Services::getService("IdManager");
+ 		$authZManager = Services::getService("AuthZ");
+ 		$idManager = Services::getService("IdManager");
  		if ($authZManager->isUserAuthorized(
  					$idManager->getId("edu.middlebury.authorization.view"),
  					$idManager->getId("edu.middlebury.coursemanagement")))
@@ -59,18 +59,18 @@ class agent_SearchAction
 	function buildContent () {
 	$defaultTextDomain = textdomain("polyphony");
 		
-		$actionRows =& $this->getActionRows();
-		$pageRows =& new Container(new YLayout(), OTHER, 1);
-		$harmoni =& Harmoni::instance();
+		$actionRows =$this->getActionRows();
+		$pageRows = new Container(new YLayout(), OTHER, 1);
+		$harmoni = Harmoni::instance();
 		
 		$harmoni->request->startNamespace("polyphony-agents");
 
-		$agentManager =& Services::getService("Agent");
+		$agentManager = Services::getService("Agent");
 		$idManager = Services::getService("Id");
-		$cm =& Services::getService("CourseManagement");
+		$cm = Services::getService("CourseManagement");
 		
-		$everyoneId =& $idManager->getId("edu.middlebury.agents.everyone");
-		$usersId =& $idManager->getId("edu.middlebury.agents.users");
+		$everyoneId =$idManager->getId("edu.middlebury.agents.everyone");
+		$usersId =$idManager->getId("edu.middlebury.agents.users");
 		
 		
 		
@@ -111,17 +111,17 @@ class agent_SearchAction
 			
 		
 			
-			$searchType =& new HarmoniType("Agent & Group Search", "edu.middlebury.harmoni", "TokenSearch");
-			//$searchType =& new HarmoniType("Agent & Group Search", "edu.middlebury.harmoni", "WildcardSearch");
+			$searchType = new HarmoniType("Agent & Group Search", "edu.middlebury.harmoni", "TokenSearch");
+			//$searchType = new HarmoniType("Agent & Group Search", "edu.middlebury.harmoni", "WildcardSearch");
 			$string=	"*".$search_criteria."*";
-			$agents =& $agentManager->getAgentsBySearch($string, $searchType);
+			$agents =$agentManager->getAgentsBySearch($string, $searchType);
 			print "search: " . $search_criteria;
 			
 
 		
 			while ($agents->hasNext()) {
-				$agent =& $agents->next();
-				$id =& $agent->getId();
+				$agent =$agents->next();
+				$id =$agent->getId();
 
 				
 			

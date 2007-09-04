@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WVerifiedChangeInput.class.php,v 1.9 2006/06/05 20:25:36 adamfranco Exp $
+ * @version $Id: WVerifiedChangeInput.class.php,v 1.10 2007/09/04 20:28:09 adamfranco Exp $
  */ 
 
 /**
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WVerifiedChangeInput.class.php,v 1.9 2006/06/05 20:25:36 adamfranco Exp $
+ * @version $Id: WVerifiedChangeInput.class.php,v 1.10 2007/09/04 20:28:09 adamfranco Exp $
  */
 
 class WVerifiedChangeInput 
@@ -44,8 +44,8 @@ class WVerifiedChangeInput
 	 * @access public
 	 * @since 10/20/05
 	 */
-	function &withInputComponent ( &$input ) {
-		$obj =& new WVerifiedChangeInput();
+	function withInputComponent ( $input ) {
+		$obj = new WVerifiedChangeInput();
 		$obj->setInput($input);
 		return $obj;
 	}
@@ -62,9 +62,9 @@ class WVerifiedChangeInput
  	 * @access public
  	 * @since 7/11/05
  	 */
- 	function &postCopy () {
- 		$this->_checkbox =& $this->_checkbox->copy();
- 		$this->_input =& $this->_input->copy();
+ 	function postCopy () {
+ 		$this->_checkbox =$this->_checkbox->copy();
+ 		$this->_input =$this->_input->copy();
  		return $this;
  	}
     
@@ -76,7 +76,7 @@ class WVerifiedChangeInput
      * @since 10/20/05
      */
     function WVerifiedChangeInput() {
-    	$this->_checkbox =& new WCheckBox;
+    	$this->_checkbox = new WCheckBox;
     	$this->_checkbox->setParent($this);
     	$this->_label = dgettext("polyphony", "Apply to All");
     	$this->setChecked(true);
@@ -90,13 +90,13 @@ class WVerifiedChangeInput
      * @access public
      * @since 10/20/05
      */
-    function &setInputComponent ( &$input ) {
+    function setInputComponent ( $input ) {
     	ArgumentValidator::validate($input,
     		ExtendsValidatorRule::getRule("WizardComponent"));
 		ArgumentValidator::validate($input, 
 			HasMethodsValidatorRule::getRule("addOnChange"));
 		
-		$this->_input =& $input;
+		$this->_input =$input;
 		$this->_input->setParent($this);
 		
 		return $this->_input;

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_Authoritative.class.php,v 1.3 2006/11/30 22:02:39 adamfranco Exp $
+ * @version $Id: PrimitiveIO_Authoritative.class.php,v 1.4 2007/09/04 20:27:58 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_Authoritative.class.php,v 1.3 2006/11/30 22:02:39 adamfranco Exp $
+ * @version $Id: PrimitiveIO_Authoritative.class.php,v 1.4 2007/09/04 20:27:58 adamfranco Exp $
  */
 class PrimitiveIO_Authoritative 
 	extends WSelectList
@@ -46,7 +46,7 @@ class PrimitiveIO_Authoritative
 	 *
 	 * @return void
 	 **/
-	function setValueFromSObject(&$value)
+	function setValueFromSObject($value)
 	{
 		$this->setValue($value);
 	}
@@ -75,7 +75,7 @@ class PrimitiveIO_Authoritative
 	 * @access public
 	 * @since 5/1/06
 	 */
-	function addOptionFromSObject ( &$valueObject ) {
+	function addOptionFromSObject ( $valueObject ) {
 		ArgumentValidator::validate($valueObject, ExtendsValidatorRule::getRule('SObject'));
 		$this->addOption($valueObject->asString(), $valueObject->asString());
 	}

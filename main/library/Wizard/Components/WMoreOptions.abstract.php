@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WMoreOptions.abstract.php,v 1.2 2006/08/19 21:08:40 sporktim Exp $
+ * @version $Id: WMoreOptions.abstract.php,v 1.3 2007/09/04 20:28:07 adamfranco Exp $
  */
 
 require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstract.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstrac
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WMoreOptions.abstract.php,v 1.2 2006/08/19 21:08:40 sporktim Exp $
+ * @version $Id: WMoreOptions.abstract.php,v 1.3 2007/09/04 20:28:07 adamfranco Exp $
  * @author Gabe Schine
  */
 class WMoreOptions extends WizardComponentWithChildren {
@@ -53,7 +53,7 @@ class WMoreOptions extends WizardComponentWithChildren {
 			$this->_usingAdvanced = false;
 		}
 					
-		$children =& $this->getChildren();
+		$children =$this->getChildren();
 		$ok = true;
 		foreach (array_keys($children) as $key) {			
 			if (!$children[$key]->update($fieldName."_".$key)) {
@@ -72,7 +72,7 @@ class WMoreOptions extends WizardComponentWithChildren {
 	 */
 	function getAllValues () {
 		$array = array();
-		$children =& $this->getChildren();
+		$children =$this->getChildren();
 		foreach(array_keys($children) as $key) {
 			$array[$key] = $children[$key]->getAllValues();
 		}

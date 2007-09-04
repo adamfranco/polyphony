@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.10 2006/11/30 22:02:40 adamfranco Exp $
+ * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.11 2007/09/04 20:28:04 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -18,7 +18,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.10 2006/11/30 22:02:40 adamfranco Exp $
+ * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.11 2007/09/04 20:28:04 adamfranco Exp $
  */
 
 class EmbeddedArrayResultPrinter 
@@ -50,22 +50,22 @@ class EmbeddedArrayResultPrinter
 	 * @access public
 	 * @date 8/5/04
 	 */
-	function EmbeddedArrayResultPrinter (& $array, $numColumns, 
+	function EmbeddedArrayResultPrinter ($array, $numColumns, 
 									$numResultsPerPage, $callbackFunction) {
 		ArgumentValidator::validate($array, ArrayValidatorRule::getRule());
 		ArgumentValidator::validate($numColumns, IntegerValidatorRule::getRule());
 		ArgumentValidator::validate($numResultsPerPage, IntegerValidatorRule::getRule());
 //		ArgumentValidator::validate($callbackFunction, StringValidatorRule::getRule());
 
-		$this->_array =& $array;
-		$this->_numColumns =& $numColumns;
-		$this->_pageSize =& $numResultsPerPage;
-		$this->_callbackFunction =& $callbackFunction;
+		$this->_array =$array;
+		$this->_numColumns =$numColumns;
+		$this->_pageSize =$numResultsPerPage;
+		$this->_callbackFunction =$callbackFunction;
 
 		$this->_callbackParams = array();
 		$args = func_get_args();
 		for ($i=4; $i<count($args); $i++) {
-			$this->_callbackParams[] =& $args[$i];
+			$this->_callbackParams[] =$args[$i];
 		}
 	}
 
@@ -181,7 +181,7 @@ class EmbeddedArrayResultPrinter
 	 */
 	function getMarkup ($shouldPrintFunction = NULL) {
 		$defaultTextDomain = textdomain("polyphony");
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 
 		$startingNumber = $this->getStartingNumber();
 			
@@ -205,7 +205,7 @@ class EmbeddedArrayResultPrinter
 
 			// trash the items before our starting number
 			while ($numItems+1 < $startingNumber && $numItems < count($this->_array)) {
-				$item =& $this->_array[key($this->_array)];
+				$item =$this->_array[key($this->_array)];
 				next($this->_array);
 
 				// Ignore this if it should be filtered.
@@ -217,18 +217,18 @@ class EmbeddedArrayResultPrinter
 			// print up to $this->_pageSize items
 			$pageItems = 0;
 			while ($numItems < $endingNumber && $numItems < count($this->_array)) {
-				$item =& $this->_array[key($this->_array)];
+				$item =$this->_array[key($this->_array)];
 				next($this->_array);
 
 				// Only Act if this item isn't to be filtered.
 
 				eval($shouldPrintEval);
 				if ($shouldPrint) {
-					$this->_currentItem =& $item;
+					$this->_currentItem =$item;
 					$numItems++;
 					$pageItems++;
 
-					$itemArray = array (& $item);
+					$itemArray = array ($item);
 					$params = array_merge($itemArray, $this->_callbackParams);
 					
 					// Add in our starting number to the end so that that it is accessible.
@@ -257,7 +257,7 @@ class EmbeddedArrayResultPrinter
 			
 			// find the count of items 
 			while (true) {
-				$item =& $this->_array[key($this->_array)];
+				$item =$this->_array[key($this->_array)];
 				if (!$item) break;
 				next($this->_array);
 				// Ignore this if it should be filtered.

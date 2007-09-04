@@ -10,15 +10,15 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: process_authorizations.act.php,v 1.13 2007/04/12 15:37:35 adamfranco Exp $
+ * @version $Id: process_authorizations.act.php,v 1.14 2007/09/04 20:28:11 adamfranco Exp $
  */
 
 class process_authorizationsAction {
 	function execute() {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		// Get services
-		$idManager =& Services::getService("Id");
-		$authZ =& Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
 
 		$harmoni->request->startNamespace("polyphony-authorizations");
 
@@ -37,25 +37,25 @@ class process_authorizationsAction {
 		// Process authorizations
 		if ($operation == 'create') {
 			// Get Ids from these strings
-			$functionId =& $idManager->getId($functionIdString);
-			$qualifierId =& $idManager->getId($qualifierIdString);
+			$functionId =$idManager->getId($functionIdString);
+			$qualifierId =$idManager->getId($qualifierIdString);
 						
 			foreach ($agentList as $agentIdString) {
 				$authZ->createAuthorization($idManager->getId($agentIdString), $functionId, $qualifierId);		
 			}
 		} else if ($operation == 'delete')  {
 			// Get Ids from these strings
-			$functionId =& $idManager->getId($functionIdString);
-			$qualifierId =& $idManager->getId($qualifierIdString);
+			$functionId =$idManager->getId($functionIdString);
+			$qualifierId =$idManager->getId($qualifierIdString);
 			
 			foreach ($agentList as $agentIdString) {
-				$authorizations =& $authZ->getExplicitAZs($idManager->getId($agentIdString), $functionId, $qualifierId, false);
+				$authorizations =$authZ->getExplicitAZs($idManager->getId($agentIdString), $functionId, $qualifierId, false);
 				while ($authorizations->hasNext()) {
-					$authorization =& $authorizations->next();
-/*					$qualifier =& $authorization->getQualifier();
-					$function =& $authorization->getFunction();
-					$qualifierId =& $qualifier->getId();
-					$functionId =& $function->getId();
+					$authorization =$authorizations->next();
+/*					$qualifier =$authorization->getQualifier();
+					$function =$authorization->getFunction();
+					$qualifierId =$qualifier->getId();
+					$functionId =$function->getId();
 					print "auth -> function: ".$functionId->getIdString().", qualifier: ".$qualifierId->getIdString()."<br/>";
 */					$authZ->deleteAuthorization($authorization);
 				}
@@ -63,10 +63,10 @@ class process_authorizationsAction {
 		} else if ($operation == 'delete_all') {
 			// clear all authorizations for the users selected
 			foreach ($agentsList as $agentIdString) {
-				$authorizations =& $authZ->getAllExplicitAZsForAgent($idManager->getId($agentIdString), false);
+				$authorizations =$authZ->getAllExplicitAZsForAgent($idManager->getId($agentIdString), false);
 				
 				while($authorizations->hasNext()) {
-					$authorization =& $authorizations->next();
+					$authorization =$authorizations->next();
 					$authZ->deleteAuthorization($authorization);
 				}
 			}

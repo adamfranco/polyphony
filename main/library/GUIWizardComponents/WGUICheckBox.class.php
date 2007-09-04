@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WGUICheckBox.class.php,v 1.1 2006/08/15 21:12:35 sporktim Exp $
+ * @version $Id: WGUICheckBox.class.php,v 1.2 2007/09/04 20:27:59 adamfranco Exp $
  */ 
 
 
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WGUICheckBox.class.php,v 1.1 2006/08/15 21:12:35 sporktim Exp $
+ * @version $Id: WGUICheckBox.class.php,v 1.2 2007/09/04 20:27:59 adamfranco Exp $
  */
  
 class WGUICheckbox
@@ -33,7 +33,7 @@ class WGUICheckbox
 	function WGUICheckbox($callBack, $collectionSelector, $styleProperty, $componentClass, $checked, $unchecked){
 		
 		
-		$this->_wizardComponent =& new WCheckBox();
+		$this->_wizardComponent = new WCheckBox();
 		
 		$this->_checkedVal = $checked;
 		$this->_unCheckedVal = $unchecked;
@@ -45,7 +45,7 @@ class WGUICheckbox
 	 * copy the value of the Wizard component to the StyleComponent
 	 */
 	function exportValue(){
-		$styleComponent =& $this->getStyleComponent();
+		$styleComponent =$this->getStyleComponent();
 		if($this->_wizardComponent->getAllValues()){
 			$styleComponent->setValue($this->_checkedVal);
 		}else{
@@ -61,7 +61,7 @@ class WGUICheckbox
 	 * Default is unchecked
 	 */
 	function importValue(){
-		$styleComponent =& $this->getStyleComponent();		
+		$styleComponent =$this->getStyleComponent();		
 		if($styleComponent->getValue()==$this->_checkedVal){
 			$this->_wizardComponent->setValue(1);
 		}elseif($styleComponent->getValue()==$this->_unCheckedVal){

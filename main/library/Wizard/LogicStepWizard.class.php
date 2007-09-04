@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: LogicStepWizard.class.php,v 1.6 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: LogicStepWizard.class.php,v 1.7 2007/09/04 20:28:05 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: LogicStepWizard.class.php,v 1.6 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: LogicStepWizard.class.php,v 1.7 2007/09/04 20:28:05 adamfranco Exp $
  */
  
  require_once(POLYPHONY."/main/library/Wizard/StepWizard.abstract.php");
@@ -51,16 +51,16 @@ class LogicStepWizard extends StepWizard {
 	 * @since 5/31/06
 	 */
 	function LogicStepWizard () {
-		$this->_stepContainer =& new WLogicStepContainer();
+		$this->_stepContainer = new WLogicStepContainer();
 		$this->addComponent('_steps', $this->_stepContainer);
 		
 		
-		//$this->_saveContinueButton =& new WSaveContinueButton($this->_stepContainer);
-		//$this->_nextButton =& new WNextStepButton($this->_stepContainer);
-		$this->_backButton =& new WBackButton($this->_stepContainer);
-		$this->_forwardButton =& new WForwardButton($this->_stepContainer);
-		$this->_cancelButton =& new WCancelButton();
-		$this->_saveButton =& new WSaveButton();
+		//$this->_saveContinueButton = new WSaveContinueButton($this->_stepContainer);
+		//$this->_nextButton = new WNextStepButton($this->_stepContainer);
+		$this->_backButton = new WBackButton($this->_stepContainer);
+		$this->_forwardButton = new WForwardButton($this->_stepContainer);
+		$this->_cancelButton = new WCancelButton();
+		$this->_saveButton = new WSaveButton();
 
 
 		//$this->addComponent('_saveContinue', $this->_saveContinueButton);
@@ -90,7 +90,7 @@ class LogicStepWizard extends StepWizard {
 	 * @return ref object
 	 * @static
 	 */
-	function &withText ($text) {
+	function withText ($text) {
 		return parent::withText($text, 'LogicStepWizard');
 	}
 	
@@ -111,13 +111,13 @@ class LogicStepWizard extends StepWizard {
 	 * @access public
 	 * $return object WLogicStepContainer
 	 */
-	function &getStepContainer(){
+	function getStepContainer(){
 		return $this->_stepContainer;
 	}
 
 	
 	
-	function &withDefaultLayout ($pre = '') {
+	function withDefaultLayout ($pre = '') {
 		return parent::withText($pre . 
 				"<div>\n" .
 				"<table width='100%' border='0' cellpadding='0' cellspacing='2'>\n" .

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetIterator.class.php,v 1.6 2006/06/26 12:51:45 adamfranco Exp $
+ * @version $Id: XMLAssetIterator.class.php,v 1.7 2007/09/04 20:28:02 adamfranco Exp $
  */ 
 
 require_once(DOMIT);
@@ -20,7 +20,7 @@ require_once(DOMIT);
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetIterator.class.php,v 1.6 2006/06/26 12:51:45 adamfranco Exp $
+ * @version $Id: XMLAssetIterator.class.php,v 1.7 2007/09/04 20:28:02 adamfranco Exp $
  */
 class XMLAssetIterator 
 extends HarmoniIterator 
@@ -34,14 +34,14 @@ extends HarmoniIterator
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function XMLAssetIterator ($srcDir, &$parentRepositoryImporter) {		
-		$import =& new DOMIT_Document();
+	function XMLAssetIterator ($srcDir, $parentRepositoryImporter) {		
+		$import = new DOMIT_Document();
 		
 		if ($import->loadXML($srcDir."metadata.xml")) {
 			if (!($import->documentElement->hasChildNodes()))
 				$parentRepositoryImporter->addError("There are no assets to import in: ".$srcDir."metadata.xml.");
 
-			$this->_assetList =& $import->documentElement->childNodes;
+			$this->_assetList =$import->documentElement->childNodes;
 			$this->_current = 0;
 		}
 		else
@@ -69,8 +69,8 @@ extends HarmoniIterator
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function &next() {
-		$temp =& $this->_assetList[$this->_current];
+	function next() {
+		$temp =$this->_assetList[$this->_current];
 		$this->_current++;
 		return $temp;
 	}

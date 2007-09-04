@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: deleteUser.act.php,v 1.3 2006/12/04 19:54:08 adamfranco Exp $
+ * @version $Id: deleteUser.act.php,v 1.4 2007/09/04 20:28:14 adamfranco Exp $
  */ 
  
 require_once(dirname(__FILE__)."/TagXmlAction.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/TagXmlAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: deleteUser.act.php,v 1.3 2006/12/04 19:54:08 adamfranco Exp $
+ * @version $Id: deleteUser.act.php,v 1.4 2007/09/04 20:28:14 adamfranco Exp $
  */
 class deleteUserAction
 	extends TagXmlAction
@@ -34,8 +34,8 @@ class deleteUserAction
 	 * @access public
 	 * @since 11/10/06
 	 */
-	function &execute () {
-		$harmoni =& Harmoni::instance();
+	function execute () {
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-tags");
 		$tagValue = RequestContext::value('tag');
 		

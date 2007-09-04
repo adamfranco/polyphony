@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.41 2006/12/07 17:25:44 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.42 2007/09/04 20:28:11 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.41 2006/12/07 17:25:44 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.42 2007/09/04 20:28:11 adamfranco Exp $
  */
 class choose_agentAction 
 	extends MainWindowAction
@@ -37,12 +37,12 @@ class choose_agentAction
 	 * @since 4/26/05
 	 */
 	function isAuthorizedToExecute () {
-		$authN =& Services::getService("AuthN");
-		$idM =& Services::getService("Id");
-		$authTypes =& $authN->getAuthenticationTypes();
+		$authN = Services::getService("AuthN");
+		$idM = Services::getService("Id");
+		$authTypes =$authN->getAuthenticationTypes();
 		while ($authTypes->hasNext()) {
-			$authType =& $authTypes->next();
-			$id =& $authN->getUserId($authType);
+			$authType =$authTypes->next();
+			$id =$authN->getUserId($authType);
 			if (!$id->isEqual($idM->getId('edu.middlebury.agents.anonymous'))) {
 				return true;
 			}
@@ -71,19 +71,19 @@ class choose_agentAction
 	function buildContent () {
 		$defaultTextDomain = textdomain("polyphony");
 		
-		$actionRows =& $this->getActionRows();
-		$pageRows =& new Container(new YLayout(), OTHER, 1);
-		$harmoni =& Harmoni::instance();
+		$actionRows =$this->getActionRows();
+		$pageRows = new Container(new YLayout(), OTHER, 1);
+		$harmoni = Harmoni::instance();
 		
 		// start our namespace
 		$harmoni->history->markReturnURL("polyphony/authorization/edit_authorizations");
 		$harmoni->request->startNamespace("polyphony-authorizations");
 		$harmoni->request->passthrough();
 		
-		$agentManager =& Services::getService("Agent");
+		$agentManager = Services::getService("Agent");
 		$idManager = Services::getService("Id");
-		$everyoneId =& $idManager->getId("edu.middlebury.agents.everyone");
-		$usersId =& $idManager->getId("edu.middlebury.agents.users");
+		$everyoneId =$idManager->getId("edu.middlebury.agents.everyone");
+		$usersId =$idManager->getId("edu.middlebury.agents.users");
 		
 		/*********************************************************
 		 * Buttons
@@ -98,7 +98,7 @@ class choose_agentAction
 		print " value='"._("Edit Authorizations for the selected User/Group")." --&gt;' />";
 		print "</td></tr></table>";
 		
-		$submit =& new Block(ob_get_contents(), STANDARD_BLOCK);
+		$submit = new Block(ob_get_contents(), STANDARD_BLOCK);
 		$actionRows->add($submit, "100%", null, LEFT, CENTER);
 		ob_end_clean();	
 		
@@ -123,9 +123,9 @@ class choose_agentAction
 			<br /><select name='$search_type_name'>
 END;
 		
-		$searchTypes =& $agentManager->getAgentSearchTypes();
+		$searchTypes =$agentManager->getAgentSearchTypes();
 		while ($searchTypes->hasNext()) {
-			$type =& $searchTypes->next();
+			$type =$searchTypes->next();
 			$typeString = $type->getDomain()
 								."::".$type->getAuthority()
 								."::".$type->getKeyword();
@@ -203,8 +203,8 @@ END;
 		$search_type = $harmoni->request->get("search_type");
 		if ($search_criteria && $search_type) {
 			$typeParts = explode("::", $search_type);
-			$searchType =& new HarmoniType($typeParts[0], $typeParts[1], $typeParts[2]);
-			$agents =& new MultiIteratorIterator;
+			$searchType = new HarmoniType($typeParts[0], $typeParts[1], $typeParts[2]);
+			$agents = new MultiIteratorIterator;
 			$agents->addIterator(
 				$agentManager->getGroupsBySearch($search_criteria, $searchType));
 			$agents->addIterator(
@@ -242,7 +242,7 @@ END;
 		'>
 END;
 			while ($agents->hasNext()) {
-				$agent =& $agents->next();
+				$agent =$agents->next();
 				if ($agent->isGroup())
 					$this->printGroup($agent);
 				else
@@ -265,11 +265,11 @@ END;
 		
 		// Loop through all of the Groups
 		$childGroupIds = array();
-		$groups =& $agentManager->getGroupsBySearch($null = null, new Type("Agent & Group Search", "edu.middlebury.harmoni", "RootGroups"));
+		$groups =$agentManager->getGroupsBySearch($null = null, new Type("Agent & Group Search", "edu.middlebury.harmoni", "RootGroups"));
 
 		while ($groups->hasNext()) {
-			$group =& $groups->next();
-			$groupId =& $group->getId();
+			$group =$groups->next();
+			$groupId =$group->getId();
 			
 			
 			// Create a layout for this group using the GroupPrinter
@@ -278,7 +278,7 @@ END;
 											2,
 											"choose_agentAction::printGroup", 
 											"choose_agentAction::printMember");
-			$groupLayout =& new Block(ob_get_contents(), STANDARD_BLOCK);
+			$groupLayout = new Block(ob_get_contents(), STANDARD_BLOCK);
 			ob_end_clean();
 			$pageRows->add($groupLayout, "100%", null, LEFT, CENTER);	
 		
@@ -306,9 +306,9 @@ END;
 	 * @access public
 	 * @ignore
 	 */
-	function printGroup(& $group) {
-		$id =& $group->getId();
-		$groupType =& $group->getType();
+	function printGroup($group) {
+		$id =$group->getId();
+		$groupType =$group->getType();
 		print "<input type='radio' id='agentId' name='".RequestContext::name("agentId")."' value='".$id->getIdString()."' />";
 		print "<a title='".$id->getIdString()."'>";
 		print "<span style='text-decoration: underline; font-weight: bold;'>".$group->getDisplayName()."</span></a>";	
@@ -323,8 +323,8 @@ END;
 	 * @access public
 	 * @ignore
 	 */
-	function printMember(& $member) {
-		$harmoni =& Harmoni::instance();
+	function printMember($member) {
+		$harmoni = Harmoni::instance();
 		$harmoni->request->forget("expandedGroups");
 		$harmoni->request->forget("search_criteria");		
 		$harmoni->request->forget("search_type");
@@ -332,15 +332,15 @@ END;
 		$oldNS = $harmoni->request->endNamespace();
  		$harmoni->request->startNamespace("polyphony-agents");
 		
-		$agentId =& $member->getId();
+		$agentId =$member->getId();
 		$agentIdString= $agentId->getIdString();
 		
 		$harmoni->history->markReturnURL("polyphony/agents/edit_agent_details");
 		$link = $harmoni->request->quickURL("agents","edit_agent_details",array("agentId"=>$agentIdString));
 		$harmoni->request->endNamespace();
 		$harmoni->request->startNamespace($oldNS);
-		$id =& $member->getId();
-		$memberType =& $member->getType();
+		$id =$member->getId();
+		$memberType =$member->getType();
 		print "<input type='radio' id='agentId' name='".RequestContext::name("agentId")."' value='".$id->getIdString()."' />";
 		print "<a title='".$id->getIdString()."' href='$link'>";
 		print "<span style='text-decoration: underline;'>".$member->getDisplayName()."</span></a>";

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.18 2006/06/26 12:51:45 adamfranco Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.19 2007/09/04 20:28:02 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.18 2006/06/26 12:51:45 adamfranco Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.19 2007/09/04 20:28:02 adamfranco Exp $
  */
 class TabRepositoryImporter
 	extends RepositoryImporter
@@ -48,7 +48,7 @@ class TabRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function &getSingleAssetInfo ($input) {
+	function getSingleAssetInfo ($input) {
 		$assetInfo = array();
 		$assetInfo['displayName'] = $input[0];
 		$assetInfo['description'] = $input[1];
@@ -73,13 +73,13 @@ class TabRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function &getSingleAssetRecordList ($input) {
+	function getSingleAssetRecordList ($input) {
 		if (Services::serviceRunning("Logging")) {
-			$loggingManager =& Services::getService("Logging");
-			$log =& $loggingManager->getLogForWriting("Harmoni");
-			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+			$loggingManager = Services::getService("Logging");
+			$log =$loggingManager->getLogForWriting("Harmoni");
+			$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
 							"A format in which the acting Agent[s] and the target nodes affected are specified.");
-			$priorityType =& new Type("logging", "edu.middlebury", "Error",
+			$priorityType = new Type("logging", "edu.middlebury", "Error",
 							"Events involving critical system errors.");
 		}			
 		if (!isset($this->_structureId)) {
@@ -107,7 +107,7 @@ class TabRepositoryImporter
 					" does not exist in repository: ".
 					$this->_repositoryId->getIdString());
 				if (isset($log)) {
-					$item =& new AgentNodeEntryItem("TabImporter Error",
+					$item = new AgentNodeEntryItem("TabImporter Error",
 						"The schema: $schema does not exist in repository: $this->_repositoryId->getIdString().");
 					$log->appendLogWithTypes($item, $formatType, $priorityType);
 				}
@@ -124,7 +124,7 @@ class TabRepositoryImporter
 				$this->addError("One or more of the Parts in the Tab-Delimited file for Schema: ".
 					$schema." are not valid.");
 				if (isset($log)) {
-					$item =& new AgentNodeEntryItem("TabImporter Error",
+					$item = new AgentNodeEntryItem("TabImporter Error",
 						"One or more of the parts in the Tab-Delimited file for Schema: $schema are not valid.");
 					$log->appendLogWithTypes($item, $formatType, $priorityType);
 				}
@@ -139,8 +139,8 @@ class TabRepositoryImporter
 					fclose($fileHandle);
 					$fileElement = array();
 					
-					$fileElement['structureId'] =& $this->_fileStructureId;
-					$fileElement['partStructureIds'] =& $this->_filePartIds;
+					$fileElement['structureId'] =$this->_fileStructureId;
+					$fileElement['partStructureIds'] =$this->_filePartIds;
 					$fileElementParts[] = $input[3];
 								
 					if ($input[4] != "") {
@@ -153,7 +153,7 @@ class TabRepositoryImporter
 					$this->addError("File: ".$this->_srcDir.$input[3].
 						" does not exist for import.");
 					if (isset($log)) {
-						$item =& new AgentNodeEntryItem("TabImporter Error",
+						$item = new AgentNodeEntryItem("TabImporter Error",
 							"File: $this->_srcDir/$input[3] does not exist for import.");
 						$log->appendLogWithTypes($item, $formatType, $priorityType);
 					}
@@ -172,10 +172,10 @@ class TabRepositoryImporter
 			}
 			
 			$recordListElement = array();
-			$recordListElement['structureId'] =& $this->_structureId;
-			$recordListElement['partStructureIds'] =& $this->_partStructureIds;
+			$recordListElement['structureId'] =$this->_structureId;
+			$recordListElement['partStructureIds'] =$this->_partStructureIds;
 			$recordListElement['parts'] = $partObjects;
-			$recordList[] =& $recordListElement;
+			$recordList[] =$recordListElement;
 			return $recordList;
 		}
 	}
@@ -188,7 +188,7 @@ class TabRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function &getChildAssetList ($input) {
+	function getChildAssetList ($input) {
 		return null;
 	}
 }

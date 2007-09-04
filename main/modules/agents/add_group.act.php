@@ -4,7 +4,7 @@
  * @package polyphony.modules.agents
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- * @version $Id: add_group.act.php,v 1.7 2006/03/14 22:07:36 cws-midd Exp $
+ * @version $Id: add_group.act.php,v 1.8 2007/09/04 20:28:10 adamfranco Exp $
  **/
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -16,7 +16,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @author Gabriel Schine
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- * @version $Id: add_group.act.php,v 1.7 2006/03/14 22:07:36 cws-midd Exp $
+ * @version $Id: add_group.act.php,v 1.8 2007/09/04 20:28:10 adamfranco Exp $
  */
 class add_groupAction extends MainWindowAction
 {
@@ -29,8 +29,8 @@ class add_groupAction extends MainWindowAction
 		 */
 		function isAuthorizedToExecute () {
 			// Check that the user can create an asset here.
-			$authZ =& Services::getService("AuthZ");
-			$idManager =& Services::getService("Id");
+			$authZ = Services::getService("AuthZ");
+			$idManager = Services::getService("Id");
 
 			return $authZ->isUserAuthorized(
 				$idManager->getId("edu.middlebury.authorization.add_children"),
@@ -56,9 +56,9 @@ class add_groupAction extends MainWindowAction
 		 * @since 4/26/05
 		 */
 		function buildContent () {
-			$harmoni =& Harmoni::instance();
+			$harmoni = Harmoni::instance();
 			
-			$centerPane =& $this->getActionRows();
+			$centerPane =$this->getActionRows();
 			$cacheName = 'create_group_wizard';
 			
 //			$this->cancelWizard($cacheName);
@@ -73,7 +73,7 @@ class add_groupAction extends MainWindowAction
 		 * @access public
 		 * @since 4/28/05
 		 */
-		function &createWizard () {
+		function createWizard () {
 
 			// Instantiate the wizard, then add our steps.
 			ob_start();
@@ -92,15 +92,15 @@ class add_groupAction extends MainWindowAction
 			if (RequestContext::value("agents") && count(($list=unserialize(RequestContext::value("agents")))) > 0 && is_array($list)) {
 				// print out a list of agents
 				print "<div>"._("The group will be created with the following members:")."<ul>\n";
-				$agentManager =& Services::getService("Agent");
-				$idManager =& Services::getService("Id");
+				$agentManager = Services::getService("Agent");
+				$idManager = Services::getService("Id");
 				foreach ($list as $idString) {
-					$id =& $idManager->getId($idString);
+					$id =$idManager->getId($idString);
 					if ($agentManager->isGroup($id)) {
-						$agent =& $agentManager->getGroup($id);
+						$agent =$agentManager->getGroup($id);
 						$name = _("Group").": ".$agent->getDisplayName();
 					} else if ($agentManager->isAgent($id)) {
-						$agent =& $agentManager->getAgent($id);
+						$agent =$agentManager->getAgent($id);
 						$name = _("Agent").": ".$agent->getDisplayName();
 					}
 					
@@ -108,42 +108,42 @@ class add_groupAction extends MainWindowAction
 				}
 				print "</ul></div>";
 			}
-			$wizard =& SimpleWizard::withText(ob_get_contents());
+			$wizard = SimpleWizard::withText(ob_get_contents());
 			ob_end_clean();
 
 			// Create the properties.
-			$displayNameProp =& $wizard->addComponent("display_name", new WTextField());
+			$displayNameProp =$wizard->addComponent("display_name", new WTextField());
 			$displayNameProp->setErrorText(_("A value for this field is required."));
 			$displayNameProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
 
-			$descriptionProp =& $wizard->addComponent("description", WTextArea::withRowsAndColumns(3,50));
+			$descriptionProp =$wizard->addComponent("description", WTextArea::withRowsAndColumns(3,50));
 
-			$property =& $wizard->addComponent("type", new WSelectList());
+			$property =$wizard->addComponent("type", new WSelectList());
 			$property->addOption("NONE", _("Use Fields Below..."));
-			$agentMgr =& Services::getService("Agent");
-			$types =& $agentMgr->getGroupTypes();
+			$agentMgr = Services::getService("Agent");
+			$types =$agentMgr->getGroupTypes();
 			while ($types->hasNext()) {
-				$type =& $types->next();
+				$type =$types->next();
 				$typeKey = urlencode(HarmoniType::typeToString($type));
 				$property->addOption($typeKey, HarmoniType::typeToString($type));
 			}
 			$property->setValue("NONE");
 
-			$property =& $wizard->addComponent("type_domain", new WTextField());
+			$property =$wizard->addComponent("type_domain", new WTextField());
 			$property->setStartingDisplayText(_("Domain, i.e. 'groups'"));
 
-			$property =& $wizard->addComponent("type_authority", new WTextField());
+			$property =$wizard->addComponent("type_authority", new WTextField());
 			$property->setStartingDisplayText(_("Authority, i.e. 'edu.middlebury'"));
 
-			$property =& $wizard->addComponent("type_keyword", new WTextField());
+			$property =$wizard->addComponent("type_keyword", new WTextField());
 			$property->setStartingDisplayText(_("Keyword, i.e 'classes"));
 			
-			$property =& $wizard->addComponent("type_description", WTextArea::withRowsAndColumns(3, 50));
+			$property =$wizard->addComponent("type_description", WTextArea::withRowsAndColumns(3, 50));
 			
 			$wizard->addComponent("_save", WSaveButton::withLabel(_("Create Group")));
 			$wizard->addComponent("_cancel", new WCancelButton());
 			
-			$members =& $wizard->addComponent("members", new WHiddenField());
+			$members =$wizard->addComponent("members", new WHiddenField());
 			if (RequestContext::value("agents")) {
 				// the members of the group to be created. an array of agent ids
 				$members->setValue(RequestContext::value("agents"));
@@ -163,15 +163,15 @@ class add_groupAction extends MainWindowAction
 		 * @since 4/28/05
 		 */
 		function saveWizard ( $cacheName ) {
-			$wizard =& $this->getWizard($cacheName);
+			$wizard =$this->getWizard($cacheName);
 
 			if (!$wizard->validate()) return false;
 
 			// Make sure we have a valid Repository
-			$idManager =& Services::getService("Id");
-			$authZ =& Services::getService("AuthZ");
+			$idManager = Services::getService("Id");
+			$authZ = Services::getService("AuthZ");
 
-			$properties =& $wizard->getAllValues();
+			$properties =$wizard->getAllValues();
 
 			// check if they entered a valid type.
 			if ($properties["type"] == "NONE") {
@@ -181,26 +181,26 @@ class add_groupAction extends MainWindowAction
 				if (!($domain && $authority && $keyword)) return false;
 				
 				$desc = $properties["type_description"];
-				$theType =& new Type($domain, $authority, $keyword, $desc);
+				$theType = new Type($domain, $authority, $keyword, $desc);
 			} else {
-				$theType =& Type::fromString(urldecode($properties["type"]));
+				$theType = Type::fromString(urldecode($properties["type"]));
 			}
 			
 			// empty properties set
-			$propObj =& new HarmoniProperties(new Type("Properties", "edu.middlebury.polyphony", "Generic"));
+			$propObj = new HarmoniProperties(new Type("Properties", "edu.middlebury.polyphony", "Generic"));
 			
-			$agents =& Services::getService("Agent");
-			$group =& $agents->createGroup($properties["display_name"], $theType, $properties["description"], $propObj);
+			$agents = Services::getService("Agent");
+			$group =$agents->createGroup($properties["display_name"], $theType, $properties["description"], $propObj);
 			
 			if ($properties["members"] && count(($list=unserialize($properties["members"]))) > 0) {
-				$ids =& Services::getService("Id");
-				$agents =& Services::getService("Agent");
+				$ids = Services::getService("Id");
+				$agents = Services::getService("Agent");
 				foreach ($list as $agentId) {
-					$id =& $ids->getId($agentId);
+					$id =$ids->getId($agentId);
 					if ($agents->isGroup($id)) {
-						$agent =& $agents->getGroup($id);
+						$agent =$agents->getGroup($id);
 					} else if ($agents->isAgent($id)) {
-						$agent =& $agents->getAgent($id);
+						$agent =$agents->getAgent($id);
 					}
 					
 					$group->add($agent);
@@ -218,7 +218,7 @@ class add_groupAction extends MainWindowAction
 		 * @since 4/28/05
 		 */
 		function getReturnUrl () {
-			$harmoni =& Harmoni::instance();
+			$harmoni = Harmoni::instance();
 			$url = $harmoni->history->getReturnURL("polyphony/agents/add_group");
 			if (!$url) $url = $harmoni->request->quickURL("agents","add_delete_group");
 			return $url;

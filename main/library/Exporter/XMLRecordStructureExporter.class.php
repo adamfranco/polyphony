@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureExporter.class.php,v 1.6 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: XMLRecordStructureExporter.class.php,v 1.7 2007/09/04 20:27:59 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Exporter/XMLPartStructureExporter.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLPartStructureExporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureExporter.class.php,v 1.6 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: XMLRecordStructureExporter.class.php,v 1.7 2007/09/04 20:27:59 adamfranco Exp $
  */
 class XMLRecordStructureExporter {
 		
@@ -33,8 +33,8 @@ class XMLRecordStructureExporter {
 	 * @access public
 	 * @since 10/17/05
 	 */
-	function XMLRecordStructureExporter (&$xmlFile) {
-		$this->_xml =& $xmlFile;
+	function XMLRecordStructureExporter ($xmlFile) {
+		$this->_xml =$xmlFile;
 		
 		$this->_childExporterList = array("XMLPartStructureExporter");
 		$this->_childElementList = array("partstructures");
@@ -47,9 +47,9 @@ class XMLRecordStructureExporter {
 	 * @access public
 	 * @since 9/26/05
 	 */
-	function export (&$rS) {
-		$this->_object =& $rS;
-		$this->_myId =& $this->_object->getId();
+	function export ($rS) {
+		$this->_object =$rS;
+		$this->_myId =$this->_object->getId();
 		$idString = $this->_myId->getIdString();
 		
 
@@ -86,12 +86,12 @@ class XMLRecordStructureExporter {
 	 * @since 9/26/05
 	 */
 	function exportPartstructures () {
-		$children =& $this->_object->getPartStructures();
+		$children =$this->_object->getPartStructures();
 		
 		while ($children->hasNext()) {
-			$child =& $children->next();
+			$child =$children->next();
 			
-			$exporter =& new XMLPartStructureExporter($this->_xml);
+			$exporter = new XMLPartStructureExporter($this->_xml);
 			
 			$exporter->export($child); // ????
 			unset($exporter);

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModule.interface.php,v 1.3 2005/04/07 17:07:46 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModule.interface.php,v 1.4 2007/09/04 20:28:02 adamfranco Exp $
  */
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModule.interface.php,v 1.3 2005/04/07 17:07:46 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModule.interface.php,v 1.4 2007/09/04 20:28:02 adamfranco Exp $
  */
 
 class RepositoryInputOutputModuleInterface {
@@ -35,7 +35,7 @@ class RepositoryInputOutputModuleInterface {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function createWizardSteps ( & $record, & $wizard ) {
+	function createWizardSteps ( $record, $wizard ) {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface <b> ".__CLASS__."</b> has not been overloaded in a child class.");
 	}
 	
@@ -50,7 +50,7 @@ class RepositoryInputOutputModuleInterface {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function createWizardStepsForPartStructures ( & $record, & $wizard, & $partStructures ) {
+	function createWizardStepsForPartStructures ( $record, $wizard, $partStructures ) {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface <b> ".__CLASS__."</b> has not been overloaded in a child class.");
 	}
 	
@@ -63,7 +63,7 @@ class RepositoryInputOutputModuleInterface {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function updateFromWizard ( & $record, & $wizard ) {
+	function updateFromWizard ( $record, $wizard ) {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface <b> ".__CLASS__."</b> has not been overloaded in a child class.");
 	}
 	
@@ -75,7 +75,7 @@ class RepositoryInputOutputModuleInterface {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function generateDisplay ( & $asset, & $record ) {
+	function generateDisplay ( $asset, $record ) {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface <b> ".__CLASS__."</b> has not been overloaded in a child class.");
 	}
 	
@@ -88,7 +88,7 @@ class RepositoryInputOutputModuleInterface {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function generateDisplayForPartStructures ( & $asset, & $record, & $partStructures ) {
+	function generateDisplayForPartStructures ( $asset, $record, $partStructures ) {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface <b> ".__CLASS__."</b> has not been overloaded in a child class.");
 	}
 }

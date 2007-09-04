@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleRecordPrinter.class.php,v 1.9 2005/09/06 20:19:59 cws-midd Exp $
+ * @version $Id: SimpleRecordPrinter.class.php,v 1.10 2007/09/04 20:27:58 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleRecordPrinter.class.php,v 1.9 2005/09/06 20:19:59 cws-midd Exp $
+ * @version $Id: SimpleRecordPrinter.class.php,v 1.10 2007/09/04 20:27:58 adamfranco Exp $
  */
 class SimpleRecordPrinter {
 	
@@ -26,7 +26,7 @@ class SimpleRecordPrinter {
 	 * @return string|void
 	 * @static
 	 */
-	function printRecord(&$record, $html=true, $return=false)
+	function printRecord($record, $html=true, $return=false)
 	{
 		if ($record->getFetchMode() == -1) {
 			print "<b>Record not populated...</b><br />";
@@ -38,7 +38,7 @@ class SimpleRecordPrinter {
 			RECORD_CURRENT=>"current_data",
 			RECORD_FULL=>"full_data"
 		);
-		$recordManager =& Services::getService("RecordManager");
+		$recordManager = Services::getService("RecordManager");
 		$v = $record->isVersionControlled();
 		
 		$text = "";
@@ -53,14 +53,14 @@ class SimpleRecordPrinter {
 			$text .= "; ";
 		}
 		$text .= "type: ".$record->getSchemaID();
-		$created =& $record->getCreationDate();
+		$created =$record->getCreationDate();
 		$text .= "; created: " . $created->asString();
 		$text .= "; ".$fetchModeStrings[$record->getFetchMode()];
 //		$text .= print_r($record->getFetchMode(), true);
 		if ($v) $text .= "; vControl";
 		$text .= "\n";
 		
-		$schema =& $record->getSchema();
+		$schema =$record->getSchema();
 		$labels = $schema->getAllLabels();
 		$noValue = array();
 		
@@ -68,17 +68,17 @@ class SimpleRecordPrinter {
 			if ($record->numValues($label, true)) {
 				foreach ($record->getIndices($label, true) as $i) {
 					$fieldID = $schema->getID() . "." . $label;
-					$value =& $record->getRecordFieldValue($fieldID,$i);
+					$value =$record->getRecordFieldValue($fieldID,$i);
 					if ($v) {
 						foreach ($value->getVersionIDs() as $verID) {
-							$version =& $value->getVersion($verID);
+							$version =$value->getVersion($verID);
 							if (!$version->isActive()) continue;
 							$text .= "\t";
 							$text .= SimpleRecordPrinter::_doRecordFieldData($value, $version, $label, $i, true, $verID);
 							$text .= "\n";
 						}
 						foreach ($value->getVersionIDs() as $verID) {
-							$version =& $value->getVersion($verID);
+							$version =$value->getVersion($verID);
 							if ($version->isActive()) continue;
 							$text .= "\t -";
 							$text .= SimpleRecordPrinter::_doRecordFieldData($value, $version, $label, $i, true, $verID);
@@ -86,8 +86,8 @@ class SimpleRecordPrinter {
 						}
 					} else {
 						$text .= "\t";
-						$version =& $value->getActiveVersion();
-						if (!$version) $version =& $value->getNewestVersion();
+						$version =$value->getActiveVersion();
+						if (!$version) $version =$value->getNewestVersion();
 						if (!$version) continue;
 						$text .= SimpleRecordPrinter::_doRecordFieldData($value, $version, $label, $i);
 						$text .= "\n";
@@ -109,10 +109,10 @@ class SimpleRecordPrinter {
 	 * @access public
 	 * @return string
 	 */
-	 function _doRecordFieldData(&$value, &$version, $label, $i, $v = false, $vID = null)
+	 function _doRecordFieldData($value, $version, $label, $i, $v = false, $vID = null)
 	 {
 	 	$text = '';
-	 	$primitive =& $version->getPrimitive();
+	 	$primitive =$version->getPrimitive();
 	 	$flags = array();
 	 	if (!$version->isActive()) $flags[] = "d";
 	 	if ($version->willPrune()) $flags[] = "p";
@@ -125,7 +125,7 @@ class SimpleRecordPrinter {
 	 	$text .= $primitive->asString();
 	 	
 	 	if ($v) {
-	 		$date =& $version->getDate();
+	 		$date =$version->getDate();
 	 		$text .= "\t\t(".$vID." - ".$date->asString().")";
 	 	}
 	 	

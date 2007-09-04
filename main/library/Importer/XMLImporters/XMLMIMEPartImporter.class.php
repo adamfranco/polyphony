@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLMIMEPartImporter.class.php,v 1.12 2006/12/06 22:17:20 adamfranco Exp $
+ * @version $Id: XMLMIMEPartImporter.class.php,v 1.13 2007/09/04 20:28:01 adamfranco Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLFilePartImporter.class.php");
 
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLFilePartImporter.
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLMIMEPartImporter.class.php,v 1.12 2006/12/06 22:17:20 adamfranco Exp $
+ * @version $Id: XMLMIMEPartImporter.class.php,v 1.13 2007/09/04 20:28:01 adamfranco Exp $
  */
 class XMLMIMEPartImporter extends XMLFilePartImporter {
 		
@@ -44,7 +44,7 @@ class XMLMIMEPartImporter extends XMLFilePartImporter {
 	 * @access public
 	 * @since 10/10/05
 	 */
-	function isImportable (&$element) {
+	function isImportable ($element) {
 		if ($element->nodeName == 'mimepart')
 			return true;
 		else

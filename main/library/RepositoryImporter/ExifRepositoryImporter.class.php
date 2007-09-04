@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.22 2007/04/03 17:26:32 adamfranco Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.23 2007/09/04 20:28:01 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -21,7 +21,7 @@ require_once(DOMIT);
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.22 2007/04/03 17:26:32 adamfranco Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.23 2007/09/04 20:28:01 adamfranco Exp $
  */
 class ExifRepositoryImporter
 	extends RepositoryImporter
@@ -48,7 +48,7 @@ class ExifRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function &getSingleAssetInfo (& $input) {
+	function getSingleAssetInfo ($input) {
 		$assetInfo = array();
 
 		$headerData = get_jpeg_header_data($input);
@@ -72,15 +72,15 @@ class ExifRepositoryImporter
 // 		printpre($assetInfo);
 // 		exit;
 		
-		$mime =& Services::getService("MIME");
+		$mime = Services::getService("MIME");
 		$mimeType = $mime->getMimeTypeForFileName(basename($input));
 		$generalType = substr($mimeType, 0, strpos($mimeType, '/'));
 		
 		if ($generalType == "application" || !$generalType)
-			$assetInfo['type'] =& new HarmoniType("Asset Types", "edu.middlebury",
+			$assetInfo['type'] = new HarmoniType("Asset Types", "edu.middlebury",
 				"Generic Asset");
 		else
-			$assetInfo['type'] =& new HarmoniType("Asset Types", "edu.middlebury",
+			$assetInfo['type'] = new HarmoniType("Asset Types", "edu.middlebury",
 				ucfirst($generalType));
 
 		return $assetInfo;
@@ -121,24 +121,24 @@ class ExifRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function &getSingleAssetRecordList (&$input) {
+	function getSingleAssetRecordList ($input) {
 		if (Services::serviceRunning("Logging")) {
-			$loggingManager =& Services::getService("Logging");
-			$log =& $loggingManager->getLogForWriting("Harmoni");
-			$formatType =& new Type("logging", "edu.middlebury", 
+			$loggingManager = Services::getService("Logging");
+			$log =$loggingManager->getLogForWriting("Harmoni");
+			$formatType = new Type("logging", "edu.middlebury", 
 				"AgentsAndNodes",
 				"A format in which the acting Agent[s] and the target nodes affected are specified.");
-			$priorityType =& new Type("logging", "edu.middlebury", "Error",
+			$priorityType = new Type("logging", "edu.middlebury", "Error",
 							"Events involving critical system errors.");
 		}			
-		$idManager =& Services::getService("Id");
-		$this->_fileStructureId =& $idManager->getId("FILE");
+		$idManager = Services::getService("Id");
+		$this->_fileStructureId =$idManager->getId("FILE");
 		$fileparts = array("File Name", "Thumbnail Data");
 		$this->_fileNamePartIds = $this->matchPartStructures(
 			$this->_destinationRepository->getRecordStructure(
 			$this->_fileStructureId), $fileparts);
 		if (!isset($this->_structureId)) {
-			$import =& new DOMIT_Document();
+			$import = new DOMIT_Document();
 			
 			if (!isset($this->_schemaPath)) {
 				$this->_schemaPath = $this->getSchemaPath($this->_srcDir);
@@ -151,7 +151,7 @@ class ExifRepositoryImporter
 					$this->addError("There are no schemas defined in : ".
 						$this->_schemaPath);
 					if (isset($log)) {
-						$item =& new AgentNodeEntryItem("ExifImporter Error",
+						$item = new AgentNodeEntryItem("ExifImporter Error",
 							"There are no schemas defined in: ".
 							$this->_schemaPath);
 						$log->appendLogWithTypes($item, $formatType, 
@@ -163,13 +163,13 @@ class ExifRepositoryImporter
 			else {
 				$this->addError("XML parse failed: ".$this->_schemaPath." does not exist or contains poorly formed XML.");
 				if (isset($log)) {
-					$item =& new AgentNodeEntryItem("ExifImporter DOMIT Error",
+					$item = new AgentNodeEntryItem("ExifImporter DOMIT Error",
 						"XML parse failed: ".$this->_schemaPath." does not exist or contains poorly formed XML.");
 					$log->appendLogWithTypes($item, $formatType, $priorityType);
 				}
 				return false;
 			}
-			$istructuresList =& $import->documentElement->childNodes;
+			$istructuresList =$import->documentElement->childNodes;
 			$this->_structureId = array();
 			$this->_partsFinal = array();
 			$this->_valuesFinal = array();
@@ -178,7 +178,7 @@ class ExifRepositoryImporter
 				$partStructuresArray = array();
 				if($istructure->nodeName == "recordStructure") {
 					//match the structure
-					$ipartStructures =& $istructure->childNodes;
+					$ipartStructures =$istructure->childNodes;
 					if($ipartStructures[0]->getText() != ""){
 						$matchedSchema = $idManager->getId($ipartStructures[0]->getText());
 					} else
@@ -187,7 +187,7 @@ class ExifRepositoryImporter
 						$this->addError("Schema: ".
 							$ipartStructures[1]->getText()." does not exist");
 						if (isset($log)) {
-							$item =& new AgentNodeEntryItem("ExifImporter 
+							$item = new AgentNodeEntryItem("ExifImporter 
 								Error", "Schema: ".
 								$ipartStructures[1]->getText().
 								" does not exist.");
@@ -202,7 +202,7 @@ class ExifRepositoryImporter
 					foreach($ipartStructures as $ipartStructure) {
 						if($ipartStructure->nodeName == "partStructure") {
 							
-							$ivaluesArray =& $ipartStructure->childNodes;
+							$ivaluesArray =$ipartStructure->childNodes;
 							if($ivaluesArray[0]->getText() != ""){
 								$matchedId = $idManager->getId(
 									$ivaluesArray[0]->getText());
@@ -214,7 +214,7 @@ class ExifRepositoryImporter
 								$this->addError("Part ".$ivaluesArray[1]->getText().
 									" does not exist.");
 								if (isset($log)) {
-									$item =& new AgentNodeEntryItem(
+									$item = new AgentNodeEntryItem(
 										"ExifImporter Error", 
 										"Part ".$ivaluesArray[1].
 										" does not exist.");
@@ -255,8 +255,8 @@ class ExifRepositoryImporter
 		$fileMetaData1 = $this->extractPhotoshopMetaData();
 		$fileMetaData2 = $this->extractExifMetaData($input);
 		$fileMetaData = array_merge($fileMetaData1, $fileMetaData2);
-		$recordListElement['structureId'] =& $this->_fileStructureId;
-		$recordListElement['partStructureIds'] =& $this->_fileNamePartIds;
+		$recordListElement['structureId'] =$this->_fileStructureId;
+		$recordListElement['partStructureIds'] =$this->_fileNamePartIds;
 		$recordListElement['parts'] = array($input, "");
 		$recordList[] = $recordListElement;
 		$recordListElement = array();
@@ -265,7 +265,7 @@ class ExifRepositoryImporter
 			$recordListElement['structureId'] = $structureId;
 			$recordListElement['partStructureIds'] = $this->_partsFinal[$structureId->getIdString()];
 			
-			$partValuesArray =& $this->_valuesFinal[$structureId->getIdString()];
+			$partValuesArray =$this->_valuesFinal[$structureId->getIdString()];
 			foreach($partValuesArray as $key=>$repeatablePartsArray){
 				$partValues = array();
 				foreach($repeatablePartsArray as $partsComponentsArray) {
@@ -333,11 +333,11 @@ class ExifRepositoryImporter
 	 */
 	
 	function getPartIdByName($partName, $structureId){
-		$dr =& $this->_destinationRepository;
-		$structure =& $dr->getRecordStructure($structureId);
+		$dr =$this->_destinationRepository;
+		$structure =$dr->getRecordStructure($structureId);
 		$parts = $structure->getPartStructures();
 		while($parts->hasNext()){
-			$part =& $parts->next();
+			$part =$parts->next();
 			if($part->getDisplayName() == $partName)
 				return $part->getId();
 		}
@@ -427,7 +427,7 @@ class ExifRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function &getChildAssetList (&$input) {
+	function getChildAssetList ($input) {
 		$null = null;
 		return $null;
 	}

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.31 2007/04/03 17:26:32 adamfranco Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.32 2007/09/04 20:28:01 adamfranco Exp $
  */ 
 require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.31 2007/04/03 17:26:32 adamfranco Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.32 2007/09/04 20:28:01 adamfranco Exp $
  */
 class RepositoryImporter {
 	
@@ -38,7 +38,7 @@ class RepositoryImporter {
 	 */
 	function RepositoryImporter ($filepath, $repositoryId, $dieOnError = false) {
 		$this->_filepath = $filepath;
-		$this->_repositoryId =& $repositoryId;
+		$this->_repositoryId =$repositoryId;
 		$this->_dieOnError = $dieOnError;
 		$this->_errors = array();
 		$this->_goodAssetIds = array();
@@ -53,8 +53,8 @@ class RepositoryImporter {
 	 * @access public
 	 * @since 4/2/07
 	 */
-	function setParent (&$asset) {
-		$this->_root =& $asset;
+	function setParent ($asset) {
+		$this->_root =$asset;
 	}
 	
 	/**
@@ -67,8 +67,8 @@ class RepositoryImporter {
 	 * @since 7/20/05
 	 */
 	function import ($decompress = true) {
-		$drManager =& Services::getService("RepositoryManager");
-		$this->_destinationRepository =& $drManager->getRepository(
+		$drManager = Services::getService("RepositoryManager");
+		$this->_destinationRepository =$drManager->getRepository(
 			$this->_repositoryId);
 		$this->_srcDir = dirname($this->_filepath)."/";
 		if ($decompress) {
@@ -91,22 +91,22 @@ class RepositoryImporter {
 		$statusStars->initializeStatistics(4);
 		$statusStars->updateStatistics();
 		
-		$dearchiver =& new Dearchiver();
+		$dearchiver = new Dearchiver();
 		$worked = $dearchiver->uncompressFile($this->_filepath,
 			dirname($this->_filepath));
 		if ($worked == false) {
 			$this->addError("Failed to decompress file: ".$this->_filepath.
 				".  Unsupported archive extension.");
 			if (Services::serviceRunning("Logging")) {
-				$loggingManager =& Services::getService("Logging");
-				$log =& $loggingManager->getLogForWriting("Harmoni");
-				$formatType =& new Type("logging", "edu.middlebury", 
+				$loggingManager = Services::getService("Logging");
+				$log =$loggingManager->getLogForWriting("Harmoni");
+				$formatType = new Type("logging", "edu.middlebury", 
 					"AgentsAndNodes",
 					"A format in which the acting Agent[s] and the target nodes affected are specified.");
-				$priorityType =& new Type("logging", "edu.middlebury", "Error",
+				$priorityType = new Type("logging", "edu.middlebury", "Error",
 								"Events involving critical system errors.");
 				
-				$item =& new AgentNodeEntryItem("Importer Decompression Error",
+				$item = new AgentNodeEntryItem("Importer Decompression Error",
 					"Failed to decompress file: ".$this->_filepath.
 					". Unsupported archive extension.");
 				$log->appendLogWithTypes($item,	$formatType, $priorityType);
@@ -127,7 +127,7 @@ class RepositoryImporter {
 	 */
 	function parse () {
 		$iteratorClass = $this->_assetIteratorClass;
-		$assetIterator =& new $iteratorClass($this->_srcDir, $this);
+		$assetIterator = new $iteratorClass($this->_srcDir, $this);
 		if ($this->hasErrors())
 			return;
 		
@@ -143,9 +143,9 @@ class RepositoryImporter {
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function &assetBuildingIteration (&$assetIterator, &$parent, &$buildOrderedSet) {
-		$setManager =& Services::getService("Sets");
-		$assetInfoIterator =& $this->getAllAssetsInfoIterator($assetIterator);
+	function assetBuildingIteration ($assetIterator, $parent, $buildOrderedSet) {
+		$setManager = Services::getService("Sets");
+		$assetInfoIterator =$this->getAllAssetsInfoIterator($assetIterator);
 		
 		$statusStars = new StatusStars(_("Creating Assets"));
 		$statusStars->initializeStatistics($assetInfoIterator->count());
@@ -153,10 +153,10 @@ class RepositoryImporter {
 		if (!$assetInfoIterator)
 			return $assetInfoIterator; // false
 		if ($buildOrderedSet)
-			$set =& $setManager->getPersistentSet($parent->getId());		
+			$set =$setManager->getPersistentSet($parent->getId());		
 		while ($assetInfoIterator->hasNext()) {
-			$info =& $assetInfoIterator->next();
-			$child =& $this->buildAsset($info);
+			$info =$assetInfoIterator->next();
+			$child =$this->buildAsset($info);
 			if (!$child)
 				return $child; // false
 			if (!is_null($parent))
@@ -179,21 +179,21 @@ class RepositoryImporter {
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function &getAllAssetsInfoIterator (&$assetIterator) {
+	function getAllAssetsInfoIterator ($assetIterator) {
 		$allAssetInfo = array();
 		while ($assetIterator->hasNext()) {
-			$asset =& $assetIterator->next();
+			$asset =$assetIterator->next();
 			$info = array();
-			$info["assetInfo"] =& $this->getSingleAssetInfo($asset);
-			$info["recordList"] =& $this->getSingleAssetRecordList($asset);
-			$info["childAssetList"] =& $this->getChildAssetList($asset);
-			$info["buildOrderedSet"] =& $this->getBuildOrderedSet($asset);
+			$info["assetInfo"] =$this->getSingleAssetInfo($asset);
+			$info["recordList"] =$this->getSingleAssetRecordList($asset);
+			$info["childAssetList"] =$this->getChildAssetList($asset);
+			$info["buildOrderedSet"] =$this->getBuildOrderedSet($asset);
 			if ($info["recordList"] !== false)
 				$allAssetInfo[] = $info;
 			else if ($this->_dieOnError)
 				return $info["recordList"]; // false
 		}
-		$obj =& new HarmoniIterator($allAssetInfo);
+		$obj = new HarmoniIterator($allAssetInfo);
 		return $obj;
 	}
 
@@ -205,8 +205,8 @@ class RepositoryImporter {
 	 * @since 7/18/05
 	 */
 
-	function matchSchema ($schema, &$repository) {
-		$structures =& $repository->getRecordStructures();
+	function matchSchema ($schema, $repository) {
+		$structures =$repository->getRecordStructures();
 		$stop = true;
 		while($structures->hasNext()) {
 			$testStructure = $structures->next();
@@ -226,11 +226,11 @@ class RepositoryImporter {
  	 * @since 7/18/05
  	 */
 
-	function matchPartStructures ($schema, &$partArray) {
+	function matchPartStructures ($schema, $partArray) {
 		$partStructureIds = array();
 		foreach ($partArray as $part) {
 			$stop = true;
-			$partStructures =& $schema->getPartStructures();
+			$partStructures =$schema->getPartStructures();
 			while ($partStructures->hasNext()) {
 				$partStructure = $partStructures->next();
 				if ($part == $partStructure->getDisplayName()) {
@@ -255,35 +255,35 @@ class RepositoryImporter {
 	 * @since 7/18/05
 	 *
 	 */
-	function &buildAsset(&$info) {
-		$assetInfo =& $info['assetInfo'];
-		$recordList =& $info['recordList'];
-		$childAssetList =& $info['childAssetList'];
-		$buildOrderedSet =& $info['buildOrderedSet'];
+	function buildAsset($info) {
+		$assetInfo =$info['assetInfo'];
+		$recordList =$info['recordList'];
+		$childAssetList =$info['childAssetList'];
+		$buildOrderedSet =$info['buildOrderedSet'];
 		$idManager = Services::getService("Id");
-		$mime =& Services::getService("MIME");
-		$FILE_ID =& $idManager->getId("FILE");
-		$FILE_DATA_ID =& $idManager->getId("FILE_DATA");
-		$FILE_NAME_ID =& $idManager->getId("FILE_NAME");
-		$MIME_TYPE_ID =& $idManager->getId("MIME_TYPE");
-		$THUMBNAIL_DATA_ID =& $idManager->getId("THUMBNAIL_DATA");
-		$THUMBNAIL_MIME_TYPE_ID =& $idManager->getId("THUMBNAIL_MIME_TYPE");
+		$mime = Services::getService("MIME");
+		$FILE_ID =$idManager->getId("FILE");
+		$FILE_DATA_ID =$idManager->getId("FILE_DATA");
+		$FILE_NAME_ID =$idManager->getId("FILE_NAME");
+		$MIME_TYPE_ID =$idManager->getId("MIME_TYPE");
+		$THUMBNAIL_DATA_ID =$idManager->getId("THUMBNAIL_DATA");
+		$THUMBNAIL_MIME_TYPE_ID =$idManager->getId("THUMBNAIL_MIME_TYPE");
 
 		
-		$asset =& $this->_destinationRepository->createAsset(
+		$asset =$this->_destinationRepository->createAsset(
 			$assetInfo['displayName'], $assetInfo['description'],
 			$assetInfo['type']);
-		$assetId =& $asset->getId();
+		$assetId =$asset->getId();
 		// log creation
 		if (Services::serviceRunning("Logging")) {
-			$loggingManager =& Services::getService("Logging");
-			$log =& $loggingManager->getLogForWriting("Harmoni");
-			$formatType =& new Type("logging", "edu.middlebury", 
+			$loggingManager = Services::getService("Logging");
+			$log =$loggingManager->getLogForWriting("Harmoni");
+			$formatType = new Type("logging", "edu.middlebury", 
 				"AgentsAndNodes",
 				"A format in which the acting Agent[s] and the target nodes affected are specified.");
-			$priorityType =& new Type("logging", "edu.middlebury",
+			$priorityType = new Type("logging", "edu.middlebury",
 				"Event_Notice",	"Normal Events.");
-			$item =& new AgentNodeEntryItem("Create Node", "Asset: ".
+			$item = new AgentNodeEntryItem("Create Node", "Asset: ".
 				$assetId->getIdString()." created.");
 			$item->addNodeId($assetId);
 			$item->addNodeId($this->_destinationRepository->getId());
@@ -292,7 +292,7 @@ class RepositoryImporter {
 		$this->addGoodAssetId($asset->getId());
 		RecordManager::setCacheMode(false);
 		foreach($recordList as $entry) {
-			$assetRecord =& $asset->createRecord($entry['structureId']);
+			$assetRecord =$asset->createRecord($entry['structureId']);
 			$j = 0;
 			printpre("creating record for: "); printpre($entry['structureId']);
 			foreach ($entry['partStructureIds'] as $id) {
@@ -314,7 +314,7 @@ class RepositoryImporter {
 						basename($filename));
 					$assetRecord->createPart($MIME_TYPE_ID,
 						$mimetype);
-					$imageProcessor =& Services::getService("ImageProcessor");
+					$imageProcessor = Services::getService("ImageProcessor");
 					if(isset($entry['parts'][1]) && $entry['parts'][1] != "") {
 						$assetRecord->createPart(
 							$THUMBNAIL_DATA_ID,
@@ -338,7 +338,7 @@ class RepositoryImporter {
 			}
 		}
 		if (!is_null($childAssetList)) {
-			$stop =& $this->assetBuildingIteration(new HarmoniIterator(
+			$stop =$this->assetBuildingIteration(new HarmoniIterator(
 				$childAssetList), $asset, $buildOrderedSet);	
 			if (!$stop)
 				return $stop; // false
@@ -356,36 +356,36 @@ class RepositoryImporter {
 	 * @access public
 	 * @since 7/21/05
 	 */
-	function &getPartObject(&$structureId, &$partStructureId, $part) {
-		$structure =& $this->_destinationRepository->getRecordStructure(
+	function getPartObject($structureId, $partStructureId, $part) {
+		$structure =$this->_destinationRepository->getRecordStructure(
 			$structureId);
-		$partStructure =& $structure->getPartStructure($partStructureId);
+		$partStructure =$structure->getPartStructure($partStructureId);
 		$type = $partStructure->getType();
 		$typeString = $type->getKeyword();
 		switch($typeString) {
 			case "shortstring":
 			case "string":
-				$obj =& String::withValue($part);
+				$obj = String::withValue($part);
 				return $obj;
 				break;
 			case "integer":
-				$obj =& Integer::withValue($part);
+				$obj = Integer::withValue($part);
 				return $obj;
 				break;
 			case "boolean":
-				$obj =& Boolean::withValue($part);
+				$obj = Boolean::withValue($part);
 				return $obj;
 				break;
 			case "float":
-				$obj =& Float::withValue($part);
+				$obj = Float::withValue($part);
 				return $obj;
 				break;
 			case "datetime":
-				$obj =& DateAndTime::fromString($part);
+				$obj = DateAndTime::fromString($part);
 				return $obj;
 				break;
 			case "type": 
-				$obj =& HarmoniType::fromString($part);
+				$obj = HarmoniType::fromString($part);
 				return $obj;
 				break;
 			default:
@@ -405,7 +405,7 @@ class RepositoryImporter {
 	 * @return bool
 	 * @since 8/16/05
 	 */
-	 function &getBuildOrderedSet (&$asset) {
+	 function getBuildOrderedSet ($asset) {
 	 	$false = false;
 	 	return $false;
 	 }

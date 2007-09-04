@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_Authoritative_datetime.class.php,v 1.2 2006/06/08 15:57:29 adamfranco Exp $
+ * @version $Id: PrimitiveIO_Authoritative_datetime.class.php,v 1.3 2007/09/04 20:27:58 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_Authoritative_datetime.class.php,v 1.2 2006/06/08 15:57:29 adamfranco Exp $
+ * @version $Id: PrimitiveIO_Authoritative_datetime.class.php,v 1.3 2007/09/04 20:27:58 adamfranco Exp $
  */
 class PrimitiveIO_Authoritative_datetime
 	extends PrimitiveIO_Authoritative 
@@ -36,7 +36,7 @@ class PrimitiveIO_Authoritative_datetime
 	 * @return boolean
 	 */
 	function validate () {
-		$parse =& StringParser::getParserFor($this->_value);
+		$parse = StringParser::getParserFor($this->_value);
 		if (!$parse) {
 			$this->_showError = true;
 			return false;
@@ -50,8 +50,8 @@ class PrimitiveIO_Authoritative_datetime
 	 * @access public
 	 * @return mixed
 	 */
-	function &getAllValues () {
-		$obj =& DateAndTime::fromString($this->_value);
+	function getAllValues () {
+		$obj = DateAndTime::fromString($this->_value);
 		return $obj;
 	}
 }

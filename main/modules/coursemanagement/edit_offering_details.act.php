@@ -11,7 +11,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_offering_details.act.php,v 1.9 2006/08/30 20:20:53 jwlee100 Exp $
+ * @version $Id: edit_offering_details.act.php,v 1.10 2007/09/04 20:28:12 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -30,9 +30,9 @@ class edit_offering_detailsAction
 	 */
 	function isAuthorizedToExecute () {
 		// Check for authorization
-		$authZManager =& Services::getService("AuthZ");
-		$idManager =& Services::getService("IdManager");
-		$harmoni =& Harmoni::instance();
+		$authZManager = Services::getService("AuthZ");
+		$idManager = Services::getService("IdManager");
+		$harmoni = Harmoni::instance();
 		
 		$harmoni->request->startNamespace("polyphony-agents");
 		$offeringIdString = $harmoni->request->get("courseId");
@@ -56,14 +56,14 @@ class edit_offering_detailsAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-agents");
 		$harmoni->request->passthrough("courseId");
 		$offeringIdString = $harmoni->request->get("courseId");
-		$idManager =& Services::getService("Id");
-		$offeringId =& $idManager->getId($offeringIdString);
-		$cm =& Services::getService("CourseManagement");
-		$offering =& $cm->getCourseOffering($offeringId);
+		$idManager = Services::getService("Id");
+		$offeringId =$idManager->getId($offeringIdString);
+		$cm = Services::getService("CourseManagement");
+		$offering =$cm->getCourseOffering($offeringId);
 		return dgettext("polyphony", $offering->getDisplayName());
 	}
 	
@@ -77,19 +77,19 @@ class edit_offering_detailsAction
 	function buildContent () {
 		$defaultTextDomain = textdomain("polyphony");
 		
-		$actionRows =& $this->getActionRows();
-		//$pageRows =& new Container(new YLayout(), OTHER, 1);
-		$harmoni =& Harmoni::instance();
+		$actionRows =$this->getActionRows();
+		//$pageRows = new Container(new YLayout(), OTHER, 1);
+		$harmoni = Harmoni::instance();
 		
 		$harmoni->request->startNamespace("polyphony-agents");
 		$harmoni->request->passthrough("courseId");
 		$offeringIdString = $harmoni->request->get("courseId");
 		$furtherAction = $harmoni->request->get("furtherAction");
 
-		$idManager =& Services::getService("Id");
-		$offeringId =& $idManager->getId($offeringIdString);
-		$cm =& Services::getService("CourseManagement");
-		$offering =& $cm->getCourseOffering($offeringId);
+		$idManager = Services::getService("Id");
+		$offeringId =$idManager->getId($offeringIdString);
+		$cm = Services::getService("CourseManagement");
+		$offering =$cm->getCourseOffering($offeringId);
 
 		
 		ob_start();
@@ -128,12 +128,12 @@ class edit_offering_detailsAction
 	 * @access public
 	 * @since 7/19/05
 	 */
-	function viewOfferingDetails(&$offering){
+	function viewOfferingDetails($offering){
 		
 		
 		edit_offering_detailsAction::refreshOfferingDetails($offering);
 
-		$offeringId =& $offering->getId();
+		$offeringId =$offering->getId();
 		$offeringIdString = $offeringId->getIdString();
 		
 		//display offering info	
@@ -149,7 +149,7 @@ class edit_offering_detailsAction
 
 		//print "\n\t<tr><td>";
 				
-		$term =& $offering->getTerm();
+		$term =$offering->getTerm();
 		print "\n<h1>".$offering->getDisplayName()." - ".$term->getDisplayName()."</h1>";
 
 		/*
@@ -168,7 +168,7 @@ class edit_offering_detailsAction
 		print "\n\t<tr>";
 		print "\n\t\t<td>Term</td>";
 		print "\n\t\t<td>";
-		$term =& $offering->getTerm();
+		$term =$offering->getTerm();
 		print $term->getDisplayName();
 		*/		
 		//print "</td>";	
@@ -183,8 +183,8 @@ class edit_offering_detailsAction
 		
 
 		//actions menu
-		$harmoni =& Harmoni::instance();
-		$url =& $harmoni->request->mkURL();
+		$harmoni = Harmoni::instance();
+		$url =$harmoni->request->mkURL();
 		
 		$link1 = $harmoni->request->quickURL("coursemanagement", "createcoursesection", 
 								   array("offeringId=>$offeringIdString"));
@@ -199,16 +199,16 @@ class edit_offering_detailsAction
 		
 		print "</div>";
 		
-		$actionRows =& $this->getActionRows();
+		$actionRows =$this->getActionRows();
 		//$actionRows->add(new Block(ob_get_contents(),2),"100%", null, CENTER, TOP);
 		//ob_end_clean();
 
 		//ob_start();
 		
-		//$actionRows =& $this->getActionRows();
-		//$pageRows =& new Container(new YLayout(), OTHER, 1);
+		//$actionRows =$this->getActionRows();
+		//$pageRows = new Container(new YLayout(), OTHER, 1);
 		
-		$sections =& $offering->getCourseSections();
+		$sections =$offering->getCourseSections();
 		
 		//print "<h2>Sections:</h2>";
 		
@@ -221,11 +221,11 @@ class edit_offering_detailsAction
 
 		ob_start();
 		
-		$actionRows =& $this->getActionRows();
-		$pageRows =& new Container(new YLayout(), OTHER, 1);
+		$actionRows =$this->getActionRows();
+		$pageRows = new Container(new YLayout(), OTHER, 1);
 		
 		
-		$section =& $sections->nextCourseSection();
+		$section =$sections->nextCourseSection();
 		
 		edit_section_detailsAction::viewSectionDetails($section);
 		
@@ -242,9 +242,9 @@ class edit_offering_detailsAction
 	 * offers a confirmation screen for deleting an entire offering
 	 */
 	 
-	function confirmDeleteOffering(&$offering){
-		$harmoni =& Harmoni::instance();
-		$url =& $harmoni->request->mkURL();
+	function confirmDeleteOffering($offering){
+		$harmoni = Harmoni::instance();
+		$url =$harmoni->request->mkURL();
 		print "Do you really want to delete ".$offering->getDisplayName()."?<br />";
 		print "<form action='".$url->write("furtherAction","edit_offering_detailsAction::deleteOffering")."' method='post'><input type='submit' value='Delete' /></form><input type='button' value='Cancel' onclick='history.back()' />";
 		return;
@@ -254,12 +254,12 @@ class edit_offering_detailsAction
 	 * Handles the actual deletion of an offering
 	 */
 	 
-	function deleteOffering(&$offering){
-		//$cm =& Services::getService("CourseManagement");
-		$can =& $offering->getCanonicalCourse();
+	function deleteOffering($offering){
+		//$cm = Services::getService("CourseManagement");
+		$can =$offering->getCanonicalCourse();
 		$can->deleteCourseOffering($offering->getId());
 		
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		print "Offering deleted.<br />";
 		$link1 = $harmoni->request->quickURL("coursemanagement", "coursesearch");
 		print "<p><a href='".$link1."'>Go back to course search.</a></p>";
@@ -293,15 +293,15 @@ class edit_offering_detailsAction
 			print "</td>";		
 		}
 		
-		$harmoni =& Harmoni::instance();
-		$id =& $offering->getId();
+		$harmoni = Harmoni::instance();
+		$id =$offering->getId();
 		print "\n\t\t<td>";
 		print "\n<a href='".$harmoni->request->quickURL("coursemanagement", "edit_offering_details", array("courseId"=>$id->getIdString()))."'>";
 		print $offering->getDisplayName()."</a>";		
 		print "\n - <a href=\"Javascript:alert('"._("Id:").'\n\t'.addslashes($id->getIdString())."')\">"._("Id")."</a>";
 		print "</td>";
 		//print "\n\t\t<td>";
-		//$term =& $offering->getTerm();
+		//$term =$offering->getTerm();
 		//print $term->getDisplayName();
 		//print "</td>";		
 		print "\n\t</tr>";
@@ -310,10 +310,10 @@ class edit_offering_detailsAction
 		
 	}
 	
-	function refreshOfferingDetails(&$offering){
+	function refreshOfferingDetails($offering){
 		
 		
-		$term =& $offering->getTerm();
+		$term =$offering->getTerm();
 		$termName = $term->getDisplayName();
 		$year = substr($termName,strlen($termName)-2,2);
 		$season = substr($termName,0,strlen($termName)-5);
@@ -337,16 +337,16 @@ class edit_offering_detailsAction
 			//print "*'".$season."'*?";
 		}
 		
-		$type =& new Type("EnrollmentRecordType","edu.middlebury","LDAP");
+		$type = new Type("EnrollmentRecordType","edu.middlebury","LDAP");
 		
 		$distinguishedNameBase = "-".$seasonChar.$year.",OU=".$season.$year.",OU=Classes,OU=Groups,DC=middlebury,DC=edu";
 		
 		//print $distinguishedNameBase;
 		
-		$sections =& $offering->getCourseSections();
+		$sections =$offering->getCourseSections();
 		
-		$am =& Services::getService("AgentManager");
-		$im =& Services::getService("Id");
+		$am = Services::getService("AgentManager");
+		$im = Services::getService("Id");
 		while($sections->hasNextCourseSection()){
 			$section = $sections->nextCourseSection();
 			
@@ -354,24 +354,24 @@ class edit_offering_detailsAction
 			//print "'CN=".$section->getNumber().$distinguishedNameBase."'";
 			
 			$id = $im->getId("CN=".$section->getNumber().$distinguishedNameBase);
-			$group =& $am->getGroup($id);
+			$group =$am->getGroup($id);
 			
-			$agentIterator =& $group->getMembers(false);
+			$agentIterator =$group->getMembers(false);
 			
 			
 			while($agentIterator->hasNext()){
 				$agent = $agentIterator->nextAgent();
-				$agentId =& $agent->getId(); 
+				$agentId =$agent->getId(); 
 				
 				
-				$dbManager =& Services::getService("DatabaseManager");
-			$query=& new SelectQuery;
+				$dbManager = Services::getService("DatabaseManager");
+			$query= new SelectQuery;
 			$query->addTable('cm_enroll');
 			$query->addWhere("fk_cm_section='".addslashes($section->_id->getIdString())."'");
 			$query->addWhere("fk_student_id='".addslashes($agentId->getIdString())."'");
 			//I don't need Id, but I need to select something for the query to work
 			$query->addColumn('id');//@TODO select count instead
-			$res=& $dbManager->query($query);
+			$res=$dbManager->query($query);
 			if($res->getNumberOfRows()==0){
 				$section->addStudent($agentId, $p = new Type("EnrollmentStatusType","edu.middlebury","LDAP"));
 			}

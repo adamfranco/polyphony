@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLThumbDataPartImporter.class.php,v 1.14 2006/06/26 19:22:42 adamfranco Exp $
+ * @version $Id: XMLThumbDataPartImporter.class.php,v 1.15 2007/09/04 20:28:01 adamfranco Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLThumbDataPartImporter.class.php,v 1.14 2006/06/26 19:22:42 adamfranco Exp $
+ * @version $Id: XMLThumbDataPartImporter.class.php,v 1.15 2007/09/04 20:28:01 adamfranco Exp $
  */
 class XMLThumbDataPartImporter extends XMLImporter {
 		
@@ -30,7 +30,7 @@ class XMLThumbDataPartImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/10/05
 	 */
-	function XMLThumbDataPartImporter (&$existingArray) {
+	function XMLThumbDataPartImporter ($existingArray) {
 		parent::XMLImporter($existingArray);
 	}
 
@@ -55,7 +55,7 @@ class XMLThumbDataPartImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/10/05
 	 */
-	function isImportable (&$element) {
+	function isImportable ($element) {
 		if ($element->nodeName == "thumbdatapart")
 			return true;
 		else
@@ -80,20 +80,20 @@ class XMLThumbDataPartImporter extends XMLImporter {
 	 * @since 10/10/05
 	 */
 	function importNode () {
-		$idManager =& Services::getService("Id");
+		$idManager = Services::getService("Id");
 		
 		$this->getNodeInfo();
 
 		if (in_array($this->_info['parentId']->getIdString(),
 				$this->_existingArray) || ($this->_type == "update")) {
-			$this->_myId =& $this->_info['fileDataId'];
-			$this->_object =& $this->_parent->getPart($this->_myId);
+			$this->_myId =$this->_info['fileDataId'];
+			$this->_object =$this->_parent->getPart($this->_myId);
 				$this->update();
 		} else {
-			$this->_object =& $this->_parent->createPart(
+			$this->_object =$this->_parent->createPart(
 				$this->_info['partStructureId'], 
 				file_get_contents($this->_info['value']));
-			$this->_myId =& $this->_object->getId();
+			$this->_myId =$this->_object->getId();
 		}
 	}
 
@@ -104,7 +104,7 @@ class XMLThumbDataPartImporter extends XMLImporter {
 	 * @since 10/10/05
 	 */
 	function getNodeInfo () {
-		$idManager =& Services::getService("Id");
+		$idManager = Services::getService("Id");
 	
 		$path = $this->_node->getText();
 		if (!ereg("^([a-zA-Z]+://|[a-zA-Z]+:\\|/)", $path))
@@ -112,11 +112,11 @@ class XMLThumbDataPartImporter extends XMLImporter {
 		
 		$this->_info['value'] = $path;
 		
-		$this->_info['partStructureId'] =& $idManager->getId("THUMBNAIL_DATA");
+		$this->_info['partStructureId'] =$idManager->getId("THUMBNAIL_DATA");
 							
 		$this->_info['parentId'] = $this->_parent->getId();
 		
-		$this->_info['fileDataId'] =& $idManager->getId(
+		$this->_info['fileDataId'] =$idManager->getId(
 			$this->_info['parentId']->getIdString()."-THUMBNAIL_DATA");
 	}
 	
@@ -127,7 +127,7 @@ class XMLThumbDataPartImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/10/05
 	 */
-	function relegateChildren (&$topImporter) {
+	function relegateChildren ($topImporter) {
 	}
 	
 	/**

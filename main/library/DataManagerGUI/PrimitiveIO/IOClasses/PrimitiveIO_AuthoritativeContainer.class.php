@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.5 2006/11/30 22:02:39 adamfranco Exp $
+ * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.6 2007/09/04 20:27:58 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.5 2006/11/30 22:02:39 adamfranco Exp $
+ * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.6 2007/09/04 20:27:58 adamfranco Exp $
  */
 class PrimitiveIO_AuthoritativeContainer
 	extends WSelectOrNew
@@ -44,7 +44,7 @@ class PrimitiveIO_AuthoritativeContainer
 	 * @return void
      * @since 10/21/05
      */
-    function setValue (&$value) {
+    function setValue ($value) {
     	if (is_string($value))
     		$value = String::fromString($value);
     		
@@ -66,7 +66,7 @@ class PrimitiveIO_AuthoritativeContainer
      * @since 5/1/06
      */
     function setSize ($size) {
-    	$hasMethods =& HasMethodsValidatorRule::getRule("setSize");
+    	$hasMethods = HasMethodsValidatorRule::getRule("setSize");
     	
 		if ($hasMethods->check($this->_new))
 			$this->_new->setSize(40);
@@ -103,7 +103,7 @@ class PrimitiveIO_AuthoritativeContainer
 	 * @access public
 	 * @since 5/1/06
 	 */
-	function addOptionFromSObject ( &$valueObject ) {
+	function addOptionFromSObject ( $valueObject ) {
 		if (!isset($this->_select))
 			throwError(new Error("No Select Child Available.", "datamanager GUI"));
 			
@@ -116,7 +116,7 @@ class PrimitiveIO_AuthoritativeContainer
 	 *
 	 * @return void
 	 **/
-	function setValueFromSObject(&$value)
+	function setValueFromSObject($value)
 	{
 		$this->setValue($value);
 	}
@@ -132,8 +132,8 @@ class PrimitiveIO_AuthoritativeContainer
 		if ($this->_select->isStartingDisplay())
 			return false;
 		
-		$newOption =& String::fromString('__NEW_VALUE__');
-		$emptyOption =& String::fromString('');
+		$newOption = String::fromString('__NEW_VALUE__');
+		$emptyOption = String::fromString('');
 // 		print "<pre>"; var_dump($this->_select->getAllValues()); print "</pre>";
 		return (!$this->_select->getAllValues() 
 				|| $newOption->isEqualTo($this->_select->getAllValues()) 
@@ -152,7 +152,7 @@ class PrimitiveIO_AuthoritativeContainer
 	function update ($fieldName) {
 		$this->_select->update($fieldName."_select");
 		$this->_new->update($fieldName."_new");
-		$newValue =& $this->_new->getAllValues();
+		$newValue =$this->_new->getAllValues();
 		if ($this->isUsingNewValue() && is_object($newValue) && $newValue->asString())
 			$this->setValue($this->_new->getAllValues());
 		

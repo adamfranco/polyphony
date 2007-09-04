@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: WFontEditor.class.php,v 1.1 2006/08/19 21:08:39 sporktim Exp $
+* @version $Id: WFontEditor.class.php,v 1.2 2007/09/04 20:28:00 adamfranco Exp $
 */
 
 
@@ -20,7 +20,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: WFontEditor.class.php,v 1.1 2006/08/19 21:08:39 sporktim Exp $
+* @version $Id: WFontEditor.class.php,v 1.2 2007/09/04 20:28:00 adamfranco Exp $
 */
 
 class WFontEditor
@@ -60,7 +60,7 @@ extends WMoreOptions
 
 
 		//get the theme
-		eval('$theme =& '.$callBack."();");
+		eval('$theme = '.$callBack."();");
 
 		
 		if(!is_object($theme)){
@@ -78,7 +78,7 @@ extends WMoreOptions
 
 		//first style collection
 		if(!$theme->getStyleCollection($collectionSelector1)){
-			$styleCollection1 =& new StyleCollection($collectionSelector1, $collectionName,"Font Properties", "Font choice with selector ".$collectionName);
+			$styleCollection1 = new StyleCollection($collectionSelector1, $collectionName,"Font Properties", "Font choice with selector ".$collectionName);
 			foreach($thingsToApplyCollectionTo as $arr){
 				$theme->addStyleForComponentType($styleCollection1,$arr['type'],$arr['index']);
 			}
@@ -86,19 +86,19 @@ extends WMoreOptions
 
 
 		//first style collection GUI elements
-		$comp =& new WGUISelectList($callBack, $collectionSelector1,new ColorSP("#000000"),"ColorSC",$color['options'],$color['styles']);
+		$comp = new WGUISelectList($callBack, $collectionSelector1,new ColorSP("#000000"),"ColorSC",$color['options'],$color['styles']);
 		$this->addComponent('color',$comp);
 
-		$prop =& new FontSP('serif',"12pt","normal","normal","normal");
-		$comp =& new WGUISelectList($callBack, $collectionSelector1,$prop,"FontFamilySC",$fonts,"font-family");
+		$prop = new FontSP('serif',"12pt","normal","normal","normal");
+		$comp = new WGUISelectList($callBack, $collectionSelector1,$prop,"FontFamilySC",$fonts,"font-family");
 		$this->addComponent('font',$comp);
-		$comp =& new WGUISelectList($callBack, $collectionSelector1,$prop,"FontSizeSC",$fontSize,"font-size");
+		$comp = new WGUISelectList($callBack, $collectionSelector1,$prop,"FontSizeSC",$fontSize,"font-size");
 		$this->addComponent('fontSize',$comp);
-		$comp =& new WGUICheckBox($callBack, $collectionSelector1,$prop,"FontWeightSC","bold","normal");
+		$comp = new WGUICheckBox($callBack, $collectionSelector1,$prop,"FontWeightSC","bold","normal");
 		$this->addComponent('boldBox',$comp);
-		$comp =& new WGUICheckBox($callBack, $collectionSelector1,$prop,"FontStyleSC","italic","normal");
+		$comp = new WGUICheckBox($callBack, $collectionSelector1,$prop,"FontStyleSC","italic","normal");
 		$this->addComponent('italicsBox',$comp);
-		$comp =& new WGUICheckBox($callBack, $collectionSelector1,$prop,"FontVariantSC","small-caps","normal");
+		$comp = new WGUICheckBox($callBack, $collectionSelector1,$prop,"FontVariantSC","small-caps","normal");
 		$this->addComponent('smallcapsBox',$comp);
 
 
@@ -131,11 +131,11 @@ extends WMoreOptions
 		$s.="\n<table border='0'  cellpadding='5' width='100%'>";
 		$s.="\n\t<tr>";
 		$s.="\t\t<td>Text Color:";
-		$comp =& $this->getChild($name = 'color');
+		$comp =$this->getChild($name = 'color');
 		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";
 
 		$s.="\t\t<td>Text Size: ";
-		$comp =& $this->getChild($name = 'fontSize');
+		$comp =$this->getChild($name = 'fontSize');
 		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";
 
 		$s.="\t\t<td>More font options: ".$this->getCheckboxMarkup($fieldName)."</td>";
@@ -172,13 +172,13 @@ extends WMoreOptions
 		$s.="\n<table border='0' width='100%' cellpadding='5'>";
 		$s.="\n\t<tr>";
 		$s.="\t\t<td>Font: ";
-		$comp =& $this->getChild($name = 'font');
+		$comp =$this->getChild($name = 'font');
 		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";
-		$comp =& $this->getChild($name = 'boldBox');
+		$comp =$this->getChild($name = 'boldBox');
 		$s.="\t\t<td>Bold".$comp->getMarkup($fieldName."_".$name)."</td>";
-		$comp =& $this->getChild($name = 'italicsBox');
+		$comp =$this->getChild($name = 'italicsBox');
 		$s.="\t\t<td>Italics".$comp->getMarkup($fieldName."_".$name)."</td>";
-		$comp =& $this->getChild($name = 'smallcapsBox');
+		$comp =$this->getChild($name = 'smallcapsBox');
 		$s.="\t\t<td>Smallcaps".$comp->getMarkup($fieldName."_".$name)."</td>";
 		$s.="\n\t</tr>";
 		$s.="\n</table>";

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.3 2006/12/04 21:08:48 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.4 2007/09/04 20:28:14 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.3 2006/12/04 21:08:48 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.4 2007/09/04 20:28:14 adamfranco Exp $
  */
 class TagAction 
 	extends MainWindowAction
@@ -46,9 +46,9 @@ class TagAction
 	 */
 	function buildContent () {
 		$defaultTextDomain = textdomain("polyphony");
-		$actionRows =& $this->getActionRows();
+		$actionRows =$this->getActionRows();
 		
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-tags");
 		
 		$actionRows->add(new Block($this->getTagMenu(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
@@ -77,17 +77,17 @@ class TagAction
 	function getTagCloud ($tags, $viewAction = 'view', $styles = null, $additionalParams = null) {		
 		ob_start();
 		if ($tags->hasNext()) {
-			$harmoni =& Harmoni::instance();
+			$harmoni = Harmoni::instance();
 			$harmoni->request->startNamespace("polyphony-tags");
 			$tagArray = array();
 			$occArray = array();
 			$tag = $tags->next();
-			$tagArray[] =& $tag;
+			$tagArray[] =$tag;
 			$minFreq = $maxFreq = $tag->getOccurances();
 			
 			while ($tags->hasNext()) {
-				$tag =& $tags->next();
-				$tagArray[] =& $tag;
+				$tag =$tags->next();
+				$tagArray[] =$tag;
 				$occArray[] = $tag->getOccurances();
 				if ($tag->getOccurances() < $minFreq)
 					$minFreq = $tag->getOccurances();
@@ -113,7 +113,7 @@ class TagAction
 // 			printpre($incrementSize);
 			
 			for ($key=0; $key < count($tagArray); $key++) {
-				$tag =& $tagArray[$key];
+				$tag =$tagArray[$key];
 				$group = 0;
 				$style = $styles[0];
 				for ($i=$minFreq; $i < $tag->getOccurances() && $group < count($styles); $i = $i + $incrementSize) {
@@ -207,7 +207,7 @@ class TagAction
 	 * @since 11/14/06
 	 * @static
 	 */
-	function getTagCloudForItem (&$item, $viewAction = 'view', $styles = null, $additionalParams = null) {
+	function getTagCloudForItem ($item, $viewAction = 'view', $styles = null, $additionalParams = null) {
 		ob_start();
 		print "\n<div>";
 		print TagAction::getTagCloud($item->getTags(), $viewAction, $styles, $additionalParams);
@@ -261,17 +261,17 @@ class TagAction
 	 * @since 11/14/06
 	 * @static
 	 */
-	function getTagCloudForRepository ( &$repository, $system, $viewAction = 'viewRepository', $styles = null) {
+	function getTagCloudForRepository ( $repository, $system, $viewAction = 'viewRepository', $styles = null) {
 		if (!is_object($repository))
 			return "";
 		
-		$repositoryId =& $repository->getId();
-		$tagManager =& Services::getService('Tagging');
+		$repositoryId =$repository->getId();
+		$tagManager = Services::getService('Tagging');
 		$items = array();
-		$assets =& $repository->getAssets();
+		$assets =$repository->getAssets();
 		while($assets->hasNext()) {
-			$asset =& $assets->next();
-			$items[] =& TaggedItem::forId($asset->getId(), $system);
+			$asset =$assets->next();
+			$items[] = TaggedItem::forId($asset->getId(), $system);
 		}
 		return TagAction::getTagCloudDiv($tagManager->getTagsForItems(
 						new HarmoniIterator($items), TAG_SORT_ALFA, 100), 
@@ -287,7 +287,7 @@ class TagAction
 	 * @access public
 	 * @since 11/8/06
 	 */
-	function &getTags () {
+	function getTags () {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.");
 	}
 	
@@ -299,10 +299,10 @@ class TagAction
 	 * @since 11/8/06
 	 */
 	function getTagMenu () {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		
 		ob_start();
-		$tagManager =& Services::getService("Tagging");
+		$tagManager = Services::getService("Tagging");
 		if ($currentUserIdString = $tagManager->getCurrentUserIdString()) {
 			if ($harmoni->getCurrentAction() == 'tags.user' 
 				&& (!RequestContext::value('agent_id') || RequestContext::value('agent_id') == $currentUserIdString)) 
@@ -337,8 +337,8 @@ class TagAction
 				
 				if (!defined('TAGGING_JS_LOADED')) {
 					// Add the tagging manager script to the header
-					$harmoni =& Harmoni::instance();
-					$outputHandler =& $harmoni->getOutputHandler();
+					$harmoni = Harmoni::instance();
+					$outputHandler =$harmoni->getOutputHandler();
 					$outputHandler->setHead($outputHandler->getHead()
 						."\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."javascript/Tagger.js'></script>"
 						."\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."javascript/quicksort.js'></script>"

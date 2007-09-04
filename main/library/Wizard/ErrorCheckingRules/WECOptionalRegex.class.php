@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WECOptionalRegex.class.php,v 1.1 2005/10/31 21:19:54 adamfranco Exp $
+ * @version $Id: WECOptionalRegex.class.php,v 1.2 2007/09/04 20:28:09 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingRules/WECRegex.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingRules/WECRegex.class.p
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WECOptionalRegex.class.php,v 1.1 2005/10/31 21:19:54 adamfranco Exp $
+ * @version $Id: WECOptionalRegex.class.php,v 1.2 2007/09/04 20:28:09 adamfranco Exp $
  */
 class WECOptionalRegex 
 	extends WECRegex 
@@ -51,7 +51,7 @@ class WECOptionalRegex
 	 * @access public
 	 * @return boolean
 	 */
-	function checkValue (&$component) {
+	function checkValue ($component) {
 		$value = $component->getAllValues();
 		if (!strval($value) == '') 
 			return true;

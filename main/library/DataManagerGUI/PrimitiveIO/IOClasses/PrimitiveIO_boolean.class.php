@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_boolean.class.php,v 1.8 2006/01/26 19:10:13 cws-midd Exp $
+ * @version $Id: PrimitiveIO_boolean.class.php,v 1.9 2007/09/04 20:27:58 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_boolean.class.php,v 1.8 2006/01/26 19:10:13 cws-midd Exp $
+ * @version $Id: PrimitiveIO_boolean.class.php,v 1.9 2007/09/04 20:27:58 adamfranco Exp $
  */
 class PrimitiveIO_boolean extends WRadioList /* implements PrimitiveIO */ {
 	
@@ -25,7 +25,7 @@ class PrimitiveIO_boolean extends WRadioList /* implements PrimitiveIO */ {
 		
 		$this->addOption("1", "true");
 		$this->addOption("0", "false");
-		$zero =& Boolean::withValue("0");
+		$zero = Boolean::withValue("0");
 		$this->setValue($zero);
 	}
 	
@@ -35,7 +35,7 @@ class PrimitiveIO_boolean extends WRadioList /* implements PrimitiveIO */ {
 	 *
 	 * @return void
 	 **/
-	function setValue(&$value)
+	function setValue($value)
 	{
 		parent::setValue($value->value()?"1":"0");
 	}
@@ -46,7 +46,7 @@ class PrimitiveIO_boolean extends WRadioList /* implements PrimitiveIO */ {
 	 *
 	 * @return void
 	 **/
-	function setValueFromSObject(&$value)
+	function setValueFromSObject($value)
 	{
 		$this->setValue($value);
 	}
@@ -57,8 +57,8 @@ class PrimitiveIO_boolean extends WRadioList /* implements PrimitiveIO */ {
 	 * @access public
 	 * @return mixed
 	 */
-	function &getAllValues () {
-		$obj =& new Boolean($this->_value=="1"?true:false);
+	function getAllValues () {
+		$obj = new Boolean($this->_value=="1"?true:false);
 		return $obj;
 	}
 

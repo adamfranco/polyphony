@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HierarchyPrinter.class.php,v 1.12 2005/07/18 13:52:41 adamfranco Exp $
+ * @version $Id: HierarchyPrinter.class.php,v 1.13 2007/09/04 20:28:00 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HierarchyPrinter.class.php,v 1.12 2005/07/18 13:52:41 adamfranco Exp $
+ * @version $Id: HierarchyPrinter.class.php,v 1.13 2007/09/04 20:28:00 adamfranco Exp $
  */
 
 class HierarchyPrinter {
@@ -34,7 +34,7 @@ class HierarchyPrinter {
 	 * @access public
 	 * @since 11/8/04
 	 */
-	function printNode (& $node, & $harmoni,
+	function printNode ($node, $harmoni,
 								$startingPathInfoKey,
 								$printFunction, 
 								$hasChildrenFunction, 
@@ -52,7 +52,7 @@ class HierarchyPrinter {
 		print ">";
 		
 		// Get a string of our nodeIds
-		$nodeId =& $node->getId();
+		$nodeId =$node->getId();
 		
 		// Break the path info into parts for the enviroment and parts that
 		// designate which nodes to expand.
@@ -92,7 +92,7 @@ class HierarchyPrinter {
 				$expanded = FALSE;
 			}
 			
-			$url =& $harmoni->request->mkURLWithPassthrough();
+			$url =$harmoni->request->mkURLWithPassthrough();
 			$url->setValue('expanded_nodes', implode('!', $newExpandedNodes));
 			
 			print "<a style='text-decoration: none;' href='".$url->write()."'>".$symbol."</a>";
@@ -137,13 +137,13 @@ END;
 			print "'>";
 			
 			if ($color !== NULL) {
-				$childColor =& $color->replicate();
+				$childColor =$color->replicate();
 				$childColor->darken(20);
 			} else {
 				$childColor = NULL;
 			}
 			
-			eval('$children =& '.$getChildrenFunction.'($node);');
+			eval('$children = '.$getChildrenFunction.'($node);');
 			foreach (array_keys($children) as $key) {
 				HierarchyPrinter::printNode( $children[$key],														$harmoni, $startingPathInfoKey, $printFunction, $hasChildrenFunction,	$getChildrenFunction, $childColor );
 			}		

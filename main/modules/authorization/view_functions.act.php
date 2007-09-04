@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view_functions.act.php,v 1.6 2005/06/07 13:43:28 gabeschine Exp $
+ * @version $Id: view_functions.act.php,v 1.7 2007/09/04 20:28:11 adamfranco Exp $
  */
 
 $harmoni->request->startNamespace("polyphony-agents");
@@ -13,58 +13,58 @@ $harmoni->request->startNamespace("polyphony-agents");
 // Get the Layout compontents. See core/modules/moduleStructure.txt
 // for more info. 
 $harmoni->ActionHandler->execute("window", "screen");
-$mainScreen =& $harmoni->getAttachedData('mainScreen');
-$statusBar =& $harmoni->getAttachedData('statusBar');
-$centerPane =& $harmoni->getAttachedData('centerPane');
+$mainScreen =$harmoni->getAttachedData('mainScreen');
+$statusBar =$harmoni->getAttachedData('statusBar');
+$centerPane =$harmoni->getAttachedData('centerPane');
  
 
 // Layout
-$yLayout =& new YLayout();
-$actionRows =& new Container($yLayout, OTHER, 1);
+$yLayout = new YLayout();
+$actionRows = new Container($yLayout, OTHER, 1);
 $centerPane->add($actionRows, null, null, CENTER, CENTER);
 
 /// Intro
-$introHeader =& new Heading(_("View Functions"), 2);
+$introHeader = new Heading(_("View Functions"), 2);
 $actionRows->add($introHeader, "100%", null, LEFT, CENTER);
 
-$authZManager =& Services::getService("AuthZ");
+$authZManager = Services::getService("AuthZ");
 
 
 // Get the function type and print this info in two headers.
-$functionTypes =& $authZManager->getFunctionTypes();
+$functionTypes =$authZManager->getFunctionTypes();
 while ($functionTypes->hasNext()) {
-	$functionType =& $functionTypes->next();
+	$functionType =$functionTypes->next();
 	ob_start();
 	print "<strong>".$functionType->getAuthority()." :: ";
 	print $functionType->getDomain()." :: ";
 	print $functionType->getKeyword()."</strong> ";
-	$typeLayout =& new Block(ob_get_contents(), 2);
+	$typeLayout = new Block(ob_get_contents(), 2);
 	ob_end_clean();
 	
 	ob_start();
 	print "<em>".$functionType->getDescription()."</em>";
-	$descriptionLayout =& new Block(ob_get_contents(), 2);
+	$descriptionLayout = new Block(ob_get_contents(), 2);
 	ob_end_clean();
 	
 	$actionRows->add($typeLayout, "100%", null, LEFT, CENTER);
 	$actionRows->add($descriptionLayout, "100%", null, LEFT, CENTER);
 	
-	$functionLayout =& new Container($yLayout, BLOCK, 4);
+	$functionLayout = new Container($yLayout, BLOCK, 4);
 	$actionRows->add($functionLayout, "100%", null, LEFT, CENTER);
 	
 	$actionRows->add(new Block(" &nbsp; <br /> &nbsp; <br /> &nbsp;",2), "100%", null, LEFT, CENTER);
 	
 // 	Now get all the functions of the specified type
-	$functions =& $authZManager->getFunctions($functionType);
+	$functions =$authZManager->getFunctions($functionType);
 	while ($functions->hasNext()) {
-		$function =& $functions->next();
+		$function =$functions->next();
 		
 	//	Store function info and create layouts.
 	//	Types consist of {domain :: authority :: type :: description}
 	//	Functions consist of {Id :: displayName :: description}
 		
 		ob_start();
-		$id =& $function->getId();
+		$id =$function->getId();
 		print $id->getIdString()." - ";
 		print "<strong>".$function->getReferenceName()." - ";
 		print "</strong>".$function->getDescription();

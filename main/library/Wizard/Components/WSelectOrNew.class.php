@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectOrNew.class.php,v 1.6 2006/11/30 22:02:41 adamfranco Exp $
+ * @version $Id: WSelectOrNew.class.php,v 1.7 2007/09/04 20:28:08 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectOrNew.class.php,v 1.6 2006/11/30 22:02:41 adamfranco Exp $
+ * @version $Id: WSelectOrNew.class.php,v 1.7 2007/09/04 20:28:08 adamfranco Exp $
  */
 class WSelectOrNew
 	extends WizardComponentWithChildren 
@@ -43,9 +43,9 @@ class WSelectOrNew
 	 * @since 4/28/06
 	 */
 	function WSelectOrNew () {
-		$this->_select =& new WSelectList;
+		$this->_select = new WSelectList;
 		$this->_select->setParent($this);
-		$this->_new =& new WTextField;
+		$this->_new = new WTextField;
 		$this->_new->setParent($this);
 		
 		$this->_init();
@@ -102,13 +102,13 @@ class WSelectOrNew
      * @access public
      * @since 10/20/05
      */
-    function &setSelectComponent ( &$input ) {
+    function setSelectComponent ( $input ) {
     	ArgumentValidator::validate($input,
     		ExtendsValidatorRule::getRule("WizardComponent"));
 		ArgumentValidator::validate($input, 
 			HasMethodsValidatorRule::getRule("addOnChange"));
 		
-		$this->_select =& $input;
+		$this->_select =$input;
 		$this->_select->setParent($this);
 		
 		$this->_init();
@@ -124,11 +124,11 @@ class WSelectOrNew
      * @access public
      * @since 10/20/05
      */
-    function &setNewComponent ( &$input ) {
+    function setNewComponent ( $input ) {
     	ArgumentValidator::validate($input,
     		ExtendsValidatorRule::getRule("WizardComponent"));
 		
-		$this->_new =& $input;
+		$this->_new =$input;
 		$this->_new->setParent($this);
 		
 		return $this->_new;
@@ -154,9 +154,9 @@ class WSelectOrNew
  	 * @access public
  	 * @since 7/11/05
  	 */
- 	function &postCopy () {
- 		$this->_select =& $this->_select->copy();
- 		$this->_new =& $this->_new->copy();
+ 	function postCopy () {
+ 		$this->_select =$this->_select->copy();
+ 		$this->_new =$this->_new->copy();
  		return $this;
  	}
  	
@@ -179,7 +179,7 @@ class WSelectOrNew
 	 */
 	function validate () {
 		if($this->isUsingNewValue()){			
-			$rule =& $this->getErrorRule();
+			$rule =$this->getErrorRule();
 			if (!$rule) return true;
 			$err = $rule->checkValue($this);		
 			return $err;		
@@ -245,8 +245,8 @@ class WSelectOrNew
 	 * @access public
 	 * @return void
 	 */
-	function setErrorRule (&$rule) {
-		$this->_errorRule =& $rule;
+	function setErrorRule ($rule) {
+		$this->_errorRule =$rule;
 	}
 	
 	/**
@@ -274,7 +274,7 @@ class WSelectOrNew
 	 * @access public
 	 * @return ref object
 	 */
-	function &getErrorRule () {
+	function getErrorRule () {
 		return $this->_errorRule;
 	}
 	
@@ -329,7 +329,7 @@ class WSelectOrNew
 		$m .= "\n\t</div>";
 		
 		$errText = $this->getErrorText();
-		$errRule =& $this->getErrorRule();
+		$errRule =$this->getErrorRule();
 		
 		$errStyle = $this->getErrorStyle();
 		

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WECRegex.class.php,v 1.4 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WECRegex.class.php,v 1.5 2007/09/04 20:28:09 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingRules/WECRule.interface.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingRules/WECRule.interfac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WECRegex.class.php,v 1.4 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WECRegex.class.php,v 1.5 2007/09/04 20:28:09 adamfranco Exp $
  */
 class WECRegex extends WECRule {
 	var $_regex;
@@ -58,7 +58,7 @@ class WECRegex extends WECRule {
 	 * @access public
 	 * @return boolean
 	 */
-	function checkValue (&$component) {
+	function checkValue ($component) {
 		$value = $component->getAllValues();
 		if (preg_match("/".$this->_regex."/", $value)) return true;
 		return false;

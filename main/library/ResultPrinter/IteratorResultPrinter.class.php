@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.28 2006/11/30 22:02:40 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.29 2007/09/04 20:28:04 adamfranco Exp $
  */
  
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."GUIManager/StyleProperties/MarginTopSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.28 2006/11/30 22:02:40 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.29 2007/09/04 20:28:04 adamfranco Exp $
  */
 
 class IteratorResultPrinter 
@@ -41,14 +41,14 @@ class IteratorResultPrinter
 	 * @access public
 	 * @date 8/5/04
 	 */
-	function IteratorResultPrinter (& $iterator, $numColumns, 
+	function IteratorResultPrinter ($iterator, $numColumns, 
 									$numResultsPerPage, $callbackFunction) {
 		ArgumentValidator::validate($iterator, new HasMethodsValidatorRule("hasNext", "next"));
 		ArgumentValidator::validate($numColumns, new IntegerValidatorRule);
 		ArgumentValidator::validate($numResultsPerPage, new IntegerValidatorRule);
 		ArgumentValidator::validate($callbackFunction, new StringValidatorRule);
 		
-		$this->_iterator =& $iterator;
+		$this->_iterator =$iterator;
 		$this->_numColumns = $numColumns;
 		$this->_pageSize = $numResultsPerPage;
 		$this->_callbackFunction = $callbackFunction;
@@ -56,10 +56,10 @@ class IteratorResultPrinter
 		$this->_callbackParams = array();
 		$args = func_get_args();
 		for ($i=4; $i<count($args); $i++) {
-			$this->_callbackParams[] =& $args[$i];
+			$this->_callbackParams[] =$args[$i];
 		}
 		
-		$this->_resultLayout =& new TableLayout($this->_numColumns);
+		$this->_resultLayout = new TableLayout($this->_numColumns);
 	}
 	
 	/**
@@ -96,24 +96,24 @@ class IteratorResultPrinter
 	 * @access public
 	 * @date 8/5/04
 	 */
-	function &getLayout ($shouldPrintFunction = NULL) {
+	function getLayout ($shouldPrintFunction = NULL) {
 		$defaultTextDomain = textdomain("polyphony");
 		
 		$startingNumber = $this->getStartingNumber();
 		
-		$yLayout =& new YLayout();
-		$container =& new Container($yLayout,OTHER,1);
+		$yLayout = new YLayout();
+		$container = new Container($yLayout,OTHER,1);
 		
 		
 		$endingNumber = $startingNumber+$this->_pageSize-1;
 		$numItems = 0;
-		$resultContainer =& new Container($this->_resultLayout, OTHER, 1);		
+		$resultContainer = new Container($this->_resultLayout, OTHER, 1);		
 		
 		if ($this->_iterator->hasNext()) {
 			
 			// trash the items before our starting number
 			while ($this->_iterator->hasNext() && $numItems+1 < $startingNumber) {
-				$item =& $this->_iterator->next();
+				$item =$this->_iterator->next();
 				
 				// Ignore this if it should be filtered.
 				if (!$shouldPrintFunction || $shouldPrintFunction($item))
@@ -124,7 +124,7 @@ class IteratorResultPrinter
 			// print up to $this->_pageSize items
 			$pageItems = 0;
 			while ($this->_iterator->hasNext() && $numItems < $endingNumber) {
-				$item =& $this->_iterator->next();
+				$item =$this->_iterator->next();
 				
 				// Only Act if this item isn't to be filtered.
 				eval('$shouldPrint = (!$shouldPrintFunction || '.$shouldPrintFunction.'($item));');
@@ -132,7 +132,7 @@ class IteratorResultPrinter
 					$numItems++;
 					$pageItems++;
 					
-					$itemArray = array (& $item);
+					$itemArray = array ($item);
 					$params = array_merge($itemArray, $this->_callbackParams);
 					
 					// Add in our starting number to the end so that that it is accessible.
@@ -160,7 +160,7 @@ class IteratorResultPrinter
 			
 			// find the count of items 
 			while ($this->_iterator->hasNext()) {
-				$item =& $this->_iterator->next();
+				$item =$this->_iterator->next();
 				
 				// Ignore this if it should be filtered.
 				eval('$shouldPrint = (!$shouldPrintFunction || '.$shouldPrintFunction.'($item));');
@@ -168,7 +168,7 @@ class IteratorResultPrinter
 					$numItems++;
 			}	
 		} else {
-			$text =& new Block("<ul><li>"._("No items are available.")."</li></ul>", STANDARD_BLOCK);
+			$text = new Block("<ul><li>"._("No items are available.")."</li></ul>", STANDARD_BLOCK);
 			$resultContainer->add($text, null, null, CENTER, CENTER);
 		}		
 		
@@ -181,10 +181,10 @@ class IteratorResultPrinter
  		if ($linksHTML = $this->getPageLinks($startingNumber, $numItems)) {
 			
 			// Add the links to the page
-			$pageLinkBlock =& new Block($linksHTML, BACKGROUND_BLOCK);
+			$pageLinkBlock = new Block($linksHTML, BACKGROUND_BLOCK);
 			$container->add($pageLinkBlock, "100%", null, CENTER, CENTER);
 			
-			$styleCollection =& new StyleCollection("*.result_page_links", "result_page_links", "Result Page Links", "Links to other pages of results.");
+			$styleCollection = new StyleCollection("*.result_page_links", "result_page_links", "Result Page Links", "Links to other pages of results.");
 			$styleCollection->addSP(new MarginTopSP("10px"));
 			$pageLinkBlock->addStyle($styleCollection);
 		}

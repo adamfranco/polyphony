@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicButton.class.php,v 1.6 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WLogicButton.class.php,v 1.7 2007/09/04 20:28:07 adamfranco Exp $
  */ 
 
  require_once(POLYPHONY."/main/library/Wizard/Components/WLogicRule.class.php");
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicButton.class.php,v 1.6 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WLogicButton.class.php,v 1.7 2007/09/04 20:28:07 adamfranco Exp $
  */
 class WLogicButton extends WEventButton {
 		
@@ -39,8 +39,8 @@ class WLogicButton extends WEventButton {
 	 * @access public
 	 * @since 5/31/06
 	 */
-	function &withLogicAndLabel (&$controller, $label) {
-		$button =& new WLogicButton();
+	function withLogicAndLabel ($controller, $label) {
+		$button = new WLogicButton();
 		$button->setLogicAndLabel($controller, $label);
 		
 		return $button;
@@ -54,8 +54,8 @@ class WLogicButton extends WEventButton {
 	 * @access public
 	 * @since 5/31/06
 	 */
-	function &withLabel ($label) {
-		$button =& new WLogicButton();
+	function withLabel ($label) {
+		$button = new WLogicButton();
 		
 		$button->setLabel($label);
 		
@@ -71,8 +71,8 @@ class WLogicButton extends WEventButton {
 	 * @access public
 	 * @since 5/31/06
 	 */
-	function setLogicAndLabel (&$controller, $label) {
-		$this->_logic =& $controller;
+	function setLogicAndLabel ($controller, $label) {
+		$this->_logic =$controller;
 		$this->_label = $label;
 	}
 	
@@ -84,8 +84,8 @@ class WLogicButton extends WEventButton {
 	 * @access public
 	 * @since 7/31/06
 	 */
-	function setLogic (&$controller) {
-		$this->_logic =& $controller;
+	function setLogic ($controller) {
+		$this->_logic =$controller;
 	}
 
 	/**
@@ -121,8 +121,8 @@ class WLogicButton extends WEventButton {
 	function update ($fieldName) {
 		$val = RequestContext::value($fieldName);
 		if ($val) {
-			$wizard =& $this->getWizard();
-			$stepContaner =& $wizard->_stepContainer;
+			$wizard =$this->getWizard();
+			$stepContaner =$wizard->_stepContainer;
 			$stepContaner->nextStep($this);			
 			$this->_pressed = true;
 		}
@@ -135,7 +135,7 @@ class WLogicButton extends WEventButton {
 	 * @access public
 	 * @since 7/31/06
 	 */
-	function &getLogicRule () {
+	function getLogicRule () {
 		return $this->_logic;
 	}
 	

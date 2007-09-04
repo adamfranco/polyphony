@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabAssetIterator.class.php,v 1.10 2006/11/30 22:02:39 adamfranco Exp $
+ * @version $Id: TabAssetIterator.class.php,v 1.11 2007/09/04 20:28:02 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabAssetIterator.class.php,v 1.10 2006/11/30 22:02:39 adamfranco Exp $
+ * @version $Id: TabAssetIterator.class.php,v 1.11 2007/09/04 20:28:02 adamfranco Exp $
  */
 class TabAssetIterator 
 extends HarmoniIterator 
@@ -44,13 +44,13 @@ extends HarmoniIterator
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function TabAssetIterator ($srcDir, &$parentRepositoryImporter) {		
+	function TabAssetIterator ($srcDir, $parentRepositoryImporter) {		
 		if (Services::serviceRunning("Logging")) {
-			$loggingManager =& Services::getService("Logging");
-			$log =& $loggingManager->getLogForWriting("Harmoni");
-			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+			$loggingManager = Services::getService("Logging");
+			$log =$loggingManager->getLogForWriting("Harmoni");
+			$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
 							"A format in which the acting Agent[s] and the target nodes affected are specified.");
-			$priorityType =& new Type("logging", "edu.middlebury", "Error",
+			$priorityType = new Type("logging", "edu.middlebury", "Error",
 							"Events involving critical system errors.");
 		}			
 		if (file_exists($srcDir."metadata.txt") && 
@@ -67,7 +67,7 @@ extends HarmoniIterator
 			if (count($this->_assetList) == 0) {
 				$parentRepositoryImporter->addError("There are no assets to import in: ".$srcDir."metadata.txt.");
 				if (isset($log)) {
-					$item =& new AgentNodeEntryItem("TabImporter Error",
+					$item = new AgentNodeEntryItem("TabImporter Error",
 						"There are no assets to import in: $srcDir/metadata.txt.");
 					$log->appendLogWithTypes($item, $formatType, $priorityType);
 				}
@@ -78,7 +78,7 @@ extends HarmoniIterator
 		else {
 			$parentRepositoryImporter->addError("Tab-Delimited parse failed: ".$srcDir."metadata.txt does not exist or is unreadable.");
 			if (isset($log)) {
-				$item =& new AgentNodeEntryItem("TabImporter Error",
+				$item = new AgentNodeEntryItem("TabImporter Error",
 					"Tab-Delimited parse failed: $srcDir/metadata.txt does not exist or is unreadable.");
 				$log->appendLogWithTypes($item, $formatType, $priorityType);
 			}
@@ -106,8 +106,8 @@ extends HarmoniIterator
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function &next() {
-		$temp =& $this->_assetList[$this->_current];
+	function next() {
+		$temp =$this->_assetList[$this->_current];
 		$this->_current++;
 		return $temp;
 	}

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositorySearchModule.interface.php,v 1.4 2006/04/26 21:40:29 adamfranco Exp $
+ * @version $Id: RepositorySearchModule.interface.php,v 1.5 2007/09/04 20:28:03 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositorySearchModule.interface.php,v 1.4 2006/04/26 21:40:29 adamfranco Exp $
+ * @version $Id: RepositorySearchModule.interface.php,v 1.5 2007/09/04 20:28:03 adamfranco Exp $
  */
 
 class RepositorySearchModuleInterface {
@@ -30,7 +30,7 @@ class RepositorySearchModuleInterface {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function createSearchForm (&$repository, $action ) {
+	function createSearchForm ($repository, $action ) {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface <b> ".__CLASS__."</b> has not been overloaded in a child class.");
 	}
 	
@@ -42,7 +42,7 @@ class RepositorySearchModuleInterface {
 	 * @access public
 	 * @since 4/26/06
 	 */
-	function createSearchFields (&$repository) {
+	function createSearchFields ($repository) {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface <b> ".__CLASS__."</b> has not been overloaded in a child class.");
 	}
 	

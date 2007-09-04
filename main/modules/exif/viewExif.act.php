@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewExif.act.php,v 1.2 2006/11/30 22:02:44 adamfranco Exp $
+ * @version $Id: viewExif.act.php,v 1.3 2007/09/04 20:28:12 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(EXIF);
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewExif.act.php,v 1.2 2006/11/30 22:02:44 adamfranco Exp $
+ * @version $Id: viewExif.act.php,v 1.3 2007/09/04 20:28:12 adamfranco Exp $
  */
 class viewExifAction
 	extends MainWindowAction
@@ -42,8 +42,8 @@ class viewExifAction
 	
 	
 	function buildContent () {
-		$harmoni =& Harmoni::instance();
-		$centerPane =& $this->getActionRows();
+		$harmoni = Harmoni::instance();
+		$centerPane =$this->getActionRows();
 		$centerPane->add(new Heading(_("Upload a file to view its EXIF/IPTC data"), 2), null, null, LEFT, TOP);
 		
 		ob_start();
@@ -61,7 +61,7 @@ class viewExifAction
 			ob_start();
 			print "<h2>".$fileArray['name']."</h2>";
 			
-			$exifImporter =& new ExifRepositoryImporter($fileArray['tmp_name'], null, false);
+			$exifImporter = new ExifRepositoryImporter($fileArray['tmp_name'], null, false);
 			$exifImporter->getSingleAssetInfo($fileArray['tmp_name']);
 			
 // 			printpre($exifImporter->_photoshopIPTC);

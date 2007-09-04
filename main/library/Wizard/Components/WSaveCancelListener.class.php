@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveCancelListener.class.php,v 1.4 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WSaveCancelListener.class.php,v 1.5 2007/09/04 20:28:08 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveCancelListener.class.php,v 1.4 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WSaveCancelListener.class.php,v 1.5 2007/09/04 20:28:08 adamfranco Exp $
  */
 class WSaveCancelListener 
 	extends WizardEventListener 
@@ -37,8 +37,8 @@ class WSaveCancelListener
 	 * @access public
 	 * @return void
 	 */
-	function setParent (&$parent) {
-		$this->_parent =& $parent;
+	function setParent ($parent) {
+		$this->_parent =$parent;
 		
 		$this->_attemptAdding();
 	}
@@ -51,7 +51,7 @@ class WSaveCancelListener
 	function _attemptAdding () {
 		if ($this->_added) return;
 		
-		$wz =& $this->getWizard();
+		$wz =$this->getWizard();
 		if ($wz) {
 			$wz->addEventListener($this);
 			$this->_added = true;
@@ -121,7 +121,7 @@ class WSaveCancelListener
 	 * @access public
 	 * @return void
 	 */
-	function handleEvent ($eventType, &$source, $context) {
+	function handleEvent ($eventType, $source, $context) {
 		switch ($eventType) {
 			case 'edu.middlebury.polyphony.wizard.save':
 				$this->_save = true;

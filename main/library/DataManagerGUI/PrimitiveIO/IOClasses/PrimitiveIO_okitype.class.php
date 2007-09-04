@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_okitype.class.php,v 1.7 2006/11/30 22:02:39 adamfranco Exp $
+ * @version $Id: PrimitiveIO_okitype.class.php,v 1.8 2007/09/04 20:27:58 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_okitype.class.php,v 1.7 2006/11/30 22:02:39 adamfranco Exp $
+ * @version $Id: PrimitiveIO_okitype.class.php,v 1.8 2007/09/04 20:27:58 adamfranco Exp $
  */
 class PrimitiveIO_okitype extends WizardComponentWithChildren {
 	var $_domain;
@@ -24,16 +24,16 @@ class PrimitiveIO_okitype extends WizardComponentWithChildren {
 	var $_keyword;
 
 	function PrimitiveIO_okitype() {
-		$rule =& new WECNonZeroRegex("[\\w]+");
-		$this->_domain =& new WTextField();
+		$rule = new WECNonZeroRegex("[\\w]+");
+		$this->_domain = new WTextField();
 		$this->_domain->setErrorRule($rule);
 		$this->_domain->setErrorText(dgettext("polyphony", "Please enter a domain."));
 		
-		$this->_authority =& new WTextField();
+		$this->_authority = new WTextField();
 		$this->_authority->setErrorRule($rule);
 		$this->_authority->setErrorText(dgettext("polyphony", "Please enter an authority."));
 		
-		$this->_keyword =& new WTextField();
+		$this->_keyword = new WTextField();
 		$this->_keyword->setErrorRule($rule);
 		$this->_keyword->setErrorText(dgettext("polyphony", "Please enter a keyword."));
 		
@@ -48,7 +48,7 @@ class PrimitiveIO_okitype extends WizardComponentWithChildren {
 	 *
 	 * @return void
 	 **/
-	function setValue(&$value) {
+	function setValue($value) {
 		$this->_domain->setValue($value->getDomain());
 		$this->_authority->setValue($value->getAuthority());
 		$this->_keyword->setValue($value->getKeyword());
@@ -60,7 +60,7 @@ class PrimitiveIO_okitype extends WizardComponentWithChildren {
 	 *
 	 * @return void
 	 **/
-	function setValueFromSObject(&$value) {
+	function setValueFromSObject($value) {
 		$this->setValue($value);
 	}
 
@@ -71,7 +71,7 @@ class PrimitiveIO_okitype extends WizardComponentWithChildren {
 	 * @return mixed
 	 */
 	function getAllValues () {
-		$type =& new Type();
+		$type = new Type();
 		$type->setDomain($this->_domain->getAllValues());
 		$type->setAuthority($this->_authority->getAllValues());
 		$type->setKeyword($this->_keyword->getAllValues());

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add_to_group.act.php,v 1.9 2005/09/07 21:18:25 adamfranco Exp $
+ * @version $Id: add_to_group.act.php,v 1.10 2007/09/04 20:28:10 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add_to_group.act.php,v 1.9 2005/09/07 21:18:25 adamfranco Exp $
+ * @version $Id: add_to_group.act.php,v 1.10 2007/09/04 20:28:10 adamfranco Exp $
  */
  
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -33,7 +33,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add_to_group.act.php,v 1.9 2005/09/07 21:18:25 adamfranco Exp $
+ * @version $Id: add_to_group.act.php,v 1.10 2007/09/04 20:28:10 adamfranco Exp $
  */
 class add_to_groupAction 
 	extends MainWindowAction
@@ -46,17 +46,17 @@ class add_to_groupAction
 	 * @since 4/26/05
 	 */
 	function isAuthorizedToExecute () {
-		$idManager =& Services::getService("Id");
-		$agentManager =& Services::getService("Agent");
-		$harmoni =& Harmoni::instance();
+		$idManager = Services::getService("Id");
+		$agentManager = Services::getService("Agent");
+		$harmoni = Harmoni::instance();
 		
 		$harmoni->request->startNamespace("polyphony-agents");
-		$destinationId =& $idManager->getId(RequestContext::value('destinationgroup'));
+		$destinationId =$idManager->getId(RequestContext::value('destinationgroup'));
 		$harmoni->request->endNamespace();
 
 		// Check for authorization
-		$authZManager =& Services::getService("AuthZ");
-		$idManager =& Services::getService("IdManager");
+		$authZManager = Services::getService("AuthZ");
+		$idManager = Services::getService("IdManager");
 		if ($authZManager->isUserAuthorized(
 					$idManager->getId("edu.middlebury.authorization.add_children"),
 					$destinationId))
@@ -75,27 +75,27 @@ class add_to_groupAction
 	 */
 	function buildContent () {
 
-		$idManager =& Services::getService("Id");
-		$agentManager =& Services::getService("Agent");
-		$harmoni =& Harmoni::instance();
+		$idManager = Services::getService("Id");
+		$agentManager = Services::getService("Agent");
+		$harmoni = Harmoni::instance();
 		
 		$harmoni->request->startNamespace("polyphony-agents");
 				
-		$id =& $idManager->getId(RequestContext::value('destinationgroup'));
-		$destGroup =& $agentManager->getGroup($id);
+		$id =$idManager->getId(RequestContext::value('destinationgroup'));
+		$destGroup =$agentManager->getGroup($id);
 		
 		foreach ($harmoni->request->getKeys() as $idString) {
 		
 			$type = RequestContext::value($idString);
 		
 			if ($type == "group") {
-				$id =& $idManager->getId(strval($idString));
-				$member =& $agentManager->getGroup($id);
+				$id =$idManager->getId(strval($idString));
+				$member =$agentManager->getGroup($id);
 				$destGroup->add($member);
 		
 			} else if ($type == "agent") {
-				$id =& $idManager->getId(strval($idString));
-				$member =& $agentManager->getAgent($id);
+				$id =$idManager->getId(strval($idString));
+				$member =$agentManager->getAgent($id);
 				$destGroup->add($member);
 			}
 		}

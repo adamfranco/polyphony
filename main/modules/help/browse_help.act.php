@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.8 2006/06/26 12:51:47 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.9 2007/09/04 20:28:13 adamfranco Exp $
  */
  
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -34,7 +34,7 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.8 2006/06/26 12:51:47 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.9 2007/09/04 20:28:13 adamfranco Exp $
  */
 class browse_helpAction 
 	extends Action
@@ -71,15 +71,15 @@ class browse_helpAction
 	 * @access public
 	 * @since 4/25/05
 	 */
-	function &execute ( &$harmoni ) {
-		$actionRows =& new Container(new YLayout, BLOCK, BACKGROUND_BLOCK);
+	function execute ( $harmoni ) {
+		$actionRows = new Container(new YLayout, BLOCK, BACKGROUND_BLOCK);
 		
 		$heading = dgettext("polyphony", 'Help');
 		if ($topic = $this->getTopic())
 			$heading .= " - ".$topic;
 		$actionRows->add(new Heading($heading, 1));
 		
-		$actionCols =& $actionRows->add(new Container(new XLayout, BLANK, 1));
+		$actionCols =$actionRows->add(new Container(new XLayout, BLANK, 1));
 		
 		$actionCols->add($this->getHelpMenu(), "250px", null, null, TOP);
 		
@@ -95,10 +95,10 @@ class browse_helpAction
 	 * @access public
 	 * @since 12/8/05
 	 */
-	function &getHelpMenu () {
-		$this->_menu =& new Menu(new YLayout, 1);
+	function getHelpMenu () {
+		$this->_menu = new Menu(new YLayout, 1);
 		
-		$toc =& $this->getTableOfContents();
+		$toc =$this->getTableOfContents();
 		$toc->acceptVisitor($this);
 				
 		return $this->_menu; 
@@ -112,13 +112,13 @@ class browse_helpAction
 	 * @access public
 	 * @since 5/31/06
 	 */
-	function &visitTableOfContentsPart ($tocPart) {
-		$harmoni =& Harmoni::instance();
+	function visitTableOfContentsPart ($tocPart) {
+		$harmoni = Harmoni::instance();
 		
 		if ($tocPart->topic == $harmoni->config->get('programTitle') && is_null($tocPart->heading)) {
-			$menuItem =& new MenuItemHeading($tocPart->topic, 1);
+			$menuItem = new MenuItemHeading($tocPart->topic, 1);
 		}else if ($tocPart->topic == $this->getMainTopic() && is_null($tocPart->heading))
-			$menuItem =& new MenuItemLink(
+			$menuItem = new MenuItemLink(
 				$this->getMainTopic(), 
 				$harmoni->request->quickURL("help", "browse_help"), 
 				(RequestContext::value("topic"))?FALSE:TRUE,
@@ -135,7 +135,7 @@ class browse_helpAction
 				$title = $tocPart->topic;
 			}
 			
-			$menuItem =& new MenuItemLink(
+			$menuItem = new MenuItemLink(
 				$title, 
 				$url, 
 				(RequestContext::value("topic") == $tocPart->topic && RequestContext::value("heading") == $tocPart->heading)?TRUE:FALSE,
@@ -158,11 +158,11 @@ class browse_helpAction
 	 * @access public
 	 * @since 12/8/05
 	 */
-	function &getHelpTopics () {
+	function getHelpTopics () {
 		if (!isset($this->_topics)) {
 			
 			//replace this with config lines.
-			$harmoni =& Harmoni::instance();
+			$harmoni = Harmoni::instance();
 			if (isset($_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')]) && is_array($_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')]))
 				$this->_dirs = $_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')];
 			else
@@ -171,13 +171,13 @@ class browse_helpAction
 			$this->_topics = array();
 			
 			// Set up the table of contents
-			$this->_tableOfContents =& new TableofContentsPart;
+			$this->_tableOfContents = new TableofContentsPart;
 			$this->_tableOfContents->topic = $harmoni->config->get('programTitle');
 			$this->_tableOfContents->level = -1;
 			
 			
 			// traverse through our directories.
-			$langMan =& Services::getService('LanguageManager');
+			$langMan = Services::getService('LanguageManager');
 			$lang = $langMan->getLanguage();
 			
 			foreach ($this->_dirs as $key => $dirArray) {
@@ -204,7 +204,7 @@ class browse_helpAction
 	 * @access public
 	 * @since 5/31/06
 	 */
-	function &getTableOfContents () {
+	function getTableOfContents () {
 		if (!isset($this->_tableOfContents))
 			$this->getHelpTopics();
 		
@@ -232,7 +232,7 @@ class browse_helpAction
 				$topic = $matches[1];
 				$this->_topics[$filePath] = $topic;
 				
-				$part =& $this->_tableOfContents->addChild($topic, null, 0, $filePath, $urlPath);
+				$part =$this->_tableOfContents->addChild($topic, null, 0, $filePath, $urlPath);
 			
 				if (preg_match_all(
 					"/<h([1-6])>(.*)<\/h[1-6]>/i", 
@@ -259,7 +259,7 @@ class browse_helpAction
 	 * @since 12/9/05
 	 */
 	function addHelpDirectory ( $directory, $urlPath ) {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		if (!isset($_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')]) || !is_array($_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')]))
 			$_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')] = array();
 		
@@ -280,7 +280,7 @@ class browse_helpAction
 	 */
 	function getMainTopic () {
 		if (!isset($this->_mainTopic)) {
-			$topics =& $this->getHelpTopics();
+			$topics =$this->getHelpTopics();
 		
 			foreach ($topics as $file => $topic) {
 				if (basename($file) == 'index.html')
@@ -316,47 +316,47 @@ class browse_helpAction
 	 * @access public
 	 * @since 12/9/05
 	 */
-	function &getTopicContents ($topic) {
-		$topicContainer =& new Container(new YLayout, BLANK, 1);
+	function getTopicContents ($topic) {
+		$topicContainer = new Container(new YLayout, BLANK, 1);
 		
 		$tocPart = $this->_tableOfContents->getTableOfContentsPart($topic);
 		
-		$document =& $this->getTopicXmlDocument($topic);
+		$document =$this->getTopicXmlDocument($topic);
 		
-		$bodyElements =& $document->getElementsByPath("/html/body");
-		$body =& $bodyElements->item(0);
+		$bodyElements =$document->getElementsByPath("/html/body");
+		$body =$bodyElements->item(0);
 				
 		$this->updateSrcTags($document->documentElement, $tocPart->urlPath."/");
 		
 		// put custom style sheets in the page's head
-		$headElements =& $document->getElementsByPath("/html/head");
-		$head =& $headElements->item(0);
+		$headElements =$document->getElementsByPath("/html/head");
+		$head =$headElements->item(0);
 		$newHeadText = '';
 		for ($i = 0; $i < count($head->childNodes); $i++) {
 			$newHeadText .= $head->childNodes[$i]->toString()."\n\t\t";
 		}
 		
-		$harmoni =& Harmoni::instance();
-		$outputHandler =& $harmoni->getOutputHandler();
+		$harmoni = Harmoni::instance();
+		$outputHandler =$harmoni->getOutputHandler();
 		$outputHandler->setHead($outputHandler->getHead().$newHeadText);
 		
 		
 		ob_start();
 		for ($i = 0; $i < count($body->childNodes); $i++) {
-			$element =& $body->childNodes[$i];
+			$element =$body->childNodes[$i];
 			switch ($element->getTagName()) {
 
 				case 'h1':
-					$heading =& new Heading($element->getText(), 1);
+					$heading = new Heading($element->getText(), 1);
 				case 'h2':
 					if (!isset($heading))
-						$heading =& new Heading($element->getText(), 2);
+						$heading = new Heading($element->getText(), 2);
 				case 'h3':
 					if (!isset($heading))
-						$heading =& new Heading($element->getText(), 3);
+						$heading = new Heading($element->getText(), 3);
 				case 'h4':
 					if (!isset($heading))
-						$heading =& new Heading($element->getText(), 4);
+						$heading = new Heading($element->getText(), 4);
 					
 					$heading->setPreHTML(
 						"<a name=\""
@@ -399,7 +399,7 @@ class browse_helpAction
 	 * @access public
 	 * @since 5/31/06
 	 */
-	function updateSrcTags (&$element, $path) {
+	function updateSrcTags ($element, $path) {
 		if (method_exists($element, 'hasAttribute')
 			&& $element->hasAttribute('src') 
 			&& !preg_match('/([a-z]+:\/\/.+)|(\/.+)/', $element->getAttribute('src')))
@@ -443,7 +443,7 @@ class browse_helpAction
 /ix';
 		
 		if (preg_match_all($regex, $inputText, $matches)) {
-			$harmoni =& Harmoni::instance();
+			$harmoni = Harmoni::instance();
 			for ($i = 0; $i < count($matches[0]); $i++) {
 				ob_start();
 				
@@ -477,8 +477,8 @@ class browse_helpAction
 	 * @access public
 	 * @since 12/9/05
 	 */
-	function &getTopicXmlDocument ($topic) {
-		$document =& new DOMIT_Document();
+	function getTopicXmlDocument ($topic) {
+		$document = new DOMIT_Document();
 		
 		$tocPart = $this->_tableOfContents->getTableOfContentsPart($topic);
 		
@@ -520,7 +520,7 @@ class browse_helpAction
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.8 2006/06/26 12:51:47 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.9 2007/09/04 20:28:13 adamfranco Exp $
  */
 class TableOfContentsPart {
 		
@@ -553,7 +553,7 @@ class TableOfContentsPart {
 	 * @access public
 	 * @since 5/31/06
 	 */
-	function &addChild ($topic, $heading, $level, $file, $urlPath) {
+	function addChild ($topic, $heading, $level, $file, $urlPath) {
 		$false = false;
 		
 		// if the level is greater or equal to ours, it is a sibling or uncle
@@ -565,19 +565,19 @@ class TableOfContentsPart {
 		{
 			$keys = array_keys($this->children);
 			
-			$part =& $this->children[$keys[count($keys) - 1]]->addChild($topic, $heading, $level, $file, $urlPath);
+			$part =$this->children[$keys[count($keys) - 1]]->addChild($topic, $heading, $level, $file, $urlPath);
 			if ($part)
 				return $part;
 		}
 		
 		// if it couldn't be appended to our last child, add it as a new child
-		$part =& new TableofContentsPart;
+		$part = new TableofContentsPart;
 		$part->topic = $topic;
 		$part->heading = $heading;
 		$part->level = $level;
 		$part->file = $file;
 		$part->urlPath = $urlPath;
-		$this->children[$topic.$heading] =& $part;
+		$this->children[$topic.$heading] =$part;
 		if ($level == 0)
 			ksort($this->children);
 		return $part;
@@ -591,8 +591,8 @@ class TableOfContentsPart {
 	 * @access public
 	 * @since 5/31/06
 	 */
-	function &acceptVisitor ($visitor) {
-		$result =& $visitor->visitTableOfContentsPart($this);
+	function acceptVisitor ($visitor) {
+		$result =$visitor->visitTableOfContentsPart($this);
 		return $result;
 	}
 	
@@ -605,12 +605,12 @@ class TableOfContentsPart {
 	 * @access public
 	 * @since 5/31/06
 	 */
-	function &getTableOfContentsPart ($topic, $heading = null) {
+	function getTableOfContentsPart ($topic, $heading = null) {
 		if ($topic == $this->topic && $heading == $this->heading)
 			return $this;
 		
 		foreach (array_keys($this->children) as $key) {
-			$result =& $this->children[$key]->getTableOfContentsPart($topic, $heading);
+			$result =$this->children[$key]->getTableOfContentsPart($topic, $heading);
 			if ($result)
 				return $result;
 		}

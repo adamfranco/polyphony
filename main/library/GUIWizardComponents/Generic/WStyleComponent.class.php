@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStyleComponent.class.php,v 1.1 2006/08/19 21:08:39 sporktim Exp $
+ * @version $Id: WStyleComponent.class.php,v 1.2 2007/09/04 20:28:00 adamfranco Exp $
  */ 
 
 
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStyleComponent.class.php,v 1.1 2006/08/19 21:08:39 sporktim Exp $
+ * @version $Id: WStyleComponent.class.php,v 1.2 2007/09/04 20:28:00 adamfranco Exp $
  */
  
 class WStyleComponent 
@@ -43,7 +43,7 @@ class WStyleComponent
 		$this->_property = $property;
 		$this->_component = $component;
 		
-		$styleComponent =& $this->getStyleComponent();
+		$styleComponent =$this->getStyleComponent();
 		
 		
 		$rule = $styleComponent->getRule();
@@ -62,7 +62,7 @@ class WStyleComponent
 		}
 	
 		if (get_class($styleComponent) == 'colorsc') {
-			$input =& new WSelectOrNew();
+			$input = new WSelectOrNew();
 			$input->addOption('', "(not set)");
 			
 			
@@ -102,7 +102,7 @@ class WStyleComponent
 			// 			if ([[colorwheel colors]])
  			// generate options for colors
 		} else if ($styleComponent->isLimitedToOptions()) {
-			$input =& new WSelectList();
+			$input = new WSelectList();
 			$input->addOption('', "(not set)");
 			$options = $styleComponent->getOptions();
 			foreach ($options as $opt) {
@@ -110,7 +110,7 @@ class WStyleComponent
 			}
 			$input->setValue($styleComponent->getValue());
 		} else if ($styleComponent->hasOptions()) {
-			$input =& new WSelectOrNew();
+			$input = new WSelectOrNew();
 			$input->addOption('', "(not set)");
 			$options = $styleComponent->getOptions();
 			foreach ($options as $opt) {
@@ -118,7 +118,7 @@ class WStyleComponent
 			}
 			$input->setValue($styleComponent->getValue());
 		} else {	
-			$input =& new WTextField();
+			$input = new WTextField();
 			$input->setValue($styleComponent->getValue());
 
 		}
@@ -131,7 +131,7 @@ class WStyleComponent
 		
 		
 		
-		$this->_wizardComponent =& $input;
+		$this->_wizardComponent =$input;
 		
 		
 		
@@ -142,16 +142,16 @@ class WStyleComponent
 	}
 	
 	
-	function &getStyleComponent(){
+	function getStyleComponent(){
 
-		eval('$theme =& '.$this->_getThemeCallBack."();");		
-		$collection =& $theme->getStyleCollection($this->_collection);
+		eval('$theme = '.$this->_getThemeCallBack."();");		
+		$collection =$theme->getStyleCollection($this->_collection);
 		//print " ".$this->_collection;
 		//print " ".$this->_property;
 		
 
 		
-		$property =& $collection->getStyleProperty($this->_property);
+		$property =$collection->getStyleProperty($this->_property);
 		return $property->getStyleComponent($this->_component);
 		
 		
@@ -160,9 +160,9 @@ class WStyleComponent
 	
 	
 	/*
-	function &getWizardRepresentation () {
+	function getWizardRepresentation () {
 		if (get_class($this) == 'colorsc') {
-			$input =& new WSelectOrNew();
+			$input = new WSelectOrNew();
 			$input->addOption('', "(not set)");
 			// make sure the current color is a possibility.
 			if (!is_null($this->_value)){
@@ -172,21 +172,21 @@ class WStyleComponent
 			// 			if ([[colorwheel colors]])
  			// generate options for colors
 		} else if ($this->_limitedToOptions) {
-			$input =& new WSelectList();
+			$input = new WSelectList();
 			$input->addOption('', "(not set)");
 			foreach ($this->_options as $opt) {
 				$input->addOption($opt, $opt, strtolower(preg_replace("/[^a-zA-Z0-9:_-]/", "-", $this->_displayName)).": $opt;");
 			}
 			$input->setValue($this->_value);
 		} else if ($this->hasOptions()) {
-			$input =& new WSelectOrNew();
+			$input = new WSelectOrNew();
 			$input->addOption('', "(not set)");
 			foreach ($this->_options as $opt) {
 				$input->addOption($opt, $opt, strtolower(preg_replace("/[^a-zA-Z0-9:_-]/", "-", $this->_displayName)).": $opt;");
 			}
 			$input->setValue($this->_value);
 		} else {
-			$input =& new WTextField();
+			$input = new WTextField();
 			$input->setValue($this->_value);
 		}
 		return $input;
@@ -206,8 +206,8 @@ class WStyleComponent
 		
 		return $this->_wizardComponent->validate();
 		
-		//$styleComponent =& $this->getStyleComponent();		
-		//$rule =& $styleComponent->getRule();
+		//$styleComponent =$this->getStyleComponent();		
+		//$rule =$styleComponent->getRule();
 		//$err = !$rule->check($styleComponent->getValue());
 		//if (!$err) $this->_showError = true;
 		//return $err;
@@ -228,11 +228,11 @@ class WStyleComponent
 		
 		$this->_wizardComponent->update($fieldName);
 		
-			$styleComponent =& $this->getStyleComponent();			
+			$styleComponent =$this->getStyleComponent();			
 			$val = $this->_wizardComponent->getAllValues();
 
 			
-			$rule =& $styleComponent->getRule();
+			$rule =$styleComponent->getRule();
 			
 			
 			
@@ -291,7 +291,7 @@ class WStyleComponent
 		
 		/*$errText = $this->getErrorText();
 		//$errText = sprintf($errText,"32werwer4");
-		$errRule =& $this->getErrorRule();
+		$errRule =$this->getErrorRule();
 		$errStyle = $this->getErrorStyle();
 		
 		

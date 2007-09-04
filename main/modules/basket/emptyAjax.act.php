@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: emptyAjax.act.php,v 1.3 2006/06/26 19:22:42 adamfranco Exp $
+ * @version $Id: emptyAjax.act.php,v 1.4 2007/09/04 20:28:12 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: emptyAjax.act.php,v 1.3 2006/06/26 19:22:42 adamfranco Exp $
+ * @version $Id: emptyAjax.act.php,v 1.4 2007/09/04 20:28:12 adamfranco Exp $
  */
 class emptyAjaxAction 
 	extends MainWindowAction {
@@ -57,9 +57,9 @@ class emptyAjaxAction
 	 * @since 5/5/06
 	 */
 	function execute () {
-		$harmoni =& Harmoni::Instance();
+		$harmoni = Harmoni::Instance();
 		
-		$basket =& Basket::instance();
+		$basket = Basket::instance();
 		$basket->removeAllItems();
 		
 		print $basket->getSmallBasketHtml();

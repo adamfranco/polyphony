@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createnewterm.act.php,v 1.2 2006/07/10 14:40:49 sporktim Exp $
+ * @version $Id: createnewterm.act.php,v 1.3 2007/09/04 20:28:12 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,8 +23,8 @@ class createnewtermAction
 	 */
 	function isAuthorizedToExecute () {
 		// Check that the user can create a term here.
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		
 		return $authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.add_children"),
@@ -62,8 +62,8 @@ class createnewtermAction
 	 * @since 4/26/05
 	 */
 	function buildContent () {
-		$harmoni =& Harmoni::instance();
-		$actionRows =& $this->getActionRows();
+		$harmoni = Harmoni::instance();
+		$actionRows =$this->getActionRows();
 		$cacheName = "createnewtermWizard";
 		$this->runWizard ( $cacheName, $actionRows );
 	}
@@ -77,41 +77,41 @@ class createnewtermAction
 	 * @since 4/28/05
 	 */
 	
-	function &createWizard () {
-		$harmoni =& Harmoni::instance();
-		//$courseManager =& Services::getService("CourseManagement");
-		//$canonicalCourseIterator =& $courseManager->getCanonicalCourses();
+	function createWizard () {
+		$harmoni = Harmoni::instance();
+		//$courseManager = Services::getService("CourseManagement");
+		//$canonicalCourseIterator =$courseManager->getCanonicalCourses();
 		
 		// Instantiate the wizard, then add our steps.
-		$wizard =& SimpleStepWizard::withDefaultLayout();
+		$wizard = SimpleStepWizard::withDefaultLayout();
 		
 		// :: Name and Description ::
-		$step =& $wizard->addStep("namedescstep", new WizardStep());
+		$step =$wizard->addStep("namedescstep", new WizardStep());
 		$step->setDisplayName(_("Select options for the new term:"));
 		
 		//displayname
-		$titleProp =& $step->addComponent("displayname", new WTextField());
+		$titleProp =$step->addComponent("displayname", new WTextField());
 		$titleProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
 		$titleProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
 		
 		
 		// Create the type chooser.
-		$select =& new WSelectList();
+		$select = new WSelectList();
 		$typename = "term";	
-		$dbHandler =& Services::getService("DBHandler");
-		$query=& new SelectQuery;
+		$dbHandler = Services::getService("DBHandler");
+		$query= new SelectQuery;
 		$query->addTable('cm_'.$typename."_type");
 		$query->addColumn('id');
 		$query->addColumn('keyword');
-		$res=& $dbHandler->query($query);
+		$res=$dbHandler->query($query);
 		while($res->hasMoreRows()){
 			$row = $res->getCurrentRow();
 			$res->advanceRow();
 			$select->addOption($row['id'],$row['keyword']);
 		}
-		$typeProp =& $step->addComponent("termtype", $select);
+		$typeProp =$step->addComponent("termtype", $select);
 		
-		//$courseManager =& Services::getService("CourseManagement");
+		//$courseManager = Services::getService("CourseManagement");
 			
 		//$select->addOption('',"Canonical Course Type");
 		/*$select->addOption('can',"Canonical Course Type");
@@ -170,16 +170,16 @@ class createnewtermAction
 	 * @since 4/28/05
 	 */
 	function saveWizard ( $cacheName ) {
-		$wizard =& $this->getWizard($cacheName);
+		$wizard =$this->getWizard($cacheName);
 		
 		// Make sure we have a valid Repository
-		$courseManager =& Services::getService("CourseManagement");
-		$idManager =& Services::getService("Id");
-		$courseManagementId =& $idManager->getId("edu.middlebury.coursemanagement");
+		$courseManager = Services::getService("CourseManagement");
+		$idManager = Services::getService("Id");
+		$courseManagementId =$idManager->getId("edu.middlebury.coursemanagement");
 
 		
 		// First, verify that we chose a parent that we can add children to.
-		$authZ =& Services::getService("AuthZ");
+		$authZ = Services::getService("AuthZ");
 		if ($authZ->isUserAuthorized(
 						$idManager->getId("edu.middlebury.authorization.add_children"), 
 						$courseManagementId))
@@ -189,9 +189,9 @@ class createnewtermAction
 			printpre($values);
 			
 			
-			$type =& $courseManager->_indexToType($values['namedescstep']['termtype'],'term');
+			$type =$courseManager->_indexToType($values['namedescstep']['termtype'],'term');
 			$schedule = null;
-			$term =& $courseManager->createTerm($type,$schedule);
+			$term =$courseManager->createTerm($type,$schedule);
 			$term->updateDisplayName($values['namedescstep']['displayname']);
 			
 			RequestContext::sendTo($this->getReturnUrl());
@@ -213,8 +213,8 @@ class createnewtermAction
 	 * @since 4/28/05
 	 */
 	function getReturnUrl () {
-		$harmoni =& Harmoni::instance();
-		$url =& $harmoni->request->mkURL("admin", "main");
+		$harmoni = Harmoni::instance();
+		$url =$harmoni->request->mkURL("admin", "main");
 		return $url->write();
 	}
 }

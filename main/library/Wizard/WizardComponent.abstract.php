@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponent.abstract.php,v 1.2 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WizardComponent.abstract.php,v 1.3 2007/09/04 20:28:06 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponent.abstract.php,v 1.2 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WizardComponent.abstract.php,v 1.3 2007/09/04 20:28:06 adamfranco Exp $
  */
 class WizardComponent 
 	extends SObject 
@@ -36,8 +36,8 @@ class WizardComponent
 	 * @access public
 	 * @return void
 	 */
-	function setParent (&$parent) {
-		$this->_parent =& $parent;
+	function setParent ($parent) {
+		$this->_parent =$parent;
 	}
 	
 	/**
@@ -45,7 +45,7 @@ class WizardComponent
 	 * @access public
 	 * @return ref object
 	 */
-	function &getWizard () {
+	function getWizard () {
 		return $this->_parent->getWizard();
 	}
 	

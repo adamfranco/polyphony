@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: removeTag.act.php,v 1.2 2006/11/30 22:02:47 adamfranco Exp $
+ * @version $Id: removeTag.act.php,v 1.3 2007/09/04 20:28:14 adamfranco Exp $
  */ 
  
 require_once(dirname(__FILE__)."/TagXmlAction.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/TagXmlAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: removeTag.act.php,v 1.2 2006/11/30 22:02:47 adamfranco Exp $
+ * @version $Id: removeTag.act.php,v 1.3 2007/09/04 20:28:14 adamfranco Exp $
  */
 class removeTagAction
 	extends TagXmlAction
@@ -34,15 +34,15 @@ class removeTagAction
 	 * @access public
 	 * @since 11/10/06
 	 */
-	function &execute () {
-		$harmoni =& Harmoni::instance();
+	function execute () {
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-tags");
 		$itemId = RequestContext::value('item_id');
 		$system = RequestContext::value('system');
 		$tagValue = RequestContext::value('tag');
 		$harmoni->request->endNamespace();
 		
-		$item =& TaggedItem::forId($itemId, $system);
+		$item = TaggedItem::forId($itemId, $system);
 		
 		// Add the tag
 		$tag = new Tag($tagValue);

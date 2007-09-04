@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLThumbpathPartImporter.class.php,v 1.10 2006/06/26 19:22:42 adamfranco Exp $
+ * @version $Id: XMLThumbpathPartImporter.class.php,v 1.11 2007/09/04 20:28:01 adamfranco Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLThumbpathPartImporter.class.php,v 1.10 2006/06/26 19:22:42 adamfranco Exp $
+ * @version $Id: XMLThumbpathPartImporter.class.php,v 1.11 2007/09/04 20:28:01 adamfranco Exp $
  */
 class XMLThumbpathPartImporter extends XMLImporter {
 		
@@ -31,7 +31,7 @@ class XMLThumbpathPartImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function XMLThumbpathPartImporter (&$existingArray) {
+	function XMLThumbpathPartImporter ($existingArray) {
 		parent::XMLImporter($existingArray);
 	}
 	
@@ -56,7 +56,7 @@ class XMLThumbpathPartImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function isImportable (&$element) {
+	function isImportable ($element) {
 		if ($element->nodeName == "thumbpathpart")
 			return true;
 		else
@@ -81,11 +81,11 @@ class XMLThumbpathPartImporter extends XMLImporter {
 	 * @since 10/6/05
 	 */
 	function importNode () {
-		$idManager =& Services::getService("Id");
-		$image =& Services::getService("ImageProcessor");
+		$idManager = Services::getService("Id");
+		$image = Services::getService("ImageProcessor");
 
-		$THUMBNAIL_DATA_ID =& $idManager->getId("THUMBNAIL_DATA");
-		$THUMBNAIL_MIME_TYPE_ID =& $idManager->getId("THUMBNAIL_MIME_TYPE");
+		$THUMBNAIL_DATA_ID =$idManager->getId("THUMBNAIL_DATA");
+		$THUMBNAIL_MIME_TYPE_ID =$idManager->getId("THUMBNAIL_MIME_TYPE");
 
 		$this->getNodeInfo();
 
@@ -107,7 +107,7 @@ class XMLThumbpathPartImporter extends XMLImporter {
 	 * @since 10/6/05
 	 */
 	function getNodeInfo () {
-		$mime =& Services::getService("MIME");
+		$mime = Services::getService("MIME");
 		$path = $this->_node->getText();
 		if (!ereg("^([a-zA-Z]+://|[a-zA-Z]+:\\|/)", $path))
 			$path = $this->_node->ownerDocument->xmlPath.$path;
@@ -125,7 +125,7 @@ class XMLThumbpathPartImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/10/05
 	 */
-	function relegateChildren (&$topImporter) {
+	function relegateChildren ($topImporter) {
 	}
 }
 

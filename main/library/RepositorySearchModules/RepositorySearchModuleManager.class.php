@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositorySearchModuleManager.class.php,v 1.9 2006/05/15 21:32:51 adamfranco Exp $
+ * @version $Id: RepositorySearchModuleManager.class.php,v 1.10 2007/09/04 20:28:03 adamfranco Exp $
  */
 
 /**
@@ -21,8 +21,8 @@ require_once(dirname(__FILE__)."/modules/PartAndValuesModule.class.php");
  * to the appropriate RepositorySearchModule based on their types.
  * 
  * @package polyphony.library.repository.search
- * @version $Id: RepositorySearchModuleManager.class.php,v 1.9 2006/05/15 21:32:51 adamfranco Exp $
- * @since $Date: 2006/05/15 21:32:51 $
+ * @version $Id: RepositorySearchModuleManager.class.php,v 1.10 2007/09/04 20:28:03 adamfranco Exp $
+ * @since $Date: 2007/09/04 20:28:03 $
  * @copyright 2004 Middlebury College
  */
 
@@ -37,14 +37,14 @@ class RepositorySearchModuleManager {
 	 */
 	function RepositorySearchModuleManager () {
 		$this->_modules = array();
-		$this->_modules["Repository::edu.middlebury.harmoni::Keyword"] =& new SimpleFieldModule("Keyword");
-		$this->_modules["Repository::edu.middlebury.harmoni::DisplayName"] =& new SimpleFieldModule("DisplayName");
-		$this->_modules["Repository::edu.middlebury.harmoni::Authoritative Values"] =& new PartAndValuesModule("PartId", "AuthValue");
-		$this->_modules["Repository::edu.middlebury.harmoni::AssetType"] =& new SimpleFieldModule("AssetType");
-		$this->_modules["Repository::edu.middlebury.harmoni::RootAssets"] =& new SimpleFieldModule("RootAssets");
-		$this->_modules["Repository::edu.middlebury.harmoni::Description"] =& new SimpleFieldModule("Description");
-		$this->_modules["Repository::edu.middlebury.harmoni::Content"] =& new SimpleFieldModule("Content");
-		$this->_modules["Repository::edu.middlebury.harmoni::AllCustomStructures"] =& new SimpleFieldModule("AllCustomStructures");
+		$this->_modules["Repository::edu.middlebury.harmoni::Keyword"] = new SimpleFieldModule("Keyword");
+		$this->_modules["Repository::edu.middlebury.harmoni::DisplayName"] = new SimpleFieldModule("DisplayName");
+		$this->_modules["Repository::edu.middlebury.harmoni::Authoritative Values"] = new PartAndValuesModule("PartId", "AuthValue");
+		$this->_modules["Repository::edu.middlebury.harmoni::AssetType"] = new SimpleFieldModule("AssetType");
+		$this->_modules["Repository::edu.middlebury.harmoni::RootAssets"] = new SimpleFieldModule("RootAssets");
+		$this->_modules["Repository::edu.middlebury.harmoni::Description"] = new SimpleFieldModule("Description");
+		$this->_modules["Repository::edu.middlebury.harmoni::Content"] = new SimpleFieldModule("Content");
+		$this->_modules["Repository::edu.middlebury.harmoni::AllCustomStructures"] = new SimpleFieldModule("AllCustomStructures");
 	}
 		
 	/**
@@ -67,8 +67,8 @@ class RepositorySearchModuleManager {
 	 * 
 	 * @access public
 	 */
-	function assignConfiguration ( &$configuration ) { 
-		$this->_configuration =& $configuration;
+	function assignConfiguration ( $configuration ) { 
+		$this->_configuration =$configuration;
 	}
 
 	/**
@@ -80,7 +80,7 @@ class RepositorySearchModuleManager {
 	 * 
 	 * @access public
 	 */
-	function &getOsidContext () { 
+	function getOsidContext () { 
 		return $this->_osidContext;
 	} 
 
@@ -95,8 +95,8 @@ class RepositorySearchModuleManager {
 	 * 
 	 * @access public
 	 */
-	function assignOsidContext ( &$context ) { 
-		$this->_osidContext =& $context;
+	function assignOsidContext ( $context ) { 
+		$this->_osidContext =$context;
 	} 
 
 	/**
@@ -109,7 +109,7 @@ class RepositorySearchModuleManager {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function createSearchForm ( &$repository, &$searchType, $action) {
+	function createSearchForm ( $repository, $searchType, $action) {
 		ArgumentValidator::validate($repository, new ExtendsValidatorRule("Repository"));
 		ArgumentValidator::validate($searchType, new ExtendsValidatorRule("Type"));
 		ArgumentValidator::validate($action, new StringValidatorRule);
@@ -135,7 +135,7 @@ class RepositorySearchModuleManager {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function createSearchFields ( &$repository, &$searchType) {
+	function createSearchFields ( $repository, $searchType) {
 		ArgumentValidator::validate($repository, new ExtendsValidatorRule("Repository"));
 		ArgumentValidator::validate($searchType, new ExtendsValidatorRule("Type"));
 		
@@ -157,7 +157,7 @@ class RepositorySearchModuleManager {
 	 * @access public
 	 * @since 10/28/04
 	 */
-	function getSearchCriteria ( &$repository, &$searchType ) {
+	function getSearchCriteria ( $repository, $searchType ) {
 		ArgumentValidator::validate($searchType, new ExtendsValidatorRule("Type"));
 				
 		$typeKey = $searchType->getDomain()
@@ -179,7 +179,7 @@ class RepositorySearchModuleManager {
 	 * @access public
 	 * @since 10/28/04
 	 */
-	function getCurrentValues ( &$searchType ) {
+	function getCurrentValues ( $searchType ) {
 		ArgumentValidator::validate($searchType, new ExtendsValidatorRule("Type"));
 				
 		$typeKey = $searchType->getDomain()
@@ -203,7 +203,7 @@ class RepositorySearchModuleManager {
 	 * @access public
 	 * @since 10/28/04
 	 */
-	function setCurrentValues ( &$searchType, $values ) {
+	function setCurrentValues ( $searchType, $values ) {
 		ArgumentValidator::validate($searchType, new ExtendsValidatorRule("Type"));
 				
 		$typeKey = $searchType->getDomain()

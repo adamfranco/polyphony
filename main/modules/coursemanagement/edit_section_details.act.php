@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: edit_section_details.act.php,v 1.19 2006/08/30 17:53:51 jwlee100 Exp $
+* @version $Id: edit_section_details.act.php,v 1.20 2007/09/04 20:28:12 adamfranco Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -29,9 +29,9 @@ extends MainWindowAction
 	*/
 	function isAuthorizedToExecute () {
 		// Check for authorization
-		$authZManager =& Services::getService("AuthZ");
-		$idManager =& Services::getService("IdManager");
-		$harmoni =& Harmoni::instance();
+		$authZManager = Services::getService("AuthZ");
+		$idManager = Services::getService("IdManager");
+		$harmoni = Harmoni::instance();
 
 		$harmoni->request->startNamespace("polyphony-agents");
 		$sectionIdString = $harmoni->request->get("courseId");
@@ -55,14 +55,14 @@ extends MainWindowAction
 	* @since 4/26/05
 	*/
 	function getHeadingText () {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-agents");
 		$harmoni->request->passthrough("courseId");
 		$sectionIdString = $harmoni->request->get("courseId");
-		$idManager =& Services::getService("Id");
-		$sectionId =& $idManager->getId($sectionIdString);
-		$cm =& Services::getService("CourseManagement");
-		$section =& $cm->getCourseSection($sectionId);
+		$idManager = Services::getService("Id");
+		$sectionId =$idManager->getId($sectionIdString);
+		$cm = Services::getService("CourseManagement");
+		$section =$cm->getCourseSection($sectionId);
 		return dgettext("polyphony", $section->getDisplayName());
 	}
 
@@ -75,20 +75,20 @@ extends MainWindowAction
 	*/
 	function buildContent () {
 		$defaultTextDomain = textdomain("polyphony");
-		$idManager =& Services::getService("Id");
+		$idManager = Services::getService("Id");
 
-		$actionRows =& $this->getActionRows();
-		$pageRows =& new Container(new YLayout(), OTHER, 1);
-		$harmoni =& Harmoni::instance();
+		$actionRows =$this->getActionRows();
+		$pageRows = new Container(new YLayout(), OTHER, 1);
+		$harmoni = Harmoni::instance();
 
 		$harmoni->request->startNamespace("polyphony-agents");
 		$harmoni->request->passthrough("courseId");
 		$sectionIdString = $harmoni->request->get("courseId");
 		$furtherAction = $harmoni->request->get("furtherAction");
 
-		$sectionId =& $idManager->getId($sectionIdString);
-		$cm =& Services::getService("CourseManagement");
-		$section =& $cm->getCourseSection($sectionId);
+		$sectionId =$idManager->getId($sectionIdString);
+		$cm = Services::getService("CourseManagement");
+		$section =$cm->getCourseSection($sectionId);
 
 		ob_start();
 
@@ -133,12 +133,12 @@ extends MainWindowAction
 	* @access public
 	* @since 7/19/05
 	*/
-	function viewSectionDetails(&$section){
+	function viewSectionDetails($section){
 
 
 
 
-		$sectionId =& $section->getId();
+		$sectionId =$section->getId();
 
 
 		//display offering info
@@ -153,11 +153,11 @@ extends MainWindowAction
 
 
 		//actions menu
-		$harmoni =& Harmoni::instance();
-		$url =& $harmoni->request->mkURL();
+		$harmoni = Harmoni::instance();
+		$url =$harmoni->request->mkURL();
 
 		
-		$courseId =& $section->getId();
+		$courseId =$section->getId();
 		$courseIdString = $courseId->getIdString();
 		
 		print "<ul>";
@@ -186,9 +186,9 @@ extends MainWindowAction
 
 
 
-		$enrollmentRecordIterator =& $section->getRoster();
+		$enrollmentRecordIterator =$section->getRoster();
 
-		$am =& Services::getService("AgentManager");
+		$am = Services::getService("AgentManager");
 
 
 
@@ -205,12 +205,12 @@ extends MainWindowAction
 				}
 				$column++;
 	
-				$er =& $enrollmentRecordIterator->nextEnrollmentRecord();
-				$id =& $er->getStudent();
-				$member =& $am->getAgent($id);
+				$er =$enrollmentRecordIterator->nextEnrollmentRecord();
+				$id =$er->getStudent();
+				$member =$am->getAgent($id);
 	
 
-				$harmoni =& Harmoni::instance();
+				$harmoni = Harmoni::instance();
 
 				$harmoni->history->markReturnURL("polyphony/agents/edit_agent_details");
 
@@ -234,9 +234,9 @@ extends MainWindowAction
 	* offers a confirmation screen for deleting an entire offering
 	*/
 
-	function confirmDeleteSection(&$section){
-		$harmoni =& Harmoni::instance();
-		$url =& $harmoni->request->mkURL();
+	function confirmDeleteSection($section){
+		$harmoni = Harmoni::instance();
+		$url =$harmoni->request->mkURL();
 		print "Do you really want to delete ".$section->getDisplayName()."?<br />";
 		print "<form action='".$url->write("furtherAction","edit_offering_detailsAction::deleteSection")."' method='post'><input type='submit' value='Delete' /></form><input type='button' value='Cancel' onclick='history.back()' />";
 		return;
@@ -245,17 +245,17 @@ extends MainWindowAction
 	/***
 	* Handles the actual deletion of a section
 	*/
-	function deleteSection(&$section){
-		//$cm =& Services::getService("CourseManagement");
-		$idManager =& Services::getService("Id");
+	function deleteSection($section){
+		//$cm = Services::getService("CourseManagement");
+		$idManager = Services::getService("Id");
 		
-		$offering =& $section->getCourseOffering();
+		$offering =$section->getCourseOffering();
 		$offering->deleteCourseSection($section->getId());
 		
-		$offeringId =& $offering->getId();
+		$offeringId =$offering->getId();
 		$offeringIdString = $offeringId->getIdString();
 
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		print "Section deleted.<br />";
 		$link = $harmoni->request->quickURL("coursemanagement", "edit_offering_details", 
 											 array("courseId"=>$offeringIdString));

@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add_delete_group.act.php,v 1.13 2006/02/28 21:32:49 adamfranco Exp $
+ * @version $Id: add_delete_group.act.php,v 1.14 2007/09/04 20:28:10 adamfranco Exp $
  */
 
 require_once(HARMONI."/GUIManager/Layouts/YLayout.class.php");
@@ -29,7 +29,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add_delete_group.act.php,v 1.13 2006/02/28 21:32:49 adamfranco Exp $
+ * @version $Id: add_delete_group.act.php,v 1.14 2007/09/04 20:28:10 adamfranco Exp $
  */
 class add_delete_groupAction 
 	extends MainWindowAction
@@ -43,8 +43,8 @@ class add_delete_groupAction
 	 */
 	function isAuthorizedToExecute () {
 		// Check for authorization
- 		$authZManager =& Services::getService("AuthZ");
- 		$idManager =& Services::getService("IdManager");
+ 		$authZManager = Services::getService("AuthZ");
+ 		$idManager = Services::getService("IdManager");
  		if ($authZManager->isUserAuthorized(
  					$idManager->getId("edu.middlebury.authorization.view"),
  					$idManager->getId("edu.middlebury.authorization.root")))
@@ -75,14 +75,14 @@ class add_delete_groupAction
 	 * @since 4/26/05
 	 */
 	function buildContent () {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-agents");
 		$harmoni->history->markReturnURL("polyphony/agents/delete_group", $harmoni->request->mkURLWithPassthrough());
 
 		// Our
-		$actionRows =& $this->getActionRows();
+		$actionRows =$this->getActionRows();
 
-		$agentManager =& Services::getService("Agent");
+		$agentManager = Services::getService("Agent");
 
 		// pass our search variables through to new URLs
 		$harmoni->request->passthrough();
@@ -92,7 +92,7 @@ class add_delete_groupAction
 		 *********************************************************/
 
 		 // 'Delete a Group' header
-/*		$deleteHeader =& new Heading(_("Delete a Group"), 3);
+/*		$deleteHeader = new Heading(_("Delete a Group"), 3);
 		$actionRows->add($deleteHeader, "100%", null, null, LEFT, CENTER);
 */
 
@@ -105,10 +105,10 @@ class add_delete_groupAction
 		ob_end_clean();
 
 		// Loop through all of the Root Groups 
-		$groups =& $agentManager->getGroupsBySearch($null = null, new Type("Agent & Group Search", "edu.middlebury.harmoni", "RootGroups"));
+		$groups =$agentManager->getGroupsBySearch($null = null, new Type("Agent & Group Search", "edu.middlebury.harmoni", "RootGroups"));
 		while ($groups->hasNext()) {
-			$group =& $groups->next();
-			$groupId =& $group->getId();
+			$group =$groups->next();
+			$groupId =$group->getId();
 			
 			// Create a layout for this group using the GroupPrinter
 			ob_start();
@@ -117,7 +117,7 @@ class add_delete_groupAction
 											2,
 											"add_delete_groupAction::printGroup",
 											"add_delete_groupAction::printMember");
-			$groupLayout =& new Block(ob_get_contents(), 4);
+			$groupLayout = new Block(ob_get_contents(), 4);
 			ob_end_clean();
 			$actionRows->add($groupLayout, "100%", null, LEFT, CENTER);
 		}
@@ -143,11 +143,11 @@ class add_delete_groupAction
 	 * @access public
 	 * @ignore
 	 */
-	function printGroup(& $group) {
-		$id =& $group->getId();
-		$groupType =& $group->getType();
+	function printGroup($group) {
+		$id =$group->getId();
+		$groupType =$group->getType();
 
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$toggleURL = $harmoni->request->quickURL("agents","delete_group",
 				array("groupId"=>$id->getIdString()));
 
@@ -165,24 +165,24 @@ class add_delete_groupAction
 	 * @access public
 	 * @ignore
 	 */
-	function printMember(& $member) {
-		$id =& $member->getId();
-		$memberType =& $member->getType();
+	function printMember($member) {
+		$id =$member->getId();
+		$memberType =$member->getType();
 		print "\n<a title='".$memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription()."'>";
 		print "\n<span style='text-decoration: underline;'>".$id->getIdString()." - ".$member->getDisplayName()."</span>";
 
 		// print out the properties of the Agent
 		print "\n<em>";
-		$propertiesIterator =& $member->getProperties();
+		$propertiesIterator =$member->getProperties();
 		while($propertiesIterator->hasNext()) {
-			$properties =& $propertiesIterator->next();
-			$propertiesType =& $properties->getType();
+			$properties =$propertiesIterator->next();
+			$propertiesType =$properties->getType();
 			print "\n\t(<a title='".$propertiesType->getDomain()." :: ".$propertiesType->getAuthority()." :: ".$propertiesType->getKeyword()." - ".$propertiesType->getDescription()."'>";
 
-			$keys =& $properties->getKeys();
+			$keys =$properties->getKeys();
 			$i = 0;
 			while ($keys->hasNext()) {
-				$key =& $keys->next();			
+				$key =$keys->next();			
 				print "\n\t\t".(($i)?", ":"").$key.": ".$properties->getProperty($key);
 				$i++;
 			}

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.16 2007/05/15 16:53:55 adamfranco Exp $
+ * @version $Id: Wizard.abstract.php,v 1.17 2007/09/04 20:28:05 adamfranco Exp $
  */
 
 /*
@@ -31,7 +31,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WUpdateListener.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.16 2007/05/15 16:53:55 adamfranco Exp $
+ * @version $Id: Wizard.abstract.php,v 1.17 2007/09/04 20:28:05 adamfranco Exp $
  * @author Gabe Schine
  * @abstract
  */
@@ -60,7 +60,7 @@ class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 	 */
 	function update ($fieldName) {
 		// get all the steps we have here and update them
-		$children =& $this->getChildren();
+		$children =$this->getChildren();
 		$ok = true;
 		foreach (array_keys($children) as $key) {
 			if (!$children[$key]->update($fieldName."_".$key)) {
@@ -69,7 +69,7 @@ class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 		}
 		$this->triggerEvent("edu.middlebury.polyphony.wizard.update", $this);
 		foreach (array_keys($this->_eventsLater) as $key) {
-			$info =& $this->_eventsLater[$key];
+			$info =$this->_eventsLater[$key];
 			$this->triggerEvent($info[0], $info[1], $info[2]);
 			unset($this->_eventsLater[$key]);
 		}
@@ -81,7 +81,7 @@ class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 	 * @access public
 	 * @return ref object
 	 */
-	function &getWizard () {
+	function getWizard () {
 		return $this;
 	}
 	
@@ -109,10 +109,10 @@ class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 	 * Returns a layout of content for the current Wizard-state
 	 * @return ref object Layout
 	 */
-	function &getLayout () {
+	function getLayout () {
 		$markup = $this->getMarkup($this->_id);
 		
-		$obj =& new Block($markup, WIZARD_BLOCK);
+		$obj = new Block($markup, WIZARD_BLOCK);
 		
 		return $obj;
 	}
@@ -124,7 +124,7 @@ class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 	 * @access public
 	 * @return void
 	 */
-	function setParent (&$parent) {
+	function setParent ($parent) {
 		// do nothing - this component should never have a parent
 	}
 	
@@ -146,12 +146,12 @@ class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 	 * @access public
 	 * @return void
 	 */
-	function triggerLater ($event, &$source, $context = null) {
+	function triggerLater ($event, $source, $context = null) {
 		$newArray = array();
 		$newArray[0] = $event;
-		$newArray[1] =& $source;
+		$newArray[1] =$source;
 		$newArray[2] = $context;
-		$this->_eventsLater[] =& $newArray;
+		$this->_eventsLater[] =$newArray;
 	}
 	
 	/**
@@ -264,7 +264,7 @@ END;
 	 * @return string
 	 * @static
 	 */
-	 function parseText($text, &$components, $prepend = '')
+	 function parseText($text, $components, $prepend = '')
 	 {
 	 	// first get all of the tags we have to work with
 	 	preg_match_all("/\[{2}[^\[]*\]{2}/", $text, $matches);
@@ -310,7 +310,7 @@ END;
 	 * @return string
 	 * @static
 	 */
-	function getValidationJavascript ($elementID, &$rule, $errDivID, $displayError = false) {
+	function getValidationJavascript ($elementID, $rule, $errDivID, $displayError = false) {
 		$elementID = str_replace("'", "\\'", $elementID);
 		$errDivID = str_replace("'", "\\'", $errDivID);
 		$checkFunc = $rule->generateJavaScript();
@@ -338,9 +338,9 @@ END;
 	 * @access public
 	 * @return ref object
 	 */
-	function addEventListener (&$eventListener) {
+	function addEventListener ($eventListener) {
 		ArgumentValidator::validate($eventListener, HasMethodsValidatorRule::getRule("handleEvent"), true);
-		$this->_eventListeners[] =& $eventListener;
+		$this->_eventListeners[] =$eventListener;
 	}
 	
 	/**
@@ -352,8 +352,8 @@ END;
 	 * @access public
 	 * @return void
 	 */
-	function triggerEvent ($eventType, &$source, $context = null) {
-		$list =& $this->_eventListeners;
+	function triggerEvent ($eventType, $source, $context = null) {
+		$list =$this->_eventListeners;
 		foreach (array_keys($list) as $key) {
 			$list[$key]->handleEvent($eventType, $source, $context);
 		}

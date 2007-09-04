@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.10 2007/04/03 16:50:55 adamfranco Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.11 2007/09/04 20:28:09 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.10 2007/04/03 16:50:55 adamfranco Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.11 2007/09/04 20:28:09 adamfranco Exp $
  */
 class WizardStepContainer extends WizardComponent {
 	var $_currStep;
@@ -44,11 +44,11 @@ class WizardStepContainer extends WizardComponent {
 	 * @access public
 	 * @return ref object The new step object.
 	 */
-	function &addStep ($name, &$step) {
+	function addStep ($name, $step) {
 		ArgumentValidator::validate($step, ExtendsValidatorRule::getRule("WizardStep"), true);
 		$name = preg_replace("/[^a-zA-Z0-9:_\-]/", "_", $name);
 		
-		$this->_steps[] =& $step;
+		$this->_steps[] =$step;
 		$this->_stepNames[] = $name;
 		$step->setParent($this);
 		return $step;
@@ -87,7 +87,7 @@ class WizardStepContainer extends WizardComponent {
 		if ($ind !== false) {
 			$oldStep = $this->_currStep;
 			$this->_currStep = $ind;
-			$wizard =& $this->getWizard();
+			$wizard =$this->getWizard();
 			if(!is_null($oldStep)){
 				$context['from'] = $this->_stepNames[$oldStep];
 				$context['to'] =$this->_stepNames[$this->_currStep];
@@ -117,7 +117,7 @@ class WizardStepContainer extends WizardComponent {
 	 * @access public
 	 * @return ref array
 	 */
-	function &getSteps () {
+	function getSteps () {
 		return $this->_steps;
 	}
 	
@@ -127,7 +127,7 @@ class WizardStepContainer extends WizardComponent {
 	 * @access public
 	 * @return ref object
 	 */
-	function &getStep ($name) {
+	function getStep ($name) {
 		$name = preg_replace("/[^a-zA-Z0-9:_-]/", "_", $name);
 		$key = array_search($name, $this->_stepNames);
 		if($key !== false) return $this->_steps[$key];
@@ -145,7 +145,7 @@ class WizardStepContainer extends WizardComponent {
 			$this->_currStep++;
 		}
 		
-		$wizard =& $this->getWizard();
+		$wizard =$this->getWizard();
 		$wizard->triggerLater("edu.middlebury.polyphony.wizard.step_changed", $this, array(
 				'from'=>$this->_stepNames[$this->_currStep-1], 'to'=>$this->_stepNames[$this->_currStep]));
 	}
@@ -161,7 +161,7 @@ class WizardStepContainer extends WizardComponent {
 			$this->_currStep--;
 		}
 		
-		$wizard =& $this->getWizard();
+		$wizard =$this->getWizard();
 		$wizard->triggerLater("edu.middlebury.polyphony.wizard.step_changed", $this, array(
 				'from'=>$this->_stepNames[$this->_currStep+1], 'to'=>$this->_stepNames[$this->_currStep]));
 	}
@@ -195,7 +195,7 @@ class WizardStepContainer extends WizardComponent {
 	 * @return boolean
 	 */
 	function validate () {
-		$children =& $this->getSteps();
+		$children =$this->getSteps();
 		foreach (array_keys($children) as $step) {
 			if (!$children[$step]->validate()) {
 				$this->setStep($step);
@@ -250,7 +250,7 @@ class WizardStepContainer extends WizardComponent {
 	function getMarkup ($fieldName) {
 		// first we have to check our current step
 		if (count($this->_steps)) {
-			$theStep =& $this->_steps[$this->_currStep];
+			$theStep =$this->_steps[$this->_currStep];
 			$theName = $this->_stepNames[$this->_currStep];
 			$markup = $theStep->getMarkup($fieldName."_".$theName);
 			return $markup;

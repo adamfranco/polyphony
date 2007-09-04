@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureExporter.class.php,v 1.5 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: XMLPartStructureExporter.class.php,v 1.6 2007/09/04 20:27:59 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureExporter.class.php,v 1.5 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: XMLPartStructureExporter.class.php,v 1.6 2007/09/04 20:27:59 adamfranco Exp $
  */
 class XMLPartStructureExporter {
 		
@@ -31,8 +31,8 @@ class XMLPartStructureExporter {
 	 * @access public
 	 * @since 10/17/05
 	 */
-	function XMLPartStructureExporter (&$xmlFile) {
-		$this->_xml =& $xmlFile;
+	function XMLPartStructureExporter ($xmlFile) {
+		$this->_xml =$xmlFile;
 		
 		$this->_childExporterList = null;
 		$this->_childElementList = null;
@@ -45,10 +45,10 @@ class XMLPartStructureExporter {
 	 * @access public
 	 * @since 10/17/05
 	 */
-	function export (&$pS) {
-		$this->_object =& $pS;
-		$this->_myId =& $this->_object->getId();
-		$type =& $this->_object->getType();
+	function export ($pS) {
+		$this->_object =$pS;
+		$this->_myId =$this->_object->getId();
+		$type =$this->_object->getType();
 
 		fwrite($this->_xml,
 "\t\t<partstructure ".

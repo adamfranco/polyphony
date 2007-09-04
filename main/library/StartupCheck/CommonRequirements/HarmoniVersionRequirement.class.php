@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HarmoniVersionRequirement.class.php,v 1.5 2005/04/07 17:07:49 adamfranco Exp $
+ * @version $Id: HarmoniVersionRequirement.class.php,v 1.6 2007/09/04 20:28:04 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HarmoniVersionRequirement.class.php,v 1.5 2005/04/07 17:07:49 adamfranco Exp $
+ * @version $Id: HarmoniVersionRequirement.class.php,v 1.6 2007/09/04 20:28:04 adamfranco Exp $
  */
 class HarmoniVersionRequirement extends StartupRequirement {
 
@@ -29,9 +29,9 @@ class HarmoniVersionRequirement extends StartupRequirement {
 	 * @param ref object $harmoni A reference to a {$link Harmoni} object.
 	 * @param string $version The harmoni version string, ie, "1.5.2".
 	 */
-	function HarmoniVersionRequirement(&$harmoni, $version) {
+	function HarmoniVersionRequirement($harmoni, $version) {
 
-		$this->_harmoni =& $harmoni;
+		$this->_harmoni =$harmoni;
 		$this->_versionStr = $harmoni->getVersionStr($version);
 		
 		// let's convert the string into its numeric counterpart.
@@ -83,7 +83,7 @@ class HarmoniVersionRequirement extends StartupRequirement {
 	 * @access public
 	 * @return ref object
 	 */
-	function &createWizard()
+	function createWizard()
 	{
 		$null = null; 
 		return $null;

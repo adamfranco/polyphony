@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HarmoniFileModule.class.php,v 1.18 2006/12/06 20:59:20 adamfranco Exp $
+ * @version $Id: HarmoniFileModule.class.php,v 1.19 2007/09/04 20:28:02 adamfranco Exp $
  */
 
 /**
@@ -24,8 +24,8 @@ require_once(HARMONI."Primitives/Numbers/ByteSize.class.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: HarmoniFileModule.class.php,v 1.18 2006/12/06 20:59:20 adamfranco Exp $
- * @since $Date: 2006/12/06 20:59:20 $
+ * @version $Id: HarmoniFileModule.class.php,v 1.19 2007/09/04 20:28:02 adamfranco Exp $
+ * @since $Date: 2007/09/04 20:28:02 $
  * @copyright 2004 Middlebury College
  */
 
@@ -56,7 +56,7 @@ class HarmoniFileModule
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function createWizardStepsForPartStructures ( & $record, & $wizard, & $partStructures ) {
+	function createWizardStepsForPartStructures ( $record, $wizard, $partStructures ) {
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
 		ArgumentValidator::validate($wizard, new ExtendsValidatorRule("Wizard"));
 		ArgumentValidator::validate($partStructures, new ArrayValidatorRuleWithRule(new ExtendsValidatorRule("PartStructure")));
@@ -74,28 +74,28 @@ class HarmoniFileModule
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function createWizardSteps ( & $record, & $wizard ) {
+	function createWizardSteps ( $record, $wizard ) {
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
 		ArgumentValidator::validate($wizard, new ExtendsValidatorRule("Wizard"));
 		
-		$recordStructure =& $record->getRecordStructure();
+		$recordStructure =$record->getRecordStructure();
 		
 		// Get all the parts
-		$partIterator =& $record->getParts();
+		$partIterator =$record->getParts();
 		$parts = array();
 		while($partIterator->hasNext()) {
-			$part =& $partIterator->next();
-			$partStructure =& $part->getPartStructure();
-			$partStructureId =& $partStructure->getId();
-			$parts[$partStructureId->getIdString()] =& $part;
+			$part =$partIterator->next();
+			$partStructure =$part->getPartStructure();
+			$partStructureId =$partStructure->getId();
+			$parts[$partStructureId->getIdString()] =$part;
 		}
 		
-		$step =& $wizard->addStep("record", new WizardStep());
+		$step =$wizard->addStep("record", new WizardStep());
 		$step->setDisplayName($recordStructure->getDisplayName());
 		
 		ob_start();
 		
-		$component =& $step->addComponent("file_upload", new WFileUploadField());
+		$component =$step->addComponent("file_upload", new WFileUploadField());
 		
 		print "\n<em>"._("Upload a new file or change file properties.")."</em>\n<hr />";
 		print "\n<br /><strong>";
@@ -109,31 +109,31 @@ class HarmoniFileModule
 		print "\n[[file_upload]]";
 		
 		
-		$component =& $step->addComponent("file_name", new WTextField());
+		$component =$step->addComponent("file_name", new WTextField());
 		$component->setValue($parts['FILE_NAME']->getValue());
 		
-		$component =& $step->addComponent("use_custom_filename", new WCheckBox());
+		$component =$step->addComponent("use_custom_filename", new WCheckBox());
 		$component->setValue(false);
 		
 		
-		$component =& $step->addComponent("file_size", new WTextField());
-		$size =& ByteSize::withValue($parts['FILE_SIZE']->getValue());
+		$component =$step->addComponent("file_size", new WTextField());
+		$size = ByteSize::withValue($parts['FILE_SIZE']->getValue());
 		$component->setValue($size->asString());
 		$component->setEnabled(FALSE, TRUE);
 // 		
-// 		$component =& $step->addComponent("size_from_file", new WCheckBox());
+// 		$component =$step->addComponent("size_from_file", new WCheckBox());
 // 		$component->setValue(false);
 		
 		
-		$component =& $step->addComponent("mime_type", new WTextField());
+		$component =$step->addComponent("mime_type", new WTextField());
 		$component->setValue($parts['MIME_TYPE']->getValue());
 		
-		$component =& $step->addComponent("use_custom_type", new WCheckBox());
+		$component =$step->addComponent("use_custom_type", new WCheckBox());
 		$component->setValue(false);
 		
 		
 		// Dimensions 
-		$dimensionComponent =& new WTextField();
+		$dimensionComponent = new WTextField();
 		$dimensionComponent->setSize(8);
 		$dimensionComponent->setStyle("text-align: right");
 		$dimensionComponent->setErrorRule(new WECRegex("^([0-9]+px)?$"));
@@ -141,47 +141,47 @@ class HarmoniFileModule
 		$dimensionComponent->addOnChange("validateWizard(this.form);");
 		
 		$dim = $parts['DIMENSIONS']->getValue();
-		$component =& $step->addComponent("height", $dimensionComponent->shallowCopy());
+		$component =$step->addComponent("height", $dimensionComponent->shallowCopy());
 		if ($dim[1])
 			$component->setValue($dim[1].'px');
 
-		$component =& $step->addComponent("use_custom_height", new WCheckBox());
+		$component =$step->addComponent("use_custom_height", new WCheckBox());
 		$component->setValue(false);
 		
-		$component =& $step->addComponent("width", $dimensionComponent->shallowCopy());
+		$component =$step->addComponent("width", $dimensionComponent->shallowCopy());
 		if ($dim[0])
 			$component->setValue($dim[0].'px');
 		
 		
-		$component =& $step->addComponent("use_custom_width", new WCheckBox());
+		$component =$step->addComponent("use_custom_width", new WCheckBox());
 		$component->setValue(false);
 		
 		
 		// Thumnail Upload
-		$component =& $step->addComponent("thumbnail_upload", new WFileUploadField());
+		$component =$step->addComponent("thumbnail_upload", new WFileUploadField());
 		
 		
-		$component =& $step->addComponent("thumbnail_mime_type", new WTextField());
+		$component =$step->addComponent("thumbnail_mime_type", new WTextField());
 		$component->setValue($parts['THUMBNAIL_MIME_TYPE']->getValue());
 		
-		$component =& $step->addComponent("use_custom_thumbnail_type", new WCheckBox());
+		$component =$step->addComponent("use_custom_thumbnail_type", new WCheckBox());
 		$component->setValue(false);
 		
 		
 		// Thumbnail dimensions
 		$thumDim = $parts['THUMBNAIL_DIMENSIONS']->getValue();
-		$component =& $step->addComponent("thumbnail_height", $dimensionComponent->shallowCopy());
+		$component =$step->addComponent("thumbnail_height", $dimensionComponent->shallowCopy());
 		if ($thumDim[1])
 			$component->setValue($thumDim[1].'px');
 		
-		$component =& $step->addComponent("use_custom_thumbnail_height", new WCheckBox());
+		$component =$step->addComponent("use_custom_thumbnail_height", new WCheckBox());
 		$component->setValue(false);
 		
-		$component =& $step->addComponent("thumbnail_width", $dimensionComponent->shallowCopy());
+		$component =$step->addComponent("thumbnail_width", $dimensionComponent->shallowCopy());
 		if ($thumDim[0])
 			$component->setValue($thumDim[0].'px');
 		
-		$component =& $step->addComponent("use_custom_thumbnail_width", new WCheckBox());
+		$component =$step->addComponent("use_custom_thumbnail_width", new WCheckBox());
 		$component->setValue(false);
 		
 		
@@ -329,22 +329,22 @@ class HarmoniFileModule
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function updateFromWizard ( & $record, & $wizard ) {
+	function updateFromWizard ( $record, $wizard ) {
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
 		ArgumentValidator::validate($wizard, new ExtendsValidatorRule("Wizard"));
 		
-		$properties =& $wizard->getAllValues();
-		$values =& $properties["record"];
+		$properties =$wizard->getAllValues();
+		$values =$properties["record"];
 		printpre($properties);
 		
 		// Get all the parts
-		$partIterator =& $record->getParts();
+		$partIterator =$record->getParts();
 		$parts = array();
 		while($partIterator->hasNext()) {
-			$part =& $partIterator->next();
-			$partStructure =& $part->getPartStructure();
-			$partStructureId =& $partStructure->getId();
-			$parts[$partStructureId->getIdString()] =& $part;
+			$part =$partIterator->next();
+			$partStructure =$part->getPartStructure();
+			$partStructureId =$partStructure->getId();
+			$parts[$partStructureId->getIdString()] =$part;
 		}
 
 		// if a new File was uploaded, store it.
@@ -358,7 +358,7 @@ class HarmoniFileModule
 			// application/octet-stream type, see if we can figure out the
 			// type.
 			if (!$mimeType || $mimeType == 'application/octet-stream') {
-				$mime =& Services::getService("MIME");
+				$mime = Services::getService("MIME");
 				$mimeType = $mime->getMimeTypeForFileName($name);
 			}
 			
@@ -379,7 +379,7 @@ class HarmoniFileModule
 			// application/octet-stream type, see if we can figure out the
 			// type.
 			if (!$mimeType || $mimeType == 'application/octet-stream') {
-				$mime =& Services::getService("MIME");
+				$mime = Services::getService("MIME");
 				$mimeType = $mime->getMimeTypeForFileName($name);
 			}
 			
@@ -391,7 +391,7 @@ class HarmoniFileModule
 		else if ($values['file_upload']['tmp_name'] 
 			&& $values['file_upload']['name']) 
 		{
-			$imageProcessor =& Services::getService("ImageProcessor");
+			$imageProcessor = Services::getService("ImageProcessor");
 			
 			// If our image format is supported by the image processor,
 			// generate a thumbnail.
@@ -472,16 +472,16 @@ class HarmoniFileModule
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function generateDisplay ( & $repositoryId, & $assetId, & $record ) {
+	function generateDisplay ( $repositoryId, $assetId, $record ) {
 		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
 		
 		// Get all the partstructures
-		$recordStructure =& $record->getRecordStructure();
-		$partStructureIterator =& $recordStructure->getPartStructures();
+		$recordStructure =$record->getRecordStructure();
+		$partStructureIterator =$recordStructure->getPartStructures();
 		$partStructures = array();
 		while($partStructureIterator->hasNext()) {
-			$partStructures[] =& $partStructureIterator->next();
+			$partStructures[] =$partStructureIterator->next();
 		}
 		
 		return $this->generateDisplayForParts($repositoryId, $assetId, $record, $partStructures);
@@ -496,21 +496,21 @@ class HarmoniFileModule
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function generateDisplayForPartStructures ( & $repositoryId, & $assetId, & $record, & $partStructures ) {
+	function generateDisplayForPartStructures ( $repositoryId, $assetId, $record, $partStructures ) {
 		ArgumentValidator::validate($repositoryId, new ExtendsValidatorRule("Id"));
 		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
 		ArgumentValidator::validate($partStructures, new ArrayValidatorRuleWithRule(new ExtendsValidatorRule("PartStructure")));
 		
-		$partIterator =& $record->getParts();
+		$partIterator =$record->getParts();
 		$parts = array();
 		while($partIterator->hasNext()) {
-			$part =& $partIterator->next();
-			$partStructure =& $part->getPartStructure();
-			$partStructureId =& $partStructure->getId();
+			$part =$partIterator->next();
+			$partStructure =$part->getPartStructure();
+			$partStructureId =$partStructure->getId();
 			if (!isset($parts[$partStructureId->getIdString()]) || !is_array($parts[$partStructureId->getIdString()]))
 				$parts[$partStructureId->getIdString()] = array();
-			$parts[$partStructureId->getIdString()][] =& $part;
+			$parts[$partStructureId->getIdString()][] =$part;
 		}
 		
 		// print out the parts;
@@ -520,14 +520,14 @@ class HarmoniFileModule
 								'THUMBNAIL_MIME_TYPE', 'THUMBNAIL_DIMENSIONS');
 		$printThumbnail = FALSE;
 		foreach (array_keys($partStructures) as $key) {
-			$partStructure =& $partStructures[$key];
-			$partStructureId =& $partStructure->getId();
+			$partStructure =$partStructures[$key];
+			$partStructureId =$partStructure->getId();
 			
 			if(!in_array($partStructureId->getIdString(), $partStructuresToSkip)){
 				print "\n<strong>".$partStructure->getDisplayName().":</strong> \n";
 				switch ($partStructureId->getIdString()) {
 					case 'FILE_SIZE':
-						$size =& ByteSize::withValue($parts[$partStructureId->getIdString()][0]->getValue());
+						$size = ByteSize::withValue($parts[$partStructureId->getIdString()][0]->getValue());
 						print $size->asString();
 						break;
 					case 'DIMENSIONS':
@@ -549,12 +549,12 @@ class HarmoniFileModule
 
 		$html = ob_get_clean();
 		
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-repository");
 		
 		if ($printThumbnail) {
 			ob_start();
-			$recordId =& $record->getId();
+			$recordId =$record->getId();
 			$ns = $harmoni->request->endNamespace();
 // ======= VIEWER LINK ======== //			
 			$xmlAssetIdString = $harmoni->request->get("asset_id");

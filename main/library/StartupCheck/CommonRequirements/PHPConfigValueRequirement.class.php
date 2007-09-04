@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PHPConfigValueRequirement.class.php,v 1.4 2005/04/07 17:07:49 adamfranco Exp $
+ * @version $Id: PHPConfigValueRequirement.class.php,v 1.5 2007/09/04 20:28:04 adamfranco Exp $
  */
 
 /**
@@ -37,7 +37,7 @@ define("PHPINI_GREATER",3);
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PHPConfigValueRequirement.class.php,v 1.4 2005/04/07 17:07:49 adamfranco Exp $
+ * @version $Id: PHPConfigValueRequirement.class.php,v 1.5 2007/09/04 20:28:04 adamfranco Exp $
  */
 class PHPConfigValueRequirement extends StartupRequirement {
 
@@ -145,7 +145,7 @@ class PHPConfigValueRequirement extends StartupRequirement {
 	* @access public
 	* @return ref object
 	*/
-	function &createWizard()
+	function createWizard()
 	{
 		$null = null;
 		return $null;

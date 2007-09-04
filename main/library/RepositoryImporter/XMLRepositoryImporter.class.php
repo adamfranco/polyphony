@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.17 2006/06/26 12:51:45 adamfranco Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.18 2007/09/04 20:28:02 adamfranco Exp $
  */ 
 require_once(DOMIT);
 
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.17 2006/06/26 12:51:45 adamfranco Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.18 2007/09/04 20:28:02 adamfranco Exp $
  */
 class XMLRepositoryImporter
 	extends RepositoryImporter
@@ -48,7 +48,7 @@ class XMLRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function &getSingleAssetInfo (&$input) {
+	function getSingleAssetInfo ($input) {
 		$assetInfo = array();
 		$assetInfo['displayName'] = $input->childNodes[0]->getText();
 		$assetInfo['description'] = $input->childNodes[1]->getText();
@@ -71,8 +71,8 @@ class XMLRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function &getSingleAssetRecordList (&$input) {
-		$iRecordList =& $input->childNodes;
+	function getSingleAssetRecordList ($input) {
+		$iRecordList =$input->childNodes;
 		$recordList = array();
 		foreach ($iRecordList as $record) {
 			$recordListElement = array();
@@ -117,7 +117,7 @@ class XMLRepositoryImporter
 							return $false;
 						}
 					}
-					$recordListElement['parts'] =& $parts;
+					$recordListElement['parts'] =$parts;
 				}
 				else {
 					$partObjects = array();
@@ -128,7 +128,7 @@ class XMLRepositoryImporter
 							return $partObject; // false
 						$partObjects[] = $partObject;
 					}
-					$recordListElement['parts'] =& $partObjects;
+					$recordListElement['parts'] =$partObjects;
 				}
 				$recordListElement['partStructureIds'] = $partStructureIds;
 				$recordList[] = $recordListElement;
@@ -146,8 +146,8 @@ class XMLRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function &getChildAssetList (&$input) {
-		$iChildAssetList =& $input->childNodes;
+	function getChildAssetList ($input) {
+		$iChildAssetList =$input->childNodes;
 		$childAssetList = array();
 		foreach ($iChildAssetList as $asset) {
 			if ($asset->nodeName == "asset") {
@@ -165,7 +165,7 @@ class XMLRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function &getBuildOrderedSet (&$input) {
+	function getBuildOrderedSet ($input) {
 		$buildOrderedSet = $input->getAttribute("buildOrderedSet");
 
 		return $buildOrderedSet;

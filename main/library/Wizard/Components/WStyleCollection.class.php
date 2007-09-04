@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStyleCollection.class.php,v 1.2 2006/08/01 17:30:37 adamfranco Exp $
+ * @version $Id: WStyleCollection.class.php,v 1.3 2007/09/04 20:28:08 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStyleCollection.class.php,v 1.2 2006/08/01 17:30:37 adamfranco Exp $
+ * @version $Id: WStyleCollection.class.php,v 1.3 2007/09/04 20:28:08 adamfranco Exp $
  */
 class WStyleCollection extends WRepeatableComponentCollection {
 		
@@ -35,14 +35,14 @@ class WStyleCollection extends WRepeatableComponentCollection {
 	 * @access public
 	 * @since 6/2/06
 	 */
-	function WStyleCollection (&$style) {
-		$gui =& Services::getService("GUI");
+	function WStyleCollection ($style) {
+		$gui = Services::getService("GUI");
 		
 		// grab the list of supported SPs
 		$this->_supportedSPs = $gui->getSupportedSPs();
 
 		// grab the array of currently instantiated SPs
-		$SPs =& $style->getSPs();
+		$SPs =$style->getSPs();
 		
 		// make a list  of SPs that can be added
 		$this->_availableSPs = array_diff($this->_supportedSPs, array_keys($SPs));
@@ -74,8 +74,8 @@ class WStyleCollection extends WRepeatableComponentCollection {
 	 * @access public
 	 * @since 6/2/06
 	 */
-	function _addSP (&$SP, $removable = 'true') {
-		$this->_collections[get_class($SP)] =& new WStyleProperty($SP);
+	function _addSP ($SP, $removable = 'true') {
+		$this->_collections[get_class($SP)] = new WStyleProperty($SP);
 	}
 	
 	

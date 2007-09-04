@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExtensionRequirement.class.php,v 1.4 2005/04/07 17:07:49 adamfranco Exp $
+ * @version $Id: ExtensionRequirement.class.php,v 1.5 2007/09/04 20:28:04 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExtensionRequirement.class.php,v 1.4 2005/04/07 17:07:49 adamfranco Exp $
+ * @version $Id: ExtensionRequirement.class.php,v 1.5 2007/09/04 20:28:04 adamfranco Exp $
  */
 class ExtensionRequirement extends StartupRequirement {
 
@@ -68,7 +68,7 @@ class ExtensionRequirement extends StartupRequirement {
 	 * @access public
 	 * @return ref object
 	 */
-	function &createWizard()
+	function createWizard()
 	{
 		$null = null; 
 		return $null;

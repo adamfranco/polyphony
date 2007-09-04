@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStepDisplayBar.class.php,v 1.3 2007/04/03 16:50:55 adamfranco Exp $
+ * @version $Id: WStepDisplayBar.class.php,v 1.4 2007/09/04 20:28:08 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStepDisplayBar.class.php,v 1.3 2007/04/03 16:50:55 adamfranco Exp $
+ * @version $Id: WStepDisplayBar.class.php,v 1.4 2007/09/04 20:28:08 adamfranco Exp $
  */
 class WStepDisplayBar 
 	extends WizardComponent 
@@ -35,8 +35,8 @@ class WStepDisplayBar
 	 * @access public
 	 * @return void
 	 */
-	function WStepDisplayBar (&$stepContainer) {
-		$this->_stepContainer =& $stepContainer;
+	function WStepDisplayBar ($stepContainer) {
+		$this->_stepContainer =$stepContainer;
 	}
 	
 	/**

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WDynamicStep.class.php,v 1.1 2006/08/15 21:03:12 sporktim Exp $
+ * @version $Id: WDynamicStep.class.php,v 1.2 2007/09/04 20:28:06 adamfranco Exp $
  */
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WizardStep.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WizardStep.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WDynamicStep.class.php,v 1.1 2006/08/15 21:03:12 sporktim Exp $
+ * @version $Id: WDynamicStep.class.php,v 1.2 2007/09/04 20:28:06 adamfranco Exp $
  * @author Gabe Schine
  */
 class WDynamicStep extends WizardStep {
@@ -66,7 +66,7 @@ class WDynamicStep extends WizardStep {
 	 * @access public
 	 * @return ref object
 	 */
-	function &setComponent ($name, &$component) {
+	function setComponent ($name, $component) {
 		return $this->addComponent($name,$component);
 	}
 	

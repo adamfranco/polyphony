@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MainWindowAction.class.php,v 1.11 2006/11/30 22:02:37 adamfranco Exp $
+ * @version $Id: MainWindowAction.class.php,v 1.12 2007/09/04 20:27:57 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/WizardAction.class.php");
@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MainWindowAction.class.php,v 1.11 2006/11/30 22:02:37 adamfranco Exp $
+ * @version $Id: MainWindowAction.class.php,v 1.12 2007/09/04 20:27:57 adamfranco Exp $
  */
 class MainWindowAction 
 	extends WizardAction {
@@ -72,13 +72,13 @@ class MainWindowAction
 	 * @access public
 	 * @since 4/25/05
 	 */
-	function &execute () {
-		$harmoni =& Harmoni::instance();
+	function execute () {
+		$harmoni = Harmoni::instance();
 		$pageTitle = $harmoni->config->get('programTitle');
 		
 		
 		// Our Rows for action content
-		$actionRows =& $this->getActionRows();
+		$actionRows =$this->getActionRows();
 		
 		// Check authorization
 		if (!$this->isAuthorizedToExecute()) {
@@ -100,7 +100,7 @@ class MainWindowAction
 		}
 		
 		// Set the page title and other new header items
-		$outputHandler =& $harmoni->getOutputHandler();
+		$outputHandler =$harmoni->getOutputHandler();
 		ob_start();
 		
 		// Remove any existing title tags from the head text
@@ -129,9 +129,9 @@ class MainWindowAction
 	 * @access public
 	 * @since 4/26/05
 	 */
-	function &getActionRows () {
+	function getActionRows () {
 		if (!is_object($this->_actionRows))
-			$this->_actionRows =& new Container(new YLayout(), BLOCK, BACKGROUND_BLOCK);
+			$this->_actionRows = new Container(new YLayout(), BLOCK, BACKGROUND_BLOCK);
 		
 		return $this->_actionRows;
 	}

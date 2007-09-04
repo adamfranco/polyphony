@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_numeric.classes.php,v 1.8 2006/01/18 22:51:58 adamfranco Exp $
+ * @version $Id: PrimitiveIO_numeric.classes.php,v 1.9 2007/09/04 20:27:58 adamfranco Exp $
  */
 
 /**
@@ -31,7 +31,7 @@ class PrimitiveIO_integer extends PrimitiveIO_shortstring {
 	 *
 	 * @return void
 	 **/
-	function setValue(&$value)
+	function setValue($value)
 	{
 		parent::setValue($value);
 	}
@@ -42,7 +42,7 @@ class PrimitiveIO_integer extends PrimitiveIO_shortstring {
 	 *
 	 * @return void
 	 **/
-	function setValueFromSObject(&$value)
+	function setValueFromSObject($value)
 	{
 		$this->setValue($value);
 	}
@@ -53,8 +53,8 @@ class PrimitiveIO_integer extends PrimitiveIO_shortstring {
 	 * @access public
 	 * @return mixed
 	 */
-	function &getAllValues () {
-		$obj =& Integer::withValue($this->_value?intval($this->_value):0);
+	function getAllValues () {
+		$obj = Integer::withValue($this->_value?intval($this->_value):0);
 		return $obj;
 	}
 	
@@ -89,7 +89,7 @@ class PrimitiveIO_float extends PrimitiveIO_integer {
 	 *
 	 * @return void
 	 **/
-	function setValue(&$value)
+	function setValue($value)
 	{
 		parent::setValue($value->asString());
 	}
@@ -100,7 +100,7 @@ class PrimitiveIO_float extends PrimitiveIO_integer {
 	 *
 	 * @return void
 	 **/
-	function setValueFromSObject(&$value)
+	function setValueFromSObject($value)
 	{
 		$this->setValue($value);
 	}
@@ -111,8 +111,8 @@ class PrimitiveIO_float extends PrimitiveIO_integer {
 	 * @access public
 	 * @return mixed
 	 */
-	function &getAllValues () {
-		$obj =& Float::withValue($this->_value?floatval($this->_value):0);
+	function getAllValues () {
+		$obj = Float::withValue($this->_value?floatval($this->_value):0);
 		return $obj;
 	}
 	

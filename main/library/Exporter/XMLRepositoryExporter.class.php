@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryExporter.class.php,v 1.11 2006/12/13 20:17:37 adamfranco Exp $
+ * @version $Id: XMLRepositoryExporter.class.php,v 1.12 2007/09/04 20:27:59 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Exporter/XMLExporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLAssetExporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryExporter.class.php,v 1.11 2006/12/13 20:17:37 adamfranco Exp $
+ * @version $Id: XMLRepositoryExporter.class.php,v 1.12 2007/09/04 20:27:59 adamfranco Exp $
  */
 class XMLRepositoryExporter extends XMLExporter {
 		
@@ -60,7 +60,7 @@ class XMLRepositoryExporter extends XMLExporter {
 	 * @access public
 	 * @since 10/31/05
 	 */
-	function &withCompression($compression, $class = 'XMLRepositoryExporter') {
+	function withCompression($compression, $class = 'XMLRepositoryExporter') {
 		return parent::withCompression($compression, $class);
 	}	
 
@@ -72,8 +72,8 @@ class XMLRepositoryExporter extends XMLExporter {
 	 * @access public
 	 * @since 10/31/05
 	 */
-	function &withDir($tmpDir, $class = 'XMLRepositoryExporter') {
-		$exporter =& new $class;
+	function withDir($tmpDir, $class = 'XMLRepositoryExporter') {
+		$exporter = new $class;
 		$exporter->_tmpDir = $tmpDir;
 		return $exporter;
 	}	
@@ -86,16 +86,16 @@ class XMLRepositoryExporter extends XMLExporter {
 	 * @access public
 	 * @since 10/17/05
 	 */
-	function export (&$repId) {
+	function export ($repId) {
 	// ===== CREATE THE DIRECTORY FOR THIS OBJECT ===== //
 		$this->_repDir = $this->_tmpDir."/".$repId->getIdString();
 		mkdir($this->_repDir);
 
 	// ===== SELF KNOWLEDGE ===== //
-		$this->_myId =& $repId;
-		$rm =& Services::getService("Repository");
-		$this->_object =& $rm->getRepository($this->_myId);
-		$type =& $this->_object->getType();
+		$this->_myId =$repId;
+		$rm = Services::getService("Repository");
+		$this->_object =$rm->getRepository($this->_myId);
+		$type =$this->_object->getType();
 
 	// ===== SELF EXPORT ===== //
 		$this->setupXML($this->_repDir);				
@@ -139,10 +139,10 @@ class XMLRepositoryExporter extends XMLExporter {
 	 * @since 10/17/05
 	 */
 	function exportRecordstructures () {
-		$children =& $this->_object->getRecordStructures();
+		$children =$this->_object->getRecordStructures();
 		while ($children->hasNext()) {
-			$child =& $children->next();
-			$exporter =& new XMLRecordStructureExporter($this->_xml);
+			$child =$children->next();
+			$exporter = new XMLRecordStructureExporter($this->_xml);
 			$exporter->export($child); // ????
 		}
 		unset($children, $child, $exporter);
@@ -156,9 +156,9 @@ class XMLRepositoryExporter extends XMLExporter {
 	 */
 	function exportAssets () {
 		$hasRootSearch = FALSE;
-		$rootSearchType =& new HarmoniType("Repository",
+		$rootSearchType = new HarmoniType("Repository",
 			"edu.middlebury.harmoni", "RootAssets", "");
-		$searchTypes =& $this->_object->getSearchTypes();
+		$searchTypes =$this->_object->getSearchTypes();
 		while ($searchTypes->hasNext()) {
 			if ($rootSearchType->isEqual( $searchTypes->next() )) {
 				$hasRootSearch = TRUE;
@@ -167,17 +167,17 @@ class XMLRepositoryExporter extends XMLExporter {
 		}
 		if ($hasRootSearch) {
 			$criteria = NULL;
-			$children =& $this->_object->getAssetsBySearch($criteria,
+			$children =$this->_object->getAssetsBySearch($criteria,
 				$rootSearchType, $searchProperties = NULL);
 		} else
-			$children =& $this->_object->getAssets();
+			$children =$this->_object->getAssets();
 		
 		$this->_status = new StatusStars(str_replace('%1', $this->_object->getDisplayName(), _("Exporting all Assets in the Collection, '%1'")));
 		$this->_status->initializeStatistics($children->count(), 100);
 		
 		while ($children->hasNext()) {
-			$child =& $children->next();
-			$exporter =& XMLAssetExporter::withDir($this->_xml, $this->_repDir);
+			$child =$children->next();
+			$exporter = XMLAssetExporter::withDir($this->_xml, $this->_repDir);
 			$exporter->export($child);
 			$this->_status->updateStatistics();	
 		}

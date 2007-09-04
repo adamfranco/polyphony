@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.17 2007/04/03 16:50:55 adamfranco Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.18 2007/09/04 20:28:01 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRecordStructureIm
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.17 2007/04/03 16:50:55 adamfranco Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.18 2007/09/04 20:28:01 adamfranco Exp $
  */
 class XMLRepositoryImporter extends XMLImporter {
 		
@@ -34,7 +34,7 @@ class XMLRepositoryImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/5/05
 	 */
-	function XMLRepositoryImporter (&$existingArray) {
+	function XMLRepositoryImporter ($existingArray) {
 		parent::XMLImporter($existingArray);
 	}
 
@@ -48,7 +48,7 @@ class XMLRepositoryImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/11/05
 	 */
-	function &withFile (&$existingArray, $filepath, $type, $class = 'XMLRepositoryImporter') {
+	function withFile ($existingArray, $filepath, $type, $class = 'XMLRepositoryImporter') {
 		return parent::withFile($existingArray, $filepath, $type, $class);
 	}
 
@@ -63,7 +63,7 @@ class XMLRepositoryImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/11/05
 	 */
-	function &withObject (&$existingArray, &$object, $filepath, $type, $class = 'XMLRepositoryImporter') {
+	function withObject ($existingArray, $object, $filepath, $type, $class = 'XMLRepositoryImporter') {
 		return parent::withObject($existingArray, $object, $filepath, $type, $class);
 	}
 	
@@ -100,7 +100,7 @@ class XMLRepositoryImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/5/05
 	 */
-	function isImportable (&$element) {
+	function isImportable ($element) {
 		if($element->nodeName == "repository")
 			return true;
 		else
@@ -115,14 +115,14 @@ class XMLRepositoryImporter extends XMLImporter {
 	 * @access public
 	 * @since 4/3/07
 	 */
-	function &getParentForImporter ( $importer) {
+	function getParentForImporter ( $importer) {
 		if ($importer == "XMLAssetImporter") {
 			if ($this->_parent)
-				$parent =& $this->_parent;
+				$parent =$this->_parent;
 			else
-				$parent =& $this->_object;
+				$parent =$this->_object;
 		} else {
-			$parent =& $this->_object;
+			$parent =$this->_object;
 		}
 		
 		return $parent;
@@ -135,8 +135,8 @@ class XMLRepositoryImporter extends XMLImporter {
 	 * @since 10/5/05
 	 */
 	function importNode () {			
-		$idManager =& Services::getService("Id");
-		$repositoryManager =& Services::getService("RepositoryManager");
+		$idManager = Services::getService("Id");
+		$repositoryManager = Services::getService("RepositoryManager");
 		
 		$this->getNodeInfo();
 //printpre($this->_node->nodeName);
@@ -147,24 +147,24 @@ class XMLRepositoryImporter extends XMLImporter {
 		
 		if ($hasId && (in_array($this->_node->getAttribute("id"),
 				$this->_existingArray)	|| $this->_type == "update")) {
-			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
-			$this->_object =& $repositoryManager->getRepository($this->_myId);
+			$this->_myId =$idManager->getId($this->_node->getAttribute("id"));
+			$this->_object =$repositoryManager->getRepository($this->_myId);
 			$this->update();
 		} 
 		else {
-			$this->_object =& $repositoryManager->createRepository(
+			$this->_object =$repositoryManager->createRepository(
 				$this->_info['name'], $this->_info['description'],
 				$this->_info['type']);
-			$this->_myId =& $this->_object->getId();
+			$this->_myId =$this->_object->getId();
 			// log repository creation
 			if (Services::serviceRunning("Logging")) {
-				$loggingManager =& Services::getService("Logging");
-				$log =& $loggingManager->getLogForWriting("Harmoni");
-				$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+				$loggingManager = Services::getService("Logging");
+				$log =$loggingManager->getLogForWriting("Harmoni");
+				$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
 								"A format in which the acting Agent[s] and the target nodes affected are specified.");
-				$priorityType =& new Type("logging", "edu.middlebury",
+				$priorityType = new Type("logging", "edu.middlebury",
 					"Event_Notice",	"Normal events.");
-				$item =& new AgentNodeEntryItem("Create Node",
+				$item = new AgentNodeEntryItem("Create Node",
 					"Repository: ".$this->_myId->getIdString()." created.");
 				$item->addNodeId($this->_myId);
 				$log->appendLogWithTypes($item, $formatType, $priorityType);
@@ -181,9 +181,9 @@ class XMLRepositoryImporter extends XMLImporter {
 	 * @since 10/6/05
 	 */
 	function doSets () {
-		$idManager =& Services::getService("Id");
-		$sets =& Services::getService("Sets");
-		$set =& $sets->getPersistentSet($this->_myId);
+		$idManager = Services::getService("Id");
+		$sets = Services::getService("Sets");
+		$set =$sets->getPersistentSet($this->_myId);
 		if (!$set->isInSet($idManager->getId("FILE")))
 			$set->addItem($idManager->getId("FILE"));
 	}
@@ -195,9 +195,9 @@ class XMLRepositoryImporter extends XMLImporter {
 	 * @since 10/6/05
 	 */
 	function doIdMatrix () {
-		$dbHandler =& Services::getService("DBHandler");
+		$dbHandler = Services::getService("DBHandler");
 // define dbIndexConcerto for children
-		$createTableQuery =& new GenericSQLQuery;
+		$createTableQuery = new GenericSQLQuery;
 		$createTableQuery->addSQLQuery("Create temporary table if not exists
 			xml_id_matrix ( xml_id varchar(255)
 			not null , conc_id varchar(255) not null)");
@@ -213,8 +213,8 @@ class XMLRepositoryImporter extends XMLImporter {
 	 * @since 10/6/05
 	 */
 	function dropIdMatrix () {
-		$dbHandler =& Services::getService("DBHandler");
-//		$dropTableQuery =& new GenericSQLQuery;
+		$dbHandler = Services::getService("DBHandler");
+//		$dropTableQuery = new GenericSQLQuery;
 //		$dropTableQuery->addSQLQuery("Drop table if exists
 //			xml_id_matrix");
 		
@@ -243,14 +243,14 @@ class XMLRepositoryImporter extends XMLImporter {
 			$this->_object->updateDescription($this->_info['description']);
 		}
 		if (Services::serviceRunning("Logging") && $modified) {
-			$loggingManager =& Services::getService("Logging");
-			$log =& $loggingManager->getLogForWriting("Harmoni");
-			$formatType =& new Type("logging", "edu.middlebury", 
+			$loggingManager = Services::getService("Logging");
+			$log =$loggingManager->getLogForWriting("Harmoni");
+			$formatType = new Type("logging", "edu.middlebury", 
 				"AgentsAndNodes",
 				"A format in which the acting Agent[s] and the target nodes affected are specified.");
-			$priorityType =& new Type("logging", "edu.middlebury",
+			$priorityType = new Type("logging", "edu.middlebury",
 				"Event_Notice",	"Normal events.");
-			$item =& new AgentNodeEntryItem("Modify Node",
+			$item = new AgentNodeEntryItem("Modify Node",
 				"Repository: ".$this->_myId->getIdString()." modified.");
 			$item->addNodeId($this->_myId);
 			$log->appendLogWithTypes($item, $formatType, $priorityType);

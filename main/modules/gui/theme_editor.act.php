@@ -5,7 +5,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: theme_editor.act.php,v 1.2 2006/08/21 16:25:24 sporktim Exp $
+* @version $Id: theme_editor.act.php,v 1.3 2007/09/04 20:28:13 adamfranco Exp $
 */
 
 
@@ -21,7 +21,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: theme_editor.act.php,v 1.2 2006/08/21 16:25:24 sporktim Exp $
+* @version $Id: theme_editor.act.php,v 1.3 2007/09/04 20:28:13 adamfranco Exp $
 */
 
 define("theme_editorAction_wizardId", 'theme_editor_wizard3_');
@@ -93,8 +93,8 @@ Here are some general notes:
 	* @since 4/26/05
 	*/
 	function isAuthorizedToExecute () {
-		$authZManager =& Services::getService("AuthZ");
-		$idManager =& Services::getService("IdManager");
+		$authZManager = Services::getService("AuthZ");
+		$idManager = Services::getService("IdManager");
 		if ($authZManager->isUserAuthorized(
 		$idManager->getId("edu.middlebury.authorization.create_agent"),
 		$idManager->getId("edu.middlebury.authorization.root")))
@@ -112,8 +112,8 @@ Here are some general notes:
 	* @since 4/26/05
 	*/
 	function isAuthorizedToTemplate () {
-		$authZManager =& Services::getService("AuthZ");
-		$idManager =& Services::getService("IdManager");
+		$authZManager = Services::getService("AuthZ");
+		$idManager = Services::getService("IdManager");
 		if ($authZManager->isUserAuthorized(
 		$idManager->getId("edu.middlebury.authorization.create_agent"),
 		$idManager->getId("edu.middlebury.authorization.root")))
@@ -153,11 +153,11 @@ Here are some general notes:
 	* @since 4/26/05
 	*/
 	function buildContent () {
-		$harmoni =& Harmoni::instance();
-		$guimanager =& Services::getService('GUIManager');
-		$currentTheme =& $guimanager->getTheme();
+		$harmoni = Harmoni::instance();
+		$guimanager = Services::getService('GUIManager');
+		$currentTheme =$guimanager->getTheme();
 
-		$actionRows =& $this->getActionRows();
+		$actionRows =$this->getActionRows();
 		$cacheName = theme_editorAction_wizardId;// @todo create unique cache name;
 
 		$this->runWizard ( $cacheName, $actionRows );
@@ -171,27 +171,27 @@ Here are some general notes:
 	* @access public
 	* @since 4/28/05
 	*/
-	function &createWizard () {
+	function createWizard () {
 
 
 
 
-		$harmoni =& Harmoni::instance();
-		$guiManager =& Services::getService('GUIManager');
+		$harmoni = Harmoni::instance();
+		$guiManager = Services::getService('GUIManager');
 
-		$currentTheme =& $guiManager->getTheme();
+		$currentTheme =$guiManager->getTheme();
 
 		// Instantiate the wizard, then add our steps.
-		//$wizard =& new LogicStepWizard();
-		// $wizard =& SimpleStepWizard::withDefaultLayout();
-		$wizard =& LogicStepWizard::withDefaultLayout();
+		//$wizard = new LogicStepWizard();
+		// $wizard = SimpleStepWizard::withDefaultLayout();
+		$wizard = LogicStepWizard::withDefaultLayout();
 
-		$stepChangedListener =& new WStepChangedListener("theme_editorAction::handleStepChange");
-		$updateListener =& new WUpdateListener("theme_editorAction::handleUpdate");
+		$stepChangedListener = new WStepChangedListener("theme_editorAction::handleStepChange");
+		$updateListener = new WUpdateListener("theme_editorAction::handleUpdate");
 		$wizard->addEventListener($stepChangedListener);
 		$wizard->addEventListener($updateListener);
 
-		$stepContainer =& $wizard->getStepContainer();
+		$stepContainer =$wizard->getStepContainer();
 
 		/*********************************************************
 		* LOAD STEP
@@ -200,14 +200,14 @@ Here are some general notes:
 
 
 
-		$loadStep =& $wizard->addStep('load_step', new WizardStep());
+		$loadStep =$wizard->addStep('load_step', new WizardStep());
 		$loadStep->setDisplayName(_("This is the load step:"));
 
 		ob_start();
 
 
 		// select list for listing themes user can access
-		$loadChoice =& $loadStep->addComponent('load_choice',
+		$loadChoice =$loadStep->addComponent('load_choice',
 		new WSelectList());
 		//$loadChoice->addOption('', '(choose a theme to copy or edit)');
 		//$loadChoice->setValue('');
@@ -224,11 +224,11 @@ Here are some general notes:
 
 
 		// add buttons... copy to new, update, create from scratch.
-		$copyButton =& $loadStep->addComponent('copy',
+		$copyButton =$loadStep->addComponent('copy',
 		WLogicButton::withLabel(_('Copy to New...')));
-		$loadButton =& $loadStep->addComponent('load',
+		$loadButton =$loadStep->addComponent('load',
 		WLogicButton::withLabel(_('Load for Edit...')));
-		$newButton =& $loadStep->addComponent('new',
+		$newButton =$loadStep->addComponent('new',
 		WLogicButton::withLabel(_('Create Empty...')));
 
 
@@ -236,7 +236,7 @@ Here are some general notes:
 
 
 		// create logic for buttons
-		$newThemeRule =& WLogicRule::withSteps(array('dd_step', 'home_step','save_step'));
+		$newThemeRule = WLogicRule::withSteps(array('dd_step', 'home_step','save_step'));
 		$copyButton->setLogic(WLogicRule::withSteps(array('home_step','save_step')));
 		$newButton->setLogic($newThemeRule);
 		$loadButton->setLogic(WLogicRule::withSteps(array('home_step','save_step')));
@@ -268,11 +268,11 @@ Here are some general notes:
 		/*********************************************************
 		* DISPLAYNAME DESCRIPTION STEP
 		*********************************************************/
-		$ddStep =& $wizard->addStep('dd_step', new WizardStep());
+		$ddStep =$wizard->addStep('dd_step', new WizardStep());
 
 		// display name and description fields for theme
-		$dName =& $ddStep->addComponent('display_name', new WTextField());
-		$desc =& $ddStep->addComponent('description', new WTextArea());
+		$dName =$ddStep->addComponent('display_name', new WTextField());
+		$desc =$ddStep->addComponent('description', new WTextArea());
 		$ddStep->addComponent('next', new WNextStepButton($stepContainer));
 
 		// add markup for step
@@ -291,34 +291,34 @@ Here are some general notes:
 		/*********************************************************
 		* GLOBAL STYLES STEP
 		*********************************************************/
-		$globalStep =& $wizard->addStep('global_step', new WDynamicStep());
+		$globalStep =$wizard->addStep('global_step', new WDynamicStep());
 		$globalStep->setDynamicFunction('theme_editorAction::globalStepCallBack');
 
 
 		/*********************************************************
 		* HOME STEP AND EDITING STEPS
 		*********************************************************/
-		$homeStep =& $wizard->addStep('home_step', new WizardStep());
+		$homeStep =$wizard->addStep('home_step', new WizardStep());
 
 		//===== BUTTONS =====//
 		// Quick Manipulation
-		$button =& WLogicButton::withLabel('Quick and Easy Editing');
+		$button = WLogicButton::withLabel('Quick and Easy Editing');
 		$homeStep->addComponent('quick',$button);
 		$button->setLogic(WLogicRule::withSteps(array('quick_step','home_step')));
 
 		// D&D
-		$button =& WLogicButton::withLabel('Display Name and Description');
+		$button = WLogicButton::withLabel('Display Name and Description');
 		$homeStep->addComponent('d_d',$button);
 		$button->setLogic(WLogicRule::withSteps(array('dd_step','home_step')));
 
 		// Global
-		$button =& WLogicButton::withLabel('Semi-obselete way to fix things');
+		$button = WLogicButton::withLabel('Semi-obselete way to fix things');
 		$homeStep->addComponent('global',$button);
 		$button->setLogic(WLogicRule::withSteps(array('global_step','home_step')));
 
 
 		// Start Over
-		$button =& new WCallbackButton();
+		$button = new WCallbackButton();
 		$homeStep->addComponent('load',$button);
 		$button->setEventAndLabel('theme_editorAction::resetToBeginning($this->getWizard());','Back to Beginning');
 
@@ -357,7 +357,7 @@ Here are some general notes:
 		$arr = array(array('type'=>BLOCK,'index'=>1));
 		//execute
 		$this->addAnEditingStep($wizard, $name,$arr, $info, false, true, false);
-		$button =& WLogicButton::withLabel($label);
+		$button = WLogicButton::withLabel($label);
 		$homeStep->addComponent($name.'_button',$button);
 		$button->setLogic(WLogicRule::withSteps(array($name.'_step','home_step')));
 		print "\n\t\t<td>"._($explanation)."</td><td>[[".$name."_button]]</td>";
@@ -370,7 +370,7 @@ Here are some general notes:
 		$arr = array(array('type'=>BLOCK,'index'=>2));
 		//execute
 		$this->addAnEditingStep($wizard, $name,$arr, $info, true, true, true);
-		$button =& WLogicButton::withLabel($label);
+		$button = WLogicButton::withLabel($label);
 		$homeStep->addComponent($name.'_button',$button);
 		$button->setLogic(WLogicRule::withSteps(array($name.'_step','home_step')));
 		print "\n\t\t<td>"._($explanation)."</td><td>[[".$name."_button]]</td>";
@@ -385,7 +385,7 @@ Here are some general notes:
 		$arr = array(array('type'=>HEADING,'index'=>1));
 		//execute
 		$this->addAnEditingStep($wizard, $name,$arr, $info, true, true, false);
-		$button =& WLogicButton::withLabel($label);
+		$button = WLogicButton::withLabel($label);
 		$homeStep->addComponent($name.'_button',$button);
 		$button->setLogic(WLogicRule::withSteps(array($name.'_step','home_step')));
 		print "\n\t\t<td>"._($explanation)."</td><td>[[".$name."_button]]</td>";
@@ -398,7 +398,7 @@ Here are some general notes:
 		$arr = array(array('type'=>HEADING,'index'=>2));
 		//execute
 		$this->addAnEditingStep($wizard, $name,$arr, $info, true, true, false);
-		$button =& WLogicButton::withLabel($label);
+		$button = WLogicButton::withLabel($label);
 		$homeStep->addComponent($name.'_button',$button);
 		$button->setLogic(WLogicRule::withSteps(array($name.'_step','home_step')));
 		print "\n\t\t<td>"._($explanation)."</td><td>[[".$name."_button]]</td>";
@@ -413,7 +413,7 @@ Here are some general notes:
 		$arr = array(array('type'=>HEADER,'index'=>1));
 		//execute
 		$this->addAnEditingStep($wizard, $name,$arr, $info, true, true, false);
-		$button =& WLogicButton::withLabel($label);
+		$button = WLogicButton::withLabel($label);
 		$homeStep->addComponent($name.'_button',$button);
 		$button->setLogic(WLogicRule::withSteps(array($name.'_step','home_step')));
 		print "\n\t\t<td>"._($explanation)."</td><td>[[".$name."_button]]</td>";
@@ -426,7 +426,7 @@ Here are some general notes:
 		$arr = array(array('type'=>FOOTER,'index'=>1));
 		//execute
 		$this->addAnEditingStep($wizard, $name,$arr, $info, true, true, false);
-		$button =& WLogicButton::withLabel($label);
+		$button = WLogicButton::withLabel($label);
 		$homeStep->addComponent($name.'_button',$button);
 		$button->setLogic(WLogicRule::withSteps(array($name.'_step','home_step')));
 		print "\n\t\t<td>"._($explanation)."</td><td>[[".$name."_button]]</td>";
@@ -442,7 +442,7 @@ Here are some general notes:
 		$arr = array(array('type'=>MENU,'index'=>1));
 		//execute
 		$this->addAnEditingStep($wizard, $name,$arr, $info, true, true, false);
-		$button =& WLogicButton::withLabel($label);
+		$button = WLogicButton::withLabel($label);
 		$homeStep->addComponent($name.'_button',$button);
 		$button->setLogic(WLogicRule::withSteps(array($name.'_step','home_step')));
 		print "\n\t\t<td>"._($explanation)."</td><td>[[".$name."_button]]</td>";
@@ -456,7 +456,7 @@ Here are some general notes:
 		$arr = array(array('type'=>MENU_ITEM_HEADING,'index'=>1));
 		//execute
 		$this->addAnEditingStep($wizard, $name,$arr, $info, true, true, false);
-		$button =& WLogicButton::withLabel($label);
+		$button = WLogicButton::withLabel($label);
 		$homeStep->addComponent($name.'_button',$button);
 		$button->setLogic(WLogicRule::withSteps(array($name.'_step','home_step')));
 		print "\n\t\t<td>"._($explanation)."</td><td>[[".$name."_button]]</td>";
@@ -471,7 +471,7 @@ Here are some general notes:
 		$arr = array(array('type'=>MENU_ITEM_LINK_SELECTED,'index'=>1));
 		//execute
 		$this->addAnEditingStep($wizard, $name,$arr, $info, true, true, false);
-		$button =& WLogicButton::withLabel($label);
+		$button = WLogicButton::withLabel($label);
 		$homeStep->addComponent($name.'_button',$button);
 		$button->setLogic(WLogicRule::withSteps(array($name.'_step','home_step')));
 		print "\n\t\t<td>"._($explanation)."</td><td>[[".$name."_button]]</td>";
@@ -486,7 +486,7 @@ Here are some general notes:
 		$arr = array(array('type'=>MENU_ITEM_LINK_UNSELECTED,'index'=>1));
 		//execute
 		$this->addAnEditingStep($wizard, $name,$arr, $info, true, true, false);
-		$button =& WLogicButton::withLabel($label);
+		$button = WLogicButton::withLabel($label);
 		$homeStep->addComponent($name.'_button',$button);
 		$button->setLogic(WLogicRule::withSteps(array($name.'_step','home_step')));
 		print "\n\t\t<td>"._($explanation)."</td><td>[[".$name."_button]]</td>";
@@ -515,10 +515,10 @@ Here are some general notes:
 
 		//@todo read the text that I tell it to print out.  I suspect that this step should be deleted.
 
-		$saveStep =& $wizard->addStep('save_step', new WizardStep());
+		$saveStep =$wizard->addStep('save_step', new WizardStep());
 
 		// how do you want to save your theme
-		$saveStyle =& $saveStep->addComponent('save_style', new WSelectList());
+		$saveStyle =$saveStep->addComponent('save_style', new WSelectList());
 		$saveStyle->addOption('new', _('Save as a new Theme'));
 		$saveStyle->addOption('update', _('Save as updated Theme'));
 		if (theme_editorAction::isAuthorizedToTemplate()) {
@@ -561,8 +561,8 @@ Here are some general notes:
 	function saveWizard ( $cacheName ) {
 		//@todo this does not actually save the theme.  Maybe it should.  See the save step for hints.
 
-		$guiManager =& Services::getService("GUI");
-		$wizard =& $this->getWizard($cacheName);
+		$guiManager = Services::getService("GUI");
+		$wizard =$this->getWizard($cacheName);
 
 
 		if($wizard->validate()){
@@ -571,7 +571,7 @@ Here are some general notes:
 			print "fail!";
 			return;
 		}
-		$theme =& theme_editorAction::getTheme();
+		$theme = theme_editorAction::getTheme();
 
 		if(!is_null($theme)){
 			print $theme->getCSS();
@@ -586,18 +586,18 @@ Here are some general notes:
 	* @access public
 	* @since 8/8/06
 	*/
-	function addIFrame(&$theStep) {
+	function addIFrame($theStep) {
 
 		//@todo It wouldn't be all that hard to add a series of three radio buttons, each allowing a new theme.  It would be really cool and quite useful.
 
 		//@todo I'm not sure if its a good idea or easy, but here's an idea--every time the user changes something, the thing relods, probably through javascript.  I suspect it would make work frustratingly slow and be difficult though.
 
 		$s = "";
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 
 		$url = $harmoni->request->quickURL("gui","test_page", array("theme"=>theme_editorAction_wizardId."__theme"));
 
-		$refreshButton =& $theStep->addComponent('refresh_preview',
+		$refreshButton =$theStep->addComponent('refresh_preview',
 		WEventButton::withLabel(_('Refresh...')));
 
 
@@ -629,17 +629,17 @@ Here are some general notes:
 
 
 
-	function globalStepCallBack(&$step){
+	function globalStepCallBack($step){
 		$s = "";
 
-		$wizard =& $step->getWizard();
-		$stepContainer =& $wizard->getStepContainer();
-		$theme =& theme_editorAction::getTheme();
+		$wizard =$step->getWizard();
+		$stepContainer =$wizard->getStepContainer();
+		$theme = theme_editorAction::getTheme();
 
 		if(!is_null($theme)){
-			$styleCollections =& $theme->getStyleCollections();
+			$styleCollections =$theme->getStyleCollections();
 
-			$children =& $step->getChildren();
+			$children =$step->getChildren();
 			foreach(array_keys($children) as $key){
 				$step->removeChild($key);
 			}
@@ -657,7 +657,7 @@ Here are some general notes:
 			foreach(array_keys($styleCollections) as $key){
 				$i++;
 				$name = 'collection_'.$i;
-				$comp =& new WStyleCollection("theme_editorAction::getTheme",$key);
+				$comp = new WStyleCollection("theme_editorAction::getTheme",$key);
 				$step->setComponent($name,$comp);
 				$s.= "\n\t<tr>";
 				$s.= "\n\t\t<td>[[".$name."]]</td>";
@@ -686,14 +686,14 @@ Here are some general notes:
 		
 		//@todo This is unfortunate in that hitting back to this step will delete all your changes.  If you fix the above problem, that should go away.
 		
-		$wizard =& $source->getWizard();
+		$wizard =$source->getWizard();
 		$values = $wizard->getAllValues();
 		if($context['from']=="load_step"){
 			if($context['to']=="dd_step"){
-				$_SESSION[theme_editorAction_wizardId.'__theme'] =& new SimpleLinesTheme();
+				$_SESSION[theme_editorAction_wizardId.'__theme'] = new SimpleLinesTheme();
 			}else{
 				$startingTheme=$values["load_step"]["load_choice"];
-				$codeToExecute = '$_SESSION["'.theme_editorAction_wizardId.'__theme"] =& new '.$startingTheme.'();';
+				$codeToExecute = '$_SESSION["'.theme_editorAction_wizardId.'__theme"] = new '.$startingTheme.'();';
 				eval($codeToExecute);
 			}
 		}
@@ -702,11 +702,11 @@ Here are some general notes:
 
 	function addAnEditingStep($wizard, $name, $arr, $info, $font, $bg, $text ){
 
-		$stepContainer =& $wizard->getStepContainer();
+		$stepContainer =$wizard->getStepContainer();
 
 		
 		
-		$step =& $wizard->addStep($name.'_step', new WizardStep());
+		$step =$wizard->addStep($name.'_step', new WizardStep());
 		$step->addComponent('next', new WNextStepButton($stepContainer));
 		$step->addComponent('main', new WMultiCollection("theme_editorAction::getTheme",$name,$arr,$font,$bg, $text));
 		
@@ -744,13 +744,13 @@ Here are some general notes:
 	* @since 4/28/05
 	*/
 	function getReturnUrl () {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		//@todo this, of course, should be in the user folder eventually.
 		return $harmoni->request->quickURL("admin", "main");
 	}
 
 
-	function &getTheme(){
+	function getTheme(){
 		return $_SESSION[theme_editorAction_wizardId."__theme"];
 	}
 

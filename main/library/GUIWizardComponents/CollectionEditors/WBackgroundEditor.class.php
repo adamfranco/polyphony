@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: WBackgroundEditor.class.php,v 1.2 2006/08/21 16:25:23 sporktim Exp $
+* @version $Id: WBackgroundEditor.class.php,v 1.3 2007/09/04 20:28:00 adamfranco Exp $
 */
 
 
@@ -20,7 +20,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: WBackgroundEditor.class.php,v 1.2 2006/08/21 16:25:23 sporktim Exp $
+* @version $Id: WBackgroundEditor.class.php,v 1.3 2007/09/04 20:28:00 adamfranco Exp $
 */
 
 class WBackgroundEditor
@@ -67,7 +67,7 @@ extends WMoreOptions
 		
 		
 		//get the theme
-		eval('$theme =& '.$callBack."();");
+		eval('$theme = '.$callBack."();");
 
 
 		
@@ -86,7 +86,7 @@ extends WMoreOptions
 
 		//first style collection
 		if(!$theme->getStyleCollection($collectionSelector1)){
-			$styleCollection1 =& new StyleCollection($collectionSelector1, $collectionName,"BackGround properties", "How would you like your background to look?".$collectionName);
+			$styleCollection1 = new StyleCollection($collectionSelector1, $collectionName,"BackGround properties", "How would you like your background to look?".$collectionName);
 			foreach($thingsToApplyCollectionTo as $arr){
 				$theme->addStyleForComponentType($styleCollection1,$arr['type'],$arr['index']);
 			}
@@ -95,28 +95,28 @@ extends WMoreOptions
 
 		//first style collection GUI elements
 		
-		$comp =& new WGUISelectList($callBack, $collectionSelector1,new BackgroundColorSP("#FFFFFF"),"ColorSC",$color['options'],$color['styles']);
+		$comp = new WGUISelectList($callBack, $collectionSelector1,new BackgroundColorSP("#FFFFFF"),"ColorSC",$color['options'],$color['styles']);
 		$this->addComponent('bgColor',$comp);
 		
 		
-		$prop =& new BorderSP('0px',"solid","#000000");
-		$comp =& new WGUISelectList($callBack, $collectionSelector1,$prop,"LengthSC",$borderSizes['options'],$borderSizes['styles']);
+		$prop = new BorderSP('0px',"solid","#000000");
+		$comp = new WGUISelectList($callBack, $collectionSelector1,$prop,"LengthSC",$borderSizes['options'],$borderSizes['styles']);
 		$this->addComponent('borderSize',$comp);
-		$comp =& new WGUISelectList($callBack, $collectionSelector1,$prop,"BorderStyleSC",$borderStyles['options'],$borderStyles['styles']);
+		$comp = new WGUISelectList($callBack, $collectionSelector1,$prop,"BorderStyleSC",$borderStyles['options'],$borderStyles['styles']);
 		$this->addComponent('borderStyle',$comp);
-		$comp =& new WGUISelectList($callBack, $collectionSelector1,$prop,"ColorSC",$color['options'],$color['styles']);
+		$comp = new WGUISelectList($callBack, $collectionSelector1,$prop,"ColorSC",$color['options'],$color['styles']);
 		$this->addComponent('borderColor',$comp);
 		
 		
 	
 		
-		$comp =& new WGUISelectList($callBack, $collectionSelector1,new MarginTopSP("0px"),"LengthSC",$marginArray,false);
+		$comp = new WGUISelectList($callBack, $collectionSelector1,new MarginTopSP("0px"),"LengthSC",$marginArray,false);
 		$this->addComponent('m_top',$comp);
-		$comp =& new WGUISelectList($callBack, $collectionSelector1,new MarginBottomSP("0px"),"LengthSC",$marginArray,false);
+		$comp = new WGUISelectList($callBack, $collectionSelector1,new MarginBottomSP("0px"),"LengthSC",$marginArray,false);
 		$this->addComponent('m_bottom',$comp);	
-		$comp =& new WGUISelectList($callBack, $collectionSelector1,new MarginLeftSP("0px"),"LengthSC",$marginArray,false);
+		$comp = new WGUISelectList($callBack, $collectionSelector1,new MarginLeftSP("0px"),"LengthSC",$marginArray,false);
 		$this->addComponent('m_left',$comp);	
-		$comp =& new WGUISelectList($callBack, $collectionSelector1,new MarginRightSP("0px"),"LengthSC",$marginArray,false);
+		$comp = new WGUISelectList($callBack, $collectionSelector1,new MarginRightSP("0px"),"LengthSC",$marginArray,false);
 		$this->addComponent('m_right',$comp);		
 
 		
@@ -150,13 +150,13 @@ extends WMoreOptions
 		$s.="\n<table border='0' width='100%' cellpadding='5'>";
 		$s.="\n\t<tr>";
 		$s.="\t\t<td>Background Color: ";
-		$comp =& $this->getChild($name = 'bgColor');
+		$comp =$this->getChild($name = 'bgColor');
 		$s.="\n\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";
 		
 		
 				
 		$s.="\t\t<td width>Border Size: ";
-		$comp =& $this->getChild($name = 'borderSize');
+		$comp =$this->getChild($name = 'borderSize');
 		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";	
 		
 
@@ -203,30 +203,30 @@ extends WMoreOptions
 	
 		
 		$s.="\t\t<td>Border Color: ";
-		$comp =& $this->getChild($name = 'borderColor');
+		$comp =$this->getChild($name = 'borderColor');
 		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";
 		
 		$s.="\t\t<td width>Border Style: ";
-		$comp =& $this->getChild($name = 'borderStyle');
+		$comp =$this->getChild($name = 'borderStyle');
 		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";
 		$s.="\n\t</tr><tr>";
 		
 
 		
 		$s.="\t\t<td>Top Margin: ";
-		$comp =& $this->getChild($name = 'm_top');
+		$comp =$this->getChild($name = 'm_top');
 		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";		
 		$s.="\t\t<td>Bottom Margin: ";
-		$comp =& $this->getChild($name = 'm_bottom');
+		$comp =$this->getChild($name = 'm_bottom');
 		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";
 		$s.="\n\t</tr><tr>";
 		
 		
 		$s.="\t\t<td>Left Margin: ";
-		$comp =& $this->getChild($name = 'm_left');
+		$comp =$this->getChild($name = 'm_left');
 		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";		
 		$s.="\t\t<td>Right Margin: ";
-		$comp =& $this->getChild($name = 'm_right');
+		$comp =$this->getChild($name = 'm_right');
 		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";
 		$s.="\n\t</tr><tr>";
 		

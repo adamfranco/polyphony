@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login_type.act.php,v 1.17 2006/03/14 22:07:37 cws-midd Exp $
+ * @version $Id: login_type.act.php,v 1.18 2007/09/04 20:28:10 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login_type.act.php,v 1.17 2006/03/14 22:07:37 cws-midd Exp $
+ * @version $Id: login_type.act.php,v 1.18 2007/09/04 20:28:10 adamfranco Exp $
  */
 class login_typeAction
 	extends Action
@@ -45,14 +45,14 @@ class login_typeAction
 	 * @access public
 	 * @since 4/25/05
 	 */
-	function &execute ( &$harmoni ) {
-		$harmoni =& Harmoni::instance();
+	function execute ( $harmoni ) {
+		$harmoni = Harmoni::instance();
 		
 		//$isAuthenticated = FALSE;
-		$authN =& Services::getService("AuthN");
+		$authN = Services::getService("AuthN");
 
 		$harmoni->request->startNamespace("polyphony");
-		$authType =& HarmoniType::fromString(urldecode($harmoni->request->get("type")));
+		$authType = HarmoniType::fromString(urldecode($harmoni->request->get("type")));
 		$harmoni->request->endNamespace();
 	
 		if ($authN->isUserAuthenticated($authType)) {
@@ -66,7 +66,7 @@ class login_typeAction
 
 			$harmoni->request->startNamespace("polyphony");
 			
-			$currentUrl =& $harmoni->request->mkURL();
+			$currentUrl =$harmoni->request->mkURL();
 			$currentUrl->setValue("type", $harmoni->request->get("type"));
 			$harmoni->history->markReturnURL("polyphony/authentication", $currentUrl);
 				
@@ -82,7 +82,7 @@ class login_typeAction
 			
 			// Otherwise, send us to our failed-login screen:
 			else {
-				$harmoni =& Harmoni::instance();
+				$harmoni = Harmoni::instance();
 				
 				// Set our textdomain
 				$defaultTextDomain = textdomain("polyphony");
@@ -101,7 +101,7 @@ class login_typeAction
 				print _("Try Again.");
 				print "</p>";
 				
-				$introText =& new Block(ob_get_contents(), 3);
+				$introText = new Block(ob_get_contents(), 3);
 				ob_end_clean();
 				
 				$harmoni->request->endNamespace();

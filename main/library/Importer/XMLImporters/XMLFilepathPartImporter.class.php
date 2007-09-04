@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFilepathPartImporter.class.php,v 1.12 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: XMLFilepathPartImporter.class.php,v 1.13 2007/09/04 20:28:01 adamfranco Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFilepathPartImporter.class.php,v 1.12 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: XMLFilepathPartImporter.class.php,v 1.13 2007/09/04 20:28:01 adamfranco Exp $
  */
 class XMLFilepathPartImporter extends XMLImporter {
 		
@@ -31,7 +31,7 @@ class XMLFilepathPartImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function XMLFilepathPartImporter (&$existingArray) {
+	function XMLFilepathPartImporter ($existingArray) {
 		parent::XMLImporter($existingArray);
 	}
 	
@@ -44,7 +44,7 @@ class XMLFilepathPartImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function isImportable (&$element) {
+	function isImportable ($element) {
 		if ($element->nodeName == "filepathpart")
 			return true;
 		else
@@ -81,14 +81,14 @@ class XMLFilepathPartImporter extends XMLImporter {
 	 * @since 10/6/05
 	 */
 	function importNode () {
-		$idManager =& Services::getService("Id");
-		$mime =& Services::getService("MIME");
+		$idManager = Services::getService("Id");
+		$mime = Services::getService("MIME");
 		
-		$FILE_DATA_ID =& $idManager->getId("FILE_DATA");
-		$FILE_NAME_ID =& $idManager->getId("FILE_NAME");
-		$MIME_TYPE_ID =& $idManager->getId("MIME_TYPE");
-		$THUMBNAIL_DATA_ID =& $idManager->getId("THUMBNAIL_DATA");
-		$THUMBNAIL_MIME_TYPE_ID =& $idManager->getId("THUMBNAIL_MIME_TYPE");
+		$FILE_DATA_ID =$idManager->getId("FILE_DATA");
+		$FILE_NAME_ID =$idManager->getId("FILE_NAME");
+		$MIME_TYPE_ID =$idManager->getId("MIME_TYPE");
+		$THUMBNAIL_DATA_ID =$idManager->getId("THUMBNAIL_DATA");
+		$THUMBNAIL_MIME_TYPE_ID =$idManager->getId("THUMBNAIL_MIME_TYPE");
 
 		$this->getNodeInfo();
 
@@ -123,7 +123,7 @@ class XMLFilepathPartImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function relegateChildren (&$topImporter) {
+	function relegateChildren ($topImporter) {
 		/* this node should not have children */
 	}
 }

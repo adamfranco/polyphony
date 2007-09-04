@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.11 2006/12/06 20:59:21 adamfranco Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.12 2007/09/04 20:28:14 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
@@ -25,7 +25,7 @@ require_once(POLYPHONY."/main/library/RepositoryInputOutputModules/RepositoryInp
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.11 2006/12/06 20:59:21 adamfranco Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.12 2007/09/04 20:28:14 adamfranco Exp $
  */
 class viewthumbnailAction 
 	extends ForceAuthAction
@@ -38,12 +38,12 @@ class viewthumbnailAction
 	 * @since 4/26/05
 	 */
 	function isExecutionAuthorized () {
-		$harmoni =& Harmoni::instance();
-		$idManager =& Services::getService("Id");
-		$authZManager =& Services::getService("AuthorizationManager");
+		$harmoni = Harmoni::instance();
+		$idManager = Services::getService("Id");
+		$authZManager = Services::getService("AuthorizationManager");
 		
 		$harmoni->request->startNamespace("polyphony-repository");
-		$assetId =& $idManager->getId(RequestContext::value("asset_id"));
+		$assetId =$idManager->getId(RequestContext::value("asset_id"));
 		$harmoni->request->endNamespace();
 		
 		return $authZManager->isUserAuthorized(
@@ -101,35 +101,35 @@ class viewthumbnailAction
 		
 		$defaultTextDomain = textdomain("polyphony");
 		
-		$harmoni =& Harmoni::instance();
-		$idManager =& Services::getService("Id");
-		$repositoryManager =& Services::getService("Repository");
+		$harmoni = Harmoni::instance();
+		$idManager = Services::getService("Id");
+		$repositoryManager = Services::getService("Repository");
 		
 		$harmoni->request->startNamespace("polyphony-repository");
 		
-		$assetId =& $idManager->getId(RequestContext::value("asset_id"));
+		$assetId =$idManager->getId(RequestContext::value("asset_id"));
 		if (RequestContext::value("repository_id")) {
-			$repositoryId =& $idManager->getId(RequestContext::value("repository_id"));
-			$repository =& $repositoryManager->getRepository($repositoryId);
-			$asset =& $repository->getAsset($assetId);
+			$repositoryId =$idManager->getId(RequestContext::value("repository_id"));
+			$repository =$repositoryManager->getRepository($repositoryId);
+			$asset =$repository->getAsset($assetId);
 		} else {
-			$repositoryManager =& Services::getService("RepositoryManager");
-			$asset =& $repositoryManager->getAsset($assetId);
+			$repositoryManager = Services::getService("RepositoryManager");
+			$asset =$repositoryManager->getAsset($assetId);
 		}
 		
 		// Get the requested record.
 		if (RequestContext::value("record_id")) {
-			$recordId =& $idManager->getId(RequestContext::value("record_id"));
-			$record =& $asset->getRecord($recordId);
+			$recordId =$idManager->getId(RequestContext::value("record_id"));
+			$record =$asset->getRecord($recordId);
 		} else {
-			$record =& RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset($asset);
+			$record = RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset($asset);
 		}
 		
 				
 		// Make sure that the structure is the right one.
-		$structure =& $record->getRecordStructure();
-		$fileId =& $idManager->getId('FILE');
-		$remoteFileId =& $idManager->getId('REMOTE_FILE');
+		$structure =$record->getRecordStructure();
+		$fileId =$idManager->getId('FILE');
+		$remoteFileId =$idManager->getId('REMOTE_FILE');
 		if (!$fileId->isEqual($structure->getId()) 
 			&& !$remoteFileId->isEqual($structure->getId())) 
 		{
@@ -137,13 +137,13 @@ class viewthumbnailAction
 		} else {
 		
 			// Get the parts for the record.
-			$partIterator =& $record->getParts();
+			$partIterator =$record->getParts();
 			$parts = array();
 			while($partIterator->hasNext()) {
-				$part =& $partIterator->next();
-				$partStructure =& $part->getPartStructure();
-				$partStructureId =& $partStructure->getId();
-				$parts[$partStructureId->getIdString()] =& $part;
+				$part =$partIterator->next();
+				$partStructure =$part->getPartStructure();
+				$partStructureId =$partStructure->getId();
+				$parts[$partStructureId->getIdString()] =$part;
 			}
 			
 			// If we have a thumbnail, print that.
@@ -151,7 +151,7 @@ class viewthumbnailAction
 				
  				header("Content-Type: ".$parts['THUMBNAIL_MIME_TYPE']->getValue());
 				
-				$mime =& Services::getService("MIME");
+				$mime = Services::getService("MIME");
 				$extension = $mime->getExtensionForMIMEType(
 									$parts['THUMBNAIL_MIME_TYPE']->getValue());
 				$filename = $parts['FILE_NAME']->getValue();
@@ -168,7 +168,7 @@ class viewthumbnailAction
 				
 				$mimeType = $parts['MIME_TYPE']->getValue();
 				if (!$mimeType || $mimeType == 'application/octet-stream') {
-					$mime =& Services::getService("MIME");
+					$mime = Services::getService("MIME");
 					$mimeType = $mime->getMIMETypeForFileName($parts['FILE_NAME']->getValue());
 				}
 				

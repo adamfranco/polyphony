@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_rss.act.php,v 1.3 2006/12/05 20:10:12 adamfranco Exp $
+ * @version $Id: browse_rss.act.php,v 1.4 2007/09/04 20:28:14 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/RSSAction.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/RSSAction.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_rss.act.php,v 1.3 2006/12/05 20:10:12 adamfranco Exp $
+ * @version $Id: browse_rss.act.php,v 1.4 2007/09/04 20:28:14 adamfranco Exp $
  */
 class browse_rssAction 
 	extends RSSAction
@@ -35,8 +35,8 @@ class browse_rssAction
 	 */
 	function isExecutionAuthorized () {
 		// Check for authorization
- 		$authZManager =& Services::getService("AuthZ");
- 		$idManager =& Services::getService("IdManager");
+ 		$authZManager = Services::getService("AuthZ");
+ 		$idManager = Services::getService("IdManager");
  		if ($authZManager->isUserAuthorized(
  					$idManager->getId("edu.middlebury.authorization.view"),
  					$idManager->getId("edu.middlebury.authorization.root")))
@@ -69,40 +69,40 @@ class browse_rssAction
 	function buildFeed () {		
 		$defaultTextDomain = textdomain("polyphony");
 		
-		$harmoni =& Harmoni::instance();		
+		$harmoni = Harmoni::instance();		
 		$harmoni->request->startNamespace("polyphony-logs");
 		$harmoni->request->passthrough('log', 'priority',
 			'startYear', 'startMonth', 'startDay', 'startHour',
 			'endYear', 'endMonth', 'endDay', 'endHour',
 			'agent_id', 'node_id', 'category');
 			
-		$agentManager =& Services::getService("Agent");
+		$agentManager = Services::getService("Agent");
 		$idManager = Services::getService("Id");
 		$hierarchyManager = Services::getService("Hierarchy");
-		$loggingManager =& Services::getService("Logging");
+		$loggingManager = Services::getService("Logging");
 		
-		$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+		$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
 						"A format in which the acting Agent[s] and the target nodes affected are specified.");
 		
 		if (RequestContext::value("log"))
 			$currentLogName = RequestContext::value("log");
 		else {
-			$logNames =& $loggingManager->getLogNamesForReading();
+			$logNames =$loggingManager->getLogNamesForReading();
 			$currentLogName = $logNames->next();
 		}
 		
 		
 		// --- The Current log ---
 		if (isset($currentLogName) && $currentLogName) {
-			$log =& $loggingManager->getLogForReading($currentLogName);
+			$log =$loggingManager->getLogForReading($currentLogName);
 			
 			// Priority Type
 			if (RequestContext::value("priority")) {
-				$currentPriorityType =& Type::fromString(
+				$currentPriorityType = Type::fromString(
 											RequestContext::value("priority"));
 			} else {
-				$priorityTypes =& $loggingManager->getPriorityTypes();
-				$currentPriorityType =& $priorityTypes->next();
+				$priorityTypes =$loggingManager->getPriorityTypes();
+				$currentPriorityType =$priorityTypes->next();
 			}
 			
 			// --- The Current log with Priority type ---
@@ -113,29 +113,29 @@ class browse_rssAction
 					|| RequestContext::value('category'))
 				{
 					$criteria = array();
-					$criteria['start'] =& $this->minDate();
-					$criteria['end'] =& DateAndTime::tomorrow();
+					$criteria['start'] =$this->minDate();
+					$criteria['end'] = DateAndTime::tomorrow();
 					if (RequestContext::value('agent_id'))
-						$criteria['agent_id'] =& $idManager->getId(
+						$criteria['agent_id'] =$idManager->getId(
 													RequestContext::value('agent_id'));
 					if (RequestContext::value('node_id'))
-						$criteria['node_id'] =& $idManager->getId(
+						$criteria['node_id'] =$idManager->getId(
 													RequestContext::value('node_id'));
 					if (RequestContext::value('category'))
 						$criteria['category'] = urldecode(RequestContext::value('category'));
 					
-					$searchType =& new Type("logging_search", "edu.middlebury", "Date-Range/Agent/Node");
-					$entries =& $log->getEntriesBySearch($criteria, $searchType, 
+					$searchType = new Type("logging_search", "edu.middlebury", "Date-Range/Agent/Node");
+					$entries =$log->getEntriesBySearch($criteria, $searchType, 
 											$formatType, $currentPriorityType);
 					if ($entries->hasNext())
-						$firstEntry =& $entries->next();
-					$entries =& $log->getEntriesBySearch($criteria, $searchType, 
+						$firstEntry =$entries->next();
+					$entries =$log->getEntriesBySearch($criteria, $searchType, 
 											$formatType, $currentPriorityType);
 				} else {
-					$entries =& $log->getEntries($formatType, $currentPriorityType);
+					$entries =$log->getEntries($formatType, $currentPriorityType);
 					if ($entries->hasNext())
-						$firstEntry =& $entries->next();
-					$entries =& $log->getEntries($formatType, $currentPriorityType);
+						$firstEntry =$entries->next();
+					$entries =$log->getEntries($formatType, $currentPriorityType);
 				}
 			}
 		}
@@ -152,16 +152,16 @@ class browse_rssAction
 		if (RequestContext::value('agent_id')) {
 			print "\n<p style='text-indent: 0.5in'>";
 			print _("Limited to agent: ");
-			$id =& $idManager->getId(RequestContext::value('agent_id'));
-			$agent =& $agentManager->getAgent($id);
+			$id =$idManager->getId(RequestContext::value('agent_id'));
+			$agent =$agentManager->getAgent($id);
 			print $agent->getDisplayName();
 			print "</p>";
 		}
 		if (RequestContext::value('node_id')) {
 			print "\n<p style='text-indent: 0.5in'>";
 			print _("Limited to node: ");
-			$id =& $idManager->getId(RequestContext::value('node_id'));
-			$node =& $hierarchyManager->getNode($id);
+			$id =$idManager->getId(RequestContext::value('node_id'));
+			$node =$hierarchyManager->getNode($id);
 			if ($node->getDisplayName())
 				print $node->getDisplayName();
 			else
@@ -193,16 +193,16 @@ class browse_rssAction
 	 * @access public
 	 * @since 8/7/06
 	 */
-	function addEntry ( &$entry ) {
-		$rssItem =& $this->addItem(new RSSItem);
-		$harmoni =& Harmoni::instance();
-		$agentManager =& Services::getService("Agent");
+	function addEntry ( $entry ) {
+		$rssItem =$this->addItem(new RSSItem);
+		$harmoni = Harmoni::instance();
+		$agentManager = Services::getService("Agent");
 		$hierarchyManager = Services::getService("Hierarchy");
 		
-		$timestamp =& $entry->getTimestamp();
-		$timestamp =& $timestamp->asTimestamp();
-		$item =& $entry->getItem();
-		$desc =& HtmlString::fromString($item->getDescription());
+		$timestamp =$entry->getTimestamp();
+		$timestamp =$timestamp->asTimestamp();
+		$item =$entry->getItem();
+		$desc = HtmlString::fromString($item->getDescription());
 		
 		// a title
 		$rssItem->setTitle($desc->stripTagsAndTrim(5));
@@ -222,11 +222,11 @@ class browse_rssAction
 		
 		// Agent / 'author'
 		$agentList = '';
-		$agentIds =& $item->getAgentIds(true);
+		$agentIds =$item->getAgentIds(true);
 		while ($agentIds->hasNext()) {
-			$agentId =& $agentIds->next();
+			$agentId =$agentIds->next();
 			if ($agentManager->isAgent($agentId) || $agentManager->isGroup($agentId)) {
-				$agent =& $agentManager->getAgent($agentId);
+				$agent =$agentManager->getAgent($agentId);
 				$agentList .= $agent->getDisplayName();
 			} else
 				$agentList .= _("Id: ").$agentId->getIdString();
@@ -237,12 +237,12 @@ class browse_rssAction
 		
 		// Agents with links
 		ob_start();
-		$agentIds =& $item->getAgentIds(true);
+		$agentIds =$item->getAgentIds(true);
 		$authorList = '';
 		while ($agentIds->hasNext()) {
-			$agentId =& $agentIds->next();
+			$agentId =$agentIds->next();
 			if ($agentManager->isAgent($agentId) || $agentManager->isGroup($agentId)) {
-				$agent =& $agentManager->getAgent($agentId);
+				$agent =$agentManager->getAgent($agentId);
 				print "<a href='";
 				print $harmoni->request->quickURL("logs", "browse",
 						array(	"agent_id" => $agentId->getIdString()));
@@ -264,15 +264,15 @@ class browse_rssAction
 		
 		// Nodes
 		ob_start();
-		$nodeIds =& $item->getNodeIds(true);
+		$nodeIds =$item->getNodeIds(true);
 		while ($nodeIds->hasNext()) {
-			$nodeId =& $nodeIds->next();
+			$nodeId =$nodeIds->next();
 			print "<a href='";
 			print $harmoni->request->quickURL("logs", "browse",
 					array(	"node_id" => $nodeId->getIdString()));
 			print "'>";
 			if ($hierarchyManager->nodeExists($nodeId)) {
-				$node =& $hierarchyManager->getNode($nodeId);
+				$node =$hierarchyManager->getNode($nodeId);
 				if ($node->getDisplayName())
 					print $node->getDisplayName();
 				else
@@ -326,7 +326,7 @@ class browse_rssAction
 	 * @access public
 	 * @since 3/8/06
 	 */
-	function &minDate () {
+	function minDate () {
 		return DateAndTime::withYearDay(2000, 1);
 	}
 }

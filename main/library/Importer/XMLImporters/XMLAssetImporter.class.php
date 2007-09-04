@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.18 2006/12/06 22:17:20 adamfranco Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.19 2007/09/04 20:28:01 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -25,7 +25,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.18 2006/12/06 22:17:20 adamfranco Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.19 2007/09/04 20:28:01 adamfranco Exp $
  */
 class XMLAssetImporter extends XMLImporter {
 		
@@ -37,7 +37,7 @@ class XMLAssetImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function XMLAssetImporter (&$existingArray) {
+	function XMLAssetImporter ($existingArray) {
 		parent::XMLImporter($existingArray);
 	}
 
@@ -51,7 +51,7 @@ class XMLAssetImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/11/05
 	 */
-	function &withFile (&$existingArray, $filepath, $type, $class = 'XMLAssetImporter') {
+	function withFile ($existingArray, $filepath, $type, $class = 'XMLAssetImporter') {
 		return parent::withFile($existingArray, $filepath, $type, $class);
 	}
 
@@ -66,7 +66,7 @@ class XMLAssetImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/11/05
 	 */
-	function &withObject (&$existingArray, &$object, $filepath, $type, $class = 'XMLAssetImporter') {
+	function withObject ($existingArray, $object, $filepath, $type, $class = 'XMLAssetImporter') {
 		return parent::withObject($existingArray, $object, $filepath, $type, $class);
 	}
 
@@ -92,7 +92,7 @@ class XMLAssetImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function isImportable (&$element) {
+	function isImportable ($element) {
 		if ($element->nodeName == "asset")
 			return true;
 		else
@@ -106,10 +106,10 @@ class XMLAssetImporter extends XMLImporter {
 	 * @since 10/6/05
 	 */
 	function importNode () {
-		$idManager =& Services::getService("Id");
+		$idManager = Services::getService("Id");
 		if (!method_exists($this->_parent, "createAsset")) {
-			$this->_stepParent =& $this->_parent;
-			$this->_parent =& $this->_stepParent->getRepository();
+			$this->_stepParent =$this->_parent;
+			$this->_parent =$this->_stepParent->getRepository();
 		}
 
 		$this->getNodeInfo();
@@ -117,22 +117,22 @@ class XMLAssetImporter extends XMLImporter {
 		$hasId = $this->_node->hasAttribute("id");
 		if ($hasId && (in_array($this->_node->getAttribute("id"),
 				$this->_existingArray)	|| $this->_type == "update")) {
-			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
-			$this->_object =& $this->_parent->getAsset($this->_myId);
+			$this->_myId =$idManager->getId($this->_node->getAttribute("id"));
+			$this->_object =$this->_parent->getAsset($this->_myId);
 			$this->update();
 		} else {
-			$this->_object =& $this->_parent->createAsset(
+			$this->_object =$this->_parent->createAsset(
 				$this->_info['name'], $this->_info['description'], 
 				$this->_info['type']);
-			$this->_myId =& $this->_object->getId();
+			$this->_myId =$this->_object->getId();
 			if (Services::serviceRunning("Logging")) {
-				$loggingManager =& Services::getService("Logging");
-				$log =& $loggingManager->getLogForWriting("Harmoni");
-				$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+				$loggingManager = Services::getService("Logging");
+				$log =$loggingManager->getLogForWriting("Harmoni");
+				$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
 								"A format in which the acting Agent[s] and the target nodes affected are specified.");
-				$priorityType =& new Type("logging", "edu.middlebury",
+				$priorityType = new Type("logging", "edu.middlebury",
 					"Event_Notice",	"Normal events.");
-				$item =& new AgentNodeEntryItem("Create Node",
+				$item = new AgentNodeEntryItem("Create Node",
 					"Asset: ".$this->_myId->getIdString()." created.");
 				$item->addNodeId($this->_myId);
 				$item->addNodeId($this->_parent->getId());
@@ -164,8 +164,8 @@ class XMLAssetImporter extends XMLImporter {
 	 * @since 10/6/05
 	 */
 	function doSets () {
-		$sets =& Services::getService("Sets");
-		$this->_set =& $sets->getPersistentSet($this->_myId);
+		$sets = Services::getService("Sets");
+		$this->_set =$sets->getPersistentSet($this->_myId);
 	}
 
 	/**
@@ -175,20 +175,20 @@ class XMLAssetImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function relegateChildren (&$topImporter) {
+	function relegateChildren ($topImporter) {
 		foreach ($this->_node->childNodes as $element) {
 			foreach ($this->_childImporterList as $importer) {
 				if (!is_subclass_of(new $importer($this->_existingArray), 'XMLImporter')) {
 					$this->addError("Class, '$class', is not a subclass of 'XMLImporter'.");
 					if (Services::serviceRunning("Logging")) {
-						$loggingManager =& Services::getService("Logging");
-						$log =& $loggingManager->getLogForWriting("Harmoni");
-						$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+						$loggingManager = Services::getService("Logging");
+						$log =$loggingManager->getLogForWriting("Harmoni");
+						$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
 										"A format in which the acting Agent[s] and the target nodes affected are specified.");
-						$priorityType =& new Type("logging", "edu.middlebury", "Error",
+						$priorityType = new Type("logging", "edu.middlebury", "Error",
 										"Events involving critical system errors.");
 						
-						$item =& new AgentNodeEntryItem("Instantiate Undefined Importer", "$class is not a subclass of Importer");
+						$item = new AgentNodeEntryItem("Instantiate Undefined Importer", "$class is not a subclass of Importer");
 						$item->addNodeId($this->_myId);
 						$log->appendLogWithTypes($item,	$formatType,
 							$priorityType);
@@ -197,7 +197,7 @@ class XMLAssetImporter extends XMLImporter {
 				}
 				eval('$result = '.$importer.'::isImportable($element);');
 				if ($result) {
-					$imp =& new $importer($this->_existingArray);
+					$imp = new $importer($this->_existingArray);
 					if (isset($this->_set) && $element->nodeName == "asset")
 						$this->_set->addItem($imp->import($topImporter,
 							$element, $this->_type, $this->_object));
@@ -235,14 +235,14 @@ class XMLAssetImporter extends XMLImporter {
 			$this->_object->updateDescription($this->_info['description']);
 		}
 		if (Services::serviceRunning("Logging") && $modified) {
-			$loggingManager =& Services::getService("Logging");
-			$log =& $loggingManager->getLogForWriting("Harmoni");
-			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+			$loggingManager = Services::getService("Logging");
+			$log =$loggingManager->getLogForWriting("Harmoni");
+			$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
 							"A format in which the acting Agent[s] and the target nodes affected are specified.");
-			$priorityType =& new Type("logging", "edu.middlebury", "Event_Notice",
+			$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
 							"Normal Events.");
 			
-			$item =& new AgentNodeEntryItem("Modified Node", "Asset: ".
+			$item = new AgentNodeEntryItem("Modified Node", "Asset: ".
 				$this->_myId->getIdString()." modified.");
 			$item->addNodeId($this->_myId);
 			

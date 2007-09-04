@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStyleCollection.class.php,v 1.1 2006/08/19 21:08:39 sporktim Exp $
+ * @version $Id: WStyleCollection.class.php,v 1.2 2007/09/04 20:28:00 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponentWithChildren.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponentWithChildren.abstrac
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStyleCollection.class.php,v 1.1 2006/08/19 21:08:39 sporktim Exp $
+ * @version $Id: WStyleCollection.class.php,v 1.2 2007/09/04 20:28:00 adamfranco Exp $
  */
  
 class WStyleCollection 
@@ -42,17 +42,17 @@ class WStyleCollection
 		$this->_collection = $collection;
 		
 		
-		$styleCollection =& $this->getStyleCollection();
+		$styleCollection =$this->getStyleCollection();
 		
 		
 		/*
 		// the list of existing SCs
-		$scs =& $styleProperty->getSCs();
+		$scs =$styleProperty->getSCs();
 		
 		
 		foreach (array_keys($scs) as $key) {
 			$class = get_class($scs[$key]);	
-			$scComp =& new WStyleComponent($this->_callBack, $class ,$this->getName(),$collection,true);
+			$scComp = new WStyleComponent($this->_callBack, $class ,$this->getName(),$collection,true);
 			$wizSP->addComponent("comp".$i, $scComp);
 			$i++;	
 		}
@@ -61,10 +61,10 @@ class WStyleCollection
 
 
 		// build individula SP markup chunks that can be unset
-		$SPs =& $styleCollection->getSPs();
+		$SPs =$styleCollection->getSPs();
 		$i = 0;
 		foreach (array_keys($SPs) as $key) {
-			$styleProperty =& new WStyleProperty($callBack, $key, $collection);
+			$styleProperty = new WStyleProperty($callBack, $key, $collection);
 			$this->addComponent("property".$i, $styleProperty);
 			$i++;
 
@@ -76,16 +76,16 @@ class WStyleCollection
 		
 	}
 	
-	function &getStyleCollection(){
-		eval('$theme =& '.$this->_getThemeCallBack."();");		
+	function getStyleCollection(){
+		eval('$theme = '.$this->_getThemeCallBack."();");		
 		return $theme->getStyleCollection($this->_collection);	
 	}
 	
 	
 	
 	/*
-	$wizStyle =& new WizardStep();
-		$guiManager =& Services::getService('GUI');
+	$wizStyle = new WizardStep();
+		$guiManager = Services::getService('GUI');
 		
 		// table in buffer for WHOLE Style Collection
 		ob_start();
@@ -95,12 +95,12 @@ class WStyleCollection
 		print "<td><table border=2 width='100%'>";
 
 		// build individula SP markup chunks that can be unset
-		$SPs =& $this->getSPs();
+		$SPs =$this->getSPs();
 		$i = 0;
 		foreach (array_keys($SPs) as $key) {
 			
 		
-			$spid =& $SPs[$key]->getId();
+			$spid =$SPs[$key]->getId();
 			$wizStyle->addComponent("property_".$i,
 									$SPs[$key]->getWizardRepresentation($callBack,$this->getSelector()));
 			
@@ -138,7 +138,7 @@ class WStyleCollection
 		
 		// create list and button for adding SPs
 		if ($removable) {
-			$SL =& $wizStyle->addComponent('add-SP', new WSelectList());		
+			$SL =$wizStyle->addComponent('add-SP', new WSelectList());		
 			$wizStyle->addComponent('plus', WEventButton::withLabel('+'));
 			$SupSPs = $guiManager->getSupportedSPs();
 			$available = array_diff($SupSPs, array_keys($SPs));
@@ -176,7 +176,7 @@ class WStyleCollection
 	 * @return boolean - TRUE if everything is OK
 	 */
 	function update ($fieldName) {
-		$children =& $this->getChildren();
+		$children =$this->getChildren();
 		$ok = true;
 		foreach (array_keys($children) as $key) {
 			
@@ -203,7 +203,7 @@ class WStyleCollection
 	 * @return boolean
 	 */
 	function validate () {
-		$children =& $this->getChildren();
+		$children =$this->getChildren();
 		foreach (array_keys($children) as $step) {
 			if (!$children[$step]->validate()) {
 				return false;
@@ -222,7 +222,7 @@ class WStyleCollection
 	 * @return string
 	 */
 	function getMarkup ($fieldName) {
-		$styleCollection =& $this->getStyleCollection();
+		$styleCollection =$this->getStyleCollection();
 
 
 		$s = "";
@@ -232,10 +232,10 @@ class WStyleCollection
 		$i = 0;
 		
 		
-		$children =& $this->getChildren();
+		$children =$this->getChildren();
 		
 		foreach ($children as $key=>$child) {
-			$sc =& $child->getStyleComponent();
+			$sc =$child->getStyleComponent();
 						
 			// table row [displayName][input][description]
 			$s.= "<tr><td>".$sc->getDisplayName().":</td>";
@@ -244,8 +244,8 @@ class WStyleCollection
 		}
 		
 		*/
-		$wizStyle =& new WizardStep();
-		$guiManager =& Services::getService('GUI');
+		$wizStyle = new WizardStep();
+		$guiManager = Services::getService('GUI');
 		
 		// table in buffer for WHOLE Style Collection
 		
@@ -255,13 +255,13 @@ class WStyleCollection
 		$s.= "<td><table border=2 width='100%'>";
 
 		// build individula SP markup chunks that can be unset
-		$children =& $this->getChildren();
+		$children =$this->getChildren();
 		$i = 0;
 		foreach ($children as $key=>$child) {
 			
 		
 			
-			$styleProperty =& $child->getStyleProperty();
+			$styleProperty =$child->getStyleProperty();
 			$s.= "<tr><td>".$styleProperty->getDisplayName()."</td>";
 			$s.= "<td>".$child->getMarkup($fieldName."_".$key)."</td>";
 

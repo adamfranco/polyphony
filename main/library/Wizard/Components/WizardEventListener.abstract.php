@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardEventListener.abstract.php,v 1.1 2006/06/02 16:00:28 cws-midd Exp $
+ * @version $Id: WizardEventListener.abstract.php,v 1.2 2007/09/04 20:28:09 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -22,7 +22,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardEventListener.abstract.php,v 1.1 2006/06/02 16:00:28 cws-midd Exp $
+ * @version $Id: WizardEventListener.abstract.php,v 1.2 2007/09/04 20:28:09 adamfranco Exp $
  */
 class WizardEventListener 
 	extends WizardComponent 
@@ -35,8 +35,8 @@ class WizardEventListener
 	 * @access public
 	 * @return void
 	 */
-	function setParent (&$parent) {
-		$this->_parent =& $parent;
+	function setParent ($parent) {
+		$this->_parent =$parent;
 		
 		$this->_attemptAdding();
 	}
@@ -49,7 +49,7 @@ class WizardEventListener
 	function _attemptAdding () {
 		if ($this->_added) return;
 		
-		$wz =& $this->getWizard();
+		$wz =$this->getWizard();
 		if ($wz) {
 			$wz->addEventListener($this);
 			$this->_added = true;
@@ -100,7 +100,7 @@ class WizardEventListener
 	 * @access public
 	 * @return void
 	 */
-	function handleEvent ($eventType, &$source, $context) {
+	function handleEvent ($eventType, $source, $context) {
 		throwError(new Error(__CLASS__."::".__FUNCTION__."() must be overridded in child classes."));
 	}
 }

@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: edit_section_roster.act.php,v 1.2 2006/08/30 13:49:22 jwlee100 Exp $
+* @version $Id: edit_section_roster.act.php,v 1.3 2007/09/04 20:28:12 adamfranco Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -29,9 +29,9 @@ extends MainWindowAction
 	*/
 	function isAuthorizedToExecute () {
 		// Check for authorization
-		$authZManager =& Services::getService("AuthZ");
-		$idManager =& Services::getService("IdManager");
-		$harmoni =& Harmoni::instance();
+		$authZManager = Services::getService("AuthZ");
+		$idManager = Services::getService("IdManager");
+		$harmoni = Harmoni::instance();
 
 		$harmoni->request->startNamespace("polyphony-agents");
 		$sectionIdString = $harmoni->request->get("courseId");
@@ -55,14 +55,14 @@ extends MainWindowAction
 	* @since 4/26/05
 	*/
 	function getHeadingText () {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-agents");
 		$harmoni->request->passthrough("courseId");
 		$sectionIdString = $harmoni->request->get("courseId");
-		$idManager =& Services::getService("Id");
-		$sectionId =& $idManager->getId($sectionIdString);
-		$cm =& Services::getService("CourseManagement");
-		$section =& $cm->getCourseSection($sectionId);
+		$idManager = Services::getService("Id");
+		$sectionId =$idManager->getId($sectionIdString);
+		$cm = Services::getService("CourseManagement");
+		$section =$cm->getCourseSection($sectionId);
 		return dgettext("polyphony", $section->getDisplayName());
 	}
 
@@ -76,16 +76,16 @@ extends MainWindowAction
 	function buildContent () {
 		$defaultTextDomain = textdomain("polyphony");
 		
-		$idManager =& Services::getService("Id");
-		$harmoni =& Harmoni::instance();
+		$idManager = Services::getService("Id");
+		$harmoni = Harmoni::instance();
 
 		$harmoni->request->startNamespace("polyphony-agents");
 		$harmoni->request->passthrough("courseId");
 		
 		$sectionIdString = $harmoni->request->get("courseId");
-		$sectionId =& $idManager->getId($sectionIdString);
-		$cm =& Services::getService("CourseManagement");
-		$section =& $cm->getCourseSection($sectionId);
+		$sectionId =$idManager->getId($sectionIdString);
+		$cm = Services::getService("CourseManagement");
+		$section =$cm->getCourseSection($sectionId);
 
 		
 		// Process any changes
@@ -98,7 +98,7 @@ extends MainWindowAction
 		
 		
 		// Print out our search and memebers
-		$actionRows =& $this->getActionRows();
+		$actionRows =$this->getActionRows();
 		$sectionName = $section->getDisplayName();
 		
 		$actionRows->add(new Heading(_("Edit roster for $sectionName."), 2), "100%", null, LEFT, CENTER);
@@ -126,14 +126,14 @@ extends MainWindowAction
 	* @access public
 	* @since 8/24/05
 	*/
-	function &getAddForm(&$section) {
-		$harmoni =& Harmoni::instance();
+	function getAddForm($section) {
+		$harmoni = Harmoni::instance();
 		
-		$cmm =& Services::getService("CourseManagement");
-		$idManager =& Services::getService("Id");
-		$am =& Services::GetService("AgentManager");
+		$cmm = Services::getService("CourseManagement");
+		$idManager = Services::getService("Id");
+		$am = Services::GetService("AgentManager");
 
-		$offering =& $section->getCourseOffering();
+		$offering =$section->getCourseOffering();
 		$offeringId = $offering->getId();
 		$courseIdString = $offeringId->getIdString();
 		
@@ -166,16 +166,16 @@ extends MainWindowAction
 		
 		// Agent search results		
 		if ($search_criteria = $harmoni->request->get('search_criteria')) {
-			$searchType =& new HarmoniType("Agent & Group Search", "edu.middlebury.harmoni", "TokenSearch");
+			$searchType = new HarmoniType("Agent & Group Search", "edu.middlebury.harmoni", "TokenSearch");
 			$string = "*".$search_criteria."*";
-			$agents =& $am->getAgentsBySearch($string, $searchType);
+			$agents =$am->getAgentsBySearch($string, $searchType);
 			$displayName = $section->getDisplayName();
 			print "\n<hr/><p><h3>Search results</h3></p>";
 			print "Click on a student's name to add for the course, <strong>$displayName</strong>.";
 			
 			while ($agents->hasNext()) {
-				$agent =& $agents->next();
-				$id =& $agent->getId();
+				$agent =$agents->next();
+				$id =$agent->getId();
 				$harmoni->history->markReturnURL("polyphony/coursemanagement/edit_section_details");
 		
 				$last_status_name = $harmoni->request->get("status");
@@ -196,10 +196,10 @@ extends MainWindowAction
 				
 				/* Search the record to see if student is already enrolled. */
 				$studentPresent = 0;							// To check later whether student is enrolled or not
-				$roster =& $section->getRoster();
+				$roster =$section->getRoster();
 				while ($roster->hasNextEnrollmentRecord()) {
 					$record = $roster->nextEnrollmentRecord();
-					$studentId =& $record->getStudent();
+					$studentId =$record->getStudent();
 
 					if ($id->isEqual($studentId))
 						$studentPresent = 1;					// Set to student already being enrolled
@@ -215,7 +215,7 @@ extends MainWindowAction
 				print "</form></p>";		
 			}
 		}
-		$output =& new Block(ob_get_clean(), STANDARD_BLOCK);
+		$output = new Block(ob_get_clean(), STANDARD_BLOCK);
 		return $output;
 	}
 	
@@ -227,26 +227,26 @@ extends MainWindowAction
 	* @access public
 	* @since 8/24/05
 	*/
-	function &getMembers(&$section) {
-	  	$harmoni =& Harmoni::instance();
+	function getMembers($section) {
+	  	$harmoni = Harmoni::instance();
 	  
-	  	$cmm =& Services::getService("CourseManagement");
-		$idManager =& Services::getService("Id");
-		$am =& Services::GetService("AgentManager");
+	  	$cmm = Services::getService("CourseManagement");
+		$idManager = Services::getService("Id");
+		$am = Services::GetService("AgentManager");
 	  	
 	  	ob_start();
 		print "\n<h4>Members</h4>";
 		
-		$roster =& $section->getRoster();
+		$roster =$section->getRoster();
 		if (!$roster->hasNextEnrollmentRecord()) {
 			print "<p>No students are enrolled in this class.</p>";
 		} else {
 			while ($roster->hasNextEnrollmentRecord()) {
-				$er =& $roster->nextEnrollmentRecord();
-				$agent =& $am->getAgent($er->getStudent());
+				$er =$roster->nextEnrollmentRecord();
+				$agent =$am->getAgent($er->getStudent());
 			
 				$agentName = $agent->getDisplayName();
-				$id =& $agent->getId();
+				$id =$agent->getId();
 				$idString = $id->getIdString();
 				
 				$self = $harmoni->request->quickURL("coursemanagement", "edit_section_roster", 
@@ -258,7 +258,7 @@ extends MainWindowAction
 																array("agentId"=>$id->getIdString()))."'>";
 				print "\n".$agent->getDisplayName()."</a>";
 				
-				$statusType =& $er->getStatus();
+				$statusType =$er->getStatus();
 				$status = $statusType->getKeyword();
 				
 				print "&nbsp;&nbsp;&nbsp;$status&nbsp;&nbsp;&nbsp;";
@@ -268,7 +268,7 @@ extends MainWindowAction
 			}
 		}
 		
-		$output =& new Block(ob_get_clean(), STANDARD_BLOCK);
+		$output = new Block(ob_get_clean(), STANDARD_BLOCK);
 		return $output;
 	}
 	
@@ -282,34 +282,34 @@ extends MainWindowAction
 	* @access public
 	* @since 8/29/05
 	*/
-	function addStudent(&$section, $agentIdString, $status) {
-		$actionRows =& $this->getActionRows();
-		$pageRows =& new Container(new YLayout(), OTHER, 1);
-		$harmoni =& Harmoni::instance();
+	function addStudent($section, $agentIdString, $status) {
+		$actionRows =$this->getActionRows();
+		$pageRows = new Container(new YLayout(), OTHER, 1);
+		$harmoni = Harmoni::instance();
 		
-		$cmm =& Services::getService("CourseManagement");
-		$idManager =& Services::getService("Id");
-		$am =& Services::GetService("AgentManager");
+		$cmm = Services::getService("CourseManagement");
+		$idManager = Services::getService("Id");
+		$am = Services::GetService("AgentManager");
 		
-		$agentId =& $idManager->getId($agentIdString);
-		$agent =& $am->getAgent($agentId);
+		$agentId =$idManager->getId($agentIdString);
+		$agent =$am->getAgent($agentId);
 		
-		$everyoneId =& $idManager->getId("edu.middlebury.agents.everyone");
-		$usersId =& $idManager->getId("edu.middlebury.agents.users");
+		$everyoneId =$idManager->getId("edu.middlebury.agents.everyone");
+		$usersId =$idManager->getId("edu.middlebury.agents.users");
 		
 		/* Search the record to see if student is already enrolled. */
 		$studentPresent = 0;							// To check later whether student is enrolled or not
-		$roster =& $section->getRoster();
+		$roster =$section->getRoster();
 		while ($roster->hasNextEnrollmentRecord()) {
 			$record = $roster->nextEnrollmentRecord();
-			$studentId =& $record->getStudent();
+			$studentId =$record->getStudent();
 
 			if ($agentId->isEqual($studentId))
 				$studentPresent = 1;					// Set to student already being enrolled
 		}
 				
 		if ($studentPresent == 0) {
-		  	$enrollmentStatusType =& new Type("EnrollmentStatusType", "edu.middlebury", $status);
+		  	$enrollmentStatusType = new Type("EnrollmentStatusType", "edu.middlebury", $status);
 			$section->addStudent($agentId, $enrollmentStatusType);
 		}
 	}
@@ -323,15 +323,15 @@ extends MainWindowAction
 	* @access public
 	* @since 8/29/05
 	*/	
-	function removeStudent(&$section, $agentIdString) {
-		$harmoni =& Harmoni::instance();
+	function removeStudent($section, $agentIdString) {
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-agents");
 		$harmoni->request->passthrough("agentId");
 		
-		$idManager =& Services::getService("Id");
-		$am =& Services::GetService("AgentManager");
+		$idManager = Services::getService("Id");
+		$am = Services::GetService("AgentManager");
 		
-		$agentId =& $idManager->getId($agentIdString);
+		$agentId =$idManager->getId($agentIdString);
 		$section->removeStudent($agentId);
 	}
 }

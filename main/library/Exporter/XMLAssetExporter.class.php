@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetExporter.class.php,v 1.9 2006/12/13 20:17:37 adamfranco Exp $
+ * @version $Id: XMLAssetExporter.class.php,v 1.10 2007/09/04 20:27:59 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Exporter/XMLExporter.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLRemoteFileRecordExporter.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetExporter.class.php,v 1.9 2006/12/13 20:17:37 adamfranco Exp $
+ * @version $Id: XMLAssetExporter.class.php,v 1.10 2007/09/04 20:27:59 adamfranco Exp $
  */
 class XMLAssetExporter extends XMLExporter {
 		
@@ -57,7 +57,7 @@ class XMLAssetExporter extends XMLExporter {
 	 * @access public
 	 * @since 10/31/05
 	 */
-	function &withCompression($compression, $class = 'XMLAssetExporter') {
+	function withCompression($compression, $class = 'XMLAssetExporter') {
 		return parent::withCompression($compression, $class);
 	}	
 
@@ -70,9 +70,9 @@ class XMLAssetExporter extends XMLExporter {
 	 * @access public
 	 * @since 10/31/05
 	 */
-	function &withDir($xmlFile, $fileDir) {
-		$exporter =& new XMLAssetExporter();
-		$exporter->_xml =& $xmlFile;
+	function withDir($xmlFile, $fileDir) {
+		$exporter = new XMLAssetExporter();
+		$exporter->_xml =$xmlFile;
 		$exporter->_fileDir = $fileDir;			
 		
 		return $exporter;
@@ -85,10 +85,10 @@ class XMLAssetExporter extends XMLExporter {
 	 * @access public
 	 * @since 10/17/05
 	 */
-	function export (&$asset) {
-		$this->_object =& $asset;
-		$this->_myId =& $this->_object->getId();
-		$type =& $this->_object->getAssetType();
+	function export ($asset) {
+		$this->_object =$asset;
+		$this->_myId =$this->_object->getId();
+		$type =$this->_object->getAssetType();
 
 		fwrite($this->_xml,
 "\t<asset ".
@@ -123,15 +123,15 @@ class XMLAssetExporter extends XMLExporter {
 	 * @access public
 	 * @since 12/13/05
 	 */
-	function exportList (&$idList) {
-		$harmoni =& Harmoni::Instance();
-		$repositoryManager =& Services::getService("Repository");
+	function exportList ($idList) {
+		$harmoni = Harmoni::Instance();
+		$repositoryManager = Services::getService("Repository");
 		$listOfRS = array();
 		$idListRS = array();
 		$this->_fileDir = $this->_tmpDir;
 		// prepare all the things we need to export
 		foreach ($idList as $assetId) {
-			$asset =& $repositoryManager->getAsset($assetId);
+			$asset =$repositoryManager->getAsset($assetId);
 
 			// build the list of recordstructures	
 			$this->buildRSList($asset, $idListRS, $listOfRS);
@@ -143,7 +143,7 @@ class XMLAssetExporter extends XMLExporter {
 
 		// export the necessary recordstructures
 		foreach ($listOfRS as $rS) {
-			$exporter =& new XMLRecordStructureExporter($this->_xml);
+			$exporter = new XMLRecordStructureExporter($this->_xml);
 			$exporter->export($rS);
 			unset($exporter);
 		}
@@ -156,7 +156,7 @@ class XMLAssetExporter extends XMLExporter {
 		$this->_status->initializeStatistics(count($idList), 100);
 		
 		foreach ($idList as $assetId) {
-			$asset =& $repositoryManager->getAsset($assetId);
+			$asset =$repositoryManager->getAsset($assetId);
 			
 			$this->export($asset);
 			
@@ -176,24 +176,24 @@ class XMLAssetExporter extends XMLExporter {
 	 * @access public
 	 * @since 12/13/05
 	 */
-	function buildRSList (&$asset, &$idListRS, &$listOfRS) {
-		$iterator =& $asset->getRecordStructures();
+	function buildRSList ($asset, $idListRS, $listOfRS) {
+		$iterator =$asset->getRecordStructures();
 		
 		// go through RS's find those with different Id's
 		while ($iterator->hasNext()) {
-			$rS =& $iterator->next();
-			$id =& $rS->getId();
+			$rS =$iterator->next();
+			$id =$rS->getId();
 			$idString = $id->getIdString();
 			// new recordstructure add it to the list			
 			if (!in_array($idString, $idListRS)) {
 				$idListRS[] = $idString;
-				$listOfRS[] =& $rS;
+				$listOfRS[] =$rS;
 			}
 		}
 		// recurse through the children
-		$children =& $asset->getAssets();
+		$children =$asset->getAssets();
 		while($children->hasNext()) {
-			$child =& $children->next();
+			$child =$children->next();
 			$this->buildRSList($child, $idListRS, $listOfRS);
 		}
 	}
@@ -208,20 +208,20 @@ class XMLAssetExporter extends XMLExporter {
 	 * @since 10/17/05
 	 */
 	function exportRecords () {
-		$idManager =& Services::getService("Id");
-		$children =& $this->_object->getRecords();
+		$idManager = Services::getService("Id");
+		$children =$this->_object->getRecords();
 		
 		while ($children->hasNext()) {
-			$child =& $children->next();
-			$rS =& $child->getRecordStructure();
+			$child =$children->next();
+			$rS =$child->getRecordStructure();
 			if ($rS->getId() == $idManager->getId("FILE")) {
-				$exporter =& new XMLFileRecordExporter($this->_xml, 
+				$exporter = new XMLFileRecordExporter($this->_xml, 
 					$this->_fileDir);
 			} else if ($rS->getId() == $idManager->getId("REMOTE_FILE")) {
-				$exporter =& new XMLRemoteFileRecordExporter($this->_xml, 
+				$exporter = new XMLRemoteFileRecordExporter($this->_xml, 
 					$this->_fileDir);
 			} else 
-				$exporter =& new XMLRecordExporter($this->_xml);
+				$exporter = new XMLRecordExporter($this->_xml);
 			$exporter->export($child); // ????
 
 			unset($exporter);
@@ -235,12 +235,12 @@ class XMLAssetExporter extends XMLExporter {
 	 * @since 10/17/05
 	 */
 	function exportAssets () {
-		$children =& $this->_object->getAssets();
+		$children =$this->_object->getAssets();
 
 		while ($children->hasNext()) {
-			$child =& $children->next();
+			$child =$children->next();
 
-			$exporter =& XMLAssetExporter::withDir($this->_xml,
+			$exporter = XMLAssetExporter::withDir($this->_xml,
 				$this->_fileDir);
 
 			$exporter->export($child);

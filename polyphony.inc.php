@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.42 2007/06/07 19:38:54 adamfranco Exp $
+ * @version $Id: polyphony.inc.php,v 1.43 2007/09/04 20:27:56 adamfranco Exp $
  */
 
 /**
@@ -90,10 +90,10 @@ require_once(dirname(__FILE__)."/main/library/RepositorySearchModules/Repository
 Services::registerService("RepositorySearchModules", "RepositorySearchModuleManager");
 
 require_once(OKI2."osid/OsidContext.php");
-$context =& new OsidContext;
+$context = new OsidContext;
 $context->assignContext('harmoni', $harmoni);
 require_once(HARMONI."oki2/shared/ConfigurationProperties.class.php");
-$configuration =& new ConfigurationProperties;
+$configuration = new ConfigurationProperties;
 Services::startManagerAsService("InOutModules", $context, $configuration);
 Services::startManagerAsService("RepositorySearchModules", $context, $configuration);
 

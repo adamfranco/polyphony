@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: logout_type.act.php,v 1.7 2006/03/14 22:07:37 cws-midd Exp $
+ * @version $Id: logout_type.act.php,v 1.8 2007/09/04 20:28:10 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: logout_type.act.php,v 1.7 2006/03/14 22:07:37 cws-midd Exp $
+ * @version $Id: logout_type.act.php,v 1.8 2007/09/04 20:28:10 adamfranco Exp $
  */
 class logout_typeAction
 	extends Action
@@ -45,10 +45,10 @@ class logout_typeAction
 	 * @access public
 	 * @since 4/25/05
 	 */
-	function &execute ( &$harmoni ) {
-		$authN =& Services::getService("AuthN");
+	function execute ( $harmoni ) {
+		$authN = Services::getService("AuthN");
 		$harmoni->request->startNamespace("polyphony");
-		$authType =& HarmoniType::fromString(urldecode($harmoni->request->get("type")));
+		$authType = HarmoniType::fromString(urldecode($harmoni->request->get("type")));
 		$harmoni->request->endNamespace();
 		
 		// Try authenticating with this type

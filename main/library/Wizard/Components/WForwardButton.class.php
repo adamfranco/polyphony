@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WForwardButton.class.php,v 1.1 2006/08/15 21:00:51 sporktim Exp $
+ * @version $Id: WForwardButton.class.php,v 1.2 2007/09/04 20:28:06 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WForwardButton.class.php,v 1.1 2006/08/15 21:00:51 sporktim Exp $
+ * @version $Id: WForwardButton.class.php,v 1.2 2007/09/04 20:28:06 adamfranco Exp $
  */
 class WForwardButton extends WEventButton {
 	
@@ -32,9 +32,9 @@ class WForwardButton extends WEventButton {
 	 * @access public
 	 * @return void
 	 */
-	function WForwardButton (&$stepContainer) {
+	function WForwardButton ($stepContainer) {
 		$this->setLabel(_("Forward -->"));
-		$this->_stepContainer =& $stepContainer;
+		$this->_stepContainer =$stepContainer;
 	}
 
 	/**
@@ -48,7 +48,7 @@ class WForwardButton extends WEventButton {
 	 */
 	function update ($fieldName) {
 		parent::update($fieldName);
-		$wizard =& $this->getWizard();
+		$wizard =$this->getWizard();
 		if ($this->getAllValues()) {
 			// go forward!
 			$this->_stepContainer->goForward();

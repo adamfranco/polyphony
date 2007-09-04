@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveWithChoiceButtonList.class.php,v 1.1 2007/06/07 19:38:54 adamfranco Exp $
+ * @version $Id: WSaveWithChoiceButtonList.class.php,v 1.2 2007/09/04 20:28:08 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -23,7 +23,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveWithChoiceButtonList.class.php,v 1.1 2007/06/07 19:38:54 adamfranco Exp $
+ * @version $Id: WSaveWithChoiceButtonList.class.php,v 1.2 2007/09/04 20:28:08 adamfranco Exp $
  */
 class WSaveWithChoiceButtonList
 	extends WizardComponent
@@ -53,8 +53,8 @@ class WSaveWithChoiceButtonList
 	 * @return ref object
 	 * @static
 	 */
-	function &withLayout ($pre, $eachPre, $eachPost, $post, $class='WSaveWithChoiceButtonList') {
-		$obj =& new $class();
+	function withLayout ($pre, $eachPre, $eachPost, $post, $class='WSaveWithChoiceButtonList') {
+		$obj = new $class();
 		$obj->_pre = $pre;
 		$obj->_post = $post;
 		$obj->_eachPre = $eachPre;
@@ -133,7 +133,7 @@ class WSaveWithChoiceButtonList
 				$this->_value = key($this->_items);
 				
 				// trigger the save event on the wizard
-				$wizard =& $this->getWizard();
+				$wizard =$this->getWizard();
 				$wizard->triggerLater($this->_event, $wizard);
 				
 				return true;

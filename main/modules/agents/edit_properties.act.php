@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_properties.act.php,v 1.8 2006/06/05 20:25:36 adamfranco Exp $
+ * @version $Id: edit_properties.act.php,v 1.9 2007/09/04 20:28:10 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_properties.act.php,v 1.8 2006/06/05 20:25:36 adamfranco Exp $
+ * @version $Id: edit_properties.act.php,v 1.9 2007/09/04 20:28:10 adamfranco Exp $
  */
 class edit_propertiesAction 
 	extends MainWindowAction
@@ -36,8 +36,8 @@ class edit_propertiesAction
 	 */
 	function isAuthorizedToExecute () {
 		// Check for authorization
-		$authZManager =& Services::getService("AuthZ");
-		$idManager =& Services::getService("IdManager");
+		$authZManager = Services::getService("AuthZ");
+		$idManager = Services::getService("IdManager");
 		
 		$list = $this->_getAgentList();
 		
@@ -65,7 +65,7 @@ class edit_propertiesAction
 	var $_agentList = null;
 	function _getAgentList() {
 		if ($this->_agentList != null) return $this->_agentList;
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-agents");
 		
 		if (RequestContext::value("mult")) {
@@ -89,14 +89,14 @@ class edit_propertiesAction
 	function buildContent () {
 		$defaultTextDomain = textdomain("polyphony");
 		
-		$actionRows =& $this->getActionRows();
-		$harmoni =& Harmoni::instance();
+		$actionRows =$this->getActionRows();
+		$harmoni = Harmoni::instance();
 		
 		$harmoni->request->startNamespace("polyphony-agents");
 		$harmoni->request->passthrough("agentId", "mult", "agents");
 		
 		// get a lsit of agents that cannot be edited
-		$agentManager =& Services::getService("Agent");
+		$agentManager = Services::getService("Agent");
 		
 		//we can't really do anything if its not an editableAgent
 		if($agentManager->getAgentFlavor()!="HarmoniEditableAgent"){
@@ -111,7 +111,7 @@ class edit_propertiesAction
 		textdomain($defaultTextDomain);
 	}
 	
-	function &createWizard() {
+	function createWizard() {
 		$list = $this->_getAgentList();
 		if (count($list) > 1) {
 			$string = dgettext("polyphony", "You are editing properties for multiple agents. Existing values are not displayed unless they are the same for all agents. To change a value, be sure to select the checkbox next to the field to indicate you want the field updated.");
@@ -131,33 +131,33 @@ class edit_propertiesAction
 </div>
 END;
 
-		$wizard =& SimpleWizard::withText($wizardText);
+		$wizard = SimpleWizard::withText($wizardText);
 
 		// get a lsit of agents that cannot be edited
-		$idManager =& Services::getService("Id");
-		$agentManager =& Services::getService("Agent");
+		$idManager = Services::getService("Id");
+		$agentManager = Services::getService("Agent");
 		
 		$values = array();
 		$valuesSame = array();
 		$valueCount = array();
 		
 		foreach($list as $idString) {
-			$idObj =& $idManager->getId($idString);
-			$agent =& $agentManager->getAgentOrGroup($idObj);
-			$properties =& $agent->getProperties();
+			$idObj =$idManager->getId($idString);
+			$agent =$agentManager->getAgentOrGroup($idObj);
+			$properties =$agent->getProperties();
 			
 			// put this agent's properties into an array.
 			$propArray = array();
 			while($properties->hasNext()) {
-				$propObj =& $properties->next();
-				$typeObj =& $propObj->getType();
+				$propObj =$properties->next();
+				$typeObj =$propObj->getType();
 				$typeString = Type::typeToString($typeObj);
 				if (!isset($propArray[$typeString])) {
 					$propArray[$typeString] = array();
 				}
-				$keys =& $propObj->getKeys();
+				$keys =$propObj->getKeys();
 				while($keys->hasNext()) {
-					$key =& $keys->next();
+					$key =$keys->next();
 					
 					$propArray[$typeString][$key] = $propObj->getProperty($key);
 				}
@@ -195,10 +195,10 @@ END;
 		$wizard->addComponent("_save", WSaveButton::withLabel(dgettext("polyphony", "Update")));
 		$wizard->addComponent("_cancel", new WCancelButton());
 		
-		$collection =& $wizard->addComponent("properties", 
+		$collection =$wizard->addComponent("properties", 
 			new WAddFromListRepeatableComponentCollection());
 		$collection->setStartingNumber(0);
-		$propertyManager =& Services::getService("Property");
+		$propertyManager = Services::getService("Property");
 		$collection->addOptionCollection(dgettext("polyphony", "New Key..."), $value = null);
 		unset($array);
 		$allProperties = $propertyManager->getAllPropertyKeys();
@@ -210,12 +210,12 @@ END;
 			unset($array);
 		}
 		
-		$keyComponent =& $collection->addComponent("key", new WTextField());
+		$keyComponent =$collection->addComponent("key", new WTextField());
 		$keyComponent->setSize(15);
 		$collection->addComponent("type", new WHiddenField());
-		$typeText =& $collection->addComponent("type_text", new WText());
+		$typeText =$collection->addComponent("type_text", new WText());
 		$typeText->setStyle("color: #666;");
-		$valueComponent =& $collection->addComponent("value", new WTextField());
+		$valueComponent =$collection->addComponent("value", new WTextField());
 		$valueComponent->setSize(40);
 		if (count($list) > 1) {
 //			$valueComponent->addOnChange("alert(this.id+'_update_dummy');");
@@ -232,7 +232,7 @@ END;
 		foreach(array_keys($values) as $typeString) {
 			$typeArray = $values[$typeString];
 			$typeSameArray = $valuesSame[$typeString];
-			$typeObj =& Type::fromString($typeString);
+			$typeObj = Type::fromString($typeString);
 			
 			// now the keys
 			foreach(array_keys($typeArray) as $key) {
@@ -244,7 +244,7 @@ END;
 					'value'=>''
 				);
 								
-				$newSet =& $collection->addValueCollection($valuesArray);
+				$newSet =$collection->addValueCollection($valuesArray);
 				$newSet["key"]->setEnabled(false, true);
 				$newSet["key"]->setStyle("border: 0px;"); // <-- not sure if this actually works as desired.
 				// if the values are the same and there are as many values as there are agents (otherwise, some didn't have a value),
@@ -282,23 +282,23 @@ END;
 	}
 	
 	function saveWizard($cacheName) {
-		$wizard =& $this->getWizard($cacheName);
+		$wizard =$this->getWizard($cacheName);
 		$values = $wizard->getAllValues();
 		$props = $values["properties"];
 		$list = $this->_getAgentList();
 		
 		print_r($props);
 		
-		$agentManager =& Services::getService("Agent");
-		$idManager =& Services::getService("Id");
+		$agentManager = Services::getService("Agent");
+		$idManager = Services::getService("Id");
 		
 		$valuesHandled = array();
 		
 		// go through each agent and update all its properties at once
 		foreach ($list as $idString) {
 			// first clear all their properties, then reset them
-			$id =& $idManager->getId($idString);
-			$agent =& $agentManager->getAgentOrGroup($id);
+			$id =$idManager->getId($idString);
+			$agent =$agentManager->getAgentOrGroup($id);
 			if (count($list) == 1) $agent->deleteAllProperties();
 			
 			foreach($props as $values) {
@@ -322,13 +322,13 @@ END;
 		if (count($list) > 1) {
 			// now go through each agent and check if there are any properties that were not handled, delete them
 			foreach ($list as $idString) {
-				$id =& $idManager->getId($idString);
-				$agent =& $agentManager->getAgentOrGroup($id);
-				$properties =& $agent->getProperties();
+				$id =$idManager->getId($idString);
+				$agent =$agentManager->getAgentOrGroup($id);
+				$properties =$agent->getProperties();
 				while($properties->hasNext()) {
-					$property =& $properties->next();
+					$property =$properties->next();
 					$keys = $property->getKeys();
-					$type =& $property->getType();
+					$type =$property->getType();
 					$typeString = Type::typeToString($type);
 					while($keys->hasNext()) {
 						$key = $keys->next();
@@ -344,7 +344,7 @@ END;
 	}
 	
 	function getReturnUrl() {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		return $harmoni->history->getReturnURL("polyphony/agents/edit_properties");
 	}
 
@@ -358,9 +358,9 @@ END;
 	 * @access public
 	 * @since 7/19/05
 	 */
-	function viewAgentDetails(&$agent){
+	function viewAgentDetails($agent){
 		
-		$agentId =& $agent->getId();
+		$agentId =$agent->getId();
 		$agentIdString = $agentId->getIdString();
 		
 		//display agent info	
@@ -395,8 +395,8 @@ END;
 		print "</table>";
 		
 		//actions menu
-		$harmoni =& Harmoni::instance();
-		$url =& $harmoni->request->mkURL();
+		$harmoni = Harmoni::instance();
+		$url =$harmoni->request->mkURL();
 		
 		print "<h3>Actions</h3>
 				<ul>
@@ -418,9 +418,9 @@ END;
 	 * Offers a confirmation screen for clearing of properties
 	 */
 	
-	function confirmClearProperties(&$agent){
-		$harmoni =& Harmoni::instance();
-		$url =& $harmoni->request->mkURL();
+	function confirmClearProperties($agent){
+		$harmoni = Harmoni::instance();
+		$url =$harmoni->request->mkURL();
 		print "Do you really want to clear all properties of ".$agent->getDisplayName()."? (this will not reset system name or password)<br />";
 		print "<form action='".$url->write("furtherAction","edit_agent_detailsAction::clearProperties")."' method='post'><input type='submit' value='Clear' /></form><input type='button' value='Cancel' onclick='history.back()' />";
 		return;
@@ -430,8 +430,8 @@ END;
 	 * Clears all the properties
 	 */
 	 
-	function clearProperties(& $agent){
-		$propertyManager =& Services::getService("Property");
+	function clearProperties($agent){
+		$propertyManager = Services::getService("Property");
 		
 		//clear the props
 		$agent->clearAllProperties();
@@ -448,9 +448,9 @@ END;
 	 * offers a confirmation screen for deleting an entire agent
 	 */
 	 
-	function confirmDeleteAgent(&$agent){
-		$harmoni =& Harmoni::instance();
-		$url =& $harmoni->request->mkURL();
+	function confirmDeleteAgent($agent){
+		$harmoni = Harmoni::instance();
+		$url =$harmoni->request->mkURL();
 		print "Do you really want to delete ".$agent->getDisplayName()."?<br />";
 		print "<form action='".$url->write("furtherAction","edit_agent_detailsAction::deleteAgent")."' method='post'><input type='submit' value='Delete' /></form><input type='button' value='Cancel' onclick='history.back()' />";
 		return;
@@ -460,11 +460,11 @@ END;
 	 * Handles the actual deletion of an agent
 	 */
 	 
-	function deleteAgent(&$agent){
-		$agentManager =& Services::getService("Agent");
+	function deleteAgent($agent){
+		$agentManager = Services::getService("Agent");
 		$agentManager->deleteAgent($agent->getId());
 		
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		print "Agent deleted.<br />";
 		print "<a href='".$harmoni->history->getReturnURL("polyphony/agents/edit_agent_details")."'>Go Back</a>";
 		
@@ -481,27 +481,27 @@ END;
 	 * in that case, I've arbitrarily entered "Immutable Reality" under type
 	 */
 	 
-	function editAgent(&$agent){
+	function editAgent($agent){
 		
 		//to get the username and maybe the password.
-		$tokenMappingManager =& Services::getService("AgentTokenMappingManager");
+		$tokenMappingManager = Services::getService("AgentTokenMappingManager");
 		
 		//a properties manager to handle, what else, properties
-		$propertiesManager =& Services::getService("Property");
+		$propertiesManager = Services::getService("Property");
 		
-		$mappings=& $tokenMappingManager->getMappingsForAgentId($agent->getId());
+		$mappings=$tokenMappingManager->getMappingsForAgentId($agent->getId());
 		
 		//there should only be one mapping but what the heck
 		while($mappings->hasNextObject()){
-			$mapping=& $mappings->nextObject();	
-			$tokens =& $mapping->getTokens();
+			$mapping=$mappings->nextObject();	
+			$tokens =$mapping->getTokens();
 			$userName=$tokens->getUsername();
 		}
 		
 		if (!isset($userName)) { $userName = '&laquo; undefined &raquo;';}
 		
-		$harmoni =& Harmoni::instance();
-		$url =& $harmoni->request->mkURL();
+		$harmoni = Harmoni::instance();
+		$url =$harmoni->request->mkURL();
 		
 		//display name
 		print "<h3>Editing User: ".$agent->getDisplayName()."</h3>";
@@ -542,7 +542,7 @@ END;
 				  <td>N/A</td>
 				  </form>
 				</tr>";
-		$type=& $agent->getType();
+		$type=$agent->getType();
 		
 		$propertiesArray = edit_agent_detailsAction::_getUsableProperties($agent);
 				
@@ -615,7 +615,7 @@ END;
 	 * Updates property from the edit agent form
 	 */
 	
-	function updateProperty(&$agent){
+	function updateProperty($agent){
 		$propertyKey = RequestContext::value("property_name");
 		$propertyValue = RequestContext::value("property_value");
 		
@@ -623,7 +623,7 @@ END;
 		$propertyTypeArray = explode("::",RequestContext::value("property_type"));
 		
 		//create type object
-		$propertyType =& new HarmoniType($propertyTypeArray[0], $propertyTypeArray[1], $propertyTypeArray[2]);
+		$propertyType = new HarmoniType($propertyTypeArray[0], $propertyTypeArray[1], $propertyTypeArray[2]);
 		
 		//update the agent propreties
 		if($agent->updateProperty($propertyType, $propertyKey, $propertyValue)){
@@ -643,13 +643,13 @@ END;
 	 * Adds a property to the agent
 	 */
 	 
-	 function addProperty(&$agent){
+	 function addProperty($agent){
 		$propertyName = RequestContext::value('name');
 		$propertyValue = RequestContext::value('value');
 		
 		//create the type object
 		$typeArray = explode("::", RequestContext::value('property_type'));
-		$type =& new HarmoniType($typeArray[0], $typeArray[1], $typeArray[2]);
+		$type = new HarmoniType($typeArray[0], $typeArray[1], $typeArray[2]);
 		
 		if($agent->addProperty($type, $propertyName, $propertyValue)){
 			print ucfirst($propertyName)." added to ".$agent->getDisplayName();
@@ -667,11 +667,11 @@ END;
 	 * Deletes a property from the agent. Duh.
 	 */
 	 
-	 function deleteProperty(&$agent){
+	 function deleteProperty($agent){
 		$propertyName = RequestContext::value('property_name');
 		$propertyType = explode("::", RequestContext::value('property_type'));
 		
-		$type =& new HarmoniType($propertyType[0], $propertyType[1], $propertyType[2]);
+		$type = new HarmoniType($propertyType[0], $propertyType[1], $propertyType[2]);
 	
 		if($agent->deleteProperty($type, $propertyName)){
 			print "Deleted property.";
@@ -689,7 +689,7 @@ END;
 	  * Stores a new display name for the agent
 	  */
 	  
-	  function updateDisplayName(&$agent){
+	  function updateDisplayName($agent){
 		if(!RequestContext::value('display_name')){
 			print "If you want to update the display name you'll need to enter a new one!";
 			editAgent($agent);
@@ -713,23 +713,23 @@ END;
 	 * preserving most of the information from the object modify at will
 	 */
 			
-	function _getUsableProperties(&$agent){
+	function _getUsableProperties($agent){
 		$propertiesArray=array();
 		
-		$propertiesIterator =& $agent->getProperties();
+		$propertiesIterator =$agent->getProperties();
 		$i=0;
 		while($propertiesIterator->hasNext()){
 			
-			$property =& $propertiesIterator->next();
+			$property =$propertiesIterator->next();
 			
-			$type=& $property->getType();
+			$type=$property->getType();
 			$typeString = $type->getDomain()."::".$type->getAuthority()."::".$type->getKeyword();
 			
-			$keys =& $property->getKeys();
+			$keys =$property->getKeys();
 			
 			while($keys->hasNext()){
 				
-				$key=& $keys->next();
+				$key=$keys->next();
 				$propertiesArray[$key]['value'] = $property->getProperty($key);
 				$propertiesArray[$key]['type'] = $typeString;
 			}

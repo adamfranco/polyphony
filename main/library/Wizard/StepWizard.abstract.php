@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: StepWizard.abstract.php,v 1.3 2007/06/07 19:38:34 adamfranco Exp $
+ * @version $Id: StepWizard.abstract.php,v 1.4 2007/09/04 20:28:05 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/SimpleWizard.class.php");
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WStepDisplayBar.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: StepWizard.abstract.php,v 1.3 2007/06/07 19:38:34 adamfranco Exp $
+ * @version $Id: StepWizard.abstract.php,v 1.4 2007/09/04 20:28:05 adamfranco Exp $
  */
 class StepWizard extends SimpleWizard {
 		
@@ -38,7 +38,7 @@ class StepWizard extends SimpleWizard {
 	 * @access public
 	 * @since 5/5/06
 	 */
-	function &getSteps () {
+	function getSteps () {
 		return $this->_stepContainer->getSteps();
 	}
 
@@ -49,7 +49,7 @@ class StepWizard extends SimpleWizard {
 	 * @access public
 	 * @return ref object
 	 */
-	function &addStep ($name, &$step) {
+	function addStep ($name, $step) {
 		return $this->_stepContainer->addStep($name, $step);
 	}
 	

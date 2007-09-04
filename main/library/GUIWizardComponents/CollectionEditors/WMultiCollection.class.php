@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: WMultiCollection.class.php,v 1.1 2006/08/19 21:12:28 sporktim Exp $
+* @version $Id: WMultiCollection.class.php,v 1.2 2007/09/04 20:28:00 adamfranco Exp $
 */
 
 
@@ -20,7 +20,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: WMultiCollection.class.php,v 1.1 2006/08/19 21:12:28 sporktim Exp $
+* @version $Id: WMultiCollection.class.php,v 1.2 2007/09/04 20:28:00 adamfranco Exp $
 */
 
 class WMultiCollection
@@ -52,11 +52,11 @@ extends WMoreOptions
 
 
 
-		$comp =& new WFontEditor($callBack, $uniqueName."_font", $thingsToApplyCollectionsTo);
+		$comp = new WFontEditor($callBack, $uniqueName."_font", $thingsToApplyCollectionsTo);
 		$this->addComponent("font",$comp);
-		$comp =& new WTextLayoutEditor($callBack, $uniqueName."_font", $thingsToApplyCollectionsTo);
+		$comp = new WTextLayoutEditor($callBack, $uniqueName."_font", $thingsToApplyCollectionsTo);
 		$this->addComponent("text",$comp);
-		$comp =& new WBackgroundEditor($callBack, $uniqueName."_font", $thingsToApplyCollectionsTo);
+		$comp = new WBackgroundEditor($callBack, $uniqueName."_font", $thingsToApplyCollectionsTo);
 		$this->addComponent("bg",$comp);
 
 
@@ -123,7 +123,7 @@ extends WMoreOptions
 
 			$s.="\n\t<tr>";
 			$s.="\t\t<td>".$this->_descriptions[$name]."</td>";
-			$comp =& $this->getChild($name);
+			$comp =$this->getChild($name);
 			$s.="\n\t\t<td>".$comp->getMarkup($fieldName."_".$name)."</td>";
 			$s.="\n\t</tr>";
 		}
@@ -186,7 +186,7 @@ extends WMoreOptions
 
 			$s.="\n\t<tr>";
 			$s.="\t\t<td>".$this->_descriptions[$name]."</td>";
-			$comp =& $this->getChild($name);
+			$comp =$this->getChild($name);
 			$s.="\n\t\t<td>".$comp->getMarkup($fieldName."_".$name)."</td>";
 			$s.="\n\t</tr>";
 		}

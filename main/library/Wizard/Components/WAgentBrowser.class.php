@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WAgentBrowser.class.php,v 1.3 2006/03/14 22:07:36 cws-midd Exp $
+ * @version $Id: WAgentBrowser.class.php,v 1.4 2007/09/04 20:28:06 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/ResultPrinter/EmbeddedArrayResultPrinter.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/ResultPrinter/EmbeddedArrayResultPrinter.c
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WAgentBrowser.class.php,v 1.3 2006/03/14 22:07:36 cws-midd Exp $
+ * @version $Id: WAgentBrowser.class.php,v 1.4 2007/09/04 20:28:06 adamfranco Exp $
  */
 class WAgentBrowser
 	extends WizardComponent 
@@ -40,16 +40,16 @@ class WAgentBrowser
 	
 	function WAgentBrowser ()
 	{
-		$this->_searchField =& new WTextField();
+		$this->_searchField = new WTextField();
 		$this->_searchField->setSize(20);
-		$this->_searchButton =& WEventButton::withLabel(dgettext("polyphony", "Go"));
+		$this->_searchButton = WEventButton::withLabel(dgettext("polyphony", "Go"));
 		
-		$agentManager =& Services::getService("Agent");
-		$searchTypes =& $agentManager->getAgentSearchTypes();
-		$this->_searchTypeSelector =& new WSelectList();
+		$agentManager = Services::getService("Agent");
+		$searchTypes =$agentManager->getAgentSearchTypes();
+		$this->_searchTypeSelector = new WSelectList();
 		$count = 0;
 		while($searchTypes->hasNext()) {
-			$type =& $searchTypes->next();
+			$type =$searchTypes->next();
 			$this->_searchTypeSelector->addOption(urlencode(Type::typeToString($type)), Type::typeToString($type));
 			$this->_searchTypeSelector->setValue(urlencode(Type::typeToString($type)));
 			$count++;
@@ -114,20 +114,20 @@ class WAgentBrowser
 		// perform the search, if necessary.
 		if ($this->_searchButton->getAllValues()) {
 			$query = $this->_searchField->getAllValues();
-			$type =& Type::fromString(urldecode($this->_searchTypeSelector->getAllValues()));
+			$type = Type::fromString(urldecode($this->_searchTypeSelector->getAllValues()));
 			
-			$agentManager =& Services::getService("Agent");
+			$agentManager = Services::getService("Agent");
 			
-			$list =& $agentManager->getAgentsBySearch($query, $type);
+			$list =$agentManager->getAgentsBySearch($query, $type);
 			
 			$this->_searchResults = array(); // clear the array
 			$this->_resultPrinter = null;
 			
 			while ($list->hasNext()) {
-				$this->_searchResults[] =& $list->next();
+				$this->_searchResults[] =$list->next();
 			}
 			
-			$this->_resultPrinter =& new AgentBrowserResultPrinter($this->_searchResults, 1, 10, array("WAgentBrowser", "printAgent"), $fieldName);
+			$this->_resultPrinter = new AgentBrowserResultPrinter($this->_searchResults, 1, 10, array("WAgentBrowser", "printAgent"), $fieldName);
 			$this->_resultPrinter->overridePageNumber(1);
 			$this->_resultPrinter->setOptions($this->_options);
 		}
@@ -190,7 +190,7 @@ class WAgentBrowser
 	 * @access public
 	 * @static
 	 **/
-	function printAgent(&$agent)
+	function printAgent($agent)
 	{
 		$m = '';
 		$m .= $agent->getDisplayName();
@@ -205,7 +205,7 @@ class WAgentBrowser
  * @copyright Copyright &copy; 2005, Middlebury College
  * @author Gabriel Schine
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- * @version $Id: WAgentBrowser.class.php,v 1.3 2006/03/14 22:07:36 cws-midd Exp $
+ * @version $Id: WAgentBrowser.class.php,v 1.4 2007/09/04 20:28:06 adamfranco Exp $
  */
 class AgentBrowserResultPrinter
 	extends EmbeddedArrayResultPrinter
@@ -218,7 +218,7 @@ class AgentBrowserResultPrinter
 	
 	var $_options = array();
 	
-	function AgentBrowserResultPrinter(	& $array, $numColumns, 
+	function AgentBrowserResultPrinter(	$array, $numColumns, 
 										$numResultsPerPage, $callbackFunction, $fieldName) {
 		parent::EmbeddedArrayResultPrinter($array, $numColumns, $numResultsPerPage, $callbackFunction);
 		$this->_colors = array("#aaa", "#ccc");
@@ -239,7 +239,7 @@ class AgentBrowserResultPrinter
 	
 	function createItemElement($content, $checked = false) {
 		$name = RequestContext::name($this->_fieldName . "_checked");
-		$currItemId =& $this->_currentItem->getId();
+		$currItemId =$this->_currentItem->getId();
 		$id = urlencode($currItemId->getIdString());
 		$chk = $checked?" checked":"";
 		$content = "<input type='checkbox' name='".$name."[]' value='$id'$chk />\n" . $content;
@@ -256,14 +256,14 @@ class AgentBrowserResultPrinter
 	function createFooterRow() {
 		$m = '';
 		if (count($this->_selected)) {
-			$agents =& Services::getService("Agent");
-			$ids =& Services::getService("Id");
+			$agents = Services::getService("Agent");
+			$ids = Services::getService("Id");
 			// print out the existing agents.
 			$m .= $this->createTRElement().$this->createTDElement("<b>".dgettext("polyphony", "Already selected").":</b>")."</tr>\n";
 			foreach($this->_selected as $id) {
 				$agent = $agents->getAgent($ids->getId($id));
-				$this->_currentItem =& $agent;
-				$itemArray = array (& $agent);
+				$this->_currentItem =$agent;
+				$itemArray = array ($agent);
 				$params = array_merge($itemArray, $this->_callbackParams);
 				$itemMarkup = call_user_func_array(
 					$this->_callbackFunction, $params);
@@ -287,7 +287,7 @@ class AgentBrowserResultPrinter
 	
 	function createPageLinks ($numItems, $startingNumber)
 	{
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		ob_start();
 		$numPages = ceil($numItems/$this->_pageSize);
 		$currentPage = floor($startingNumber/$this->_pageSize)+1; // add one for 1-based counting
@@ -296,7 +296,7 @@ class AgentBrowserResultPrinter
 				print "<br />";
 			print " ";
 			if ($i != $currentPage) {
-				$url =& $harmoni->request->mkURLWithPassthrough();
+				$url =$harmoni->request->mkURLWithPassthrough();
 				$url->setValue("starting_number", (($i-1)*$this->_pageSize+1));
 				print "<a href='#' onclick='getWizardElement(\"starting_number\").value = \"".(($i-1)*$this->_pageSize+1)."\"; submitWizard(getWizardElement(\"starting_number\").form);'>";
 			}

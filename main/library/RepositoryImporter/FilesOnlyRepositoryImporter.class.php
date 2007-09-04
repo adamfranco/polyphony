@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: FilesOnlyRepositoryImporter.class.php,v 1.3 2006/12/08 16:18:40 adamfranco Exp $
+ * @version $Id: FilesOnlyRepositoryImporter.class.php,v 1.4 2007/09/04 20:28:01 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: FilesOnlyRepositoryImporter.class.php,v 1.3 2006/12/08 16:18:40 adamfranco Exp $
+ * @version $Id: FilesOnlyRepositoryImporter.class.php,v 1.4 2007/09/04 20:28:01 adamfranco Exp $
  */
 class FilesOnlyRepositoryImporter
 	extends RepositoryImporter
@@ -46,22 +46,22 @@ class FilesOnlyRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function &getSingleAssetInfo (& $input) {
+	function getSingleAssetInfo ($input) {
 		$assetInfo = array();
 
 		$assetInfo['description'] = "";
 		$assetInfo['displayName'] = basename($input);
 
 
-		$mime =& Services::getService("MIME");
+		$mime = Services::getService("MIME");
 		$mimeType = $mime->getMimeTypeForFileName(basename($input));
 		$generalType = substr($mimeType, 0, strpos($mimeType, '/'));
 		
 		if ($generalType == "application" || !$generalType)
-			$assetInfo['type'] =& new HarmoniType("Asset Types", "edu.middlebury",
+			$assetInfo['type'] = new HarmoniType("Asset Types", "edu.middlebury",
 				"Generic Asset");
 		else
-			$assetInfo['type'] =& new HarmoniType("Asset Types", "edu.middlebury",
+			$assetInfo['type'] = new HarmoniType("Asset Types", "edu.middlebury",
 				ucfirst($generalType));
 
 		return $assetInfo;
@@ -75,18 +75,18 @@ class FilesOnlyRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function &getSingleAssetRecordList (&$input) {
+	function getSingleAssetRecordList ($input) {
 		if (Services::serviceRunning("Logging")) {
-			$loggingManager =& Services::getService("Logging");
-			$log =& $loggingManager->getLogForWriting("Harmoni");
-			$formatType =& new Type("logging", "edu.middlebury", 
+			$loggingManager = Services::getService("Logging");
+			$log =$loggingManager->getLogForWriting("Harmoni");
+			$formatType = new Type("logging", "edu.middlebury", 
 				"AgentsAndNodes",
 				"A format in which the acting Agent[s] and the target nodes affected are specified.");
-			$priorityType =& new Type("logging", "edu.middlebury", "Error",
+			$priorityType = new Type("logging", "edu.middlebury", "Error",
 							"Events involving critical system errors.");
 		}			
-		$idManager =& Services::getService("Id");
-		$this->_fileStructureId =& $idManager->getId("FILE");
+		$idManager = Services::getService("Id");
+		$this->_fileStructureId =$idManager->getId("FILE");
 		$fileparts = array("File Name", "Thumbnail Data");
 		$this->_fileNamePartIds = $this->matchPartStructures(
 			$this->_destinationRepository->getRecordStructure(
@@ -94,8 +94,8 @@ class FilesOnlyRepositoryImporter
 
 		$recordList = array();
 		$recordListElement = array();
-		$recordListElement['structureId'] =& $this->_fileStructureId;
-		$recordListElement['partStructureIds'] =& $this->_fileNamePartIds;
+		$recordListElement['structureId'] =$this->_fileStructureId;
+		$recordListElement['partStructureIds'] =$this->_fileNamePartIds;
 		$recordListElement['parts'] = array($input, "");
 		$recordList[] = $recordListElement;
 		$recordListElement = array();
@@ -111,7 +111,7 @@ class FilesOnlyRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function &getChildAssetList (&$input) {
+	function getChildAssetList ($input) {
 		return null;
 	}
 }

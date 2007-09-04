@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRadioList.class.php,v 1.10 2007/06/07 19:37:54 adamfranco Exp $
+ * @version $Id: WRadioList.class.php,v 1.11 2007/09/04 20:28:07 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRadioList.class.php,v 1.10 2007/06/07 19:37:54 adamfranco Exp $
+ * @version $Id: WRadioList.class.php,v 1.11 2007/09/04 20:28:07 adamfranco Exp $
  */
 class WRadioList 
 	extends WizardComponent 
@@ -49,8 +49,8 @@ class WRadioList
 	 * @return ref object
 	 * @static
 	 */
-	function &withLayout ($pre, $eachPre, $eachPost, $post, $class='WRadioList') {
-		$obj =& new $class();
+	function withLayout ($pre, $eachPre, $eachPost, $post, $class='WRadioList') {
+		$obj = new $class();
 		$obj->_pre = $pre;
 		$obj->_post = $post;
 		$obj->_eachPre = $eachPre;

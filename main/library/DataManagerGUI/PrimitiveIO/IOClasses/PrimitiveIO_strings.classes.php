@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_strings.classes.php,v 1.8 2006/01/17 20:06:41 adamfranco Exp $
+ * @version $Id: PrimitiveIO_strings.classes.php,v 1.9 2007/09/04 20:27:58 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_strings.classes.php,v 1.8 2006/01/17 20:06:41 adamfranco Exp $
+ * @version $Id: PrimitiveIO_strings.classes.php,v 1.9 2007/09/04 20:27:58 adamfranco Exp $
  */
 class PrimitiveIO_shortstring extends WTextField {
 
@@ -26,7 +26,7 @@ class PrimitiveIO_shortstring extends WTextField {
 	 *
 	 * @return void
 	 **/
-	function setValue(&$value)
+	function setValue($value)
 	{
 		ArgumentValidator::validate($value, HasMethodsValidatorRule::getRule("asString"));
 		parent::setValue($value->asString());
@@ -38,7 +38,7 @@ class PrimitiveIO_shortstring extends WTextField {
 	 *
 	 * @return void
 	 **/
-	function setValueFromSObject(&$value)
+	function setValueFromSObject($value)
 	{
 		$this->setValue($value);
 	}
@@ -49,8 +49,8 @@ class PrimitiveIO_shortstring extends WTextField {
 	 * @access public
 	 * @return mixed
 	 */
-	function &getAllValues () {
-		$obj =& new String($this->_value?$this->_value:"");
+	function getAllValues () {
+		$obj = new String($this->_value?$this->_value:"");
 		return $obj;
 	}
 	
@@ -73,7 +73,7 @@ class PrimitiveIO_string extends WTextArea {
 	 *
 	 * @return void
 	 **/
-	function setValue(&$value)
+	function setValue($value)
 	{
 		ArgumentValidator::validate($value, HasMethodsValidatorRule::getRule("asString"));
 		parent::setValue($value->asString());
@@ -85,7 +85,7 @@ class PrimitiveIO_string extends WTextArea {
 	 *
 	 * @return void
 	 **/
-	function setValueFromSObject(&$value)
+	function setValueFromSObject($value)
 	{
 		$this->setValue($value);
 	}
@@ -96,8 +96,8 @@ class PrimitiveIO_string extends WTextArea {
 	 * @access public
 	 * @return mixed
 	 */
-	function &getAllValues () {
-		$obj =& new String($this->_value?$this->_value:"");
+	function getAllValues () {
+		$obj = new String($this->_value?$this->_value:"");
 		return $obj;
 	}
 }

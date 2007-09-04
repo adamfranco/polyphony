@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCheckBox.class.php,v 1.12 2006/06/14 14:54:14 adamfranco Exp $
+ * @version $Id: WCheckBox.class.php,v 1.13 2007/09/04 20:28:06 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCheckBox.class.php,v 1.12 2006/06/14 14:54:14 adamfranco Exp $
+ * @version $Id: WCheckBox.class.php,v 1.13 2007/09/04 20:28:06 adamfranco Exp $
  */
 class WCheckBox 
 	extends WizardComponent 
@@ -39,8 +39,8 @@ class WCheckBox
 	 * @return ref object
 	 * @static
 	 */
-	function &withLabel ($label) {
-		$obj =& new WCheckBox();
+	function withLabel ($label) {
+		$obj = new WCheckBox();
 		$obj->_label = $label;
 		return $obj;
 	}

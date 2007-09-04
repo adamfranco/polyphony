@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponentWithChildren.abstract.php,v 1.10 2006/11/30 22:02:41 adamfranco Exp $
+ * @version $Id: WizardComponentWithChildren.abstract.php,v 1.11 2007/09/04 20:28:06 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponentWithChildren.abstract.php,v 1.10 2006/11/30 22:02:41 adamfranco Exp $
+ * @version $Id: WizardComponentWithChildren.abstract.php,v 1.11 2007/09/04 20:28:06 adamfranco Exp $
  * @abstract
  */
 class WizardComponentWithChildren 
@@ -36,13 +36,13 @@ class WizardComponentWithChildren
 	 * @access public
 	 * @return ref object
 	 */
-	function &addComponent ($name, &$component) {
+	function addComponent ($name, $component) {
 		ArgumentValidator::validate($name,
 			NonZeroLengthStringValidatorRule::getRule());
 		ArgumentValidator::validate($component,
 			ExtendsValidatorRule::getRule('WizardComponent'));
 		
-		$this->_children[preg_replace("/[^a-zA-Z0-9:_-]/", "_", $name)] =& $component;
+		$this->_children[preg_replace("/[^a-zA-Z0-9:_-]/", "_", $name)] =$component;
 		$component->setParent($this);
 		return $component;
 	}
@@ -52,7 +52,7 @@ class WizardComponentWithChildren
 	 * @access public
 	 * @return ref array
 	 */
-	function &getChildren () {
+	function getChildren () {
 		return $this->_children;
 	}
 	
@@ -62,7 +62,7 @@ class WizardComponentWithChildren
 	 * @access public
 	 * @return ref object
 	 */
-	function &getChild ($name) {
+	function getChild ($name) {
 		return $this->_children[preg_replace("/[^a-zA-Z0-9:_-]/", "_", $name)];
 	}
 	
@@ -83,7 +83,7 @@ class WizardComponentWithChildren
 	 * @return boolean
 	 */
 	function validate () {
-		$children =& $this->getChildren();
+		$children =$this->getChildren();
 		$ok = true;
 		foreach (array_keys($children) as $key) {
 			if (!$children[$key]->validate()) return false;
@@ -102,7 +102,7 @@ class WizardComponentWithChildren
 	 * @since Jul 21, 2006
 	 */
 	function update ($fieldName) {
-		$children =& $this->getChildren();
+		$children =$this->getChildren();
 		$ok = true;
 		foreach (array_keys($children) as $key) {
 			if (!$children[$key]->update($fieldName."_".$key)) {
@@ -121,7 +121,7 @@ class WizardComponentWithChildren
 	 */
 	function getAllValues () {
 		$array = array();
-		$children =& $this->getChildren();
+		$children =$this->getChildren();
 		foreach(array_keys($children) as $key) {
 			$array[$key] = $children[$key]->getAllValues();
 		}
@@ -139,7 +139,7 @@ class WizardComponentWithChildren
 	function setEnabled ($enabled, $sticky = false) {
 		parent::setEnabled($enabled, $sticky);
 		
-		$children =& $this->getChildren();
+		$children =$this->getChildren();
 		foreach(array_keys($children) as $key) {
 			$children[$key]->setEnabled($enabled, $sticky);
 		}

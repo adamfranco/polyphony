@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change_password.act.php,v 1.4 2006/05/30 20:18:46 adamfranco Exp $
+ * @version $Id: change_password.act.php,v 1.5 2007/09/04 20:28:15 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change_password.act.php,v 1.4 2006/05/30 20:18:46 adamfranco Exp $
+ * @version $Id: change_password.act.php,v 1.5 2007/09/04 20:28:15 adamfranco Exp $
  */
 class change_passwordAction 
 	extends MainWindowAction
@@ -35,7 +35,7 @@ class change_passwordAction
 	 * @since 4/26/05
 	 */
 	function isAuthorizedToExecute () {
-		$authN =& Services::getService("AuthN");
+		$authN = Services::getService("AuthN");
 		return $authN->isUserAuthenticated(new Type ("Authentication", 
 			"edu.middlebury.harmoni", "Harmoni DB"));
 	}
@@ -63,14 +63,14 @@ class change_passwordAction
 	 * @since 4/26/05
 	 */
 	function buildContent () {
-		$authN =& Services::getService("AuthN");
+		$authN = Services::getService("AuthN");
 		
-		$dbAuthType =& new Type ("Authentication", "edu.middlebury.harmoni",
+		$dbAuthType = new Type ("Authentication", "edu.middlebury.harmoni",
 			"Harmoni DB");
 		
-		$centerPane =& $this->getActionRows();
+		$centerPane =$this->getActionRows();
 		
-		$id =& $authN->getUserId($dbAuthType);
+		$id =$authN->getUserId($dbAuthType);
 		$cacheName = 'change_password_wizard_'.$id->getIdString();
 		
 		$this->runWizard($cacheName, $centerPane);
@@ -83,9 +83,9 @@ class change_passwordAction
 	 * @access public
 	 * @since 10/24/05
 	 */
-	function &createWizard() {
-		$harmoni =& Harmoni::Instance();
-		$wizard =& SimpleWizard::withText(
+	function createWizard() {
+		$harmoni = Harmoni::Instance();
+		$wizard = SimpleWizard::withText(
 			"\n<h2>"._("Old Password")."</h2>".
 			"\n<br \>[[old_password]]".
 			"\n<h2>"._("New Password")."</h2>".
@@ -104,13 +104,13 @@ class change_passwordAction
 		if (!is_null($error))
 			print $error;
 			
-		$pass =& $wizard->addComponent("old_password", new WPasswordField());
-		$pass =& $wizard->addComponent("new_password", new WPasswordField());
-		$pass =& $wizard->addComponent("n_p_again", new WPasswordField());
+		$pass =$wizard->addComponent("old_password", new WPasswordField());
+		$pass =$wizard->addComponent("new_password", new WPasswordField());
+		$pass =$wizard->addComponent("n_p_again", new WPasswordField());
 		
-		$save =& $wizard->addComponent("_save", 
+		$save =$wizard->addComponent("_save", 
 			WSaveButton::withLabel("Change Password"));
-		$cancel =& $wizard->addComponent("_cancel", new WCancelButton());
+		$cancel =$wizard->addComponent("_cancel", new WCancelButton());
 
 		return $wizard;
 	}
@@ -126,27 +126,27 @@ class change_passwordAction
 	 * @since 10/24/05
 	 */
 	function saveWizard ($cacheName) {
-		$harmoni =& Harmoni::Instance();
-		$authN =& Services::getService("AuthN");
-		$tokenM =& Services::getService("AgentTokenMapping");
-		$wizard =& $this->getWizard($cacheName);
+		$harmoni = Harmoni::Instance();
+		$authN = Services::getService("AuthN");
+		$tokenM = Services::getService("AgentTokenMapping");
+		$wizard =$this->getWizard($cacheName);
 		
 		$properties = $wizard->getAllValues();
 		
-		$dbAuthType =& new Type ("Authentication", "edu.middlebury.harmoni",
+		$dbAuthType = new Type ("Authentication", "edu.middlebury.harmoni",
 			"Harmoni DB");		
-		$id =& $authN->getUserId($dbAuthType);
-		$it =& $tokenM->getMappingsForAgentId($id);
+		$id =$authN->getUserId($dbAuthType);
+		$it =$tokenM->getMappingsForAgentId($id);
 
 		while ($it->hasNext()) {
-			$mapping =& $it->next();
+			$mapping =$it->next();
 			
 			if ($mapping->getAuthenticationType() == $dbAuthType)
-				$tokens =& $mapping->getTokens();
+				$tokens =$mapping->getTokens();
 		}
 		if (isset($tokens)) {
-			$authNMethodManager =& Services::getService("AuthNMethodManager");
-			$dbAuthMethod =& $authNMethodManager->getAuthNMethodForType($dbAuthType);
+			$authNMethodManager = Services::getService("AuthNMethodManager");
+			$dbAuthMethod =$authNMethodManager->getAuthNMethodForType($dbAuthType);
 				
 			$uname = $tokens->getUsername();
 			
@@ -165,14 +165,14 @@ class change_passwordAction
 					
 				// Log the action
 				if (Services::serviceRunning("Logging")) {
-					$loggingManager =& Services::getService("Logging");
-					$log =& $loggingManager->getLogForWriting("Authentication");
-					$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+					$loggingManager = Services::getService("Logging");
+					$log =$loggingManager->getLogForWriting("Authentication");
+					$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
 									"A format in which the acting Agent[s] and the target nodes affected are specified.");
-					$priorityType =& new Type("logging", "edu.middlebury", "Event_Notice",
+					$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
 									"Normal events.");
 					
-					$item =& new AgentNodeEntryItem("Modify Agent", "Password changed for:\n<br/>&nbsp; &nbsp; &nbsp;".$uname."\n<br/>&nbsp; &nbsp; &nbsp;".$dbAuthType->getKeyword());
+					$item = new AgentNodeEntryItem("Modify Agent", "Password changed for:\n<br/>&nbsp; &nbsp; &nbsp;".$uname."\n<br/>&nbsp; &nbsp; &nbsp;".$dbAuthType->getKeyword());
 					$item->addAgentId($id);
 					
 					$log->appendLogWithTypes($item,	$formatType, $priorityType);
@@ -180,7 +180,7 @@ class change_passwordAction
 
 				$t_array = array("username" => $uname, 
 					"password" => $properties['new_password']);
-				$authNTokens =& $dbAuthMethod->createTokens($t_array);
+				$authNTokens =$dbAuthMethod->createTokens($t_array);
 				
 				// Add it to the system and login with new password
 				if ($dbAuthMethod->supportsTokenUpdates()) {
@@ -202,14 +202,14 @@ class change_passwordAction
 		 if (isset($error)) {
 		 	// Log the action
 			if (Services::serviceRunning("Logging")) {
-				$loggingManager =& Services::getService("Logging");
-				$log =& $loggingManager->getLogForWriting("Authentication");
-				$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+				$loggingManager = Services::getService("Logging");
+				$log =$loggingManager->getLogForWriting("Authentication");
+				$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
 								"A format in which the acting Agent[s] and the target nodes affected are specified.");
-				$priorityType =& new Type("logging", "edu.middlebury", "Error",
+				$priorityType = new Type("logging", "edu.middlebury", "Error",
 								"Normal events.");
 				
-				$item =& new AgentNodeEntryItem("Modify Agent", "Password change error:\n<br/>&nbsp; &nbsp; &nbsp;".$error."\n<br/>for:\n<br/>&nbsp; &nbsp; &nbsp;".$uname."\n<br/>&nbsp; &nbsp; &nbsp;".$dbAuthType->getKeyword());
+				$item = new AgentNodeEntryItem("Modify Agent", "Password change error:\n<br/>&nbsp; &nbsp; &nbsp;".$error."\n<br/>for:\n<br/>&nbsp; &nbsp; &nbsp;".$uname."\n<br/>&nbsp; &nbsp; &nbsp;".$dbAuthType->getKeyword());
 				$item->addAgentId($id);
 				
 				$log->appendLogWithTypes($item,	$formatType, $priorityType);
@@ -229,7 +229,7 @@ class change_passwordAction
 	 * @since 10/24/05
 	 */
 	function getReturnUrl () {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		
 		return $harmoni->request->quickURL("user", "main");
 	}

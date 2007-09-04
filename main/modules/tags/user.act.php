@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: user.act.php,v 1.3 2006/12/05 17:44:49 adamfranco Exp $
+ * @version $Id: user.act.php,v 1.4 2007/09/04 20:28:14 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/all.act.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/all.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: user.act.php,v 1.3 2006/12/05 17:44:49 adamfranco Exp $
+ * @version $Id: user.act.php,v 1.4 2007/09/04 20:28:14 adamfranco Exp $
  */
 class userAction 
 	extends allAction
@@ -45,21 +45,21 @@ class userAction
 	 * @since 11/07/06
 	 */
 	function getHeadingText () {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-tags");
 		$heading = dgettext("polyphony", "Tags for user: %1");
 		
-		$idManager =& Services::getService('Id');
-		$agentManager =& Services::getService('Agent');
-		$tagManager =& Services::getService("Tagging");
+		$idManager = Services::getService('Id');
+		$agentManager = Services::getService('Agent');
+		$tagManager = Services::getService("Tagging");
 		
 		if (RequestContext::value('agent_id'))
-			$agentId =& $idManager->getId(RequestContext::value('agent_id'));
+			$agentId =$idManager->getId(RequestContext::value('agent_id'));
 		else
-			$agentId =& $tagManager->getCurrentUserId();
+			$agentId =$tagManager->getCurrentUserId();
 		
 		if ($agentManager->isAgent($agentId)) {
-			$agent =& $agentManager->getAgent($agentId);
+			$agent =$agentManager->getAgent($agentId);
 			$heading = str_replace('%1', $agent->getDisplayName(), $heading);
 		} else		
 			$heading = str_replace('%1', $agentId->getIdString(), $heading);
@@ -74,16 +74,16 @@ class userAction
 	 * @access public
 	 * @since 11/8/06
 	 */
-	function &getTags () {
-		$tagManager =& Services::getService("Tagging");
-		$idManager =& Services::getService("Id");
+	function getTags () {
+		$tagManager = Services::getService("Tagging");
+		$idManager = Services::getService("Id");
 		
 		if (RequestContext::value('agent_id'))
-			$agentId =& $idManager->getId(RequestContext::value('agent_id'));
+			$agentId =$idManager->getId(RequestContext::value('agent_id'));
 		else
-			$agentId =& $tagManager->getCurrentUserId();
+			$agentId =$tagManager->getCurrentUserId();
 		
-		$tags =& $tagManager->getTagsByAgent($agentId, TAG_SORT_ALFA, $this->getNumTags());
+		$tags =$tagManager->getTagsByAgent($agentId, TAG_SORT_ALFA, $this->getNumTags());
 // 		printpre($tags);
 		return $tags;
 	}

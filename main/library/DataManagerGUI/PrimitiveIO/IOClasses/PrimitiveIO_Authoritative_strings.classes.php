@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_Authoritative_strings.classes.php,v 1.2 2006/05/01 20:59:36 adamfranco Exp $
+ * @version $Id: PrimitiveIO_Authoritative_strings.classes.php,v 1.3 2007/09/04 20:27:58 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_Authoritative_strings.classes.php,v 1.2 2006/05/01 20:59:36 adamfranco Exp $
+ * @version $Id: PrimitiveIO_Authoritative_strings.classes.php,v 1.3 2007/09/04 20:27:58 adamfranco Exp $
  */
 class PrimitiveIO_Authoritative_string
 	extends PrimitiveIO_Authoritative 
@@ -29,12 +29,12 @@ class PrimitiveIO_Authoritative_string
 	 * @access public
 	 * @return mixed
 	 */
-	function &getAllValues () {
+	function getAllValues () {
 		if ($this->_value == '_starting_display') {
 			$null = null;
 			return $null;
 		}
-		$obj =& new String($this->_value?$this->_value:"");
+		$obj = new String($this->_value?$this->_value:"");
 		return $obj;
 	}
 	

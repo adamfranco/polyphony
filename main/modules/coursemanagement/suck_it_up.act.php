@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: suck_it_up.act.php,v 1.3 2006/07/14 19:40:20 sporktim Exp $
+ * @version $Id: suck_it_up.act.php,v 1.4 2007/09/04 20:28:12 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -25,8 +25,8 @@ class suck_it_upAction
 	 */
 	function isAuthorizedToExecute () {
 		// Check for authorization
- 		$authZManager =& Services::getService("AuthZ");
- 		$idManager =& Services::getService("IdManager");
+ 		$authZManager = Services::getService("AuthZ");
+ 		$idManager = Services::getService("IdManager");
  		if ($authZManager->isUserAuthorized(
  					$idManager->getId("edu.middlebury.authorization.view"),
  					$idManager->getId("edu.middlebury.coursemanagement")))
@@ -59,15 +59,15 @@ class suck_it_upAction
 	function buildContent () {
 		$defaultTextDomain = textdomain("polyphony");
 		
-		$actionRows =& $this->getActionRows();
-		$pageRows =& new Container(new YLayout(), OTHER, 1);
-		$harmoni =& Harmoni::instance();
+		$actionRows =$this->getActionRows();
+		$pageRows = new Container(new YLayout(), OTHER, 1);
+		$harmoni = Harmoni::instance();
 		
 		$harmoni->request->startNamespace("polyphony-agents");
 
-		$agentManager =& Services::getService("Agent");
+		$agentManager = Services::getService("Agent");
 		$idManager = Services::getService("Id");
-		$cm =& Services::getService("CourseManagement");
+		$cm = Services::getService("CourseManagement");
 		
 		
 		
@@ -93,22 +93,22 @@ class suck_it_upAction
 			<p align='center'><select name='$term_name'>
 END;
 		
-		$searchTypes =& $agentManager->getAgentSearchTypes();
+		$searchTypes =$agentManager->getAgentSearchTypes();
 		
 		
-		$classId =& $idManager->getId("OU=Classes,OU=Groups,DC=middlebury,DC=edu ");
-	$classes =& $agentManager->getGroup($classId);
-	$terms =& $classes->getGroups(false);
+		$classId =$idManager->getId("OU=Classes,OU=Groups,DC=middlebury,DC=edu ");
+	$classes =$agentManager->getGroup($classId);
+	$terms =$classes->getGroups(false);
 	
 	while($terms->hasNext()){
-		$termGroup =& $terms->next();
+		$termGroup =$terms->next();
 		
 		$termName = $termGroup->getDisplayName();
 		
 		$term = $this->_getTerm($termName);
 		
 		
-		$id =& $term->getId();
+		$id =$term->getId();
 		$idString = $id->getIdString();
 		print "\n\t\t<option value='".$idString."'";
 			if ($harmoni->request->get('term_name') == $idString){
@@ -138,23 +138,23 @@ END;
 
 	
 		
-	$classId =& $idManager->getId("OU=Classes,OU=Groups,DC=middlebury,DC=edu ");
-	$classes =& $agentManager->getGroup($classId);
+	$classId =$idManager->getId("OU=Classes,OU=Groups,DC=middlebury,DC=edu ");
+	$classes =$agentManager->getGroup($classId);
 	
 	
 	
 	
-	$terms =& $classes->getGroups(false);
+	$terms =$classes->getGroups(false);
 	
 	
 	
 	while($terms->hasNext()){
-		$termGroup =& $terms->next();
+		$termGroup =$terms->next();
 		
 		$termName = $termGroup->getDisplayName();
 		
 		$term = $this->_getTerm($termName);
-		$id=& $term->getId();
+		$id=$term->getId();
 		
 		if($termIdString==$id->getIdString()){
 			break;
@@ -172,14 +172,14 @@ END;
 	
 	$last = "";
 		
-		$sections =& $termGroup->getGroups(false);
+		$sections =$termGroup->getGroups(false);
 			
 		while($sections->hasNext()){
 			
 			
 			
 			
-			$section =& $sections->next();
+			$section =$sections->next();
 			
 			
 			$sectionName = $section->getDisplayName();	
@@ -204,7 +204,7 @@ END;
 	
 			// Create a layout for this group using the GroupPrinter
 		
-			$groupLayout =& new Block(ob_get_contents(), STANDARD_BLOCK);
+			$groupLayout = new Block(ob_get_contents(), STANDARD_BLOCK);
 			ob_end_clean();
 			
 			
@@ -227,28 +227,28 @@ END;
 	/**
 	 *Gets a term from the LDAP name, creating it if necesary
 	 **/
-	function &_getTerm($termName ){
+	function _getTerm($termName ){
 		
-		$cm =& Services::getService("CourseManagement");
+		$cm = Services::getService("CourseManagement");
 		
 		$season =  substr($termName,0,strlen($termName)-2);		
 		$year = '20'.substr($termName,strlen($termName)-2,2);
 		$name = $season." ".$year;
 		
-		$termType =& new Type("Coursemanagement","edu.middlebury",$season);
+		$termType = new Type("Coursemanagement","edu.middlebury",$season);
 		
 		$index = $cm->_typeToIndex('term',$termType);
 		
 		
 		
 		
-		$dbHandler =& Services::getService("DBHandler");
-		$query=& new SelectQuery;
+		$dbHandler = Services::getService("DBHandler");
+		$query= new SelectQuery;
 		$query->addTable('cm_term');
 		$query->addWhere("name='".addslashes($name)."'");
 		$query->addWhere("fk_cm_term_type='".addslashes($index)."'");
 		$query->addColumn('id');
-		$res=& $dbHandler->query($query);
+		$res=$dbHandler->query($query);
 
 
 
@@ -256,11 +256,11 @@ END;
 			
 			
 			
-			$term =& $cm->createTerm($termType,$arr=array());
+			$term =$cm->createTerm($termType,$arr=array());
 			$term->updateDisplayName($name);
 			
 			return $term;
-			//$termId =& $term->getId();
+			//$termId =$term->getId();
 
 			//return $termId->getIdString();
 			
@@ -268,9 +268,9 @@ END;
 				
 			$row = $res->getCurrentRow();
 		
-			$idManager =& Services::getService("Id");
-			$id =& $idManager->getId($row['id']);
-			$term =& $cm->getTerm($id);
+			$idManager = Services::getService("Id");
+			$id =$idManager->getId($row['id']);
+			$term =$cm->getTerm($id);
 			
 			return $term;
 
@@ -279,9 +279,9 @@ END;
 	
 	
 	
-	function &_getCanonicalCourse($courseString ){
+	function _getCanonicalCourse($courseString ){
 		
-		$cm =& Services::getService("CourseManagement");
+		$cm = Services::getService("CourseManagement");
 		
 				
 		//$num = substr($courseString,4,4);
@@ -294,12 +294,12 @@ END;
 		
 		
 		
-		$dbHandler =& Services::getService("DBHandler");
-		$query=& new SelectQuery;
+		$dbHandler = Services::getService("DBHandler");
+		$query= new SelectQuery;
 		$query->addTable('cm_can');
 		$query->addWhere("number='".addslashes($number)."'");
 		$query->addColumn('id');
-		$res=& $dbHandler->query($query);
+		$res=$dbHandler->query($query);
 
 
 		
@@ -308,21 +308,21 @@ END;
 			
 		
 			
-			//$termType =& new Type("Coursemanagement","edu.middlebury",$season);		
+			//$termType = new Type("Coursemanagement","edu.middlebury",$season);		
 			//$index = $cm->_typeToIndex('term',$termType);
 			
 			$dept =  substr($courseString,0,strlen($courseString)-9);
 			
-			$type =& new Type("Coursemanagement","edu.middlebury",$dept);
-			$stattype =& new Type("Coursemanagement","edu.middlebury","default");
+			$type = new Type("Coursemanagement","edu.middlebury",$dept);
+			$stattype = new Type("Coursemanagement","edu.middlebury","default");
 			
-			$can =& $cm->createCanonicalCourse($number,$number,"",$type,$stattype,1);
+			$can =$cm->createCanonicalCourse($number,$number,"",$type,$stattype,1);
 			
 		
 			
 			print "<font size=4><b>".$number."</b> </font>\n";
 			return $can;
-			//$canId =& $can->getId();
+			//$canId =$can->getId();
 
 			//return $canId->getIdString();
 		}else{
@@ -330,9 +330,9 @@ END;
 			
 			$row = $res->getCurrentRow();
 			//$the_index = $row['id'];
-			$idManager =& Services::getService("Id");
-			$id =& $idManager->getId($row['id']);
-			$can =& $cm->getCanonicalCourse($id);
+			$idManager = Services::getService("Id");
+			$id =$idManager->getId($row['id']);
+			$can =$cm->getCanonicalCourse($id);
 			
 			print "<font size=4>".$number." </font>\n";
 			

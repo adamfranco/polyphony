@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AuthZPrinter.abstract.php,v 1.2 2006/11/30 22:02:37 adamfranco Exp $
+ * @version $Id: AuthZPrinter.abstract.php,v 1.3 2007/09/04 20:27:57 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AuthZPrinter.abstract.php,v 1.2 2006/11/30 22:02:37 adamfranco Exp $
+ * @version $Id: AuthZPrinter.abstract.php,v 1.3 2007/09/04 20:27:57 adamfranco Exp $
  */
 class AuthZPrinter {
 		
@@ -32,8 +32,8 @@ class AuthZPrinter {
 	 */
 	function getAZIcon ($qualifierId) {
 		ob_start();
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		
 		if ($authZ->isUserAuthorized(
 				$idManager->getId("edu.middlebury.authorization.view_authorizations"), 

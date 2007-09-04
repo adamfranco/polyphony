@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.16 2006/12/06 20:59:20 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.17 2007/09/04 20:28:02 adamfranco Exp $
  */
 
 /**
@@ -22,8 +22,8 @@ require_once(HARMONI."/oki2/shared/MultiIteratorIterator.class.php");
  * appropriate RepositoryInputOutputModule based on their Schema Formats.
  * 
  * @package polyphony.library.repository.inputoutput
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.16 2006/12/06 20:59:20 adamfranco Exp $
- * @since $Date: 2006/12/06 20:59:20 $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.17 2007/09/04 20:28:02 adamfranco Exp $
+ * @since $Date: 2007/09/04 20:28:02 $
  * @copyright 2004 Middlebury College
  */
 
@@ -39,17 +39,17 @@ class RepositoryInputOutputModuleManager {
 	function RepositoryInputOutputModuleManager () {
 		$this->_modules = array();
 		
-		$type =& new Type("RecordStructures", 
+		$type = new Type("RecordStructures", 
 					"edu.middlebury.harmoni", 
 					"DataManagerPrimatives", 
 					"RecordStructures stored in the Harmoni DataManager.");
- 		$this->_modules[Type::typeToString($type)] =& new DataManagerPrimativesModule;
+ 		$this->_modules[Type::typeToString($type)] = new DataManagerPrimativesModule;
 		
-		$type =& new Type("RecordStructures", 
+		$type = new Type("RecordStructures", 
 					"edu.middlebury.harmoni", 
 					"File", 
 					"RecordStructures that store files.");
- 		$this->_modules[Type::typeToString($type)] =& new HarmoniFileModule;
+ 		$this->_modules[Type::typeToString($type)] = new HarmoniFileModule;
  		
 // 		$this->_modules['text/plain'] = new PlainTextModule;
 	}
@@ -74,8 +74,8 @@ class RepositoryInputOutputModuleManager {
 	 * 
 	 * @access public
 	 */
-	function assignConfiguration ( &$configuration ) { 
-		$this->_configuration =& $configuration;
+	function assignConfiguration ( $configuration ) { 
+		$this->_configuration =$configuration;
 	}
 
 	/**
@@ -87,7 +87,7 @@ class RepositoryInputOutputModuleManager {
 	 * 
 	 * @access public
 	 */
-	function &getOsidContext () { 
+	function getOsidContext () { 
 		return $this->_osidContext;
 	} 
 
@@ -102,8 +102,8 @@ class RepositoryInputOutputModuleManager {
 	 * 
 	 * @access public
 	 */
-	function assignOsidContext ( &$context ) { 
-		$this->_osidContext =& $context;
+	function assignOsidContext ( $context ) { 
+		$this->_osidContext =$context;
 	} 
 		
 	/**
@@ -117,12 +117,12 @@ class RepositoryInputOutputModuleManager {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function createWizardStepsForPartStructures ( & $record, & $wizard, & $partStructures ) {
+	function createWizardStepsForPartStructures ( $record, $wizard, $partStructures ) {
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
 		ArgumentValidator::validate($wizard, new ExtendsValidatorRule("Wizard"));
 		ArgumentValidator::validate($partStructures, new ArrayValidatorRuleWithRule(new ExtendsValidatorRule("PartStructure")));
 		
-		$recordStructure =& $record->getRecordStructure();
+		$recordStructure =$record->getRecordStructure();
 		$format = $recordStructure->getFormat();
 		
 		if (!is_object($this->_modules[$format]))
@@ -141,11 +141,11 @@ class RepositoryInputOutputModuleManager {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function createWizardSteps ( & $record, & $wizard ) {
+	function createWizardSteps ( $record, $wizard ) {
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
 		ArgumentValidator::validate($wizard, new ExtendsValidatorRule("Wizard"));
 				
-		$recordStructure =& $record->getRecordStructure();
+		$recordStructure =$record->getRecordStructure();
 		$format = $recordStructure->getFormat();
 		
 		if (!is_object($this->_modules[$format]))
@@ -163,10 +163,10 @@ class RepositoryInputOutputModuleManager {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function updateFromWizard ( & $record, & $wizard ) {
+	function updateFromWizard ( $record, $wizard ) {
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
 		
-		$recordStructure =& $record->getRecordStructure();
+		$recordStructure =$record->getRecordStructure();
 		$format = $recordStructure->getFormat();
 		
 		if (!is_object($this->_modules[$format]))
@@ -183,12 +183,12 @@ class RepositoryInputOutputModuleManager {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function generateDisplay ( & $repositoryId, & $assetId, & $record ) {
+	function generateDisplay ( $repositoryId, $assetId, $record ) {
 		ArgumentValidator::validate($repositoryId, new ExtendsValidatorRule("Id"));
 		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
 		
-		$recordStructure =& $record->getRecordStructure();
+		$recordStructure =$record->getRecordStructure();
 		$format = $recordStructure->getFormat();
 		
 		if (!is_object($this->_modules[$format]))
@@ -206,16 +206,16 @@ class RepositoryInputOutputModuleManager {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function generateDisplayForPartStructures ( &$repositoryId, &$assetId, 
-		&$record, &$partStructures ) 
+	function generateDisplayForPartStructures ( $repositoryId, $assetId, 
+		$record, $partStructures ) 
 	{
 		ArgumentValidator::validate($repositoryId, new ExtendsValidatorRule("Id"));
 		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
 		ArgumentValidator::validate($partStructures, new ArrayValidatorRuleWithRule(new ExtendsValidatorRule("PartStructure")));
 		
-		$recordStructure =& $record->getRecordStructure();
-		$type =& $recordStructure->getType();
+		$recordStructure =$record->getRecordStructure();
+		$type =$recordStructure->getType();
 		
 		if (!is_object($this->_modules[Type::typeToString($type)]))
 			throwError(new Error("Unsupported Format, '".Type::typeToString($type)."'", "RepositoryInputOutputModuleManager", true));
@@ -232,24 +232,24 @@ class RepositoryInputOutputModuleManager {
 	 * @access public
 	 * @since 7/22/05
 	 */
-	function getThumbnailUrlForAsset (&$assetOrId ) {
+	function getThumbnailUrlForAsset ($assetOrId ) {
 		ArgumentValidator::validate($assetOrId, 
 			OrValidatorRule::getRule(
 				ExtendsValidatorRule::getRule("Id"),
 				ExtendsValidatorRule::getRule("Asset")));
 		
-		$rule =& ExtendsValidatorRule::getRule("Id");
+		$rule = ExtendsValidatorRule::getRule("Id");
 		if ($rule->check($assetOrId)) {
-			$repositoryManager =& Services::getService("RepositoryManager");
-			$asset =& $repositoryManager->getAsset($assetOrId);
+			$repositoryManager = Services::getService("RepositoryManager");
+			$asset =$repositoryManager->getAsset($assetOrId);
 		} else {
-			$asset =& $assetOrId;
+			$asset =$assetOrId;
 		}
 		
 		if (!$asset)
 			return false;
 		
-		$fileRecord =& RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset(
+		$fileRecord = RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset(
 							$asset);
 		return RepositoryInputOutputModuleManager::getThumbnailUrlForRecord(
 							$asset, $fileRecord);
@@ -263,42 +263,42 @@ class RepositoryInputOutputModuleManager {
 	 * @access public
 	 * @since 7/22/05
 	 */
-	function getThumbnailUrlForRecord (&$assetOrId, &$fileRecord ) {
+	function getThumbnailUrlForRecord ($assetOrId, $fileRecord ) {
 		ArgumentValidator::validate($assetOrId, 
 			OrValidatorRule::getRule(
 				ExtendsValidatorRule::getRule("Id"),
 				ExtendsValidatorRule::getRule("Asset")));
 		
-		$rule =& ExtendsValidatorRule::getRule("Id");
+		$rule = ExtendsValidatorRule::getRule("Id");
 		if ($rule->check($assetOrId)) {
-			$repositoryManager =& Services::getService("RepositoryManager");
-			$asset =& $repositoryManager->getAsset($assetOrId);
+			$repositoryManager = Services::getService("RepositoryManager");
+			$asset =$repositoryManager->getAsset($assetOrId);
 		} else {
-			$asset =& $assetOrId;
+			$asset =$assetOrId;
 		}
 		
-		$idManager =& Services::getService("IdManager");
-		$assetId =& $asset->getId();
-		$repository =& $asset->getRepository();
-		$repositoryId =& $repository->getId();		
+		$idManager = Services::getService("IdManager");
+		$assetId =$asset->getId();
+		$repository =$asset->getRepository();
+		$repositoryId =$repository->getId();		
 		
 		if ($fileRecord === FALSE)
 			return FALSE;
 		
-		$fileRecordId =& $fileRecord->getId();
+		$fileRecordId =$fileRecord->getId();
 		
-		$filenameParts =& $fileRecord->getPartsByPartStructure(
+		$filenameParts =$fileRecord->getPartsByPartStructure(
 			$idManager->getId("FILE_NAME"));
-		$filenamePart =& $filenameParts->next();
+		$filenamePart =$filenameParts->next();
 		$filename = $filenamePart->getValue();
 		
-		$mimeTypeParts =& $fileRecord->getPartsByPartStructure(
+		$mimeTypeParts =$fileRecord->getPartsByPartStructure(
 				$idManager->getId("THUMBNAIL_MIME_TYPE"));
-		$mimeTypePart =& $mimeTypeParts->next();
+		$mimeTypePart =$mimeTypeParts->next();
 		$mimeType = $mimeTypePart->getValue();
 		
 		
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-repository");
 		
 		$url = $harmoni->request->quickURL("repository", "viewthumbnail",
@@ -322,24 +322,24 @@ class RepositoryInputOutputModuleManager {
 	 * @access public
 	 * @since 7/22/05
 	 */
-	function getFileUrlForAsset (&$assetOrId ) {
+	function getFileUrlForAsset ($assetOrId ) {
 		ArgumentValidator::validate($assetOrId, 
 			OrValidatorRule::getRule(
 				ExtendsValidatorRule::getRule("Id"),
 				ExtendsValidatorRule::getRule("Asset")));
 		
-		$rule =& ExtendsValidatorRule::getRule("Id");
+		$rule = ExtendsValidatorRule::getRule("Id");
 		if ($rule->check($assetOrId)) {
-			$repositoryManager =& Services::getService("RepositoryManager");
-			$asset =& $repositoryManager->getAsset($assetOrId);
+			$repositoryManager = Services::getService("RepositoryManager");
+			$asset =$repositoryManager->getAsset($assetOrId);
 		} else {
-			$asset =& $assetOrId;
+			$asset =$assetOrId;
 		}
 		
 		if (!$asset)
 			return false;
 		
-		$fileRecord =& RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset(
+		$fileRecord = RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset(
 							$asset);
 		
 		return RepositoryInputOutputModuleManager::getFileUrlForRecord(
@@ -355,43 +355,43 @@ class RepositoryInputOutputModuleManager {
 	 * @access public
 	 * @since 7/22/05
 	 */
-	function getFileUrlForRecord(&$assetOrId, &$fileRecord ) {
-		$idManager =& Services::getService("IdManager");
+	function getFileUrlForRecord($assetOrId, $fileRecord ) {
+		$idManager = Services::getService("IdManager");
 		ArgumentValidator::validate($assetOrId, 
 			OrValidatorRule::getRule(
 				ExtendsValidatorRule::getRule("Id"),
 				ExtendsValidatorRule::getRule("Asset")));
 		
 		// Remote Files
-		$recStruct =& $fileRecord->getRecordStructure();
-		$remoteFileId =& $idManager->getId("REMOTE_FILE");
+		$recStruct =$fileRecord->getRecordStructure();
+		$remoteFileId =$idManager->getId("REMOTE_FILE");
 		if ($remoteFileId->isEqual($recStruct->getId())) {
-			$urlParts =& $fileRecord->getPartsByPartStructure($idManager->getId("FILE_URL"));
-			$urlPart =& $urlParts->next();
+			$urlParts =$fileRecord->getPartsByPartStructure($idManager->getId("FILE_URL"));
+			$urlPart =$urlParts->next();
 			return $urlPart->getValue();
 		}
 		
 		// Local files
-		$rule =& ExtendsValidatorRule::getRule("Id");
+		$rule = ExtendsValidatorRule::getRule("Id");
 		if ($rule->check($assetOrId)) {
-			$repositoryManager =& Services::getService("RepositoryManager");
-			$asset =& $repositoryManager->getAsset($assetOrId);
+			$repositoryManager = Services::getService("RepositoryManager");
+			$asset =$repositoryManager->getAsset($assetOrId);
 		} else {
-			$asset =& $assetOrId;
+			$asset =$assetOrId;
 		}
 		
 		
-		$assetId =& $asset->getId();
-		$repository =& $asset->getRepository();
-		$repositoryId =& $repository->getId();
+		$assetId =$asset->getId();
+		$repository =$asset->getRepository();
+		$repositoryId =$repository->getId();
 		
 		if ($fileRecord === FALSE)
 			return FALSE;
 		
-		$fileRecordId =& $fileRecord->getId();	
+		$fileRecordId =$fileRecord->getId();	
 		
 		
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-repository");
 		
 		$url = $harmoni->request->quickURL("repository", "viewfile", 
@@ -415,47 +415,47 @@ class RepositoryInputOutputModuleManager {
 	 * @access public
 	 * @since 8/19/05
 	 */
-	function &getFirstImageOrFileRecordForAsset ( &$assetOrId ) {
+	function getFirstImageOrFileRecordForAsset ( $assetOrId ) {
 		ArgumentValidator::validate($assetOrId, 
 			OrValidatorRule::getRule(
 				ExtendsValidatorRule::getRule("Id"),
 				ExtendsValidatorRule::getRule("Asset")));
 		
-		$rule =& ExtendsValidatorRule::getRule("Id");
+		$rule = ExtendsValidatorRule::getRule("Id");
 		if ($rule->check($assetOrId)) {
-			$repositoryManager =& Services::getService("RepositoryManager");
-			$asset =& $repositoryManager->getAsset($assetOrId);
+			$repositoryManager = Services::getService("RepositoryManager");
+			$asset =$repositoryManager->getAsset($assetOrId);
 		} else {
-			$asset =& $assetOrId;
+			$asset =$assetOrId;
 		}
 		
-		$idManager =& Services::getService("IdManager");
-		$assetId =& $asset->getId();
+		$idManager = Services::getService("IdManager");
+		$assetId =$asset->getId();
 		
 		// Check the cache
 		if (!isset($GLOBALS['__RepositoryThumbRecordCache']))
 			$GLOBALS['__RepositoryThumbRecordCache'] = array();
 		
 		if (!isset($GLOBALS['__RepositoryThumbRecordCache'][$assetId->getIdString()])) {		
-			$imageProcessor =& Services::getService("ImageProcessor");
-			$fileRecords =& new MultiIteratorIterator();
+			$imageProcessor = Services::getService("ImageProcessor");
+			$fileRecords = new MultiIteratorIterator();
 			$fileRecords->addIterator($asset->getRecordsByRecordStructure($idManager->getId("FILE")));
 			$fileRecords->addIterator($asset->getRecordsByRecordStructure($idManager->getId("REMOTE_FILE")));
 			while ($fileRecords->hasNext()) {
-				$record =& $fileRecords->next();
+				$record =$fileRecords->next();
 				if (!isset($fileRecord)) {
-					$fileRecord =& $record;
+					$fileRecord =$record;
 				}
 				
-				$mimeTypeParts =& $record->getPartsByPartStructure(
+				$mimeTypeParts =$record->getPartsByPartStructure(
 					$idManager->getId("MIME_TYPE"));
-				$mimeTypePart =& $mimeTypeParts->next();
+				$mimeTypePart =$mimeTypeParts->next();
 				$mimeType = $mimeTypePart->getValue();
 				
 				// If this record is supported by the image processor, then use it
 				// to generate a thumbnail instead of the default icons.
 				if ($imageProcessor->isFormatSupported($mimeType)) {
-					$fileRecord =& $record;
+					$fileRecord =$record;
 					break;	
 				}
 			}
@@ -465,7 +465,7 @@ class RepositoryInputOutputModuleManager {
 			if (!isset($fileRecord))
 				$GLOBALS['__RepositoryThumbRecordCache'][$assetId->getIdString()] = FALSE;
 			 else
-				$GLOBALS['__RepositoryThumbRecordCache'][$assetId->getIdString()] =& $fileRecord;
+				$GLOBALS['__RepositoryThumbRecordCache'][$assetId->getIdString()] =$fileRecord;
 		}
 		
 		return $GLOBALS['__RepositoryThumbRecordCache'][$assetId->getIdString()];
@@ -479,29 +479,29 @@ class RepositoryInputOutputModuleManager {
 	 * @access public
 	 * @since 12/4/06
 	 */
-	function hasThumbnailNotIcon ( &$assetOrId ) {
-		$idManager =& Services::getService("IdManager");
+	function hasThumbnailNotIcon ( $assetOrId ) {
+		$idManager = Services::getService("IdManager");
 		
-		$record =& RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset($assetOrId);
+		$record = RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset($assetOrId);
 		
 		if (!$record)
 			return FALSE;
 		
 		// Make sure that the structure is the right one.
-		$structure =& $record->getRecordStructure();
-		$fileId =& $idManager->getId('FILE');
-		$remoteFileId =& $idManager->getId('REMOTE_FILE');
+		$structure =$record->getRecordStructure();
+		$fileId =$idManager->getId('FILE');
+		$remoteFileId =$idManager->getId('REMOTE_FILE');
 		if (!$fileId->isEqual($structure->getId()) && !$remoteFileId->isEqual($structure->getId())) {
 			return FALSE;
 		} else {
 			// Get the parts for the record.
-			$partIterator =& $record->getParts();
+			$partIterator =$record->getParts();
 			$parts = array();
 			while($partIterator->hasNext()) {
-				$part =& $partIterator->next();
-				$partStructure =& $part->getPartStructure();
-				$partStructureId =& $partStructure->getId();
-				$parts[$partStructureId->getIdString()] =& $part;
+				$part =$partIterator->next();
+				$partStructure =$part->getPartStructure();
+				$partStructureId =$partStructure->getId();
+				$parts[$partStructureId->getIdString()] =$part;
 			}
 			
 			// If we have a thumbnail, print that.

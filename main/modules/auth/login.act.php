@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login.act.php,v 1.14 2006/11/30 22:02:42 adamfranco Exp $
+ * @version $Id: login.act.php,v 1.15 2007/09/04 20:28:10 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login.act.php,v 1.14 2006/11/30 22:02:42 adamfranco Exp $
+ * @version $Id: login.act.php,v 1.15 2007/09/04 20:28:10 adamfranco Exp $
  */
 class loginAction
 	extends Action
@@ -45,8 +45,8 @@ class loginAction
 	 * @access public
 	 * @since 4/25/05
 	 */
-	function &execute ( &$harmoni ) {
-		$harmoni =& Harmoni::instance();
+	function execute ( $harmoni ) {
+		$harmoni = Harmoni::instance();
 		
 		// If we are using only cookies, but cookies aren't enabled
 		// (and hence not set), print an error message.
@@ -57,12 +57,12 @@ class loginAction
 		}
 
 		$isAuthenticated = FALSE;
-		$authN =& Services::getService("AuthN");
+		$authN = Services::getService("AuthN");
 		
 		// authenticate.
-		$authTypes =& $authN->getAuthenticationTypes();
+		$authTypes =$authN->getAuthenticationTypes();
 		while ($authTypes->hasNext()) {
-			$authType =& $authTypes->next();
+			$authType =$authTypes->next();
 			
 			// Try authenticating with this type
 			$authN->authenticateUser($authType);

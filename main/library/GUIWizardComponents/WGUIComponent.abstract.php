@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WGUIComponent.abstract.php,v 1.1 2006/08/15 21:12:35 sporktim Exp $
+ * @version $Id: WGUIComponent.abstract.php,v 1.2 2007/09/04 20:27:59 adamfranco Exp $
  */ 
 
 
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WGUIComponent.abstract.php,v 1.1 2006/08/15 21:12:35 sporktim Exp $
+ * @version $Id: WGUIComponent.abstract.php,v 1.2 2007/09/04 20:27:59 adamfranco Exp $
  */
  
 class WGUIComponent 
@@ -52,22 +52,22 @@ class WGUIComponent
 		$this->_component = $componentClass;
 		
 		//get the colelction
-		$collection =& $this->getStyleCollection();	
+		$collection =$this->getStyleCollection();	
 		
 		//get the property, using the default one, if need be.  Then check to make sure we've succeeded.
-		$property =& $collection->getStyleProperty($this->_property);		
+		$property =$collection->getStyleProperty($this->_property);		
 		if(is_null($property)){
 			$collection->addSP($styleProperty);
-			$property =& $styleProperty;
+			$property =$styleProperty;
 		}
-		$rule =& ExtendsValidatorRule::getRule("StyleProperty");
+		$rule = ExtendsValidatorRule::getRule("StyleProperty");
 		if(!$rule->check($property)){
 			throwError(new Error("Failed to get StyleProperty","GUIWizardComponents",true));
 		}	
 		
 		//get the first value in case the next value is not legitamate
-		$componentTemp =& $styleProperty->getStyleComponent($componentClass);		
-		$rule =& ExtendsValidatorRule::getRule("StyleComponent");
+		$componentTemp =$styleProperty->getStyleComponent($componentClass);		
+		$rule = ExtendsValidatorRule::getRule("StyleComponent");
 		if(!$rule->check($componentTemp)){
 			throwError(new Error("Passed in Style property must have a component of given class, '".$componentClass."'","GUIWizardComponents",true));
 		}
@@ -77,7 +77,7 @@ class WGUIComponent
 		}
 		
 		//get the component, using the default one, if need be.  Then check to make sure we've succeeded.
-		$component =& $property->getStyleComponent($this->_component);
+		$component =$property->getStyleComponent($this->_component);
 		if(is_null($component)){
 			$property->addSC($styleProperty->getStyleProperty($componentClass));
 		}
@@ -91,25 +91,25 @@ class WGUIComponent
 		$this->exportValue();
 	}
 	
-	function &getStyleComponent(){
-		//eval('$theme =& '.$this->_getThemeCallBack."();");		
-		//$collection =& $theme->getStyleCollection($this->_collection);eval('$theme =& '.$this->_getThemeCallBack."();");		
-		$collection =& $this->getStyleCollection();	
-		$property =& $collection->getStyleProperty($this->_property);
+	function getStyleComponent(){
+		//eval('$theme = '.$this->_getThemeCallBack."();");		
+		//$collection =$theme->getStyleCollection($this->_collection);eval('$theme = '.$this->_getThemeCallBack."();");		
+		$collection =$this->getStyleCollection();	
+		$property =$collection->getStyleProperty($this->_property);
 		return $property->getStyleComponent($this->_component);		
 	}
 	
 	
-	function &getStyleCollection(){
-		eval('$theme =& '.$this->_getThemeCallBack."();");
+	function getStyleCollection(){
+		eval('$theme = '.$this->_getThemeCallBack."();");
 		
 		
-		$rule =& ExtendsValidatorRule::getRule("Theme");
+		$rule = ExtendsValidatorRule::getRule("Theme");
 		if(!$rule->check($theme)){
 			throwError(new Error("Callback ".$this->_getThemeCallBack."() did not return a theme ","GUIWizardComponents",true));
 		}		
-		$collection =& $theme->getStyleCollection($this->_collection);
-		$rule =& ExtendsValidatorRule::getRule("StyleCollection");
+		$collection =$theme->getStyleCollection($this->_collection);
+		$rule = ExtendsValidatorRule::getRule("StyleCollection");
 		if(!$rule->check($collection)){
 			throwError(new Error("Theme ".$theme->getDisplayName()." did not have StyleCollection ".$this->_collection,"GUIWizardComponents",true));
 		}	
@@ -141,9 +141,9 @@ class WGUIComponent
 	 */
 	function update ($fieldName) {		
 		$this->_wizardComponent->update($fieldName);
-		//$styleComponent =& $this->getStyleComponent();			
+		//$styleComponent =$this->getStyleComponent();			
 		//$val = $this->getAllValues();
-		/*$rule =& $styleComponent->getRule();
+		/*$rule =$styleComponent->getRule();
 		if($rule->check($val)){
 				$styleComponent->setValue($val);
 			}else{
@@ -166,7 +166,7 @@ class WGUIComponent
 	 * copy the value from  the StyleComponent to the wizard component
 	 */
 	function importValue(){
-		$styleComponent =& $this->getStyleComponent();
+		$styleComponent =$this->getStyleComponent();
 		$val = $styleComponent->getValue();
 		if($this->isPossibleValue($val)){
 			$this->_wizardComponent->setValue($val);

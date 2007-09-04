@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: createcourse.act.php,v 1.14 2006/08/30 17:53:51 jwlee100 Exp $
+* @version $Id: createcourse.act.php,v 1.15 2007/09/04 20:28:12 adamfranco Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -30,8 +30,8 @@ extends MainWindowAction
 	function isAuthorizedToExecute () {
 		// Check for authorization
 		// Check that the user can create an asset here.
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		
 		return $authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.add_children"),
@@ -60,13 +60,13 @@ extends MainWindowAction
 	function buildContent () {
 		$defaultTextDomain = textdomain("polyphony");
 		
-		$idManager =& Services::getService("Id");
-		$harmoni =& Harmoni::instance();
+		$idManager = Services::getService("Id");
+		$harmoni = Harmoni::instance();
 
 		$harmoni->request->startNamespace("polyphony-agents");
 		$harmoni->request->passthrough("courseId");
 		
-		$cm =& Services::getService("CourseManagement");
+		$cm = Services::getService("CourseManagement");
 				
 		// Process any changes and add or remove courses as necessary
 		if (RequestContext::value("courseTitle") && RequestContext::value("courseNumber") &&
@@ -83,7 +83,7 @@ extends MainWindowAction
 		
 		
 		// Print out the add form and course list
-		$actionRows =& $this->getActionRows();
+		$actionRows =$this->getActionRows();
 		
 		$actionRows->add(new Heading(_("Add or remove courses."), 2), "100%", null, LEFT, CENTER);
 		
@@ -108,12 +108,12 @@ extends MainWindowAction
 	* @access public
 	* @since 8/29/05
 	*/
-	function &getAddForm() {
-		$harmoni =& Harmoni::instance();
+	function getAddForm() {
+		$harmoni = Harmoni::instance();
 		
-		$cmm =& Services::getService("CourseManagement");
-		$idManager =& Services::getService("Id");
-		$am =& Services::GetService("AgentManager");
+		$cmm = Services::getService("CourseManagement");
+		$idManager = Services::getService("Id");
+		$am = Services::GetService("AgentManager");
 		
 		ob_start();
 			
@@ -153,11 +153,11 @@ extends MainWindowAction
 		
 		// Print select function for terms
 		print "<p>Course Term: <br/><select name='$course_term' value='$last_term'>";
-			$terms =& $cmm->getTerms();
+			$terms =$cmm->getTerms();
 			while ($terms->hasNextTerm()) {
-				$term =& $terms->nextTerm();
-				$termId =& $term->getId();
-				$termIdString =& $termId->getIdString();
+				$term =$terms->nextTerm();
+				$termId =$term->getId();
+				$termIdString =$termId->getIdString();
 				print "<option value='$termIdString'>".$term->getDisplayName()."</option>";
 			}
 		print "</select></p>";
@@ -175,7 +175,7 @@ extends MainWindowAction
 		$link = $harmoni->request->quickURL("coursemanagement", "course_search");
 		print _("<h4><a href='$link'>Click here to search for courses.</a></h4>")."";
 		
-		$output =& new Block(ob_get_clean(), STANDARD_BLOCK);
+		$output = new Block(ob_get_clean(), STANDARD_BLOCK);
 		return $output;
 	}
 	
@@ -186,33 +186,33 @@ extends MainWindowAction
 	* @access public
 	* @since 8/29/05
 	*/
-	function &getCourses() {
-	  	$harmoni =& Harmoni::instance();
+	function getCourses() {
+	  	$harmoni = Harmoni::instance();
 	  
-	  	$cmm =& Services::getService("CourseManagement");
-		$idManager =& Services::getService("Id");
-		$am =& Services::GetService("AgentManager");
+	  	$cmm = Services::getService("CourseManagement");
+		$idManager = Services::getService("Id");
+		$am = Services::GetService("AgentManager");
 	  	
 	  	ob_start();
 		print "\n<h4>Existing course offerings.  Please click on a course offering to edit its details (e.g. add a section).</h4>";
 		
-		$canonicalCourseIterator =& $cmm->getCanonicalCourses();
+		$canonicalCourseIterator =$cmm->getCanonicalCourses();
 		if (!$canonicalCourseIterator->hasNextCanonicalCourse()) {
 			print "<p>No course offerings are present.</p>";
 		} else {
 			while ($canonicalCourseIterator->hasNextCanonicalCourse()) {
-			  	$canonicalCourse =& $canonicalCourseIterator->nextCanonicalCourse();
-				$courseOfferingIterator =& $canonicalCourse->getCourseOfferings();
+			  	$canonicalCourse =$canonicalCourseIterator->nextCanonicalCourse();
+				$courseOfferingIterator =$canonicalCourse->getCourseOfferings();
 				while ($courseOfferingIterator->hasNextCourseOffering()) {
-				  	$courseOffering =& $courseOfferingIterator->nextCourseOffering();
-					$id =& $courseOffering->getId();
+				  	$courseOffering =$courseOfferingIterator->nextCourseOffering();
+					$id =$courseOffering->getId();
 					$idString = $id->getIdString();
 					$canonicalCourseId = $canonicalCourse->getId();
 					$canonicalCourseIdString = $canonicalCourseId->getIdString();
 					$courseName = $courseOffering->getDisplayName();
 					
 					// Get term
-					$courseTerm =& $courseOffering->getTerm();
+					$courseTerm =$courseOffering->getTerm();
 					$courseTermName = $courseTerm->getDisplayName();
 				
 					$self = $harmoni->request->quickURL("coursemanagement", "createcourse", 
@@ -229,7 +229,7 @@ extends MainWindowAction
 			}
 		}
 		
-		$output =& new Block(ob_get_clean(), STANDARD_BLOCK);
+		$output = new Block(ob_get_clean(), STANDARD_BLOCK);
 		return $output;
 	}
 	
@@ -247,26 +247,26 @@ extends MainWindowAction
 	function addCourse($courseTitle, $courseNumber, $courseDescription, $type, $status,
 					   $courseTerm, $credits, $courseGradeType) {
 					     
-		$actionRows =& $this->getActionRows();
-		$pageRows =& new Container(new YLayout(), OTHER, 1);
-		$harmoni =& Harmoni::instance();
+		$actionRows =$this->getActionRows();
+		$pageRows = new Container(new YLayout(), OTHER, 1);
+		$harmoni = Harmoni::instance();
 		
-		$cmm =& Services::getService("CourseManagement");
-		$idManager =& Services::getService("Id");
+		$cmm = Services::getService("CourseManagement");
+		$idManager = Services::getService("Id");
 		
-		$everyoneId =& $idManager->getId("edu.middlebury.agents.everyone");
-		$usersId =& $idManager->getId("edu.middlebury.agents.users");
+		$everyoneId =$idManager->getId("edu.middlebury.agents.everyone");
+		$usersId =$idManager->getId("edu.middlebury.agents.users");
 		
-		$canonicalCourseIterator =& $cmm->getCanonicalCourses();
+		$canonicalCourseIterator =$cmm->getCanonicalCourses();
 		
-		$courseType =& new Type("CourseManagement", "edu.middlebury", $type);
-		$courseStatus =& new Type("CourseManagement", "edu.middlebury", $status);
+		$courseType = new Type("CourseManagement", "edu.middlebury", $type);
+		$courseStatus = new Type("CourseManagement", "edu.middlebury", $status);
 		
 		/* Check for existing canonical course with the same title and number. */
 		$coursePresent = 0;
-		$canonicalCourseIterator =& $cmm->getCanonicalCourses();
+		$canonicalCourseIterator =$cmm->getCanonicalCourses();
 		while ($canonicalCourseIterator->hasNextCanonicalCourse()) {
-			$canonicalCourse =& $canonicalCourseIterator->nextCanonicalCourse();
+			$canonicalCourse =$canonicalCourseIterator->nextCanonicalCourse();
 			if ($canonicalCourse->getTitle() == $courseTitle && $canonicalCourse->getNumber() == $courseNumber) {
 				$coursePresent = 1;
 				break;
@@ -275,17 +275,17 @@ extends MainWindowAction
 		
 		/*If existing canonical course with the same title and number does not exist, create a new canonical course.*/
 		if ($coursePresent == 0) {
-			$canonicalCourse =& $cmm->createCanonicalCourse($courseTitle, $courseNumber, $courseDescription, 
+			$canonicalCourse =$cmm->createCanonicalCourse($courseTitle, $courseNumber, $courseDescription, 
 															$courseType, $courseStatus, $credits);
 		}
 											      											   
-		$offeringType =& new Type("CourseManagement", "edu.middlebury", $type);
-		$offeringStatus =& new Type("CourseManagement", "edu.middlebury", $status);
-		$offeringGradeType =& new Type("CourseManagement", "edu.middlebury", $courseGradeType);
+		$offeringType = new Type("CourseManagement", "edu.middlebury", $type);
+		$offeringStatus = new Type("CourseManagement", "edu.middlebury", $status);
+		$offeringGradeType = new Type("CourseManagement", "edu.middlebury", $courseGradeType);
 		
-		$termId =& $idManager->getId($courseTerm);
+		$termId =$idManager->getId($courseTerm);
 															   
-		$courseOffering =& $canonicalCourse->createCourseOffering($courseTitle, $courseNumber,
+		$courseOffering =$canonicalCourse->createCourseOffering($courseTitle, $courseNumber,
 																  $courseDescription, $termId, $offeringType, 
 																  $offeringStatus, $offeringGradeType);
 	}
@@ -302,24 +302,24 @@ extends MainWindowAction
 	* @since 8/29/05
 	*/
 	function removeCourse($courseOfferingIdString) {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-agents");
 		$harmoni->request->passthrough("agentId");
 		
-		$idManager =& Services::getService("Id");
-		$cmm =& Services::getService("CourseManagement");
+		$idManager = Services::getService("Id");
+		$cmm = Services::getService("CourseManagement");
 		
-		$courseOfferingId =& $idManager->getId($courseOfferingIdString);
+		$courseOfferingId =$idManager->getId($courseOfferingIdString);
 		
-		$courseOffering =& $cmm->getCourseOffering($courseOfferingId);
-		$canonicalCourse =& $courseOffering->getCanonicalCourse();
-		$canonicalCourseId =& $canonicalCourse->getId();
+		$courseOffering =$cmm->getCourseOffering($courseOfferingId);
+		$canonicalCourse =$courseOffering->getCanonicalCourse();
+		$canonicalCourseId =$canonicalCourse->getId();
 		
 		// Delete course offering
 		$canonicalCourse->deleteCourseOffering($courseOfferingId);
 		
 		// If no course offerings left, remove the canonical course, too.	
-		$courseOfferingIterator =& $canonicalCourse->getCourseOfferings();
+		$courseOfferingIterator =$canonicalCourse->getCourseOfferings();
 	
 		if (!$courseOfferingIterator->hasNextCourseOffering())
 			$cmm->deleteCanonicalCourse($canonicalCourseId);

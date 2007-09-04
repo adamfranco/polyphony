@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: GUIComponentUtility.class.php,v 1.3 2006/08/19 21:08:40 sporktim Exp $
+* @version $Id: GUIComponentUtility.class.php,v 1.4 2007/09/04 20:28:00 adamfranco Exp $
 */
 
 
@@ -20,7 +20,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: GUIComponentUtility.class.php,v 1.3 2006/08/19 21:08:40 sporktim Exp $
+* @version $Id: GUIComponentUtility.class.php,v 1.4 2007/09/04 20:28:00 adamfranco Exp $
 */
 
 
@@ -39,7 +39,7 @@ class GUIComponentUtility{
 	
 	
 	
-	function &makeColorArrays($slices, $triSize){
+	function makeColorArrays($slices, $triSize){
 		$options = array();
 		$styles = array();
 		$options[''] = "Default";
@@ -136,7 +136,7 @@ class GUIComponentUtility{
 		return array($val,"font-family: monospace; color: ".$col."; background-color:".$val.";");
 	}
 
-	function &makeFontArray(){
+	function makeFontArray(){
 		$options = array("serif","sans-serif","cursive","fantasy","monospace");
 		foreach($options as $option){
 			$ret[$option]=$option;
@@ -144,7 +144,7 @@ class GUIComponentUtility{
 		return $ret;
 	}
 
-	function &makeFontSizeArray(){
+	function makeFontSizeArray(){
 		$options = array("8pt","10pt","12pt","14pt","16pt","18pt","20pt","22pt","24pt","26pt");
 		foreach($options as $option){
 			$ret[$option]=$option;
@@ -152,7 +152,7 @@ class GUIComponentUtility{
 		return $ret;
 	}	
 	
-	function &makeBorderSizeArrays(){
+	function makeBorderSizeArrays(){
 		$arr = array("0px","1px","2px","3px","4px","5px","6px","8px","10px","14px");
 		foreach($arr as $option){
 			$options[$option]=$option;
@@ -162,7 +162,7 @@ class GUIComponentUtility{
 		return $ret;
 	}
 	
-	function &makeMarginAndPaddingArray(){
+	function makeMarginAndPaddingArray(){
 		$arr = array("0px","1px","2px","3px","4px","5px","6px","8px","10px","12px","16px","20px","25px","30px","35px","40px","45px","50px","60px","70px","80px","100px","125px","150px","175px","200px","225px","250px","275px","300px","350px","400px","-0px","-1px","-2px","-3px","-4px","-5px","-6px","-8px","-10px","-12px","-16px","-20px","-25px","-30px","-35px","-40px","-45px","-50px","-60px","-70px","-80px","-100px","-125px","-150px","-175px","-200px","-225px","-250px","-275px","-300px","-350px","-400px","2%","5%","10%","15%","20%","25%","30%","35%","40%","50%","60%","75%","-2%","-5%","-10%","-15%","-20%","-25%","-30%","-35%","-40%","-50%","-60%","-75%","-100%","-125%","-150%","-200%","-250%","-300%","-400%");
 		foreach($arr as $option){
 			$options[$option]=$option;
@@ -170,7 +170,7 @@ class GUIComponentUtility{
 		return $options;
 	}
 	
-	function &makeBorderStyleArrays(){
+	function makeBorderStyleArrays(){
 		$arr = array("none", "dotted", "dashed", 
 					     "solid", "groove", "ridge", 
 						 "inset", "outset", "double");
@@ -182,7 +182,7 @@ class GUIComponentUtility{
 		 return $ret;
 	}
 	
-	function &makeSpacingArray(){
+	function makeSpacingArray(){
 		$arr = array("normal","-5px", "-3px", "-2px","-1px", "0px","1px", "2px","3px","5px", "7px", "10px");   		 
 		foreach($arr as $option){
 			$options[$option]=$option;
@@ -190,7 +190,7 @@ class GUIComponentUtility{
 		 return $options;
 	}
 	
-	function &makeLineSpacingArray(){
+	function makeLineSpacingArray(){
 		$options = array("normal","50%","75%","90%","100%","125%","150%","175%","200%","250%");
 		foreach($options as $option){
 			$ret[$option]=$option;
@@ -198,7 +198,7 @@ class GUIComponentUtility{
 		return $ret;
 	}
 	
-	function &makeAlignArray(){
+	function makeAlignArray(){
 		$options = array("left","center","right","justified");
 		foreach($options as $option){
 			$ret[$option]=$option;

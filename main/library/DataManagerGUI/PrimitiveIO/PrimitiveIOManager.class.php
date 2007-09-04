@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIOManager.class.php,v 1.11 2006/12/14 15:21:58 adamfranco Exp $
+ * @version $Id: PrimitiveIOManager.class.php,v 1.12 2007/09/04 20:27:58 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIOManager.class.php,v 1.11 2006/12/14 15:21:58 adamfranco Exp $
+ * @version $Id: PrimitiveIOManager.class.php,v 1.12 2007/09/04 20:27:58 adamfranco Exp $
  * @author Gabe Schine
  */
 class PrimitiveIOManager {
@@ -28,11 +28,11 @@ class PrimitiveIOManager {
 	 * @access public
 	 * @static
 	 */
-	function &createComponent($dataType) {
+	function createComponent($dataType) {
 		$class = "PrimitiveIO_".$dataType;
 		if (!class_exists($class)) return ($null=null);
 
-		$obj =& new $class();
+		$obj = new $class();
 
 		return $obj;
 	}
@@ -44,11 +44,11 @@ class PrimitiveIOManager {
 	 * @access public
 	 * @static
 	 */
-	function &createAuthoritativeComponent($dataType) {
+	function createAuthoritativeComponent($dataType) {
 		$class = "PrimitiveIO_Authoritative_".$dataType;
 		if (!class_exists($class)) return ($null=null);
 
-		$obj =& new $class();
+		$obj = new $class();
 
 		return $obj;
 	}
@@ -62,29 +62,29 @@ class PrimitiveIOManager {
 	 * @access public
 	 * @since 5/1/06
 	 */
-	function &createComponentForPartStructure (&$partStruct) {
+	function createComponentForPartStructure ($partStruct) {
 		ArgumentValidator::validate($partStruct, ExtendsValidatorRule::getRule("PartStructure"));
 		
-		$partStructType =& $partStruct->getType();		
+		$partStructType =$partStruct->getType();		
 		// get the datamanager data type
 		$dataType = $partStructType->getKeyword();
 // 		printpre($dataType);
 		
-		$authoritativeValues =& $partStruct->getAuthoritativeValues();
+		$authoritativeValues =$partStruct->getAuthoritativeValues();
 		if ($authoritativeValues->hasNext()) {
-			$authZManager =& Services::getService("AuthZ");
-			$idManager =& Services::getService("Id");
+			$authZManager = Services::getService("AuthZ");
+			$idManager = Services::getService("Id");
 			if ($authZManager->isUserAuthorized(
 					$idManager->getId("edu.middlebury.authorization.modify_authority_list"),
 					$partStruct->getRepositoryId())) 
 			{
-				$component =& new PrimitiveIO_AuthoritativeContainer();
+				$component = new PrimitiveIO_AuthoritativeContainer();
 				$component->setSelectComponent(
 					PrimitiveIOManager::createAuthoritativeComponent($dataType));
 				$component->setNewComponent(
 					PrimitiveIOManager::createComponent($dataType));
 			} else {
-				$component =& PrimitiveIOManager::createAuthoritativeComponent($dataType);
+				$component = PrimitiveIOManager::createAuthoritativeComponent($dataType);
 			}
 						
 			while($authoritativeValues->hasNext()) {
@@ -92,7 +92,7 @@ class PrimitiveIOManager {
 			}
 		} else {		
 			// get the simple component for this data type
-			$component =& PrimitiveIOManager::createComponent($dataType);
+			$component = PrimitiveIOManager::createComponent($dataType);
 		}
 		
 		return $component;

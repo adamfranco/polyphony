@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: createcoursesection.act.php,v 1.16 2006/08/30 17:53:51 jwlee100 Exp $
+* @version $Id: createcoursesection.act.php,v 1.17 2007/09/04 20:28:12 adamfranco Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -30,8 +30,8 @@ extends MainWindowAction
 	function isAuthorizedToExecute () {
 		// Check for authorization
 		// Check that the user can create an asset here.
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		
 		return $authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.add_children"),
@@ -60,19 +60,19 @@ extends MainWindowAction
 	function buildContent () {
 		$defaultTextDomain = textdomain("polyphony");
 		
-		$idManager =& Services::getService("Id");
-		$cmm =& Services::getService("CourseManagement");
-		$harmoni =& Harmoni::instance();
+		$idManager = Services::getService("Id");
+		$cmm = Services::getService("CourseManagement");
+		$harmoni = Harmoni::instance();
 		
 		$harmoni->request->startNamespace("polyphony-agents");
 		$harmoni->request->passthrough("courseId");
 		
 		$courseIdString = $harmoni->request->get("courseId");
-		$courseId =& $idManager->getId($courseIdString);
+		$courseId =$idManager->getId($courseIdString);
 		
-		$cm =& Services::getService("CourseManagement");
+		$cm = Services::getService("CourseManagement");
 		
-		$offering =& $cmm->getCourseOffering($courseId);
+		$offering =$cmm->getCourseOffering($courseId);
 		$offeringName = $offering->getDisplayName();
 				
 		// Process any changes and add or remove courses as necessary
@@ -82,7 +82,7 @@ extends MainWindowAction
 							  RequestContext::value("sectionLocation"));
 			
 		// Print out the add form and course list
-		$actionRows =& $this->getActionRows();
+		$actionRows =$this->getActionRows();
 		
 		$actionRows->add(new Heading(_("Add or remove course sections in ".$offeringName."."), 2), "100%", null, LEFT, CENTER);
 		
@@ -106,17 +106,17 @@ extends MainWindowAction
 	* @access public
 	* @since 8/29/05
 	*/
-	function &getAddForm(&$offering) {
-		$harmoni =& Harmoni::instance();
+	function getAddForm($offering) {
+		$harmoni = Harmoni::instance();
 		
-		$cmm =& Services::getService("CourseManagement");
-		$idManager =& Services::getService("Id");
-		$am =& Services::GetService("AgentManager");
+		$cmm = Services::getService("CourseManagement");
+		$idManager = Services::getService("Id");
+		$am = Services::GetService("AgentManager");
 		
 		ob_start();
 		
 		$offeringName = $offering->getDisplayName();
-		$offeringId =& $offering->getId();
+		$offeringId =$offering->getId();
 		$offeringIdString = $offeringId->getIdString();
 		
 		print _("<h3>Course offering: ".$offeringName."</h3>")."";
@@ -148,7 +148,7 @@ extends MainWindowAction
 											array("courseId"=>$offeringIdString));
 		print _("<h4><a href='$link'>Click here to return to offering details.</a></h4>")."";
 		
-		$output =& new Block(ob_get_clean(), STANDARD_BLOCK);
+		$output = new Block(ob_get_clean(), STANDARD_BLOCK);
 		return $output;
 	}
 	
@@ -163,22 +163,22 @@ extends MainWindowAction
 	* @access public
 	* @since 8/29/05
 	*/
-	function addSection(&$offering, $type, $status, $location) {
+	function addSection($offering, $type, $status, $location) {
 					     
-		$actionRows =& $this->getActionRows();
-		$pageRows =& new Container(new YLayout(), OTHER, 1);
-		$harmoni =& Harmoni::instance();
+		$actionRows =$this->getActionRows();
+		$pageRows = new Container(new YLayout(), OTHER, 1);
+		$harmoni = Harmoni::instance();
 		
-		$cmm =& Services::getService("CourseManagement");
-		$idManager =& Services::getService("Id");
+		$cmm = Services::getService("CourseManagement");
+		$idManager = Services::getService("Id");
 		
-		$everyoneId =& $idManager->getId("edu.middlebury.agents.everyone");
-		$usersId =& $idManager->getId("edu.middlebury.agents.users");
+		$everyoneId =$idManager->getId("edu.middlebury.agents.everyone");
+		$usersId =$idManager->getId("edu.middlebury.agents.users");
 		
-		$sectionType =& new Type("CourseManagement", "edu.middlebury", $type);
-		$sectionStatus =& new Type("CourseManagement", "edu.middlebury", $status);
+		$sectionType = new Type("CourseManagement", "edu.middlebury", $type);
+		$sectionStatus = new Type("CourseManagement", "edu.middlebury", $status);
 		
-		$section =& $offering->createCourseSection($offering->getTitle(), $offering->getNumber(), 
+		$section =$offering->createCourseSection($offering->getTitle(), $offering->getNumber(), 
 												   $offering->getDescription(), $sectionType, 
 												   $sectionStatus, $sectionLocation);
 		

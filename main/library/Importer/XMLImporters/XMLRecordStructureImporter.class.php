@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.20 2007/01/30 20:45:18 adamfranco Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.21 2007/09/04 20:28:01 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLPartStructureImpo
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.20 2007/01/30 20:45:18 adamfranco Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.21 2007/09/04 20:28:01 adamfranco Exp $
  */
 class XMLRecordStructureImporter extends XMLImporter {
 		
@@ -34,7 +34,7 @@ class XMLRecordStructureImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function XMLRecordStructureImporter (&$existingArray) {
+	function XMLRecordStructureImporter ($existingArray) {
 		parent::XMLImporter($existingArray);
 	}
 
@@ -48,7 +48,7 @@ class XMLRecordStructureImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/11/05
 	 */
-	function &withFile (&$existingArray, $filepath, $type, $class = 'XMLRecordStructureImporter') {
+	function withFile ($existingArray, $filepath, $type, $class = 'XMLRecordStructureImporter') {
 		return parent::withFile($existingArray, $filepath, $type, $class);
 	}
 
@@ -63,7 +63,7 @@ class XMLRecordStructureImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/11/05
 	 */
-	function &withObject (&$existingArray, &$object, $filepath, $type, $class = 'XMLRecordStructureImporter') {
+	function withObject ($existingArray, $object, $filepath, $type, $class = 'XMLRecordStructureImporter') {
 		return parent::withObject($existingArray, $object, $filepath, $type, $class);
 	}
 
@@ -88,7 +88,7 @@ class XMLRecordStructureImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function isImportable (&$element) {
+	function isImportable ($element) {
 		if($element->nodeName == "recordstructure")
 			return true;
 		else
@@ -113,15 +113,15 @@ class XMLRecordStructureImporter extends XMLImporter {
 	 * @since 10/6/05
 	 */
 	function importNode () {
-		$idManager =& Services::getService("IdManager");
+		$idManager = Services::getService("IdManager");
 		
 		$this->getNodeInfo();
 				
 		// make/find object
 		$foundId = $this->RSExists();
 		if ($foundId != false) {
-			$this->_myId =& $foundId;
-			$this->_object =& $this->_parent->getRecordStructure($this->_myId);
+			$this->_myId =$foundId;
+			$this->_object =$this->_parent->getRecordStructure($this->_myId);
 			if ($this->_type == "update")
 				$this->update();
 		} else if ($this->_node->hasAttribute("isGlobal") && 
@@ -135,13 +135,13 @@ class XMLRecordStructureImporter extends XMLImporter {
 			} else 
 				$id = null;
 			
-			$this->_object =&
+			$this->_object =
 				$this->_parent->createRecordStructure(
 				$this->_info['name'], $this->_info['description'],
 				$this->_info['format'], "", $id, true);
 			$this->_myId = $this->_object->getId();
 		} else {
-			$this->_object =& $this->_parent->createRecordStructure(
+			$this->_object =$this->_parent->createRecordStructure(
 				$this->_info['name'], $this->_info['description'], 
 				$this->_info['format'], "");
 			$this->_myId = $this->_object->getId();
@@ -163,12 +163,12 @@ class XMLRecordStructureImporter extends XMLImporter {
 	 * @since 10/6/05
 	 */
 	function doSets () {
-		$sets =& Services::getService("Sets");
-		$idManager =& Services::getService("IdManager");
+		$sets = Services::getService("Sets");
+		$idManager = Services::getService("IdManager");
 		if ($this->_myId->isEqual($idManager->getId(
 				"edu.middlebury.harmoni.repository.asset_content")))
 			return;
-		$set =& $sets->getPersistentSet($this->_parent->getId());
+		$set =$sets->getPersistentSet($this->_parent->getId());
 		if (!$set->isInSet($this->_myId))
 			$set->addItem($this->_myId);
 	}
@@ -180,10 +180,10 @@ class XMLRecordStructureImporter extends XMLImporter {
 	 * @since 10/6/05
 	 */
 	function doChildIdMatrices () {
-		$imp =& new XMLPartStructureImporter($this->_existingArray);
+		$imp = new XMLPartStructureImporter($this->_existingArray);
 		foreach ($this->_node->childNodes as $child) {
 			if ($child->nodeName == "partstructure") {
-				$imp->_node =& $child;
+				$imp->_node =$child;
 				$imp->_myId = $this->matchPartStructure($this->_object,
 					$child);
 				$imp->doIdMatrix();
@@ -199,8 +199,8 @@ class XMLRecordStructureImporter extends XMLImporter {
  	 * @access public
  	 * @since 7/18/05
  	 */
-	function matchPartStructure (&$rS, &$partElement) {
-		$partStructures =& $rS->getPartStructures(); // get all ps's
+	function matchPartStructure ($rS, $partElement) {
+		$partStructures =$rS->getPartStructures(); // get all ps's
 		$dname = '';
 		$type = '';
 		foreach ($partElement->childNodes as $partPiece) {
@@ -216,7 +216,7 @@ class XMLRecordStructureImporter extends XMLImporter {
 		}
 		while ($partStructures->hasNext()) {
 			$partStructure = $partStructures->next();
-			$pType =& $partStructure->getType();
+			$pType =$partStructure->getType();
 			if ($dname == $partStructure->getDisplayName() && 
 					$type == $pType->getKeyword()) {
 				return $partStructure->getId();
@@ -231,10 +231,10 @@ class XMLRecordStructureImporter extends XMLImporter {
 	 * @since 10/6/05
 	 */
 	function doIdMatrix () {
-		$dbHandler =& Services::getService("DBHandler");
-// 		$dbIndexConcerto =& $dbHandler->addDatabase(new 
+		$dbHandler = Services::getService("DBHandler");
+// 		$dbIndexConcerto =$dbHandler->addDatabase(new 
 // 			MySQLDatabase("localhost", "whitey_concerto", "test", "test"));
-		$query =& new InsertQuery;
+		$query = new InsertQuery;
 		$query->setTable("xml_id_matrix");
 		$query->setColumns(array("xml_id", "conc_id"));
 		$xmlid = $this->_node->getAttribute("xml:id");
@@ -261,9 +261,9 @@ class XMLRecordStructureImporter extends XMLImporter {
     *
     * @return object HarmoniId 
     */
-	function &RSExists() {
+	function RSExists() {
 		$rS = array();
-		$recordStructures =& $this->_parent->getRecordStructures();
+		$recordStructures =$this->_parent->getRecordStructures();
 	// ===== CREATE ARRAY OF RS ESSENTIALS FOR MATCHING ===== //
 		foreach ($this->_node->childNodes as $child) {
 			if ($child->nodeName == "name")
@@ -283,7 +283,7 @@ class XMLRecordStructureImporter extends XMLImporter {
 		}
 		$found = FALSE;
 		while ($recordStructures->hasNext() && !$found) {
-			$rStruct =& $recordStructures->next();
+			$rStruct =$recordStructures->next();
 			$found = $this->cmpRS($rS, $rStruct);
 		}
 		if ($found)
@@ -297,16 +297,16 @@ class XMLRecordStructureImporter extends XMLImporter {
    	* @param array $rS an array containing displayName and partstructure info
    	* @param object HarmoniRecordStructure $rStruct object of comparison
 	*/
-	function cmpRS(&$rS, &$rStruct) {
+	function cmpRS($rS, $rStruct) {
 		if ($rS['displayName'] != $rStruct->getDisplayName())
 			return FALSE;
 		foreach ($rS as $key => $value) {
 			if ($key != "displayName") {
-				$partStructures =& $rStruct->getPartStructures();
+				$partStructures =$rStruct->getPartStructures();
 				$found = FALSE;
 				while ($partStructures->hasNext() && !$found) {
-					$pS =& $partStructures->next();
-					$type =& $pS->getType();
+					$pS =$partStructures->next();
+					$type =$pS->getType();
 					if (($pS->getDisplayName() == $value['name']) &&
 						($type->getKeyword() == $value['type']))
 						$found = TRUE;

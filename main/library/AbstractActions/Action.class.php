@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Action.class.php,v 1.7 2006/11/30 22:02:37 adamfranco Exp $
+ * @version $Id: Action.class.php,v 1.8 2007/09/04 20:27:57 adamfranco Exp $
  */ 
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Action.class.php,v 1.7 2006/11/30 22:02:37 adamfranco Exp $
+ * @version $Id: Action.class.php,v 1.8 2007/09/04 20:27:57 adamfranco Exp $
  * @since 4/28/05
  */
 class Action {
@@ -45,7 +45,7 @@ class Action {
 		
 		// Default implementation. Override as necessary.
 		
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$message = _("You are not authorized to ");
 		if ($this->getHeadingText() == '') {
 			$message .= _("execute this action, ");
@@ -75,7 +75,7 @@ class Action {
 	 * @access public
 	 * @since 4/25/05
 	 */
-	function &execute () {
+	function execute () {
 		throwError(new Error(__CLASS__."::".__FUNCTION__."() must be overridden in child classes."));
 	}
 	
@@ -88,7 +88,7 @@ class Action {
 	 * @since 6/3/05
 	 */
 	function requestedModule () {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		list($module, $action) = explode(".", $harmoni->request->getRequestedModuleAction());
 		return $module;
 	}
@@ -102,7 +102,7 @@ class Action {
 	 * @since 6/3/05
 	 */
 	function requestedAction () {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		list($module, $action) = explode(".", $harmoni->request->getRequestedModuleAction());
 		return $action;
 	}

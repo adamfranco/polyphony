@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.15 2006/12/05 20:10:12 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.16 2007/09/04 20:28:14 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.15 2006/12/05 20:10:12 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.16 2007/09/04 20:28:14 adamfranco Exp $
  */
 class browseAction 
 	extends MainWindowAction
@@ -37,8 +37,8 @@ class browseAction
 	 */
 	function isAuthorizedToExecute () {		
 		// Check for authorization
- 		$authZManager =& Services::getService("AuthZ");
- 		$idManager =& Services::getService("IdManager");
+ 		$authZManager = Services::getService("AuthZ");
+ 		$idManager = Services::getService("IdManager");
  		if ($authZManager->isUserAuthorized(
  					$idManager->getId("edu.middlebury.authorization.view"),
  					$idManager->getId("edu.middlebury.authorization.root")))
@@ -71,8 +71,8 @@ class browseAction
 	function buildContent () {
 		$defaultTextDomain = textdomain("polyphony");
 		
-		$actionRows =& $this->getActionRows();
-		$harmoni =& Harmoni::instance();
+		$actionRows =$this->getActionRows();
+		$harmoni = Harmoni::instance();
 		
 		$harmoni->request->startNamespace("polyphony-logs");
 		$harmoni->request->passthrough('log', 'priority',
@@ -80,7 +80,7 @@ class browseAction
 			'endYear', 'endMonth', 'endDay', 'endHour',
 			'agent_id', 'node_id', 'category');
 
-		$agentManager =& Services::getService("Agent");
+		$agentManager = Services::getService("Agent");
 		$idManager = Services::getService("Id");
 		$hierarchyManager = Services::getService("Hierarchy");
 		
@@ -93,17 +93,17 @@ class browseAction
 		$actionRows->add(new Heading(_("Logs"), 2), "100%", null, LEFT, CENTER);
 		
 		
-		$loggingManager =& Services::getService("Logging");
+		$loggingManager = Services::getService("Logging");
 		
-		$log =& $loggingManager->getLogForWriting("test_log");
-		$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+		$log =$loggingManager->getLogForWriting("test_log");
+		$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
 						"A format in which the acting Agent[s] and the target nodes affected are specified.");
-		$priorityType =& new Type("logging", "edu.middlebury", "normal",
+		$priorityType = new Type("logging", "edu.middlebury", "normal",
 						"An action which involves reading.");
 		
 		
 		// Links to other logs
-		$logNames =& $loggingManager->getLogNamesForReading();
+		$logNames =$loggingManager->getLogNamesForReading();
 		ob_start();
 		
 		if (RequestContext::value("log"))
@@ -136,8 +136,8 @@ class browseAction
 
 ";
 		
-		$startDate =& $this->getStartDate();
-		$endDate =& $this->getEndDate();
+		$startDate =$this->getStartDate();
+		$endDate =$this->getEndDate();
 		$this->printDateRangeForm($startDate, $endDate);
 
 		print "
@@ -157,10 +157,10 @@ class browseAction
 	
 			if (RequestContext::value('agent_id')) {
 				print "\n\t\t\t";
-				$id =& $idManager->getId(RequestContext::value('agent_id'));
+				$id =$idManager->getId(RequestContext::value('agent_id'));
 				$url = $harmoni->request->quickURL("logs", "browse",
 								array(	"agent_id" => ''));
-				$agent =& $agentManager->getAgent($id);
+				$agent =$agentManager->getAgent($id);
 				print $agent->getDisplayName();
 				print "\n\t\t\t\t<input type='button' onclick='window.location=\"";
 				print str_replace('&amp;', '&', $url);
@@ -173,10 +173,10 @@ class browseAction
 			
 			if (RequestContext::value('node_id')) {
 				print "\n\t\t\t";
-				$id =& $idManager->getId(RequestContext::value('node_id'));
+				$id =$idManager->getId(RequestContext::value('node_id'));
 				$url = $harmoni->request->quickURL("logs", "browse",
 								array(	"node_id" => ''));
-				$node =& $hierarchyManager->getNode($id);
+				$node =$hierarchyManager->getNode($id);
 				print $node->getDisplayName();
 				print "\n\t\t\t\t<input type='button' onclick='window.location=\"";
 				print str_replace('&amp;', '&', $url);
@@ -204,7 +204,7 @@ class browseAction
 		
 		// --- The Current log ---
 		if (isset($currentLogName)) {
-			$log =& $loggingManager->getLogForReading($currentLogName);
+			$log =$loggingManager->getLogForReading($currentLogName);
 			$actionRows->add(new Heading($log->getDisplayName(), 3), "100%", null, LEFT, CENTER);
 			ob_start();
 			
@@ -212,25 +212,25 @@ class browseAction
 			// Links to other priorities
 			print "<strong>"._("Priority: ")."</strong>";
 			if (RequestContext::value("priority")) {
-				$currentPriorityType =& Type::fromString(
+				$currentPriorityType = Type::fromString(
 											RequestContext::value("priority"));
-				$entries =& $log->getEntries($formatType, $currentPriorityType);
+				$entries =$log->getEntries($formatType, $currentPriorityType);
 				if (!$entries->hasNext()) {
 					unset($currentPriorityType, $entries);
 				}
 			}
 				
-			$priorityTypes =& $loggingManager->getPriorityTypes();
+			$priorityTypes =$loggingManager->getPriorityTypes();
 			$priorityLinks = array();
 			while ($priorityTypes->hasNext()) {
-				$priorityType =& $priorityTypes->next();
+				$priorityType =$priorityTypes->next();
 				
 				// Only print priority types with entries
-				$entries =& $log->getEntries($formatType, $priorityType);
+				$entries =$log->getEntries($formatType, $priorityType);
 				if ($entries->hasNext()) {
 					
 					if (!isset($currentPriorityType))
-						$currentPriorityType =& $priorityType;
+						$currentPriorityType =$priorityType;
 					
 					if (!$priorityType->isEqual($currentPriorityType)) {
 						$string = "\n<a href='";
@@ -275,22 +275,22 @@ END;
 					|| RequestContext::value('category'))
 				{
 					$criteria = array();
-					$criteria['start'] =& $startDate;
-					$criteria['end'] =& $endDate;
+					$criteria['start'] =$startDate;
+					$criteria['end'] =$endDate;
 					if (RequestContext::value('agent_id'))
-						$criteria['agent_id'] =& $idManager->getId(
+						$criteria['agent_id'] =$idManager->getId(
 													RequestContext::value('agent_id'));
 					if (RequestContext::value('node_id'))
-						$criteria['node_id'] =& $idManager->getId(
+						$criteria['node_id'] =$idManager->getId(
 													RequestContext::value('node_id'));
 					if (RequestContext::value('category'))
 						$criteria['category'] = urldecode(RequestContext::value('category'));
 					
-					$searchType =& new Type("logging_search", "edu.middlebury", "Date-Range/Agent/Node");
-					$entries =& $log->getEntriesBySearch($criteria, $searchType, 
+					$searchType = new Type("logging_search", "edu.middlebury", "Date-Range/Agent/Node");
+					$entries =$log->getEntriesBySearch($criteria, $searchType, 
 											$formatType, $currentPriorityType);
 				} else {
-					$entries =& $log->getEntries($formatType, $currentPriorityType);
+					$entries =$log->getEntries($formatType, $currentPriorityType);
 				}
 				
 				
@@ -303,7 +303,7 @@ END;
 			<th>agents</th>
 			<th>nodes</th>
 		</tr>";
-				$resultPrinter =& new TableIteratorResultPrinter($entries, $headRow,
+				$resultPrinter = new TableIteratorResultPrinter($entries, $headRow,
 										20, "printLogRow", 1);
 				print $resultPrinter->getTable();
 			}
@@ -314,7 +314,7 @@ END;
 							"priority" => Type::typeToString($currentPriorityType)));
 				$title = $currentLogName." ".$currentPriorityType->getKeyword()." "._("Logs");
 				
-				$outputHandler =& $harmoni->getOutputHandler();
+				$outputHandler =$harmoni->getOutputHandler();
 				$outputHandler->setHead($outputHandler->getHead()
 					."\n\t\t<link rel='alternate' type='application/rss+xml'"
 					." title='".$title."' href='".$url."'/>");
@@ -340,7 +340,7 @@ END;
 	 * @access public
 	 * @since 3/8/06
 	 */
-	function &getStartDate () {
+	function getStartDate () {
 		if (RequestContext::value("startYear"))
 			return DateAndTime::withYearMonthDayHourMinute(
 								RequestContext::value("startYear"),
@@ -359,7 +359,7 @@ END;
 	 * @access public
 	 * @since 3/8/06
 	 */
-	function &getEndDate () {
+	function getEndDate () {
 		if (RequestContext::value("endYear"))
 			return DateAndTime::withYearMonthDayHourMinute(
 								RequestContext::value("endYear"),
@@ -378,7 +378,7 @@ END;
 	 * @access public
 	 * @since 3/8/06
 	 */
-	function &minDate () {
+	function minDate () {
 		return DateAndTime::withYearDay(2000, 1);
 	}
 	
@@ -391,10 +391,10 @@ END;
 	 * @access public
 	 * @since 3/8/06
 	 */
-	function printDateRangeForm( &$startDate, &$endDate ) {
-		$min =& $this->minDate();
-		$max =& DateAndTime::tomorrow();
-		$harmoni =& Harmoni::instance();
+	function printDateRangeForm( $startDate, $endDate ) {
+		$min =$this->minDate();
+		$max = DateAndTime::tomorrow();
+		$harmoni = Harmoni::instance();
 		
 		print "\n<form action='";
 		print $harmoni->request->quickURL('logs', 'browse'); 
@@ -512,17 +512,17 @@ END;
  * @access public
  * @since 3/9/06
  */
-function printLogRow ( &$entry ) {
-	$harmoni =& Harmoni::instance();
-	$agentManager =& Services::getService("Agent");
+function printLogRow ( $entry ) {
+	$harmoni = Harmoni::instance();
+	$agentManager = Services::getService("Agent");
 	$idManager = Services::getService("Id");
 	$hierarchyManager = Services::getService("Hierarchy");
 	
 	print "\n\t<tr>";
 			
-	$timestamp =& $entry->getTimestamp();
-	$timezone =& $timestamp->timeZone();
-	$timezoneOffset =& $timezone->offset();
+	$timestamp =$entry->getTimestamp();
+	$timezone =$timestamp->timeZone();
+	$timezoneOffset =$timezone->offset();
 	print "\n\t\t<td title='";
 	print $timezone->name()." (".$timezoneOffset->hours().":".sprintf("%02d", abs($timezoneOffset->minutes())).")";
 	print "' style='white-space: nowrap'>";
@@ -532,7 +532,7 @@ function printLogRow ( &$entry ) {
 	print $timestamp->hmsString();
 	print "</td>";
 	
-	$item =& $entry->getItem();
+	$item =$entry->getItem();
 	
 	print "\n\t\t<td style='white-space: nowrap'>";
 	print "\n\t\t\t<a href='";
@@ -553,11 +553,11 @@ function printLogRow ( &$entry ) {
 	print "</td>";
 	
 	print "\n\t\t<td style='white-space: nowrap'>";
-	$agentIds =& $item->getAgentIds(true);
+	$agentIds =$item->getAgentIds(true);
 	while ($agentIds->hasNext()) {
-		$agentId =& $agentIds->next();
+		$agentId =$agentIds->next();
 		if ($agentManager->isAgent($agentId) || $agentManager->isGroup($agentId)) {
-			$agent =& $agentManager->getAgent($agentId);
+			$agent =$agentManager->getAgent($agentId);
 			print "<a href='";
 			print $harmoni->request->quickURL("logs", "browse",
 					array(	"agent_id" => $agentId->getIdString()));
@@ -572,15 +572,15 @@ function printLogRow ( &$entry ) {
 	print "\n\t\t</td>";
 	
 	print "\n\t\t<td style='white-space: nowrap'>";
-	$nodeIds =& $item->getNodeIds(true);
+	$nodeIds =$item->getNodeIds(true);
 	while ($nodeIds->hasNext()) {
-		$nodeId =& $nodeIds->next();
+		$nodeId =$nodeIds->next();
 		print "<a href='";
 		print $harmoni->request->quickURL("logs", "browse",
 				array(	"node_id" => $nodeId->getIdString()));
 		print "'>";
 		if ($hierarchyManager->nodeExists($nodeId)) {
-			$node =& $hierarchyManager->getNode($nodeId);
+			$node =$hierarchyManager->getNode($nodeId);
 			if ($node->getDisplayName())
 				print $node->getDisplayName();
 			else

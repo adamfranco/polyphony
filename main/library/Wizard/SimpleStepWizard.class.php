@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleStepWizard.class.php,v 1.11 2007/06/07 19:38:34 adamfranco Exp $
+ * @version $Id: SimpleStepWizard.class.php,v 1.12 2007/09/04 20:28:05 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/SimpleWizard.class.php");
@@ -28,7 +28,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WStepChangedListener.cla
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleStepWizard.class.php,v 1.11 2007/06/07 19:38:34 adamfranco Exp $
+ * @version $Id: SimpleStepWizard.class.php,v 1.12 2007/09/04 20:28:05 adamfranco Exp $
  */
 class SimpleStepWizard extends SimpleWizard {
 	var $_stepContainer;
@@ -43,11 +43,11 @@ class SimpleStepWizard extends SimpleWizard {
 	 * @return void
 	 */
 	function SimpleStepWizard () {
-		$this->_stepContainer =& new WizardStepContainer();
-		$this->_nextButton =& new WNextStepButton($this->_stepContainer);
-		$this->_prevButton =& new WPreviousStepButton($this->_stepContainer);
-		$this->_saveButton =& new WSaveButton();
-		$this->_cancelButton =& new WCancelButton();
+		$this->_stepContainer = new WizardStepContainer();
+		$this->_nextButton = new WNextStepButton($this->_stepContainer);
+		$this->_prevButton = new WPreviousStepButton($this->_stepContainer);
+		$this->_saveButton = new WSaveButton();
+		$this->_cancelButton = new WCancelButton();
 		
 		$this->addComponent("_steps", $this->_stepContainer);
 		$this->addComponent("_save", $this->_saveButton);
@@ -65,7 +65,7 @@ class SimpleStepWizard extends SimpleWizard {
 	 * @access public
 	 * @return ref object
 	 */
-	function &addStep ($name, &$step) {
+	function addStep ($name, $step) {
 		return $this->_stepContainer->addStep($name, $step);
 	}
 	
@@ -104,7 +104,7 @@ class SimpleStepWizard extends SimpleWizard {
 	 * @return ref object
 	 * @static
 	 */
-	function &withText ($text) {
+	function withText ($text) {
 		return parent::withText($text,"SimpleStepWizard");
 	}
 	
@@ -114,8 +114,8 @@ class SimpleStepWizard extends SimpleWizard {
 	 * @access public
 	 * @return ref object
 	 */
-	function &withTitleAndDefaultLayout ($title) {
-		$obj =& SimpleStepWizard::withDefaultLayout("<h2>$title</h2>\n");
+	function withTitleAndDefaultLayout ($title) {
+		$obj = SimpleStepWizard::withDefaultLayout("<h2>$title</h2>\n");
 		return $obj;
 	}
 	
@@ -126,7 +126,7 @@ class SimpleStepWizard extends SimpleWizard {
 	 * @return ref object
 	 * @static
 	 */
-	function &withDefaultLayout ($pre = '') {
+	function withDefaultLayout ($pre = '') {
 		return parent::withText($pre . 
 				"<div>\n" .
 				"[[_stepsBar]]" .
@@ -165,7 +165,7 @@ class SimpleStepWizard extends SimpleWizard {
 	 * @access public
 	 * @since 6/4/07
 	 */
-	function &getSaveButton () {
+	function getSaveButton () {
 		return $this->_saveButton;
 	}
 	
@@ -176,7 +176,7 @@ class SimpleStepWizard extends SimpleWizard {
 	 * @access public
 	 * @since 6/4/07
 	 */
-	function &getCancelButton () {
+	function getCancelButton () {
 		return $this->_cancelButton;
 	}
 }

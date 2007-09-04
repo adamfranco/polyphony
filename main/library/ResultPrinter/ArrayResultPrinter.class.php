@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.25 2007/02/28 21:34:29 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.26 2007/09/04 20:28:04 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.25 2007/02/28 21:34:29 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.26 2007/09/04 20:28:04 adamfranco Exp $
  */
 
 class ArrayResultPrinter 
@@ -41,7 +41,7 @@ class ArrayResultPrinter
 	 * @access public
 	 * @date 8/5/04
 	 */
-	function ArrayResultPrinter (&$array, $numColumns, 
+	function ArrayResultPrinter ($array, $numColumns, 
 									$numResultsPerPage, $callbackFunction = NULL) {
 		ArgumentValidator::validate($array, ArrayValidatorRule::getRule());
 		ArgumentValidator::validate($numColumns, IntegerValidatorRule::getRule());
@@ -53,7 +53,7 @@ class ArrayResultPrinter
 				ExtendsValidatorRule::getRule("ComponentInterface")));
 		
 		
-		$this->_array =& $array;
+		$this->_array = $array;
 		$this->_numColumns = $numColumns;
 		$this->_pageSize = $numResultsPerPage;
 		$this->_callbackFunction = $callbackFunction;
@@ -61,13 +61,13 @@ class ArrayResultPrinter
 		$this->_callbackParams = array();
 		$args = func_get_args();
 		for ($i=4; $i<count($args); $i++) {
-			$this->_callbackParams[] =& $args[$i];
+			$this->_callbackParams[] =$args[$i];
 		}
 		
-		$this->_resultLayout =& new TableLayout($this->_numColumns);
+		$this->_resultLayout = new TableLayout($this->_numColumns);
 		$this->_resultLayout->printEmptyCells = false;
 		
-		$this->_linksStyleCollection =& new StyleCollection(
+		$this->_linksStyleCollection = new StyleCollection(
 			"*.result_page_links", 
 			"result_page_links", 
 			"Result Page Links", 
@@ -133,18 +133,18 @@ class ArrayResultPrinter
 	 * @access public
 	 * @date 8/5/04
 	 */
-	function &getLayout ($shouldPrintFunction = NULL) {
+	function getLayout ($shouldPrintFunction = NULL) {
 		$defaultTextDomain = textdomain("polyphony");
 		
 		$startingNumber = $this->getStartingNumber();
 		
-		$yLayout =& new YLayout();
-		$container =& new Container($yLayout,OTHER,1);
+		$yLayout = new YLayout();
+		$container = new Container($yLayout,OTHER,1);
 		
 		
 		$endingNumber = $startingNumber+$this->_pageSize-1;
 		$numItems = 0;
-		$resultContainer =& new Container($this->_resultLayout, OTHER, 1);		
+		$resultContainer = new Container($this->_resultLayout, OTHER, 1);		
 		$shouldPrintEval = $shouldPrintFunction?"\$shouldPrint = ".$shouldPrintFunction."(\$item);":"\$shouldPrint = true;";
 		if (count($this->_array)) {
 		
@@ -152,7 +152,7 @@ class ArrayResultPrinter
 			
 			// trash the items before our starting number
 			while ($numItems+1 < $startingNumber && $numItems < count($this->_array)) {
-				$item =& $this->_array[key($this->_array)];
+				$item = current($this->_array);
 				next($this->_array);
 				
 				// Ignore this if it should be filtered.
@@ -164,7 +164,7 @@ class ArrayResultPrinter
 			// print up to $this->_pageSize items
 			$pageItems = 0;
 			while ($numItems < $endingNumber && $numItems < count($this->_array) && current($this->_array)) {
-				$item =& $this->_array[key($this->_array)];
+				$item = current($this->_array);
 				next($this->_array);
 				
 				// Only Act if this item isn't to be filtered.
@@ -173,7 +173,7 @@ class ArrayResultPrinter
 					$numItems++;
 					$pageItems++;
 					
-					$itemArray = array (& $item);
+					$itemArray = array ($item);
 					$params = array_merge($itemArray, $this->_callbackParams);
 					
 					// Add in our starting number to the end so that that it is accessible.
@@ -206,7 +206,7 @@ class ArrayResultPrinter
 			
 			// find the count of items 
 			while (true) {
-				$item =& $this->_array[key($this->_array)];
+				$item = current($this->_array);
 				if (!$item) break;
 				next($this->_array);
 				// Ignore this if it should be filtered.
@@ -217,7 +217,7 @@ class ArrayResultPrinter
 					$numItems++;
 			}	
 		} else {
-			$text =& new Block("<ul><li>"._("No items are available.")."</li></ul>", STANDARD_BLOCK);
+			$text = new Block("<ul><li>"._("No items are available.")."</li></ul>", STANDARD_BLOCK);
 			$resultContainer->add($text, null, null, CENTER, CENTER);
 		}		
 		
@@ -230,7 +230,7 @@ class ArrayResultPrinter
  		if ($linksHTML = $this->getPageLinks($startingNumber, $numItems)) {
 			
 			// Add the links to the page
-			$pageLinkBlock =& new Block($linksHTML, BACKGROUND_BLOCK);
+			$pageLinkBlock = new Block($linksHTML, BACKGROUND_BLOCK);
 			$container->add($pageLinkBlock, "100%", null, CENTER, CENTER);
 			
 			$pageLinkBlock->addStyle($this->_linksStyleCollection);

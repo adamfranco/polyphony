@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.15 2006/03/14 22:07:36 cws-midd Exp $
+ * @version $Id: create_agent.act.php,v 1.16 2007/09/04 20:28:10 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.15 2006/03/14 22:07:36 cws-midd Exp $
+ * @version $Id: create_agent.act.php,v 1.16 2007/09/04 20:28:10 adamfranco Exp $
  */
 class create_agentAction 
 	extends MainWindowAction
@@ -36,8 +36,8 @@ class create_agentAction
 	 */
 	function isAuthorizedToExecute () {
 		// Check for authorization
-		$authZManager =& Services::getService("AuthZ");
-		$idManager =& Services::getService("IdManager");
+		$authZManager = Services::getService("AuthZ");
+		$idManager = Services::getService("IdManager");
 		if ($authZManager->isUserAuthorized(
 					$idManager->getId("edu.middlebury.authorization.add_children"),
 					$idManager->getId("edu.middlebury.agents.all_agents")))
@@ -68,9 +68,9 @@ class create_agentAction
 	function buildContent () {
 		$defaultTextDomain = textdomain("polyphony");
 		
-		$actionRows =& $this->getActionRows();
-		$pageRows =& new Container(new YLayout(), OTHER, 1);
-		$harmoni =& Harmoni::instance();
+		$actionRows =$this->getActionRows();
+		$pageRows = new Container(new YLayout(), OTHER, 1);
+		$harmoni = Harmoni::instance();
 		
 		$harmoni->request->startNamespace("polyphony-agents");
 		$harmoni->request->passthrough();
@@ -98,7 +98,7 @@ class create_agentAction
 					}
 				}
 				
-				$agent =& create_agentAction::makeNewAgent($userName, $password, $displayName, $properties);
+				$agent = create_agentAction::makeNewAgent($userName, $password, $displayName, $properties);
 		
 				if($agent){
 					print "User ".$agent->getDisplayName()." succesfully created.";
@@ -130,7 +130,7 @@ class create_agentAction
 	 * @static
 	 */
 	function createAgentForm(){
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		
 		print "<center><form action='".$harmoni->request->quickURL()."' method='post'>
 				<table>";
@@ -155,12 +155,12 @@ class create_agentAction
 			*"._("Add to type: ")."
 			</td><td>
 				<select name='".RequestContext::name("authn_type")."'>";
-		$authNManager =& Services::getService("AuthN");
-		$typesIterator =& $authNManager->getAuthenticationTypes();
+		$authNManager = Services::getService("AuthN");
+		$typesIterator =$authNManager->getAuthenticationTypes();
 		while($typesIterator->hasNext()) {
-			$tempType =& $typesIterator->next();
-			$authNMethods =& Services::getService("AuthNMethods");
-			$tempMethod =& $authNMethods->getAuthNMethodForType($tempType);
+			$tempType =$typesIterator->next();
+			$authNMethods = Services::getService("AuthNMethods");
+			$tempMethod =$authNMethods->getAuthNMethodForType($tempType);
 			if (!$tempMethod->supportsTokenAddition()) continue;
 			print "<option value='".HarmoniType::typeToString($tempType)."'>".HarmoniType::typeToString($tempType)."</option>";
 		}
@@ -190,21 +190,21 @@ class create_agentAction
 	
 	function makeNewAgent($userName, $password, $displayName, $propertiesArray){
 		//authentication handling
-		$authNMethodManager =& Services::getService("AuthNMethodManager");
-		$tokenMappingManager =& Services::getService("AgentTokenMapping");
+		$authNMethodManager = Services::getService("AuthNMethodManager");
+		$tokenMappingManager = Services::getService("AgentTokenMapping");
 		
 		//find the authn type.  This is set in a hidden field in the form at the moment but could easily be changed to a drop down menu	
-		$authNType =& HarmoniType::fromString(RequestContext::value('authn_type'));
+		$authNType = HarmoniType::fromString(RequestContext::value('authn_type'));
 			
 		//for passing to the token handler
 		$newTokensPassed["username"]=RequestContext::value("username");
 		$newTokensPassed["password"]=RequestContext::value("password");
 		
 		//find what authentication method is associated with this type		
-		$authNMethod=& $authNMethodManager->getAuthNMethodForType($authNType);
+		$authNMethod=$authNMethodManager->getAuthNMethodForType($authNType);
 		
 		//get tokens object for authentication type
-		$tokens =& $authNMethod->createTokensObject();
+		$tokens =$authNMethod->createTokensObject();
 	
 		//set the values of the tokens to the array we just created
 		$tokens->initializeForTokens($newTokensPassed);
@@ -219,22 +219,22 @@ class create_agentAction
 		}		
 		
 		//the type for the user
-		$userType =& new HarmoniType("Agents", "edu.middlebury.harmoni", "User");
+		$userType = new HarmoniType("Agents", "edu.middlebury.harmoni", "User");
 		
 		//property manager is used for storing properties to the database
-		$propertyManager =& Services::getService("Property");
+		$propertyManager = Services::getService("Property");
 		
 		//convert the array of properties we have to a properties object		
-		$propertyObject =& $propertyManager->convertArrayToObject($propertiesArray, $userType);
+		$propertyObject =$propertyManager->convertArrayToObject($propertiesArray, $userType);
 				
-		$agentManager =& Services::getService("Agent");
+		$agentManager = Services::getService("Agent");
 		
 		//create the agent entries and build an agent object
-		$agent =& $agentManager->createAgent($displayName, $userType, $propertyObject);
+		$agent =$agentManager->createAgent($displayName, $userType, $propertyObject);
 	
 		//get the id and create a link between the agent and its authentication info
-		$id =& $agent->getId();
-		$mapping =& $tokenMappingManager->createMapping($id, $tokens, $authNType);
+		$id =$agent->getId();
+		$mapping =$tokenMappingManager->createMapping($id, $tokens, $authNType);
 		
 		//tell the specific AuthNMethod to add the tokens
 		$authNMethod->addTokens($tokens);

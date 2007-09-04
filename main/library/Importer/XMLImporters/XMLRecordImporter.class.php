@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordImporter.class.php,v 1.13 2006/06/26 19:22:42 adamfranco Exp $
+ * @version $Id: XMLRecordImporter.class.php,v 1.14 2007/09/04 20:28:01 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLPartImporter.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordImporter.class.php,v 1.13 2006/06/26 19:22:42 adamfranco Exp $
+ * @version $Id: XMLRecordImporter.class.php,v 1.14 2007/09/04 20:28:01 adamfranco Exp $
  */
 class XMLRecordImporter extends XMLImporter {
 		
@@ -33,7 +33,7 @@ class XMLRecordImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function XMLRecordImporter (&$existingArray) {
+	function XMLRecordImporter ($existingArray) {
 		parent::XMLImporter($existingArray);
 	}
 	
@@ -58,7 +58,7 @@ class XMLRecordImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function isImportable (&$element) {
+	function isImportable ($element) {
 		if ($element->nodeName == "record")
 			return true;
 		else
@@ -83,18 +83,18 @@ class XMLRecordImporter extends XMLImporter {
 	 * @since 10/6/05
 	 */
 	function importNode () {
-		$idManager =& Services::getService("Id");
+		$idManager = Services::getService("Id");
 		
 		$this->getNodeInfo();
 		$hasId = $this->_node->hasAttribute("id");
 		if ($hasId && (in_array($this->_node->getAttribute("id"),
 				$this->_existingArray)	|| $this->_type == "update")) {
-			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
-			$this->_object =& $this->_parent->getRecord($this->_myId);
+			$this->_myId =$idManager->getId($this->_node->getAttribute("id"));
+			$this->_object =$this->_parent->getRecord($this->_myId);
 		} else /*insert*/ {
-			$this->_object =& $this->_parent->createRecord(
+			$this->_object =$this->_parent->createRecord(
 				$this->_info['recordStructureId']);
-			$this->_myId =& $this->_object->getId();
+			$this->_myId =$this->_object->getId();
 		}
 	}
 
@@ -105,10 +105,10 @@ class XMLRecordImporter extends XMLImporter {
 	 * @since 10/6/05
 	 */
 	function getNodeInfo () {
-		$dbHandler =& Services::getService("DBHandler");
-// 		$dbIndexConcerto =& $dbHandler->addDatabase(new 
+		$dbHandler = Services::getService("DBHandler");
+// 		$dbIndexConcerto =$dbHandler->addDatabase(new 
 // 			MySQLDatabase("localhost", "whitey_concerto", "test", "test"));
-		$query =& new SelectQuery;
+		$query = new SelectQuery;
 		$query->addTable("xml_id_matrix");
 		$query->addColumn("conc_id");
 		$query->addColumn("xml_id");
@@ -116,25 +116,25 @@ class XMLRecordImporter extends XMLImporter {
 		$query->addWhere("xml_id = '".addslashes($id)."'");
 		
 		//$dbHandler->connect($dbIndexConcerto);
-		$results =& $dbHandler->query($query, IMPORTER_CONNECTION);
+		$results =$dbHandler->query($query, IMPORTER_CONNECTION);
 
 		if ($results->getNumberOfRows() == 1) {
 			$result = $results->next();
-			$idManager =& Services::getService("Id");
-			$this->_info['recordStructureId'] =& $idManager->getId(
+			$idManager = Services::getService("Id");
+			$this->_info['recordStructureId'] =$idManager->getId(
 				$result['conc_id']);
 		} else {
 			$this->addError("Bad XML IDREF: ".$id);
 			// Log the success or failure
 			if (Services::serviceRunning("Logging")) {
-				$loggingManager =& Services::getService("Logging");
-				$log =& $loggingManager->getLogForWriting("Harmoni");
-				$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNonNodes",
+				$loggingManager = Services::getService("Logging");
+				$log =$loggingManager->getLogForWriting("Harmoni");
+				$formatType = new Type("logging", "edu.middlebury", "AgentsAndNonNodes",
 								"A format in which the acting Agent[s] and the target nodes affected are specified.");
-				$priorityType =& new Type("logging", "edu.middlebury", "Error",
+				$priorityType = new Type("logging", "edu.middlebury", "Error",
 								"Events involving critical system errors.");
 				
-				$item =& new AgentNodeEntryItem("RecordImport Error", "Bad XML IDREF: $id");
+				$item = new AgentNodeEntryItem("RecordImport Error", "Bad XML IDREF: $id");
 				$item->addNodeId($this->_parent->getId());
 				
 				$log->appendLogWithTypes($item,	$formatType, $priorityType);

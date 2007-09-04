@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.11 2006/12/06 20:59:21 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.12 2007/09/04 20:28:14 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php"
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.11 2006/12/06 20:59:21 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.12 2007/09/04 20:28:14 adamfranco Exp $
  */
 class viewfileAction 
 	extends ForceAuthAction
@@ -36,12 +36,12 @@ class viewfileAction
 	 * @since 4/26/05
 	 */
 	function isExecutionAuthorized () {
-		$harmoni =& Harmoni::instance();
-		$idManager =& Services::getService("Id");
-		$authZManager =& Services::getService("AuthorizationManager");
+		$harmoni = Harmoni::instance();
+		$idManager = Services::getService("Id");
+		$authZManager = Services::getService("AuthorizationManager");
 		
 		$harmoni->request->startNamespace("polyphony-repository");
-		$assetId =& $idManager->getId(RequestContext::value("asset_id"));
+		$assetId =$idManager->getId(RequestContext::value("asset_id"));
 		$harmoni->request->endNamespace();
 		
 		return $authZManager->isUserAuthorized(
@@ -98,15 +98,15 @@ class viewfileAction
 		
 		$defaultTextDomain = textdomain("polyphony");
 		
-		$harmoni =& Harmoni::instance();
-		$idManager =& Services::getService("Id");
-		$repositoryManager =& Services::getService("Repository");
+		$harmoni = Harmoni::instance();
+		$idManager = Services::getService("Id");
+		$repositoryManager = Services::getService("Repository");
 		
 		$harmoni->request->startNamespace("polyphony-repository");
 		
-		$repositoryId =& $idManager->getId(RequestContext::value("repository_id"));
-		$assetId =& $idManager->getId(RequestContext::value("asset_id"));
-		$recordId =& $idManager->getId(RequestContext::value("record_id"));
+		$repositoryId =$idManager->getId(RequestContext::value("repository_id"));
+		$assetId =$idManager->getId(RequestContext::value("asset_id"));
+		$recordId =$idManager->getId(RequestContext::value("record_id"));
 		$size = RequestContext::value("size");
 		$websafe = RequestContext::value("websafe");
 		
@@ -122,41 +122,41 @@ class viewfileAction
 			$websafe = FALSE;
 
 		// Get the requested record.
-		$repository =& $repositoryManager->getRepository($repositoryId);
-		$asset =& $repository->getAsset($assetId);
-		$record =& $asset->getRecord($recordId);
+		$repository =$repositoryManager->getRepository($repositoryId);
+		$asset =$repository->getAsset($assetId);
+		$record =$asset->getRecord($recordId);
 		
 		// Make sure that the structure is the right one.
-		$structure =& $record->getRecordStructure();
-		$remoteFileId =& $idManager->getId('REMOTE_FILE');
-		$fileId =& $idManager->getId('FILE');
+		$structure =$record->getRecordStructure();
+		$remoteFileId =$idManager->getId('REMOTE_FILE');
+		$fileId =$idManager->getId('FILE');
 		
 		if ($remoteFileId->isEqual($structure->getId())) {
-			$urlParts =& $record->getPartsByPartStructure(
+			$urlParts =$record->getPartsByPartStructure(
 				$idManager->getId("FILE_URL"));
-			$urlPart =& $urlParts->next();
+			$urlPart =$urlParts->next();
 			header("Location: ".$urlPart->getValue());
 		} else if (!$fileId->isEqual($structure->getId())) {
 			print "The requested record is not of the FILE structure, and therefore cannot be displayed.";
 		} else {
 		
 			// Get the parts for the record.
-			$partIterator =& $record->getParts();
+			$partIterator =$record->getParts();
 			$parts = array();
 			while($partIterator->hasNext()) {
-				$part =& $partIterator->next();
-				$partStructure =& $part->getPartStructure();
-				$partStructureId =& $partStructure->getId();
-				$parts[$partStructureId->getIdString()] =& $part;
+				$part =$partIterator->next();
+				$partStructure =$part->getPartStructure();
+				$partStructureId =$partStructure->getId();
+				$parts[$partStructureId->getIdString()] =$part;
 			}
 			
-			$imgProcessor =& Services::getService("ImageProcessor");
+			$imgProcessor = Services::getService("ImageProcessor");
 	
 			// If we want to (and can) resize the file, do so
 			if (($size || $websafe)
 				&& $imgProcessor->isFormatSupported($parts['MIME_TYPE']->getValue())) 
 			{
-				$imageCache =& new RepositoryImageCache($record->getId(), $size, $websafe, $parts);
+				$imageCache = new RepositoryImageCache($record->getId(), $size, $websafe, $parts);
 				
 				header("Content-Type: ".$imageCache->getCachedMimeType());
 				header('Content-Disposition: attachment; filename="'.
@@ -170,7 +170,7 @@ class viewfileAction
 				
 				$filename = $parts['FILE_NAME']->getValue();
 				if (!ereg("[^\\w]", $filename)) {
-					$mime =& Services::getService("MIME");
+					$mime = Services::getService("MIME");
 					$extension = $mime->getExtensionForMIMEType($parts['MIME_TYPE']->getValue());
 					$filename = _("Untitled").".".$extension;
 				}
@@ -201,7 +201,7 @@ class viewfileAction
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.11 2006/12/06 20:59:21 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.12 2007/09/04 20:28:14 adamfranco Exp $
  */
 class RepositoryImageCache {
 	
@@ -216,11 +216,11 @@ class RepositoryImageCache {
 	 * @access public
 	 * @since 2/13/06
 	 */
-	function RepositoryImageCache ( &$id, $size, $websafe, &$parts ) {
-		$this->_id =& $id;
+	function RepositoryImageCache ( $id, $size, $websafe, $parts ) {
+		$this->_id =$id;
 		$this->_size = intval($size);
 		$this->_websafe = $websafe;
-		$this->_parts =& $parts;
+		$this->_parts =$parts;
 	}
 	
 	/**
@@ -261,7 +261,7 @@ class RepositoryImageCache {
 	 * @since 2/13/06
 	 */
 	function getCachedFileName () {
-		$mime =& Services::getService("MIME");
+		$mime = Services::getService("MIME");
 		
 		$extension = $mime->getExtensionForMIMEType($this->getCachedMimeType());
 		if (eregi("^.+\.".$extension."$", $this->_parts['FILE_NAME']->getValue())) {
@@ -281,9 +281,9 @@ class RepositoryImageCache {
 	 * @since 2/13/06
 	 */
 	function isCacheUpToDate () {
-		$dbc =& Services::getService('DatabaseManager');
+		$dbc = Services::getService('DatabaseManager');
 		
-		$query =& new SelectQuery;
+		$query = new SelectQuery;
 		$query->addColumn('dr_mime_type.type', 'mime_type');
 		$query->addTable('dr_file');
 		$query->addTable('dr_resized_cache', LEFT_JOIN, 'dr_file.id = dr_resized_cache.FK_file');
@@ -293,7 +293,7 @@ class RepositoryImageCache {
 		$query->addWhere("dr_resized_cache.size = '".addslashes($this->_size)."'");
 		$query->addWhere("dr_resized_cache.websafe = ".(($this->_websafe)?'1':'0'));
 		
-		$result =& $dbc->query($query, $this->getDBIndex());
+		$result =$dbc->query($query, $this->getDBIndex());
 		if ($result->getNumberOfRows() > 0) {
 			$this->_mimeType = $result->field('mime_type');
 			$result->free();
@@ -313,16 +313,16 @@ class RepositoryImageCache {
 	 * @since 2/13/06
 	 */
 	function readCache () {
-		$dbc =& Services::getService('DatabaseManager');
+		$dbc = Services::getService('DatabaseManager');
 		
-		$query =& new SelectQuery;
+		$query = new SelectQuery;
 		$query->addColumn('data');
 		$query->addTable('dr_resized_cache');
 		$query->addWhere("dr_resized_cache.FK_file = '".addslashes($this->_id->getIdString())."'");
 		$query->addWhere("dr_resized_cache.size = '".addslashes($this->_size)."'");
 		$query->addWhere("dr_resized_cache.websafe = ".(($this->_websafe)?'1':'0'));
 		
-		$result =& $dbc->query($query, $this->getDBIndex());
+		$result =$dbc->query($query, $this->getDBIndex());
 		$data = $result->field('data');
 		$result->free();
 		return $data;
@@ -336,9 +336,9 @@ class RepositoryImageCache {
 	 * @since 2/13/06
 	 */
 	function writeCache () {
-		$dbc =& Services::getService('DatabaseManager');
+		$dbc = Services::getService('DatabaseManager');
 		
-		$query =& new DeleteQuery;
+		$query = new DeleteQuery;
 		$query->setTable('dr_resized_cache');
 		$query->addWhere("dr_resized_cache.FK_file = '".addslashes($this->_id->getIdString())."'");
 		$query->addWhere("dr_resized_cache.size = '".addslashes($this->_size)."'");
@@ -346,7 +346,7 @@ class RepositoryImageCache {
 		
 		$dbc->query($query, $this->getDBIndex());
 		
-		$query =& new InsertQuery;
+		$query = new InsertQuery;
 		$query->setTable('dr_resized_cache');
 		$query->setColumns(array(	'FK_file',
 								'size',
@@ -361,7 +361,7 @@ class RepositoryImageCache {
 		$values[] = (($this->_websafe)?'1':'0');
 		$values[] = "NOW()";
 		
-		$imgProcessor =& Services::getService("ImageProcessor");
+		$imgProcessor = Services::getService("ImageProcessor");
 		if ($this->_websafe) {
 			$this->_mimeType = $imgProcessor->getWebsafeFormat(
 									$this->_parts['MIME_TYPE']->getValue());
@@ -394,8 +394,8 @@ class RepositoryImageCache {
 	 * @since 2/13/06
 	 */
 	function getDBIndex () {		
-		$repositoryManager =& Services::getService('Repository');
-		$configuration =& $repositoryManager->_configuration;
+		$repositoryManager = Services::getService('Repository');
+		$configuration =$repositoryManager->_configuration;
 		return $configuration->getProperty('database_index');
 	}
 	
@@ -410,23 +410,23 @@ class RepositoryImageCache {
 	function getMimeKey () {
 		// If we have a key, make sure it exists.
 		if ($this->_mimeType && $this->_mimeType != "NULL") {
-			$dbc =& Services::getService('DatabaseManager');
+			$dbc = Services::getService('DatabaseManager');
 			
 			// Check to see if the type is in the database
-			$query =& new SelectQuery;
+			$query = new SelectQuery;
 			$query->addTable("dr_mime_type");
 			$query->addColumn("id");
 			$query->addWhere("type = '".$this->_mimeType."'");
-			$result =& $dbc->query($query, $this->getDBIndex());
+			$result =$dbc->query($query, $this->getDBIndex());
 			
 			// If it doesn't exist, insert it.
 			if (!$result->getNumberOfRows()) {
-				$query =& new InsertQuery;
+				$query = new InsertQuery;
 				$query->setTable("dr_mime_type");
 				$query->setColumns(array("type"));
 				$query->setValues(array("'".addslashes($this->_mimeType)."'"));
 				
-				$result2 =& $dbc->query($query, $this->getDBIndex());
+				$result2 =$dbc->query($query, $this->getDBIndex());
 				$mimeId = "'".$result2->getLastAutoIncrementValue()."'";
 			} else {
 				$mimeId = "'".$result->field("id")."'";

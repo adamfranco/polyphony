@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: cookies_required.act.php,v 1.2 2006/11/30 22:02:42 adamfranco Exp $
+ * @version $Id: cookies_required.act.php,v 1.3 2007/09/04 20:28:10 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: cookies_required.act.php,v 1.2 2006/11/30 22:02:42 adamfranco Exp $
+ * @version $Id: cookies_required.act.php,v 1.3 2007/09/04 20:28:10 adamfranco Exp $
  */
 class cookies_requiredAction {
 		
@@ -31,7 +31,7 @@ class cookies_requiredAction {
 	 * @access public
 	 * @since 8/9/06
 	 */
-	function &execute () {
+	function execute () {
 		print _("<h2>Error: You must have cookies enabled in your browser.</h2>
 			<ul >
 				<li style='margin-bottom: 15px;'><strong>FireFox/Mozilla:</strong>

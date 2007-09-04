@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_datetime.class.php,v 1.6 2006/11/30 22:02:39 adamfranco Exp $
+ * @version $Id: PrimitiveIO_datetime.class.php,v 1.7 2007/09/04 20:27:58 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_datetime.class.php,v 1.6 2006/11/30 22:02:39 adamfranco Exp $
+ * @version $Id: PrimitiveIO_datetime.class.php,v 1.7 2007/09/04 20:27:58 adamfranco Exp $
  */
 class PrimitiveIO_datetime extends WTextField /* implements PrimitiveIO */ {
 
@@ -33,7 +33,7 @@ class PrimitiveIO_datetime extends WTextField /* implements PrimitiveIO */ {
 	 * @return boolean
 	 */
 	function validate () {
-		$parse =& StringParser::getParserFor($this->_value);
+		$parse = StringParser::getParserFor($this->_value);
 		if (!$parse) {
 			$this->_showError = true;
 			return false;
@@ -47,7 +47,7 @@ class PrimitiveIO_datetime extends WTextField /* implements PrimitiveIO */ {
 	 *
 	 * @return void
 	 **/
-	function setValue(&$value)
+	function setValue($value)
 	{
 		parent::setValue($value->asString());
 	}
@@ -58,7 +58,7 @@ class PrimitiveIO_datetime extends WTextField /* implements PrimitiveIO */ {
 	 *
 	 * @return void
 	 **/
-	function setValueFromSObject(&$value)
+	function setValueFromSObject($value)
 	{
 		$this->setValue($value);
 	}
@@ -69,8 +69,8 @@ class PrimitiveIO_datetime extends WTextField /* implements PrimitiveIO */ {
 	 * @access public
 	 * @return mixed
 	 */
-	function &getAllValues () {
-		$obj =& DateAndTime::fromString($this->_value);
+	function getAllValues () {
+		$obj = DateAndTime::fromString($this->_value);
 // 		print "<pre>"; var_dump($this->_value); print "</pre>";
 // 		printpre($obj);
 		return $obj;

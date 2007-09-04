@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.13 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WTextField.class.php,v 1.14 2007/09/04 20:28:08 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__).'/WTextInput.abstract.php');
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__).'/WTextInput.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.13 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WTextField.class.php,v 1.14 2007/09/04 20:28:08 adamfranco Exp $
  */
 class WTextField 
 	extends WTextInput 
@@ -77,7 +77,7 @@ class WTextField
 		$m .= " />";
 		
 		$errText = $this->getErrorText();
-		$errRule =& $this->getErrorRule();
+		$errRule =$this->getErrorRule();
 		$errStyle = $this->getErrorStyle();
 		
 		if ($errText && $errRule) {

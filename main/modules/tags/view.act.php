@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.6 2006/12/08 18:45:05 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.7 2007/09/04 20:28:14 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/TagAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.6 2006/12/08 18:45:05 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.7 2007/09/04 20:28:14 adamfranco Exp $
  */
 class viewAction 
 	extends MainWindowAction
@@ -47,7 +47,7 @@ class viewAction
 	 */
 	function getHeadingText () {
 		$heading = dgettext("polyphony", "Items Tagged with '%1'");
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-tags");
 		$heading = str_replace('%1', RequestContext::value('tag'), $heading);
 		$harmoni->request->endNamespace();
@@ -63,9 +63,9 @@ class viewAction
 	 */
 	function buildContent () {
 		$defaultTextDomain = textdomain("polyphony");
-		$actionRows =& $this->getActionRows();
+		$actionRows =$this->getActionRows();
 // 		ob_start();
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-tags");
 		
 		$actionRows->add(new Block(TagAction::getTagMenu(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
@@ -73,15 +73,15 @@ class viewAction
 		// Related Tags
 		ob_start();
 		print "<h3 style='margin-top: 0px; margin-bottom: 0px;'>"._("Related Tags:")."</h3>";
-		$tag =& $this->getTag();
+		$tag =$this->getTag();
 		print TagAction::getTagCloudDiv($tag->getRelatedTags(TAG_SORT_FREQ), 'view', 100);
 		$actionRows->add(new Block(ob_get_clean(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
 		
-		$items =& $this->getItems();
-		$resultPrinter =& new IteratorResultPrinter($items, 1, 5, 
+		$items =$this->getItems();
+		$resultPrinter = new IteratorResultPrinter($items, 1, 5, 
 									'getTaggedItemComponent', $this->getViewAction());
-		$resultLayout =& $resultPrinter->getLayout("canViewItem");		
-// 		$resultLayout =& $resultPrinter->getLayout();		
+		$resultLayout =$resultPrinter->getLayout("canViewItem");		
+// 		$resultLayout =$resultPrinter->getLayout();		
 		$actionRows->add($resultLayout, "100%", null, LEFT, CENTER);
 		
 // 		$actionRows->add(new Block(ob_get_clean(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
@@ -96,8 +96,8 @@ class viewAction
 	 * @access public
 	 * @since 11/8/06
 	 */
-	function &getItems () {
-		$tag =& $this->getTag();
+	function getItems () {
+		$tag =$this->getTag();
 		return $tag->getItems();
 	}
 	
@@ -108,9 +108,9 @@ class viewAction
 	 * @access public
 	 * @since 12/8/06
 	 */
-	function &getTag () {
+	function getTag () {
 		if (!isset($this->_tag)) {
-			$this->_tag =& new Tag(RequestContext::value('tag'));
+			$this->_tag = new Tag(RequestContext::value('tag'));
 		}
 		return $this->_tag;
 	}
@@ -146,7 +146,7 @@ class viewAction
  * @access public
  * @since 11/14/06
  */
-function getTaggedItemComponent ( &$item, $viewAction) {
+function getTaggedItemComponent ( $item, $viewAction) {
 	if (defined('POLYPHONY_TAGGEDITEM_PRINTING_CALLBACK'))
 		$printFunction = POLYPHONY_TAGGEDITEM_PRINTING_CALLBACK;
 	else
@@ -156,7 +156,7 @@ function getTaggedItemComponent ( &$item, $viewAction) {
 	
 	$printFunction($item, $viewAction);
 	
-	$component = & new Block(ob_get_clean(), EMPHASIZED_BLOCK);
+	$component =  new Block(ob_get_clean(), EMPHASIZED_BLOCK);
 	return $component;
 }
 
@@ -169,7 +169,7 @@ function getTaggedItemComponent ( &$item, $viewAction) {
  * @access public
  * @since 11/8/06
  */
-function printTaggedItem ( &$item, $viewAction) {	
+function printTaggedItem ( $item, $viewAction) {	
 	print "\n\t<a href='".$item->getUrl()."'>";
 	if ($item->getThumbnailUrl())
 		print "\n\t\t<img src='".$item->getThumbnailUrl()."' style=' float: right;' class='thumbnail_image' />";
@@ -200,12 +200,12 @@ function printTaggedItem ( &$item, $viewAction) {
 }
 
 // Callback function for checking authorizations
-function canViewItem( &$item ) {
+function canViewItem( $item ) {
 	if ($item->getSystem() == ARBITRARY_URL)
 		return true;
 	
-	$authZ =& Services::getService("AuthZ");
-	$idManager =& Services::getService("Id");
+	$authZ = Services::getService("AuthZ");
+	$idManager = Services::getService("Id");
 	if ($authZ->isUserAuthorized($idManager->getId("edu.middlebury.authorization.access"), $item->getId())
 		|| $authZ->isUserAuthorized($idManager->getId("edu.middlebury.authorization.view"), $item->getId()))
 	{

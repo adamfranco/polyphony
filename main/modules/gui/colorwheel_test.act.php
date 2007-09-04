@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: colorwheel_test.act.php,v 1.4 2006/02/17 21:36:41 cws-midd Exp $
+ * @version $Id: colorwheel_test.act.php,v 1.5 2007/09/04 20:28:13 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: colorwheel_test.act.php,v 1.4 2006/02/17 21:36:41 cws-midd Exp $
+ * @version $Id: colorwheel_test.act.php,v 1.5 2007/09/04 20:28:13 adamfranco Exp $
  */
 class colorwheel_testAction 
 	extends MainWindowAction
@@ -32,8 +32,8 @@ class colorwheel_testAction
 	 * @since 4/26/05
 	 */
 	function isAuthorizedToExecute () {
-		$authZManager =& Services::getService("AuthZ");
-		$idManager =& Services::getService("IdManager");
+		$authZManager = Services::getService("AuthZ");
+		$idManager = Services::getService("IdManager");
 		if ($authZManager->isUserAuthorized(
 					$idManager->getId("edu.middlebury.authorization.create_agent"),
 					$idManager->getId("edu.middlebury.authorization.root")))
@@ -75,13 +75,13 @@ class colorwheel_testAction
 	 */
 	function buildContent () {
 		/*
-		$harmoni =& Harmoni::instance();
-		//$currenttheme =& $harmoni->getTheme();
-		$guimanager =& Services::getService('GUIManager');
-		$currenttheme =& $guimanager->getTheme();
-		$array =& $currenttheme->getAllRegisteredSPs();
+		$harmoni = Harmoni::instance();
+		//$currenttheme =$harmoni->getTheme();
+		$guimanager = Services::getService('GUIManager');
+		$currenttheme =$guimanager->getTheme();
+		$array =$currenttheme->getAllRegisteredSPs();
 		*/
-		$actionRows =& $this->getActionRows();
+		$actionRows =$this->getActionRows();
 		$cacheName = 'colorwheel_test_wizard';
 		
 		$this->runWizard ( $cacheName, $actionRows );
@@ -96,17 +96,17 @@ class colorwheel_testAction
 	 * @access public
 	 * @since 4/28/05
 	 */
-	function &createWizard () {
-		$harmoni =& Harmoni::instance();
+	function createWizard () {
+		$harmoni = Harmoni::instance();
 		
 		
 		// Instantiate the wizard, then add our steps.
-		$wizard =& SimpleStepWizard::withDefaultLayout();
+		$wizard = SimpleStepWizard::withDefaultLayout();
 		
-		$step =& $wizard->addStep("themesettings", new WizardStep());
+		$step =$wizard->addStep("themesettings", new WizardStep());
 		$step->setDisplayName(_("Test"));
-		$actionlist =& $step->addComponent("colorwheel", new WColorWheel());
-		$actionlist =& $step->addComponent("textfield", new WTextField());
+		$actionlist =$step->addComponent("colorwheel", new WColorWheel());
+		$actionlist =$step->addComponent("textfield", new WTextField());
 		ob_start();
 		print "[[colorwheel]]";
 		$step->setContent(ob_get_contents());
@@ -128,8 +128,8 @@ class colorwheel_testAction
 	 * @since 4/28/05
 	 */
 	function saveWizard ( $cacheName ) {
-		$wizard =& $this->getWizard($cacheName);
-		$properties =& $wizard->getAllValues();
+		$wizard =$this->getWizard($cacheName);
+		$properties =$wizard->getAllValues();
 		printpre($properties);
 		exit();	
 	}
@@ -142,8 +142,8 @@ class colorwheel_testAction
 	 * @since 4/28/05
 	 */
 	function getReturnUrl () {
-		$harmoni =& Harmoni::instance();
-		$url =& $harmoni->request->mkURLWithPassthrough("admin", "main");
+		$harmoni = Harmoni::instance();
+		$url =$harmoni->request->mkURLWithPassthrough("admin", "main");
 		return $url->write();
 	}
 	

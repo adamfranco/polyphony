@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.15 2006/06/08 15:56:34 adamfranco Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.16 2007/09/04 20:28:08 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.15 2006/06/08 15:56:34 adamfranco Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.16 2007/09/04 20:28:08 adamfranco Exp $
  */
 
 class WRepeatableComponentCollection 
@@ -38,7 +38,7 @@ class WRepeatableComponentCollection
     	$this->_addLabel = dgettext("polyphony", "Add");
     	$this->_removeLabel = dgettext("polyphony", "Remove");
     	
-    	$this->_addButton =& WEventButton::withLabel($this->_addLabel);
+    	$this->_addButton = WEventButton::withLabel($this->_addLabel);
     	$this->_addButton->setParent($this);
     }
     
@@ -158,9 +158,9 @@ class WRepeatableComponentCollection
 	 * @access public
 	 * @return ref array An array of the components created with the values passed.
 	 */
-	function &addValueCollection (&$collection, $removable = true) {
+	function addValueCollection ($collection, $removable = true) {
 		// @todo - make sure that the correct fields/classes are represented
-		$newCollection =& $this->_addElement($removable);
+		$newCollection =$this->_addElement($removable);
 		foreach (array_keys($newCollection) as $key) {
 			if (isset($collection[$key]))
 				$newCollection[$key]->setValue($collection[$key]);
@@ -179,7 +179,7 @@ class WRepeatableComponentCollection
 	 * @access public
 	 * @since 10/27/05
 	 */
-	function setValue ( &$collectionArray ) {
+	function setValue ( $collectionArray ) {
 		foreach(array_keys($collectionArray) as $key) {
 			$this->addValueCollection($collectionArray[$key]);
 		}
@@ -191,18 +191,18 @@ class WRepeatableComponentCollection
 	 * @access private
 	 * @return void
 	 */
-	function &_addElement ($removable = true) {
+	function _addElement ($removable = true) {
 		if ($this->_max != -1 && $this->_num == $this->_max - 1) return;
 //		printDebugBacktrace();
 		// clone our base set (the getChildren() array)
 		$newArray = array();
-		$base =& $this->getChildren();
+		$base =$this->getChildren();
 		foreach (array_keys($base) as $key) {
-			$newArray[$key] =& $base[$key]->copy();
+			$newArray[$key] =$base[$key]->copy();
 			$newArray[$key]->setParent($this);
 		}
 		
-		$newArray["_remove"] =& WEventButton::withLabel($this->_removeLabel);
+		$newArray["_remove"] = WEventButton::withLabel($this->_removeLabel);
 		$newArray["_remove"]->setParent($this);
 		$newArray["_remove"]->addOnClick("ignoreValidation(this.form);");
 		if (!$this->_enabled && $this->_enabledSticky)
@@ -210,7 +210,7 @@ class WRepeatableComponentCollection
 		else
 			$newArray["_remove"]->setEnabled($removable, !$removable);
 
-		$this->_collections[] =& $newArray;
+		$this->_collections[] =$newArray;
 		$this->_num++;
 
 		return $newArray;

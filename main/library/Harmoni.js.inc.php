@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Harmoni.js.inc.php,v 1.3 2007/07/20 19:12:46 adamfranco Exp $
+ * @version $Id: Harmoni.js.inc.php,v 1.4 2007/09/04 20:27:57 adamfranco Exp $
  */ 
 
 	// Additional Files
@@ -67,7 +67,7 @@
 			 */
 			Harmoni.quickUrl = function (module, action, parameters, namespace) {
 				<?php 
-					$harmoni =& Harmoni::instance();
+					$harmoni = Harmoni::instance();
 					$url = $harmoni->request->quickURL('xxMODULExx', 'xxACTIONxx', 
 						array('xxKEY1xx'=> 'xxVALUE1xx', 'xxKEY2xx' => 'xxVALUE2xx'));
 					print "\n\t\t\t\tvar normalUrl = '".$url."';";
@@ -117,7 +117,7 @@
 			 */
 			Harmoni.fieldName = function (name, namespace) {
 				<?php 
-					$harmoni =& Harmoni::instance();
+					$harmoni = Harmoni::instance();
 					$fieldName = RequestContext::name('xxFIELDNAMExx');
 					print "\n\t\t\t\tvar normalFieldName = '".$fieldName."';";
 					

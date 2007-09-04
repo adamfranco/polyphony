@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.class.php,v 1.13 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WEventButton.class.php,v 1.14 2007/09/04 20:28:06 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.class.php,v 1.13 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WEventButton.class.php,v 1.14 2007/09/04 20:28:06 adamfranco Exp $
  */
 class WEventButton 
 	extends WizardComponent
@@ -37,8 +37,8 @@ class WEventButton
 	 * @return ref object
 	 * @static
 	 */
-	function &withEventAndLabel ($event, $label) {
-		$obj =& new WEventButton();
+	function withEventAndLabel ($event, $label) {
+		$obj = new WEventButton();
 		$obj->setEventAndLabel($event, $label);
 		
 		return $obj;
@@ -50,8 +50,8 @@ class WEventButton
 	 * @access public
 	 * @return ref object
 	 */
-	function &withLabel ($label) {
-		$obj =& new WEventButton();
+	function withLabel ($label) {
+		$obj = new WEventButton();
 		$obj->_label = $label;
 		return $obj;
 	}
@@ -118,7 +118,7 @@ class WEventButton
 		$val = RequestContext::value($fieldName);
 		if ($val) {
 			// trigger the save event on the wizard
-			$wizard =& $this->getWizard();
+			$wizard =$this->getWizard();
 			$wizard->triggerLater($this->_event, $wizard);
 			$this->_pressed = true;
 		}

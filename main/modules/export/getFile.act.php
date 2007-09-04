@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: getFile.act.php,v 1.1 2006/12/13 21:09:16 adamfranco Exp $
+ * @version $Id: getFile.act.php,v 1.2 2007/09/04 20:28:13 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: getFile.act.php,v 1.1 2006/12/13 21:09:16 adamfranco Exp $
+ * @version $Id: getFile.act.php,v 1.2 2007/09/04 20:28:13 adamfranco Exp $
  */
 class getFileAction 
 	extends Action
@@ -34,8 +34,8 @@ class getFileAction
 	 * @access public
 	 * @since 12/12/06
 	 */
-	function &execute () {
-		$harmoni =& Harmoni::instance();
+	function execute () {
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace('export');
 		$file = urldecode(RequestContext::value('file'));
 		$harmoni->request->endNamespace();

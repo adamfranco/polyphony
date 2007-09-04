@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addAjax.act.php,v 1.2 2006/05/12 18:29:40 adamfranco Exp $
+ * @version $Id: addAjax.act.php,v 1.3 2007/09/04 20:28:11 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addAjax.act.php,v 1.2 2006/05/12 18:29:40 adamfranco Exp $
+ * @version $Id: addAjax.act.php,v 1.3 2007/09/04 20:28:11 adamfranco Exp $
  */
 class addAjaxAction 
 	extends Action
@@ -55,18 +55,18 @@ class addAjaxAction
 	 * @since 4/26/05
 	 */
 	function execute () {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("basket");
 		
-		$idManager =& Services::getService("Id");
-		$authZ =& Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
 		
-		$basket =& Basket::instance();
-		$viewAZ =& $idManager->getId("edu.middlebury.authorization.view");
+		$basket = Basket::instance();
+		$viewAZ =$idManager->getId("edu.middlebury.authorization.view");
 		$assetIdList = RequestContext::value("assets");
 		$assetIdArray = explode(",", trim($assetIdList));
 		foreach ($assetIdArray as $id) {
-			$assetId =& $idManager->getId($id);
+			$assetId =$idManager->getId($id);
 			if ($authZ->isUserAuthorized(
 				$viewAZ, 
 				$assetId)) 

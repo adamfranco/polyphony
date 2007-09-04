@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createnewtype.act.php,v 1.3 2006/07/10 14:40:49 sporktim Exp $
+ * @version $Id: createnewtype.act.php,v 1.4 2007/09/04 20:28:12 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,8 +23,8 @@ class createnewtypeAction
 	 */
 	function isAuthorizedToExecute () {
 		// Check that the user can create a type here.
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		
 		return $authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.add_children"),
@@ -62,8 +62,8 @@ class createnewtypeAction
 	 * @since 4/26/05
 	 */
 	function buildContent () {
-		$harmoni =& Harmoni::instance();
-		$actionRows =& $this->getActionRows();
+		$harmoni = Harmoni::instance();
+		$actionRows =$this->getActionRows();
 		$cacheName = "createnewtypeWizard";
 		$this->runWizard ( $cacheName, $actionRows );
 	}
@@ -77,22 +77,22 @@ class createnewtypeAction
 	 * @since 4/28/05
 	 */
 	
-	function &createWizard () {
-		$harmoni =& Harmoni::instance();
-		//$courseManager =& Services::getService("CourseManagement");
-		//$canonicalCourseIterator =& $courseManager->getCanonicalCourses();
+	function createWizard () {
+		$harmoni = Harmoni::instance();
+		//$courseManager = Services::getService("CourseManagement");
+		//$canonicalCourseIterator =$courseManager->getCanonicalCourses();
 		
 		// Instantiate the wizard, then add our steps.
-		$wizard =& SimpleStepWizard::withDefaultLayout();
+		$wizard = SimpleStepWizard::withDefaultLayout();
 		
 		// :: Name and Description ::
-		$step =& $wizard->addStep("namedescstep", new WizardStep());
+		$step =$wizard->addStep("namedescstep", new WizardStep());
 		$step->setDisplayName(_("Please choose the name and type for this type:"));
 		
 		
 		
 		// Create the type chooser.
-		$select =& new WSelectList();
+		$select = new WSelectList();
 		//$select->addOption('',"Canonical Course Type");
 		$select->addOption('can',"Canonical Course Type");
 		$select->addOption('can_stat',"Canonical Course Status Type");
@@ -105,7 +105,7 @@ class createnewtypeAction
 		$select->addOption('term',"Term Type");
 		//$select->setValue('');
 		
-		$typeProp =& $step->addComponent("typetype", $select);
+		$typeProp =$step->addComponent("typetype", $select);
 		
 		//$typeProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
 		//$typeProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
@@ -113,12 +113,12 @@ class createnewtypeAction
 		
 		
 		// Create the title
-		$titleProp =& $step->addComponent("keyword", new WTextField());
+		$titleProp =$step->addComponent("keyword", new WTextField());
 		$titleProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
 		$titleProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
 		
 		// Create the description
-		$descriptionProp =& $step->addComponent("description", WTextArea::withRowsAndColumns(10,30));
+		$descriptionProp =$step->addComponent("description", WTextArea::withRowsAndColumns(10,30));
 		
 				
 		// Create the step text
@@ -155,16 +155,16 @@ class createnewtypeAction
 	 * @since 4/28/05
 	 */
 	function saveWizard ( $cacheName ) {
-		$wizard =& $this->getWizard($cacheName);
+		$wizard =$this->getWizard($cacheName);
 		
 		// Make sure we have a valid Repository
-		$courseManager =& Services::getService("CourseManagement");
-		$idManager =& Services::getService("Id");
-		$courseManagementId =& $idManager->getId("edu.middlebury.coursemanagement");
+		$courseManager = Services::getService("CourseManagement");
+		$idManager = Services::getService("Id");
+		$courseManagementId =$idManager->getId("edu.middlebury.coursemanagement");
 
 		
 		// First, verify that we chose a parent that we can add children to.
-		$authZ =& Services::getService("AuthZ");
+		$authZ = Services::getService("AuthZ");
 		if ($authZ->isUserAuthorized(
 						$idManager->getId("edu.middlebury.authorization.add_children"), 
 						$courseManagementId))
@@ -173,7 +173,7 @@ class createnewtypeAction
 			$values = $wizard->getAllValues();
 			printpre($values);
 			
-			$type =& new Type("CourseManagement", "edu.middlebury",$values['namedescstep']['keyword'], 	
+			$type = new Type("CourseManagement", "edu.middlebury",$values['namedescstep']['keyword'], 	
 																	   $values['namedescstep']['description']);
 			$courseManager->_typeToIndex($values['namedescstep']['typetype'], $type);
 			RequestContext::sendTo($this->getReturnUrl());
@@ -195,8 +195,8 @@ class createnewtypeAction
 	 * @since 4/28/05
 	 */
 	function getReturnUrl () {
-		$harmoni =& Harmoni::instance();
-		$url =& $harmoni->request->mkURL("admin", "main");
+		$harmoni = Harmoni::instance();
+		$url =$harmoni->request->mkURL("admin", "main");
 		return $url->write();
 	}
 }

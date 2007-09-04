@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: course_search.act.php,v 1.12 2006/08/30 18:24:38 jwlee100 Exp $
+* @version $Id: course_search.act.php,v 1.13 2007/09/04 20:28:12 adamfranco Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -28,8 +28,8 @@ extends MainWindowAction
 	*/
 	function isAuthorizedToExecute () {
 		// Check for authorization
-		$authZManager =& Services::getService("AuthZ");
-		$idManager =& Services::getService("IdManager");
+		$authZManager = Services::getService("AuthZ");
+		$idManager = Services::getService("IdManager");
 		if ($authZManager->isUserAuthorized(
 		$idManager->getId("edu.middlebury.authorization.view"),
 		$idManager->getId("edu.middlebury.coursemanagement")))
@@ -60,13 +60,13 @@ extends MainWindowAction
 	* @since 4/26/05
 	*/
 	function buildContent () {
-		$cm =& Services::getService("CourseManagement");
+		$cm = Services::getService("CourseManagement");
 
 		$defaultTextDomain = textdomain("polyphony");
 
-		$actionRows =& $this->getActionRows();
-		$pageRows =& new Container(new YLayout(), OTHER, 1);
-		$harmoni =& Harmoni::instance();
+		$actionRows =$this->getActionRows();
+		$pageRows = new Container(new YLayout(), OTHER, 1);
+		$harmoni = Harmoni::instance();
 
 		$searchNumber = RequestContext::value('search_number');
 
@@ -101,15 +101,15 @@ extends MainWindowAction
 
 		//@TODO this sorting is probably pretty slow--it's multiple queries per term.
 		$numOfImproperOfferingTerms=-1;
-		$terms =& $cm->getTerms();
+		$terms =$cm->getTerms();
 		while($terms->hasNextTerm()){
-			$term =& $terms->nextTerm();
-			$schedule =& $term->getSchedule();
+			$term =$terms->nextTerm();
+			$schedule =$term->getSchedule();
 			if($schedule->hasNextScheduleItem()){
-				$item1 =& $schedule->nextScheduleItem();
-				$terms2[$item1->getStart()] =&  $term;
+				$item1 =$schedule->nextScheduleItem();
+				$terms2[$item1->getStart()] =  $term;
 			}else{
-				$terms2[$numOfImproperOfferingTerms] =& $term;
+				$terms2[$numOfImproperOfferingTerms] =$term;
 				$numOfImproperOfferingTerms--;
 			}
 
@@ -118,7 +118,7 @@ extends MainWindowAction
 
 		krsort($terms2);
 		foreach($terms2 as 	$term){
-			$id =& $term->getId();
+			$id =$term->getId();
 			print "\n\t<option value='".$id->getIdString()."'";
 			/*if($searchTerm==$id->getIdString()){
 				print "selected='selected'";
@@ -134,7 +134,7 @@ extends MainWindowAction
 		
 		print "\n\t</div></form>";
 
-		//$actionRows =& $this->getActionRows();
+		//$actionRows =$this->getActionRows();
 		$actionRows->add(new Block(ob_get_contents(),2),"100%", null, CENTER, TOP);
 		ob_end_clean();
 
@@ -151,17 +151,17 @@ extends MainWindowAction
 
 
 
-		$searchType =& new HarmoniType("Agent & Group Search", "edu.middlebury.harmoni", "TokenSearch");
-		//$searchType =& new HarmoniType("Agent & Group Search", "edu.middlebury.harmoni", "WildcardSearch");
+		$searchType = new HarmoniType("Agent & Group Search", "edu.middlebury.harmoni", "TokenSearch");
+		//$searchType = new HarmoniType("Agent & Group Search", "edu.middlebury.harmoni", "WildcardSearch");
 		$string=	"*".$search_criteria."*";
-		$agents =& $agentManager->getAgentsBySearch($string, $searchType);
+		$agents =$agentManager->getAgentsBySearch($string, $searchType);
 		print "search: " . $search_criteria;
 
 
 
 		while ($agents->hasNext()) {
-		$agent =& $agents->next();
-		$id =& $agent->getId();
+		$agent =$agents->next();
+		$id =$agent->getId();
 
 
 
@@ -197,16 +197,16 @@ extends MainWindowAction
 
 
 
-			$searchType =& new ClassTokenSearch();
+			$searchType = new ClassTokenSearch();
 
 			$string = "*".$searchNumber."*";
-			$DNs =& $searchType->getClassDNsBySearch($string);
+			$DNs =$searchType->getClassDNsBySearch($string);
 			print "search: " . $searchNumber;
 
 			/*
 
-			$dbHandler =& Services::getService("DBHandler");
-			$query=& new SelectQuery;
+			$dbHandler = Services::getService("DBHandler");
+			$query= new SelectQuery;
 			$query->addTable('cm_offer');
 			$query->addColumn('id');
 
@@ -220,12 +220,12 @@ extends MainWindowAction
 			}
 
 
-			$res =& $dbHandler->query($query);*/
+			$res =$dbHandler->query($query);*/
 
 
 			$sections=array();
-			$cm =& Services::getService("CourseManagement");
-			$im =& Services::getService("Id");
+			$cm = Services::getService("CourseManagement");
+			$im = Services::getService("Id");
 
 
 
@@ -269,7 +269,7 @@ extends MainWindowAction
 				//	continue;
 				//}
 
-				$sections[]=& suck_by_agentAction::_figureOut($name,$agentId = null);
+				$sections[]= suck_by_agentAction::_figureOut($name,$agentId = null);
 
 
 
@@ -280,26 +280,26 @@ extends MainWindowAction
 			$termId = null;
 			if($searchTerm != ""){
 					//$term = substr($name, strlen($name)-3,3);
-					$idManager =& Services::getService("Id");
-					// $term =& $cm->getTerm($idManager->getId($searchTerm));
-					// $termId =& $term->getId();
-					$termId =& $idManager->getId($searchTerm);
+					$idManager = Services::getService("Id");
+					// $term =$cm->getTerm($idManager->getId($searchTerm));
+					// $termId =$term->getId();
+					$termId =$idManager->getId($searchTerm);
 			}
 			
 			foreach($sections as $section){
 
-				$offering =& $section->getCourseOffering();
+				$offering =$section->getCourseOffering();
 				
-				$term2 =& $offering->getTerm();
-				$term2Id =& $term2->getId();
+				$term2 =$offering->getTerm();
+				$term2Id =$term2->getId();
 				if(!is_null($termId)&&!$termId->isEqual($term2Id)){
 					continue;
 				}
 				
 				
 				
-				$offeringId =& $offering->getId();
-				$offerings[$offeringId->getIdString()] =& $offering;
+				$offeringId =$offering->getId();
+				$offerings[$offeringId->getIdString()] =$offering;
 
 			}
 			/*
@@ -310,11 +310,11 @@ extends MainWindowAction
 
 
 
-			$id =& $im->getId($row['id']);
-			$array[] =& $cm->getCourseOffering($id);
+			$id =$im->getId($row['id']);
+			$array[] =$cm->getCourseOffering($id);
 			}*/
 
-			$iter =& new HarmoniCourseOfferingIterator($offerings);
+			$iter = new HarmoniCourseOfferingIterator($offerings);
 			edit_agent_detailsAction::printCourseOfferings($iter);
 
 

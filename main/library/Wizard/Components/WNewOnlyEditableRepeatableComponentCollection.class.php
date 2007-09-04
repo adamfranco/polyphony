@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WNewOnlyEditableRepeatableComponentCollection.class.php,v 1.3 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WNewOnlyEditableRepeatableComponentCollection.class.php,v 1.4 2007/09/04 20:28:07 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WNewOnlyEditableRepeatableComponentCollection.class.php,v 1.3 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WNewOnlyEditableRepeatableComponentCollection.class.php,v 1.4 2007/09/04 20:28:07 adamfranco Exp $
  */
 
 class WNewOnlyEditableRepeatableComponentCollection
@@ -34,9 +34,9 @@ class WNewOnlyEditableRepeatableComponentCollection
 	 * @access public
 	 * @return ref array An array of the components created with the values passed.
 	 */
-	function &addValueCollection (&$collection, $removable = true) {
+	function addValueCollection ($collection, $removable = true) {
 		// @todo - make sure that the correct fields/classes are represented
-		$newCollection =& $this->_addElement($removable);
+		$newCollection =$this->_addElement($removable);
 		foreach (array_keys($newCollection) as $key) {
 			if (isset($collection[$key]))
 				$newCollection[$key]->setValue($collection[$key]);

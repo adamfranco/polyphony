@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: remove.act.php,v 1.4 2006/05/12 18:29:40 adamfranco Exp $
+ * @version $Id: remove.act.php,v 1.5 2007/09/04 20:28:12 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: remove.act.php,v 1.4 2006/05/12 18:29:40 adamfranco Exp $
+ * @version $Id: remove.act.php,v 1.5 2007/09/04 20:28:12 adamfranco Exp $
  */
 class removeAction 
 	extends MainWindowAction
@@ -55,15 +55,15 @@ class removeAction
 	 * @since 4/26/05
 	 */
 	function buildContent () {
-		$actionRows =& $this->getActionRows();
-		$harmoni =& Harmoni::instance();
+		$actionRows =$this->getActionRows();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("basket");
 		
-		$idManager =& Services::getService("Id");
-		$authZ =& Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
 		
-		$basket =& Basket::instance();
-		$assetId =& $idManager->getId(RequestContext::value("asset_id"));
+		$basket = Basket::instance();
+		$assetId =$idManager->getId(RequestContext::value("asset_id"));
 
 		$basket->removeItem($assetId);
 

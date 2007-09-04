@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLExporter.class.php,v 1.11 2006/12/13 20:17:37 adamfranco Exp $
+ * @version $Id: XMLExporter.class.php,v 1.12 2007/09/04 20:27:59 adamfranco Exp $
  */ 
 
 require_once("Archive/Tar.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLRepositoryExporter.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLExporter.class.php,v 1.11 2006/12/13 20:17:37 adamfranco Exp $
+ * @version $Id: XMLExporter.class.php,v 1.12 2007/09/04 20:27:59 adamfranco Exp $
  */
 class XMLExporter {
 		
@@ -55,17 +55,17 @@ class XMLExporter {
 	 * @access public
 	 * @since 10/31/05
 	 */
-	function &withCompression ($compression, $class = 'XMLExporter') {
+	function withCompression ($compression, $class = 'XMLExporter') {
 		if (!(strtolower($class) == strtolower('XMLExporter')
 			|| is_subclass_of(new $class, 'XMLExporter')))
 		{
 			die("Class, '$class', is not a subclass of 'XMLExporter'.");
 		}
-		$exporter =& new $class;
-		$now =& DateAndTime::now();
+		$exporter = new $class;
+		$now = DateAndTime::now();
 		$exporter->_tmpDir = "/tmp/export_".$now->asString();
 		while (file_exists($exporter->_tmpDir)) {
-			$now =& DateAndTime::now();
+			$now = DateAndTime::now();
 			$exporter->_tmpDir = "/tmp/export_".$now->asString();
 		}		
 		
@@ -138,16 +138,16 @@ class XMLExporter {
 	 * @since 10/17/05
 	 */
 	function exportRepositories () {
-		$rm =& Services::getService("Repository");
-		$children =& $rm->getRepositories();
+		$rm = Services::getService("Repository");
+		$children =$rm->getRepositories();
 		while ($children->hasNext()) {
-			$child =& $children->next();
-			$childId =& $child->getId();
+			$child =$children->next();
+			$childId =$child->getId();
 			
 			fwrite($this->_xml, "\t<repositoryfile>".$childId->getIdString().
 				"/metadata.xml</repositoryfile>\n");
 			
-			$exporter =& XMLRepositoryExporter::withDir($this->_tmpDir);
+			$exporter = XMLRepositoryExporter::withDir($this->_tmpDir);
 			
 			$exporter->export($childId); // ????
 			unset($exporter);

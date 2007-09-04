@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: username_password_form.act.php,v 1.10 2005/07/21 15:10:29 adamfranco Exp $
+ * @version $Id: username_password_form.act.php,v 1.11 2007/09/04 20:28:10 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/Components/Block.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: username_password_form.act.php,v 1.10 2005/07/21 15:10:29 adamfranco Exp $
+ * @version $Id: username_password_form.act.php,v 1.11 2007/09/04 20:28:10 adamfranco Exp $
  */
 class username_password_formAction 
 	extends MainWindowAction
@@ -53,8 +53,8 @@ class username_password_formAction
 	 * @since 4/26/05
 	 */
 	function buildContent () {
-		$actionRows =& $this->getActionRows();
-		$harmoni =& Harmoni::instance();
+		$actionRows =$this->getActionRows();
+		$harmoni = Harmoni::instance();
 
 		// Set our textdomain
 		$defaultTextDomain = textdomain("polyphony");

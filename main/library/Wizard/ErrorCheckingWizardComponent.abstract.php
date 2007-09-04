@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ErrorCheckingWizardComponent.abstract.php,v 1.3 2005/08/10 17:52:05 adamfranco Exp $
+ * @version $Id: ErrorCheckingWizardComponent.abstract.php,v 1.4 2007/09/04 20:28:05 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ErrorCheckingWizardComponent.abstract.php,v 1.3 2005/08/10 17:52:05 adamfranco Exp $
+ * @version $Id: ErrorCheckingWizardComponent.abstract.php,v 1.4 2007/09/04 20:28:05 adamfranco Exp $
  * @abstract
  */
 class ErrorCheckingWizardComponent extends WizardComponent {
@@ -34,8 +34,8 @@ class ErrorCheckingWizardComponent extends WizardComponent {
 	 * @access public
 	 * @return void
 	 */
-	function setErrorRule (&$rule) {
-		$this->_errorRule =& $rule;
+	function setErrorRule ($rule) {
+		$this->_errorRule =$rule;
 	}
 	
 	/**
@@ -63,7 +63,7 @@ class ErrorCheckingWizardComponent extends WizardComponent {
 	 * @access public
 	 * @return ref object
 	 */
-	function &getErrorRule () {
+	function getErrorRule () {
 		return $this->_errorRule;
 	}
 	

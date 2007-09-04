@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicStepContainer.class.php,v 1.5 2006/08/21 16:25:24 sporktim Exp $
+ * @version $Id: WLogicStepContainer.class.php,v 1.6 2007/09/04 20:28:07 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WizardStepContainer.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WizardStepContainer.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicStepContainer.class.php,v 1.5 2006/08/21 16:25:24 sporktim Exp $
+ * @version $Id: WLogicStepContainer.class.php,v 1.6 2007/09/04 20:28:07 adamfranco Exp $
  */
 class WLogicStepContainer extends WizardStepContainer {
 		
@@ -120,7 +120,7 @@ class WLogicStepContainer extends WizardStepContainer {
 		//if there is a WLogicButton passed in, add the appropriate steps
 		
 		if(func_num_args()>0){
-			$controller =& $button->getLogicRule();		
+			$controller =$button->getLogicRule();		
 			$this->pushSteps($controller->getRequiredSteps());			
 		}
 		
@@ -228,7 +228,7 @@ class WLogicStepContainer extends WizardStepContainer {
 	 * @return boolean
 	 */
 	function validate () {
-		$step =& $this->_steps[$this->_currStep];
+		$step =$this->_steps[$this->_currStep];
 		return $step->validate();
 	}
 	

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WHiddenField.class.php,v 1.5 2006/05/17 20:23:45 adamfranco Exp $
+ * @version $Id: WHiddenField.class.php,v 1.6 2007/09/04 20:28:07 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WHiddenField.class.php,v 1.5 2006/05/17 20:23:45 adamfranco Exp $
+ * @version $Id: WHiddenField.class.php,v 1.6 2007/09/04 20:28:07 adamfranco Exp $
  */
 class WHiddenField 
 	extends WizardComponent 
@@ -35,8 +35,8 @@ class WHiddenField
 	 * @return ref object
 	 * @static
 	 */
-	function &withValue ($value) {
-		$obj =& new WHiddenField();
+	function withValue ($value) {
+		$obj = new WHiddenField();
 		$obj->_value = $value;
 		return $obj;
 	}
@@ -48,8 +48,8 @@ class WHiddenField
 	 * @return ref object
 	 * @static
 	 */
-	function &fromString ($aString) {
-		$obj =& new WHiddenField();
+	function fromString ($aString) {
+		$obj = new WHiddenField();
 		$obj->_value = $aString;
 		return $obj;
 	}

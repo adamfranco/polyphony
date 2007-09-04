@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PartAndValuesModule.class.php,v 1.5 2006/05/15 21:32:51 adamfranco Exp $
+ * @version $Id: PartAndValuesModule.class.php,v 1.6 2007/09/04 20:28:03 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PartAndValuesModule.class.php,v 1.5 2006/05/15 21:32:51 adamfranco Exp $
+ * @version $Id: PartAndValuesModule.class.php,v 1.6 2007/09/04 20:28:03 adamfranco Exp $
  */
 
 class PartAndValuesModule {
@@ -45,7 +45,7 @@ class PartAndValuesModule {
 	 */
 	function init () {
 		if (!$this->_initilaized) {
-			$harmoni =& Harmoni::instance();
+			$harmoni = Harmoni::instance();
 			$harmoni->request->startNamespace('PartAndValuesModule');
 			
 			$this->_contextPartStructFieldName = RequestContext::name($this->_partStructFieldName);
@@ -76,7 +76,7 @@ class PartAndValuesModule {
 	 * @access public
 	 * @since 04/25/06
 	 */
-	function createSearchForm (&$repository, $action ) {
+	function createSearchForm ($repository, $action ) {
 		ob_start();
 		
 		print "<form action='$action' method='post'>\n<div>\n";
@@ -97,22 +97,22 @@ class PartAndValuesModule {
 	 * @access public
 	 * @since 4/26/06
 	 */
-	function createSearchFields (&$repository) {
+	function createSearchFields ($repository) {
 		$this->init();
 		ob_start();
 		
 		print "\n\t\t<select name='".$this->_contextPartStructFieldName."'";
 		print " onchange='this.form.submit()'>";
 		
-		$idManager =& Services::getService("Id");
+		$idManager = Services::getService("Id");
 		if ($this->_partStruct) {
 			$idStrings = explode("_____", $this->_partStruct);
-			$selectedRecordStructId =& $idManager->getId($idStrings[0]);
-			$selectedPartStructId =& $idManager->getId($idStrings[1]);
+			$selectedRecordStructId =$idManager->getId($idStrings[0]);
+			$selectedPartStructId =$idManager->getId($idStrings[1]);
 		}
 		
-		$setManager =& Services::getService("Sets");
-		$recordStructSet =& $setManager->getPersistentSet($repository->getId());
+		$setManager = Services::getService("Sets");
+		$recordStructSet =$setManager->getPersistentSet($repository->getId());
 		$recordStructSet->reset();
 		$recordStructHeadingPrinted = FALSE;
 		while ($recordStructSet->hasNext()) {
@@ -121,14 +121,14 @@ class PartAndValuesModule {
 				print "\n\t\t\t</optgroup>";
 			
 			$recordStructHeadingPrinted = FALSE;
-			$recordStruct =& $repository->getRecordStructure($recordStructSet->next());
-			$recordStructId =& $recordStruct->getId();
-			$partStructSet =& $setManager->getPersistentSet($recordStruct->getId());
+			$recordStruct =$repository->getRecordStructure($recordStructSet->next());
+			$recordStructId =$recordStruct->getId();
+			$partStructSet =$setManager->getPersistentSet($recordStruct->getId());
 			while ($partStructSet->hasNext()) {
-				$partStruct =& $recordStruct->getPartStructure($partStructSet->next());
+				$partStruct =$recordStruct->getPartStructure($partStructSet->next());
 				
 				// If the $partStruct has Authoritative values, add them to our menu
-				$authoritativeValues =& $partStruct->getAuthoritativeValues();
+				$authoritativeValues =$partStruct->getAuthoritativeValues();
 				if ($authoritativeValues->hasNext()) {
 					// Print a heading for the record structure if it isn't printed
 					// yet.
@@ -139,7 +139,7 @@ class PartAndValuesModule {
 						$recordStructHeadingPrinted = TRUE;
 					}
 					
-					$partStructId =& $partStruct->getId();
+					$partStructId =$partStruct->getId();
 					print "\n\t\t\t\t<option ";
 					print " value='";
 						print $recordStructId->getIdString();
@@ -151,11 +151,11 @@ class PartAndValuesModule {
 					// or the first one around for populating the Authority List
 					if (isset($selectedPartStructId)) {
 						if ($selectedPartStructId->isEqual($partStructId)) {
-							$selectedPartStruct =& $partStruct;
+							$selectedPartStruct =$partStruct;
 							print " selected='selected'";
 						}
 					} else if (!isset($selectedPartStruct)) {
-						$selectedPartStruct =& $partStruct;
+						$selectedPartStruct =$partStruct;
 						print " selected='selected'";
 					}
 					
@@ -175,9 +175,9 @@ class PartAndValuesModule {
 			print "\n\t\t<select name='".$this->_contextValueFieldName."'>";
 			print "\n\t\t\t<option value=''>"._("Please select a value...")."</option>";
 			
-			$authoritativeValues =& $selectedPartStruct->getAuthoritativeValues();
+			$authoritativeValues =$selectedPartStruct->getAuthoritativeValues();
 			while ($authoritativeValues->hasNext()) {
-				$value =& $authoritativeValues->next();
+				$value =$authoritativeValues->next();
 				print "\n\t\t\t<option";
 				print " value='".urlencode($value->asString())."'";
 				if ($this->_value == urlencode($value->asString()))
@@ -204,22 +204,22 @@ class PartAndValuesModule {
 	 * @access public
 	 * @since 04/25/06
 	 */
-	function getSearchCriteria ( &$repository ) {
+	function getSearchCriteria ( $repository ) {
 		$this->init();
 		
 		if ($this->_partStruct 
 			&& $this->_value) 
 		{
-			$idManager =& Services::getService("Id");
+			$idManager = Services::getService("Id");
 			
 			$idStrings = explode("_____", $this->_partStruct);
-			$selectedRecordStructId =& $idManager->getId($idStrings[0]);
-			$selectedPartStructId =& $idManager->getId($idStrings[1]);
+			$selectedRecordStructId =$idManager->getId($idStrings[0]);
+			$selectedPartStructId =$idManager->getId($idStrings[1]);
 			
-			$recordStruct =& $repository->getRecordStructure($selectedRecordStructId);
-			$partStruct =& $recordStruct->getPartStructure($selectedPartStructId);
+			$recordStruct =$repository->getRecordStructure($selectedRecordStructId);
+			$partStruct =$recordStruct->getPartStructure($selectedPartStructId);
 			
-			$value =& $partStruct->createValueObjectFromString(
+			$value =$partStruct->createValueObjectFromString(
 				urldecode($this->_value));
 			
 			return array (

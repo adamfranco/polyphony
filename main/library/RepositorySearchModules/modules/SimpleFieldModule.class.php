@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleFieldModule.class.php,v 1.7 2006/05/15 21:32:51 adamfranco Exp $
+ * @version $Id: SimpleFieldModule.class.php,v 1.8 2007/09/04 20:28:03 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleFieldModule.class.php,v 1.7 2006/05/15 21:32:51 adamfranco Exp $
+ * @version $Id: SimpleFieldModule.class.php,v 1.8 2007/09/04 20:28:03 adamfranco Exp $
  */
 
 class SimpleFieldModule {
@@ -44,7 +44,7 @@ class SimpleFieldModule {
 	 */
 	function init () {
 		if (!$this->_initilaized) {
-			$harmoni =& Harmoni::instance();
+			$harmoni = Harmoni::instance();
 			$harmoni->request->startNamespace('SimpleFieldModule');
 			
 			$this->_contextFieldName = RequestContext::name($this->_fieldname);
@@ -67,7 +67,7 @@ class SimpleFieldModule {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function createSearchForm (&$repository, $action ) {
+	function createSearchForm ($repository, $action ) {
 		ob_start();
 		
 		print "<form action='$action' method='post'>\n<div>\n";
@@ -90,7 +90,7 @@ class SimpleFieldModule {
 	 * @access public
 	 * @since 4/26/06
 	 */
-	function createSearchFields (&$repository) {
+	function createSearchFields ($repository) {
 		$this->init();
 		return "\t<input type='text' name='".$this->_contextFieldName."' value=\"".$this->_value."\" />\n";
 	}
@@ -103,7 +103,7 @@ class SimpleFieldModule {
 	 * @access public
 	 * @since 10/28/04
 	 */
-	function getSearchCriteria ( &$repository ) {
+	function getSearchCriteria ( $repository ) {
 		$this->init();
 		return $this->_value;
 	}

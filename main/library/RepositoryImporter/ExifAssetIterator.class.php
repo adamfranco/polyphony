@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifAssetIterator.class.php,v 1.6 2006/12/08 16:18:40 adamfranco Exp $
+ * @version $Id: ExifAssetIterator.class.php,v 1.7 2007/09/04 20:28:01 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifAssetIterator.class.php,v 1.6 2006/12/08 16:18:40 adamfranco Exp $
+ * @version $Id: ExifAssetIterator.class.php,v 1.7 2007/09/04 20:28:01 adamfranco Exp $
  */
 
 class ExifAssetIterator
@@ -59,8 +59,8 @@ class ExifAssetIterator
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function &next() {
-		$temp =& $this->_assetList[$this->_current];
+	function next() {
+		$temp =$this->_assetList[$this->_current];
 		$this->_current++;
 		return $temp;
 	}

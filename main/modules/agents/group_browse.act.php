@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_browse.act.php,v 1.8 2006/02/28 21:32:49 adamfranco Exp $
+ * @version $Id: group_browse.act.php,v 1.9 2007/09/04 20:28:10 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_browse.act.php,v 1.8 2006/02/28 21:32:49 adamfranco Exp $
+ * @version $Id: group_browse.act.php,v 1.9 2007/09/04 20:28:10 adamfranco Exp $
  */
 class group_browseAction 
 	extends MainWindowAction
@@ -36,8 +36,8 @@ class group_browseAction
 	 */
 	function isAuthorizedToExecute () {
 		// Check for authorization
- 		$authZManager =& Services::getService("AuthZ");
- 		$idManager =& Services::getService("IdManager");
+ 		$authZManager = Services::getService("AuthZ");
+ 		$idManager = Services::getService("IdManager");
  		if ($authZManager->isUserAuthorized(
  					$idManager->getId("edu.middlebury.authorization.view"),
  					$idManager->getId("edu.middlebury.authorization.root")))
@@ -70,16 +70,16 @@ class group_browseAction
 	function buildContent () {
 		$defaultTextDomain = textdomain("polyphony");
 		
-		$actionRows =& $this->getActionRows();
-		$pageRows =& new Container(new YLayout(), OTHER, 1);
-		$harmoni =& Harmoni::instance();
+		$actionRows =$this->getActionRows();
+		$pageRows = new Container(new YLayout(), OTHER, 1);
+		$harmoni = Harmoni::instance();
 		
 		$harmoni->request->startNamespace("polyphony-agents");
 
-		$agentManager =& Services::getService("Agent");
+		$agentManager = Services::getService("Agent");
 		$idManager = Services::getService("Id");
-		$everyoneId =& $idManager->getId("edu.middlebury.agents.everyone");
-		$usersId =& $idManager->getId("edu.middlebury.agents.users");
+		$everyoneId =$idManager->getId("edu.middlebury.agents.everyone");
+		$usersId =$idManager->getId("edu.middlebury.agents.users");
 		
 		
 		/*********************************************************
@@ -101,9 +101,9 @@ class group_browseAction
 			<br /><select name='$search_type_name'>
 END;
 		
-		$searchTypes =& $agentManager->getAgentSearchTypes();
+		$searchTypes =$agentManager->getAgentSearchTypes();
 		while ($searchTypes->hasNext()) {
-			$type =& $searchTypes->next();
+			$type =$searchTypes->next();
 			$typeString = htmlspecialchars($type->getDomain()
 								."::".$type->getAuthority()
 								."::".$type->getKeyword());
@@ -129,8 +129,8 @@ END;
 		ob_start();
 		if (($search_criteria = $harmoni->request->get('search_criteria')) && ($search_type = $harmoni->request->get('search_type'))) {
 			$typeParts = explode("::", @html_entity_decode($search_type, ENT_COMPAT, 'UTF-8'));
-			$searchType =& new HarmoniType($typeParts[0], $typeParts[1], $typeParts[2]);
-			$agents =& $agentManager->getAgentsBySearch($search_criteria, $searchType);
+			$searchType = new HarmoniType($typeParts[0], $typeParts[1], $typeParts[2]);
+			$agents =$agentManager->getAgentsBySearch($search_criteria, $searchType);
 			print "search: " . $search_criteria;
 			
 			print <<<END
@@ -166,7 +166,7 @@ END;
 		'>
 END;
 			while ($agents->hasNext()) {
-				$agent =& $agents->next();
+				$agent =$agents->next();
 				group_browseAction::printMember($agent);
 				print "<br />";
 			}
@@ -186,11 +186,11 @@ END;
 		
 		// Loop through all of the Root Groups
 		$childGroupIds = array();
-		$groups =& $agentManager->getGroupsBySearch($null = null, new Type("Agent & Group Search", "edu.middlebury.harmoni", "RootGroups"));
+		$groups =$agentManager->getGroupsBySearch($null = null, new Type("Agent & Group Search", "edu.middlebury.harmoni", "RootGroups"));
 
 		while ($groups->hasNext()) {
-			$group =& $groups->next();
-			$groupId =& $group->getId();
+			$group =$groups->next();
+			$groupId =$group->getId();
 							
 			// Create a layout for this group using the GroupPrinter
 			ob_start();
@@ -199,7 +199,7 @@ END;
 											2,
 											"group_browseAction::printGroup", 
 											"group_browseAction::printMember");
-			$groupLayout =& new Block(ob_get_contents(), STANDARD_BLOCK);
+			$groupLayout = new Block(ob_get_contents(), STANDARD_BLOCK);
 			ob_end_clean();
 			$pageRows->add($groupLayout, "100%", null, LEFT, CENTER);	
 		}
@@ -224,13 +224,13 @@ END;
 	 * @access public
 	 * @ignore
 	 */
-	function printGroup(& $group) {
+	function printGroup($group) {
 		$idManager = Services::getService("Id");
-		$everyoneId =& $idManager->getId("edu.middlebury.agents.everyone");
-		$usersId =& $idManager->getId("edu.middlebury.agents.users");
+		$everyoneId =$idManager->getId("edu.middlebury.agents.everyone");
+		$usersId =$idManager->getId("edu.middlebury.agents.users");
 		
-		$id =& $group->getId();
-		$groupType =& $group->getType();
+		$id =$group->getId();
+		$groupType =$group->getType();
 		
 		print "\n&nbsp; &nbsp; &nbsp;";
 		
@@ -242,18 +242,18 @@ END;
 		
 		// print out the properties of the Agent
 		print "\n<em>";
-		$propertiesIterator =& $group->getProperties();
+		$propertiesIterator =$group->getProperties();
 		
 		while($propertiesIterator->hasNext()) {
-			$properties =& $propertiesIterator->next();
-			$propertiesType =& $properties->getType();
+			$properties =$propertiesIterator->next();
+			$propertiesType =$properties->getType();
 			print "\n\t(<a title='".htmlspecialchars($propertiesType->getDomain()." :: ".$propertiesType->getAuthority()." :: ".$propertiesType->getKeyword()." - ".$propertiesType->getDescription())."'>";
 			
-			$keys =& $properties->getKeys();
+			$keys =$properties->getKeys();
 			$i = 0;
 			
 			while ($keys->hasNext()) {
-				$key =& $keys->next();			
+				$key =$keys->next();			
 				print htmlspecialchars("\n\t\t".(($i)?", ":"").$key.": ".$properties->getProperty($key));
 				$i++;
 			}
@@ -271,11 +271,11 @@ END;
 	 * @access public
 	 * @ignore
 	 */
-	function printMember(& $member) {
-		$harmoni =& Harmoni::instance();
-		$id =& $member->getId();
+	function printMember($member) {
+		$harmoni = Harmoni::instance();
+		$id =$member->getId();
 		
-		$memberType =& $member->getType();
+		$memberType =$member->getType();
 		$harmoni->history->markReturnURL("polyphony/agents/edit_agent_details");
 		
 		print "\n<a href='".$harmoni->request->quickURL("agents","edit_agent_details", array("agentId"=>$id->getIdString()))."' title='".htmlspecialchars($memberType->getDomain()." :: ".$memberType->getAuthority()." :: ".$memberType->getKeyword()." - ".$memberType->getDescription())."'>";
@@ -285,18 +285,18 @@ END;
 		// print out the properties of the Agent
 		print "\n<em>";
 		$propertiesIterator = NULL;
-		$propertiesIterator =& $member->getProperties();
+		$propertiesIterator =$member->getProperties();
 		while($propertiesIterator->hasNext()) {
 			$properties = NULL;
-			$properties =& $propertiesIterator->next();
+			$properties =$propertiesIterator->next();
 			
-			$propertiesType =& $properties->getType();
+			$propertiesType =$properties->getType();
 			print "\n\t(<a style='text-decoration: none; font-weight: normal;' title='".htmlspecialchars($propertiesType->getDomain()." :: ".$propertiesType->getAuthority()." :: ".$propertiesType->getKeyword()." - ".$propertiesType->getDescription())."'>";
 			
-			$keys =& $properties->getKeys();
+			$keys =$properties->getKeys();
 			$i = 0;
 			while ($keys->hasNext()) {
-				$key =& $keys->next();			
+				$key =$keys->next();			
 				print htmlspecialchars("\n\t\t".(($i)?", ":"").$key.": ".$properties->getProperty($key));
 				$i++;
 			}

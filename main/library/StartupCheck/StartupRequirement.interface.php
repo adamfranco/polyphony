@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: StartupRequirement.interface.php,v 1.6 2005/08/05 18:31:35 gabeschine Exp $
+ * @version $Id: StartupRequirement.interface.php,v 1.7 2007/09/04 20:28:04 adamfranco Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: StartupRequirement.interface.php,v 1.6 2005/08/05 18:31:35 gabeschine Exp $
+ * @version $Id: StartupRequirement.interface.php,v 1.7 2007/09/04 20:28:04 adamfranco Exp $
  */
 class StartupRequirement {
 
@@ -47,7 +47,7 @@ class StartupRequirement {
 	 * @access public
 	 * @return ref object
 	 */
-	function &createWizard()
+	function createWizard()
 	{
 		
 	}

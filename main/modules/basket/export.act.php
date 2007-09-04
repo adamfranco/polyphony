@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.9 2006/12/13 20:17:38 adamfranco Exp $
+ * @version $Id: export.act.php,v 1.10 2007/09/04 20:28:12 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLAssetExporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.9 2006/12/13 20:17:38 adamfranco Exp $
+ * @version $Id: export.act.php,v 1.10 2007/09/04 20:28:12 adamfranco Exp $
  */
 class exportAction 
 	extends MainWindowAction
@@ -34,17 +34,17 @@ class exportAction
 	 * @since 9/27/05
 	 */
 	function isAuthorizedToExecute () {
-		$harmoni =& Harmoni::instance();
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$harmoni = Harmoni::instance();
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 
-		$basket =& Basket::instance();
+		$basket = Basket::instance();
 		$basket->reset();
-		$view =& $idManager->getId("edu.middlebury.authorization.view");
+		$view =$idManager->getId("edu.middlebury.authorization.view");
 		$this->_exportList = array();
 
 		while ($basket->hasNext()) {
-			$id =& $basket->next();
+			$id =$basket->next();
 			if ($authZ->isUserAuthorized($view, $id))
 				$this->_exportList[] = $id;
 		}
@@ -74,8 +74,8 @@ class exportAction
 	 * @since 9/28/05
 	 */
 	function getHeadingText () {
-		$harmoni =& Harmoni::Instance();
-		$idManager =& Services::getService("Id");
+		$harmoni = Harmoni::Instance();
+		$idManager = Services::getService("Id");
 
 		return dgettext("polyphony", "Export the <em>Assets</em> in the Selection");
 	}
@@ -88,15 +88,15 @@ class exportAction
 	 * @since 9/27/05
 	 */
 	function buildContent () {
-		$harmoni =& Harmoni::Instance();
+		$harmoni = Harmoni::Instance();
 
-		$centerPane =& $this->getActionRows();
+		$centerPane =$this->getActionRows();
 
-		$authN =& Services::getService("AuthN");
-		$authTypes =& $authN->getAuthenticationTypes();
+		$authN = Services::getService("AuthN");
+		$authTypes =$authN->getAuthenticationTypes();
 		$uniqueString = "";
 		while($authTypes->hasNext()) {
-			$authType =& $authTypes->next();
+			$authType =$authTypes->next();
 			$uniqueString .= "_".$authN->getUserId($authType);
 		}
 
@@ -113,9 +113,9 @@ class exportAction
 	 * @access public
 	 * @since 9/28/05
 	 */
-	function &createWizard () {
+	function createWizard () {
 		// Instantiate the wizard, then add our steps.
-		$wizard =& SimpleWizard::withText(
+		$wizard = SimpleWizard::withText(
 			"\n<h3>"._("Click <em>Export</em> to Export the Selection")."</h3>".
 			"\n<br/>"._("The current content of the Selection will be exported and presented as an archive for download.  Once the archive is downloaded click <em>Cancel</em> to go back.").
 			"\n<br/><h3>"._("Archive:")."</h3>".
@@ -133,26 +133,26 @@ class exportAction
 			"</td></tr></table>");
 		
 		// Create the properties.
-		$fileNameProp =& $wizard->addComponent("filepath", new WTextField());
+		$fileNameProp =$wizard->addComponent("filepath", new WTextField());
 
-// 		$datefield =& $wizard->addComponent("effective_date", new WTextField());
-// 		$date =& DateAndTime::Now();
+// 		$datefield =$wizard->addComponent("effective_date", new WTextField());
+// 		$date = DateAndTime::Now();
 // 		$datefield->setValue($date->asString());		
 // 
-// 		$date2field =& $wizard->addComponent("expiration_date", new WTextField());
+// 		$date2field =$wizard->addComponent("expiration_date", new WTextField());
 // 		
 // 		if (is_object($date2))
 // 			$date2field->setValue($date->asString());
 		
- 		$type =& $wizard->addComponent("compression", new WSelectList());
+ 		$type =$wizard->addComponent("compression", new WSelectList());
  		$type->setValue(".tar.gz");
  		$type->addOption(".tar.gz", dgettext("polyphony", "gzip"));
 //  		$type->addOption(".zip", _("zip"));
 //  		$type->addOption(".bz2", _("bz2"));
 
-		$save =& $wizard->addComponent("_save", 
+		$save =$wizard->addComponent("_save", 
 			WSaveButton::withLabel("Export"));
-		$cancel =& $wizard->addComponent("_cancel", new WCancelButton());
+		$cancel =$wizard->addComponent("_cancel", new WCancelButton());
 
 		return $wizard;
 	}
@@ -168,11 +168,11 @@ class exportAction
 	 * @since 4/28/05
 	 */
 	function saveWizard ( $cacheName ) {
-		$wizard =& $this->getWizard($cacheName);
+		$wizard =$this->getWizard($cacheName);
 				
 		$properties = $wizard->getAllValues();
 		// instantiate new exporter
-		$exporter =& XMLAssetExporter::withCompression(
+		$exporter = XMLAssetExporter::withCompression(
 			$properties['compression']);
 			
 		$dir = $exporter->exportList($this->_exportList);
@@ -204,7 +204,7 @@ class exportAction
 	 * @since 4/28/05
 	 */
 	function getReturnUrl () {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 				
 		$return = $harmoni->request->quickURL("basket", "view");
 		

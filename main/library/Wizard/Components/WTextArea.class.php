@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextArea.class.php,v 1.9 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WTextArea.class.php,v 1.10 2007/09/04 20:28:08 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__).'/WTextInput.abstract.php');
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__).'/WTextInput.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextArea.class.php,v 1.9 2006/04/24 22:36:55 adamfranco Exp $
+ * @version $Id: WTextArea.class.php,v 1.10 2007/09/04 20:28:08 adamfranco Exp $
  */
 class WTextArea 
 	extends WTextInput 
@@ -37,8 +37,8 @@ class WTextArea
 	 * @return ref object
 	 * @static
 	 */
-	function &withRowsAndColumns ($rows, $cols) {
-		$obj =& new WTextArea();
+	function withRowsAndColumns ($rows, $cols) {
+		$obj = new WTextArea();
 		$obj->_rows = $rows;
 		$obj->_cols = $cols;
 		return $obj;
@@ -123,7 +123,7 @@ class WTextArea
 		$m .= "</textarea>";
 		
 		$errText = $this->getErrorText();
-		$errRule =& $this->getErrorRule();
+		$errRule =$this->getErrorRule();
 		$errStyle = $this->getErrorStyle();
 		
 		if ($errText && $errRule) {

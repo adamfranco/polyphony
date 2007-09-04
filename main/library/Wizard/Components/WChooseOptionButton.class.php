@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WChooseOptionButton.class.php,v 1.2 2006/08/03 20:51:57 sporktim Exp $
+ * @version $Id: WChooseOptionButton.class.php,v 1.3 2007/09/04 20:28:06 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/WEventButton.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/WEventButton.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WChooseOptionButton.class.php,v 1.2 2006/08/03 20:51:57 sporktim Exp $
+ * @version $Id: WChooseOptionButton.class.php,v 1.3 2007/09/04 20:28:06 adamfranco Exp $
  */
 class WChooseOptionButton 
 	extends WEventButton
@@ -37,8 +37,8 @@ class WChooseOptionButton
 	 * @return ref object
 	 * @static
 	 */
-	function &withEventAndLabel ($event, $label) {
-		$obj =& new WChooseOptionButton();
+	function withEventAndLabel ($event, $label) {
+		$obj = new WChooseOptionButton();
 		$obj->setEventAndLabel($event, $label);
 		
 		return $obj;
@@ -50,8 +50,8 @@ class WChooseOptionButton
 	 * @access public
 	 * @return ref object
 	 */
-	function &withLabel ($label) {
-		$obj =& new WChooseOptionButton();
+	function withLabel ($label) {
+		$obj = new WChooseOptionButton();
 		$obj->_label = $label;
 		return $obj;
 	}
@@ -65,8 +65,8 @@ class WChooseOptionButton
 	 * @access public
 	 * @since 11/1/05
 	 */
-	function addOptionValue ( $name, &$value ) {
-		$this->_options[$name] =& $value;
+	function addOptionValue ( $name, $value ) {
+		$this->_options[$name] =$value;
 	}
 	
 	/**
@@ -83,7 +83,7 @@ class WChooseOptionButton
 		$option = stripslashes(RequestContext::value($fieldName."_option"));
 		if ($val) {
 			// trigger the save event on the wizard
-			$wizard =& $this->getWizard();
+			$wizard =$this->getWizard();
 			$wizard->triggerLater($this->_event, $wizard);
 			$this->_pressed = true;
 			$this->_option = $option;
@@ -105,7 +105,7 @@ class WChooseOptionButton
 		$values = array();
 		$values['pressed'] = $val;
 		$values['option_name'] = $option;
-		$values['option'] =& $this->_options[$option];
+		$values['option'] =$this->_options[$option];
 		return $values;
 	}
 	

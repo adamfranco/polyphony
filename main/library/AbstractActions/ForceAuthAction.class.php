@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ForceAuthAction.class.php,v 1.2 2006/11/30 22:02:37 adamfranco Exp $
+ * @version $Id: ForceAuthAction.class.php,v 1.3 2007/09/04 20:27:57 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -25,7 +25,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ForceAuthAction.class.php,v 1.2 2006/11/30 22:02:37 adamfranco Exp $
+ * @version $Id: ForceAuthAction.class.php,v 1.3 2007/09/04 20:27:57 adamfranco Exp $
  */
 class ForceAuthAction 
 	extends Action
@@ -63,12 +63,12 @@ class ForceAuthAction
 	 */
 	function isAuthenticated () {
 		$isAuthenticated = FALSE;
-		$authN =& Services::getService("AuthN");
+		$authN = Services::getService("AuthN");
 		
 		// authenticate.
-		$authTypes =& $authN->getAuthenticationTypes();
+		$authTypes =$authN->getAuthenticationTypes();
 		while ($authTypes->hasNext()) {
-			$authType =& $authTypes->next();
+			$authType =$authTypes->next();
 						
 			// If they are authenticated, quit
 			if ($authN->isUserAuthenticated($authType)) {
@@ -87,15 +87,15 @@ class ForceAuthAction
 	 * @since 8/4/06
 	 */
 	function authenticate () {
-		$authN =& Services::getService("AuthN");
+		$authN = Services::getService("AuthN");
 		
 		// Reconfigure the AuthNManager to use HTTP Auth rather than forms
 		// :: Start the AuthenticationManager OSID Impl.
-		$configuration =& new ConfigurationProperties;
+		$configuration = new ConfigurationProperties;
 		$tokenCollectors = array();
-		$authNTypes =& $authN->getAuthenticationTypes();
+		$authNTypes =$authN->getAuthenticationTypes();
 		while ($authNTypes->hasNext()) {
-			$tokenCollectors[serialize($authNTypes->next())] =& 
+			$tokenCollectors[serialize($authNTypes->next())] = 
 				new HTTPAuthNamePassTokenCollector($this->getRelm(),
 					$this->getCancelFunction());
 		}
@@ -104,11 +104,11 @@ class ForceAuthAction
 		
 		
 		// Authenticate with HTTP Authentication.
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$isAuthenticated = FALSE;
-		$authTypes =& $authN->getAuthenticationTypes();
+		$authTypes =$authN->getAuthenticationTypes();
 		while ($authTypes->hasNext() && !$isAuthenticated) {
-			$authType =& $authTypes->next();
+			$authType =$authTypes->next();
 			
 			// Try authenticating with this type
 			$authN->authenticateUser($authType);

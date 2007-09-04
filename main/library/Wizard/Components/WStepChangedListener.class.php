@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStepChangedListener.class.php,v 1.2 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WStepChangedListener.class.php,v 1.3 2007/09/04 20:28:08 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WizardEventListener.abstract.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WizardEventListener.abst
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStepChangedListener.class.php,v 1.2 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WStepChangedListener.class.php,v 1.3 2007/09/04 20:28:08 adamfranco Exp $
  */
 class WStepChangedListener 
 	extends WizardEventListener 
@@ -74,7 +74,7 @@ class WStepChangedListener
 	 * @access public
 	 * @return void
 	 */
-	function handleEvent ($eventType, &$source, $context) {
+	function handleEvent ($eventType, $source, $context) {
 		if ($eventType == 'edu.middlebury.polyphony.wizard.step_changed'){
 			$action = $this->_callBackFunction.'($source, $context);';
 			eval($action);				

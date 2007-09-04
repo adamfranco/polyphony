@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.45 2006/05/24 20:01:04 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.46 2007/09/04 20:28:11 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -26,7 +26,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_authorizations.act.php,v 1.45 2006/05/24 20:01:04 adamfranco Exp $
+ * @version $Id: edit_authorizations.act.php,v 1.46 2007/09/04 20:28:11 adamfranco Exp $
  */
 class edit_authorizationsAction 
 	extends MainWindowAction
@@ -50,28 +50,28 @@ class edit_authorizationsAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		$harmoni =& Harmoni::instance();
-		$idManager =& Services::getService("Id");
-		$agentManager =& Services::getService("Agent");
+		$harmoni = Harmoni::instance();
+		$idManager = Services::getService("Id");
+		$agentManager = Services::getService("Agent");
 			
 		// Get the id of the selected agent using $_REQUEST
 		$harmoni->request->startNamespace("polyphony-authorizations");
 		$mult = RequestContext::value("mult");
 		$agents = RequestContext::value("agents");
 		$idObject = $mult?null:$idManager->getId(RequestContext::value("agentId"));
-//		$idObject =& $idManager->getId(RequestContext::value("agentId"));
-		$GLOBALS["agentId"] =& $idObject;
+//		$idObject =$idManager->getId(RequestContext::value("agentId"));
+		$GLOBALS["agentId"] =$idObject;
 		$harmoni->request->endNamespace();
 		
 		if ($mult) {
 			return dgettext("polyphony", "Modify Authorizations for Multiple Agents");
 		} else if ($agentManager->isGroup($idObject)) {
-			$agent =& $agentManager->getGroup($idObject);
+			$agent =$agentManager->getGroup($idObject);
 			return dgettext("polyphony", "Modify Authorizations for Group").": <em> "
 						.$agent->getDisplayName()."</em>";
 		
 		} else if ($agentManager->isAgent($idObject)) {
-			$agent =& $agentManager->getAgent($idObject);
+			$agent =$agentManager->getAgent($idObject);
 			return dgettext("polyphony", "Modify Authorizations for User").": <em> "
 						.$agent->getDisplayName()."</em>";
 		
@@ -91,8 +91,8 @@ class edit_authorizationsAction
 	function buildContent () {
 		$defaultTextDomain = textdomain("polyphony");
 		
-		$actionRows =& $this->getActionRows();
-		$harmoni =& Harmoni::instance();
+		$actionRows =$this->getActionRows();
+		$harmoni = Harmoni::instance();
 		
 		// start our namespace
 		$harmoni->request->startNamespace("polyphony-authorizations");
@@ -102,12 +102,12 @@ class edit_authorizationsAction
 		$harmoni->history->markReturnURL("polyphony/agents/process_authorizations");
 
 		// Intro
-		$idManager =& Services::getService("Id");
-		$agentManager =& Services::getService("Agent");
-		$authZManager =& Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		$agentManager = Services::getService("Agent");
+		$authZManager = Services::getService("AuthZ");
 		
 		// Intro message
-		$intro =& new Block("&nbsp; &nbsp; "._("Check or uncheck authorization(s) for the section(s) of your choice.")."<br />
+		$intro = new Block("&nbsp; &nbsp; "._("Check or uncheck authorization(s) for the section(s) of your choice.")."<br />
 				&nbsp; &nbsp; "._("After each change, the changes are saved automatically.")."<br /><br />", STANDARD_BLOCK);
 		$actionRows->add($intro);
 		
@@ -129,7 +129,7 @@ class edit_authorizationsAction
 		
 		$this->_agentIds = array();
 		foreach ($agentIds as $idString) {
-			$this->_agentIds[] =& $idManager->getId($idString);
+			$this->_agentIds[] =$idManager->getId($idString);
 		}
 		
 		
@@ -146,24 +146,24 @@ class edit_authorizationsAction
 		print "<a href='".$harmoni->request->quickURL("admin","main")."'><button>"._("Return to the Admin Tools")."</button></a>";
 		print "</td></tr></table>";
 		
-		$nav =& new Block(ob_get_contents(), STANDARD_BLOCK);
+		$nav = new Block(ob_get_contents(), STANDARD_BLOCK);
 		$actionRows->add($nav, "100%", null, LEFT, CENTER);
 		ob_end_clean();
 		
 		// Get all hierarchies and their root qualifiers
-		$hierarchyIds =& $authZManager->getQualifierHierarchies();
-		$hierarchyManager =& Services::getService("Hierarchy");
+		$hierarchyIds =$authZManager->getQualifierHierarchies();
+		$hierarchyManager = Services::getService("Hierarchy");
 		while ($hierarchyIds->hasNext()) {
-			$hierarchyId =& $hierarchyIds->next();
+			$hierarchyId =$hierarchyIds->next();
 			
-			$hierarchy =& $hierarchyManager->getHierarchy($hierarchyId);
-			$header =& new Heading($hierarchy->getDisplayName()." - <em>".$hierarchy->getDescription()."</em>", 2);
+			$hierarchy =$hierarchyManager->getHierarchy($hierarchyId);
+			$header = new Heading($hierarchy->getDisplayName()." - <em>".$hierarchy->getDescription()."</em>", 2);
 			$actionRows->add($header, "100%", null, LEFT, CENTER);
 		
 			// Get the root qualifiers for the Hierarchy
-			$qualifiers =& $authZManager->getRootQualifiers($hierarchyId);
+			$qualifiers =$authZManager->getRootQualifiers($hierarchyId);
 			while ($qualifiers->hasNext()) {
-				$qualifier =& $qualifiers->next();
+				$qualifier =$qualifiers->next();
 		
 				// Create a layout for this qualifier
 				ob_start();
@@ -177,7 +177,7 @@ class edit_authorizationsAction
 // 										"edit_authorizationsAction::getChildQualifiers",
 // 										new HTMLColor("#ddd")
 // 									);
-				$qualifierLayout =& new Block(ob_get_contents(), STANDARD_BLOCK);
+				$qualifierLayout = new Block(ob_get_contents(), STANDARD_BLOCK);
 				ob_end_clean();
 				$actionRows->add($qualifierLayout, "100%", null, LEFT, CENTER);
 		
@@ -202,23 +202,23 @@ class edit_authorizationsAction
 	 * @access public
 	 * @since 1/6/06
 	 */
-	function printAZTable ( &$qualifier ) {
-		$azManager =& Services::getService("AuthZ");
+	function printAZTable ( $qualifier ) {
+		$azManager = Services::getService("AuthZ");
 		$functionOrder = array();
 		
 		print "\n\n<table border='0' style='text-align: center'>";
 		
-		$funcTypes =& $azManager->getFunctionTypes();
+		$funcTypes =$azManager->getFunctionTypes();
 		$funcTypeRow = '';
 		ob_start();
 		while ($funcTypes->hasNext()) {
-			$funcType =& $funcTypes->next();
-			$functions =& $azManager->getFunctions($funcType);
+			$funcType =$funcTypes->next();
+			$functions =$azManager->getFunctions($funcType);
 			$i = 0;
 			while ($functions->hasNext()) {
 				$i++;
-				$function =& $functions->next();
-				$functionOrder[] =& $function->getId();
+				$function =$functions->next();
+				$functionOrder[] =$function->getId();
 				print "\n\t\t<th style='vertical-align: bottom; border: 1px solid; border-bottom: 0px;'>";
 				
 				$name = htmlspecialchars($function->getReferenceName());
@@ -262,9 +262,9 @@ class edit_authorizationsAction
 	 * @access public
 	 * @since 1/6/06
 	 */
-	function printQualifierRows( &$qualifier, &$functionOrder, $depth=0 ) {
-		$qualifierId =& $qualifier->getId();
-		$type =& $qualifier->getQualifierType();
+	function printQualifierRows( $qualifier, $functionOrder, $depth=0 ) {
+		$qualifierId =$qualifier->getId();
+		$type =$qualifier->getQualifierType();
 		
 		$title = _("Id: ").$qualifierId->getIdString()." ";
 		$title .= _("Type: ").$type->getDomain()."::".$type->getAuthority()."::".$type->getKeyword();
@@ -309,8 +309,8 @@ class edit_authorizationsAction
 				$expanded = FALSE;
 			}
 			
-			$harmoni =& Harmoni::instance();
-			$url =& $harmoni->request->mkURLWithPassthrough();
+			$harmoni = Harmoni::instance();
+			$url =$harmoni->request->mkURLWithPassthrough();
 			$url->setValue('expanded_nodes', implode('!', $newExpandedNodes));
 			
 			print "<a style='text-decoration: none;' href='".$url->write()."'>".$symbol."</a>";
@@ -345,7 +345,7 @@ class edit_authorizationsAction
 		
 		// Recursively print the children.
 		if (in_array($qualifierId->getIdString(), $this->expandedNodes)) {
-			$children =& $qualifier->getChildren();
+			$children =$qualifier->getChildren();
 			
 			// Stuff for previous/next links
 			$linkLeftSpace = (($depth + 1) * 20 + 25).'px';
@@ -358,15 +358,15 @@ class edit_authorizationsAction
 			
 			// previous link
 			if ($total > $limit) {
-				$harmoni =& Harmoni::instance();
-				$url =& $harmoni->request->mkURLWithPassthrough();
+				$harmoni = Harmoni::instance();
+				$url =$harmoni->request->mkURLWithPassthrough();
 				$url->setValue($qualifierId->getIdString().'_start', max($start - 10, 0));
 				ob_start();
 				print "\n\t<tr>";
 				print "\n\t\t<td style='white-space: nowrap; text-align: left; border: 1px solid; border-right: 0px; padding-left: ".$linkLeftSpace."'>";
 				print "\n\t\t\t"._("Displaying: ");
-				$harmoni =& Harmoni::instance();
-				$url =& $harmoni->request->mkURLWithPassthrough();
+				$harmoni = Harmoni::instance();
+				$url =$harmoni->request->mkURLWithPassthrough();
 				$url->setValue($qualifierId->getIdString().'_start', 'STARTSTARTSTART');
 				print "\n\t\t\t<select onchange='";
 				print 'var url="'.$url->write().'"; var regex = /STARTSTARTSTART/; window.location = url.replace(regex, this.value);';
@@ -413,12 +413,12 @@ class edit_authorizationsAction
 	 * @access public
 	 * @since 1/6/06
 	 */
-	function printAZCell ( &$qualifier, &$functionId ) {
-		$harmoni =& Harmoni::instance();
-		$idManager =& Services::getService("Id");
-		$authZManager =& Services::getService("AuthZ");
-		$idManager =& Services::getService("IdManager");
-		$agentManager =& Services::getService("AgentManager");
+	function printAZCell ( $qualifier, $functionId ) {
+		$harmoni = Harmoni::instance();
+		$idManager = Services::getService("Id");
+		$authZManager = Services::getService("AuthZ");
+		$idManager = Services::getService("IdManager");
+		$agentManager = Services::getService("AgentManager");
 		
 		print "\n\t\t<td>";
 		
@@ -445,20 +445,20 @@ class edit_authorizationsAction
 	 * @access public
 	 * @since 1/9/06
 	 */
-	function loadAZs (&$qualifierId) {
+	function loadAZs ($qualifierId) {
 		$this->_agentAZs = array();
-		$azManager =& Services::getService("AuthZ");
+		$azManager = Services::getService("AuthZ");
 		foreach (array_keys($this->_agentIds) as $key) {
 			$agentIdString = $this->_agentIds[$key]->getIdString();
 			$null = null;
-			$azs =& $azManager->getAllAZs($this->_agentIds[$key], $null, $qualifierId, FALSE);
+			$azs =$azManager->getAllAZs($this->_agentIds[$key], $null, $qualifierId, FALSE);
 			$agentAZs[$agentIdString] = array();
 			while ($azs->hasNext()) {
-				$az =& $azs->next();
-				$function =& $az->getFunction();
-				$functionId =& $function->getId();
-// 				$qualifier =& $az->getQualifier();
-// 				$qualifierid =& $qualifier->getId();
+				$az =$azs->next();
+				$function =$az->getFunction();
+				$functionId =$function->getId();
+// 				$qualifier =$az->getQualifier();
+// 				$qualifierid =$qualifier->getId();
 				
 				if (!isset($this->_agentAZs[$agentIdString][$qualifierId->getIdString()]))
 					$this->_agentAZs[$agentIdString][$qualifierId->getIdString()] = array();
@@ -466,7 +466,7 @@ class edit_authorizationsAction
 				if (!isset($this->_agentAZs[$agentIdString][$qualifierId->getIdString()][$functionId->getIdString()]))
 					$this->_agentAZs[$agentIdString][$qualifierId->getIdString()][$functionId->getIdString()] = array();
 				
-				$this->_agentAZs[$agentIdString][$qualifierId->getIdString()][$functionId->getIdString()][] =& $az;
+				$this->_agentAZs[$agentIdString][$qualifierId->getIdString()][$functionId->getIdString()][] =$az;
 			}
 		}
 		
@@ -486,9 +486,9 @@ class edit_authorizationsAction
 	 * @access public
 	 * @ignore
 	 */
-	function printQualifier(& $qualifier) {
-		$id =& $qualifier->getId();
-		$type =& $qualifier->getQualifierType();
+	function printQualifier($qualifier) {
+		$id =$qualifier->getId();
+		$type =$qualifier->getQualifierType();
 		
 		$title = _("Id: ").$id->getIdString()." ";
 		$title .= _("Type: ").$type->getDomain()."::".$type->getAuthority()."::".$type->getKeyword();
@@ -496,8 +496,8 @@ class edit_authorizationsAction
 		print "\n<a title='".htmlspecialchars($title, ENT_QUOTES)."'><strong>".htmlspecialchars($qualifier->getReferenceName(), ENT_QUOTES)."</strong></a>";
 		
 		// Check that the current user is authorized to see the authorizations.
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("IdManager");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("IdManager");
 		if ($authZ->isUserAuthorized(
 					$idManager->getId("edu.middlebury.authorization.view_authorizations"),
 					$id)) 
@@ -522,13 +522,13 @@ class edit_authorizationsAction
 	 * @access public
 	 * @ignore
 	 */
-	function printEditOptions( &$qualifier, &$functionId ) {
-		$qualifierId =& $qualifier->getId();
-		$harmoni =& Harmoni::instance();
-		$idManager =& Services::getService("Id");
-		$authZManager =& Services::getService("AuthZ");
-		$idManager =& Services::getService("IdManager");
-		$agentManager =& Services::getService("AgentManager");
+	function printEditOptions( $qualifier, $functionId ) {
+		$qualifierId =$qualifier->getId();
+		$harmoni = Harmoni::instance();
+		$idManager = Services::getService("Id");
+		$authZManager = Services::getService("AuthZ");
+		$idManager = Services::getService("IdManager");
+		$agentManager = Services::getService("AgentManager");
 		
 		$totalAgents = count($this->_agentIds);
 				
@@ -540,16 +540,16 @@ class edit_authorizationsAction
 				$implicitAZs = array();
 				$implicitAZOwners = array();
 				foreach (array_keys($this->_agentIds) as $key) {
-					$allAZs =& $authZManager->getAllAZs($this->_agentIds[$key], $functionId, $qualifierId, FALSE);
+					$allAZs =$authZManager->getAllAZs($this->_agentIds[$key], $functionId, $qualifierId, FALSE);
 					$hasExplicit = $hasImplicit = false;
 					while ($allAZs->hasNext()) {
-						$az =& $allAZs->next();
+						$az =$allAZs->next();
 						if ($az->isExplicit()) {
 							$hasExplicit = true;
 						} else {
 							$hasImplicit = true;
-							$implicitAZs[] =& $az;
-							$implicitAZOwners[] =& $this->_agentIds[$key];
+							$implicitAZs[] =$az;
+							$implicitAZOwners[] =$this->_agentIds[$key];
 						}
 					}
 					if ($hasExplicit) $numExplicit++;
@@ -581,33 +581,33 @@ class edit_authorizationsAction
 // 				$title = "";
 // 				for ($i=0; $i < count($implicitAZs); $i++) {
 // 					// Built info about the explicit AZs that cause this implictAZ
-// 					$implicitAZ =& $implicitAZs[$i];
-// 					$AZOwnerId =& $implicitAZOwners[$i];
+// 					$implicitAZ =$implicitAZs[$i];
+// 					$AZOwnerId =$implicitAZOwners[$i];
 // 					$displayName = "";
 // 					if ($agentManager->isAgent($AZOwnerId)) {
-// 						$agent =& $agentManager->getAgent($AZOwnerId);
+// 						$agent =$agentManager->getAgent($AZOwnerId);
 // 						$displayName = $agent->getDisplayName();
 // 						unset($agent);
 // 					} else if ($agentManager->isGroup($AZOwnerId)) {
-// 						$group =& $agentManager->getGroup($AZOwnerId);
+// 						$group =$agentManager->getGroup($AZOwnerId);
 // 						$displayName = $group->getDisplayName();
 // 						unset($group);
 // 					}
-// 					$explicitAZs =& $authZManager->getExplicitUserAZsForImplicitAZ($implicitAZ);
+// 					$explicitAZs =$authZManager->getExplicitUserAZsForImplicitAZ($implicitAZ);
 // 
 // 					while ($explicitAZs->hasNext()) {
 // 						$title .= "$displayName - ";
-// 						$explicitAZ =& $explicitAZs->next();
-// 						$explicitAgentId =& $explicitAZ->getAgentId();
-// 						$explicitQualifier =& $explicitAZ->getQualifier();
-// 						$explicitQualifierId =& $explicitQualifier->getId();
+// 						$explicitAZ =$explicitAZs->next();
+// 						$explicitAgentId =$explicitAZ->getAgentId();
+// 						$explicitQualifier =$explicitAZ->getQualifier();
+// 						$explicitQualifierId =$explicitQualifier->getId();
 // 					
 // 						// get the agent/group for the AZ
 // 						if ($agentManager->isAgent($explicitAgentId)) {
-// 							$explicitAgent =& $agentManager->getAgent($explicitAgentId);
+// 							$explicitAgent =$agentManager->getAgent($explicitAgentId);
 // 							$title .= _("User").": ".$explicitAgent->getDisplayName();
 // 						} else if ($agentManager->isGroup($explicitAgentId)) {
-// 							$explicitGroup =& $agentManager->getGroup($explicitAgentId);
+// 							$explicitGroup =$agentManager->getGroup($explicitAgentId);
 // 							$title .= _("Group").": ".$explicitGroup->getDisplayName();
 // 						} else {
 // 							$title .= _("User/Group").": ".$explicitAgentId->getIdString();
@@ -647,8 +647,8 @@ class edit_authorizationsAction
 				if (count($implicitAZs))
 					print "&nbsp;";
 				
-				$authZ =& Services::getService("AuthZ");
-				$idManager =& Services::getService("IdManager");
+				$authZ = Services::getService("AuthZ");
+				$idManager = Services::getService("IdManager");
 				$canEdit = $authZ->isUserAuthorized(
 										$idManager->getId("edu.middlebury.authorization.modify_authorizations"),
 										$qualifierId);
@@ -679,7 +679,7 @@ class edit_authorizationsAction
 					print $explicitChecked;
 				
 					// Check that the current user is authorized to modify the authorizations.
-					$agentManager =& Services::getService("AgentManager");
+					$agentManager = Services::getService("AgentManager");
 					if ($canEdit)
 					{
 						// The checkbox is really just for show, the link is where we send
@@ -717,13 +717,13 @@ class edit_authorizationsAction
 	 * @access public
 	 * @ignore
 	 */
-	function printNewEditOptions( &$qualifier, &$functionId) {
-		$qualifierId =& $qualifier->getId();
-		$harmoni =& Harmoni::instance();
-		$idManager =& Services::getService("Id");
-		$authZManager =& Services::getService("AuthZ");
-		$idManager =& Services::getService("IdManager");
-		$agentManager =& Services::getService("AgentManager");
+	function printNewEditOptions( $qualifier, $functionId) {
+		$qualifierId =$qualifier->getId();
+		$harmoni = Harmoni::instance();
+		$idManager = Services::getService("Id");
+		$authZManager = Services::getService("AuthZ");
+		$idManager = Services::getService("IdManager");
+		$agentManager = Services::getService("AgentManager");
 		
 		$totalAgents = count($this->_agentIds);
 				
@@ -735,20 +735,20 @@ class edit_authorizationsAction
 				$implicitAZs = array();
 				$implicitAZOwners = array();
 				foreach (array_keys($this->_agentIds) as $key) {
-					$allAZs =& $this->_agentAZs
+					$allAZs =$this->_agentAZs
 						[$this->_agentIds[$key]->getIdString()]
 						[$qualifierId->getIdString()]
 						[$functionId->getIdString()];
 					$hasExplicit = $hasImplicit = false;
 					if (is_array($allAZs)) {
 						foreach (array_keys($allAZs) as $azKey) {
-							$az =& $allAZs[$azKey];
+							$az =$allAZs[$azKey];
 							if ($az->isExplicit()) {
 								$hasExplicit = true;
 							} else {
 								$hasImplicit = true;
-								$implicitAZs[] =& $az;
-								$implicitAZOwners[] =& $this->_agentIds[$key];
+								$implicitAZs[] =$az;
+								$implicitAZOwners[] =$this->_agentIds[$key];
 							}
 						}
 						if ($hasExplicit) $numExplicit++;
@@ -781,33 +781,33 @@ class edit_authorizationsAction
 // 				$title = "";
 // 				for ($i=0; $i < count($implicitAZs); $i++) {
 // 					// Built info about the explicit AZs that cause this implictAZ
-// 					$implicitAZ =& $implicitAZs[$i];
-// 					$AZOwnerId =& $implicitAZOwners[$i];
+// 					$implicitAZ =$implicitAZs[$i];
+// 					$AZOwnerId =$implicitAZOwners[$i];
 // 					$displayName = "";
 // 					if ($agentManager->isAgent($AZOwnerId)) {
-// 						$agent =& $agentManager->getAgent($AZOwnerId);
+// 						$agent =$agentManager->getAgent($AZOwnerId);
 // 						$displayName = $agent->getDisplayName();
 // 						unset($agent);
 // 					} else if ($agentManager->isGroup($AZOwnerId)) {
-// 						$group =& $agentManager->getGroup($AZOwnerId);
+// 						$group =$agentManager->getGroup($AZOwnerId);
 // 						$displayName = $group->getDisplayName();
 // 						unset($group);
 // 					}
-// 					$explicitAZs =& $authZManager->getExplicitUserAZsForImplicitAZ($implicitAZ);
+// 					$explicitAZs =$authZManager->getExplicitUserAZsForImplicitAZ($implicitAZ);
 // 
 // 					while ($explicitAZs->hasNext()) {
 // 						$title .= "$displayName - ";
-// 						$explicitAZ =& $explicitAZs->next();
-// 						$explicitAgentId =& $explicitAZ->getAgentId();
-// 						$explicitQualifier =& $explicitAZ->getQualifier();
-// 						$explicitQualifierId =& $explicitQualifier->getId();
+// 						$explicitAZ =$explicitAZs->next();
+// 						$explicitAgentId =$explicitAZ->getAgentId();
+// 						$explicitQualifier =$explicitAZ->getQualifier();
+// 						$explicitQualifierId =$explicitQualifier->getId();
 // 					
 // 						// get the agent/group for the AZ
 // 						if ($agentManager->isAgent($explicitAgentId)) {
-// 							$explicitAgent =& $agentManager->getAgent($explicitAgentId);
+// 							$explicitAgent =$agentManager->getAgent($explicitAgentId);
 // 							$title .= _("User").": ".$explicitAgent->getDisplayName();
 // 						} else if ($agentManager->isGroup($explicitAgentId)) {
-// 							$explicitGroup =& $agentManager->getGroup($explicitAgentId);
+// 							$explicitGroup =$agentManager->getGroup($explicitAgentId);
 // 							$title .= _("Group").": ".$explicitGroup->getDisplayName();
 // 						} else {
 // 							$title .= _("User/Group").": ".$explicitAgentId->getIdString();
@@ -847,8 +847,8 @@ class edit_authorizationsAction
 				if (count($implicitAZs))
 					print "&nbsp;";
 				
-				$authZ =& Services::getService("AuthZ");
-				$idManager =& Services::getService("IdManager");
+				$authZ = Services::getService("AuthZ");
+				$idManager = Services::getService("IdManager");
 				$canEdit = $authZ->isUserAuthorized(
 										$idManager->getId("edu.middlebury.authorization.modify_authorizations"),
 										$qualifierId);
@@ -879,7 +879,7 @@ class edit_authorizationsAction
 					print $explicitChecked;
 				
 					// Check that the current user is authorized to modify the authorizations.
-					$agentManager =& Services::getService("AgentManager");
+					$agentManager = Services::getService("AgentManager");
 					if ($canEdit)
 					{
 						// The checkbox is really just for show, the link is where we send

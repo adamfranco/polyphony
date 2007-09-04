@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleWizard.class.php,v 1.5 2005/09/28 20:50:28 gabeschine Exp $
+ * @version $Id: SimpleWizard.class.php,v 1.6 2007/09/04 20:28:05 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Wizard.abstract.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Wizard/Wizard.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleWizard.class.php,v 1.5 2005/09/28 20:50:28 gabeschine Exp $
+ * @version $Id: SimpleWizard.class.php,v 1.6 2007/09/04 20:28:05 adamfranco Exp $
  */
 class SimpleWizard extends Wizard {
 	var $_text;
@@ -33,8 +33,8 @@ class SimpleWizard extends Wizard {
 	 * @access public
 	 * @return ref object
 	 */
-	function &withText ($text, $class = 'SimpleWizard') {
-		$obj =& new $class();
+	function withText ($text, $class = 'SimpleWizard') {
+		$obj = new $class();
 		$obj->_text = $text;
 		return $obj;
 	}
@@ -50,8 +50,8 @@ class SimpleWizard extends Wizard {
 	function getMarkup ($fieldName) {
 		$fromParent = parent::getMarkup($fieldName);
 		// make sure that we add the form info to the markup
-		$harmoni =& Harmoni::instance();
-		$urlObj =& $harmoni->request->mkURL();
+		$harmoni = Harmoni::instance();
+		$urlObj =$harmoni->request->mkURL();
 		$url = $urlObj->write();
 		$formName = $this->getWizardFormName();
 		$pre = "<form action='$url' method='post' name='$formName' id='$formName' enctype='multipart/form-data'>\n";

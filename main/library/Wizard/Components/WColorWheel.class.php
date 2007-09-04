@@ -7,7 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  * @license This is distributed under the BY-NC-SA licence(http://creativecommons.org/licenses/by-nc-sa/2.0/). License for commercial use is not possible
  *
- * @version $Id: WColorWheel.class.php,v 1.2 2005/09/02 19:09:20 nstamato Exp $
+ * @version $Id: WColorWheel.class.php,v 1.3 2007/09/04 20:28:06 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -22,7 +22,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *  @license This is distributed under the BY-NC-SA licence(http://creativecommons.org/licenses/by-nc-sa/2.0/). License for commercial use is not possible
  *
- * @version $Id: WColorWheel.class.php,v 1.2 2005/09/02 19:09:20 nstamato Exp $
+ * @version $Id: WColorWheel.class.php,v 1.3 2007/09/04 20:28:06 adamfranco Exp $
  */
 class WColorWheel 
 	extends WizardComponent 
@@ -124,7 +124,7 @@ class WColorWheel
 	 * @return string
 	 */
 	function getMarkup ($fieldName) {
-		$guimanager =& Services::getService("GUIManager");
+		$guimanager = Services::getService("GUIManager");
 		$name = RequestContext::name($fieldName);
 		$value = $this->_value;
 		$settings = $this->_settings;

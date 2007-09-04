@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ConfigSystem.class.php,v 1.9 2005/08/01 20:06:54 adamfranco Exp $
+ * @version $Id: ConfigSystem.class.php,v 1.10 2007/09/04 20:27:58 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ConfigSystem.class.php,v 1.9 2005/08/01 20:06:54 adamfranco Exp $
+ * @version $Id: ConfigSystem.class.php,v 1.10 2007/09/04 20:27:58 adamfranco Exp $
  */
 class ConfigSystem {
 
@@ -64,13 +64,13 @@ class ConfigSystem {
 			return;
 		}
 
-		$typeManager =& Services::getService("SchemaManager");
+		$typeManager = Services::getService("SchemaManager");
 
-		$this->_schemaType =& new HarmoniType("config_system","edu.middlebury.harmoni",$program);
+		$this->_schemaType = new HarmoniType("config_system","edu.middlebury.harmoni",$program);
 		
-		$schema =& new Schema($this->_schemaType);
+		$schema = new Schema($this->_schemaType);
 
-		$this->_schema =& $schema;
+		$this->_schema =$schema;
 
 		$this->_setup = true;
 		$this->_record = null;
@@ -87,11 +87,11 @@ class ConfigSystem {
 	*/
 	function addProperty($field, $default=null)
 	{
-		$typeManager =& Services::getService("DataTypeManager");
+		$typeManager = Services::getService("DataTypeManager");
 
 		if ($default == null || $typeManager->isObjectOfDataType($default, $field->getType())) {
 			$this->_schema->addField( $field );
-			if ($default) $this->_defaults[$field->getLabel()] =& $default;
+			if ($default) $this->_defaults[$field->getLabel()] =$default;
 		}
 	}
 
@@ -102,11 +102,11 @@ class ConfigSystem {
 	*/
 	function finishSetup()
 	{
-		$manager =& Services::getService("SchemaManager");
+		$manager = Services::getService("SchemaManager");
 		$manager->synchronize($this->_schema);
 
 		// now go through and set up all our default values. but only do so if it's not already stored in the DB.
-		$record =& $this->getRecord(true);
+		$record =$this->getRecord(true);
 		if (!$record->getID()) {
 			foreach (array_keys($this->_defaults) as $key) {
 				if ($this->_defaults[$key])
@@ -135,7 +135,7 @@ class ConfigSystem {
 	* @access public
 	* @return ref object
 	*/
-	function &getRecord($force=false)
+	function getRecord($force=false)
 	{
 		if ($this->_setup && !$force) {
 			throwError(
@@ -143,7 +143,7 @@ class ConfigSystem {
 		}
 
 		if ($this->_record) return $this->_record;
-		$recordManager =& Services::getService("RecordManager");
+		$recordManager = Services::getService("RecordManager");
 
 		// first we will search the record manager to see if it has any records (hopefully only one!!) of the type
 		// that we are looking for. otherwise, we will create a new one.
@@ -153,13 +153,13 @@ class ConfigSystem {
 		if (count($ids)) {
 			// we'll use the first id, since there really only should be one.
 			$id = $ids[0];
-			$this->_record =& $recordManager->fetchRecord($id, true);
+			$this->_record =$recordManager->fetchRecord($id, true);
 			// if for some reason the record is not active, let's activate it
 			if (!$this->_record->isActive()) {
 				$this->_record->setActiveFlag(true);
 			}
 		} else {
-			$this->_record =& $recordManager->createRecord($this->_schemaType, false);
+			$this->_record =$recordManager->createRecord($this->_schemaType, false);
 		}
 
 		return $this->_record;

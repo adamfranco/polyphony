@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WFileUploadField.class.php,v 1.3 2005/10/31 22:54:19 adamfranco Exp $
+ * @version $Id: WFileUploadField.class.php,v 1.4 2007/09/04 20:28:06 adamfranco Exp $
  */
 
 require_once (POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once (POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WFileUploadField.class.php,v 1.3 2005/10/31 22:54:19 adamfranco Exp $
+ * @version $Id: WFileUploadField.class.php,v 1.4 2007/09/04 20:28:06 adamfranco Exp $
  */
 class WFileUploadField 
 	extends WizardComponent 
@@ -209,10 +209,10 @@ class WFileUploadField
 		$m = "";
 
 		if ($this->_filename) {
-			$size =& ByteSize::withValue($this->_size);
+			$size = ByteSize::withValue($this->_size);
 			$m .= "<i>". $this->_filename." (".$size->asString().")</i>\n";
 		} else if ($this->_startingDisplayFilename && $this->_startingDisplaySize) {
-			$size =& ByteSize::withValue($this->_startingDisplaySize);
+			$size = ByteSize::withValue($this->_startingDisplaySize);
 			$m .= "<i>". $this->_startingDisplayFilename
 				." (".$size->asString().")</i>\n";
 		}

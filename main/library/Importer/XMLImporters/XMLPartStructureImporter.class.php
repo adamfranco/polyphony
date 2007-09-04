@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureImporter.class.php,v 1.21 2007/01/30 20:45:18 adamfranco Exp $
+ * @version $Id: XMLPartStructureImporter.class.php,v 1.22 2007/09/04 20:28:01 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLPartStructureImporter.class.php,v 1.21 2007/01/30 20:45:18 adamfranco Exp $
+ * @version $Id: XMLPartStructureImporter.class.php,v 1.22 2007/09/04 20:28:01 adamfranco Exp $
  */
 class XMLPartStructureImporter extends XMLImporter {
 		
@@ -33,7 +33,7 @@ class XMLPartStructureImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function XMLPartStructureImporter (&$existingArray) {
+	function XMLPartStructureImporter ($existingArray) {
 		parent::XMLImporter($existingArray);
 	}
 
@@ -58,7 +58,7 @@ class XMLPartStructureImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function isImportable (&$element) {
+	function isImportable ($element) {
 		if($element->nodeName == "partstructure")
 			return true;
 		else
@@ -83,15 +83,15 @@ class XMLPartStructureImporter extends XMLImporter {
 	 * @since 10/6/05
 	 */
 	function importNode () {
-		$idManager =& Services::getService("IdManager");
+		$idManager = Services::getService("IdManager");
 		
 		$this->getNodeInfo();
 
 		$hasId = $this->_node->hasAttribute("id");
 		if ($hasId && (in_array($this->_node->getAttribute("id"),
 				$this->_existingArray)	|| $this->_type == "update")) {
-			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
-			$this->_object =& $this->_parent->getPartStructure($this->_myId);
+			$this->_myId =$idManager->getId($this->_node->getAttribute("id"));
+			$this->_object =$this->_parent->getPartStructure($this->_myId);
 			$this->update();
 		} else if ($this->validate($this->_info['type'])) {
 			// If we an id specified for this global Record Structure make use
@@ -99,7 +99,7 @@ class XMLPartStructureImporter extends XMLImporter {
 			// like Dublin Core
 			if ($this->_node->hasAttribute("id") && $this->_node->getAttribute("id")) {
 				
-				$parentId =& $this->_parent->getId();
+				$parentId =$this->_parent->getId();
 				// Escape any regular expression special characters
 				$parentIdStringTerm = preg_replace('/[\/()\[\]\.\+\?\^\$]/',
 										'\\\\$0', $parentId->getIdString());
@@ -119,7 +119,7 @@ class XMLPartStructureImporter extends XMLImporter {
 			} else 
 				$id = null;
 			
-			$this->_object =&
+			$this->_object =
 				$this->_parent->createPartStructure(
 				$this->_info['name'], $this->_info['description'],
 				$this->_info['type'], 
@@ -127,19 +127,19 @@ class XMLPartStructureImporter extends XMLImporter {
 				(($this->_info['isRepeatable'] == "TRUE")?true:false), 
 				(($this->_info['isPopulated'] == "TRUE")?true:false),
 				$id);
-			$this->_myId =& $this->_object->getId();
+			$this->_myId =$this->_object->getId();
 		}
 		else {
 			$this->addError("bad PartStructure data Type");
 			if (Services::serviceRunning("Logging")) {
-				$loggingManager =& Services::getService("Logging");
-				$log =& $loggingManager->getLogForWriting("Harmoni");
-				$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+				$loggingManager = Services::getService("Logging");
+				$log =$loggingManager->getLogForWriting("Harmoni");
+				$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
 								"A format in which the acting Agent[s] and the target nodes affected are specified.");
-				$priorityType =& new Type("logging", "edu.middlebury", "Error",
+				$priorityType = new Type("logging", "edu.middlebury", "Error",
 								"Events involving critical system errors.");
 				
-				$item =& new AgentNodeEntryItem("PartStructure Importer", "Bad PartStructure DataType: ".$this->_info['type']->getKeyword()." undefined");				
+				$item = new AgentNodeEntryItem("PartStructure Importer", "Bad PartStructure DataType: ".$this->_info['type']->getKeyword()." undefined");				
 				$log->appendLogWithTypes($item,	$formatType, $priorityType);
 			}
 		}
@@ -154,7 +154,7 @@ class XMLPartStructureImporter extends XMLImporter {
 	 */
 	 function validate($type) {
 		// get a set of valid types from the DM
-		$dm =& Services::getService("DataTypeManager");
+		$dm = Services::getService("DataTypeManager");
 		$validTypes = $dm->getRegisteredTypes();
 		if (in_array($type->getKeyword(), $validTypes))
 		 	return true;
@@ -169,10 +169,10 @@ class XMLPartStructureImporter extends XMLImporter {
 	 * @since 10/6/05
 	 */
 	function doIdMatrix () {
-		$dbHandler =& Services::getService("DBHandler");
-// 		$dbIndexConcerto =& $dbHandler->addDatabase(new 
+		$dbHandler = Services::getService("DBHandler");
+// 		$dbIndexConcerto =$dbHandler->addDatabase(new 
 // 			MySQLDatabase("localhost", "whitey_concerto", "test", "test"));
-		$query =& new InsertQuery;
+		$query = new InsertQuery;
 		$query->setTable("xml_id_matrix");
 		$query->setColumns(array("xml_id", "conc_id"));
 		$xmlid = $this->_node->getAttribute("xml:id");

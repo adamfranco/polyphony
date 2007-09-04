@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_xml.act.php,v 1.2 2006/11/30 22:02:43 adamfranco Exp $
+ * @version $Id: browse_xml.act.php,v 1.3 2007/09/04 20:28:12 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -17,7 +17,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_xml.act.php,v 1.2 2006/11/30 22:02:43 adamfranco Exp $
+ * @version $Id: browse_xml.act.php,v 1.3 2007/09/04 20:28:12 adamfranco Exp $
  */
 class browse_xmlAction 
 	extends Action
@@ -62,18 +62,18 @@ class browse_xmlAction
 	 * @access public
 	 * @since 5/4/06
 	 */
-	function &getAssets () {
+	function getAssets () {
 		$assets = array();
-		$repositoryManager =& Services::getService("Repository");
+		$repositoryManager = Services::getService("Repository");
 		
-		$basket =& Basket::instance();
+		$basket = Basket::instance();
 		$basket->clean();
 		$basket->reset();
 		
 		while ($basket->hasNext())
-			$assets[] =& $repositoryManager->getAsset($basket->next());
+			$assets[] =$repositoryManager->getAsset($basket->next());
 		
-		$iterator =& new HarmoniIterator($assets);
+		$iterator = new HarmoniIterator($assets);
 		return $iterator;
 	}
 	
@@ -109,11 +109,11 @@ END;
 		print "\t<default_size>medium</default_size>\n";
 	
 		
-		$assets =& $this->getAssets();
+		$assets =$this->getAssets();
 		
 		
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		
 		while ($assets->hasNext())
 			$this->printAssetXML($assets->next());
@@ -130,10 +130,10 @@ END;
 	 * @access public
 	 * @since 10/14/05
 	 */
-	function printAssetXML( &$asset) {
+	function printAssetXML( $asset) {
 		
-		$assetId =& $asset->getId();
-		$harmoni =& Harmoni::instance();
+		$assetId =$asset->getId();
+		$harmoni = Harmoni::instance();
 		
 		
 		// ------------------------------------------

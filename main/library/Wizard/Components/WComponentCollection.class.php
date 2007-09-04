@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WComponentCollection.class.php,v 1.2 2006/11/30 22:02:41 adamfranco Exp $
+ * @version $Id: WComponentCollection.class.php,v 1.3 2007/09/04 20:28:06 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WComponentCollection.class.php,v 1.2 2006/11/30 22:02:41 adamfranco Exp $
+ * @version $Id: WComponentCollection.class.php,v 1.3 2007/09/04 20:28:06 adamfranco Exp $
  */
 class WComponentCollection
 	extends WizardComponentWithChildren
@@ -57,7 +57,7 @@ class WComponentCollection
      */
     function setValue ($value) {
 		ArgumentValidator::validate($value, ArrayValidatorRule::getRule());
-    	$children =& $this->getChildren();
+    	$children =$this->getChildren();
     	foreach (array_keys($children) as $key) {
     		if (isset($value[$key]))
 				$children[$key]->setValue($value[$key]);

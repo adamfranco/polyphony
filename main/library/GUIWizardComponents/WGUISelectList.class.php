@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WGUISelectList.class.php,v 1.1 2006/08/15 21:12:35 sporktim Exp $
+ * @version $Id: WGUISelectList.class.php,v 1.2 2007/09/04 20:27:59 adamfranco Exp $
  */ 
 
 
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WGUISelectList.class.php,v 1.1 2006/08/15 21:12:35 sporktim Exp $
+ * @version $Id: WGUISelectList.class.php,v 1.2 2007/09/04 20:27:59 adamfranco Exp $
  */
  
 class WGUISelectList
@@ -37,7 +37,7 @@ class WGUISelectList
 	function WGUISelectList($callBack, $collectionSelector, $styleProperty, $componentClass, $options, $styles = false){
 		
 				
-		$input =& new WSelectList();		
+		$input = new WSelectList();		
 		foreach ($options as $opt=>$name) {
 			if($styles){
 				if(is_array($styles)){
@@ -49,7 +49,7 @@ class WGUISelectList
 				$input->addOption($opt, $name);
 			}
 		}		
-		$this->_wizardComponent =& $input;
+		$this->_wizardComponent =$input;
 			
 			
 		$this->init($callBack, $collectionSelector, $styleProperty, $componentClass);
@@ -59,7 +59,7 @@ class WGUISelectList
 	 * copy the value of the Wizard component to the StyleComponent
 	 */
 	function exportValue(){
-		$styleComponent =& $this->getStyleComponent();
+		$styleComponent =$this->getStyleComponent();
 		$val = $this->_wizardComponent->getAllValues();
 		$styleComponent->setValue($val);		
 	}

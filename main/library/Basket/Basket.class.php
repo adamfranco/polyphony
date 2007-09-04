@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.15 2007/04/10 18:00:45 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.16 2007/09/04 20:27:57 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.15 2007/04/10 18:00:45 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.16 2007/09/04 20:27:57 adamfranco Exp $
  */
 class Basket 
 	extends OrderedSet
@@ -40,9 +40,9 @@ class Basket
 	 * @since 5/26/05
 	 * @static
 	 */
-	function &instance () {
+	function instance () {
 		if (!isset($_SESSION['__basket'])) {
-			$_SESSION['__basket'] =& new Basket();
+			$_SESSION['__basket'] = new Basket();
 		}
 		
 		return $_SESSION['__basket'];
@@ -81,7 +81,7 @@ class Basket
 		}
 		
 		
-		$idManager =& Services::getService("Id");
+		$idManager = Services::getService("Id");
 		$this->OrderedSet($idManager->getId("__basket"));	
 	}
 	
@@ -93,12 +93,12 @@ class Basket
 	 * @since 12/14/05
 	 */
 	function clean () {
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 
 		$this->reset();
 		while ($this->hasNext()) {	
-			$id =& $this->next();
+			$id =$this->next();
 			if (!$authZ->isUserAuthorized(
 				$idManager->getId("edu.middlebury.authorization.view"), $id))
 			{
@@ -118,14 +118,14 @@ class Basket
 	 * @access public
 	 * @since 8/5/05
 	 */
-	function &getSmallBasketBlock ($level = ALERT_BLOCK) {
-		$block =& new Block(
+	function getSmallBasketBlock ($level = ALERT_BLOCK) {
+		$block = new Block(
 			"<div id='basket_small'>\n".$this->getSmallBasketHtml()."\n</div>", 
 			$level);
 		
 		// controlling JS
 		ob_start();
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		
 		$placeHolderUrl = POLYPHONY_PATH."/icons/1x1.png";
 		
@@ -314,7 +314,7 @@ END;
 	 * @since 5/2/06
 	 */
 	function getSmallBasketHtml () {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("basket");
 		
 		$this->clean();
@@ -332,7 +332,7 @@ END;
 		$i = 0;
 		if ($this->hasNext()) {
 			while ($this->hasNext()) {
-				$id =& $this->next();
+				$id =$this->next();
 				$thumbnailURL = RepositoryInputOutputModuleManager::getThumbnailUrlForAsset($id);
 				if ($thumbnailURL !== FALSE) {				
 					print "\n\t<div style='border: 1px solid; height: 60px; width: 60px; float: left; text-align: center; vertical-align: middle; padding: 0px; margin: 2px;'>";
@@ -392,8 +392,8 @@ END;
 	 * @access public
 	 * @since 5/2/06
 	 */
-	function getAddLink ( &$assetId ) {
-		$harmoni =& Harmoni::instance();
+	function getAddLink ( $assetId ) {
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("basket");
 		ob_start();
 		

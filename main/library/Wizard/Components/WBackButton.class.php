@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WBackButton.class.php,v 1.1 2006/08/15 21:00:51 sporktim Exp $
+ * @version $Id: WBackButton.class.php,v 1.2 2007/09/04 20:28:06 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WBackButton.class.php,v 1.1 2006/08/15 21:00:51 sporktim Exp $
+ * @version $Id: WBackButton.class.php,v 1.2 2007/09/04 20:28:06 adamfranco Exp $
  */
 class WBackButton extends WEventButton {
 	
@@ -32,9 +32,9 @@ class WBackButton extends WEventButton {
 	 * @access public
 	 * @return void
 	 */
-	function WBackButton (&$stepContainer) {
+	function WBackButton ($stepContainer) {
 		$this->setLabel(_("<-- Back"));
-		$this->_stepContainer =& $stepContainer;
+		$this->_stepContainer =$stepContainer;
 		$this->addOnClick("ignoreValidation(this.form);");
 	}
 

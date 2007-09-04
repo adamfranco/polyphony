@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.21 2006/08/19 21:52:36 sporktim Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.22 2007/09/04 20:28:10 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/modules/coursemanagement/suck_by_agent.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.21 2006/08/19 21:52:36 sporktim Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.22 2007/09/04 20:28:10 adamfranco Exp $
  */
 class edit_agent_detailsAction 
 	extends MainWindowAction
@@ -36,9 +36,9 @@ class edit_agent_detailsAction
 	 */
 	function isAuthorizedToExecute () {
 		// Check for authorization
-		$authZManager =& Services::getService("AuthZ");
-		$idManager =& Services::getService("IdManager");
-		$harmoni =& Harmoni::instance();
+		$authZManager = Services::getService("AuthZ");
+		$idManager = Services::getService("IdManager");
+		$harmoni = Harmoni::instance();
 		
 		$harmoni->request->startNamespace("polyphony-agents");
 		$agentIdString = $harmoni->request->get("agentId");
@@ -62,14 +62,14 @@ class edit_agent_detailsAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-agents");
 		$harmoni->request->passthrough("agentId");
 		$agentIdString = $harmoni->request->get("agentId");
-		$idManager =& Services::getService("Id");
-		$agentId =& $idManager->getId($agentIdString);
-		$agentManager =& Services::getService("Agent");
-		$agent =& $agentManager->getAgent($agentId);
+		$idManager = Services::getService("Id");
+		$agentId =$idManager->getId($agentIdString);
+		$agentManager = Services::getService("Agent");
+		$agent =$agentManager->getAgent($agentId);
 		return dgettext("polyphony", $agent->getDisplayName());
 	}
 	
@@ -83,18 +83,18 @@ class edit_agent_detailsAction
 	function buildContent () {
 		$defaultTextDomain = textdomain("polyphony");
 		
-		$actionRows =& $this->getActionRows();
-		$pageRows =& new Container(new YLayout(), OTHER, 1);
-		$harmoni =& Harmoni::instance();
+		$actionRows =$this->getActionRows();
+		$pageRows = new Container(new YLayout(), OTHER, 1);
+		$harmoni = Harmoni::instance();
 		
 		$harmoni->request->startNamespace("polyphony-agents");
 		$harmoni->request->passthrough("agentId");
 		$agentIdString = $harmoni->request->get("agentId");
 		$furtherAction = $harmoni->request->get("furtherAction");
 
-		$idManager =& Services::getService("Id");
-		$agentId =& $idManager->getId($agentIdString);
-		$agentManager =& Services::getService("Agent");
+		$idManager = Services::getService("Id");
+		$agentId =$idManager->getId($agentIdString);
+		$agentManager = Services::getService("Agent");
 
 		//we can't really do anything if its not an editableAgent
 		if($agentManager->getAgentFlavor()!="HarmoniEditableAgent"){
@@ -102,7 +102,7 @@ class edit_agent_detailsAction
 			return $mainScreen;
 		}
 		
-		$agent =& $agentManager->getAgent($agentId);
+		$agent =$agentManager->getAgent($agentId);
 		
 		ob_start();
 		
@@ -150,11 +150,11 @@ class edit_agent_detailsAction
 	 * @access public
 	 * @since 7/19/05
 	 */
-	function viewAgentDetails(&$agent){
+	function viewAgentDetails($agent){
 		
 		suck_by_agentAction::refreshAgentDetails($agent);
 		
-		$agentId =& $agent->getId();
+		$agentId =$agent->getId();
 		$agentIdString = $agentId->getIdString();
 		
 		//display agent info	
@@ -192,8 +192,8 @@ class edit_agent_detailsAction
 		print "\n</table>";
 		print "\n</td><td>";
 		//actions menu
-		$harmoni =& Harmoni::instance();
-		$url =& $harmoni->request->mkURL();
+		$harmoni = Harmoni::instance();
+		$url =$harmoni->request->mkURL();
 
 		print "<ul>
 				<li><a href='".$url->write("furtherAction","edit_agent_detailsAction::editAgent")."'>Edit agent</a></li>
@@ -220,9 +220,9 @@ class edit_agent_detailsAction
 		
 		//sort the courses by term and the terms by date
 		
-		$cm =& Services::getService("CourseManagement");
+		$cm = Services::getService("CourseManagement");
 		
-		$offerings =& $cm->getCourseOfferings($agentId);
+		$offerings =$cm->getCourseOfferings($agentId);
 		
 			
 		
@@ -244,11 +244,11 @@ class edit_agent_detailsAction
 	 * @access public
 	 * @since 7/19/05
 	 */
-	function advancedViewAgentDetails(&$agent){
+	function advancedViewAgentDetails($agent){
 		
 		
 		
-		$agentId =& $agent->getId();
+		$agentId =$agent->getId();
 		$agentIdString = $agentId->getIdString();
 		
 		//display agent info	
@@ -283,8 +283,8 @@ class edit_agent_detailsAction
 		print "</table>";
 		
 		//actions menu
-		$harmoni =& Harmoni::instance();
-		$url =& $harmoni->request->mkURL();
+		$harmoni = Harmoni::instance();
+		$url =$harmoni->request->mkURL();
 		
 		print "<h3>Actions</h3>
 				<ul>
@@ -303,14 +303,14 @@ class edit_agent_detailsAction
 		// Groups
 		print "<h3>Groups</h3>
 				<ul>";
-		$agentManager =& Services::getService("Agent");
-		$groups =& $agentManager->getGroupsBySearch($agentId, 
+		$agentManager = Services::getService("Agent");
+		$groups =$agentManager->getGroupsBySearch($agentId, 
 					new Type(	"Agent & Group Search", 
 								"edu.middlebury.harmoni",
 								"AncestorGroups"));
 		while ($groups->hasNext()) {
-			$group =& $groups->next();
-			$groupId =& $group->getId();
+			$group =$groups->next();
+			$groupId =$group->getId();
 			print "\n\t<li title=\"".addslashes($groupId->getIdString())."\">".$group->getDisplayName()."</li>";
 		}
 		
@@ -323,9 +323,9 @@ class edit_agent_detailsAction
 	 * Offers a confirmation screen for clearing of properties
 	 */
 	
-	function confirmClearProperties(&$agent){
-		$harmoni =& Harmoni::instance();
-		$url =& $harmoni->request->mkURL();
+	function confirmClearProperties($agent){
+		$harmoni = Harmoni::instance();
+		$url =$harmoni->request->mkURL();
 		print "Do you really want to clear all properties of ".$agent->getDisplayName()."? (this will not reset system name or password)<br />";
 		print "<form action='".$url->write("furtherAction","edit_agent_detailsAction::clearProperties")."' method='post'><input type='submit' value='Clear' /></form><input type='button' value='Cancel' onclick='history.back()' />";
 		return;
@@ -335,8 +335,8 @@ class edit_agent_detailsAction
 	 * Clears all the properties
 	 */
 	 
-	function clearProperties(& $agent){
-		$propertyManager =& Services::getService("Property");
+	function clearProperties($agent){
+		$propertyManager = Services::getService("Property");
 		
 		//clear the props
 		$agent->clearAllProperties();
@@ -353,9 +353,9 @@ class edit_agent_detailsAction
 	 * offers a confirmation screen for deleting an entire agent
 	 */
 	 
-	function confirmDeleteAgent(&$agent){
-		$harmoni =& Harmoni::instance();
-		$url =& $harmoni->request->mkURL();
+	function confirmDeleteAgent($agent){
+		$harmoni = Harmoni::instance();
+		$url =$harmoni->request->mkURL();
 		print "Do you really want to delete ".$agent->getDisplayName()."?<br />";
 		print "<form action='".$url->write("furtherAction","edit_agent_detailsAction::deleteAgent")."' method='post'><input type='submit' value='Delete' /></form><input type='button' value='Cancel' onclick='history.back()' />";
 		return;
@@ -365,11 +365,11 @@ class edit_agent_detailsAction
 	 * Handles the actual deletion of an agent
 	 */
 	 
-	function deleteAgent(&$agent){
-		$agentManager =& Services::getService("Agent");
+	function deleteAgent($agent){
+		$agentManager = Services::getService("Agent");
 		$agentManager->deleteAgent($agent->getId());
 		
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		print "Agent deleted.<br />";
 		print "<a href='".$harmoni->history->getReturnURL("polyphony/agents/edit_agent_details")."'>Go Back</a>";
 		
@@ -386,27 +386,27 @@ class edit_agent_detailsAction
 	 * in that case, I've arbitrarily entered "Immutable Reality" under type
 	 */
 	 
-	function editAgent(&$agent){
+	function editAgent($agent){
 		
 		//to get the username and maybe the password.
-		$tokenMappingManager =& Services::getService("AgentTokenMappingManager");
+		$tokenMappingManager = Services::getService("AgentTokenMappingManager");
 		
 		//a properties manager to handle, what else, properties
-		$propertiesManager =& Services::getService("Property");
+		$propertiesManager = Services::getService("Property");
 		
-		$mappings=& $tokenMappingManager->getMappingsForAgentId($agent->getId());
+		$mappings=$tokenMappingManager->getMappingsForAgentId($agent->getId());
 		
 		//there should only be one mapping but what the heck
 		while($mappings->hasNextObject()){
-			$mapping=& $mappings->nextObject();	
-			$tokens =& $mapping->getTokens();
+			$mapping=$mappings->nextObject();	
+			$tokens =$mapping->getTokens();
 			$userName=$tokens->getUsername();
 		}
 		
 		if (!isset($userName)) { $userName = '&laquo; undefined &raquo;';}
 		
-		$harmoni =& Harmoni::instance();
-		$url =& $harmoni->request->mkURL();
+		$harmoni = Harmoni::instance();
+		$url =$harmoni->request->mkURL();
 		
 		//display name
 		print "<h3>Editing User: ".$agent->getDisplayName()."</h3>";
@@ -447,7 +447,7 @@ class edit_agent_detailsAction
 				  <td>N/A</td>
 				  </form>
 				</tr>";
-		$type=& $agent->getType();
+		$type=$agent->getType();
 		
 		$propertiesArray = edit_agent_detailsAction::_getUsableProperties($agent);
 				
@@ -520,7 +520,7 @@ class edit_agent_detailsAction
 	 * Updates property from the edit agent form
 	 */
 	
-	function updateProperty(&$agent){
+	function updateProperty($agent){
 		$propertyKey = RequestContext::value("property_name");
 		$propertyValue = RequestContext::value("property_value");
 		
@@ -528,7 +528,7 @@ class edit_agent_detailsAction
 		$propertyTypeArray = explode("::",RequestContext::value("property_type"));
 		
 		//create type object
-		$propertyType =& new HarmoniType($propertyTypeArray[0], $propertyTypeArray[1], $propertyTypeArray[2]);
+		$propertyType = new HarmoniType($propertyTypeArray[0], $propertyTypeArray[1], $propertyTypeArray[2]);
 		
 		//update the agent propreties
 		if($agent->updateProperty($propertyType, $propertyKey, $propertyValue)){
@@ -548,13 +548,13 @@ class edit_agent_detailsAction
 	 * Adds a property to the agent
 	 */
 	 
-	 function addProperty(&$agent){
+	 function addProperty($agent){
 		$propertyName = RequestContext::value('name');
 		$propertyValue = RequestContext::value('value');
 		
 		//create the type object
 		$typeArray = explode("::", RequestContext::value('property_type'));
-		$type =& new HarmoniType($typeArray[0], $typeArray[1], $typeArray[2]);
+		$type = new HarmoniType($typeArray[0], $typeArray[1], $typeArray[2]);
 		
 		if($agent->addProperty($type, $propertyName, $propertyValue)){
 			print ucfirst($propertyName)." added to ".$agent->getDisplayName();
@@ -572,11 +572,11 @@ class edit_agent_detailsAction
 	 * Deletes a property from the agent. Duh.
 	 */
 	 
-	 function deleteProperty(&$agent){
+	 function deleteProperty($agent){
 		$propertyName = RequestContext::value('property_name');
 		$propertyType = explode("::", RequestContext::value('property_type'));
 		
-		$type =& new HarmoniType($propertyType[0], $propertyType[1], $propertyType[2]);
+		$type = new HarmoniType($propertyType[0], $propertyType[1], $propertyType[2]);
 	
 		if($agent->deleteProperty($type, $propertyName)){
 			print "Deleted property.";
@@ -594,7 +594,7 @@ class edit_agent_detailsAction
 	  * Stores a new display name for the agent
 	  */
 	  
-	  function updateDisplayName(&$agent){
+	  function updateDisplayName($agent){
 		if(!RequestContext::value('display_name')){
 			print "If you want to update the display name you'll need to enter a new one!";
 			editAgent($agent);
@@ -618,23 +618,23 @@ class edit_agent_detailsAction
 	 * preserving most of the information from the object modify at will
 	 */
 			
-	function _getUsableProperties(&$agent){
+	function _getUsableProperties($agent){
 		$propertiesArray=array();
 		
-		$propertiesIterator =& $agent->getProperties();
+		$propertiesIterator =$agent->getProperties();
 		$i=0;
 		while($propertiesIterator->hasNext()){
 			
-			$property =& $propertiesIterator->next();
+			$property =$propertiesIterator->next();
 			
-			$type=& $property->getType();
+			$type=$property->getType();
 			$typeString = $type->getDomain()."::".$type->getAuthority()."::".$type->getKeyword();
 			
-			$keys =& $property->getKeys();
+			$keys =$property->getKeys();
 			
 			while($keys->hasNext()){
 				
-				$key=& $keys->next();
+				$key=$keys->next();
 				$propertiesArray[$key]['value'] = $property->getProperty($key);
 				$propertiesArray[$key]['type'] = $typeString;
 			}
@@ -686,11 +686,11 @@ class edit_agent_detailsAction
 			print "</td>";		
 		}
 		
-		$harmoni =& Harmoni::instance();
-		$id =& $offering->getId();
+		$harmoni = Harmoni::instance();
+		$id =$offering->getId();
 		print "\n\t\t<td>";
 		
-		$url =& new GETMethodURLWriter();
+		$url = new GETMethodURLWriter();
 		$url->setModuleAction("coursemanagement","edit_offering_details");
 		$url->setValue("courseId",$id->getIdString());
 		
@@ -699,7 +699,7 @@ class edit_agent_detailsAction
 		print "\n - <a href=\"Javascript:alert('"._("Id:").'\n\t'.addslashes($id->getIdString())."')\">"._("Id")."</a>";
 		print "</td>";
 		//print "\n\t\t<td>";
-		//$term =& $offering->getTerm();
+		//$term =$offering->getTerm();
 		//print $term->getDisplayName();
 		//print "</td>";		
 		print "\n\t</tr>";
@@ -708,7 +708,7 @@ class edit_agent_detailsAction
 		
 	}
 	
-	function printCourseOfferings(&$offerings){
+	function printCourseOfferings($offerings){
 		
 		$denominator = 60000;
 	
@@ -718,17 +718,17 @@ class edit_agent_detailsAction
 		//note that this variable seperates any courses that start in the same term from being written to the same place in the array.  It's a bit hacky, but shouldn't be a problem unless two terms start within an hour or so of each other.
 		$courseNum = 0;	
 		while($offerings->hasNextCourseOffering()){		
-			$offering =& $offerings->nextCourseOffering();
-			$term =& $offering->getTerm();
-			$schedule =& $term->getSchedule();
+			$offering =$offerings->nextCourseOffering();
+			$term =$offering->getTerm();
+			$schedule =$term->getSchedule();
 			if($schedule->hasNextScheduleItem()){				
-				$item1 =& $schedule->nextScheduleItem();
+				$item1 =$schedule->nextScheduleItem();
 				//@todo It seems that arrays can't be indexed by longs.  Thus I divided by the number of milliseconds in a minute.  This shouldn't be a problem, but it's hacky in a way that kinda bugs me.
 				$index = $item1->getStart()/$denominator+$courseNum;
-				$offerings2[$index] =&  $offering;	
+				$offerings2[$index] =  $offering;	
 			}else{
 				//
-				$offerings2[$courseNum] =& $offering;
+				$offerings2[$courseNum] =$offering;
 				
 			}
 			$courseNum++;
@@ -752,18 +752,18 @@ class edit_agent_detailsAction
 			
 			
 			
-			$cm =& Services::getService("CourseManagement");
+			$cm = Services::getService("CourseManagement");
 			
 			
 			$time = time()*1000;
-			$currentTermIterator =& $cm->getTermsByDate($time);
+			$currentTermIterator =$cm->getTermsByDate($time);
 			$time /= $denominator;
 
 			if($currentTermIterator->hasNextTerm()){
-				$term =& $currentTermIterator->nextTerm();
-				$schedule =& $term->getSchedule();
+				$term =$currentTermIterator->nextTerm();
+				$schedule =$term->getSchedule();
 				if($schedule->hasNextScheduleItem()){
-					$item =& $schedule->nextScheduleItem();
+					$item =$schedule->nextScheduleItem();
 					$currSemesterStart = $item->getStart();	
 
 
@@ -777,7 +777,7 @@ class edit_agent_detailsAction
 			}
 			
 		
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-agents");
 	
 		
@@ -790,7 +790,7 @@ class edit_agent_detailsAction
 			
 						
 			$term=$offering->getTerm();
-			$termId =& $term->getId();
+			$termId =$term->getId();
 			if(!is_null($lastTermId)&&$termId->isEqual($lastTermId)){
 				edit_agent_detailsAction::_printOffering($offering,null);
 			}else{
@@ -829,7 +829,7 @@ class edit_agent_detailsAction
 				
 				edit_agent_detailsAction::_printOffering($offering,$term);
 			}
-			$lastTermId =& $termId;
+			$lastTermId =$termId;
 			
 		}
 		

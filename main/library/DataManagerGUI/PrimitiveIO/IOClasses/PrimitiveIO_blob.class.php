@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_blob.class.php,v 1.7 2005/08/24 14:34:42 cws-midd Exp $
+ * @version $Id: PrimitiveIO_blob.class.php,v 1.8 2007/09/04 20:27:58 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_blob.class.php,v 1.7 2005/08/24 14:34:42 cws-midd Exp $
+ * @version $Id: PrimitiveIO_blob.class.php,v 1.8 2007/09/04 20:27:58 adamfranco Exp $
  */
 class PrimitiveIO_blob 
 	extends PrimitiveIO 
@@ -34,9 +34,9 @@ class PrimitiveIO_blob
 	 *
 	 * @return void
 	 **/
-	function setValue(&$value)
+	function setValue($value)
 	{
-		$this->_blob =& $value;
+		$this->_blob =$value;
 	}
 
 	/**
@@ -45,7 +45,7 @@ class PrimitiveIO_blob
 	 *
 	 * @return void
 	 **/
-	function setValueFromSObject(&$value)
+	function setValueFromSObject($value)
 	{
 		$this->setValue($value);
 	}

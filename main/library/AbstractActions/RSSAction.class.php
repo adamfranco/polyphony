@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.2 2006/11/30 22:02:37 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.3 2007/09/04 20:27:57 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.2 2006/11/30 22:02:37 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.3 2007/09/04 20:27:57 adamfranco Exp $
  */
 class RSSAction
 	extends ForceAuthAction
@@ -113,8 +113,8 @@ class RSSAction
 	 * @access public
 	 * @since 8/7/06
 	 */
-	function &addItem (&$item) {
-		$this->_items[] =& $item;
+	function addItem ($item) {
+		$this->_items[] =$item;
 		return $item;
 	}
 	
@@ -133,7 +133,7 @@ class RSSAction
 	function setTitle ($title) {
 		ArgumentValidator::validate($title, StringValidatorRule::getRule());
 		
-		$tmp =& HtmlString::fromString(str_replace("&nbsp;", "&#160;", $title));
+		$tmp = HtmlString::fromString(str_replace("&nbsp;", "&#160;", $title));
 		$this->_title = $tmp->stripTagsAndTrim(20);
 	}
 	
@@ -167,7 +167,7 @@ class RSSAction
 	function setDescription ($description) {
 		ArgumentValidator::validate($description, StringValidatorRule::getRule());
 		
-		$this->_description =& HtmlString::fromString(
+		$this->_description = HtmlString::fromString(
 								str_replace("&nbsp;", "&#160;", $description));
 		$this->_description->clean();
 	}
@@ -184,10 +184,10 @@ class RSSAction
 	 * @access public
 	 * @since 8/7/06
 	 */
-	function setPubDate ( &$pubDate) {
+	function setPubDate ( $pubDate) {
 		ArgumentValidator::validate($pubDate, HasMethodsValidatorRule::getRule("asDateAndTime"));
 		
-		$this->_pubDate =& $pubDate->asDateAndTime();
+		$this->_pubDate =$pubDate->asDateAndTime();
 	}
 	
 	/**
@@ -198,10 +198,10 @@ class RSSAction
 	 * @access public
 	 * @since 8/7/06
 	 */
-	function setLastBuildDate ( &$lastBuildDate) {
+	function setLastBuildDate ( $lastBuildDate) {
 		ArgumentValidator::validate($pubDate, HasMethodsValidatorRule::getRule("asDateAndTime"));
 		
-		$this->_lastBuildDate =& $lastBuildDate->asDateAndTime();
+		$this->_lastBuildDate =$lastBuildDate->asDateAndTime();
 	}
 	
 	/**
@@ -356,7 +356,7 @@ END;
 		}
 		
 		if (!isset($this->_lastBuildDate) || !is_object($this->_lastBuildDate))
-			$this->_lastBuildDate =& $this->getLatestItemDate();
+			$this->_lastBuildDate =$this->getLatestItemDate();
 			
 		if (isset($this->_lastBuildDate) && is_object($this->_lastBuildDate)) {
 			print "\n\t\t<lastBuildDate>";
@@ -454,21 +454,21 @@ END;
 	 * @access public
 	 * @since 8/8/06
 	 */
-	function &getLatestItemDate () {
+	function getLatestItemDate () {
 		$latestDate = null;
 		
 		foreach (array_keys($this->_items) as $key) {
-			$itemDate =& $this->_items[$key]->getPubDate();
+			$itemDate =$this->_items[$key]->getPubDate();
 			if (!is_object($itemDate))
 				continue;
 			
 			if (is_null($latestDate)) {
-				$latestDate =& $itemDate;
+				$latestDate =$itemDate;
 				continue;
 			}
 			
 			if ($itemDate->isGreaterThan($latestDate))
-				$latestDate =& $itemDate;
+				$latestDate =$itemDate;
 		}
 		
 		return $latestDate;
@@ -488,7 +488,7 @@ END;
 		print $timestamp->monthAbbreviation()." ";
 		print $timestamp->year()." ";	
 		print $timestamp->hmsString()." ";
-		$tzOffset =& $timestamp->offset();
+		$tzOffset =$timestamp->offset();
 		print (($tzOffset->isPositive())?"+":"-");
 		print str_pad(abs($tzOffset->hours()), 2, '0', STR_PAD_LEFT)."";
 		print str_pad(abs($tzOffset->minutes()), 2, '0', STR_PAD_LEFT);
@@ -505,7 +505,7 @@ END;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.2 2006/11/30 22:02:37 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.3 2007/09/04 20:27:57 adamfranco Exp $
  */
 class RSSItem {
 	
@@ -541,7 +541,7 @@ class RSSItem {
 	function setTitle ($title) {
 		ArgumentValidator::validate($title, StringValidatorRule::getRule());
 		
-		$tmp =& HtmlString::fromString(str_replace("&nbsp;", "&#160;", $title));
+		$tmp = HtmlString::fromString(str_replace("&nbsp;", "&#160;", $title));
 		$this->_title = $tmp->stripTagsAndTrim(20);
 	}
  	
@@ -556,7 +556,7 @@ class RSSItem {
 	function setDescription ($description) {
 		ArgumentValidator::validate($description, StringValidatorRule::getRule());
 		
-		$this->_description =& HtmlString::fromString(
+		$this->_description = HtmlString::fromString(
 								str_replace("&nbsp;", "&#160;", $description));
 		$this->_description->clean();
 	}
@@ -603,10 +603,10 @@ class RSSItem {
 	 * @access public
 	 * @since 8/7/06
 	 */
-	function setPubDate ( &$pubDate) {
+	function setPubDate ( $pubDate) {
 		ArgumentValidator::validate($pubDate, HasMethodsValidatorRule::getRule("asDateAndTime"));
 		
-		$this->_pubDate =& $pubDate->asDateAndTime();
+		$this->_pubDate =$pubDate->asDateAndTime();
 	}
 	
 	/**
@@ -616,7 +616,7 @@ class RSSItem {
 	 * @access public
 	 * @since 8/8/06
 	 */
-	function &getPubDate () {
+	function getPubDate () {
 		if (isset($this->_pubDate) && is_object($this->_pubDate))
 			return $this->_pubDate;
 		else {

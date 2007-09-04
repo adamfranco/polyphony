@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: all.act.php,v 1.3 2006/12/05 17:44:49 adamfranco Exp $
+ * @version $Id: all.act.php,v 1.4 2007/09/04 20:28:14 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/TagAction.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/TagAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: all.act.php,v 1.3 2006/12/05 17:44:49 adamfranco Exp $
+ * @version $Id: all.act.php,v 1.4 2007/09/04 20:28:14 adamfranco Exp $
  */
 class allAction 
 	extends TagAction
@@ -55,9 +55,9 @@ class allAction
 	 * @access public
 	 * @since 11/8/06
 	 */
-	function &getTags () {
-		$tagManager =& Services::getService("Tagging");
-		$tags =& $tagManager->getTags(TAG_SORT_ALFA, $this->getNumTags());
+	function getTags () {
+		$tagManager = Services::getService("Tagging");
+		$tags =$tagManager->getTags(TAG_SORT_ALFA, $this->getNumTags());
 // 		printpre($tags);
 		return $tags;
 	}
@@ -89,9 +89,9 @@ class allAction
 		parent::buildContent();
 		
 		$defaultTextDomain = textdomain("polyphony");
-		$actionRows =& $this->getActionRows();
+		$actionRows =$this->getActionRows();
 		ob_start();
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-tags");
 		
 		ob_start();

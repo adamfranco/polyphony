@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SingleStepWizard.class.php,v 1.1 2007/06/04 19:43:28 adamfranco Exp $
+ * @version $Id: SingleStepWizard.class.php,v 1.2 2007/09/04 20:28:05 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SimpleStepWizard.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/SimpleStepWizard.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SingleStepWizard.class.php,v 1.1 2007/06/04 19:43:28 adamfranco Exp $
+ * @version $Id: SingleStepWizard.class.php,v 1.2 2007/09/04 20:28:05 adamfranco Exp $
  */
 class SingleStepWizard 
 	extends SimpleStepWizard
@@ -34,7 +34,7 @@ class SingleStepWizard
 	 * @access public
 	 * @return ref object
 	 */
-	function &addStep ($name, &$step) {
+	function addStep ($name, $step) {
 		if (count($this->getSteps())) {
 			throwError(new Error("SingleStepWizards can only have one step. Cannot add '".$name."' step.", "Wizard"));
 		}
@@ -48,7 +48,7 @@ class SingleStepWizard
 	 * @return ref object
 	 * @static
 	 */
-	function &withDefaultLayout ($pre = '') {
+	function withDefaultLayout ($pre = '') {
 		return parent::withText($pre . 
 				"<div>\n" .
 				"<table width='100%' border='0' cellpadding='0' cellspacing='2'>\n" .

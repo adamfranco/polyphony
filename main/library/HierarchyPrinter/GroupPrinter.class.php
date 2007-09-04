@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: GroupPrinter.class.php,v 1.13 2006/02/27 19:51:22 adamfranco Exp $
+ * @version $Id: GroupPrinter.class.php,v 1.14 2007/09/04 20:28:00 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: GroupPrinter.class.php,v 1.13 2006/02/27 19:51:22 adamfranco Exp $
+ * @version $Id: GroupPrinter.class.php,v 1.14 2007/09/04 20:28:00 adamfranco Exp $
  * @since 11/11/04
  */
 
@@ -33,13 +33,13 @@ class GroupPrinter {
 	 * @access public
 	 * @since 11/8/04
 	 */
-	function printGroup (& $group, & $harmoni,
+	function printGroup ($group, $harmoni,
 								$startingPathInfoKey,
 								$printGroupFunction,
 								$printMemberFunction ) 
 	{
 		// Get a string of our groupIds
-		$groupId =& $group->getId();
+		$groupId =$group->getId();
 		$groupIdString = urlencode($groupId->getIdString());
 		
 		// Break the path info into parts for the enviroment and parts that
@@ -71,7 +71,7 @@ END;
 		if (in_array($groupIdString, $expandedGroups)) {
 			$groupsToRemove = array($groupIdString);
 			$newGroups = array_diff($expandedGroups, $groupsToRemove); 
-			$url =& $harmoni->request->mkURL();
+			$url =$harmoni->request->mkURL();
 			$url->setValue("expandedGroups", implode(",",$newGroups));
 			print "<a style='text-decoration: none;' href='";
 			print $url->write();
@@ -82,7 +82,7 @@ END;
 			$newGroups = $expandedGroups;
 			$newGroups[] = $groupIdString;
 			print "<a style='text-decoration: none;' href='";
-			$url =& $harmoni->request->mkURL();
+			$url =$harmoni->request->mkURL();
 			$url->setValue("expandedGroups", implode(",", $newGroups));
 			print $url->write();
 			print "'>+</a>";
@@ -110,10 +110,10 @@ END;
 '>
 
 END;
-			$childGroups =& $group->getGroups(false);
-			$childMembers =& $group->getMembers(false);
+			$childGroups =$group->getGroups(false);
+			$childMembers =$group->getMembers(false);
 			while ($childGroups->hasNext()) {
-				$childGroup =& $childGroups->next();
+				$childGroup =$childGroups->next();
 				GroupPrinter::printGroup( $childGroup,
 											$harmoni,
 											$startingPathInfoKey,
@@ -124,7 +124,7 @@ END;
 			// And finally print all the members for the group
 			
 			while ($childMembers->hasNext()) {
-				$childMember =& $childMembers->next();
+				$childMember =$childMembers->next();
 				
 				print "\n\n<table>\n\t<tr><td valign='top'>";
 				print "\n\t\t<div style='width: 15px;'>&nbsp;</div>";

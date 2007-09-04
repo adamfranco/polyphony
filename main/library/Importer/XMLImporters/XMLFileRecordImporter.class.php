@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordImporter.class.php,v 1.15 2006/12/07 19:13:05 adamfranco Exp $
+ * @version $Id: XMLFileRecordImporter.class.php,v 1.16 2007/09/04 20:28:01 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -28,7 +28,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLFilepathPartImpor
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileRecordImporter.class.php,v 1.15 2006/12/07 19:13:05 adamfranco Exp $
+ * @version $Id: XMLFileRecordImporter.class.php,v 1.16 2007/09/04 20:28:01 adamfranco Exp $
  */
 class XMLFileRecordImporter extends XMLImporter {
 		
@@ -40,7 +40,7 @@ class XMLFileRecordImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function XMLFileRecordImporter (&$existingArray) {
+	function XMLFileRecordImporter ($existingArray) {
 		parent::XMLImporter($existingArray);
 	}
 
@@ -69,7 +69,7 @@ class XMLFileRecordImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function isImportable (&$element) {
+	function isImportable ($element) {
 		if ($element->nodeName == "filerecord")
 			return true;
 		else
@@ -94,19 +94,19 @@ class XMLFileRecordImporter extends XMLImporter {
 	 * @since 10/6/05
 	 */
 	function importNode () {
-		$idManager =& Services::getService("Id");
+		$idManager = Services::getService("Id");
 		
 		$this->getNodeInfo();
 		
 		$hasId = $this->_node->hasAttribute("id");
 		if ($hasId && (in_array($this->_node->getAttribute("id"),
 				$this->_existingArray)	|| $this->_type == "update")) {
-			$this->_myId =& $idManager->getId($this->_node->getAttribute("id"));
-			$this->_object =& $this->_parent->getRecord($this->_myId);
+			$this->_myId =$idManager->getId($this->_node->getAttribute("id"));
+			$this->_object =$this->_parent->getRecord($this->_myId);
 		} else {
-			$this->_object =& $this->_parent->createRecord(
+			$this->_object =$this->_parent->createRecord(
 				$this->_info['recordStructureId']);
-			$this->_myId =& $this->_object->getId();
+			$this->_myId =$this->_object->getId();
 		}
 	}
 
@@ -117,9 +117,9 @@ class XMLFileRecordImporter extends XMLImporter {
 	 * @since 10/6/05
 	 */
 	function getNodeInfo () {
-		$idManager =& Services::getService("Id");
+		$idManager = Services::getService("Id");
 		
-		$this->_info['recordStructureId'] =& $idManager->getId("FILE");
+		$this->_info['recordStructureId'] =$idManager->getId("FILE");
 	}
 	
 	/**
@@ -129,7 +129,7 @@ class XMLFileRecordImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function relegateChildren (&$topImporter) {
+	function relegateChildren ($topImporter) {
 		$filepath = FALSE;
 		$thumbpath = FALSE;
 		foreach ($this->_node->childNodes as $element) {
@@ -144,14 +144,14 @@ class XMLFileRecordImporter extends XMLImporter {
 					$this->addError("Class, '$class', is not a subclass of 'XMLImporter'.");
 					// Log the success or failure
 					if (Services::serviceRunning("Logging")) {
-						$loggingManager =& Services::getService("Logging");
-						$log =& $loggingManager->getLogForWriting("Harmoni");
-						$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+						$loggingManager = Services::getService("Logging");
+						$log =$loggingManager->getLogForWriting("Harmoni");
+						$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
 										"A format in which the acting Agent[s] and the target nodes affected are specified.");
-						$priorityType =& new Type("logging", "edu.middlebury", "Error",
+						$priorityType = new Type("logging", "edu.middlebury", "Error",
 										"Events involving critical system errors.");
 						
-						$item =& new AgentNodeEntryItem("Instantiate Undefined Importer", "$class is not a subclass of Importer");
+						$item = new AgentNodeEntryItem("Instantiate Undefined Importer", "$class is not a subclass of Importer");
 						$item->addNodeId($this->_parent->getId());
 						
 						$log->appendLogWithTypes($item,	$formatType, $priorityType);
@@ -160,7 +160,7 @@ class XMLFileRecordImporter extends XMLImporter {
 				}
 				eval('$result = '.$importer.'::isImportable($element);');
 				if ($result) {
-					$imp =& new $importer($this->_existingArray);
+					$imp = new $importer($this->_existingArray);
 					$imp->import($topImporter, $element, $this->_type,
 						$this->_object);
 					if ($imp->hasErrors())
@@ -173,9 +173,9 @@ class XMLFileRecordImporter extends XMLImporter {
 			$topImporter->_status->updateStatistics();
 		}
 		if ($filepath && !$thumbpath) {
-			$elements =& $this->_node->getElementsByTagName($filepath);
-			$element =& $elements->item(0);
-			$imp =& new XMLThumbpathPartImporter($this->_existingArray);
+			$elements =$this->_node->getElementsByTagName($filepath);
+			$element =$elements->item(0);
+			$imp = new XMLThumbpathPartImporter($this->_existingArray);
 			$imp->import($topImporter, $element, $this->_type, $this->_object);
 			if ($imp->hasErrors())
 				foreach($imp->getErrors() as $error)

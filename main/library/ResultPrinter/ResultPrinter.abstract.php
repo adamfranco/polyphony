@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ResultPrinter.abstract.php,v 1.5 2006/11/30 22:02:40 adamfranco Exp $
+ * @version $Id: ResultPrinter.abstract.php,v 1.6 2007/09/04 20:28:04 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ResultPrinter.abstract.php,v 1.5 2006/11/30 22:02:40 adamfranco Exp $
+ * @version $Id: ResultPrinter.abstract.php,v 1.6 2007/09/04 20:28:04 adamfranco Exp $
  */
 class ResultPrinter {
 
@@ -31,7 +31,7 @@ class ResultPrinter {
 	 */
 	function getStartingNumber () {
 		if (isset($this->_namespace) && is_string($this->_namespace)) {
-			$harmoni =& Harmoni::instance();
+			$harmoni = Harmoni::instance();
 			$harmoni->request->startNamespace($this->_namespace);
 		}
 		
@@ -98,7 +98,7 @@ class ResultPrinter {
 	 */
 	function getPageLinks ($startingNumber, $numItems) {
 		if ($numItems > $this->_pageSize) {
-			$harmoni =& Harmoni::instance();
+			$harmoni = Harmoni::instance();
 			
 			if (isset($this->_namespace) && is_string($this->_namespace))
 				$harmoni->request->startNamespace($this->_namespace);
@@ -126,7 +126,7 @@ class ResultPrinter {
 					$firstPage = 1;
 			}
 			
-			$url =& $harmoni->request->mkURLWithPassthrough();
+			$url =$harmoni->request->mkURLWithPassthrough();
 			
 			$lastPage = $firstPage + (2 * $pagesAround);
 			if ($lastPage > $numPages)

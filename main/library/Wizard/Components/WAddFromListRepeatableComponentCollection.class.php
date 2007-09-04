@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WAddFromListRepeatableComponentCollection.class.php,v 1.2 2006/06/05 21:09:15 adamfranco Exp $
+ * @version $Id: WAddFromListRepeatableComponentCollection.class.php,v 1.3 2007/09/04 20:28:06 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WAddFromListRepeatableComponentCollection.class.php,v 1.2 2006/06/05 21:09:15 adamfranco Exp $
+ * @version $Id: WAddFromListRepeatableComponentCollection.class.php,v 1.3 2007/09/04 20:28:06 adamfranco Exp $
  */
 
 class WAddFromListRepeatableComponentCollection
@@ -28,7 +28,7 @@ class WAddFromListRepeatableComponentCollection
 {
 	function WAddFromListRepeatableComponentCollection() {
 		parent::WRepeatableComponentCollection();
-    	$this->_addButton =& WChooseOptionButton::withLabel($this->_addLabel);
+    	$this->_addButton = WChooseOptionButton::withLabel($this->_addLabel);
     	$this->_addButton->setParent($this);
     }
     
@@ -41,7 +41,7 @@ class WAddFromListRepeatableComponentCollection
 	 * @access public
 	 * @since 11/1/05
 	 */
-	function addOptionCollection ( $name, &$valueCollection ) {
+	function addOptionCollection ( $name, $valueCollection ) {
 		$this->_addButton->addOptionValue($name, $valueCollection);
 	}
 	

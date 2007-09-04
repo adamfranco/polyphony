@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.13 2006/12/05 19:12:05 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.14 2007/09/04 20:28:12 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.13 2006/12/05 19:12:05 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.14 2007/09/04 20:28:12 adamfranco Exp $
  */
 class viewAction 
 	extends MainWindowAction
@@ -59,14 +59,14 @@ class viewAction
 	 * @since 4/26/05
 	 */
 	function buildContent () {
-		$actionRows =& $this->getActionRows();
-		$harmoni =& Harmoni::instance();
+		$actionRows =$this->getActionRows();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("basket");
 		
-		$idManager =& Services::getService("Id");
-		$authZ =& Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
 		
-		$basket =& Basket::instance();
+		$basket = Basket::instance();
 		$basket->clean();
 		$basket->reset();
 
@@ -85,29 +85,29 @@ class viewAction
 		print "<a href=\"".$harmoni->request->quickURL("basket", "empty").
 			"\">"._("Empty Selection")."</a>";
 
-		$layout =& new Block(ob_get_contents(), STANDARD_BLOCK);
+		$layout = new Block(ob_get_contents(), STANDARD_BLOCK);
 		ob_end_clean();
 		$actionRows->add($layout, "100%", null, CENTER, CENTER);
 		
 		//***********************************
 		// print the results
 		//***********************************
-		$resultPrinter =& new IteratorResultPrinter($basket, 3, 6, "printAssetShort");
-		$resultLayout =& $resultPrinter->getLayout("viewAction::canView");
+		$resultPrinter = new IteratorResultPrinter($basket, 3, 6, "printAssetShort");
+		$resultLayout =$resultPrinter->getLayout("viewAction::canView");
 		$actionRows->add($resultLayout, "100%", null, LEFT, CENTER);
 		$harmoni->request->endNamespace();
 	}
 	
 	// Callback function for checking authorizations
-	function canView( & $assetId ) {
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+	function canView( $assetId ) {
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 
 		if ($authZ->isUserAuthorized($idManager->getId("edu.middlebury.authorization.view"), $assetId))
 		{
 			return TRUE;
 		} else {
-			$basket =& Basket::instance();
+			$basket = Basket::instance();
 			$basket->removeItem($assetId);
 			return FALSE;
 		}
@@ -115,20 +115,20 @@ class viewAction
 	
 }
 
-function printAssetShort(&$assetId, $num) {
-	$harmoni =& Harmoni::instance();
-	$repositoryManager =& Services::getService("Repository");
-	$asset =& $repositoryManager->getAsset($assetId);
+function printAssetShort($assetId, $num) {
+	$harmoni = Harmoni::instance();
+	$repositoryManager = Services::getService("Repository");
+	$asset =$repositoryManager->getAsset($assetId);
 	
-	$container =& new Container(new YLayout, BLOCK, EMPHASIZED_BLOCK);
-	$fillContainerSC =& new StyleCollection("*.fillcontainer", "fillcontainer", "Fill Container", "Elements with this style will fill their container.");
+	$container = new Container(new YLayout, BLOCK, EMPHASIZED_BLOCK);
+	$fillContainerSC = new StyleCollection("*.fillcontainer", "fillcontainer", "Fill Container", "Elements with this style will fill their container.");
 	$fillContainerSC->addSP(new MinHeightSP("88%"));
 	$container->addStyle($fillContainerSC);
 	
-	$centered =& new StyleCollection("*.centered", "centered", "Centered", "Centered Text");
+	$centered = new StyleCollection("*.centered", "centered", "Centered", "Centered Text");
 	$centered->addSP(new TextAlignSP("center"));	
 	
-	$assetId =& $asset->getId();
+	$assetId =$asset->getId();
 	
 	if ($_SESSION["show_thumbnail"] == 'true') {
 		$thumbnailURL = RepositoryInputOutputModuleManager::getThumbnailUrlForAsset($asset);
@@ -150,7 +150,7 @@ function printAssetShort(&$assetId, $num) {
 			print "\n\t\t<img src='$thumbnailURL' class='thumbnail thumbnail_image' alt='Thumbnail Image' style='max-height: $thumbSize; max-width: $thumbSize;' />";
 			print "\n\t</a>";
 			print "\n</div>";
-			$component =& new UnstyledBlock(ob_get_contents());
+			$component = new UnstyledBlock(ob_get_contents());
 			$component->addStyle($centered);
 			ob_end_clean();
 			$container->add($component, "100%", null, CENTER, CENTER);
@@ -163,12 +163,12 @@ function printAssetShort(&$assetId, $num) {
 	if ($_SESSION["show_id"] == 'true')
 		print "\n\t<div>"._("ID#").": ".$assetId->getIdString()."</div>";
 	if ($_SESSION["show_description"] == 'true') {
-		$description =& HtmlString::withValue($asset->getDescription());
+		$description = HtmlString::withValue($asset->getDescription());
 		$description->trim(25);
 		print  "\n\t<div style='font-size: smaller; height: 50px; overflow: auto;'>".$description->asString()."</div>";	
 	}
 	
-	$component =& new UnstyledBlock(ob_get_contents());
+	$component = new UnstyledBlock(ob_get_contents());
 	ob_end_clean();
 	$container->add($component, "100%", null, LEFT, TOP);
 	

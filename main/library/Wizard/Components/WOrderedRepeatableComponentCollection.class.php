@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.10 2006/06/08 15:56:34 adamfranco Exp $
+ * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.11 2007/09/04 20:28:07 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WSelectList.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WSelectList.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.10 2006/06/08 15:56:34 adamfranco Exp $
+ * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.11 2007/09/04 20:28:07 adamfranco Exp $
  */
 
 class WOrderedRepeatableComponentCollection 
@@ -32,8 +32,8 @@ class WOrderedRepeatableComponentCollection
     
     function WOrderedRepeatableComponentCollection() {
     	parent::WRepeatableComponentCollection();
-    	$idManager =& Services::getService("Id");
-    	$this->_orderedSet =& new OrderedSet($idManager->getId("unimportant"));
+    	$idManager = Services::getService("Id");
+    	$this->_orderedSet = new OrderedSet($idManager->getId("unimportant"));
     	$this->_nextId = 0;
     }
     	
@@ -43,23 +43,23 @@ class WOrderedRepeatableComponentCollection
 	 * @access private
 	 * @return void
 	 */
-	function &_addElement ($removable = true) {
+	function _addElement ($removable = true) {
 		if ($this->_max != -1 && $this->_num == $this->_max - 1) return;
 //		printDebugBacktrace();
 		// clone our base set (the getChildren() array)
 		$newArray = array();
-		$base =& $this->getChildren();
+		$base =$this->getChildren();
 		foreach (array_keys($base) as $key) {
-			$newArray[$key] =& $base[$key]->copy();
+			$newArray[$key] =$base[$key]->copy();
 			$newArray[$key]->setParent($this);
 		}
-		$newArray["_remove"] =& WEventButton::withLabel($this->_removeLabel);
+		$newArray["_remove"] = WEventButton::withLabel($this->_removeLabel);
 		$newArray["_remove"]->setParent($this);
 		$newArray["_remove"]->addOnClick("ignoreValidation(this.form);");
 		$newArray["_remove"]->setEnabled($removable, !$removable);
 		
-		$this->_collections[$this->_nextId] =& $newArray;
-		$idManager =& Services::getService("Id");
+		$this->_collections[$this->_nextId] =$newArray;
+		$idManager = Services::getService("Id");
 		$this->_orderedSet->addItem($idManager->getId(strval($this->_nextId)));
 		$this->_nextId++;
 		$this->_num++;
@@ -79,7 +79,7 @@ class WOrderedRepeatableComponentCollection
 		if (($this->_num-count($ar)) < $this->_min) return;
 		foreach ($ar as $key) {
 			unset($this->_collections[$key]);
-			$idManager =& Services::getService("Id");
+			$idManager = Services::getService("Id");
 			$this->_orderedSet->removeItem($idManager->getId(strval($key)));
 			$this->_num--;
 		}
@@ -122,14 +122,14 @@ class WOrderedRepeatableComponentCollection
 		// Rebuild the position lists.
 		$this->_orderedSet->reset();
 		while ($this->_orderedSet->hasNext()) {
-			$collectionId =& $this->_orderedSet->next();
+			$collectionId =$this->_orderedSet->next();
 			$key = $collectionId->getIdString();
 			
-			$this->_collections[$key]["_moveToPosition"] =& $positionList->deepCopy();
+			$this->_collections[$key]["_moveToPosition"] =$positionList->deepCopy();
 			$this->_collections[$key]["_moveToPosition"]->setParent($this);
 			$this->_collections[$key]["_moveToPosition"]->setValue(
 				strval($this->_orderedSet->getPosition($collectionId)));
-			$this->_collections[$key]["_moveToPositionChoice"] =& WHiddenField::withValue('false');
+			$this->_collections[$key]["_moveToPositionChoice"] = WHiddenField::withValue('false');
 			$this->_collections[$key]["_moveToPositionChoice"]->setParent($this);
 		}
 	}
@@ -144,7 +144,7 @@ class WOrderedRepeatableComponentCollection
 	 * @return boolean - TRUE if everything is OK
 	 */
 	function update ($fieldName) {
-		$idManager =& Services::getService("Id");
+		$idManager = Services::getService("Id");
 		$ok = true;
 //		$this->_removeElements(array(2));
 		// first update all our components in the collections
@@ -152,7 +152,7 @@ class WOrderedRepeatableComponentCollection
 		foreach(array_keys($this->_collections) as $key) {
 			foreach(array_keys($this->_collections[$key]) as $name) {
 // 				print "$name in $key is a ".gettype($this->_collections[$key][$name])."<br/>";
-				$rule =& ExtendsValidatorRule::getRule("WizardComponent");
+				$rule = ExtendsValidatorRule::getRule("WizardComponent");
 				if (!$rule->check($this->_collections[$key][$name])) continue;
 				if (!$this->_collections[$key][$name]->update($fieldName."_".$key."_".$name)) 
 					$ok = false;
@@ -211,7 +211,7 @@ class WOrderedRepeatableComponentCollection
 		$array = array();
 		$this->_orderedSet->reset();
 		while ($this->_orderedSet->hasNext()) {
-			$collectionId =& $this->_orderedSet->next();
+			$collectionId =$this->_orderedSet->next();
 			$key = $collectionId->getIdString();
 			foreach(array_keys($this->_collections[$key]) as $name) {
 				$array[$key][$name] = $this->_collections[$key][$name]->getAllValues();
@@ -242,7 +242,7 @@ class WOrderedRepeatableComponentCollection
 		
 		$this->_orderedSet->reset();
 		while ($this->_orderedSet->hasNext()) {
-			$collectionId =& $this->_orderedSet->next();
+			$collectionId =$this->_orderedSet->next();
 			$key = $collectionId->getIdString();
 			
 			$this->_collections[$key]["_remove"]->setEnabled($includeRemove);

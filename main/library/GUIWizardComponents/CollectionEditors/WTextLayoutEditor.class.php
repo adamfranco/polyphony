@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: WTextLayoutEditor.class.php,v 1.2 2006/08/21 16:25:23 sporktim Exp $
+* @version $Id: WTextLayoutEditor.class.php,v 1.3 2007/09/04 20:28:00 adamfranco Exp $
 */
 
 
@@ -20,7 +20,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: WTextLayoutEditor.class.php,v 1.2 2006/08/21 16:25:23 sporktim Exp $
+* @version $Id: WTextLayoutEditor.class.php,v 1.3 2007/09/04 20:28:00 adamfranco Exp $
 */
 
 class WTextLayoutEditor
@@ -64,7 +64,7 @@ extends WMoreOptions
 		
 		
 		//get the theme
-		eval('$theme =& '.$callBack."();");
+		eval('$theme = '.$callBack."();");
 
 
 		
@@ -83,7 +83,7 @@ extends WMoreOptions
 
 		//first style collection
 		if(!$theme->getStyleCollection($collectionSelector1)){
-			$styleCollection1 =& new StyleCollection($collectionSelector1, $collectionName,"Text Properties", "How would you like your text to look?".$collectionName);
+			$styleCollection1 = new StyleCollection($collectionSelector1, $collectionName,"Text Properties", "How would you like your text to look?".$collectionName);
 			foreach($thingsToApplyCollectionTo as $arr){
 				$theme->addStyleForComponentType($styleCollection1,$arr['type'],$arr['index']);
 			}
@@ -91,25 +91,25 @@ extends WMoreOptions
 
 
 		//first style collection GUI elements
-		$comp =& new WGUISelectList($callBack, $collectionSelector1,new TextAlignSP("left"),"TextAlignSC",$align,"text-align");
+		$comp = new WGUISelectList($callBack, $collectionSelector1,new TextAlignSP("left"),"TextAlignSC",$align,"text-align");
 		$this->addComponent('align',$comp);
 		
-		$comp =& new WGUISelectList($callBack, $collectionSelector1,new LetterSpacingSP("normal"),"TextSpacingSC",$textSpacing,"letter-spacing");
+		$comp = new WGUISelectList($callBack, $collectionSelector1,new LetterSpacingSP("normal"),"TextSpacingSC",$textSpacing,"letter-spacing");
 		$this->addComponent('letterSpace',$comp);
 		
-		$comp =& new WGUISelectList($callBack, $collectionSelector1,new WordSpacingSP("normal"),"TextSpacingSC",$textSpacing,false);
+		$comp = new WGUISelectList($callBack, $collectionSelector1,new WordSpacingSP("normal"),"TextSpacingSC",$textSpacing,false);
 		$this->addComponent('wordSpace',$comp);	
 		
-		$comp =& new WGUISelectList($callBack, $collectionSelector1,new LineHeightSP("normal"),"LineHeightSC",$lineSpacing,false);
+		$comp = new WGUISelectList($callBack, $collectionSelector1,new LineHeightSP("normal"),"LineHeightSC",$lineSpacing,false);
 		$this->addComponent('lineSpace',$comp);	
 
-				$comp =& new WGUISelectList($callBack, $collectionSelector1,new PaddingTopSP("0px"),"LengthSC",$marginArray,false);
+				$comp = new WGUISelectList($callBack, $collectionSelector1,new PaddingTopSP("0px"),"LengthSC",$marginArray,false);
 		$this->addComponent('p_top',$comp);
-		$comp =& new WGUISelectList($callBack, $collectionSelector1,new PaddingBottomSP("0px"),"LengthSC",$marginArray,false);
+		$comp = new WGUISelectList($callBack, $collectionSelector1,new PaddingBottomSP("0px"),"LengthSC",$marginArray,false);
 		$this->addComponent('p_bottom',$comp);	
-		$comp =& new WGUISelectList($callBack, $collectionSelector1,new PaddingLeftSP("0px"),"LengthSC",$marginArray,false);
+		$comp = new WGUISelectList($callBack, $collectionSelector1,new PaddingLeftSP("0px"),"LengthSC",$marginArray,false);
 		$this->addComponent('p_left',$comp);	
-		$comp =& new WGUISelectList($callBack, $collectionSelector1,new PaddingRightSP("0px"),"LengthSC",$marginArray,false);
+		$comp = new WGUISelectList($callBack, $collectionSelector1,new PaddingRightSP("0px"),"LengthSC",$marginArray,false);
 		$this->addComponent('p_right',$comp);	
 
 	}
@@ -141,12 +141,12 @@ extends WMoreOptions
 		$s.="\n<table border='0' width='100%' cellpadding='5'>";
 		$s.="\n\t<tr>";
 		$s.="\t\t<td>Text Align: ";
-		$comp =& $this->getChild($name = 'align');
+		$comp =$this->getChild($name = 'align');
 		$s.="\n\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";
 		
 		
 		$s.="\t\t<td>Line Spacing: ";
-		$comp =& $this->getChild($name = 'lineSpace');
+		$comp =$this->getChild($name = 'lineSpace');
 		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";
 		
 		$s.="\n\t\t<td>More Text layout options: ".$this->getCheckboxMarkup($fieldName)."</td>";
@@ -190,27 +190,27 @@ extends WMoreOptions
 		$s.="\n\t<tr>";
 		
 		$s.="\t\t<td width>Space between letters: ";
-		$comp =& $this->getChild($name = 'letterSpace');
+		$comp =$this->getChild($name = 'letterSpace');
 		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";		
 		$s.="\t\t<td width>Space between words: ";
-		$comp =& $this->getChild($name = 'wordSpace');
+		$comp =$this->getChild($name = 'wordSpace');
 		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";
 		$s.="\n\t</tr><tr>";
 		
 		$s.="\t\t<td>Top Padding: ";
-		$comp =& $this->getChild($name = 'p_top');
+		$comp =$this->getChild($name = 'p_top');
 		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";		
 		$s.="\t\t<td>Bottom Padding: ";
-		$comp =& $this->getChild($name = 'p_bottom');
+		$comp =$this->getChild($name = 'p_bottom');
 		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";
 		$s.="\n\t</tr><tr>";
 		
 		
 		$s.="\t\t<td>Left Padding: ";
-		$comp =& $this->getChild($name = 'p_left');
+		$comp =$this->getChild($name = 'p_left');
 		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";		
 		$s.="\t\t<td>Right Padding: ";
-		$comp =& $this->getChild($name = 'p_right');
+		$comp =$this->getChild($name = 'p_right');
 		$s.="\t\t".$comp->getMarkup($fieldName."_".$name)."</td>";
 		$s.="\n\t</tr><tr>";
 		

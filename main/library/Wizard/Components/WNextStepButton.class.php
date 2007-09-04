@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WNextStepButton.class.php,v 1.6 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WNextStepButton.class.php,v 1.7 2007/09/04 20:28:07 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WNextStepButton.class.php,v 1.6 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WNextStepButton.class.php,v 1.7 2007/09/04 20:28:07 adamfranco Exp $
  */
 class WNextStepButton 
 	extends WEventButton 
@@ -34,12 +34,12 @@ class WNextStepButton
 	 * @access public
 	 * @return void
 	 */
-	function WNextStepButton (&$stepContainer, $label = null) {
+	function WNextStepButton ($stepContainer, $label = null) {
 		if(is_null($label)){
 			$label = dgettext("polyphony", "Next");
 		}
 		$this->setLabel($label);
-		$this->_stepContainer =& $stepContainer;
+		$this->_stepContainer =$stepContainer;
 	}
 	
 	/**

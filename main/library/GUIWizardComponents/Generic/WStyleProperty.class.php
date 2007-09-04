@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStyleProperty.class.php,v 1.1 2006/08/19 21:08:39 sporktim Exp $
+ * @version $Id: WStyleProperty.class.php,v 1.2 2007/09/04 20:28:00 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponentWithChildren.abstract.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponentWithChildren.abstrac
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStyleProperty.class.php,v 1.1 2006/08/19 21:08:39 sporktim Exp $
+ * @version $Id: WStyleProperty.class.php,v 1.2 2007/09/04 20:28:00 adamfranco Exp $
  */
  
 class WStyleProperty 
@@ -43,17 +43,17 @@ class WStyleProperty
 		$this->_collection = $collection;
 		$this->_property = $property;
 		
-		$styleProperty =& $this->getStyleProperty();
+		$styleProperty =$this->getStyleProperty();
 	
 		
 		
 		// the list of existing SCs
-		$scs =& $styleProperty->getSCs();
+		$scs =$styleProperty->getSCs();
 		
 		$i =0;
 		foreach (array_keys($scs) as $key) {
 			$class = get_class($scs[$key]);	
-			$scComp =& new WStyleComponent($this->_getThemeCallBack, $class ,$styleProperty->getName(),$collection,true);
+			$scComp = new WStyleComponent($this->_getThemeCallBack, $class ,$styleProperty->getName(),$collection,true);
 			$this->addComponent("comp".$i, $scComp);
 			$i++;	
 		}
@@ -61,8 +61,8 @@ class WStyleProperty
 		$empties = array_diff($scList, array_keys($scs));
 		// for each SC not populated create their options too
 		foreach ($empties as $empty) {
-			$emptySC =& new $empty();
-			$emptyComp =& new WStyleComponent($emptySC,true);
+			$emptySC = new $empty();
+			$emptyComp = new WStyleComponent($emptySC,true);
 			$wizSP->addComponent("comp".$i, $emptyComp);
 			// table row [displayName][input][description]
 			$s.= "<tr><td>".$emptySC->getDisplayName().":</td>";
@@ -75,10 +75,10 @@ class WStyleProperty
 		
 	}
 	
-	function &getStyleProperty(){
+	function getStyleProperty(){
 
-		eval('$theme =& '.$this->_getThemeCallBack."();");		
-		$collection =& $theme->getStyleCollection($this->_collection);
+		eval('$theme = '.$this->_getThemeCallBack."();");		
+		$collection =$theme->getStyleCollection($this->_collection);
 		return $collection->getStyleProperty($this->_property);
 
 		
@@ -88,9 +88,9 @@ class WStyleProperty
 	
 	
 	/*
-	$wizSP =& new WizardStep();
+	$wizSP = new WizardStep();
 		// the list of existing SCs
-		$scs =& $this->getSCs();
+		$scs =$this->getSCs();
 		// the list of SC types for this SP
 		$scList = $this->getSCList();
 		ob_start();
@@ -108,7 +108,7 @@ class WStyleProperty
 			
 			//print "   $key>-->'".$class."' ";
 			
-			$scComp =& new WStyleComponent($callBack, $class ,$this->getName(),$collection,true);
+			$scComp = new WStyleComponent($callBack, $class ,$this->getName(),$collection,true);
 			$wizSP->addComponent("comp".$i, $scComp);
 			// table row [displayName][input][description]
 			print "<tr><td>".$scs[$key]->getDisplayName().":</td>";
@@ -122,8 +122,8 @@ class WStyleProperty
 		$empties = array_diff($scList, array_keys($scs));
 		// for each SC not populated create their options too
 		foreach ($empties as $empty) {
-			$emptySC =& new $empty();
-			$emptyComp =& new WStyleComponent($emptySC,true);
+			$emptySC = new $empty();
+			$emptyComp = new WStyleComponent($emptySC,true);
 			$wizSP->addComponent("comp".$i, $emptyComp);
 			// table row [displayName][input][description]
 			print "<tr><td>".$emptySC->getDisplayName().":</td>";
@@ -152,7 +152,7 @@ class WStyleProperty
 	 * @return boolean - TRUE if everything is OK
 	 */
 	function update ($fieldName) {
-		$children =& $this->getChildren();
+		$children =$this->getChildren();
 		$ok = true;
 		foreach (array_keys($children) as $key) {
 			
@@ -179,7 +179,7 @@ class WStyleProperty
 	 * @return boolean
 	 */
 	function validate () {
-		$children =& $this->getChildren();
+		$children =$this->getChildren();
 		foreach (array_keys($children) as $step) {
 			if (!$children[$step]->validate()) {
 				return false;
@@ -199,9 +199,9 @@ class WStyleProperty
 	 * @return string
 	 */
 	function getMarkup ($fieldName) {
-		$styleProperty =& $this->getStyleProperty();
+		$styleProperty =$this->getStyleProperty();
 		// the list of existing SCs
-		$scs =& $styleProperty->getSCs();
+		$scs =$styleProperty->getSCs();
 		// the list of SC types for this SP
 		$scList = $styleProperty->getSCList();
 
@@ -212,10 +212,10 @@ class WStyleProperty
 		$i = 0;
 		
 		
-		$children =& $this->getChildren();
+		$children =$this->getChildren();
 		
 		foreach ($children as $key=>$child) {
-			$sc =& $child->getStyleComponent();
+			$sc =$child->getStyleComponent();
 						
 			// table row [displayName][input][description]
 			$s.= "<tr><td>".$sc->getDisplayName().":</td>";
@@ -228,8 +228,8 @@ class WStyleProperty
 		$empties = array_diff($scList, array_keys($scs));
 		// for each SC not populated create their options too
 		foreach ($empties as $empty) {
-			$emptySC =& new $empty();
-			$emptyComp =& new WStyleComponent($emptySC,true);
+			$emptySC = new $empty();
+			$emptyComp = new WStyleComponent($emptySC,true);
 			$wizSP->addComponent("comp".$i, $emptyComp);
 			// table row [displayName][input][description]
 			$s.= "<tr><td>".$emptySC->getDisplayName().":</td>";

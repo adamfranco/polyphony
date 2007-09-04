@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordExporter.class.php,v 1.7 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: XMLRecordExporter.class.php,v 1.8 2007/09/04 20:27:59 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Exporter/XMLPartExporter.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLPartExporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordExporter.class.php,v 1.7 2006/06/26 19:22:41 adamfranco Exp $
+ * @version $Id: XMLRecordExporter.class.php,v 1.8 2007/09/04 20:27:59 adamfranco Exp $
  */
 class XMLRecordExporter {
 		
@@ -33,8 +33,8 @@ class XMLRecordExporter {
 	 * @access public
 	 * @since 10/17/05
 	 */
-	function XMLRecordExporter (&$xmlFile) {
-		$this->_xml =& $xmlFile;
+	function XMLRecordExporter ($xmlFile) {
+		$this->_xml =$xmlFile;
 		
 		$this->_childExporterList = array("XMLPartExporter");
 		$this->_childElementList = array("parts");
@@ -47,12 +47,12 @@ class XMLRecordExporter {
 	 * @access public
 	 * @since 10/17/05
 	 */
-	function export (&$record) {
-		$this->_object =& $record;
-		$this->_myId =& $this->_object->getId();
+	function export ($record) {
+		$this->_object =$record;
+		$this->_myId =$this->_object->getId();
 
-		$rS =& $this->_object->getRecordStructure();
-		$rSId =& $rS->getId();
+		$rS =$this->_object->getRecordStructure();
+		$rSId =$rS->getId();
 		
 		fwrite($this->_xml,
 "\t\t<record ".
@@ -79,11 +79,11 @@ class XMLRecordExporter {
 	 * @since 10/17/05
 	 */
 	function exportParts () {
-		$children =& $this->_object->getParts();
+		$children =$this->_object->getParts();
 		
 		while ($children->hasNext()) {
-			$child =& $children->next();
-			$exporter =& new XMLPartExporter($this->_xml);
+			$child =$children->next();
+			$exporter = new XMLPartExporter($this->_xml);
 			$exporter->export($child); // ????
 			unset($exporter);
 		}
