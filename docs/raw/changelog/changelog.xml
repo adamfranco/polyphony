@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.82 2007/09/05 16:46:18 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.83 2007/09/05 22:14:28 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -33,6 +33,10 @@
 							Kept the first parameter being passed by reference. Needed in this case.
 		</change>
 		
+		<new author='adam' date='2007-09-05'>
+			Wizard: Adding the HtmlTextArea component for switching between multiple
+			text editors, some WYSIWYG, some not.
+		</new>
 		<change author='adam' date='2007-09-05'>
 			Wizard: Now defines classes and methods to enforce interface compliance.
 		</change>

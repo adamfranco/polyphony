@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextArea.class.php,v 1.10 2007/09/04 20:28:08 adamfranco Exp $
+ * @version $Id: WTextArea.class.php,v 1.11 2007/09/05 22:14:29 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__).'/WTextInput.abstract.php');
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__).'/WTextInput.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextArea.class.php,v 1.10 2007/09/04 20:28:08 adamfranco Exp $
+ * @version $Id: WTextArea.class.php,v 1.11 2007/09/05 22:14:29 adamfranco Exp $
  */
 class WTextArea 
 	extends WTextInput 
@@ -37,10 +37,10 @@ class WTextArea
 	 * @return ref object
 	 * @static
 	 */
-	function withRowsAndColumns ($rows, $cols) {
-		$obj = new WTextArea();
-		$obj->_rows = $rows;
-		$obj->_cols = $cols;
+	static function withRowsAndColumns ($rows, $cols, $class = 'WTextArea') {
+		$obj = new $class();
+		$obj->setRows($rows);
+		$obj->setColumns($cols);
 		return $obj;
 	}
 	
@@ -49,7 +49,7 @@ class WTextArea
 	 * @access public
 	 * @return WTextArea
 	 */
-	function WTextArea () {
+	function __construct () {
 		$this->_value = '';
 		$this->_rows = 3;
 		$this->_cols = 60;
@@ -62,6 +62,7 @@ class WTextArea
 	 * @return void
 	 */
 	function setRows ($rows) {
+		ArgumentValidator::validate($rows, IntegerValidatorRule::getRule());
 		$this->_rows = $rows;
 	}
 	
@@ -72,6 +73,7 @@ class WTextArea
 	 * @return void
 	 */
 	function setColumns ($cols) {
+		ArgumentValidator::validate($cols, IntegerValidatorRule::getRule());
 		$this->_cols = $cols;
 	}
 	
