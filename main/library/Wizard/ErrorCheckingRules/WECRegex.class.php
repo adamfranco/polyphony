@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WECRegex.class.php,v 1.5 2007/09/04 20:28:09 adamfranco Exp $
+ * @version $Id: WECRegex.class.php,v 1.6 2007/09/05 16:46:19 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingRules/WECRule.interface.php");
@@ -19,9 +19,12 @@ require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingRules/WECRule.interfac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WECRegex.class.php,v 1.5 2007/09/04 20:28:09 adamfranco Exp $
+ * @version $Id: WECRegex.class.php,v 1.6 2007/09/05 16:46:19 adamfranco Exp $
  */
-class WECRegex extends WECRule {
+class WECRegex 
+	implements WECRule 
+{
+
 	var $_regex;
 	
 	/**

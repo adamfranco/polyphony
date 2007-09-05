@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.81 2007/09/04 20:27:56 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.82 2007/09/05 16:46:18 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -31,6 +31,10 @@
 					
 					- harmoni/core/oki2/hierarchy/tree/Tree.class.php - _traverse()
 							Kept the first parameter being passed by reference. Needed in this case.
+		</change>
+		
+		<change author='adam' date='2007-09-05'>
+			Wizard: Now defines classes and methods to enforce interface compliance.
 		</change>
 		<new author='adam'>
 			Javascript: Now provides functions for namespacing of form fields.

@@ -4,7 +4,7 @@
  * @package polyphony.library.datamanager_gui
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- * @version $Id: PrimitiveIO.interface.php,v 1.7 2007/09/04 20:27:58 adamfranco Exp $
+ * @version $Id: PrimitiveIO.interface.php,v 1.8 2007/09/05 16:46:18 adamfranco Exp $
  **/
 
 /**
@@ -15,9 +15,9 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @author Gabriel Schine
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- * @version $Id: PrimitiveIO.interface.php,v 1.7 2007/09/04 20:27:58 adamfranco Exp $
+ * @version $Id: PrimitiveIO.interface.php,v 1.8 2007/09/05 16:46:18 adamfranco Exp $
  */
-class PrimitiveIO extends WizardComponent
+abstract class PrimitiveIO extends WizardComponent
 {
 	/**
 	 * Sets the value of this Component to the {@link SObject} passed.
@@ -25,11 +25,7 @@ class PrimitiveIO extends WizardComponent
 	 *
 	 * @return void
 	 **/
-	function setValue($value)
-	{
-		
-	}
+	abstract function setValue($value);
 
-} // END class PrimitiveIO
-
+}
 ?>

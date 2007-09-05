@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ErrorCheckingWizardComponent.abstract.php,v 1.4 2007/09/04 20:28:05 adamfranco Exp $
+ * @version $Id: ErrorCheckingWizardComponent.abstract.php,v 1.5 2007/09/05 16:46:18 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
@@ -20,10 +20,12 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ErrorCheckingWizardComponent.abstract.php,v 1.4 2007/09/04 20:28:05 adamfranco Exp $
+ * @version $Id: ErrorCheckingWizardComponent.abstract.php,v 1.5 2007/09/05 16:46:18 adamfranco Exp $
  * @abstract
  */
-class ErrorCheckingWizardComponent extends WizardComponent {
+abstract class ErrorCheckingWizardComponent 
+	extends WizardComponent 
+{
 	var $_errorRule = null;
 	var $_errorMessage = null;
 	var $_errorStyle = "color: red;";

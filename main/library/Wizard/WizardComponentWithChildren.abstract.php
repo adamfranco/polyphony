@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponentWithChildren.abstract.php,v 1.11 2007/09/04 20:28:06 adamfranco Exp $
+ * @version $Id: WizardComponentWithChildren.abstract.php,v 1.12 2007/09/05 16:46:18 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
@@ -20,10 +20,10 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponentWithChildren.abstract.php,v 1.11 2007/09/04 20:28:06 adamfranco Exp $
+ * @version $Id: WizardComponentWithChildren.abstract.php,v 1.12 2007/09/05 16:46:18 adamfranco Exp $
  * @abstract
  */
-class WizardComponentWithChildren 
+abstract class WizardComponentWithChildren 
 	extends WizardComponent 
 {
 

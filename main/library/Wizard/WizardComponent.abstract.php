@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponent.abstract.php,v 1.3 2007/09/04 20:28:06 adamfranco Exp $
+ * @version $Id: WizardComponent.abstract.php,v 1.4 2007/09/05 16:46:18 adamfranco Exp $
  */ 
 
 /**
@@ -19,9 +19,9 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponent.abstract.php,v 1.3 2007/09/04 20:28:06 adamfranco Exp $
+ * @version $Id: WizardComponent.abstract.php,v 1.4 2007/09/05 16:46:18 adamfranco Exp $
  */
-class WizardComponent 
+abstract class WizardComponent 
 	extends SObject 
 {
 	var $_parent;
@@ -98,9 +98,7 @@ class WizardComponent
 	 * @access public
 	 * @return boolean - TRUE if everything is OK
 	 */
-	function update ($fieldName) {
-		die ("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class ".get_class($this).".");
-	}
+	abstract function update ($fieldName);
 	
 	/**
 	 * Returns the values of wizard-components. Should return an array if children are involved,
@@ -108,9 +106,7 @@ class WizardComponent
 	 * @access public
 	 * @return mixed
 	 */
-	function getAllValues () {
-		die ("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class ".get_class($this).".");
-	}
+	abstract function getAllValues ();
 	
 	/**
 	 * Returns a block of XHTML-valid code that contains markup for this specific
@@ -120,9 +116,7 @@ class WizardComponent
 	 * @access public
 	 * @return string
 	 */
-	function getMarkup ($fieldName) {
-		die ("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class ".get_class($this).".");
-	}
+	abstract function getMarkup ($fieldName);
 }
 
 

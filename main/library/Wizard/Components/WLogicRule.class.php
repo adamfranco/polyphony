@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicRule.class.php,v 1.6 2007/09/04 20:28:07 adamfranco Exp $
+ * @version $Id: WLogicRule.class.php,v 1.7 2007/09/05 16:46:19 adamfranco Exp $
  */ 
 
 /**
@@ -18,9 +18,9 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicRule.class.php,v 1.6 2007/09/04 20:28:07 adamfranco Exp $
+ * @version $Id: WLogicRule.class.php,v 1.7 2007/09/05 16:46:19 adamfranco Exp $
  */
-class WLogicRule extends WizardComponent {
+class WLogicRule {
 		
 	var $_requiredSteps;
 		

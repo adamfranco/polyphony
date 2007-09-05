@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WECRule.interface.php,v 1.3 2007/09/04 20:28:09 adamfranco Exp $
+ * @version $Id: WECRule.interface.php,v 1.4 2007/09/05 16:46:19 adamfranco Exp $
  */ 
 /**
  * An interface that defines rules for javascript error checking with the {@link Wizard}.
@@ -17,9 +17,9 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WECRule.interface.php,v 1.3 2007/09/04 20:28:09 adamfranco Exp $
+ * @version $Id: WECRule.interface.php,v 1.4 2007/09/05 16:46:19 adamfranco Exp $
  */
-class WECRule {
+interface WECRule {
 	/**
 	 * Returns a block of javascript code defining a function like so:
 	 * 
@@ -30,9 +30,7 @@ class WECRule {
 	 * @access public
 	 * @return string
 	 */
-	function generateJavaScript () {
-		
-	}
+	function generateJavaScript () ;
 	
 	/**
 	 * Returns true if the passed {@link WizardComponent} validates against this rule.
@@ -40,9 +38,7 @@ class WECRule {
 	 * @access public
 	 * @return boolean
 	 */
-	function checkValue ($component) {
-		
-	}
+	function checkValue ($component) ;
 }
 
 
