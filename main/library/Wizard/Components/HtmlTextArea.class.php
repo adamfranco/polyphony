@@ -6,8 +6,10 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HtmlTextArea.class.php,v 1.1 2007/09/05 22:14:29 adamfranco Exp $
+ * @version $Id: HtmlTextArea.class.php,v 1.2 2007/09/06 17:23:26 adamfranco Exp $
  */ 
+
+require_once(dirname(__FILE__)."/FckTextArea.class.php");
 
 /**
  * The HtmlTextArea is a text input block that allows the user to use one of several
@@ -21,7 +23,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HtmlTextArea.class.php,v 1.1 2007/09/05 22:14:29 adamfranco Exp $
+ * @version $Id: HtmlTextArea.class.php,v 1.2 2007/09/06 17:23:26 adamfranco Exp $
  */
 class HtmlTextArea
 	extends WTextArea
@@ -35,8 +37,8 @@ class HtmlTextArea
 	 * @return ref object
 	 * @static
 	 */
-	public static function withRowsAndColumns ($rows, $cols, $class = 'WTextArea') {
-		return parent::withRowsAndColumns($rows, $cols, 'HtmlTextArea');
+	public static function withRowsAndColumns ($rows, $cols, $class = 'HtmlTextArea') {
+		return parent::withRowsAndColumns($rows, $cols, $class);
 	}
 	
 	/**
@@ -67,7 +69,7 @@ class HtmlTextArea
 		$this->editorChoice->addOnChange('this.form.submit();');
 		
 		$this->addEditor('none', _('None'), new WTextArea);
-		$this->addEditor('test', _('Test'), new WTextArea);
+		$this->addEditor('fck', _('FCK Editor'), new FckTextarea);
 		
 		$this->chooseEditor('none');
 	}
