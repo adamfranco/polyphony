@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: FckTextArea.class.php,v 1.1 2007/09/06 17:23:26 adamfranco Exp $
+ * @version $Id: FckTextArea.class.php,v 1.2 2007/09/06 17:35:26 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/WTextArea.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY.'/javascript/fckeditor/fckeditor.php');
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: FckTextArea.class.php,v 1.1 2007/09/06 17:23:26 adamfranco Exp $
+ * @version $Id: FckTextArea.class.php,v 1.2 2007/09/06 17:35:26 adamfranco Exp $
  */
 class FckTextArea
 	extends WTextArea
@@ -81,6 +81,24 @@ class FckTextArea
 		$this->editor->Config['ImageDlgHideAdvanced'] = "false";
 		
 		$this->editor->Config['FlashDlgHideAdvanced'] = "false";
+	}
+	
+	/**
+	 * Set a file browser URL and enable uploading. This is a helper method, the
+	 * same effect can be accomplished by modifying the editor configuration
+	 * directly.
+	 * 
+	 * @param string $url
+	 * @return void
+	 * @access public
+	 * @since 9/6/07
+	 */
+	public function enableFileBrowsingAtUrl ( $url) {
+		$this->editor->Config['ImageBrowser'] = "true";
+		$this->editor->Config['ImageBrowserURL'] = str_replace('&amp;', '&', $url);
+		
+		$this->editor->Config['FlashBrowser'] = 'true';
+		$this->editor->Config['FlashBrowserURL'] = str_replace('&amp;', '&', $url);
 	}
 	
 	/**

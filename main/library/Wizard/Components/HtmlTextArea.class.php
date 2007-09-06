@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HtmlTextArea.class.php,v 1.2 2007/09/06 17:23:26 adamfranco Exp $
+ * @version $Id: HtmlTextArea.class.php,v 1.3 2007/09/06 17:35:26 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/FckTextArea.class.php");
@@ -23,7 +23,7 @@ require_once(dirname(__FILE__)."/FckTextArea.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HtmlTextArea.class.php,v 1.2 2007/09/06 17:23:26 adamfranco Exp $
+ * @version $Id: HtmlTextArea.class.php,v 1.3 2007/09/06 17:35:26 adamfranco Exp $
  */
 class HtmlTextArea
 	extends WTextArea
@@ -116,6 +116,20 @@ class HtmlTextArea
 		$editor->setStyle($this->_style);
 		$editor->_onchange = $this->_onchange;
 		
+	}
+	
+	/**
+	 * Answer an editor so that it may be configured
+	 * 
+	 * @param string $name
+	 * @return void
+	 * @access public
+	 * @since 9/5/07
+	 */
+	public function getEditor ($name) {
+		if (!isset($this->editors[$name]))
+			throw new Exception("Unknown editor, '$name'.");
+		return $this->editors[$name];
 	}
 	
 	/**
