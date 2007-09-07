@@ -3,8 +3,70 @@
 Name: Polyphony ChangeLog
 
 
-v. 0.8.3 (The Future)
+v. 0.9.0 (2007-09-07)
 ----------------------------------------------------
+		
+	* Change: 
+		Removing ampersands for compatability with other PHP5 code. The BBEdit-grep
+		string used for the find and replace was: (function
+		)&amp;|(=\s?)&amp;([^a-z#])|([^&amp;])&amp;\s?(\$) replaced with \1\2\3\4\5 Special Changes
+		were made to the following files to fix problems introduced in the search
+		and repace for ampersands: -
+		polyphony/main/library/ResultPrinter/ArrayResultPrinter.class.php -
+		getLayout() - $item = $this-&gt;_array[key($this-&gt;_array)]; ====== + $item =
+		current($this-&gt;_array); -
+		harmoni/core/oki2/repository/HarmoniRecord.class.php - getParts() Moved the
+		following line out of the if-statement: $activeValue =
+		$allRecordFieldValues[$key]-&gt;getActiveVersion(); -
+		harmoni/core/oki2/hierarchy/tree/Tree.class.php - _traverse() Kept the first
+		parameter being passed by reference. Needed in this case.
+		(Adam Franco)
+		
+		
+	* New feature: 
+		Wizard: Adding the HtmlTextArea component for switching between multiple
+		text editors, some WYSIWYG, some not.
+		(2007-09-05 - Adam Franco)
+		
+	* Change: 
+		
+		Wizard: Now defines classes and methods to enforce interface compliance.
+		(2007-09-05 - Adam Franco)
+		
+	* New feature: 
+		
+		Javascript: Now provides functions for namespacing of form fields.
+		(Adam Franco)
+		
+	* New feature: 
+		
+		Wizard: Added new wizard component, 'SaveWithChoiceButtonList'.
+		(Adam Franco)
+		
+	* New feature: 
+		
+		Wizard: Adding a single-step wizard for small wizards.
+		(Adam Franco)
+		
+	* New feature: 
+		Wizard: Can now access the save and cancel buttons, allowing for changing of
+		labels. 
+		(Adam Franco)
+		
+	* New feature: 
+		Wizard: Adding an optional 'extendedHtml' parameter to allow radio buttons
+		to have additional HTML attached after the label.
+		(Adam Franco)
+		
+	* New feature: 
+		Wizard: Now supports [[fieldname:xxxxxxx]] syntax to allow locating of input
+		elements by custom javascript.
+		(Adam Franco)
+		
+	* New feature: 
+		Wizard: Wizard steps can now return their raw content/markup, allowing
+		appending and prepending of additional content/markup.
+		(Adam Franco)
 		
 	* Bug Fix: 
 		Converting all short tags (&lt;?) to the full tags (&lt;?php) for compatibility
@@ -15,6 +77,7 @@ v. 0.8.2 (2007-04-10)
 ----------------------------------------------------
 		
 	* Bug Fix: 
+		
 		Fixed a few bugs that prevented the basket from running in PHP 5.
 		(Adam Franco)
 	
@@ -22,6 +85,7 @@ v. 0.8.1 (2007-04-05)
 ----------------------------------------------------
 		
 	* Change: 
+		
 		Wizards: Now steps can be accessed out-of-order via links.
 		(Adam Franco)
 		
@@ -31,10 +95,12 @@ v. 0.8.1 (2007-04-05)
 		(Adam Franco)
 		
 	* Change: 
+		
 		Importing: Can now import a single file as an Asset, without compression.
 		(Adam Franco)
 		
 	* New feature: 
+		
 		Wizard: Select field can now have a disabled option added.
 		(Adam Franco)
 	
@@ -42,23 +108,28 @@ v. 0.8.0 (2006-12-13)
 ----------------------------------------------------
 		
 	* New feature: 
+		
 		AuthN: Added support for LDAP Group searching.
 		(Adam Franco)
 		
 	* New feature: 
+		
 		Repository: Added support for files stored at remote locations.
 		(Adam Franco)
 		
 	* Bug Fix: 
+		
 		Exporting: Temporary files are now removed after they are used.
 		(Adam Franco)
 		
 	* New feature: 
+		
 		Exporting: Now shows status of the export.
 		(Adam Franco)
 		
 	* Bug Fix: 
-		Importing: Now doesn't add the AssetContent structure to the Repository's 
+		Importing: Now doesn't add the AssetContent structure to the Repository's
+		list. 
 		(Adam Franco)
 		
 	* Change: 
@@ -73,10 +144,12 @@ v. 0.8.0 (2006-12-13)
 		(Adam Franco)
 		
 	* Bug Fix: 
+		
 		Tagging: Tags could be accidentally added with no value, no cannot.
 		(Adam Franco)
 		
 	* Bug Fix: 
+		
 		Tagging: Adding a tag before current tags load was causing an error.
 		(Adam Franco)
 		
@@ -91,24 +164,29 @@ v. 0.8.0 (2006-12-13)
 		(Adam Franco)
 		
 	* New feature: 
+		
 		Tagging: Now can fetch related tags.
 		(Adam Franco)
 		
 	* Bug Fix: 
+		
 		Thumbnails: Can now determine if a thumbnail is real or an icon.
 		(Adam Franco)
 		
 	* Change: 
 		AuthZ: Now orders Authorization display in popup with everyone and institute
-		at the top, then groups, then agents, ordered alphabetically within each  
+		at the top, then groups, then agents, ordered alphabetically within each
+		category. 
 		(Adam Franco)
 		
 	* Bug Fix: 
+		
 		Logs: Now prints the node id if there is no display name.
 		(Adam Franco)
 		
 	* Change: 
-		Logs: Now prints links back to the logs for agents and nodes in the RSS 
+		Logs: Now prints links back to the logs for agents and nodes in the RSS
+		Feed. 
 		(Adam Franco)
 	
 v. 0.7.0 (2006-12-01)
@@ -122,22 +200,27 @@ v. 0.7.0 (2006-12-01)
 		(Adam Franco)
 		
 	* Bug Fix: 
+		
 		Install: Fixed warnings in partstructure install.
 		(Adam Franco)
 		
 	* New feature: 
+		
 		GUI theme management interfaces.
 		(Tim Bahls)
 		
 	* New feature: 
+		
 		Wizard: new logic wizard and components to support theme management.
 		(Tim Bahls)
 		
 	* Change: 
+		
 		AgentEditing: Updates to interface for agent editing.
 		(Tim Bahls)
 		
 	* New feature: 
+		
 		CourseManagement: Interfaces for managing courses and membership.
 		(John Lee)
 	
@@ -145,14 +228,17 @@ v. 0.6.9 (2006-11-30)
 ----------------------------------------------------
 		
 	* Bug Fix: 
+		
 		Tagging: Fixed IE javascript errors.
 		(Adam Franco)
 		
 	* New feature: 
+		
 		AuthZ: Added icon and popup display of Authorizations
 		(Adam Franco)
 		
 	* Change: 
+		
 		Moved all polyphony javascript into the centrally-loaded place.
 		(Adam Franco)
 		
@@ -170,26 +256,30 @@ v. 0.6.8 (2006-11-28)
 		(Adam Franco)
 		
 	* New feature: 
+		
 		Tagging: Support for Tagging.
 		(Adam Franco)
 		
 	* New feature: 
+		
 		Help: Adding action to allow viewing of exif data in images.
 		(Adam Franco)
 		
 	* New feature: 
+		
 		Javascript: Added a common Javascript library.
 		(Adam Franco)
 		
 	* Bug Fix: 
 		Importing: Updating the Exif importer to support multi-valued fields such as
-		 
+		keywords. 
 		(Adam Franco)
 	
 v. 0.6.7 (2006-10-25)
 ----------------------------------------------------
 		
 	* Bug Fix: 
+		
 		Wizard: Now can handle cache names that contain periods.
 		(Adam Franco)
 		
@@ -202,6 +292,7 @@ v. 0.6.6 (2006-08-16)
 ----------------------------------------------------
 		
 	* Bug Fix: 
+		
 		RSS/Logs: Fixed log RSS feed links when no priority is explicitly chosen.
 		(Adam Franco)
 	
@@ -227,14 +318,17 @@ v. 0.6.4 (2006-08-11)
 		(Adam Franco)
 		
 	* New feature: 
+		
 		Logs: Added RSS feeds of logs.
 		(Adam Franco)
 		
 	* Bug Fix: 
+		
 		Logs: Now has a button to clear date limits.
 		(Adam Franco)
 		
 	* Bug Fix: 
+		
 		Removed unneeded parameter from file and thumbnail urls.
 		(Adam Franco)
 		
@@ -247,10 +341,12 @@ v. 0.6.3 (2006-08-04)
 ----------------------------------------------------
 		
 	* Bug Fix: 
+		
 		Importer: Now doesn't generate null thumbnails for multi-page PDF files.
 		(Adam Franco)
 		
 	* Bug Fix: 
+		
 		Basket: Can now view basket contents in viewer.
 		(Adam Franco)
 		
@@ -276,6 +372,7 @@ v. 0.6.1 (2006-07-21)
 ----------------------------------------------------
 		
 	* Bug Fix: 
+		
 		Importer: Fixed default types.
 		(Adam Franco)
 		
@@ -285,11 +382,13 @@ v. 0.6.1 (2006-07-21)
 		(Adam Franco)
 		
 	* Bug Fix: 
+		
 		Importer: Fixed a parse error.
 		(Adam Franco)
 		
 	* New feature: 
-		Wizard: Adding new WComponentCollection class that can wrap other 
+		Wizard: Adding new WComponentCollection class that can wrap other
+		components. 
 		(Adam Franco)
 		
 	* Bug Fix: 
@@ -301,11 +400,13 @@ v. 0.6.0 (2006-06-16)
 ----------------------------------------------------
 		
 	* Change: 
-		Basket/Selection images are now show bordered placeholders before they are 
+		Basket/Selection images are now show bordered placeholders before they are
+		loaded. 
 		(Adam Franco)
 		
 	* Change: 
-		Basket/Selection images are now resized -- albeit only one dimension -- in 
+		Basket/Selection images are now resized -- albeit only one dimension -- in
+		IE. 
 		(Adam Franco)
 		
 	* Change: 
@@ -315,15 +416,18 @@ v. 0.6.0 (2006-06-16)
 		
 	* Change: 
 		StatusStars: Moved output buffer jumping methods to the RequestContext as
-		ob_jump() and ob_land() from Chris's StatusStars. StatusStars is now in  
+		ob_jump() and ob_land() from Chris's StatusStars. StatusStars is now in
+		harmoni/core/utilities. 
 		(Adam Franco)
 		
 	* Change: 
+		
 		StatusStars: Now will print a label if requested.
 		(Adam Franco)
 		
 	* Change: 
-		DataManagerGUI: AuthoritativeValues addition is now an 
+		DataManagerGUI: AuthoritativeValues addition is now an
+		AuthorizationFunction. 
 		(Adam Franco)
 		
 	* Change: 
@@ -332,16 +436,19 @@ v. 0.6.0 (2006-06-16)
 		(Adam Franco)
 		
 	* Change: 
+		
 		Wizard: Can now change Add/Remove button labels for Repeatable Components.
 		(Adam Franco)
 		
 	* Change: 
-		Wizard: Verified change inputs are now set to be checked for new values by 
+		Wizard: Verified change inputs are now set to be checked for new values by
+		default. 
 		(Adam Franco)
 		
 	* Change: 
 		Wizard: onchange items are now added with addOnChange() rather than
-		overwritten with setOnchange(). Same with setOnClick() going to  
+		overwritten with setOnchange(). Same with setOnClick() going to
+		addOnClick(). 
 		(Adam Franco)
 		
 	* New feature: 
@@ -350,6 +457,7 @@ v. 0.6.0 (2006-06-16)
 		(Adam Franco)
 		
 	* Bug Fix: 
+		
 		Wizard: Now Select or new fields show either the option OR new, not both.
 		(Adam Franco)
 		
@@ -360,34 +468,41 @@ v. 0.6.0 (2006-06-16)
 		
 	* Change: 
 		Help: Improving the parsing and display of help files to support relative
-		links to images, stylesheets, and other files. Better generation of menus  
+		links to images, stylesheets, and other files. Better generation of menus
+		too. 
 		(Adam Franco)
 		
 	* Bug Fix: 
-		Logging: Ensured that logging is now ready for use before attempting to log 
+		Logging: Ensured that logging is now ready for use before attempting to log
+		errors. 
 		(Adam Franco)
 	
 v. 0.5.2 (2006-05-26)
 ----------------------------------------------------
 		
 	* Change: 
+		
 		ResultPrinter pagination now matches background styles.
 		(Adam Franco)
 		
 	* Change: 
 		Edit-authorization screen now limits each level of the hierarchy to ten
-		nodes to prevent being overwhelmed (and timing out) if there are many child  
+		nodes to prevent being overwhelmed (and timing out) if there are many child
+		nodes. 
 		(Adam Franco)
 		
 	* Change: 
+		
 		Selection view now better matches the collection view.
 		(Adam Franco)
 		
 	* Change: 
+		
 		Basket/Selection now has an empty link.
 		(Adam Franco)
 		
 	* Change: 
+		
 		All importers log their actions and errors appropriately.
 		(Christopher W. Shubert)
 	
@@ -400,7 +515,8 @@ v. 0.5.1 (2006-05-19)
 		(Adam Franco)
 		
 	* Change: 
-		Wizard: now suports dropdown-menu reordering rather than just 
+		Wizard: now suports dropdown-menu reordering rather than just
+		move-up/move-down. 
 		(Adam Franco)
 		
 	* Change: 
@@ -409,10 +525,12 @@ v. 0.5.1 (2006-05-19)
 		(Adam Franco)
 		
 	* Change: 
+		
 		"Basket" is now being displayed as "Selection"
 		(Adam Franco)
 		
 	* Change: 
+		
 		Result printers now pull more from the common abstract class.
 		(Adam Franco)
 	
@@ -422,12 +540,12 @@ v. 0.5.0 (2006-05-05)
 	* Change: 
 		Reworked the basket library be more straight-forward, getting rid of the
 		uneeded "BasketManager" and putting all of the functionality in the "Basket"
-		 
+		singleton. 
 		(Adam Franco)
 		
 	* Change: 
 		Made the Add-Asset-To-Basket process work via AJAX rather than reloading the
-		 
+		page. 
 		(Adam Franco)
 		
 	* New feature: 
@@ -436,15 +554,18 @@ v. 0.5.0 (2006-05-05)
 		(Adam Franco)
 		
 	* Change: 
-		Importer class now uses StatusStars to keep track of progress and keep user 
+		Importer class now uses StatusStars to keep track of progress and keep user
+		informed 
 		(Christopher W. Shubert)
 		
 	* New feature: 
 		StatusStars class added, is a very simple asterisk status bar, created for
-		the importer, but works anywhere. (direct output so no apache related  
+		the importer, but works anywhere. (direct output so no apache related
+		timeouts) 
 		(Christopher W. Shubert)
 		
 	* New feature: 
+		
 		Now caches resized versions of images.
 		(Adam Franco)
 	
@@ -452,10 +573,12 @@ v. 0.4.1 (2005-02-09)
 ----------------------------------------------------
 		
 	* Bug Fix: 
+		
 		Fixed return by reference errors that threw notices in PHP 4.4
 		(Adam Franco)
 		
 	* Bug Fix: 
+		
 		Fixed url '.' to '_' conversion errors.
 		(Adam Franco)
 	
@@ -468,10 +591,12 @@ v. 0.4.0 (2005-01-10)
 		(Adam Franco)
 		
 	* Change: 
-		Login: modified the login process so that it is more consistent and 
+		Login: modified the login process so that it is more consistent and
+		understandable. 
 		(Christopher W. Shubert)
 		
 	* Change: 
+		
 		Result Printers: now capable of configurable display.
 		(Adam Franco)
 		
@@ -481,6 +606,7 @@ v. 0.4.0 (2005-01-10)
 		(Christopher W. Shubert)
 		
 	* Change: 
+		
 		Validator: fixed rules and moved some validations
 		(Adam Franco)
 		
@@ -491,6 +617,7 @@ v. 0.4.0 (2005-01-10)
 		(Christopher W. Shubert)
 		
 	* New feature: 
+		
 		HelpBrowser system.
 		(Adam Franco)
 		
@@ -511,6 +638,7 @@ v. 0.4.0 (2005-01-10)
 		(Adam Franco)
 		
 	* Change: 
+		
 		Optimizations to speed loading of thumbnails.
 		(Adam Franco)
 		
@@ -539,7 +667,8 @@ v. 0.4.0 (2005-01-10)
 	* Change: 
 		Importer: XML importer has been removed from the "RepositoryImporter"
 		classification, and re-designed to be extensible to all aspects of our
-		systems. Tab and Exif are still only available for repository data  
+		systems. Tab and Exif are still only available for repository data
+		population. 
 		(Christopher W. Shubert)
 	
 v. 0.3.0 (2005-10-12)
@@ -566,6 +695,7 @@ v. 0.3.0 (2005-10-12)
 		(Adam Franco)
 		
 	* Change: 
+		
 		Changed the StartupCheck classes to use the new Wizard.
 		(Gabe Schine)
 		
@@ -575,10 +705,12 @@ v. 0.3.0 (2005-10-12)
 		(Gabe Schine)
 		
 	* Bug Fix: 
+		
 		Wizard now can handle field names with .'s in them.
 		(Adam Franco)
 		
 	* Bug Fix: 
+		
 		RepositoryInputOutputModules now check for the right record interface.
 		(Adam Franco)
 		
@@ -588,6 +720,7 @@ v. 0.3.0 (2005-10-12)
 		(Gabe Schine)
 		
 	* Change: 
+		
 		Updating much of Polyphony to support the RequestContext
 		(Gabe Schine)
 		
@@ -600,14 +733,17 @@ v. 0.2.2 (2005-04-14)
 ----------------------------------------------------
 		
 	* Bug Fix: 
-		clone() is a reserved word in PHP5. All clone methods have been renamed 
+		clone() is a reserved word in PHP5. All clone methods have been renamed
+		replicate(). 
 		(Adam Franco)
 		
 	* Bug Fix: 
-		textdomain() calls now specify NULL instead of no argument to prevent PHP 
+		textdomain() calls now specify NULL instead of no argument to prevent PHP
+		Warnings. 
 		(Adam Franco)
 		
 	* Bug Fix: 
+		
 		RepositoryInOutModules now don't throw errors.
 		(Adam Franco)
 		
@@ -625,6 +761,7 @@ v. 0.2.1 (2005-04-11)
 		(Adam Franco)
 		
 	* Change: 
+		
 		Fixed some references to the non-existant "SharedManager"
 		(Adam Franco)
 	
@@ -632,6 +769,7 @@ v. 0.2.0 (2005-04-07)
 ----------------------------------------------------
 		
 	* Change: 
+		
 		Reconfigured modules to work with version 2 of the OSIDs.
 		(Adam Franco)
 		
@@ -641,6 +779,7 @@ v. 0.2.0 (2005-04-07)
 		(Adam Franco)
 		
 	* New feature: 
+		
 		Graphical tools have been created for managing hierarchical authorizations.
 		(Adam Franco)
 	
@@ -658,6 +797,7 @@ v. 0.1.0 (2004-10-26)
 		(Adam Franco)
 		
 	* New feature: 
+		
 		The 'auth' module provides shared actions for logging in and out.
 		(Adam Franco)
 		
@@ -675,10 +815,12 @@ v. 0.1.0 (2004-10-26)
 	* New feature: 
 		The Wizard library provides a system for the generation of dynamic
 		Multi-step wizards. The Wizard library handles the catching, storing, and
-		validating of form submitions, as well as handle user-progress through the  
+		validating of form submitions, as well as handle user-progress through the
+		wizard. 
 		(Adam Franco)
 		
 	* New feature: 
+		
 		Created Polyphony directory structure.
 		(Adam Franco)
 	

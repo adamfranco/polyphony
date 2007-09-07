@@ -22,9 +22,63 @@
 </head>
 <body>
 <h1>Polyphony ChangeLog</h1>
-<h2>Version 0.8.3</h2>
-<h3>The Future</h3>
+<h2>Version 0.9.0</h2>
+<h3>2007-09-07</h3>
 <ul>
+		<li> Change:  
+			Removing ampersands for compatability with other PHP5 code.
+			The BBEdit-grep string used for the find and replace was:
+					(function )&amp;|(=\s?)&amp;([^a-z#])|([^&amp;])&amp;\s?(\$)
+			replaced with
+					\1\2\3\4\5
+			
+			Special Changes were made to the following files to fix problems introduced 
+			in the search and repace for ampersands:
+					- polyphony/main/library/ResultPrinter/ArrayResultPrinter.class.php - getLayout()
+							- $item = $this-&gt;_array[key($this-&gt;_array)];
+							======
+							+ $item = current($this-&gt;_array);
+					
+					- harmoni/core/oki2/repository/HarmoniRecord.class.php - getParts()
+							Moved the following line out of the if-statement:
+							$activeValue = $allRecordFieldValues[$key]-&gt;getActiveVersion();
+					
+					- harmoni/core/oki2/hierarchy/tree/Tree.class.php - _traverse()
+							Kept the first parameter being passed by reference. Needed in this case.
+		 (<em>Adam Franco</em>)</li>
+		
+		<li> New feature:  
+			Wizard: Adding the HtmlTextArea component for switching between multiple
+			text editors, some WYSIWYG, some not.
+		 (<em>2007-09-05 - Adam Franco</em>)</li>
+		<li> Change:  
+			Wizard: Now defines classes and methods to enforce interface compliance.
+		 (<em>2007-09-05 - Adam Franco</em>)</li>
+		<li> New feature:  
+			Javascript: Now provides functions for namespacing of form fields.
+		 (<em>Adam Franco</em>)</li>
+		<li> New feature:  
+			Wizard: Added new wizard component, 'SaveWithChoiceButtonList'.
+		 (<em>Adam Franco</em>)</li>
+		<li> New feature:  
+			Wizard: Adding a single-step wizard for small wizards.
+		 (<em>Adam Franco</em>)</li>
+		<li> New feature:  
+			Wizard: Can now access the save and cancel buttons, allowing for 
+			changing of labels.
+		 (<em>Adam Franco</em>)</li>
+		<li> New feature:  
+			Wizard: Adding an optional 'extendedHtml' parameter to allow radio 
+			buttons to have additional HTML attached after the label.
+		 (<em>Adam Franco</em>)</li>
+		<li> New feature:  
+			Wizard: Now supports [[fieldname:xxxxxxx]] syntax to allow locating
+			of input elements by custom javascript.
+		 (<em>Adam Franco</em>)</li>
+		<li> New feature:  
+			Wizard: Wizard steps can now return their raw content/markup, allowing appending
+			and prepending of additional content/markup.
+		 (<em>Adam Franco</em>)</li>
 		<li> Bug Fix:  	
 			Converting all short tags (&lt;?) to the full tags (&lt;?php) for 
 			compatibility with more PHP configurations.

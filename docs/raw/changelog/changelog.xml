@@ -4,13 +4,13 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.83 2007/09/05 22:14:28 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.84 2007/09/07 17:03:00 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
-	<version number="0.8.3" date="The Future">
+	<version number="0.9.0" date="2007-09-07">
 		<change author='adam'>
 			Removing ampersands for compatability with other PHP5 code.
 			The BBEdit-grep string used for the find and replace was:
@@ -21,9 +21,9 @@
 			Special Changes were made to the following files to fix problems introduced 
 			in the search and repace for ampersands:
 					- polyphony/main/library/ResultPrinter/ArrayResultPrinter.class.php - getLayout()
-							< $item = $this->_array[key($this->_array)];
+							- $item = $this->_array[key($this->_array)];
 							======
-							> $item = current($this->_array);
+							+ $item = current($this->_array);
 					
 					- harmoni/core/oki2/repository/HarmoniRecord.class.php - getParts()
 							Moved the following line out of the if-statement:
