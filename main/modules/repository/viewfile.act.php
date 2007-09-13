@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.12 2007/09/04 20:28:14 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.13 2007/09/13 16:08:10 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php"
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.12 2007/09/04 20:28:14 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.13 2007/09/13 16:08:10 adamfranco Exp $
  */
 class viewfileAction 
 	extends ForceAuthAction
@@ -201,7 +201,7 @@ class viewfileAction
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.12 2007/09/04 20:28:14 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.13 2007/09/13 16:08:10 adamfranco Exp $
  */
 class RepositoryImageCache {
 	
@@ -423,6 +423,7 @@ class RepositoryImageCache {
 			if (!$result->getNumberOfRows()) {
 				$query = new InsertQuery;
 				$query->setTable("dr_mime_type");
+				$query->setAutoIncrementColumn("id", "dr_mime_type_id_seq");
 				$query->setColumns(array("type"));
 				$query->setValues(array("'".addslashes($this->_mimeType)."'"));
 				

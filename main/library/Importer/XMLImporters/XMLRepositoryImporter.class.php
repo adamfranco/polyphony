@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.18 2007/09/04 20:28:01 adamfranco Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.19 2007/09/13 16:08:09 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRecordStructureIm
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryImporter.class.php,v 1.18 2007/09/04 20:28:01 adamfranco Exp $
+ * @version $Id: XMLRepositoryImporter.class.php,v 1.19 2007/09/13 16:08:09 adamfranco Exp $
  */
 class XMLRepositoryImporter extends XMLImporter {
 		
@@ -198,12 +198,15 @@ class XMLRepositoryImporter extends XMLImporter {
 		$dbHandler = Services::getService("DBHandler");
 // define dbIndexConcerto for children
 		$createTableQuery = new GenericSQLQuery;
-		$createTableQuery->addSQLQuery("Create temporary table if not exists
+		$createTableQuery->addSQLQuery("CREATE TEMPORARY TABLE
 			xml_id_matrix ( xml_id varchar(255)
 			not null , conc_id varchar(255) not null)");
 		$dbHandler->disconnect(IMPORTER_CONNECTION);
 		$dbHandler->connect(IMPORTER_CONNECTION);
-		$dbHandler->query($createTableQuery, IMPORTER_CONNECTION);
+		$dbHandler->beginTransaction(IMPORTER_CONNECTION);
+		// PostgreSQL doesn't seem to like the CREATE TEMPORARY TABLE IF NOT EXISTS syntax
+		if (!in_array('xml_id_matrix', $dbHandler->getTableList(IMPORTER_CONNECTION)))
+			$dbHandler->query($createTableQuery, IMPORTER_CONNECTION);
 	}
 
 	/**
@@ -219,6 +222,7 @@ class XMLRepositoryImporter extends XMLImporter {
 //			xml_id_matrix");
 		
 //		$dbHandler->query($dropTableQuery, $dbIndexConcerto);
+		$dbHandler->commitTransaction(IMPORTER_CONNECTION);
 		$dbHandler->disconnect(IMPORTER_CONNECTION);
 		$dbHandler->pconnect(IMPORTER_CONNECTION);
 	}	
