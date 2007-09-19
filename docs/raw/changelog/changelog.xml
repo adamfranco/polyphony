@@ -4,12 +4,18 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.86 2007/09/13 19:21:44 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.87 2007/09/19 20:49:46 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
+	<version number="0.9.2" date="The Future">
+		<fix author='adam' date='2007-09-19'>
+			Javascript: document.getHeight() method now reliably returns the height of
+			the document whether the window is larger or smaller than the hieght.
+		</fix>
+	</version>
 	<version number="0.9.1" date="2007-09-13">
 		<fix author='adam' date='2007-09-13'>
 			Importer: Fixing importer SQL to work with PostgreSQL.

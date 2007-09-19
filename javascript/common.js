@@ -8,7 +8,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: common.js,v 1.7 2007/05/03 20:56:12 adamfranco Exp $
+ * @version $Id: common.js,v 1.8 2007/09/19 20:49:48 adamfranco Exp $
  */
 
 /**
@@ -97,7 +97,7 @@ String.prototype.wordWrap = function(maxLength, breakWith, cutWords){
  * | Authors:   Stuart Wigley <stuartwigley@yahoo.co.uk>                     |
  * |            Randolph Fielding <gator4life@cinci.rr.com>                  |
  * +-------------------------------------------------------------------------+
- * $Id: common.js,v 1.7 2007/05/03 20:56:12 adamfranco Exp $
+ * $Id: common.js,v 1.8 2007/09/19 20:49:48 adamfranco Exp $
  *
  *
  * Replaces a small group of characters in this string defined in the HTML
@@ -217,12 +217,19 @@ document.getOffsetLeft = function (element) {
  * @since 5/3/07
  */
 document.getHeight = function () {
+	var maxFound = 0;
 	if (typeof( document.height ) == 'number')
-		return document.height;
+		maxFound = Math.max(maxFound, document.height);
+	
+	// Firefox, some cases
+	if (document.body && typeof( document.body.scrollHeight ) == 'number')
+		maxFound = Math.max(maxFound, document.body.scrollHeight);
 	
 	// IE
 	if (document.body && typeof( document.body.offsetHeight ) == 'number')
-		return document.body.offsetHeight;
+		maxFound = Math.max(maxFound, document.body.offsetHeight);
+	
+	return maxFound;
 	
 	throw new Error("Undefined Height");
 }

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CenteredPanel.js,v 1.5 2007/05/03 20:56:12 adamfranco Exp $
+ * @version $Id: CenteredPanel.js,v 1.6 2007/09/19 20:49:48 adamfranco Exp $
  */
 
 CenteredPanel.prototype = new Panel();
@@ -22,7 +22,7 @@ CenteredPanel.superclass = Panel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CenteredPanel.js,v 1.5 2007/05/03 20:56:12 adamfranco Exp $
+ * @version $Id: CenteredPanel.js,v 1.6 2007/09/19 20:49:48 adamfranco Exp $
  */
 function CenteredPanel ( title, height, width, callingElement, classNames ) {
 	if ( arguments.length > 0 ) {
@@ -145,6 +145,7 @@ function CenteredPanel ( title, height, width, callingElement, classNames ) {
 	 * @since 2/2/07
 	 */
 	CenteredPanel.prototype.getScreenHeight = function () {
+// 		alert("window: " + window.getInnerHeight() + "\ndocument: " + document.getHeight());
 		if (window.getInnerHeight() > document.getHeight()) {
 			return window.getInnerHeight();
 		} else {
