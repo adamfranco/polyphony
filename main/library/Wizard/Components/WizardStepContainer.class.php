@@ -1,12 +1,12 @@
 <?php
 /**
  * @since Jul 20, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.11 2007/09/04 20:28:09 adamfranco Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.12 2007/09/19 14:04:51 adamfranco Exp $
  */ 
 
 /**
@@ -14,12 +14,12 @@
  * and switch from one to the other.
  * 
  * @since Jul 20, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.11 2007/09/04 20:28:09 adamfranco Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.12 2007/09/19 14:04:51 adamfranco Exp $
  */
 class WizardStepContainer extends WizardComponent {
 	var $_currStep;

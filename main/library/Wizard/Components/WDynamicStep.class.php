@@ -1,11 +1,11 @@
 <?php
 /**
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WDynamicStep.class.php,v 1.2 2007/09/04 20:28:06 adamfranco Exp $
+ * @version $Id: WDynamicStep.class.php,v 1.3 2007/09/19 14:04:51 adamfranco Exp $
  */
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WizardStep.class.php");
@@ -14,12 +14,12 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WizardStep.class.php");
  * The Wizard class provides a system for registering Wizard properties and 
  * associating those properties with the appropriate form elements.
  *
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WDynamicStep.class.php,v 1.2 2007/09/04 20:28:06 adamfranco Exp $
+ * @version $Id: WDynamicStep.class.php,v 1.3 2007/09/19 14:04:51 adamfranco Exp $
  * @author Gabe Schine
  */
 class WDynamicStep extends WizardStep {

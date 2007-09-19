@@ -1,24 +1,24 @@
 <?php
 /**
  * @since 5/31/06
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveContinueButton.class.php,v 1.7 2007/09/04 20:28:08 adamfranco Exp $
+ * @version $Id: WSaveContinueButton.class.php,v 1.8 2007/09/19 14:04:51 adamfranco Exp $
  */ 
 
 /**
  * a button that persists data changes
  * 
  * @since 5/31/06
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveContinueButton.class.php,v 1.7 2007/09/04 20:28:08 adamfranco Exp $
+ * @version $Id: WSaveContinueButton.class.php,v 1.8 2007/09/19 14:04:51 adamfranco Exp $
  */
  
 require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php");

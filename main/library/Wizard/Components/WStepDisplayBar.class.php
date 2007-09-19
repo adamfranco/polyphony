@@ -1,12 +1,12 @@
 <?php
 /**
  * @since Jul 20, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStepDisplayBar.class.php,v 1.4 2007/09/04 20:28:08 adamfranco Exp $
+ * @version $Id: WStepDisplayBar.class.php,v 1.5 2007/09/19 14:04:51 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
@@ -15,12 +15,12 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
  * This adds a "Next" button to the wizard and throws the appropriate event.
  * 
  * @since Jul 20, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStepDisplayBar.class.php,v 1.4 2007/09/04 20:28:08 adamfranco Exp $
+ * @version $Id: WStepDisplayBar.class.php,v 1.5 2007/09/19 14:04:51 adamfranco Exp $
  */
 class WStepDisplayBar 
 	extends WizardComponent 

@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 6/7/07
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveWithChoiceButtonList.class.php,v 1.2 2007/09/04 20:28:08 adamfranco Exp $
+ * @version $Id: WSaveWithChoiceButtonList.class.php,v 1.3 2007/09/19 14:04:51 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -18,12 +18,12 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * easy determination of which button was pressed by the client code.
  * 
  * @since 6/7/07
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveWithChoiceButtonList.class.php,v 1.2 2007/09/04 20:28:08 adamfranco Exp $
+ * @version $Id: WSaveWithChoiceButtonList.class.php,v 1.3 2007/09/19 14:04:51 adamfranco Exp $
  */
 class WSaveWithChoiceButtonList
 	extends WizardComponent

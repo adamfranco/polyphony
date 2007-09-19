@@ -1,12 +1,12 @@
 <?php
 /**
  * @since Jul 20, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WForwardButton.class.php,v 1.2 2007/09/04 20:28:06 adamfranco Exp $
+ * @version $Id: WForwardButton.class.php,v 1.3 2007/09/19 14:04:51 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php");
@@ -15,12 +15,12 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php")
  * This adds a "Back" button to the wizard and throws the appropriate event.
  * 
  * @since Jul 20, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WForwardButton.class.php,v 1.2 2007/09/04 20:28:06 adamfranco Exp $
+ * @version $Id: WForwardButton.class.php,v 1.3 2007/09/19 14:04:51 adamfranco Exp $
  */
 class WForwardButton extends WEventButton {
 	

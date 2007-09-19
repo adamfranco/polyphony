@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 8/7/06
- * @package polyphony.library.AbstractActions
+ * @package polyphony.AbstractActions
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.3 2007/09/04 20:27:57 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.4 2007/09/19 14:04:41 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
@@ -16,12 +16,12 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * <##>
  * 
  * @since 8/7/06
- * @package polyphony.library.AbstractActions
+ * @package polyphony.AbstractActions
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.3 2007/09/04 20:27:57 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.4 2007/09/19 14:04:41 adamfranco Exp $
  */
 class RSSAction
 	extends ForceAuthAction
@@ -500,12 +500,12 @@ END;
  * This class represents an item in an RSS feed
  * 
  * @since 8/7/06
- * @package polyphony.library.AbstractActions
+ * @package polyphony.AbstractActions
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.3 2007/09/04 20:27:57 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.4 2007/09/19 14:04:41 adamfranco Exp $
  */
 class RSSItem {
 	

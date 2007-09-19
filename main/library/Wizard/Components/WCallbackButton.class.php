@@ -1,24 +1,24 @@
 <?php
 /**
  * @since Jul 20, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCallbackButton.class.php,v 1.1 2006/08/15 21:03:12 sporktim Exp $
+ * @version $Id: WCallbackButton.class.php,v 1.2 2007/09/19 14:04:51 adamfranco Exp $
  */ 
 
 /**
  * This class simply evaluates its event as a callback function when pressed.
  * 
  * @since Jul 20, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCallbackButton.class.php,v 1.1 2006/08/15 21:03:12 sporktim Exp $
+ * @version $Id: WCallbackButton.class.php,v 1.2 2007/09/19 14:04:51 adamfranco Exp $
  */
 class WCallbackButton 
 	extends WEventButton

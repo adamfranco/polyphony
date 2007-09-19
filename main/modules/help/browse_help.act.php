@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 12/8/05
- * @package polyphony.modules.help
+ * @package polyphony.help
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.9 2007/09/04 20:28:13 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.10 2007/09/19 14:04:56 adamfranco Exp $
  */
  
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -29,12 +29,12 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * This is the help-browser action which enables browsing of help documentation.
  * 
  * @since 12/8/05
- * @package polyphony.modules.help
+ * @package polyphony.help
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.9 2007/09/04 20:28:13 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.10 2007/09/19 14:04:56 adamfranco Exp $
  */
 class browse_helpAction 
 	extends Action
@@ -515,12 +515,12 @@ class browse_helpAction
  * <##>
  * 
  * @since 5/31/06
- * @package polyphony.modules.help
+ * @package polyphony.help
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.9 2007/09/04 20:28:13 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.10 2007/09/19 14:04:56 adamfranco Exp $
  */
 class TableOfContentsPart {
 		

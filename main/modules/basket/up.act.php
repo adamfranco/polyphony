@@ -1,11 +1,11 @@
 <?php
 /**
- * @package polyphony.modules.exhibitions
+ * @package polyphony.basket
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: up.act.php,v 1.5 2007/09/04 20:28:12 adamfranco Exp $
+ * @version $Id: up.act.php,v 1.6 2007/09/19 14:04:54 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -14,12 +14,12 @@ require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
 /**
  * 
  * 
- * @package polyphony.modules.exhibitions
+ * @package polyphony.basket
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: up.act.php,v 1.5 2007/09/04 20:28:12 adamfranco Exp $
+ * @version $Id: up.act.php,v 1.6 2007/09/19 14:04:54 adamfranco Exp $
  */
 class upAction 
 	extends MainWindowAction

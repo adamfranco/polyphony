@@ -1,12 +1,12 @@
 <?php
 /**
  * @since Jul 21, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextArea.class.php,v 1.11 2007/09/05 22:14:29 adamfranco Exp $
+ * @version $Id: WTextArea.class.php,v 1.12 2007/09/19 14:04:51 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__).'/WTextInput.abstract.php');
@@ -15,12 +15,12 @@ require_once(dirname(__FILE__).'/WTextInput.abstract.php');
  * This class allows for the creation of a textarea element
  * 
  * @since Jul 21, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextArea.class.php,v 1.11 2007/09/05 22:14:29 adamfranco Exp $
+ * @version $Id: WTextArea.class.php,v 1.12 2007/09/19 14:04:51 adamfranco Exp $
  */
 class WTextArea 
 	extends WTextInput 

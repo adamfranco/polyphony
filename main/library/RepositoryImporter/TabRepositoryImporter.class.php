@@ -1,12 +1,12 @@
 <?php
 /**
 * @since 7/20/05
- * @package polyphony.library.repository_importer
+ * @package polyphony.repository_importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.19 2007/09/04 20:28:02 adamfranco Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.20 2007/09/19 14:04:48 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -15,12 +15,12 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
 * <##>
  * 
  * @since 7/20/05
- * @package polyphony.library.repository_importer
+ * @package polyphony.repository_importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.19 2007/09/04 20:28:02 adamfranco Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.20 2007/09/19 14:04:48 adamfranco Exp $
  */
 class TabRepositoryImporter
 	extends RepositoryImporter

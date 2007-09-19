@@ -1,12 +1,12 @@
 <?php
 /**
 * @since 7/20/05
- * @package polyphony.library.repository_importer
+ * @package polyphony.repository_importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetIterator.class.php,v 1.7 2007/09/04 20:28:02 adamfranco Exp $
+ * @version $Id: XMLAssetIterator.class.php,v 1.8 2007/09/19 14:04:48 adamfranco Exp $
  */ 
 
 require_once(DOMIT);
@@ -15,12 +15,12 @@ require_once(DOMIT);
 * <##>
  * 
  * @since 7/20/05
- * @package polyphony.library.repository_importer
+ * @package polyphony.repository_importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetIterator.class.php,v 1.7 2007/09/04 20:28:02 adamfranco Exp $
+ * @version $Id: XMLAssetIterator.class.php,v 1.8 2007/09/19 14:04:48 adamfranco Exp $
  */
 class XMLAssetIterator 
 extends HarmoniIterator 

@@ -1,12 +1,12 @@
 <?php
 /**
  * @since Jul 21, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextInput.abstract.php,v 1.10 2007/09/05 16:46:19 adamfranco Exp $
+ * @version $Id: WTextInput.abstract.php,v 1.11 2007/09/19 14:04:51 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingWizardComponent.abstract.php");
@@ -15,12 +15,12 @@ require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingWizardComponent.abstra
  * This adds an input type='text' field to a {@link Wizard}.
  * 
  * @since Jul 21, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextInput.abstract.php,v 1.10 2007/09/05 16:46:19 adamfranco Exp $
+ * @version $Id: WTextInput.abstract.php,v 1.11 2007/09/19 14:04:51 adamfranco Exp $
  */
 abstract class WTextInput
 	extends ErrorCheckingWizardComponent 

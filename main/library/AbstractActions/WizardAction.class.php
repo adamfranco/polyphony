@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 4/28/05
- * @package polyphony.library.AbstractActions
+ * @package polyphony.AbstractActions
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardAction.class.php,v 1.14 2007/09/04 20:27:57 adamfranco Exp $
+ * @version $Id: WizardAction.class.php,v 1.15 2007/09/19 14:04:41 adamfranco Exp $
  */ 
  
  require_once(dirname(__FILE__)."/Action.class.php");
@@ -45,12 +45,12 @@
  *	</code>
  *
  * @since 4/28/05
- * @package polyphony.library.AbstractActions
+ * @package polyphony.AbstractActions
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardAction.class.php,v 1.14 2007/09/04 20:27:57 adamfranco Exp $
+ * @version $Id: WizardAction.class.php,v 1.15 2007/09/19 14:04:41 adamfranco Exp $
  */
 class WizardAction 
 	extends Action

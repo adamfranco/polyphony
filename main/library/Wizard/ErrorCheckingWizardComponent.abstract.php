@@ -1,12 +1,12 @@
 <?php
 /**
  * @since Jul 22, 2005
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ErrorCheckingWizardComponent.abstract.php,v 1.5 2007/09/05 16:46:18 adamfranco Exp $
+ * @version $Id: ErrorCheckingWizardComponent.abstract.php,v 1.6 2007/09/19 14:04:50 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
@@ -15,12 +15,12 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
  * Defines a component that makes use of the Wizard's javascript error checking abilities.
  * 
  * @since Jul 22, 2005
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ErrorCheckingWizardComponent.abstract.php,v 1.5 2007/09/05 16:46:18 adamfranco Exp $
+ * @version $Id: ErrorCheckingWizardComponent.abstract.php,v 1.6 2007/09/19 14:04:50 adamfranco Exp $
  * @abstract
  */
 abstract class ErrorCheckingWizardComponent 

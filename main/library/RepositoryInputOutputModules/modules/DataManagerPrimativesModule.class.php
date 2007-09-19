@@ -1,12 +1,12 @@
 <?php
 /**
  *
- * @package polyphony.library.repository.inputoutput
+ * @package polyphony.repository.inputoutput
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DataManagerPrimativesModule.class.php,v 1.12 2007/09/04 20:28:02 adamfranco Exp $
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.13 2007/09/19 14:04:48 adamfranco Exp $
  */
 
 /**
@@ -23,9 +23,9 @@ require_once(POLYPHONY."/main/library/DataManagerGUI/PrimitiveIO/inc.php");
  * using the "DataManagerPrimitive" Type would use the DataManagerPrimative
  * InputOutput module for displaying generating forms for editing its data.
  * 
- * @package polyphony.library.repository.inputoutput
- * @version $Id: DataManagerPrimativesModule.class.php,v 1.12 2007/09/04 20:28:02 adamfranco Exp $
- * @since $Date: 2007/09/04 20:28:02 $
+ * @package polyphony.repository.inputoutput
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.13 2007/09/19 14:04:48 adamfranco Exp $
+ * @since $Date: 2007/09/19 14:04:48 $
  * @copyright 2004 Middlebury College
  */
 

@@ -1,24 +1,24 @@
 <?php
 /**
  * @since Aug 1, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.16 2007/09/04 20:28:08 adamfranco Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.17 2007/09/19 14:04:51 adamfranco Exp $
  */ 
 
 /**
  * This component allows for the creation of repeatable components or groups of components. 
  * 
  * @since Aug 1, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.16 2007/09/04 20:28:08 adamfranco Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.17 2007/09/19 14:04:51 adamfranco Exp $
  */
 
 class WRepeatableComponentCollection 

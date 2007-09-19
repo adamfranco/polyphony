@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 11/29/06
- * @package polyphony.modules.authorization
+ * @package polyphony.authorization
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: getWhoCanDo.act.php,v 1.4 2007/09/04 20:28:11 adamfranco Exp $
+ * @version $Id: getWhoCanDo.act.php,v 1.5 2007/09/19 14:04:53 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__).'/AuthZXmlAction.class.php');
@@ -15,12 +15,12 @@ require_once(dirname(__FILE__).'/AuthZXmlAction.class.php');
  * Answer who has authorization to view a given qualifier
  * 
  * @since 11/29/06
- * @package polyphony.modules.authorization
+ * @package polyphony.authorization
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: getWhoCanDo.act.php,v 1.4 2007/09/04 20:28:11 adamfranco Exp $
+ * @version $Id: getWhoCanDo.act.php,v 1.5 2007/09/19 14:04:53 adamfranco Exp $
  */
 class getWhoCanDoAction
 	extends AuthZXmlAction

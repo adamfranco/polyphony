@@ -2,12 +2,12 @@
 
 /**
  * @since Jul 21, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WFileUploadField.class.php,v 1.4 2007/09/04 20:28:06 adamfranco Exp $
+ * @version $Id: WFileUploadField.class.php,v 1.5 2007/09/19 14:04:51 adamfranco Exp $
  */
 
 require_once (POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
@@ -16,12 +16,12 @@ require_once (POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
  * This adds an input type='text' field to a {@link Wizard}.
  * 
  * @since Jul 21, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WFileUploadField.class.php,v 1.4 2007/09/04 20:28:06 adamfranco Exp $
+ * @version $Id: WFileUploadField.class.php,v 1.5 2007/09/19 14:04:51 adamfranco Exp $
  */
 class WFileUploadField 
 	extends WizardComponent 

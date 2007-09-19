@@ -3,7 +3,7 @@
 /**
 * This action is the central page for viewing and modifying course section information.
 *
-* @package polyphony.modules.coursemanagement
+* @package polyphony.coursemanagement
 *
 *
 * @since 7/28/06
@@ -11,7 +11,7 @@
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: edit_section_details.act.php,v 1.20 2007/09/04 20:28:12 adamfranco Exp $
+* @version $Id: edit_section_details.act.php,v 1.21 2007/09/19 14:04:54 adamfranco Exp $
 */
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");

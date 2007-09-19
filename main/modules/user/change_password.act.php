@@ -1,12 +1,12 @@
 <?php
 
 /**
- * @package polyphony.modules.user
+ * @package polyphony.user
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change_password.act.php,v 1.5 2007/09/04 20:28:15 adamfranco Exp $
+ * @version $Id: change_password.act.php,v 1.6 2007/09/19 14:04:58 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -17,12 +17,12 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @since 10/24/05 
  * @author Christopher W. Shubert
  * 
- * @package polyphony.modules.user
+ * @package polyphony.user
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change_password.act.php,v 1.5 2007/09/04 20:28:15 adamfranco Exp $
+ * @version $Id: change_password.act.php,v 1.6 2007/09/19 14:04:58 adamfranco Exp $
  */
 class change_passwordAction 
 	extends MainWindowAction

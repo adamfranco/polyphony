@@ -1,11 +1,11 @@
 <?php
 /**
- * @package polyphony.library.datamanager_gui
+ * @package polyphony.datamanager_gui
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_numeric.classes.php,v 1.9 2007/09/04 20:27:58 adamfranco Exp $
+ * @version $Id: PrimitiveIO_numeric.classes.php,v 1.10 2007/09/19 14:04:44 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@ require_once(POLYPHONY."/main/library/DataManagerGUI/PrimitiveIO/IOClasses/Primi
 
 /**
  * 
- * @package polyphony.library.datamanager_gui
+ * @package polyphony.datamanager_gui
  */
 class PrimitiveIO_integer extends PrimitiveIO_shortstring {
 
@@ -74,7 +74,7 @@ class PrimitiveIO_integer extends PrimitiveIO_shortstring {
 
 /**
  * 
- * @package polyphony.library.datamanager_gui
+ * @package polyphony.datamanager_gui
  */
 class PrimitiveIO_float extends PrimitiveIO_integer {
 

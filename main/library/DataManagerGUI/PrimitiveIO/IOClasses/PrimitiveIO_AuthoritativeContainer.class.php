@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 5/1/06
- * @package polyphony.library.datamanager_gui
+ * @package polyphony.datamanager_gui
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.6 2007/09/04 20:27:58 adamfranco Exp $
+ * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.7 2007/09/19 14:04:44 adamfranco Exp $
  */ 
 
 /**
@@ -14,12 +14,12 @@
  * a list or adding a new value. Its children are the list and the new value
  * 
  * @since 5/1/06
- * @package polyphony.library.datamanager_gui
+ * @package polyphony.datamanager_gui
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.6 2007/09/04 20:27:58 adamfranco Exp $
+ * @version $Id: PrimitiveIO_AuthoritativeContainer.class.php,v 1.7 2007/09/19 14:04:44 adamfranco Exp $
  */
 class PrimitiveIO_AuthoritativeContainer
 	extends WSelectOrNew

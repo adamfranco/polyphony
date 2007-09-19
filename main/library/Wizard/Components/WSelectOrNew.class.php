@@ -1,24 +1,24 @@
 <?php
 /**
  * @since 4/28/06
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectOrNew.class.php,v 1.7 2007/09/04 20:28:08 adamfranco Exp $
+ * @version $Id: WSelectOrNew.class.php,v 1.8 2007/09/19 14:04:51 adamfranco Exp $
  */ 
 
 /**
  * <##>
  * 
  * @since 4/28/06
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSelectOrNew.class.php,v 1.7 2007/09/04 20:28:08 adamfranco Exp $
+ * @version $Id: WSelectOrNew.class.php,v 1.8 2007/09/19 14:04:51 adamfranco Exp $
  */
 class WSelectOrNew
 	extends WizardComponentWithChildren 

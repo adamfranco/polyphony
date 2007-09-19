@@ -1,11 +1,11 @@
 <?php
 /**
- * @package polyphony.library.startupcheck
+ * @package polyphony.startupcheck
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: StartupRequirement.interface.php,v 1.7 2007/09/04 20:28:04 adamfranco Exp $
+ * @version $Id: StartupRequirement.interface.php,v 1.8 2007/09/19 14:04:50 adamfranco Exp $
  */
 
 /**
@@ -13,12 +13,12 @@
  * the environment for running said program is OK, or to make updates to settings, database tables, etc to adjust for changes
  * or program updates.
  *
- * @package polyphony.library.startupcheck
+ * @package polyphony.startupcheck
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: StartupRequirement.interface.php,v 1.7 2007/09/04 20:28:04 adamfranco Exp $
+ * @version $Id: StartupRequirement.interface.php,v 1.8 2007/09/19 14:04:50 adamfranco Exp $
  */
 class StartupRequirement {
 

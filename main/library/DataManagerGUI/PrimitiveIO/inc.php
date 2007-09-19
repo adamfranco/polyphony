@@ -2,12 +2,12 @@
 /**
  * Require all of our necessary files
  *
- * @package polyphony.library.datamanager_gui
+ * @package polyphony.datamanager_gui
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: inc.php,v 1.5 2006/06/26 12:51:44 adamfranco Exp $
+ * @version $Id: inc.php,v 1.6 2007/09/19 14:04:44 adamfranco Exp $
  */
 
 require_once POLYPHONY."/main/library/DataManagerGUI/PrimitiveIO/PrimitiveIO.interface.php";

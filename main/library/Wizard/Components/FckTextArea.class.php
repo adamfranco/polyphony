@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 9/6/07
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: FckTextArea.class.php,v 1.2 2007/09/06 17:35:26 adamfranco Exp $
+ * @version $Id: FckTextArea.class.php,v 1.3 2007/09/19 14:04:50 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/WTextArea.class.php");
@@ -17,12 +17,12 @@ require_once(POLYPHONY.'/javascript/fckeditor/fckeditor.php');
  * WYSIWYG editing of text
  * 
  * @since 9/6/07
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: FckTextArea.class.php,v 1.2 2007/09/06 17:35:26 adamfranco Exp $
+ * @version $Id: FckTextArea.class.php,v 1.3 2007/09/19 14:04:50 adamfranco Exp $
  */
 class FckTextArea
 	extends WTextArea

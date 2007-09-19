@@ -1,12 +1,12 @@
 <?php
 /**
  * @since Jul 21, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCheckBox.class.php,v 1.13 2007/09/04 20:28:06 adamfranco Exp $
+ * @version $Id: WCheckBox.class.php,v 1.14 2007/09/19 14:04:51 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -15,12 +15,12 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * This class allows for the creation of a input type='checkbox' element.
  * 
  * @since Jul 21, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCheckBox.class.php,v 1.13 2007/09/04 20:28:06 adamfranco Exp $
+ * @version $Id: WCheckBox.class.php,v 1.14 2007/09/19 14:04:51 adamfranco Exp $
  */
 class WCheckBox 
 	extends WizardComponent 

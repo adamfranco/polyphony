@@ -5,12 +5,12 @@
  * This action will create or delete authorizations as specified by edit_authorizations.act.php
  * 11/18/04 Ryan Richards
  *
- * @package polyphony.modules.authorization
+ * @package polyphony.authorization
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: process_authorizations.act.php,v 1.14 2007/09/04 20:28:11 adamfranco Exp $
+ * @version $Id: process_authorizations.act.php,v 1.15 2007/09/19 14:04:53 adamfranco Exp $
  */
 
 class process_authorizationsAction {

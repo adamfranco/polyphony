@@ -1,12 +1,12 @@
 <?php
 
 /**
- * @package polyphony.modules.coursemanagement
+ * @package polyphony.coursemanagement
  * 
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: suck_by_agent.act.php,v 1.6 2007/09/04 20:28:12 adamfranco Exp $
+ * @version $Id: suck_by_agent.act.php,v 1.7 2007/09/19 14:04:54 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");

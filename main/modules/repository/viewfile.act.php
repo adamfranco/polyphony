@@ -1,12 +1,12 @@
 <?php
 
 /**
- * @package polyphony.modules.repository
+ * @package polyphony.repository
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.13 2007/09/13 16:08:10 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.14 2007/09/19 14:04:56 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
@@ -18,12 +18,12 @@ require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php"
  * @author Ryan Richards
  * @author Adam Franco
  * 
- * @package polyphony.modules.repository
+ * @package polyphony.repository
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.13 2007/09/13 16:08:10 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.14 2007/09/19 14:04:56 adamfranco Exp $
  */
 class viewfileAction 
 	extends ForceAuthAction
@@ -196,12 +196,12 @@ class viewfileAction
  * FILE RecordStructure as well.
  * 
  * @since 2/13/06
- * @package polyphony.modules.repository
+ * @package polyphony.repository
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.13 2007/09/13 16:08:10 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.14 2007/09/19 14:04:56 adamfranco Exp $
  */
 class RepositoryImageCache {
 	

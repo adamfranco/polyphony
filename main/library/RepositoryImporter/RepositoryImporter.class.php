@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 7/20/05
- * @package polyphony.library.repository_importer
+ * @package polyphony.repository_importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.32 2007/09/04 20:28:01 adamfranco Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.33 2007/09/19 14:04:48 adamfranco Exp $
  */ 
 require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -17,12 +17,12 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * #insertion#
  * 
  * @since 7/20/05
- * @package polyphony.library.repository_importer
+ * @package polyphony.repository_importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.32 2007/09/04 20:28:01 adamfranco Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.33 2007/09/19 14:04:48 adamfranco Exp $
  */
 class RepositoryImporter {
 	

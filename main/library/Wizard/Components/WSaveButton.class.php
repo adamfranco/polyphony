@@ -1,12 +1,12 @@
 <?php
 /**
  * @since Jul 20, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveButton.class.php,v 1.4 2007/09/04 20:28:08 adamfranco Exp $
+ * @version $Id: WSaveButton.class.php,v 1.5 2007/09/19 14:04:51 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php");
@@ -16,12 +16,12 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php")
  * event
  * 
  * @since Jul 20, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveButton.class.php,v 1.4 2007/09/04 20:28:08 adamfranco Exp $
+ * @version $Id: WSaveButton.class.php,v 1.5 2007/09/19 14:04:51 adamfranco Exp $
  */
 class WSaveButton extends WEventButton {
 	function WSaveButton() {

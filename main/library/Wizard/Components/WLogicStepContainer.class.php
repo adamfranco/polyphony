@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 5/31/06
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicStepContainer.class.php,v 1.6 2007/09/04 20:28:07 adamfranco Exp $
+ * @version $Id: WLogicStepContainer.class.php,v 1.7 2007/09/19 14:04:51 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WizardStepContainer.class.php");
@@ -15,12 +15,12 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WizardStepContainer.clas
  * StepContainer that add steps to its stack as the wizard goes along
  * 
  * @since 5/31/06
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicStepContainer.class.php,v 1.6 2007/09/04 20:28:07 adamfranco Exp $
+ * @version $Id: WLogicStepContainer.class.php,v 1.7 2007/09/19 14:04:51 adamfranco Exp $
  */
 class WLogicStepContainer extends WizardStepContainer {
 		

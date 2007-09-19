@@ -1,11 +1,11 @@
 <?php
 /**
- * @package polyphony.modules.authorization
+ * @package polyphony.authorization
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view_agents.act.php,v 1.8 2007/09/04 20:28:11 adamfranco Exp $
+ * @version $Id: view_agents.act.php,v 1.9 2007/09/19 14:04:53 adamfranco Exp $
  */
  
 $harmoni->request->startNamespace("polyphony-agents");

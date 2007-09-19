@@ -1,12 +1,12 @@
 <?php
 /**
  * @since Jul 21, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WPasswordField.class.php,v 1.2 2005/08/10 17:52:05 adamfranco Exp $
+ * @version $Id: WPasswordField.class.php,v 1.3 2007/09/19 14:04:51 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
@@ -15,12 +15,12 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
  * This adds an input type='password' field to a {@link Wizard}.
  * 
  * @since Jul 21, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WPasswordField.class.php,v 1.2 2005/08/10 17:52:05 adamfranco Exp $
+ * @version $Id: WPasswordField.class.php,v 1.3 2007/09/19 14:04:51 adamfranco Exp $
  */
 class WPasswordField 
 	extends WizardComponent 

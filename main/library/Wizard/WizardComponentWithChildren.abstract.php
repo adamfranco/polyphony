@@ -1,12 +1,12 @@
 <?php
 /**
  * @since Jul 19, 2005
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponentWithChildren.abstract.php,v 1.12 2007/09/05 16:46:18 adamfranco Exp $
+ * @version $Id: WizardComponentWithChildren.abstract.php,v 1.13 2007/09/19 14:04:50 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
@@ -15,12 +15,12 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
  * This is an abstract class that defines a {@link WizardComponent} that can have children.
  * 
  * @since Jul 19, 2005
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardComponentWithChildren.abstract.php,v 1.12 2007/09/05 16:46:18 adamfranco Exp $
+ * @version $Id: WizardComponentWithChildren.abstract.php,v 1.13 2007/09/19 14:04:50 adamfranco Exp $
  * @abstract
  */
 abstract class WizardComponentWithChildren 

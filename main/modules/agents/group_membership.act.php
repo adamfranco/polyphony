@@ -1,12 +1,12 @@
 <?php
 
 /**
- * @package polyphony.modules.agents
+ * @package polyphony.agents
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_membership.act.php,v 1.37 2007/09/04 20:28:10 adamfranco Exp $
+ * @version $Id: group_membership.act.php,v 1.38 2007/09/19 14:04:52 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -17,12 +17,12 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  *
  * @since 11/10/04 
  * 
- * @package polyphony.modules.agents
+ * @package polyphony.agents
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_membership.act.php,v 1.37 2007/09/04 20:28:10 adamfranco Exp $
+ * @version $Id: group_membership.act.php,v 1.38 2007/09/19 14:04:52 adamfranco Exp $
  */
 class group_membershipAction 
 	extends MainWindowAction

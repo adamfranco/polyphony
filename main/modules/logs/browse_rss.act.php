@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 8/7/06
- * @package polyphony.modules.logging
+ * @package polyphony.logging
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_rss.act.php,v 1.4 2007/09/04 20:28:14 adamfranco Exp $
+ * @version $Id: browse_rss.act.php,v 1.5 2007/09/19 14:04:56 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/RSSAction.class.php");
@@ -15,12 +15,12 @@ require_once(POLYPHONY."/main/library/AbstractActions/RSSAction.class.php");
  * <##>
  * 
  * @since 8/7/06
- * @package polyphony.modules.logging
+ * @package polyphony.logging
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_rss.act.php,v 1.4 2007/09/04 20:28:14 adamfranco Exp $
+ * @version $Id: browse_rss.act.php,v 1.5 2007/09/19 14:04:56 adamfranco Exp $
  */
 class browse_rssAction 
 	extends RSSAction

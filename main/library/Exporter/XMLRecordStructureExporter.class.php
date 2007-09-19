@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 10/17/05
- * @package polyphony.library.exporter
+ * @package polyphony.exporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureExporter.class.php,v 1.7 2007/09/04 20:27:59 adamfranco Exp $
+ * @version $Id: XMLRecordStructureExporter.class.php,v 1.8 2007/09/19 14:04:45 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Exporter/XMLPartStructureExporter.class.php");
@@ -15,12 +15,12 @@ require_once(POLYPHONY."/main/library/Exporter/XMLPartStructureExporter.class.ph
  * Exports into XML for use with the XML Importer
  * 
  * @since 10/17/05
- * @package polyphony.library.exporter
+ * @package polyphony.exporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureExporter.class.php,v 1.7 2007/09/04 20:27:59 adamfranco Exp $
+ * @version $Id: XMLRecordStructureExporter.class.php,v 1.8 2007/09/19 14:04:45 adamfranco Exp $
  */
 class XMLRecordStructureExporter {
 		

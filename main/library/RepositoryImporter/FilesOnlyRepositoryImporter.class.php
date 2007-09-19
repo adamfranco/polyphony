@@ -1,12 +1,12 @@
 <?php
 /**
 * @since 7/20/06
- * @package polyphony.library.importer
+ * @package polyphony.importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: FilesOnlyRepositoryImporter.class.php,v 1.4 2007/09/04 20:28:01 adamfranco Exp $
+ * @version $Id: FilesOnlyRepositoryImporter.class.php,v 1.5 2007/09/19 14:04:48 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -14,12 +14,12 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
 * <##>
  * 
  * @since 7/20/06
- * @package polyphony.library.importer
+ * @package polyphony.importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: FilesOnlyRepositoryImporter.class.php,v 1.4 2007/09/04 20:28:01 adamfranco Exp $
+ * @version $Id: FilesOnlyRepositoryImporter.class.php,v 1.5 2007/09/19 14:04:48 adamfranco Exp $
  */
 class FilesOnlyRepositoryImporter
 	extends RepositoryImporter

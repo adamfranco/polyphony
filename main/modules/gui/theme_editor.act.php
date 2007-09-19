@@ -1,11 +1,11 @@
 <?php
 /**
-* @package polyphony.modules.gui
+* @package polyphony.gui
 *
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: theme_editor.act.php,v 1.3 2007/09/04 20:28:13 adamfranco Exp $
+* @version $Id: theme_editor.act.php,v 1.4 2007/09/19 14:04:55 adamfranco Exp $
 */
 
 
@@ -16,12 +16,12 @@
 /**
 *
 *
-* @package polyphony.modules.gui
+* @package polyphony.gui
 *
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: theme_editor.act.php,v 1.3 2007/09/04 20:28:13 adamfranco Exp $
+* @version $Id: theme_editor.act.php,v 1.4 2007/09/19 14:04:55 adamfranco Exp $
 */
 
 define("theme_editorAction_wizardId", 'theme_editor_wizard3_');

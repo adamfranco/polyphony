@@ -2,12 +2,12 @@
 
 /**
  * @since Jul 22, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveCancelListener.class.php,v 1.5 2007/09/04 20:28:08 adamfranco Exp $
+ * @version $Id: WSaveCancelListener.class.php,v 1.6 2007/09/19 14:04:51 adamfranco Exp $
  */ 
 
 /**
@@ -15,12 +15,12 @@
  * was posted. This is useful for when saving Wizards in session to handle events. 
  * 
  * @since Jul 22, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveCancelListener.class.php,v 1.5 2007/09/04 20:28:08 adamfranco Exp $
+ * @version $Id: WSaveCancelListener.class.php,v 1.6 2007/09/19 14:04:51 adamfranco Exp $
  */
 class WSaveCancelListener 
 	extends WizardEventListener 

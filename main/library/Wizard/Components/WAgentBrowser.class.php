@@ -1,12 +1,12 @@
 <?php
 /**
  * @since Jul 19, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WAgentBrowser.class.php,v 1.4 2007/09/04 20:28:06 adamfranco Exp $
+ * @version $Id: WAgentBrowser.class.php,v 1.5 2007/09/19 14:04:51 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/ResultPrinter/EmbeddedArrayResultPrinter.class.php");
@@ -15,12 +15,12 @@ require_once(POLYPHONY."/main/library/ResultPrinter/EmbeddedArrayResultPrinter.c
  * This component allows you to search the agents in the system and select a number of them for some action.
  * 
  * @since Jul 19, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WAgentBrowser.class.php,v 1.4 2007/09/04 20:28:06 adamfranco Exp $
+ * @version $Id: WAgentBrowser.class.php,v 1.5 2007/09/19 14:04:51 adamfranco Exp $
  */
 class WAgentBrowser
 	extends WizardComponent 
@@ -201,11 +201,11 @@ class WAgentBrowser
 /**
  * A result printer for the {@link WAgentBrowser}.
  *
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * @copyright Copyright &copy; 2005, Middlebury College
  * @author Gabriel Schine
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- * @version $Id: WAgentBrowser.class.php,v 1.4 2007/09/04 20:28:06 adamfranco Exp $
+ * @version $Id: WAgentBrowser.class.php,v 1.5 2007/09/19 14:04:51 adamfranco Exp $
  */
 class AgentBrowserResultPrinter
 	extends EmbeddedArrayResultPrinter

@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 8/9/06
- * @package polyphony.modules.authentication
+ * @package polyphony.authentication
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: cookies_required.act.php,v 1.3 2007/09/04 20:28:10 adamfranco Exp $
+ * @version $Id: cookies_required.act.php,v 1.4 2007/09/19 14:04:53 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -15,12 +15,12 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * <##>
  * 
  * @since 8/9/06
- * @package polyphony.modules.authentication
+ * @package polyphony.authentication
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: cookies_required.act.php,v 1.3 2007/09/04 20:28:10 adamfranco Exp $
+ * @version $Id: cookies_required.act.php,v 1.4 2007/09/19 14:04:53 adamfranco Exp $
  */
 class cookies_requiredAction {
 		

@@ -2,12 +2,12 @@
 
 /**
  * @since Jul 22, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WUpdateListener.class.php,v 1.3 2007/09/04 20:28:08 adamfranco Exp $
+ * @version $Id: WUpdateListener.class.php,v 1.4 2007/09/19 14:04:51 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WizardEventListener.abstract.php");
@@ -17,12 +17,12 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WizardEventListener.abst
  * pass the control back to the wizard if it would like it.
  * 
  * @since Jul 22, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WUpdateListener.class.php,v 1.3 2007/09/04 20:28:08 adamfranco Exp $
+ * @version $Id: WUpdateListener.class.php,v 1.4 2007/09/19 14:04:51 adamfranco Exp $
  */
 class WUpdateListener 
 	extends WizardEventListener 

@@ -1,11 +1,11 @@
 <?php
 /**
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStep.class.php,v 1.4 2007/05/15 16:54:24 adamfranco Exp $
+ * @version $Id: WizardStep.class.php,v 1.5 2007/09/19 14:04:51 adamfranco Exp $
  */
 
 require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstract.php");
@@ -14,12 +14,12 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstrac
  * The Wizard class provides a system for registering Wizard properties and 
  * associating those properties with the appropriate form elements.
  *
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStep.class.php,v 1.4 2007/05/15 16:54:24 adamfranco Exp $
+ * @version $Id: WizardStep.class.php,v 1.5 2007/09/19 14:04:51 adamfranco Exp $
  * @author Gabe Schine
  */
 class WizardStep extends WizardComponentWithChildren {

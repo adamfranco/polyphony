@@ -5,12 +5,12 @@
  * This action will allow for the creation/deletion of groups
  * 11/29/04 Ryan Richards, some code from Adam Franco
  *
- * @package polyphony.modules.agents
+ * @package polyphony.agents
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: delete.act.php,v 1.3 2007/09/04 20:28:10 adamfranco Exp $
+ * @version $Id: delete.act.php,v 1.4 2007/09/19 14:04:52 adamfranco Exp $
  */
 
 require_once(HARMONI."/GUIManager/Layouts/YLayout.class.php");
@@ -24,12 +24,12 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  *
  * @since 11/10/04 
  * 
- * @package polyphony.modules.agents
+ * @package polyphony.agents
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: delete.act.php,v 1.3 2007/09/04 20:28:10 adamfranco Exp $
+ * @version $Id: delete.act.php,v 1.4 2007/09/19 14:04:52 adamfranco Exp $
  */
 class deleteAction 
 	extends MainWindowAction

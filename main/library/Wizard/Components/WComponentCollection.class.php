@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 7/21/06
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WComponentCollection.class.php,v 1.3 2007/09/04 20:28:06 adamfranco Exp $
+ * @version $Id: WComponentCollection.class.php,v 1.4 2007/09/19 14:04:51 adamfranco Exp $
  */ 
 
 /**
@@ -15,12 +15,12 @@
  * a single one is expected.
  * 
  * @since 7/21/06
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WComponentCollection.class.php,v 1.3 2007/09/04 20:28:06 adamfranco Exp $
+ * @version $Id: WComponentCollection.class.php,v 1.4 2007/09/19 14:04:51 adamfranco Exp $
  */
 class WComponentCollection
 	extends WizardComponentWithChildren

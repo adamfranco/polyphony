@@ -5,12 +5,12 @@
  * This action will delete the group as specified by add_delete_group.act.php
  * 11/29/04 Ryan Richards
  *
- * @package polyphony.modules.agents
+ * @package polyphony.agents
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: delete_group.act.php,v 1.10 2007/09/04 20:28:10 adamfranco Exp $
+ * @version $Id: delete_group.act.php,v 1.11 2007/09/19 14:04:52 adamfranco Exp $
  */
 
 $harmoni->request->startNamespace("polyphony-agents");

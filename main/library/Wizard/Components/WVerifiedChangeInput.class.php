@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 2005/10/20
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WVerifiedChangeInput.class.php,v 1.10 2007/09/04 20:28:09 adamfranco Exp $
+ * @version $Id: WVerifiedChangeInput.class.php,v 1.11 2007/09/19 14:04:51 adamfranco Exp $
  */ 
 
 /**
@@ -16,12 +16,12 @@
  * where the user may only wish to change one of the fields across all items.
  * 
  * @since 2005/10/20
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WVerifiedChangeInput.class.php,v 1.10 2007/09/04 20:28:09 adamfranco Exp $
+ * @version $Id: WVerifiedChangeInput.class.php,v 1.11 2007/09/19 14:04:51 adamfranco Exp $
  */
 
 class WVerifiedChangeInput 

@@ -1,24 +1,24 @@
 <?php
 /**
  * @since 6/2/06
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStyleCollection.class.php,v 1.3 2007/09/04 20:28:08 adamfranco Exp $
+ * @version $Id: WStyleCollection.class.php,v 1.4 2007/09/19 14:04:51 adamfranco Exp $
  */ 
 
 /**
  * a wizard representation for style collections
  * 
  * @since 6/2/06
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStyleCollection.class.php,v 1.3 2007/09/04 20:28:08 adamfranco Exp $
+ * @version $Id: WStyleCollection.class.php,v 1.4 2007/09/19 14:04:51 adamfranco Exp $
  */
 class WStyleCollection extends WRepeatableComponentCollection {
 		

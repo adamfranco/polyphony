@@ -1,24 +1,24 @@
 <?php
 /**
  * @since 12/6/06
- * @package polyphony.library.exporter
+ * @package polyphony.exporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRemoteFileRecordExporter.class.php,v 1.3 2007/09/04 20:27:59 adamfranco Exp $
+ * @version $Id: XMLRemoteFileRecordExporter.class.php,v 1.4 2007/09/19 14:04:45 adamfranco Exp $
  */ 
 
 /**
  * Exports a "remote file" record to XML
  * 
  * @since 12/6/06
- * @package polyphony.library.exporter
+ * @package polyphony.exporter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRemoteFileRecordExporter.class.php,v 1.3 2007/09/04 20:27:59 adamfranco Exp $
+ * @version $Id: XMLRemoteFileRecordExporter.class.php,v 1.4 2007/09/19 14:04:45 adamfranco Exp $
  */
 class XMLRemoteFileRecordExporter {
 		

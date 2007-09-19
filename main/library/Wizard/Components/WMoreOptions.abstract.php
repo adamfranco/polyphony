@@ -1,11 +1,11 @@
 <?php
 /**
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WMoreOptions.abstract.php,v 1.3 2007/09/04 20:28:07 adamfranco Exp $
+ * @version $Id: WMoreOptions.abstract.php,v 1.4 2007/09/19 14:04:51 adamfranco Exp $
  */
 
 require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstract.php");
@@ -14,12 +14,12 @@ require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstrac
  * The goal here is to provide a system for having a simple view that the 
  * user can expand to get more options.
  *
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WMoreOptions.abstract.php,v 1.3 2007/09/04 20:28:07 adamfranco Exp $
+ * @version $Id: WMoreOptions.abstract.php,v 1.4 2007/09/19 14:04:51 adamfranco Exp $
  * @author Gabe Schine
  */
 class WMoreOptions extends WizardComponentWithChildren {

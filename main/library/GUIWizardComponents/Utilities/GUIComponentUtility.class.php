@@ -1,12 +1,12 @@
 <?php
 /**
 * @since 8/15/2006
-* @package polyphony.library.guiwizardcomponents
+* @package polyphony.guiwizardcomponents
 *
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: GUIComponentUtility.class.php,v 1.4 2007/09/04 20:28:00 adamfranco Exp $
+* @version $Id: GUIComponentUtility.class.php,v 1.5 2007/09/19 14:04:46 adamfranco Exp $
 */
 
 
@@ -15,12 +15,12 @@
 * This class allows for the modification of an entire "level" of theme.
 *
 * @since 8/09/2006
-* @package polyphony.library.guiwizardcomponents
+* @package polyphony.guiwizardcomponents
 *
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: GUIComponentUtility.class.php,v 1.4 2007/09/04 20:28:00 adamfranco Exp $
+* @version $Id: GUIComponentUtility.class.php,v 1.5 2007/09/19 14:04:46 adamfranco Exp $
 */
 
 

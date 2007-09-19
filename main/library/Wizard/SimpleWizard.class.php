@@ -2,12 +2,12 @@
 
 /**
  * @since Jul 19, 2005
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleWizard.class.php,v 1.6 2007/09/04 20:28:05 adamfranco Exp $
+ * @version $Id: SimpleWizard.class.php,v 1.7 2007/09/19 14:04:50 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Wizard.abstract.php");
@@ -16,12 +16,12 @@ require_once(POLYPHONY."/main/library/Wizard/Wizard.abstract.php");
  * The SimpleWizard is a {@link WizardClass} which contains children and a block of formatting text in which to include those children.
  * 
  * @since Jul 19, 2005
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleWizard.class.php,v 1.6 2007/09/04 20:28:05 adamfranco Exp $
+ * @version $Id: SimpleWizard.class.php,v 1.7 2007/09/19 14:04:50 adamfranco Exp $
  */
 class SimpleWizard extends Wizard {
 	var $_text;

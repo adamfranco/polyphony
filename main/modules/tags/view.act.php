@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 11/7/06
- * @package polyphony.modules.tagging
+ * @package polyphony.tagging
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.7 2007/09/04 20:28:14 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.8 2007/09/19 14:04:58 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -17,12 +17,12 @@ require_once(dirname(__FILE__)."/TagAction.abstract.php");
  * <##>
  * 
  * @since 11/7/06
- * @package polyphony.modules.tagging
+ * @package polyphony.tagging
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.7 2007/09/04 20:28:14 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.8 2007/09/19 14:04:58 adamfranco Exp $
  */
 class viewAction 
 	extends MainWindowAction

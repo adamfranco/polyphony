@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 8/09/2006
- * @package polyphony.library.guiwizardcomponents
+ * @package polyphony.guiwizardcomponents
  * 
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStyleProperty.class.php,v 1.2 2007/09/04 20:28:00 adamfranco Exp $
+ * @version $Id: WStyleProperty.class.php,v 1.3 2007/09/19 14:04:46 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponentWithChildren.abstract.php');
@@ -15,12 +15,12 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponentWithChildren.abstrac
  * This class allows for the creation of a StyleProperty GUI Wizard Component.
  * 
  * @since 8/09/2006
- * @package polyphony.library.guiwizardcomponents
+ * @package polyphony.guiwizardcomponents
  * 
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WStyleProperty.class.php,v 1.2 2007/09/04 20:28:00 adamfranco Exp $
+ * @version $Id: WStyleProperty.class.php,v 1.3 2007/09/19 14:04:46 adamfranco Exp $
  */
  
 class WStyleProperty 

@@ -1,12 +1,12 @@
 <?php
 /**
  * @since Aug 1, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.11 2007/09/04 20:28:07 adamfranco Exp $
+ * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.12 2007/09/19 14:04:51 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WSelectList.class.php");
@@ -15,12 +15,12 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WSelectList.class.php");
  * This component allows for the creation of ordered repeatable components or groups of components. 
  * 
  * @since Aug 1, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.11 2007/09/04 20:28:07 adamfranco Exp $
+ * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.12 2007/09/19 14:04:51 adamfranco Exp $
  */
 
 class WOrderedRepeatableComponentCollection 

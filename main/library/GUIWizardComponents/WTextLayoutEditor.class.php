@@ -1,12 +1,12 @@
 <?php
 /**
 * @since 8/15/2006
-* @package polyphony.library.guiwizardcomponents
+* @package polyphony.guiwizardcomponents
 *
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: WTextLayoutEditor.class.php,v 1.2 2007/09/04 20:27:59 adamfranco Exp $
+* @version $Id: WTextLayoutEditor.class.php,v 1.3 2007/09/19 14:04:45 adamfranco Exp $
 */
 
 
@@ -15,12 +15,12 @@
 * This class allows for the modification of the layout of a font.
 *
 * @since 8/09/2006
-* @package polyphony.library.guiwizardcomponents
+* @package polyphony.guiwizardcomponents
 *
 * @copyright Copyright &copy; 2006, Middlebury College
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 *
-* @version $Id: WTextLayoutEditor.class.php,v 1.2 2007/09/04 20:27:59 adamfranco Exp $
+* @version $Id: WTextLayoutEditor.class.php,v 1.3 2007/09/19 14:04:45 adamfranco Exp $
 */
 
 class WTextLayoutEditor

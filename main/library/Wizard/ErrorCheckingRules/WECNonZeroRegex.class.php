@@ -1,12 +1,12 @@
 <?php
 /**
  * @since Jul 23, 2005
- * @package polyphony.library.wizard.errorchecking
+ * @package polyphony.wizard.errorchecking
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WECNonZeroRegex.class.php,v 1.2 2007/09/04 20:28:09 adamfranco Exp $
+ * @version $Id: WECNonZeroRegex.class.php,v 1.3 2007/09/19 14:04:52 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingRules/WECRegex.class.php");
@@ -14,12 +14,12 @@ require_once(POLYPHONY."/main/library/Wizard/ErrorCheckingRules/WECRegex.class.p
  * Allows for regular expression javascript error checking.
  * 
  * @since Jul 23, 2005
- * @package polyphony.library.wizard.errorchecking
+ * @package polyphony.wizard.errorchecking
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WECNonZeroRegex.class.php,v 1.2 2007/09/04 20:28:09 adamfranco Exp $
+ * @version $Id: WECNonZeroRegex.class.php,v 1.3 2007/09/19 14:04:52 adamfranco Exp $
  */
 class WECNonZeroRegex 
 	extends WECRegex 

@@ -1,23 +1,23 @@
 <?php
 /**
- * @package polyphony.library.AbstractActions
+ * @package polyphony.AbstractActions
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: filebrowser.act.php,v 1.1 2007/09/04 21:20:29 adamfranco Exp $
+ * @version $Id: filebrowser.act.php,v 1.2 2007/09/19 14:04:55 adamfranco Exp $
  */ 
 
 /**
  * This class is the most simple abstraction of an action. It provides a structure
  * for common methods
  * 
- * @package polyphony.library.AbstractActions
+ * @package polyphony.AbstractActions
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: filebrowser.act.php,v 1.1 2007/09/04 21:20:29 adamfranco Exp $
+ * @version $Id: filebrowser.act.php,v 1.2 2007/09/19 14:04:55 adamfranco Exp $
  * @since 4/28/05
  */
 class filebrowserAction

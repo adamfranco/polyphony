@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 7/21/05
- * @package polyphony.modules.authentication
+ * @package polyphony.authentication
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login.act.php,v 1.15 2007/09/04 20:28:10 adamfranco Exp $
+ * @version $Id: login.act.php,v 1.16 2007/09/19 14:04:53 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -15,12 +15,12 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * Change the language to the one specified by the user
  * 
  * @since 7/21/05
- * @package polyphony.modules.language
+ * @package polyphony.language
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login.act.php,v 1.15 2007/09/04 20:28:10 adamfranco Exp $
+ * @version $Id: login.act.php,v 1.16 2007/09/19 14:04:53 adamfranco Exp $
  */
 class loginAction
 	extends Action

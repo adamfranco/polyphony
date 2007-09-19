@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 6/4/07
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SingleStepWizard.class.php,v 1.2 2007/09/04 20:28:05 adamfranco Exp $
+ * @version $Id: SingleStepWizard.class.php,v 1.3 2007/09/19 14:04:50 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SimpleStepWizard.class.php");
@@ -16,12 +16,12 @@ require_once(dirname(__FILE__)."/SimpleStepWizard.class.php");
  * but doesn't have or allow more than one step.
  * 
  * @since 6/4/07
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SingleStepWizard.class.php,v 1.2 2007/09/04 20:28:05 adamfranco Exp $
+ * @version $Id: SingleStepWizard.class.php,v 1.3 2007/09/19 14:04:50 adamfranco Exp $
  */
 class SingleStepWizard 
 	extends SimpleStepWizard

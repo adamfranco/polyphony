@@ -1,12 +1,12 @@
 <?php
 
 /**
- * @package polyphony.modules.authorization
+ * @package polyphony.authorization
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.42 2007/09/04 20:28:11 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.43 2007/09/19 14:04:53 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,12 +19,12 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @author Ryan Richards
  * @author Adam Franco
  * 
- * @package polyphony.modules.authorization
+ * @package polyphony.authorization
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.42 2007/09/04 20:28:11 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.43 2007/09/19 14:04:53 adamfranco Exp $
  */
 class choose_agentAction 
 	extends MainWindowAction

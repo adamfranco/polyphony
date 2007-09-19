@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 8/5/05
- * @package polyphony.library.basket
+ * @package polyphony.basket
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.16 2007/09/04 20:27:57 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.17 2007/09/19 14:04:43 adamfranco Exp $
  */ 
 
 /**
@@ -14,12 +14,12 @@
  * added and removed from it, as well as its contents viewed.
  * 
  * @since 8/5/05
- * @package polyphony.library.basket
+ * @package polyphony.basket
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.16 2007/09/04 20:27:57 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.17 2007/09/19 14:04:43 adamfranco Exp $
  */
 class Basket 
 	extends OrderedSet

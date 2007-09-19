@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 10/6/05
- * @package polyphony.library.importer
+ * @package polyphony.importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLThumbpathPartImporter.class.php,v 1.11 2007/09/04 20:28:01 adamfranco Exp $
+ * @version $Id: XMLThumbpathPartImporter.class.php,v 1.12 2007/09/19 14:04:47 adamfranco Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -14,12 +14,12 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * imports the thumbnaildata, and thumbnailmimetype of a file
  * 
  * @since 10/6/05
- * @package polyphony.library.importer
+ * @package polyphony.importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLThumbpathPartImporter.class.php,v 1.11 2007/09/04 20:28:01 adamfranco Exp $
+ * @version $Id: XMLThumbpathPartImporter.class.php,v 1.12 2007/09/19 14:04:47 adamfranco Exp $
  */
 class XMLThumbpathPartImporter extends XMLImporter {
 		

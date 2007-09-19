@@ -1,22 +1,22 @@
 <?php
 /**
- * @package polyphony.library.datamanager_gui
+ * @package polyphony.datamanager_gui
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_Authoritative_strings.classes.php,v 1.3 2007/09/04 20:27:58 adamfranco Exp $
+ * @version $Id: PrimitiveIO_Authoritative_strings.classes.php,v 1.4 2007/09/19 14:04:44 adamfranco Exp $
  */
 
 /**
  * 
  *
- * @package polyphony.library.datamanager_gui
+ * @package polyphony.datamanager_gui
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIO_Authoritative_strings.classes.php,v 1.3 2007/09/04 20:27:58 adamfranco Exp $
+ * @version $Id: PrimitiveIO_Authoritative_strings.classes.php,v 1.4 2007/09/19 14:04:44 adamfranco Exp $
  */
 class PrimitiveIO_Authoritative_string
 	extends PrimitiveIO_Authoritative 
@@ -42,7 +42,7 @@ class PrimitiveIO_Authoritative_string
 
 /**
  * 
- * @package polyphony.library.datamanager_gui
+ * @package polyphony.datamanager_gui
  */
 class PrimitiveIO_Authoritative_shortstring 
 	extends PrimitiveIO_Authoritative_string 

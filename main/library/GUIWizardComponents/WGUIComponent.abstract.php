@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 8/14/2006
- * @package polyphony.library.guiwizardcomponents
+ * @package polyphony.guiwizardcomponents
  * 
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WGUIComponent.abstract.php,v 1.2 2007/09/04 20:27:59 adamfranco Exp $
+ * @version $Id: WGUIComponent.abstract.php,v 1.3 2007/09/19 14:04:45 adamfranco Exp $
  */ 
 
 
@@ -15,12 +15,12 @@
  * This class is an abstract class for associating StyleComponents with a wizard component.
  * 
  * @since 8/14/2006
- * @package polyphony.library.guiwizardcomponents
+ * @package polyphony.guiwizardcomponents
  * 
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WGUIComponent.abstract.php,v 1.2 2007/09/04 20:27:59 adamfranco Exp $
+ * @version $Id: WGUIComponent.abstract.php,v 1.3 2007/09/19 14:04:45 adamfranco Exp $
  */
  
 class WGUIComponent 

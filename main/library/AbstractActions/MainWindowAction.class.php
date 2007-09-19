@@ -1,11 +1,11 @@
 <?php
 /**
- * @package polyphony.library.AbstractActions
+ * @package polyphony.AbstractActions
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MainWindowAction.class.php,v 1.12 2007/09/04 20:27:57 adamfranco Exp $
+ * @version $Id: MainWindowAction.class.php,v 1.13 2007/09/19 14:04:41 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/WizardAction.class.php");
@@ -27,12 +27,12 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * a structure for accessing various parts of this main window, as well as delegating
  * the implementation of some methods to decendent classes.
  * 
- * @package polyphony.library.AbstractActions
+ * @package polyphony.AbstractActions
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MainWindowAction.class.php,v 1.12 2007/09/04 20:27:57 adamfranco Exp $
+ * @version $Id: MainWindowAction.class.php,v 1.13 2007/09/19 14:04:41 adamfranco Exp $
  */
 class MainWindowAction 
 	extends WizardAction {

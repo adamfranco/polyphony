@@ -1,12 +1,12 @@
 <?php
 /**
  * @since Aug 1, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WNewOnlyEditableRepeatableComponentCollection.class.php,v 1.4 2007/09/04 20:28:07 adamfranco Exp $
+ * @version $Id: WNewOnlyEditableRepeatableComponentCollection.class.php,v 1.5 2007/09/19 14:04:51 adamfranco Exp $
  */ 
 
 /**
@@ -15,12 +15,12 @@
  * be removed.
  * 
  * @since Aug 1, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WNewOnlyEditableRepeatableComponentCollection.class.php,v 1.4 2007/09/04 20:28:07 adamfranco Exp $
+ * @version $Id: WNewOnlyEditableRepeatableComponentCollection.class.php,v 1.5 2007/09/19 14:04:51 adamfranco Exp $
  */
 
 class WNewOnlyEditableRepeatableComponentCollection

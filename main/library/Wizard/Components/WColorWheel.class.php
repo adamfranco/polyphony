@@ -1,13 +1,13 @@
 <?php
 /**
  * @since Jul 21, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  * @license This is distributed under the BY-NC-SA licence(http://creativecommons.org/licenses/by-nc-sa/2.0/). License for commercial use is not possible
  *
- * @version $Id: WColorWheel.class.php,v 1.3 2007/09/04 20:28:06 adamfranco Exp $
+ * @version $Id: WColorWheel.class.php,v 1.4 2007/09/19 14:04:51 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -16,13 +16,13 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * This class allows for the creation of a ColorWheel color management tool.
  * 
  * @since Jul 21, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *  @license This is distributed under the BY-NC-SA licence(http://creativecommons.org/licenses/by-nc-sa/2.0/). License for commercial use is not possible
  *
- * @version $Id: WColorWheel.class.php,v 1.3 2007/09/04 20:28:06 adamfranco Exp $
+ * @version $Id: WColorWheel.class.php,v 1.4 2007/09/19 14:04:51 adamfranco Exp $
  */
 class WColorWheel 
 	extends WizardComponent 

@@ -1,12 +1,12 @@
 <?php
 
 /**
- * @package polyphony.modules.repository
+ * @package polyphony.repository
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.12 2007/09/04 20:28:14 adamfranco Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.13 2007/09/19 14:04:56 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
@@ -20,12 +20,12 @@ require_once(POLYPHONY."/main/library/RepositoryInputOutputModules/RepositoryInp
  * @author Ryan Richards
  * @author Adam Franco
  * 
- * @package polyphony.modules.repository
+ * @package polyphony.repository
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.12 2007/09/04 20:28:14 adamfranco Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.13 2007/09/19 14:04:56 adamfranco Exp $
  */
 class viewthumbnailAction 
 	extends ForceAuthAction

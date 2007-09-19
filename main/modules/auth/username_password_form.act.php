@@ -1,11 +1,11 @@
 <?php
 /**
- * @package polyphony.modules.authentication
+ * @package polyphony.authentication
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: username_password_form.act.php,v 1.11 2007/09/04 20:28:10 adamfranco Exp $
+ * @version $Id: username_password_form.act.php,v 1.12 2007/09/19 14:04:53 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/Components/Block.class.php");
@@ -13,12 +13,12 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
 
 /**
  * 
- * @package polyphony.modules.authentication
+ * @package polyphony.authentication
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: username_password_form.act.php,v 1.11 2007/09/04 20:28:10 adamfranco Exp $
+ * @version $Id: username_password_form.act.php,v 1.12 2007/09/19 14:04:53 adamfranco Exp $
  */
 class username_password_formAction 
 	extends MainWindowAction

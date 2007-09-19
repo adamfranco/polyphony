@@ -1,24 +1,24 @@
 <?php
 /**
  * @since 5/31/06
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicRule.class.php,v 1.7 2007/09/05 16:46:19 adamfranco Exp $
+ * @version $Id: WLogicRule.class.php,v 1.8 2007/09/19 14:04:51 adamfranco Exp $
  */ 
 
 /**
  * Logic Class allows for wizards to be freeform and direct their own progress
  * 
  * @since 5/31/06
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicRule.class.php,v 1.7 2007/09/05 16:46:19 adamfranco Exp $
+ * @version $Id: WLogicRule.class.php,v 1.8 2007/09/19 14:04:51 adamfranco Exp $
  */
 class WLogicRule {
 		

@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 11/27/06
- * @package concerto.test
+ * @package polyphony.images
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewExif.act.php,v 1.3 2007/09/04 20:28:12 adamfranco Exp $
+ * @version $Id: viewExif.act.php,v 1.4 2007/09/19 14:04:55 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,12 +18,12 @@ require_once(EXIF);
  * data that it contains
  * 
  * @since 11/27/06
- * @package concerto.test
+ * @package polyphony.images
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewExif.act.php,v 1.3 2007/09/04 20:28:12 adamfranco Exp $
+ * @version $Id: viewExif.act.php,v 1.4 2007/09/19 14:04:55 adamfranco Exp $
  */
 class viewExifAction
 	extends MainWindowAction

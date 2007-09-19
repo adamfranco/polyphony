@@ -1,12 +1,12 @@
 <?php
 /**
  * @since Jul 21, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.14 2007/09/04 20:28:08 adamfranco Exp $
+ * @version $Id: WTextField.class.php,v 1.15 2007/09/19 14:04:51 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__).'/WTextInput.abstract.php');
@@ -15,12 +15,12 @@ require_once(dirname(__FILE__).'/WTextInput.abstract.php');
  * This adds an input type='text' field to a {@link Wizard}.
  * 
  * @since Jul 21, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextField.class.php,v 1.14 2007/09/04 20:28:08 adamfranco Exp $
+ * @version $Id: WTextField.class.php,v 1.15 2007/09/19 14:04:51 adamfranco Exp $
  */
 class WTextField 
 	extends WTextInput 

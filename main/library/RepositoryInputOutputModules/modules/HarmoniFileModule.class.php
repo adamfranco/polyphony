@@ -1,12 +1,12 @@
 <?php
 /**
  *
- * @package polyphony.library.repository.inputoutput
+ * @package polyphony.repository.inputoutput
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HarmoniFileModule.class.php,v 1.19 2007/09/04 20:28:02 adamfranco Exp $
+ * @version $Id: HarmoniFileModule.class.php,v 1.20 2007/09/19 14:04:48 adamfranco Exp $
  */
 
 /**
@@ -23,9 +23,9 @@ require_once(HARMONI."Primitives/Numbers/ByteSize.class.php");
  * using the "DataManagerPrimitive" Format would use the DataManagerPrimative
  * InputOutput module for displaying generating forms for editing its data.
  * 
- * @package polyphony.library.repository.inputoutput
- * @version $Id: HarmoniFileModule.class.php,v 1.19 2007/09/04 20:28:02 adamfranco Exp $
- * @since $Date: 2007/09/04 20:28:02 $
+ * @package polyphony.repository.inputoutput
+ * @version $Id: HarmoniFileModule.class.php,v 1.20 2007/09/19 14:04:48 adamfranco Exp $
+ * @since $Date: 2007/09/19 14:04:48 $
  * @copyright 2004 Middlebury College
  */
 

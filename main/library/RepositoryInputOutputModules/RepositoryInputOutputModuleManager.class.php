@@ -1,12 +1,12 @@
 <?php
 /**
  *
- * @package polyphony.library.repository.inputoutput
+ * @package polyphony.repository.inputoutput
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.17 2007/09/04 20:28:02 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.18 2007/09/19 14:04:48 adamfranco Exp $
  */
 
 /**
@@ -21,9 +21,9 @@ require_once(HARMONI."/oki2/shared/MultiIteratorIterator.class.php");
  * The RepositoryInputOutModuleManager is responcible for sending records to the 
  * appropriate RepositoryInputOutputModule based on their Schema Formats.
  * 
- * @package polyphony.library.repository.inputoutput
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.17 2007/09/04 20:28:02 adamfranco Exp $
- * @since $Date: 2007/09/04 20:28:02 $
+ * @package polyphony.repository.inputoutput
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.18 2007/09/19 14:04:48 adamfranco Exp $
+ * @since $Date: 2007/09/19 14:04:48 $
  * @copyright 2004 Middlebury College
  */
 

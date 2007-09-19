@@ -1,11 +1,11 @@
 <?php
 /**
- * @package polyphony.library.resultprinter
+ * @package polyphony.resultprinter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.29 2007/09/04 20:28:04 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.30 2007/09/19 14:04:49 adamfranco Exp $
  */
  
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -15,12 +15,12 @@ require_once(HARMONI."GUIManager/StyleProperties/MarginTopSP.class.php");
  * Print out an Iterator of items in rows and columns of TEXT_BLOCK widgets 
  * spread over multiple pages.
  *
- * @package polyphony.library.resultprinter
+ * @package polyphony.resultprinter
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.29 2007/09/04 20:28:04 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.30 2007/09/19 14:04:49 adamfranco Exp $
  */
 
 class IteratorResultPrinter 

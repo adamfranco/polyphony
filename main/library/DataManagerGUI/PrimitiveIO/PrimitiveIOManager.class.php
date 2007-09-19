@@ -1,22 +1,22 @@
 <?php
 /**
- * @package polyphony.library.datamanager_gui
+ * @package polyphony.datamanager_gui
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIOManager.class.php,v 1.12 2007/09/04 20:27:58 adamfranco Exp $
+ * @version $Id: PrimitiveIOManager.class.php,v 1.13 2007/09/19 14:04:44 adamfranco Exp $
  */
 
 /**
  * Handles the creation of {@link PrimitiveIO} objects for different data types, as registered with the DataTypeManager of Harmoni.
  *
- * @package polyphony.library.datamanager_gui
+ * @package polyphony.datamanager_gui
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIOManager.class.php,v 1.12 2007/09/04 20:27:58 adamfranco Exp $
+ * @version $Id: PrimitiveIOManager.class.php,v 1.13 2007/09/19 14:04:44 adamfranco Exp $
  * @author Gabe Schine
  */
 class PrimitiveIOManager {

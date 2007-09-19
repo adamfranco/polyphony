@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 10/5/05
- * @package polyphony.library.importer
+ * @package polyphony.importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.30 2007/09/04 20:28:01 adamfranco Exp $
+ * @version $Id: XMLImporter.class.php,v 1.31 2007/09/19 14:04:47 adamfranco Exp $
  *
  * @author Christopher W. Shubert
  */ 
@@ -22,12 +22,12 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * Harmoni Based Application
  * 
  * @since 10/5/05
- * @package polyphony.library.importer
+ * @package polyphony.importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.30 2007/09/04 20:28:01 adamfranco Exp $
+ * @version $Id: XMLImporter.class.php,v 1.31 2007/09/19 14:04:47 adamfranco Exp $
  */
 class XMLImporter {
 

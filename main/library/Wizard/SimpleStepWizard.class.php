@@ -1,12 +1,12 @@
 <?php
 /**
  * @since Jul 20, 2005
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleStepWizard.class.php,v 1.12 2007/09/04 20:28:05 adamfranco Exp $
+ * @version $Id: SimpleStepWizard.class.php,v 1.13 2007/09/19 14:04:50 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/SimpleWizard.class.php");
@@ -23,12 +23,12 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WStepChangedListener.cla
  * typecomment
  * 
  * @since Jul 20, 2005
- * @package polyphony.library.wizard
+ * @package polyphony.wizard
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleStepWizard.class.php,v 1.12 2007/09/04 20:28:05 adamfranco Exp $
+ * @version $Id: SimpleStepWizard.class.php,v 1.13 2007/09/19 14:04:50 adamfranco Exp $
  */
 class SimpleStepWizard extends SimpleWizard {
 	var $_stepContainer;

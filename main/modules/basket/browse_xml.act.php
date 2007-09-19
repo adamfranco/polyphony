@@ -1,23 +1,23 @@
 <?php
 /**
- * @package concerto.modules.asset
+ * @package polyphony.basket
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_xml.act.php,v 1.3 2007/09/04 20:28:12 adamfranco Exp $
+ * @version $Id: browse_xml.act.php,v 1.4 2007/09/19 14:04:54 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
 /**
  * 
  * 
- * @package concerto.modules.asset
+ * @package polyphony.basket
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_xml.act.php,v 1.3 2007/09/04 20:28:12 adamfranco Exp $
+ * @version $Id: browse_xml.act.php,v 1.4 2007/09/19 14:04:54 adamfranco Exp $
  */
 class browse_xmlAction 
 	extends Action

@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 12/12/06
- * @package polyphony.modules.export
+ * @package polyphony.export
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: getFile.act.php,v 1.2 2007/09/04 20:28:13 adamfranco Exp $
+ * @version $Id: getFile.act.php,v 1.3 2007/09/19 14:04:55 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -16,12 +16,12 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * Give the user the file that they wish to download
  * 
  * @since 12/12/06
- * @package polyphony.modules.export
+ * @package polyphony.export
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: getFile.act.php,v 1.2 2007/09/04 20:28:13 adamfranco Exp $
+ * @version $Id: getFile.act.php,v 1.3 2007/09/19 14:04:55 adamfranco Exp $
  */
 class getFileAction 
 	extends Action

@@ -1,12 +1,12 @@
 <?php
 /**
  *
- * @package polyphony.library.repository.search
+ * @package polyphony.repository.search
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositorySearchModuleManager.class.php,v 1.10 2007/09/04 20:28:03 adamfranco Exp $
+ * @version $Id: RepositorySearchModuleManager.class.php,v 1.11 2007/09/19 14:04:48 adamfranco Exp $
  */
 
 /**
@@ -20,9 +20,9 @@ require_once(dirname(__FILE__)."/modules/PartAndValuesModule.class.php");
  * The RepositorySearchModuleManager is responcible for sending requests for search forms
  * to the appropriate RepositorySearchModule based on their types.
  * 
- * @package polyphony.library.repository.search
- * @version $Id: RepositorySearchModuleManager.class.php,v 1.10 2007/09/04 20:28:03 adamfranco Exp $
- * @since $Date: 2007/09/04 20:28:03 $
+ * @package polyphony.repository.search
+ * @version $Id: RepositorySearchModuleManager.class.php,v 1.11 2007/09/19 14:04:48 adamfranco Exp $
+ * @since $Date: 2007/09/19 14:04:48 $
  * @copyright 2004 Middlebury College
  */
 

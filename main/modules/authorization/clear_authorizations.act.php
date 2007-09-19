@@ -2,12 +2,12 @@
 
 /**
  *
- * @package polyphony.modules.agents
+ * @package polyphony.agents
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: clear_authorizations.act.php,v 1.2 2007/09/04 20:28:11 adamfranco Exp $
+ * @version $Id: clear_authorizations.act.php,v 1.3 2007/09/19 14:04:53 adamfranco Exp $
  */
 
 require_once(HARMONI."/GUIManager/Layouts/YLayout.class.php");
@@ -21,12 +21,12 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  *
  * @since 11/10/04 
  * 
- * @package polyphony.modules.agents
+ * @package polyphony.agents
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: clear_authorizations.act.php,v 1.2 2007/09/04 20:28:11 adamfranco Exp $
+ * @version $Id: clear_authorizations.act.php,v 1.3 2007/09/19 14:04:53 adamfranco Exp $
  */
 class clear_authorizationsAction 
 	extends MainWindowAction

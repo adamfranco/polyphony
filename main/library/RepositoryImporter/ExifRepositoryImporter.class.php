@@ -1,12 +1,12 @@
 <?php
 /**
 * @since 7/20/05
- * @package polyphony.library.repository_importer
+ * @package polyphony.repository_importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.23 2007/09/04 20:28:01 adamfranco Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.24 2007/09/19 14:04:48 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -16,12 +16,12 @@ require_once(DOMIT);
 * <##>
  * 
  * @since 7/20/05
- * @package polyphony.library.repository_importer
+ * @package polyphony.repository_importer
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.23 2007/09/04 20:28:01 adamfranco Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.24 2007/09/19 14:04:48 adamfranco Exp $
  */
 class ExifRepositoryImporter
 	extends RepositoryImporter

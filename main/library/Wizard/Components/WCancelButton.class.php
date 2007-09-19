@@ -1,12 +1,12 @@
 <?php
 /**
  * @since Jul 20, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCancelButton.class.php,v 1.7 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WCancelButton.class.php,v 1.8 2007/09/19 14:04:51 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php");
@@ -16,12 +16,12 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php")
  * event.
  * 
  * @since Jul 20, 2005
- * @package polyphony.library.wizard.components
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCancelButton.class.php,v 1.7 2006/08/15 20:51:43 sporktim Exp $
+ * @version $Id: WCancelButton.class.php,v 1.8 2007/09/19 14:04:51 adamfranco Exp $
  */
 class WCancelButton extends WEventButton {
 	function WCancelButton($label=null) {
