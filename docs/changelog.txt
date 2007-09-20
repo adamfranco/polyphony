@@ -3,6 +3,14 @@
 Name: Polyphony ChangeLog
 
 
+v. 0.9.2 (2007-09-20)
+----------------------------------------------------
+		
+	* Bug Fix: 
+		Javascript: document.getHeight() method now reliably returns the height of
+		the document whether the window is larger or smaller than the hieght.
+		(2007-09-19 - Adam Franco)
+	
 v. 0.9.1 (2007-09-13)
 ----------------------------------------------------
 		
