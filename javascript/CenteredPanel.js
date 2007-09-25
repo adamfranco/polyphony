@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CenteredPanel.js,v 1.6 2007/09/19 20:49:48 adamfranco Exp $
+ * @version $Id: CenteredPanel.js,v 1.7 2007/09/25 22:19:08 adamfranco Exp $
  */
 
 CenteredPanel.prototype = new Panel();
@@ -22,7 +22,7 @@ CenteredPanel.superclass = Panel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CenteredPanel.js,v 1.6 2007/09/19 20:49:48 adamfranco Exp $
+ * @version $Id: CenteredPanel.js,v 1.7 2007/09/25 22:19:08 adamfranco Exp $
  */
 function CenteredPanel ( title, height, width, callingElement, classNames ) {
 	if ( arguments.length > 0 ) {
@@ -182,9 +182,21 @@ function CenteredPanel ( title, height, width, callingElement, classNames ) {
 		var panel = this;
 		window.onresize = function () {
 			panel.center();
-			panel.screen.style.height = panel.getScreenHeight() + 'px';
+			
 		}
 		
+	}
+	
+	/**
+	 * Reposition the main element based on the rendered height and width
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 1/26/07
+	 */
+	CenteredPanel.prototype.center = function () {
+		CenteredPanel.superclass.center.call(this);
+		this.screen.style.height = this.getScreenHeight() + 'px';
 	}
 	
 	/**
