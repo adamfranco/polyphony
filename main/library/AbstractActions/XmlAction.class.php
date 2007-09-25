@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlAction.class.php,v 1.4 2007/09/19 14:04:42 adamfranco Exp $
+ * @version $Id: XmlAction.class.php,v 1.5 2007/09/25 20:00:23 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY_DIR.'/main/library/AbstractActions/Action.class.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR.'/main/library/AbstractActions/Action.class.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlAction.class.php,v 1.4 2007/09/19 14:04:42 adamfranco Exp $
+ * @version $Id: XmlAction.class.php,v 1.5 2007/09/25 20:00:23 adamfranco Exp $
  */
 class XmlAction
 	extends Action
@@ -80,6 +80,19 @@ END;
 		$this->start();
 		print "\n\t<error><![CDATA[".str_replace(']]>', '}}>', $message)."]]></error>";
 		$this->end();
+	}
+	
+	/**
+	 * Respond with a non-fatal error
+	 * 
+	 * @param string $message
+	 * @return void
+	 * @access public
+	 * @since 9/25/07
+	 */
+	public function nonFatalError ($message) {
+		$this->start();
+		print "\n\t<error><![CDATA[".str_replace(']]>', '}}>', $message)."]]></error>";
 	}
 }
 
