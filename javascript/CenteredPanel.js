@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CenteredPanel.js,v 1.7 2007/09/25 22:19:08 adamfranco Exp $
+ * @version $Id: CenteredPanel.js,v 1.8 2007/09/25 22:22:43 adamfranco Exp $
  */
 
 CenteredPanel.prototype = new Panel();
@@ -22,7 +22,7 @@ CenteredPanel.superclass = Panel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CenteredPanel.js,v 1.7 2007/09/25 22:19:08 adamfranco Exp $
+ * @version $Id: CenteredPanel.js,v 1.8 2007/09/25 22:22:43 adamfranco Exp $
  */
 function CenteredPanel ( title, height, width, callingElement, classNames ) {
 	if ( arguments.length > 0 ) {
@@ -182,7 +182,6 @@ function CenteredPanel ( title, height, width, callingElement, classNames ) {
 		var panel = this;
 		window.onresize = function () {
 			panel.center();
-			
 		}
 		
 	}
