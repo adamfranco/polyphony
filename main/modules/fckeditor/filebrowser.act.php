@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: filebrowser.act.php,v 1.2 2007/09/19 14:04:55 adamfranco Exp $
+ * @version $Id: filebrowser.act.php,v 1.3 2007/09/25 18:31:46 adamfranco Exp $
  */ 
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: filebrowser.act.php,v 1.2 2007/09/19 14:04:55 adamfranco Exp $
+ * @version $Id: filebrowser.act.php,v 1.3 2007/09/25 18:31:46 adamfranco Exp $
  * @since 4/28/05
  */
 class filebrowserAction
@@ -55,7 +55,10 @@ class filebrowserAction
 	 */
 	function execute () {
 		$title = $this->getHeadingText();
+		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace('fckeditor');
 		$nodeId = RequestContext::value('node');
+		$harmoni->request->endNamespace();
 		$POLYPHONY_PATH = POLYPHONY_PATH;
 		$MYPATH = MYPATH;
 		
@@ -96,6 +99,7 @@ END;
 
 
 END;
+		
 		exit;
 	}
 }

@@ -3,6 +3,14 @@
 Name: Polyphony ChangeLog
 
 
+v. 0.9.3 (2007-09-25)
+----------------------------------------------------
+		
+	* Change: 
+		
+		FileBrowser: Now namespacing the assetId parameter.
+		(2007-09-25 - Adam Franco)
+	
 v. 0.9.2 (2007-09-20)
 ----------------------------------------------------
 		
