@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.17 2007/09/19 14:04:52 adamfranco Exp $
+ * @version $Id: create_agent.act.php,v 1.18 2007/10/01 14:41:28 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.17 2007/09/19 14:04:52 adamfranco Exp $
+ * @version $Id: create_agent.act.php,v 1.18 2007/10/01 14:41:28 adamfranco Exp $
  */
 class create_agentAction 
 	extends MainWindowAction
@@ -158,11 +158,16 @@ class create_agentAction
 		$authNManager = Services::getService("AuthN");
 		$typesIterator =$authNManager->getAuthenticationTypes();
 		while($typesIterator->hasNext()) {
-			$tempType =$typesIterator->next();
+			$tempType = $typesIterator->next();
 			$authNMethods = Services::getService("AuthNMethods");
-			$tempMethod =$authNMethods->getAuthNMethodForType($tempType);
-			if (!$tempMethod->supportsTokenAddition()) continue;
-			print "<option value='".HarmoniType::typeToString($tempType)."'>".HarmoniType::typeToString($tempType)."</option>";
+			try {
+				$tempMethod = $authNMethods->getAuthNMethodForType($tempType);
+				if (!$tempMethod->supportsTokenAddition()) 
+					continue;
+				print "<option value='".HarmoniType::typeToString($tempType)."'>".HarmoniType::typeToString($tempType)."</option>";
+			} catch (Exception $e) {
+				// Skip if is not available, such as the change-user type
+			}
 		}
 		print "</select>";
 		print "</td></tr>";

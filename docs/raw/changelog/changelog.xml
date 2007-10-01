@@ -4,12 +4,18 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.90 2007/09/25 22:22:42 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.91 2007/10/01 14:41:27 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony ChangeLog">
+	<version number="0.9.4" date="The Future">
+		<fix author='adam' date='2007-10-01'>
+			CreateAgent, now doesn't die when encountering the changeuser authentication
+			type.
+		</fix>
+	</version>
 	<version number="0.9.3" date="2007-09-25">
 		<change author='adam' date='2007-09-25'>
 			CenteredPanel: center() now extends the screen.
