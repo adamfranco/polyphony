@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.91 2007/10/01 14:41:27 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.92 2007/10/05 14:14:41 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -15,6 +15,12 @@
 			CreateAgent, now doesn't die when encountering the changeuser authentication
 			type.
 		</fix>
+		<new author='adam' date='2007-10-05'>
+			RepositoryIO: Now supports records types with only string values.
+		</new>
+		<change author='adam' date='2007-10-05'>
+			RepositoryIO: updating to PHP 5 interfaces.
+		</change>
 	</version>
 	<version number="0.9.3" date="2007-09-25">
 		<change author='adam' date='2007-09-25'>
