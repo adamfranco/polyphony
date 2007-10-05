@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.18 2007/09/19 14:04:48 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.19 2007/10/05 14:04:24 adamfranco Exp $
  */
 
 /**
@@ -15,6 +15,7 @@
  */
 require_once(dirname(__FILE__)."/modules/DataManagerPrimativesModule.class.php");
 require_once(dirname(__FILE__)."/modules/HarmoniFileModule.class.php");
+require_once(dirname(__FILE__)."/modules/PlainTextModule.class.php");
 require_once(HARMONI."/oki2/shared/MultiIteratorIterator.class.php");
 
 /**
@@ -22,8 +23,8 @@ require_once(HARMONI."/oki2/shared/MultiIteratorIterator.class.php");
  * appropriate RepositoryInputOutputModule based on their Schema Formats.
  * 
  * @package polyphony.repository.inputoutput
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.18 2007/09/19 14:04:48 adamfranco Exp $
- * @since $Date: 2007/09/19 14:04:48 $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.19 2007/10/05 14:04:24 adamfranco Exp $
+ * @since $Date: 2007/10/05 14:04:24 $
  * @copyright 2004 Middlebury College
  */
 
@@ -51,7 +52,12 @@ class RepositoryInputOutputModuleManager {
 					"RecordStructures that store files.");
  		$this->_modules[Type::typeToString($type)] = new HarmoniFileModule;
  		
-// 		$this->_modules['text/plain'] = new PlainTextModule;
+ 		$type = new Type("RecordStructures", 
+					"edu.middlebury.harmoni", 
+					"text/plain", 
+					"RecordStructures all values are strings.");
+ 		$this->_modules[Type::typeToString($type)] = new PlainTextModule;
+ 		
 	}
 	
 	/**
@@ -215,7 +221,13 @@ class RepositoryInputOutputModuleManager {
 		ArgumentValidator::validate($partStructures, new ArrayValidatorRuleWithRule(new ExtendsValidatorRule("PartStructure")));
 		
 		$recordStructure =$record->getRecordStructure();
-		$type =$recordStructure->getType();
+		try {
+			$type = $recordStructure->getType();
+		} catch (UnimplementedException $e) {
+			$type = new Type("RecordStructures", 
+					"edu.middlebury.harmoni", 
+					"text/plain");
+		}
 		
 		if (!is_object($this->_modules[Type::typeToString($type)]))
 			throwError(new Error("Unsupported Format, '".Type::typeToString($type)."'", "RepositoryInputOutputModuleManager", true));
@@ -439,8 +451,15 @@ class RepositoryInputOutputModuleManager {
 		if (!isset($GLOBALS['__RepositoryThumbRecordCache'][$assetId->getIdString()])) {		
 			$imageProcessor = Services::getService("ImageProcessor");
 			$fileRecords = new MultiIteratorIterator();
-			$fileRecords->addIterator($asset->getRecordsByRecordStructure($idManager->getId("FILE")));
-			$fileRecords->addIterator($asset->getRecordsByRecordStructure($idManager->getId("REMOTE_FILE")));
+			try { 	
+				$fileRecords->addIterator(
+					$asset->getRecordsByRecordStructure($idManager->getId("FILE")));
+			} catch (UnknownIdException $e) {}
+			try {
+				$fileRecords->addIterator(
+					$asset->getRecordsByRecordStructure($idManager->getId("REMOTE_FILE")));
+			} catch (UnknownIdException $e) {}
+			
 			while ($fileRecords->hasNext()) {
 				$record =$fileRecords->next();
 				if (!isset($fileRecord)) {

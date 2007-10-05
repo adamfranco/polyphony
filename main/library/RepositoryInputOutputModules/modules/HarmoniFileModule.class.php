@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HarmoniFileModule.class.php,v 1.20 2007/09/19 14:04:48 adamfranco Exp $
+ * @version $Id: HarmoniFileModule.class.php,v 1.21 2007/10/05 14:04:25 adamfranco Exp $
  */
 
 /**
@@ -24,13 +24,13 @@ require_once(HARMONI."Primitives/Numbers/ByteSize.class.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.repository.inputoutput
- * @version $Id: HarmoniFileModule.class.php,v 1.20 2007/09/19 14:04:48 adamfranco Exp $
- * @since $Date: 2007/09/19 14:04:48 $
+ * @version $Id: HarmoniFileModule.class.php,v 1.21 2007/10/05 14:04:25 adamfranco Exp $
+ * @since $Date: 2007/10/05 14:04:25 $
  * @copyright 2004 Middlebury College
  */
 
 class HarmoniFileModule
-	extends RepositoryInputOutputModuleInterface {
+	implements RepositoryInputOutputModuleInterface {
 	
 	/**
 	 * Constructor
@@ -472,7 +472,7 @@ class HarmoniFileModule
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function generateDisplay ( $repositoryId, $assetId, $record ) {
+	function generateDisplay ( Id $repositoryId, Id $assetId, RecordInterface $record ) {
 		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
 		
@@ -496,7 +496,7 @@ class HarmoniFileModule
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function generateDisplayForPartStructures ( $repositoryId, $assetId, $record, $partStructures ) {
+	function generateDisplayForPartStructures ( Id $repositoryId, Id $assetId, RecordInterface $record, array $partStructures ) {
 		ArgumentValidator::validate($repositoryId, new ExtendsValidatorRule("Id"));
 		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));

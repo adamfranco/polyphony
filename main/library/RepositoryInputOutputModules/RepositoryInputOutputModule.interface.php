@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModule.interface.php,v 1.5 2007/09/19 14:04:48 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModule.interface.php,v 1.6 2007/10/05 14:04:24 adamfranco Exp $
  */
 
 /**
@@ -20,10 +20,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModule.interface.php,v 1.5 2007/09/19 14:04:48 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModule.interface.php,v 1.6 2007/10/05 14:04:24 adamfranco Exp $
  */
 
-class RepositoryInputOutputModuleInterface {
+interface RepositoryInputOutputModuleInterface {
 		
 	/**
 	 * Create wizard steps for editing the values of the specified Record and
@@ -35,9 +35,7 @@ class RepositoryInputOutputModuleInterface {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function createWizardSteps ( $record, $wizard ) {
-		die ("Method <b>".__FUNCTION__."()</b> declared in interface <b> ".__CLASS__."</b> has not been overloaded in a child class.");
-	}
+	function createWizardSteps ( $record, $wizard ) ;
 	
 	/**
 	 * Create wizard steps for editing the values of the specified Record and
@@ -50,9 +48,7 @@ class RepositoryInputOutputModuleInterface {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function createWizardStepsForPartStructures ( $record, $wizard, $partStructures ) {
-		die ("Method <b>".__FUNCTION__."()</b> declared in interface <b> ".__CLASS__."</b> has not been overloaded in a child class.");
-	}
+	function createWizardStepsForPartStructures ( $record, $wizard, $partStructures );
 	
 	/**
 	 * Get the values submitted in the wizard and update the Record with them.
@@ -63,9 +59,7 @@ class RepositoryInputOutputModuleInterface {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function updateFromWizard ( $record, $wizard ) {
-		die ("Method <b>".__FUNCTION__."()</b> declared in interface <b> ".__CLASS__."</b> has not been overloaded in a child class.");
-	}
+	function updateFromWizard ( $record, $wizard );
 	
 	/**
 	 * Generate HTML for displaying the Record
@@ -75,9 +69,7 @@ class RepositoryInputOutputModuleInterface {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function generateDisplay ( $asset, $record ) {
-		die ("Method <b>".__FUNCTION__."()</b> declared in interface <b> ".__CLASS__."</b> has not been overloaded in a child class.");
-	}
+	function generateDisplay ( Id $repositoryId, Id $assetId, RecordInterface $record );
 	
 	/**
 	 * Generate HTML for displaying particular parts of the Record 
@@ -88,9 +80,7 @@ class RepositoryInputOutputModuleInterface {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function generateDisplayForPartStructures ( $asset, $record, $partStructures ) {
-		die ("Method <b>".__FUNCTION__."()</b> declared in interface <b> ".__CLASS__."</b> has not been overloaded in a child class.");
-	}
+	function generateDisplayForPartStructures ( Id $repositoryId, Id $assetId, RecordInterface $record, array $partStructures );
 }
 
 ?>

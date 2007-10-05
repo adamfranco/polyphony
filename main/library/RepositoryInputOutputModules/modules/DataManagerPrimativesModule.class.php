@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DataManagerPrimativesModule.class.php,v 1.13 2007/09/19 14:04:48 adamfranco Exp $
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.14 2007/10/05 14:04:25 adamfranco Exp $
  */
 
 /**
@@ -24,13 +24,14 @@ require_once(POLYPHONY."/main/library/DataManagerGUI/PrimitiveIO/inc.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.repository.inputoutput
- * @version $Id: DataManagerPrimativesModule.class.php,v 1.13 2007/09/19 14:04:48 adamfranco Exp $
- * @since $Date: 2007/09/19 14:04:48 $
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.14 2007/10/05 14:04:25 adamfranco Exp $
+ * @since $Date: 2007/10/05 14:04:25 $
  * @copyright 2004 Middlebury College
  */
 
 class DataManagerPrimativesModule
-	extends RepositoryInputOutputModuleInterface {
+	implements RepositoryInputOutputModuleInterface 
+{
 	
 	/**
 	 * Constructor
@@ -164,7 +165,7 @@ class DataManagerPrimativesModule
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function generateDisplay ( $repositoryId, $assetId, $record ) {
+	function generateDisplay ( Id $repositoryId, Id $assetId, RecordInterface $record ) {
 		ArgumentValidator::validate($repositoryId, new ExtendsValidatorRule("Id"));
 		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
@@ -189,7 +190,7 @@ class DataManagerPrimativesModule
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function generateDisplayForPartStructures ( $repositoryId, $assetId, $record, $partStructures ) {
+	function generateDisplayForPartStructures ( Id $repositoryId, Id $assetId, RecordInterface $record, array $partStructures ) {
 		ArgumentValidator::validate($repositoryId, new ExtendsValidatorRule("Id"));
 		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
 		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
@@ -216,10 +217,9 @@ class DataManagerPrimativesModule
 				if (is_array($parts[$partStructureId->getIdString()])) {
 					foreach (array_keys($parts[$partStructureId->getIdString()]) as $key) {
 						$part =$parts[$partStructureId->getIdString()][$key];
-						$value =$part->getValue();
 					
 						print "\n<strong>".$partStructure->getDisplayName().":</strong> \n";			
-						print $value->asString();
+						print $this->getPartStringValue($part);
 						print "\n<br />";
 					}
 				}
@@ -231,7 +231,20 @@ class DataManagerPrimativesModule
 		
 		return $html;
 	}
-
+	
+	/**
+	 * Answer the string value of a part for display
+	 * 
+	 * @param object Part
+	 * @return string
+	 * @access protected
+	 * @since 10/5/07
+	 */
+	protected function getPartStringValue (Part $part) {
+		$value = $part->getValue();
+		return $value->asString();
+	}
+	
 	/**
 	 * Returns the a string for the passed part structure corresponding to a {@link WizardComponent} that is added automatically.
 	 * 
