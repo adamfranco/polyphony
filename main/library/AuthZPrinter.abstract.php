@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AuthZPrinter.abstract.php,v 1.4 2007/09/19 14:04:40 adamfranco Exp $
+ * @version $Id: AuthZPrinter.abstract.php,v 1.5 2007/10/05 15:42:26 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AuthZPrinter.abstract.php,v 1.4 2007/09/19 14:04:40 adamfranco Exp $
+ * @version $Id: AuthZPrinter.abstract.php,v 1.5 2007/10/05 15:42:26 adamfranco Exp $
  */
 class AuthZPrinter {
 		
@@ -35,20 +35,30 @@ class AuthZPrinter {
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
 		
-		if ($authZ->isUserAuthorized(
+		try {
+			$isAuthorized = $authZ->isUserAuthorized(
 				$idManager->getId("edu.middlebury.authorization.view_authorizations"), 
-				$qualifierId))
-		{
+				$qualifierId);
+		} catch (UnknownIdException $e) {
+			$isAuthorized = $authZ->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.view_authorizations"), 
+				$idManager->getId("edu.middlebury.authorization.root"));
+		}
+		if ($isAuthorized) {
 			$onclick = "onclick=\"AuthZViewer.run('".addslashes($qualifierId->getIdString())."', this);\" style='cursor: pointer;' ";
 		} else {
 			$onclick = '';
 		}
-	
-		if ($authZ->isAuthorized(
+		
+		try {
+			$isPublicAuthorized = $authZ->isAuthorized(
 				$idManager->getId("edu.middlebury.agents.everyone"),
 				$idManager->getId("edu.middlebury.authorization.view"), 
-				$qualifierId))
-		{
+				$qualifierId);
+		} catch (UnknownIdException $e) {
+			$isPublicAuthorized = true;
+		}
+		if ($isPublicAuthorized) {
 			print "\n<img src='".POLYPHONY_PATH."/icons/view_public.gif' alt='".("Public-Viewable")."' title='".("Public-Viewable")."' ".$onclick."/> ";
 		} else if ($authZ->isAuthorized(
 				$idManager->getId("edu.middlebury.agents.users"),
