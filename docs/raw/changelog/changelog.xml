@@ -4,12 +4,12 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.92 2007/10/05 14:14:41 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.93 2007/10/09 18:46:49 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
-<changelog name="Polyphony ChangeLog">
+<changelog name="Polyphony">
 	<version number="0.9.4" date="The Future">
 		<fix author='adam' date='2007-10-01'>
 			CreateAgent, now doesn't die when encountering the changeuser authentication

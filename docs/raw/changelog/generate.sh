@@ -5,11 +5,12 @@
 #  @copyright Copyright &copy; 2005, Middlebury College
 #  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 #  
-#  @version $Id: generate.sh,v 1.3 2007/05/04 20:56:56 adamfranco Exp $
+#  @version $Id: generate.sh,v 1.4 2007/10/09 18:46:49 adamfranco Exp $
 
 progdir=`dirname $0`
 cd $progdir
 
 xsltproc ../xslt/changelog-simplehtml.xsl changelog.xml | sed -e 's/<?xml.*?>//' > ../../changelog.html
 xsltproc ../xslt/changelog-plaintext.xsl changelog.xml | sed -e 's/<?xml.*?>//' > ../../changelog.txt
+xsltproc ../xslt/releaseNotes-plaintext.xsl changelog.xml | sed -e 's/<?xml.*?>//' > ../../release_notes.txt
 
