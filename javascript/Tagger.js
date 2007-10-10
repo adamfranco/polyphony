@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.4 2006/12/04 20:11:34 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.5 2007/10/10 23:57:00 adamfranco Exp $
  */
 
 Tagger.prototype = new Panel();
@@ -21,7 +21,7 @@ Tagger.superclass = Panel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.4 2006/12/04 20:11:34 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.5 2007/10/10 23:57:00 adamfranco Exp $
  */
 function Tagger ( itemId, system, positionElement, containerElement ) {
 	if ( arguments.length > 0 ) {
@@ -262,6 +262,7 @@ function Tagger ( itemId, system, positionElement, containerElement ) {
 				if (req.readyState == 4) {
 					// only if we get a good load should we continue.
 					if (req.status == 200) {
+						tagger.displayErrors(req.responseXML);
 						// Cache all user tags in the document so that we only
 						// have to fetch them once and can update the cache o
 						// on tag addition.
@@ -306,6 +307,7 @@ function Tagger ( itemId, system, positionElement, containerElement ) {
 				if (req.readyState == 4) {
 					// only if we get a good load should we continue.
 					if (req.status == 200) {
+						tagger.displayErrors(req.responseXML);
 						tagger.writeTagCloud(tagger.getTagsFromXml(req.responseXML), element, 'add');
 					} else {
 						alert("There was a problem retrieving the XML data:\n" +
@@ -345,6 +347,7 @@ function Tagger ( itemId, system, positionElement, containerElement ) {
 				if (req.readyState == 4) {
 					// only if we get a good load should we continue.
 					if (req.status == 200) {
+						tagger.displayErrors(req.responseXML);
 						tagger.currentTags = tagger.getTagsFromXml(req.responseXML);
 						tagger.writeTagCloud(tagger.currentTags, element, 'remove');
 					} else {
@@ -457,6 +460,7 @@ function Tagger ( itemId, system, positionElement, containerElement ) {
 					if (req.readyState == 4) {
 						// only if we get a good load should we continue.
 						if (req.status == 200) {
+							tagger.displayErrors(req.responseXML);
 							tagger.reloadSourceCloud(tagger.getTagsFromXml(req.responseXML));
 						} else {
 							alert("There was a problem retrieving the XML data:\n" +
@@ -649,7 +653,7 @@ function Tagger ( itemId, system, positionElement, containerElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.4 2006/12/04 20:11:34 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.5 2007/10/10 23:57:00 adamfranco Exp $
  */
 function Tag ( value, occurances ) {
 	if ( arguments.length > 0 ) {
@@ -694,7 +698,7 @@ function Tag ( value, occurances ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.4 2006/12/04 20:11:34 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.5 2007/10/10 23:57:00 adamfranco Exp $
  */
 function TagCloud ( container ) {
 	if ( arguments.length > 0 ) {
@@ -794,7 +798,7 @@ TagRenameDialog.superclass = Panel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.4 2006/12/04 20:11:34 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.5 2007/10/10 23:57:00 adamfranco Exp $
  */
 function TagRenameDialog ( tag, positionElement ) {
 	if ( arguments.length > 0 ) {

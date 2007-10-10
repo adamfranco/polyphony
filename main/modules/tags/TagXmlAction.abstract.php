@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagXmlAction.abstract.php,v 1.3 2007/09/04 20:28:14 adamfranco Exp $
+ * @version $Id: TagXmlAction.abstract.php,v 1.4 2007/10/10 23:57:01 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY_DIR.'/main/library/AbstractActions/XmlAction.class.php');
@@ -20,9 +20,9 @@ require_once(POLYPHONY_DIR.'/main/library/AbstractActions/XmlAction.class.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagXmlAction.abstract.php,v 1.3 2007/09/04 20:28:14 adamfranco Exp $
+ * @version $Id: TagXmlAction.abstract.php,v 1.4 2007/10/10 23:57:01 adamfranco Exp $
  */
-class TagXmlAction
+abstract class TagXmlAction
 	extends XmlAction
 {
 	

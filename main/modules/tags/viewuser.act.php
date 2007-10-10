@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewuser.act.php,v 1.4 2007/09/19 14:04:58 adamfranco Exp $
+ * @version $Id: viewuser.act.php,v 1.5 2007/10/10 23:57:01 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/view.act.php");
@@ -20,30 +20,20 @@ require_once(dirname(__FILE__)."/view.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewuser.act.php,v 1.4 2007/09/19 14:04:58 adamfranco Exp $
+ * @version $Id: viewuser.act.php,v 1.5 2007/10/10 23:57:01 adamfranco Exp $
  */
 class viewuserAction 
 	extends viewAction
 {
+
 	/**
-	 * Check Authorizations
+	 * Constructor
 	 * 
-	 * @return boolean
+	 * @return void
 	 * @access public
-	 * @since 11/07/06
+	 * @since 10/10/07
 	 */
-	function isAuthorizedToExecute () {
-		return true;
-	}
-	
-	/**
-	 * Execute this action
-	 * 
-	 * @return mixed
-	 * @access public
-	 * @since 11/21/06
-	 */
-	function execute () {
+	public function __construct () {
 		// @todo check authorization to view a given user's tags.
 		$idManager = Services::getService('Id');		
 		$harmoni = Harmoni::instance();
@@ -57,8 +47,16 @@ class viewuserAction
 		}
 		
 		$harmoni->request->endNamespace();
-		
-		return parent::execute();
+	}
+	/**
+	 * Check Authorizations
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 11/07/06
+	 */
+	function isAuthorizedToExecute () {
+		return true;
 	}
 	
 	/**
