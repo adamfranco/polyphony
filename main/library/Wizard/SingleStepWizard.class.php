@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SingleStepWizard.class.php,v 1.3 2007/09/19 14:04:50 adamfranco Exp $
+ * @version $Id: SingleStepWizard.class.php,v 1.4 2007/10/10 22:58:55 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SimpleStepWizard.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/SimpleStepWizard.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SingleStepWizard.class.php,v 1.3 2007/09/19 14:04:50 adamfranco Exp $
+ * @version $Id: SingleStepWizard.class.php,v 1.4 2007/10/10 22:58:55 adamfranco Exp $
  */
 class SingleStepWizard 
 	extends SimpleStepWizard
@@ -48,7 +48,7 @@ class SingleStepWizard
 	 * @return ref object
 	 * @static
 	 */
-	function withDefaultLayout ($pre = '') {
+	static function withDefaultLayout ($pre = '') {
 		return parent::withText($pre . 
 				"<div>\n" .
 				"<table width='100%' border='0' cellpadding='0' cellspacing='2'>\n" .

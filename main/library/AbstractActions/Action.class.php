@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Action.class.php,v 1.9 2007/09/19 14:04:41 adamfranco Exp $
+ * @version $Id: Action.class.php,v 1.10 2007/10/10 22:58:42 adamfranco Exp $
  */ 
 
 /**
@@ -17,10 +17,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Action.class.php,v 1.9 2007/09/19 14:04:41 adamfranco Exp $
+ * @version $Id: Action.class.php,v 1.10 2007/10/10 22:58:42 adamfranco Exp $
  * @since 4/28/05
  */
-class Action {
+abstract class Action {
 		
 	/**
 	 * Check Authorizations
@@ -29,9 +29,7 @@ class Action {
 	 * @access public
 	 * @since 4/26/05
 	 */
-	function isAuthorizedToExecute () {
-		throwError(new Error(__CLASS__."::".__FUNCTION__."() must be overridded in child classes."));
-	}
+	abstract function isAuthorizedToExecute () ;
 	
 	/**
 	 * Answer the message to print when the user is not authorized to execute
@@ -75,9 +73,7 @@ class Action {
 	 * @access public
 	 * @since 4/25/05
 	 */
-	function execute () {
-		throwError(new Error(__CLASS__."::".__FUNCTION__."() must be overridden in child classes."));
-	}
+	abstract function execute () ;
 	
 	/**
 	 * Answer the requested module, maybe other than this action's module if this

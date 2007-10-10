@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.17 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.18 2007/10/10 22:58:56 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WRepeatableComponentCollection.class.php,v 1.17 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WRepeatableComponentCollection.class.php,v 1.18 2007/10/10 22:58:56 adamfranco Exp $
  */
 
 class WRepeatableComponentCollection 
@@ -193,7 +193,7 @@ class WRepeatableComponentCollection
 	 */
 	function _addElement ($removable = true) {
 		if ($this->_max != -1 && $this->_num == $this->_max - 1) return;
-//		printDebugBacktrace();
+
 		// clone our base set (the getChildren() array)
 		$newArray = array();
 		$base =$this->getChildren();

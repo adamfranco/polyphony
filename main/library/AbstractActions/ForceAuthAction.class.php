@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ForceAuthAction.class.php,v 1.4 2007/09/19 14:04:41 adamfranco Exp $
+ * @version $Id: ForceAuthAction.class.php,v 1.5 2007/10/10 22:58:42 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -25,9 +25,9 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ForceAuthAction.class.php,v 1.4 2007/09/19 14:04:41 adamfranco Exp $
+ * @version $Id: ForceAuthAction.class.php,v 1.5 2007/10/10 22:58:42 adamfranco Exp $
  */
-class ForceAuthAction 
+abstract class ForceAuthAction 
 	extends Action
 {
 		
@@ -38,7 +38,7 @@ class ForceAuthAction
 	 * @access public
 	 * @since 4/26/05
 	 */
-	function isAuthorizedToExecute () {		
+	public final function isAuthorizedToExecute () {		
 		if ($this->isExecutionAuthorized()) {
 			return true;	
 		}
@@ -127,9 +127,7 @@ class ForceAuthAction
 	 * @access public
 	 * @since 8/4/06
 	 */
-	function isExecutionAuthorized () {
-		throwError(new Error(__CLASS__."::".__FUNCTION__."() must be overridded in child classes."));
-	}
+	abstract function isExecutionAuthorized () ;
 	
 	/**
 	 * Answer the HTTP Authentication 'Relm' to present to the user for authentication.

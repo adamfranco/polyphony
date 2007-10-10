@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.12 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.13 2007/10/10 22:58:56 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WSelectList.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WSelectList.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.12 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WOrderedRepeatableComponentCollection.class.php,v 1.13 2007/10/10 22:58:56 adamfranco Exp $
  */
 
 class WOrderedRepeatableComponentCollection 
@@ -45,7 +45,7 @@ class WOrderedRepeatableComponentCollection
 	 */
 	function _addElement ($removable = true) {
 		if ($this->_max != -1 && $this->_num == $this->_max - 1) return;
-//		printDebugBacktrace();
+
 		// clone our base set (the getChildren() array)
 		$newArray = array();
 		$base =$this->getChildren();

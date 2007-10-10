@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.class.php,v 1.15 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WEventButton.class.php,v 1.16 2007/10/10 22:58:55 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.class.php,v 1.15 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WEventButton.class.php,v 1.16 2007/10/10 22:58:55 adamfranco Exp $
  */
 class WEventButton 
 	extends WizardComponent
@@ -37,7 +37,7 @@ class WEventButton
 	 * @return ref object
 	 * @static
 	 */
-	function withEventAndLabel ($event, $label) {
+	static function withEventAndLabel ($event, $label) {
 		$obj = new WEventButton();
 		$obj->setEventAndLabel($event, $label);
 		
@@ -49,8 +49,9 @@ class WEventButton
 	 * @param string $label
 	 * @access public
 	 * @return ref object
+	 * @static
 	 */
-	function withLabel ($label) {
+	static function withLabel ($label) {
 		$obj = new WEventButton();
 		$obj->_label = $label;
 		return $obj;

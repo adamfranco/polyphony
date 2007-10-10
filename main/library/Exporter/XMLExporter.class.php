@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLExporter.class.php,v 1.13 2007/09/19 14:04:44 adamfranco Exp $
+ * @version $Id: XMLExporter.class.php,v 1.14 2007/10/10 22:58:47 adamfranco Exp $
  */ 
 
 require_once("Archive/Tar.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLRepositoryExporter.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLExporter.class.php,v 1.13 2007/09/19 14:04:44 adamfranco Exp $
+ * @version $Id: XMLExporter.class.php,v 1.14 2007/10/10 22:58:47 adamfranco Exp $
  */
 class XMLExporter {
 		
@@ -162,7 +162,7 @@ class XMLExporter {
 	 * @access public
 	 * @since 12/12/06
 	 */
-	function compressWithStatus () {
+	static function compressWithStatus () {
 		$archiveBaseName = "export_".md5(time()." ".rand());
 		
 		// Get the number of files in the directory and initialize the status stars

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryFileImporter.class.php,v 1.9 2007/09/19 14:04:47 adamfranco Exp $
+ * @version $Id: XMLRepositoryFileImporter.class.php,v 1.10 2007/10/10 22:58:48 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLRepositoryImporte
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryFileImporter.class.php,v 1.9 2007/09/19 14:04:47 adamfranco Exp $
+ * @version $Id: XMLRepositoryFileImporter.class.php,v 1.10 2007/10/10 22:58:48 adamfranco Exp $
  */
 class XMLRepositoryFileImporter extends XMLImporter {
 
@@ -58,7 +58,7 @@ class XMLRepositoryFileImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/5/05
 	 */
-	function isImportable ($element) {
+	static function isImportable ($element) {
 		if($element->nodeName == "repositoryfile")
 			return true;
 		else

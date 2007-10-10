@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleWizard.class.php,v 1.7 2007/09/19 14:04:50 adamfranco Exp $
+ * @version $Id: SimpleWizard.class.php,v 1.8 2007/10/10 22:58:54 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Wizard.abstract.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Wizard/Wizard.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleWizard.class.php,v 1.7 2007/09/19 14:04:50 adamfranco Exp $
+ * @version $Id: SimpleWizard.class.php,v 1.8 2007/10/10 22:58:54 adamfranco Exp $
  */
 class SimpleWizard extends Wizard {
 	var $_text;
@@ -33,7 +33,7 @@ class SimpleWizard extends Wizard {
 	 * @access public
 	 * @return ref object
 	 */
-	function withText ($text, $class = 'SimpleWizard') {
+	static function withText ($text, $class = 'SimpleWizard') {
 		$obj = new $class();
 		$obj->_text = $text;
 		return $obj;

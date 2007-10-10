@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AuthZPrinter.abstract.php,v 1.5 2007/10/05 15:42:26 adamfranco Exp $
+ * @version $Id: AuthZPrinter.abstract.php,v 1.6 2007/10/10 22:58:41 adamfranco Exp $
  */ 
 
 /**
@@ -18,9 +18,9 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AuthZPrinter.abstract.php,v 1.5 2007/10/05 15:42:26 adamfranco Exp $
+ * @version $Id: AuthZPrinter.abstract.php,v 1.6 2007/10/10 22:58:41 adamfranco Exp $
  */
-class AuthZPrinter {
+abstract class AuthZPrinter {
 		
 	/**
 	 * Answer the html string for an icon that displays authorization state
@@ -28,9 +28,10 @@ class AuthZPrinter {
 	 * @param object Id $qualifierId
 	 * @return string
 	 * @access public
+	 * @static
 	 * @since 11/29/06
 	 */
-	function getAZIcon ($qualifierId) {
+	static function getAZIcon ($qualifierId) {
 		ob_start();
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");

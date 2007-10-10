@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.19 2007/10/05 14:04:24 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.20 2007/10/10 22:58:50 adamfranco Exp $
  */
 
 /**
@@ -23,8 +23,8 @@ require_once(HARMONI."/oki2/shared/MultiIteratorIterator.class.php");
  * appropriate RepositoryInputOutputModule based on their Schema Formats.
  * 
  * @package polyphony.repository.inputoutput
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.19 2007/10/05 14:04:24 adamfranco Exp $
- * @since $Date: 2007/10/05 14:04:24 $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.20 2007/10/10 22:58:50 adamfranco Exp $
+ * @since $Date: 2007/10/10 22:58:50 $
  * @copyright 2004 Middlebury College
  */
 
@@ -243,8 +243,9 @@ class RepositoryInputOutputModuleManager {
 	 * @return string The URL of the thumbnail
 	 * @access public
 	 * @since 7/22/05
+	 * @static
 	 */
-	function getThumbnailUrlForAsset ($assetOrId ) {
+	static function getThumbnailUrlForAsset ($assetOrId ) {
 		ArgumentValidator::validate($assetOrId, 
 			OrValidatorRule::getRule(
 				ExtendsValidatorRule::getRule("Id"),
@@ -274,8 +275,9 @@ class RepositoryInputOutputModuleManager {
 	 * @return string The URL of the thumbnail
 	 * @access public
 	 * @since 7/22/05
+	 * @static
 	 */
-	function getThumbnailUrlForRecord ($assetOrId, $fileRecord ) {
+	static function getThumbnailUrlForRecord ($assetOrId, $fileRecord ) {
 		ArgumentValidator::validate($assetOrId, 
 			OrValidatorRule::getRule(
 				ExtendsValidatorRule::getRule("Id"),
@@ -333,8 +335,9 @@ class RepositoryInputOutputModuleManager {
 	 * @return string The URL of the thumbnail
 	 * @access public
 	 * @since 7/22/05
+	 * @static
 	 */
-	function getFileUrlForAsset ($assetOrId ) {
+	static function getFileUrlForAsset ($assetOrId ) {
 		ArgumentValidator::validate($assetOrId, 
 			OrValidatorRule::getRule(
 				ExtendsValidatorRule::getRule("Id"),
@@ -366,8 +369,9 @@ class RepositoryInputOutputModuleManager {
 	 * @return string The URL of the thumbnail
 	 * @access public
 	 * @since 7/22/05
+	 * @static
 	 */
-	function getFileUrlForRecord($assetOrId, $fileRecord ) {
+	static function getFileUrlForRecord($assetOrId, $fileRecord ) {
 		$idManager = Services::getService("IdManager");
 		ArgumentValidator::validate($assetOrId, 
 			OrValidatorRule::getRule(
@@ -426,8 +430,9 @@ class RepositoryInputOutputModuleManager {
 	 * @return mixed
 	 * @access public
 	 * @since 8/19/05
+	 * @static
 	 */
-	function getFirstImageOrFileRecordForAsset ( $assetOrId ) {
+	static function getFirstImageOrFileRecordForAsset ( $assetOrId ) {
 		ArgumentValidator::validate($assetOrId, 
 			OrValidatorRule::getRule(
 				ExtendsValidatorRule::getRule("Id"),
@@ -497,8 +502,9 @@ class RepositoryInputOutputModuleManager {
 	 * @return boolean
 	 * @access public
 	 * @since 12/4/06
+	 * @static
 	 */
-	function hasThumbnailNotIcon ( $assetOrId ) {
+	static function hasThumbnailNotIcon ( $assetOrId ) {
 		$idManager = Services::getService("IdManager");
 		
 		$record = RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset($assetOrId);

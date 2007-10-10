@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFilePartImporter.class.php,v 1.3 2007/09/19 14:04:47 adamfranco Exp $
+ * @version $Id: XMLFilePartImporter.class.php,v 1.4 2007/10/10 22:58:48 adamfranco Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFilePartImporter.class.php,v 1.3 2007/09/19 14:04:47 adamfranco Exp $
+ * @version $Id: XMLFilePartImporter.class.php,v 1.4 2007/10/10 22:58:48 adamfranco Exp $
  */
 class XMLFilePartImporter extends XMLImporter {
 		
@@ -67,7 +67,7 @@ class XMLFilePartImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/10/05
 	 */
-	function isImportable ($element) {
+	static function isImportable ($element) {
 		throwError(new Error(__CLASS__."::".__FUNCTION__."() must be overridded in child classes."));
 	}
 

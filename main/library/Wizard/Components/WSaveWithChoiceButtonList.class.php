@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveWithChoiceButtonList.class.php,v 1.3 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WSaveWithChoiceButtonList.class.php,v 1.4 2007/10/10 22:58:56 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -23,7 +23,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveWithChoiceButtonList.class.php,v 1.3 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WSaveWithChoiceButtonList.class.php,v 1.4 2007/10/10 22:58:56 adamfranco Exp $
  */
 class WSaveWithChoiceButtonList
 	extends WizardComponent
@@ -53,7 +53,7 @@ class WSaveWithChoiceButtonList
 	 * @return ref object
 	 * @static
 	 */
-	function withLayout ($pre, $eachPre, $eachPost, $post, $class='WSaveWithChoiceButtonList') {
+	static function withLayout ($pre, $eachPre, $eachPost, $post, $class='WSaveWithChoiceButtonList') {
 		$obj = new $class();
 		$obj->_pre = $pre;
 		$obj->_post = $post;

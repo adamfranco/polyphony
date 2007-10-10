@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: StartupCheck.class.php,v 1.12 2007/09/19 14:04:49 adamfranco Exp $
+ * @version $Id: StartupCheck.class.php,v 1.13 2007/10/10 22:58:51 adamfranco Exp $
  */
 
 /**
@@ -64,7 +64,7 @@ define("STARTUP_STATUS_NEEDS_INSTALL", 0);
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: StartupCheck.class.php,v 1.12 2007/09/19 14:04:49 adamfranco Exp $
+ * @version $Id: StartupCheck.class.php,v 1.13 2007/10/10 22:58:51 adamfranco Exp $
  */
 class StartupCheck {
 
@@ -347,7 +347,7 @@ class StartupCheck {
 	 * @return void
 	 * @static
 	 */
-	function error($string)
+	static function error($string)
 	{
 		$f = new FieldSet;
 		

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicButton.class.php,v 1.8 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WLogicButton.class.php,v 1.9 2007/10/10 22:58:56 adamfranco Exp $
  */ 
 
  require_once(POLYPHONY."/main/library/Wizard/Components/WLogicRule.class.php");
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicButton.class.php,v 1.8 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WLogicButton.class.php,v 1.9 2007/10/10 22:58:56 adamfranco Exp $
  */
 class WLogicButton extends WEventButton {
 		
@@ -37,9 +37,10 @@ class WLogicButton extends WEventButton {
 	 * @param string $label
 	 * @return ref object
 	 * @access public
+	 * @static
 	 * @since 5/31/06
 	 */
-	function withLogicAndLabel ($controller, $label) {
+	static function withLogicAndLabel ($controller, $label) {
 		$button = new WLogicButton();
 		$button->setLogicAndLabel($controller, $label);
 		
@@ -52,9 +53,10 @@ class WLogicButton extends WEventButton {
 	 * @param string $label
 	 * @return ref object
 	 * @access public
+	 * @static
 	 * @since 5/31/06
 	 */
-	function withLabel ($label) {
+	static function withLabel ($label) {
 		$button = new WLogicButton();
 		
 		$button->setLabel($label);

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: LogicStepWizard.class.php,v 1.8 2007/09/19 14:04:50 adamfranco Exp $
+ * @version $Id: LogicStepWizard.class.php,v 1.9 2007/10/10 22:58:52 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: LogicStepWizard.class.php,v 1.8 2007/09/19 14:04:50 adamfranco Exp $
+ * @version $Id: LogicStepWizard.class.php,v 1.9 2007/10/10 22:58:52 adamfranco Exp $
  */
  
  require_once(POLYPHONY."/main/library/Wizard/StepWizard.abstract.php");
@@ -90,7 +90,7 @@ class LogicStepWizard extends StepWizard {
 	 * @return ref object
 	 * @static
 	 */
-	function withText ($text) {
+	static function withText ($text) {
 		return parent::withText($text, 'LogicStepWizard');
 	}
 	

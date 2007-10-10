@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardAction.class.php,v 1.15 2007/09/19 14:04:41 adamfranco Exp $
+ * @version $Id: WizardAction.class.php,v 1.16 2007/10/10 22:58:43 adamfranco Exp $
  */ 
  
  require_once(dirname(__FILE__)."/Action.class.php");
@@ -50,9 +50,9 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardAction.class.php,v 1.15 2007/09/19 14:04:41 adamfranco Exp $
+ * @version $Id: WizardAction.class.php,v 1.16 2007/10/10 22:58:43 adamfranco Exp $
  */
-class WizardAction 
+abstract class WizardAction 
 	extends Action
 {
 	
@@ -65,7 +65,9 @@ class WizardAction
 	 * @since 4/28/05
 	 */
 	function createWizard () {
-		throwError(new Error(__CLASS__."::".__FUNCTION__."() must be overridded in child classes."));
+		// The implementation of this method is optional.
+		// It is only required if using a wizard.
+		throw new UnimplementedException();
 	}
 	
 	/**
@@ -79,7 +81,9 @@ class WizardAction
 	 * @since 4/28/05
 	 */
 	function saveWizard ( $cacheName ) {
-		throwError(new Error(__CLASS__."::".__FUNCTION__."() must be overridded in child classes."));
+		// The implementation of this method is optional.
+		// It is only required if using a wizard.
+		throw new UnimplementedException();
 	}
 	
 	/**
@@ -90,7 +94,9 @@ class WizardAction
 	 * @since 4/28/05
 	 */
 	function getReturnUrl () {
-		throwError(new Error(__CLASS__."::".__FUNCTION__."() must be overridded in child classes."));
+		// The implementation of this method is optional.
+		// It is only required if using a wizard.
+		throw new UnimplementedException();
 	}
 	
 	/**

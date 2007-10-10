@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLThumbpathPartImporter.class.php,v 1.12 2007/09/19 14:04:47 adamfranco Exp $
+ * @version $Id: XMLThumbpathPartImporter.class.php,v 1.13 2007/10/10 22:58:49 adamfranco Exp $
  */ 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLThumbpathPartImporter.class.php,v 1.12 2007/09/19 14:04:47 adamfranco Exp $
+ * @version $Id: XMLThumbpathPartImporter.class.php,v 1.13 2007/10/10 22:58:49 adamfranco Exp $
  */
 class XMLThumbpathPartImporter extends XMLImporter {
 		
@@ -56,7 +56,7 @@ class XMLThumbpathPartImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function isImportable ($element) {
+	static function isImportable ($element) {
 		if ($element->nodeName == "thumbpathpart")
 			return true;
 		else

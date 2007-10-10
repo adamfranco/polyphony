@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.17 2007/09/19 14:04:43 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.18 2007/10/10 22:58:44 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.17 2007/09/19 14:04:43 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.18 2007/10/10 22:58:44 adamfranco Exp $
  */
 class Basket 
 	extends OrderedSet
@@ -30,22 +30,28 @@ class Basket
  *********************************************************/
 
 	/**
-	 * Get the instance of the Basket.
-	 * The Basket class implements the Singleton pattern. There is only ever
-	 * on instance of the Basket object and it is accessed only via the 
-	 * Basket::instance() method.
+ 	 * @var object  $instance;  
+ 	 * @access private
+ 	 * @since 10/10/07
+ 	 * @static
+ 	 */
+ 	private static $instance;
+
+	/**
+	 * This class implements the Singleton pattern. There is only ever
+	 * one instance of the this class and it is accessed only via the 
+	 * ClassName::instance() method.
 	 * 
-	 * @return object Basket
+	 * @return object 
 	 * @access public
 	 * @since 5/26/05
 	 * @static
 	 */
-	function instance () {
-		if (!isset($_SESSION['__basket'])) {
-			$_SESSION['__basket'] = new Basket();
-		}
+	public static function instance () {
+		if (!isset(self::$instance))
+			self::$instance = new Basket;
 		
-		return $_SESSION['__basket'];
+		return self::$instance;
 	}
 
 /*********************************************************
@@ -57,30 +63,7 @@ class Basket
 	 * @access public
 	 * @return void
 	 **/
-	function Basket() {
-		// Verify that there is only one instance of Harmoni.
-		$backtrace = debug_backtrace();
-		if (false && $GLOBALS['BASKET_INSTANTIATED'] 
-			|| !(
-				strtolower($backtrace[1]['class']) == strtolower('Basket')
-				&& $backtrace[1]['function'] == 'instance'
-// 				&& $backtrace[1]['type'] == '::'	// PHP 5.2.1 seems to get this wrong
-			))
-		{
-			die("\n<dl style='border: 1px solid #F00; padding: 10px;'>"
-			."\n\t<dt><strong>Invalid Basket instantiation at...</strong></dt>"
-			."\n\t<dd> File: ".$backtrace[0]['file']
-			."\n\t\t<br/> Line: ".$backtrace[0]['line']
-			."\n\t</dd>"
-			."\n\t<dt><strong>Access Basket with <em>Basket::instance()</em></strong></dt>"
-			."\n\t<dt><strong>Backtrace:</strong></dt>"
-			."\n\t<dd>".printDebugBacktrace(debug_backtrace(), true)."</dd>"
-			."\n\t<dt><strong>PHP Version:</strong></dt>"
-			."\n\t<dd>".phpversion()."</dd>"
-			."\n</dl>");
-		}
-		
-		
+	private function __construct() {
 		$idManager = Services::getService("Id");
 		$this->OrderedSet($idManager->getId("__basket"));	
 	}

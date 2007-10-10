@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WChooseOptionButton.class.php,v 1.4 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WChooseOptionButton.class.php,v 1.5 2007/10/10 22:58:55 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/WEventButton.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/WEventButton.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WChooseOptionButton.class.php,v 1.4 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WChooseOptionButton.class.php,v 1.5 2007/10/10 22:58:55 adamfranco Exp $
  */
 class WChooseOptionButton 
 	extends WEventButton
@@ -37,7 +37,7 @@ class WChooseOptionButton
 	 * @return ref object
 	 * @static
 	 */
-	function withEventAndLabel ($event, $label) {
+	static function withEventAndLabel ($event, $label) {
 		$obj = new WChooseOptionButton();
 		$obj->setEventAndLabel($event, $label);
 		
@@ -49,8 +49,9 @@ class WChooseOptionButton
 	 * @param string $label
 	 * @access public
 	 * @return ref object
+	 * @static
 	 */
-	function withLabel ($label) {
+	static function withLabel ($label) {
 		$obj = new WChooseOptionButton();
 		$obj->_label = $label;
 		return $obj;

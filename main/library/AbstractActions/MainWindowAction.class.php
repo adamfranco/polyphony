@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MainWindowAction.class.php,v 1.13 2007/09/19 14:04:41 adamfranco Exp $
+ * @version $Id: MainWindowAction.class.php,v 1.14 2007/10/10 22:58:43 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/WizardAction.class.php");
@@ -32,9 +32,9 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MainWindowAction.class.php,v 1.13 2007/09/19 14:04:41 adamfranco Exp $
+ * @version $Id: MainWindowAction.class.php,v 1.14 2007/10/10 22:58:43 adamfranco Exp $
  */
-class MainWindowAction 
+abstract class MainWindowAction 
 	extends WizardAction {
 
 /*********************************************************
@@ -59,9 +59,7 @@ class MainWindowAction
 	 * @access public
 	 * @since 4/26/05
 	 */
-	function buildContent () {
-		throwError(new Error(__CLASS__."::".__FUNCTION__."() must be overridded in child classes."));
-	}
+	abstract function buildContent () ;
 		
 	/**
 	 * Execute this action. This is a template method that handles setting up
@@ -72,7 +70,7 @@ class MainWindowAction
 	 * @access public
 	 * @since 4/25/05
 	 */
-	function execute () {
+	public final function execute () {
 		$harmoni = Harmoni::instance();
 		$pageTitle = $harmoni->config->get('programTitle');
 		

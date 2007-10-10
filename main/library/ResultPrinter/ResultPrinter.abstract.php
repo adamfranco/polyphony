@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ResultPrinter.abstract.php,v 1.7 2007/09/19 14:04:49 adamfranco Exp $
+ * @version $Id: ResultPrinter.abstract.php,v 1.8 2007/10/10 22:58:50 adamfranco Exp $
  */ 
 
 /**
@@ -18,9 +18,9 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ResultPrinter.abstract.php,v 1.7 2007/09/19 14:04:49 adamfranco Exp $
+ * @version $Id: ResultPrinter.abstract.php,v 1.8 2007/10/10 22:58:50 adamfranco Exp $
  */
-class ResultPrinter {
+abstract class ResultPrinter {
 
 	/**
 	 * Answer the number of the first asset on our current page
@@ -67,8 +67,9 @@ class ResultPrinter {
 	 * @return string
 	 * @access public
 	 * @since 5/11/06
+	 * @static
 	 */
-	function startingNumberParam () {
+	static function startingNumberParam () {
 		return RequestContext::name('starting_number');
 	}
 	

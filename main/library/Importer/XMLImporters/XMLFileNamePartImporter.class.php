@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileNamePartImporter.class.php,v 1.6 2007/09/19 14:04:47 adamfranco Exp $
+ * @version $Id: XMLFileNamePartImporter.class.php,v 1.7 2007/10/10 22:58:48 adamfranco Exp $
  */ 
  
 require_once(dirname(__FILE__)."/XMLFilePartImporter.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/XMLFilePartImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLFileNamePartImporter.class.php,v 1.6 2007/09/19 14:04:47 adamfranco Exp $
+ * @version $Id: XMLFileNamePartImporter.class.php,v 1.7 2007/10/10 22:58:48 adamfranco Exp $
  */
 class XMLFileNamePartImporter
 	extends XMLFilePartImporter
@@ -46,7 +46,7 @@ class XMLFileNamePartImporter
 	 * @access public
 	 * @since 10/10/05
 	 */
-	function isImportable ($element) {
+	static function isImportable ($element) {
 		if ($element->nodeName == 'filenamepart')
 			return true;
 		else

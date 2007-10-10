@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextArea.class.php,v 1.12 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WTextArea.class.php,v 1.13 2007/10/10 22:58:56 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__).'/WTextInput.abstract.php');
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__).'/WTextInput.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WTextArea.class.php,v 1.12 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WTextArea.class.php,v 1.13 2007/10/10 22:58:56 adamfranco Exp $
  */
 class WTextArea 
 	extends WTextInput 
@@ -37,7 +37,7 @@ class WTextArea
 	 * @return ref object
 	 * @static
 	 */
-	static function withRowsAndColumns ($rows, $cols, $class = 'WTextArea') {
+	static static function withRowsAndColumns ($rows, $cols, $class = 'WTextArea') {
 		$obj = new $class();
 		$obj->setRows($rows);
 		$obj->setColumns($cols);

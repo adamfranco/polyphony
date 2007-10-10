@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.18 2007/10/01 14:41:28 adamfranco Exp $
+ * @version $Id: create_agent.act.php,v 1.19 2007/10/10 22:58:57 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.18 2007/10/01 14:41:28 adamfranco Exp $
+ * @version $Id: create_agent.act.php,v 1.19 2007/10/10 22:58:57 adamfranco Exp $
  */
 class create_agentAction 
 	extends MainWindowAction
@@ -129,7 +129,7 @@ class create_agentAction
 	 * @return void
 	 * @static
 	 */
-	function createAgentForm(){
+	static function createAgentForm(){
 		$harmoni = Harmoni::instance();
 		
 		print "<center><form action='".$harmoni->request->quickURL()."' method='post'>

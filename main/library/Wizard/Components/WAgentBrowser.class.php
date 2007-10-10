@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WAgentBrowser.class.php,v 1.5 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WAgentBrowser.class.php,v 1.6 2007/10/10 22:58:55 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/ResultPrinter/EmbeddedArrayResultPrinter.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/ResultPrinter/EmbeddedArrayResultPrinter.c
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WAgentBrowser.class.php,v 1.5 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WAgentBrowser.class.php,v 1.6 2007/10/10 22:58:55 adamfranco Exp $
  */
 class WAgentBrowser
 	extends WizardComponent 
@@ -190,7 +190,7 @@ class WAgentBrowser
 	 * @access public
 	 * @static
 	 **/
-	function printAgent($agent)
+	static function printAgent($agent)
 	{
 		$m = '';
 		$m .= $agent->getDisplayName();
@@ -205,7 +205,7 @@ class WAgentBrowser
  * @copyright Copyright &copy; 2005, Middlebury College
  * @author Gabriel Schine
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- * @version $Id: WAgentBrowser.class.php,v 1.5 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WAgentBrowser.class.php,v 1.6 2007/10/10 22:58:55 adamfranco Exp $
  */
 class AgentBrowserResultPrinter
 	extends EmbeddedArrayResultPrinter

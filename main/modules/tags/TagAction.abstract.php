@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.5 2007/09/19 14:04:57 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.6 2007/10/10 22:58:59 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,9 +20,9 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.5 2007/09/19 14:04:57 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.6 2007/10/10 22:58:59 adamfranco Exp $
  */
-class TagAction 
+abstract class TagAction 
 	extends MainWindowAction
 {
 	
@@ -72,9 +72,10 @@ class TagAction
 	 *						levels of of tag occurrances.
 	 * @return string
 	 * @access public
+	 * @static
 	 * @since 11/7/06
 	 */
-	function getTagCloud ($tags, $viewAction = 'view', $styles = null, $additionalParams = null) {		
+	static function getTagCloud ($tags, $viewAction = 'view', $styles = null, $additionalParams = null) {		
 		ob_start();
 		if ($tags->hasNext()) {
 			$harmoni = Harmoni::instance();
@@ -155,7 +156,7 @@ class TagAction
 	 * @since 11/15/06
 	 * @static
 	 */
-	function getDefaultStyles () {
+	static function getDefaultStyles () {
 		return array(
 					"font-size: 75%;",
 					"font-size: 100%;",
@@ -177,7 +178,7 @@ class TagAction
 	 * @since 11/14/06
 	 * @static
 	 */
-	function getTagCloudDiv ($tags, $viewAction = 'view', $styles = null, $additionalParams = null) {
+	static function getTagCloudDiv ($tags, $viewAction = 'view', $styles = null, $additionalParams = null) {
 		ob_start();
 		print "\n<div style='text-align: justify'>";
 		print TagAction::getTagCloud($tags, $viewAction, $styles, $additionalParams);
@@ -207,7 +208,7 @@ class TagAction
 	 * @since 11/14/06
 	 * @static
 	 */
-	function getTagCloudForItem ($item, $viewAction = 'view', $styles = null, $additionalParams = null) {
+	static function getTagCloudForItem ($item, $viewAction = 'view', $styles = null, $additionalParams = null) {
 		ob_start();
 		print "\n<div>";
 		print TagAction::getTagCloud($item->getTags(), $viewAction, $styles, $additionalParams);
@@ -261,7 +262,7 @@ class TagAction
 	 * @since 11/14/06
 	 * @static
 	 */
-	function getTagCloudForRepository ( $repository, $system, $viewAction = 'viewRepository', $styles = null) {
+	static function getTagCloudForRepository ( $repository, $system, $viewAction = 'viewRepository', $styles = null) {
 		if (!is_object($repository))
 			return "";
 		
@@ -287,9 +288,7 @@ class TagAction
 	 * @access public
 	 * @since 11/8/06
 	 */
-	function getTags () {
-		die ("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.");
-	}
+	abstract function getTags () ;
 	
 	/**
 	 * Answer a menu for the tagging system
@@ -389,8 +388,10 @@ class TagAction
 	 * mightymrj at hotmail dot com
 	 * 23-May-2006 12:52
 	 * Here's a couple functions I made that easily calculate the standard deviation. 
+	 * 
+	 * @static
 	 *********************************************************/
-	function average($array){
+	static function average($array){
 		if (!count($array))
 			return 0;
 		
@@ -400,8 +401,13 @@ class TagAction
 		return $sum/$count;
 	}
 	
-	//The average function can be use independantly but the deviation function uses the average function.
-	function deviation ($array) {
+	/**
+	 * The average function can be use independantly but the deviation function uses 
+	 * the average function.
+	 *
+	 * @static
+	 */
+	static function deviation ($array) {
 		if (!count($array))
 			return 0;
 		

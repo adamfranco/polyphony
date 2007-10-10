@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.10 2007/09/19 14:04:56 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.11 2007/10/10 22:58:57 adamfranco Exp $
  */
  
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -34,7 +34,7 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.10 2007/09/19 14:04:56 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.11 2007/10/10 22:58:57 adamfranco Exp $
  */
 class browse_helpAction 
 	extends Action
@@ -71,7 +71,7 @@ class browse_helpAction
 	 * @access public
 	 * @since 4/25/05
 	 */
-	function execute ( $harmoni ) {
+	function execute () {
 		$actionRows = new Container(new YLayout, BLOCK, BACKGROUND_BLOCK);
 		
 		$heading = dgettext("polyphony", 'Help');
@@ -258,7 +258,7 @@ class browse_helpAction
 	 * @static
 	 * @since 12/9/05
 	 */
-	function addHelpDirectory ( $directory, $urlPath ) {
+	static function addHelpDirectory ( $directory, $urlPath ) {
 		$harmoni = Harmoni::instance();
 		if (!isset($_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')]) || !is_array($_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')]))
 			$_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')] = array();
@@ -520,7 +520,7 @@ class browse_helpAction
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.10 2007/09/19 14:04:56 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.11 2007/10/10 22:58:57 adamfranco Exp $
  */
 class TableOfContentsPart {
 		

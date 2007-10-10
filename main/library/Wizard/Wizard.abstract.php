@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.18 2007/09/19 14:04:50 adamfranco Exp $
+ * @version $Id: Wizard.abstract.php,v 1.19 2007/10/10 22:58:55 adamfranco Exp $
  */
 
 /*
@@ -31,7 +31,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WUpdateListener.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.18 2007/09/19 14:04:50 adamfranco Exp $
+ * @version $Id: Wizard.abstract.php,v 1.19 2007/10/10 22:58:55 adamfranco Exp $
  * @author Gabe Schine
  * @abstract
  */
@@ -264,7 +264,7 @@ END;
 	 * @return string
 	 * @static
 	 */
-	 function parseText($text, $components, $prepend = '')
+	 static function parseText($text, $components, $prepend = '')
 	 {
 	 	// first get all of the tags we have to work with
 	 	preg_match_all("/\[{2}[^\[]*\]{2}/", $text, $matches);
@@ -310,7 +310,7 @@ END;
 	 * @return string
 	 * @static
 	 */
-	function getValidationJavascript ($elementID, $rule, $errDivID, $displayError = false) {
+	static function getValidationJavascript ($elementID, $rule, $errDivID, $displayError = false) {
 		$elementID = str_replace("'", "\\'", $elementID);
 		$errDivID = str_replace("'", "\\'", $errDivID);
 		$checkFunc = $rule->generateJavaScript();
