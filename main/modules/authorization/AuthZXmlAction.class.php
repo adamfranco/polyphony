@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AuthZXmlAction.class.php,v 1.4 2007/09/19 14:04:53 adamfranco Exp $
+ * @version $Id: AuthZXmlAction.class.php,v 1.5 2007/10/11 00:32:49 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY_DIR.'/main/library/AbstractActions/XmlAction.class.php');
@@ -20,9 +20,9 @@ require_once(POLYPHONY_DIR.'/main/library/AbstractActions/XmlAction.class.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AuthZXmlAction.class.php,v 1.4 2007/09/19 14:04:53 adamfranco Exp $
+ * @version $Id: AuthZXmlAction.class.php,v 1.5 2007/10/11 00:32:49 adamfranco Exp $
  */
-class AuthZXmlAction
+abstract class AuthZXmlAction
 	extends XmlAction
 {
 
@@ -33,7 +33,7 @@ class AuthZXmlAction
 	 * @access public
 	 * @since 11/29/06
 	 */
-	function execute () {
+	public final function execute () {
 		if (!$this->isAuthorizedToExecute())
 			$this->getUnauthorizedMessage();
 		else
