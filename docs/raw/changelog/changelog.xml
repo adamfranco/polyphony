@@ -4,14 +4,14 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.94 2007/10/10 23:57:00 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.95 2007/10/11 16:28:28 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
 	<version number="0.9.4" date="The Future">
-		<fix author='adam' date='2007-10-01'>
+		<fix author='adam' date='2007-10-01' reporter='chris_newton'>
 			CreateAgent, now doesn't die when encountering the changeuser authentication
 			type.
 		</fix>
@@ -650,6 +650,12 @@
 		<name short="tim">Tim Bahls</name>
 		<name short="john">John Lee</name>
 	</authors>
+	<reporters>
+		<reporter short="chris_newton">
+			<name>Chris Newton</name>
+			<!-- <institution></institution> -->
+		</reporter>
+	</reporters>
 	<groupid>82873</groupid>
 	<reftypes>
 		<reftype name="bug">567473</reftype>
