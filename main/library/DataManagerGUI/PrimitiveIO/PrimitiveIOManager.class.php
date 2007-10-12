@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIOManager.class.php,v 1.14 2007/10/10 22:58:46 adamfranco Exp $
+ * @version $Id: PrimitiveIOManager.class.php,v 1.15 2007/10/12 15:33:45 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PrimitiveIOManager.class.php,v 1.14 2007/10/10 22:58:46 adamfranco Exp $
+ * @version $Id: PrimitiveIOManager.class.php,v 1.15 2007/10/12 15:33:45 adamfranco Exp $
  * @author Gabe Schine
  */
 class PrimitiveIOManager {
@@ -62,7 +62,7 @@ class PrimitiveIOManager {
 	 * @access public
 	 * @since 5/1/06
 	 */
-	function createComponentForPartStructure ($partStruct) {
+	static function createComponentForPartStructure ($partStruct) {
 		ArgumentValidator::validate($partStruct, ExtendsValidatorRule::getRule("PartStructure"));
 		
 		$partStructType =$partStruct->getType();		
