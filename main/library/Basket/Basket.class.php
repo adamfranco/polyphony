@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.18 2007/10/10 22:58:44 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.19 2007/10/12 20:54:57 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Basket.class.php,v 1.18 2007/10/10 22:58:44 adamfranco Exp $
+ * @version $Id: Basket.class.php,v 1.19 2007/10/12 20:54:57 adamfranco Exp $
  */
 class Basket 
 	extends OrderedSet
@@ -28,15 +28,7 @@ class Basket
 /*********************************************************
  * Class Methods - Instance-Creation/Singlton
  *********************************************************/
-
-	/**
- 	 * @var object  $instance;  
- 	 * @access private
- 	 * @since 10/10/07
- 	 * @static
- 	 */
- 	private static $instance;
-
+ 	
 	/**
 	 * This class implements the Singleton pattern. There is only ever
 	 * one instance of the this class and it is accessed only via the 
@@ -48,10 +40,11 @@ class Basket
 	 * @static
 	 */
 	public static function instance () {
-		if (!isset(self::$instance))
-			self::$instance = new Basket;
+		if (!isset($_SESSION['__basket'])) {
+			$_SESSION['__basket'] = new Basket();
+		}
 		
-		return self::$instance;
+		return $_SESSION['__basket'];
 	}
 
 /*********************************************************
@@ -82,11 +75,16 @@ class Basket
 		$this->reset();
 		while ($this->hasNext()) {	
 			$id =$this->next();
-			if (!$authZ->isUserAuthorized(
-				$idManager->getId("edu.middlebury.authorization.view"), $id))
-			{
-				$this->removeItem($id);
-				$this->reset();
+			
+			try {
+				if (!$authZ->isUserAuthorized(
+					$idManager->getId("edu.middlebury.authorization.view"), $id))
+				{
+					$this->removeItem($id);
+					$this->reset();
+				}
+			} catch (UnknownIdException $e) {
+				// Let assets out of the purvue of our authorization manager slide.
 			}
 		}
 		$this->reset();

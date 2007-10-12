@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.15 2007/09/19 14:04:54 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.16 2007/10/12 20:54:58 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.15 2007/09/19 14:04:54 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.16 2007/10/12 20:54:58 adamfranco Exp $
  */
 class viewAction 
 	extends MainWindowAction
@@ -99,17 +99,21 @@ class viewAction
 	}
 	
 	// Callback function for checking authorizations
-	function canView( $assetId ) {
+	public static function canView( $assetId ) {
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
 
-		if ($authZ->isUserAuthorized($idManager->getId("edu.middlebury.authorization.view"), $assetId))
-		{
-			return TRUE;
-		} else {
-			$basket = Basket::instance();
-			$basket->removeItem($assetId);
-			return FALSE;
+		try {
+			if ($authZ->isUserAuthorized($idManager->getId("edu.middlebury.authorization.view"), $assetId))
+			{
+				return TRUE;
+			} else {
+				$basket = Basket::instance();
+				$basket->removeItem($assetId);
+				return FALSE;
+			}
+		} catch (UnknownIdException $e) {
+			return true;
 		}
 	}
 	
@@ -118,7 +122,7 @@ class viewAction
 function printAssetShort($assetId, $num) {
 	$harmoni = Harmoni::instance();
 	$repositoryManager = Services::getService("Repository");
-	$asset =$repositoryManager->getAsset($assetId);
+	$asset = $repositoryManager->getAsset($assetId);
 	
 	$container = new Container(new YLayout, BLOCK, EMPHASIZED_BLOCK);
 	$fillContainerSC = new StyleCollection("*.fillcontainer", "fillcontainer", "Fill Container", "Elements with this style will fill their container.");
@@ -128,7 +132,7 @@ function printAssetShort($assetId, $num) {
 	$centered = new StyleCollection("*.centered", "centered", "Centered", "Centered Text");
 	$centered->addSP(new TextAlignSP("center"));	
 	
-	$assetId =$asset->getId();
+	$assetId = $asset->getId();
 	
 	if ($_SESSION["show_thumbnail"] == 'true') {
 		$thumbnailURL = RepositoryInputOutputModuleManager::getThumbnailUrlForAsset($asset);

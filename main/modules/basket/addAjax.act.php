@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addAjax.act.php,v 1.4 2007/09/19 14:04:54 adamfranco Exp $
+ * @version $Id: addAjax.act.php,v 1.5 2007/10/12 20:54:58 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addAjax.act.php,v 1.4 2007/09/19 14:04:54 adamfranco Exp $
+ * @version $Id: addAjax.act.php,v 1.5 2007/10/12 20:54:58 adamfranco Exp $
  */
 class addAjaxAction 
 	extends Action
@@ -67,10 +67,14 @@ class addAjaxAction
 		$assetIdArray = explode(",", trim($assetIdList));
 		foreach ($assetIdArray as $id) {
 			$assetId =$idManager->getId($id);
-			if ($authZ->isUserAuthorized(
-				$viewAZ, 
-				$assetId)) 
-			{
+			try {
+				if ($authZ->isUserAuthorized(
+					$viewAZ, 
+					$assetId)) 
+				{
+					$basket->addItem($assetId);
+				}
+			} catch (UnknownIdException $e) {
 				$basket->addItem($assetId);
 			}
 		}
