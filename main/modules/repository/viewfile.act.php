@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.14 2007/09/19 14:04:56 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.15 2007/10/12 19:18:55 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php"
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.14 2007/09/19 14:04:56 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.15 2007/10/12 19:18:55 adamfranco Exp $
  */
 class viewfileAction 
 	extends ForceAuthAction
@@ -201,7 +201,7 @@ class viewfileAction
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.14 2007/09/19 14:04:56 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.15 2007/10/12 19:18:55 adamfranco Exp $
  */
 class RepositoryImageCache {
 	
@@ -394,9 +394,7 @@ class RepositoryImageCache {
 	 * @since 2/13/06
 	 */
 	function getDBIndex () {		
-		$repositoryManager = Services::getService('Repository');
-		$configuration =$repositoryManager->_configuration;
-		return $configuration->getProperty('database_index');
+		return IMPORTER_CONNECTION;
 	}
 	
 	/**

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login_type.act.php,v 1.19 2007/09/19 14:04:53 adamfranco Exp $
+ * @version $Id: login_type.act.php,v 1.20 2007/10/12 19:18:50 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login_type.act.php,v 1.19 2007/09/19 14:04:53 adamfranco Exp $
+ * @version $Id: login_type.act.php,v 1.20 2007/10/12 19:18:50 adamfranco Exp $
  */
 class login_typeAction
 	extends Action
@@ -45,7 +45,7 @@ class login_typeAction
 	 * @access public
 	 * @since 4/25/05
 	 */
-	function execute ( $harmoni ) {
+	function execute () {
 		$harmoni = Harmoni::instance();
 		
 		//$isAuthenticated = FALSE;

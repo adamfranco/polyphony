@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login.act.php,v 1.16 2007/09/19 14:04:53 adamfranco Exp $
+ * @version $Id: login.act.php,v 1.17 2007/10/12 19:18:50 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login.act.php,v 1.16 2007/09/19 14:04:53 adamfranco Exp $
+ * @version $Id: login.act.php,v 1.17 2007/10/12 19:18:50 adamfranco Exp $
  */
 class loginAction
 	extends Action
@@ -45,7 +45,7 @@ class loginAction
 	 * @access public
 	 * @since 4/25/05
 	 */
-	function execute ( $harmoni ) {
+	function execute () {
 		$harmoni = Harmoni::instance();
 		
 		// If we are using only cookies, but cookies aren't enabled
