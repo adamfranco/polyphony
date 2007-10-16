@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: GroupPrinter.class.php,v 1.15 2007/09/19 14:04:46 adamfranco Exp $
+ * @version $Id: GroupPrinter.class.php,v 1.16 2007/10/16 20:10:18 adamfranco Exp $
  */
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: GroupPrinter.class.php,v 1.15 2007/09/19 14:04:46 adamfranco Exp $
+ * @version $Id: GroupPrinter.class.php,v 1.16 2007/10/16 20:10:18 adamfranco Exp $
  * @since 11/11/04
  */
 
@@ -33,7 +33,7 @@ class GroupPrinter {
 	 * @access public
 	 * @since 11/8/04
 	 */
-	function printGroup ($group, $harmoni,
+	public static function printGroup ($group, $harmoni,
 								$startingPathInfoKey,
 								$printGroupFunction,
 								$printMemberFunction ) 
@@ -92,7 +92,7 @@ END;
 		
 		
 		print "\n\t</td><td valign='top'>\n\t\t";
-		eval($printGroupFunction.'($group);');
+		call_user_func_array($printGroupFunction, array($group)); 
 		print "\n\t</td></tr>\n</table>";
 		
 		

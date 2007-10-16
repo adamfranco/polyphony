@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HierarchyPrinter.class.php,v 1.14 2007/09/19 14:04:46 adamfranco Exp $
+ * @version $Id: HierarchyPrinter.class.php,v 1.15 2007/10/16 20:10:18 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HierarchyPrinter.class.php,v 1.14 2007/09/19 14:04:46 adamfranco Exp $
+ * @version $Id: HierarchyPrinter.class.php,v 1.15 2007/10/16 20:10:18 adamfranco Exp $
  */
 
 class HierarchyPrinter {
@@ -34,7 +34,7 @@ class HierarchyPrinter {
 	 * @access public
 	 * @since 11/8/04
 	 */
-	function printNode ($node, $harmoni,
+	public static function printNode ($node, $harmoni,
 								$startingPathInfoKey,
 								$printFunction, 
 								$hasChildrenFunction, 
@@ -118,7 +118,7 @@ END;
 		}
 		
 		print "\n\t</td><td valign='top'>\n\t\t";
-		eval($printFunction.'( $node );');
+		call_user_func_array($printFunction, array($node)); 
 		print "\n\t</td></tr>\n</table>";
 		
 		

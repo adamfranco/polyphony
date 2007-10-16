@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.98 2007/10/16 19:51:38 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.99 2007/10/16 20:10:17 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -52,6 +52,10 @@
 		<change author='adam' date='2007-10-16' ref='1812418' reftype='concerto_bug'>
 			Printers can now accept instance-method callbacks of the form array($obj, 'methodname').
 		</change>
+		<fix author='adam' date='2007-10-16'>
+			GroupPrinter and HierarchyPrinter now use call_user_func_array() for 
+			executing callback methods instead of eval().
+		</fix>
 	</version>
 	<version number="0.9.3" date="2007-09-25">
 		<change author='adam' date='2007-09-25'>

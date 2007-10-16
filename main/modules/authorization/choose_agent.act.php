@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.43 2007/09/19 14:04:53 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.44 2007/10/16 20:10:19 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.43 2007/09/19 14:04:53 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.44 2007/10/16 20:10:19 adamfranco Exp $
  */
 class choose_agentAction 
 	extends MainWindowAction
@@ -265,7 +265,7 @@ END;
 		
 		// Loop through all of the Groups
 		$childGroupIds = array();
-		$groups =$agentManager->getGroupsBySearch($null = null, new Type("Agent & Group Search", "edu.middlebury.harmoni", "RootGroups"));
+		$groups = $agentManager->getGroupsBySearch($null = null, new Type("Agent & Group Search", "edu.middlebury.harmoni", "RootGroups"));
 
 		while ($groups->hasNext()) {
 			$group =$groups->next();
@@ -276,8 +276,8 @@ END;
 			ob_start();
 			GroupPrinter::printGroup($group, $harmoni,
 											2,
-											"choose_agentAction::printGroup", 
-											"choose_agentAction::printMember");
+											array($this, "printGroup"), 
+											array($this, "printMember"));
 			$groupLayout = new Block(ob_get_contents(), STANDARD_BLOCK);
 			ob_end_clean();
 			$pageRows->add($groupLayout, "100%", null, LEFT, CENTER);	

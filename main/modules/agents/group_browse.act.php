@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_browse.act.php,v 1.10 2007/09/19 14:04:52 adamfranco Exp $
+ * @version $Id: group_browse.act.php,v 1.11 2007/10/16 20:10:18 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_browse.act.php,v 1.10 2007/09/19 14:04:52 adamfranco Exp $
+ * @version $Id: group_browse.act.php,v 1.11 2007/10/16 20:10:18 adamfranco Exp $
  */
 class group_browseAction 
 	extends MainWindowAction
@@ -197,8 +197,8 @@ END;
 			
 			GroupPrinter::printGroup($group, $harmoni,
 											2,
-											"group_browseAction::printGroup", 
-											"group_browseAction::printMember");
+											array($this, "printGroup"), 
+											array($this, "printMember"));
 			$groupLayout = new Block(ob_get_contents(), STANDARD_BLOCK);
 			ob_end_clean();
 			$pageRows->add($groupLayout, "100%", null, LEFT, CENTER);	
@@ -224,18 +224,23 @@ END;
 	 * @access public
 	 * @ignore
 	 */
-	function printGroup($group) {
+	function printGroup(Group $group) {
 		$idManager = Services::getService("Id");
 		$everyoneId =$idManager->getId("edu.middlebury.agents.everyone");
 		$usersId =$idManager->getId("edu.middlebury.agents.users");
 		
-		$id =$group->getId();
+		$id = $group->getId();
 		$groupType =$group->getType();
+		
+		if ($group->getDisplayName())
+			$displayName = $group->getDisplayName();
+		else
+			$displayName = $id->getIdString();
 		
 		print "\n&nbsp; &nbsp; &nbsp;";
 		
 		print "\n<a title='".htmlspecialchars($groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()." - ".$groupType->getDescription())."'>";
-		print "\n<span style='text-decoration: underline; font-weight: bold;'>".htmlspecialchars($group->getDisplayName())."</span></a>";
+		print "\n<span style='text-decoration: underline; font-weight: bold;'>".htmlspecialchars($displayName)."</span></a>";
 		
 		print "\n - <a href=\"Javascript:alert('"._("Id:").'\n\t'.addslashes($id->getIdString())."')\">"._("Show Id")."</a>";
 		print "\n - <em>".htmlspecialchars($group->getDescription())."</em>";
