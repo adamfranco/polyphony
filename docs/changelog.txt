@@ -12,6 +12,7 @@ v. 0.9.4 (The Future)
 		CreateAgent, now doesn't die when encountering the changeuser authentication
 		type. 
 		(2007-10-01 - Adam Franco)
+		(reported by Chris Newton)
 		
 	* New feature: 
 		RepositoryIO: Now supports records types with only string values.
@@ -20,6 +21,20 @@ v. 0.9.4 (The Future)
 	* Change: 
 		RepositoryIO: updating to PHP 5 interfaces.
 		(2007-10-05 - Adam Franco)
+		
+	* Bug Fix: 
+		Fixing a number of E_STRICT notices and improving the class and interface
+		hierarchies. 
+		(2007-10-10 - Adam Franco)
+		
+	* Change: 
+		Wizard: Asset component now expects UnknownIdExceptions rather than FALSE
+		when an asset does not exist.
+		(2007-10-12 - Adam Franco)
+		
+	* Bug Fix: #1811204 
+		Wizard step links are now working in namespaced wizards.
+		(2007-10-16 - Adam Franco)
 	
 v. 0.9.3 (2007-09-25)
 ----------------------------------------------------

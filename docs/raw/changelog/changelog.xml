@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.95 2007/10/11 16:28:28 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.96 2007/10/16 13:44:31 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -24,6 +24,13 @@
 		<fix author='adam' date='2007-10-10'>
 			Fixing a number of E_STRICT notices and improving the class and interface
 			hierarchies.
+		</fix>
+		<change author='adam' date='2007-10-12'>
+			Wizard: Asset component now expects UnknownIdExceptions rather than
+			FALSE when an asset does not exist.
+		</change>
+		<fix author='adam' date='2007-10-16' ref='1811204' reftype='concerto_bug'>
+			Wizard step links are now working in namespaced wizards.
 		</fix>
 	</version>
 	<version number="0.9.3" date="2007-09-25">
@@ -656,10 +663,17 @@
 			<!-- <institution></institution> -->
 		</reporter>
 	</reporters>
-	<groupid>82873</groupid>
 	<reftypes>
-		<reftype name="bug">567473</reftype>
-		<reftype name="fr">567476</reftype>
-		<reftype name="task"></reftype>
+		<reftype name="bug" group="82873" tracker='567473'/>
+		<reftype name="fr" group="82873" tracker='567476'/>
+		<reftype name="patch" group="82873" tracker='567475'/>
+		
+		<reftype name="concerto_bug" group="88266" tracker='586054'/>
+		<reftype name="concerto_fr" group="88266" tracker='586057'/>
+		<reftype name="concerto_patch" group="88266" tracker='586056'/>
+		
+		<reftype name="segue_bug" group="82171" tracker='565234'/>
+		<reftype name="segue_fr" group="82171" tracker='565237'/>
+		<reftype name="segue_patch" group="82171" tracker='565236'/>
 	</reftypes>
 </changelog>
