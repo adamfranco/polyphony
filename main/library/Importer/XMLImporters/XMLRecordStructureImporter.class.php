@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.23 2007/10/10 22:58:48 adamfranco Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.24 2007/10/16 21:13:12 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLPartStructureImpo
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRecordStructureImporter.class.php,v 1.23 2007/10/10 22:58:48 adamfranco Exp $
+ * @version $Id: XMLRecordStructureImporter.class.php,v 1.24 2007/10/16 21:13:12 adamfranco Exp $
  */
 class XMLRecordStructureImporter extends XMLImporter {
 		
@@ -47,8 +47,9 @@ class XMLRecordStructureImporter extends XMLImporter {
 	 * @return object mixed
 	 * @access public
 	 * @since 10/11/05
+	 * @static
 	 */
-	function withFile ($existingArray, $filepath, $type, $class = 'XMLRecordStructureImporter') {
+	public static function withFile ($existingArray, $filepath, $type, $class = 'XMLRecordStructureImporter') {
 		return parent::withFile($existingArray, $filepath, $type, $class);
 	}
 
@@ -62,8 +63,9 @@ class XMLRecordStructureImporter extends XMLImporter {
 	 * @return object mixed
 	 * @access public
 	 * @since 10/11/05
+	 * @static
 	 */
-	function withObject ($existingArray, $object, $filepath, $type, $class = 'XMLRecordStructureImporter') {
+	public static function withObject ($existingArray, $object, $filepath, $type, $class = 'XMLRecordStructureImporter') {
 		return parent::withObject($existingArray, $object, $filepath, $type, $class);
 	}
 

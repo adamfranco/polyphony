@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.31 2007/09/19 14:04:47 adamfranco Exp $
+ * @version $Id: XMLImporter.class.php,v 1.32 2007/10/16 21:13:12 adamfranco Exp $
  *
  * @author Christopher W. Shubert
  */ 
@@ -27,7 +27,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLImporter.class.php,v 1.31 2007/09/19 14:04:47 adamfranco Exp $
+ * @version $Id: XMLImporter.class.php,v 1.32 2007/10/16 21:13:12 adamfranco Exp $
  */
 class XMLImporter {
 
@@ -64,8 +64,9 @@ class XMLImporter {
 	 * @return object mixed 
 	 * @access public
 	 * @since 10/11/05
+	 * @static
 	 */
-	function withFile ($existingArray, $filepath, $type, $class = 'XMLImporter') {
+	static function withFile ($existingArray, $filepath, $type, $class = 'XMLImporter') {
 		if (!(strtolower($class) == strtolower('XMLImporter')
 			|| is_subclass_of(new $class($existingArray), 'XMLImporter')))
 		{
@@ -89,9 +90,10 @@ class XMLImporter {
 	 * @param string $class class of the import to instantiate
 	 * @return object mixed
 	 * @access public
+	 * @static
 	 * @since 10/11/05
 	 */
-	function withObject ($existingArray, $object, $filepath, $type, $class = 'XMLImporter') {
+	static function withObject ($existingArray, $object, $filepath, $type, $class = 'XMLImporter') {
 		if (!(strtolower($class) == strtolower('XMLImporter')
 			|| is_subclass_of(new $class($existingArray), 'XMLImporter')))
 		{

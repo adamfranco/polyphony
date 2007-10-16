@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.21 2007/10/10 22:58:48 adamfranco Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.22 2007/10/16 21:13:12 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -25,7 +25,7 @@ require_once(HARMONI."/utilities/StatusStars.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetImporter.class.php,v 1.21 2007/10/10 22:58:48 adamfranco Exp $
+ * @version $Id: XMLAssetImporter.class.php,v 1.22 2007/10/16 21:13:12 adamfranco Exp $
  */
 class XMLAssetImporter extends XMLImporter {
 		
@@ -50,8 +50,9 @@ class XMLAssetImporter extends XMLImporter {
 	 * @return object mixed
 	 * @access public
 	 * @since 10/11/05
+	 * @static
 	 */
-	function withFile ($existingArray, $filepath, $type, $class = 'XMLAssetImporter') {
+	public static function withFile ($existingArray, $filepath, $type, $class = 'XMLAssetImporter') {
 		return parent::withFile($existingArray, $filepath, $type, $class);
 	}
 
@@ -65,8 +66,9 @@ class XMLAssetImporter extends XMLImporter {
 	 * @return object mixed
 	 * @access public
 	 * @since 10/11/05
+	 * @static
 	 */
-	function withObject ($existingArray, $object, $filepath, $type, $class = 'XMLAssetImporter') {
+	public static function withObject ($existingArray, $object, $filepath, $type, $class = 'XMLAssetImporter') {
 		return parent::withObject($existingArray, $object, $filepath, $type, $class);
 	}
 
