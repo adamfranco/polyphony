@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.96 2007/10/16 13:44:31 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.97 2007/10/16 15:13:47 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -31,6 +31,9 @@
 		</change>
 		<fix author='adam' date='2007-10-16' ref='1811204' reftype='concerto_bug'>
 			Wizard step links are now working in namespaced wizards.
+		</fix>
+		<fix author='adam' date='2007-10-16' ref='1811216' reftype='concerto_bug'>
+			Wizard links now do not bypass PHP field validation.
 		</fix>
 	</version>
 	<version number="0.9.3" date="2007-09-25">

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.19 2007/10/10 22:58:55 adamfranco Exp $
+ * @version $Id: Wizard.abstract.php,v 1.20 2007/10/16 15:13:49 adamfranco Exp $
  */
 
 /*
@@ -31,7 +31,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WUpdateListener.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.19 2007/10/10 22:58:55 adamfranco Exp $
+ * @version $Id: Wizard.abstract.php,v 1.20 2007/10/16 15:13:49 adamfranco Exp $
  * @author Gabe Schine
  * @abstract
  */
@@ -353,7 +353,7 @@ END;
 	 * @return void
 	 */
 	function triggerEvent ($eventType, $source, $context = null) {
-		$list =$this->_eventListeners;
+		$list = $this->_eventListeners;
 		foreach (array_keys($list) as $key) {
 			$list[$key]->handleEvent($eventType, $source, $context);
 		}

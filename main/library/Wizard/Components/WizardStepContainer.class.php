@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.12 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.13 2007/10/16 15:13:50 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardStepContainer.class.php,v 1.12 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WizardStepContainer.class.php,v 1.13 2007/10/16 15:13:50 adamfranco Exp $
  */
 class WizardStepContainer extends WizardComponent {
 	var $_currStep;
@@ -84,6 +84,11 @@ class WizardStepContainer extends WizardComponent {
 	function setStep ($name, $context=array()) {
 		$name = preg_replace("/[^a-zA-Z0-9:_-]/", "_", $name);
 		$ind = array_search($name, $this->_stepNames);
+		
+		// Validate the current step:
+		if (!$this->_steps[$this->_currStep]->validate())
+			return;
+		
 		if ($ind !== false) {
 			$oldStep = $this->_currStep;
 			$this->_currStep = $ind;
