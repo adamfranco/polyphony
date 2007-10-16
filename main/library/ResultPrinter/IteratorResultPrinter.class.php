@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.30 2007/09/19 14:04:49 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.31 2007/10/16 19:51:39 adamfranco Exp $
  */
  
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."GUIManager/StyleProperties/MarginTopSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.30 2007/09/19 14:04:49 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.31 2007/10/16 19:51:39 adamfranco Exp $
  */
 
 class IteratorResultPrinter 
@@ -46,7 +46,10 @@ class IteratorResultPrinter
 		ArgumentValidator::validate($iterator, new HasMethodsValidatorRule("hasNext", "next"));
 		ArgumentValidator::validate($numColumns, new IntegerValidatorRule);
 		ArgumentValidator::validate($numResultsPerPage, new IntegerValidatorRule);
-		ArgumentValidator::validate($callbackFunction, new StringValidatorRule);
+		if (is_array($callbackFunction)) {
+			ArgumentValidator::validate($callbackFunction[1], new StringValidatorRule);
+		} else
+			ArgumentValidator::validate($callbackFunction, new StringValidatorRule);
 		
 		$this->_iterator =$iterator;
 		$this->_numColumns = $numColumns;

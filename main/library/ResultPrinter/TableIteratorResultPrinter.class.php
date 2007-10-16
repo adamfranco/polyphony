@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TableIteratorResultPrinter.class.php,v 1.17 2007/09/19 14:04:49 adamfranco Exp $
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.18 2007/10/16 19:51:39 adamfranco Exp $
  */
  
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TableIteratorResultPrinter.class.php,v 1.17 2007/09/19 14:04:49 adamfranco Exp $
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.18 2007/10/16 19:51:39 adamfranco Exp $
  */
 
 class TableIteratorResultPrinter 
@@ -45,7 +45,10 @@ class TableIteratorResultPrinter
 		ArgumentValidator::validate($iterator, new HasMethodsValidatorRule("hasNext", "next"));
 		ArgumentValidator::validate($headRow, new StringValidatorRule);
 		ArgumentValidator::validate($numResultsPerPage, new IntegerValidatorRule);
-		ArgumentValidator::validate($callbackFunction, new StringValidatorRule);
+		if (is_array($callbackFunction))
+			ArgumentValidator::validate($callbackFunction[1], new StringValidatorRule);
+		else
+			ArgumentValidator::validate($callbackFunction, new StringValidatorRule);
 		ArgumentValidator::validate($tableBorder, new IntegerValidatorRule);
 		
 		$this->_iterator =$iterator;

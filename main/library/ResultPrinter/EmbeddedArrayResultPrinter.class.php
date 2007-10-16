@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.12 2007/09/19 14:04:49 adamfranco Exp $
+ * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.13 2007/10/16 19:51:39 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -18,7 +18,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.12 2007/09/19 14:04:49 adamfranco Exp $
+ * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.13 2007/10/16 19:51:39 adamfranco Exp $
  */
 
 class EmbeddedArrayResultPrinter 
@@ -55,7 +55,10 @@ class EmbeddedArrayResultPrinter
 		ArgumentValidator::validate($array, ArrayValidatorRule::getRule());
 		ArgumentValidator::validate($numColumns, IntegerValidatorRule::getRule());
 		ArgumentValidator::validate($numResultsPerPage, IntegerValidatorRule::getRule());
-//		ArgumentValidator::validate($callbackFunction, StringValidatorRule::getRule());
+// 		if (is_array($callbackFunction))
+// 			ArgumentValidator::validate($callbackFunction[1], new StringValidatorRule);
+// 		else
+// 			ArgumentValidator::validate($callbackFunction, new StringValidatorRule);
 
 		$this->_array =$array;
 		$this->_numColumns =$numColumns;

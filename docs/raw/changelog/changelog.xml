@@ -4,13 +4,27 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.97 2007/10/16 15:13:47 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.98 2007/10/16 19:51:38 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="0.9.4" date="The Future">
+	<version number="0.10.0" date="The Future">
+		<releaseNotes>
+			This release fixes a number of bugs and reworks many of the class
+			hierarchies to use PHP 5 interfaces and abstract classes for better
+			enforcement of class responsibilities.
+			
+			The Action class hierarchy has changed to use abstract classes
+			and interfaces. Any applications that extend the Action class will need
+			to be checked to ensure that they implement all abstract methods.
+		</releaseNotes>
+		<important author='adam' date='2007-10-16'>
+			Actions: The Action class hierarchy has changed to use abstract classes
+			and interfaces. Any applications that extend the Action class will need
+			to be checked to ensure that they implement all abstract methods.
+		</important>
 		<fix author='adam' date='2007-10-01' reporter='chris_newton'>
 			CreateAgent, now doesn't die when encountering the changeuser authentication
 			type.
@@ -35,6 +49,9 @@
 		<fix author='adam' date='2007-10-16' ref='1811216' reftype='concerto_bug'>
 			Wizard links now do not bypass PHP field validation.
 		</fix>
+		<change author='adam' date='2007-10-16' ref='1812418' reftype='concerto_bug'>
+			Printers can now accept instance-method callbacks of the form array($obj, 'methodname').
+		</change>
 	</version>
 	<version number="0.9.3" date="2007-09-25">
 		<change author='adam' date='2007-09-25'>
