@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.99 2007/10/16 20:10:17 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.100 2007/10/16 20:24:20 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -56,6 +56,9 @@
 			GroupPrinter and HierarchyPrinter now use call_user_func_array() for 
 			executing callback methods instead of eval().
 		</fix>
+		<change author='adam' date='2007-10-16'>
+			CreateUser action now forwards to the agent details screen.
+		</change>
 	</version>
 	<version number="0.9.3" date="2007-09-25">
 		<change author='adam' date='2007-09-25'>

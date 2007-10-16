@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.19 2007/10/10 22:58:57 adamfranco Exp $
+ * @version $Id: create_agent.act.php,v 1.20 2007/10/16 20:24:21 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: create_agent.act.php,v 1.19 2007/10/10 22:58:57 adamfranco Exp $
+ * @version $Id: create_agent.act.php,v 1.20 2007/10/16 20:24:21 adamfranco Exp $
  */
 class create_agentAction 
 	extends MainWindowAction
@@ -102,7 +102,9 @@ class create_agentAction
 		
 				if($agent){
 					print "User ".$agent->getDisplayName()." succesfully created.";
-					$harmoni->history->goBack("polyphony/agents/create_agent");
+					$harmoni->request->sendTo(
+						$harmoni->request->quickURL('agents', 'edit_agent_details',
+							array('agentId' => $agent->getId()->getIdString())));
 				}else{
 					print "Create agent failed.";
 					create_agentAction::createAgentForm();
