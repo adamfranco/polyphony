@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TableIteratorResultPrinter.class.php,v 1.18 2007/10/16 19:51:39 adamfranco Exp $
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.19 2007/10/18 14:24:24 adamfranco Exp $
  */
  
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TableIteratorResultPrinter.class.php,v 1.18 2007/10/16 19:51:39 adamfranco Exp $
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.19 2007/10/18 14:24:24 adamfranco Exp $
  */
 
 class TableIteratorResultPrinter 
@@ -97,13 +97,17 @@ class TableIteratorResultPrinter
 			
 			// trash the items before our starting number
 			while ($this->_iterator->hasNext() && $numItems+1 < $startingNumber) {
-				if (!$shouldPrintFunction) {
+				if (!is_null($shouldPrintFunction)) {
 					$this->_iterator->skipNext();
 					$numItems++;
 				} else {
 					$item =$this->_iterator->next();
 					// Ignore this if it should be filtered.
-					eval('$shouldPrint = ('.$shouldPrintFunction.'($item));');
+					if (is_null($shouldPrintFunction))
+						$shouldPrint = true;
+					else
+						$shouldPrint = call_user_func_array($shouldPrintFunction, array($item));
+						
 					if ($shouldPrint)
 						$numItems++;
 				}
@@ -116,7 +120,11 @@ class TableIteratorResultPrinter
 				$item =$this->_iterator->next();
 				
 				// Only Act if this item isn't to be filtered.
-				eval('$shouldPrint = (!$shouldPrintFunction || '.$shouldPrintFunction.'($item));');
+				if (is_null($shouldPrintFunction))
+					$shouldPrint = true;
+				else
+					$shouldPrint = call_user_func_array($shouldPrintFunction, array($item));
+					
 				if ($shouldPrint) {
 					$numItems++;
 					$pageItems++;
@@ -132,14 +140,18 @@ class TableIteratorResultPrinter
 			}
 			
 			// find the count of items 
-			if (!$shouldPrintFunction) {
+			if (!is_null($shouldPrintFunction)) {
 				$numItems = $this->_iterator->count();
 			} else {
 				while ($this->_iterator->hasNext()) {
 					$item =$this->_iterator->next();
 					
 					// Ignore this if it should be filtered.
-					eval('$shouldPrint = ('.$shouldPrintFunction.'($item));');
+					if (is_null($shouldPrintFunction))
+						$shouldPrint = true;
+					else
+						$shouldPrint = call_user_func_array($shouldPrintFunction, array($item));
+						
 					if ($shouldPrint)
 						$numItems++;
 				}

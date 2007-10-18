@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.13 2007/10/16 19:51:39 adamfranco Exp $
+ * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.14 2007/10/18 14:24:24 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -18,7 +18,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.13 2007/10/16 19:51:39 adamfranco Exp $
+ * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.14 2007/10/18 14:24:24 adamfranco Exp $
  */
 
 class EmbeddedArrayResultPrinter 
@@ -201,7 +201,6 @@ class EmbeddedArrayResultPrinter
 
 		$endingNumber = $startingNumber+$this->_pageSize-1;
 		$numItems = 0;	
-		$shouldPrintEval = $shouldPrintFunction?"\$shouldPrint = ".$shouldPrintFunction."(\$item);":"\$shouldPrint = true;";
 		if (count($this->_array)) {
 
 			reset($this->_array);
@@ -212,7 +211,11 @@ class EmbeddedArrayResultPrinter
 				next($this->_array);
 
 				// Ignore this if it should be filtered.
-				eval($shouldPrintEval);
+				if (is_null($shouldPrintFunction))
+					$shouldPrint = true;
+				else
+					$shouldPrint = call_user_func_array($shouldPrintFunction, array($item));
+					
 				if ($shouldPrint)
 					$numItems++;
 			}
@@ -224,8 +227,11 @@ class EmbeddedArrayResultPrinter
 				next($this->_array);
 
 				// Only Act if this item isn't to be filtered.
-
-				eval($shouldPrintEval);
+				if (is_null($shouldPrintFunction))
+					$shouldPrint = true;
+				else
+					$shouldPrint = call_user_func_array($shouldPrintFunction, array($item));
+					
 				if ($shouldPrint) {
 					$this->_currentItem =$item;
 					$numItems++;
@@ -264,7 +270,11 @@ class EmbeddedArrayResultPrinter
 				if (!$item) break;
 				next($this->_array);
 				// Ignore this if it should be filtered.
-				eval($shouldPrintEval);
+				if (is_null($shouldPrintFunction))
+					$shouldPrint = true;
+				else
+					$shouldPrint = call_user_func_array($shouldPrintFunction, array($item));
+					
 				if ($shouldPrint)
 					$numItems++;
 			}	

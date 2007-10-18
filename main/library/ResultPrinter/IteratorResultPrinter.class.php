@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.31 2007/10/16 19:51:39 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.32 2007/10/18 14:24:24 adamfranco Exp $
  */
  
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."GUIManager/StyleProperties/MarginTopSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IteratorResultPrinter.class.php,v 1.31 2007/10/16 19:51:39 adamfranco Exp $
+ * @version $Id: IteratorResultPrinter.class.php,v 1.32 2007/10/18 14:24:24 adamfranco Exp $
  */
 
 class IteratorResultPrinter 
@@ -119,7 +119,12 @@ class IteratorResultPrinter
 				$item =$this->_iterator->next();
 				
 				// Ignore this if it should be filtered.
-				if (!$shouldPrintFunction || $shouldPrintFunction($item))
+				if (is_null($shouldPrintFunction))
+					$shouldPrint = true;
+				else
+					$shouldPrint = call_user_func_array($shouldPrintFunction, array($item));
+					
+				if ($shouldPrint)
 					$numItems++;
 			}
 			
@@ -130,7 +135,11 @@ class IteratorResultPrinter
 				$item =$this->_iterator->next();
 				
 				// Only Act if this item isn't to be filtered.
-				eval('$shouldPrint = (!$shouldPrintFunction || '.$shouldPrintFunction.'($item));');
+				if (is_null($shouldPrintFunction))
+					$shouldPrint = true;
+				else
+					$shouldPrint = call_user_func_array($shouldPrintFunction, array($item));
+					
 				if ($shouldPrint) {
 					$numItems++;
 					$pageItems++;
@@ -166,7 +175,11 @@ class IteratorResultPrinter
 				$item =$this->_iterator->next();
 				
 				// Ignore this if it should be filtered.
-				eval('$shouldPrint = (!$shouldPrintFunction || '.$shouldPrintFunction.'($item));');
+				if (is_null($shouldPrintFunction))
+					$shouldPrint = true;
+				else
+					$shouldPrint = call_user_func_array($shouldPrintFunction, array($item));
+					
 				if ($shouldPrint)
 					$numItems++;
 			}	

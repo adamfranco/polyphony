@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.27 2007/09/19 14:04:49 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.28 2007/10/18 14:24:24 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.27 2007/09/19 14:04:49 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.28 2007/10/18 14:24:24 adamfranco Exp $
  */
 
 class ArrayResultPrinter 
@@ -126,7 +126,7 @@ class ArrayResultPrinter
 	/**
 	 * Returns a layout of the Results
 	 * 
-	 * @param optional string $shouldPrintFunction The name of a function that will
+	 * @param optional mixed $shouldPrintFunction A callback function that will
 	 *		return a boolean specifying whether or not to filter a given result.
 	 *		If null, all results are printed.
 	 * @return object Layout A layout containing the results/page links
@@ -144,31 +144,39 @@ class ArrayResultPrinter
 		
 		$endingNumber = $startingNumber+$this->_pageSize-1;
 		$numItems = 0;
-		$resultContainer = new Container($this->_resultLayout, OTHER, 1);		
-		$shouldPrintEval = $shouldPrintFunction?"\$shouldPrint = ".$shouldPrintFunction."(\$item);":"\$shouldPrint = true;";
+		$resultContainer = new Container($this->_resultLayout, OTHER, 1);
+		
 		if (count($this->_array)) {
 		
 			reset($this->_array);
 			
 			// trash the items before our starting number
-			while ($numItems+1 < $startingNumber && $numItems < count($this->_array)) {
+			while ($numItems+1 < $startingNumber && $numItems < count($this->_array) && current($this->_array) !== false) {
 				$item = current($this->_array);
 				next($this->_array);
 				
 				// Ignore this if it should be filtered.
-				eval($shouldPrintEval);
+				if (is_null($shouldPrintFunction))
+					$shouldPrint = true;
+				else
+					$shouldPrint = call_user_func_array($shouldPrintFunction, array($item));
+					
 				if ($shouldPrint)
 					$numItems++;
 			}
 			
 			// print up to $this->_pageSize items
 			$pageItems = 0;
-			while ($numItems < $endingNumber && $numItems < count($this->_array) && current($this->_array)) {
+			while ($numItems < $endingNumber && $numItems < count($this->_array) && current($this->_array) !== false) {
 				$item = current($this->_array);
 				next($this->_array);
 				
 				// Only Act if this item isn't to be filtered.
-				eval($shouldPrintEval);
+				if (is_null($shouldPrintFunction))
+					$shouldPrint = true;
+				else
+					$shouldPrint = call_user_func_array($shouldPrintFunction, array($item));
+				
 				if ($shouldPrint) {
 					$numItems++;
 					$pageItems++;
@@ -212,7 +220,12 @@ class ArrayResultPrinter
 				// Ignore this if it should be filtered.
 				if (!is_object($item))
 					var_dump($item);
-				eval($shouldPrintEval);
+				
+				if (is_null($shouldPrintFunction))
+					$shouldPrint = true;
+				else
+					$shouldPrint = call_user_func_array($shouldPrintFunction, array($item));
+				
 				if ($shouldPrint)
 					$numItems++;
 			}	
