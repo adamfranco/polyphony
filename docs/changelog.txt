@@ -4,9 +4,21 @@ Name: Polyphony Change Log
 
 
 
-v. 0.9.4 (The Future)
+v. 0.10.0 (2007-10-22)
 ----------------------------------------------------
+This release fixes a number of bugs and reworks many of the class hierarchies to use
+PHP 5 interfaces and abstract classes for better enforcement of class responsibilities.
 
+The Action class hierarchy has changed to use abstract classes and interfaces. Any
+applications that extend the Action class will need to be checked to ensure that
+they implement all abstract methods.
+		
+		
+	**** IMPORTANT *** Change: 
+		Actions: The Action class hierarchy has changed to use abstract classes and
+		interfaces. Any applications that extend the Action class will need to be
+		checked to ensure that they implement all abstract methods.
+		(2007-10-16 - Adam Franco)
 		
 	* Bug Fix: 
 		CreateAgent, now doesn't die when encountering the changeuser authentication
@@ -34,6 +46,24 @@ v. 0.9.4 (The Future)
 		
 	* Bug Fix: #1811204 
 		Wizard step links are now working in namespaced wizards.
+		(2007-10-16 - Adam Franco)
+		
+	* Bug Fix: #1811216 
+		Wizard links now do not bypass PHP field validation.
+		(2007-10-16 - Adam Franco)
+		
+	* Change: #1812418 
+		Printers can now accept instance-method callbacks of the form array($obj,
+		'methodname'). 
+		(2007-10-16 - Adam Franco)
+		
+	* Bug Fix: 
+		GroupPrinter and HierarchyPrinter now use call_user_func_array() for
+		executing callback methods instead of eval().
+		(2007-10-16 - Adam Franco)
+		
+	* Change: 
+		CreateUser action now forwards to the agent details screen.
 		(2007-10-16 - Adam Franco)
 	
 v. 0.9.3 (2007-09-25)

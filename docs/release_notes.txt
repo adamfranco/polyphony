@@ -3,9 +3,14 @@ Name: Polyphony Release Notes
 (See the Polyphony change log for more details)
 
 
-v. 0.9.4 (The Future)
+v. 0.10.0 (2007-10-22)
 ----------------------------------------------------
+This release fixes a number of bugs and reworks many of the class hierarchies to use
+PHP 5 interfaces and abstract classes for better enforcement of class responsibilities.
 
+The Action class hierarchy has changed to use abstract classes and interfaces. Any
+applications that extend the Action class will need to be checked to ensure that
+they implement all abstract methods.
 
 
 v. 0.9.3 (2007-09-25)

@@ -4,13 +4,13 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.100 2007/10/16 20:24:20 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.101 2007/10/22 15:36:32 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="0.10.0" date="The Future">
+	<version number="0.10.0" date="2007-10-22">
 		<releaseNotes>
 			This release fixes a number of bugs and reworks many of the class
 			hierarchies to use PHP 5 interfaces and abstract classes for better
