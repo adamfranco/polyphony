@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.103 2007/10/24 17:48:19 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.104 2007/10/24 17:57:57 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -20,6 +20,9 @@
 		</fix>
 		<fix author='adam' date='2007-10-24' ref='1819451' reftype='concerto_bug'>
 			AdminTools: Group membership UI now loads.
+		</fix>
+		<fix author='adam' date='2007-10-24' ref='1819450' reftype='concerto_bug'>
+			Tags: Now doesn't print a link to "your tags" if no one is logged it.
 		</fix>
 	</version>
 	<version number="0.10.0" date="2007-10-22">

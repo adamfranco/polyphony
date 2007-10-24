@@ -17,6 +17,10 @@ This release fixes issues with log browsing.
 	* Bug Fix: #1819451 
 		AdminTools: Group membership UI now loads.
 		(2007-10-24 - Adam Franco)
+		
+	* Bug Fix: #1819450 
+		Tags: Now doesn't print a link to "your tags" if no one is logged it.
+		(2007-10-24 - Adam Franco)
 	
 v. 0.10.0 (2007-10-22)
 ----------------------------------------------------
