@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.105 2007/10/24 17:58:32 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.106 2007/10/24 19:33:50 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -22,7 +22,11 @@
 			AdminTools: Group membership UI now loads.
 		</fix>
 		<fix author='adam' date='2007-10-24' ref='1819450' reftype='concerto_bug'>
-			Tags: Now doesn't print a link to "your tags" if no one is logged it.
+			Tags: Now doesn't print a link to "your tags" if no one is logged in.
+		</fix>
+		<fix author='adam' date='2007-10-24'>
+			Importer: ExifRepositoryImporter now uses the filename as the default
+			title if one is not present in the metadata.
 		</fix>
 	</version>
 	<version number="0.10.0" date="2007-10-22">

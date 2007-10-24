@@ -19,7 +19,12 @@ This release fixes issues with log browsing, admin tools, and tags.
 		(2007-10-24 - Adam Franco)
 		
 	* Bug Fix: #1819450 
-		Tags: Now doesn't print a link to "your tags" if no one is logged it.
+		Tags: Now doesn't print a link to "your tags" if no one is logged in.
+		(2007-10-24 - Adam Franco)
+		
+	* Bug Fix: 
+		Importer: ExifRepositoryImporter now uses the filename as the default title
+		if one is not present in the metadata.
 		(2007-10-24 - Adam Franco)
 	
 v. 0.10.0 (2007-10-22)

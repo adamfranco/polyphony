@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.24 2007/09/19 14:04:48 adamfranco Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.25 2007/10/24 19:33:51 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -21,7 +21,7 @@ require_once(DOMIT);
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ExifRepositoryImporter.class.php,v 1.24 2007/09/19 14:04:48 adamfranco Exp $
+ * @version $Id: ExifRepositoryImporter.class.php,v 1.25 2007/10/24 19:33:51 adamfranco Exp $
  */
 class ExifRepositoryImporter
 	extends RepositoryImporter
@@ -57,16 +57,19 @@ class ExifRepositoryImporter
 		
 // 		printpre($this->_photoshopIPTC);
 		$assetInfo['description'] = "";
-		$assetInfo['displayName'] = "";
-		foreach ($this->_photoshopIPTC as $array) {
-			switch ($array['RecName']) {
-				case 'Caption/Abstract':
-				case 'description':
-					$assetInfo['description'] = $array['RecData'];
-					break;
-				case "Object Name (Title)":
-				case "title":
-					$assetInfo['displayName'] = $array['RecData'];
+		$assetInfo['displayName'] = basename($input);
+		if (is_array($this->_photoshopIPTC)) {
+			foreach ($this->_photoshopIPTC as $array) {
+				switch ($array['RecName']) {
+					case 'Caption/Abstract':
+					case 'description':
+						$assetInfo['description'] = $array['RecData'];
+						break;
+					case "Object Name (Title)":
+					case "title":
+						if (strlen(trim($array['RecData'])))
+							$assetInfo['displayName'] = trim($array['RecData']);
+				}
 			}
 		}
 // 		printpre($assetInfo);
