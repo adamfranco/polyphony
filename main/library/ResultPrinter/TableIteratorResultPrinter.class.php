@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TableIteratorResultPrinter.class.php,v 1.19 2007/10/18 14:24:24 adamfranco Exp $
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.20 2007/10/24 17:31:43 adamfranco Exp $
  */
  
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TableIteratorResultPrinter.class.php,v 1.19 2007/10/18 14:24:24 adamfranco Exp $
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.20 2007/10/24 17:31:43 adamfranco Exp $
  */
 
 class TableIteratorResultPrinter 
@@ -140,7 +140,7 @@ class TableIteratorResultPrinter
 			}
 			
 			// find the count of items 
-			if (!is_null($shouldPrintFunction)) {
+			if (is_null($shouldPrintFunction)) {
 				$numItems = $this->_iterator->count();
 			} else {
 				while ($this->_iterator->hasNext()) {

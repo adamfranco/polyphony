@@ -4,12 +4,21 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.101 2007/10/22 15:36:32 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.102 2007/10/24 17:31:39 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="0.10.1" date="2007-10-24">
+		<releaseNotes>
+			This release fixes issues with log browsing.
+		</releaseNotes>
+		<fix author='adam' date='2007-10-24'>
+			ResultPrinter: The TableResultPrinter was dropping into a long loop
+			and preventing fast viewing of logs.
+		</fix>
+	</version>
 	<version number="0.10.0" date="2007-10-22">
 		<releaseNotes>
 			This release fixes a number of bugs and reworks many of the class
