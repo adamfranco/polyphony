@@ -5,7 +5,7 @@ Name: Polyphony Release Notes
 
 v. 0.10.1 (2007-10-24)
 ----------------------------------------------------
-This release fixes issues with log browsing.
+This release fixes issues with log browsing, admin tools, and tags.
 
 
 v. 0.10.0 (2007-10-22)

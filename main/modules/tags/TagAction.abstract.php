@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.7 2007/10/10 23:57:01 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.8 2007/10/24 17:57:57 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.7 2007/10/10 23:57:01 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.8 2007/10/24 17:57:57 adamfranco Exp $
  */
 abstract class TagAction 
 	extends MainWindowAction
@@ -373,7 +373,7 @@ abstract class TagAction
 				print "} ";
 				print "\">"._("delete")."</a> &nbsp; ";
 				
-			} else {
+			} else if ($tagManager->getCurrentUserIdString()) {
 				$url = $harmoni->request->quickURL('tags', 'viewuser', 
 					array('agent_id' => $tagManager->getCurrentUserIdString(),
 					'tag' => RequestContext::value('tag')));

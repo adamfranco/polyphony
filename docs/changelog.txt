@@ -6,7 +6,7 @@ Name: Polyphony Change Log
 
 v. 0.10.1 (2007-10-24)
 ----------------------------------------------------
-This release fixes issues with log browsing.
+This release fixes issues with log browsing, admin tools, and tags.
 		
 		
 	* Bug Fix: 
