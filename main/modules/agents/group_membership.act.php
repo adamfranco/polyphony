@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_membership.act.php,v 1.38 2007/09/19 14:04:52 adamfranco Exp $
+ * @version $Id: group_membership.act.php,v 1.39 2007/10/24 17:48:19 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_membership.act.php,v 1.38 2007/09/19 14:04:52 adamfranco Exp $
+ * @version $Id: group_membership.act.php,v 1.39 2007/10/24 17:48:19 adamfranco Exp $
  */
 class group_membershipAction 
 	extends MainWindowAction
@@ -190,6 +190,7 @@ END;
 		
 		// Define some global variables to store javascript array definitions
 		// for validating adding/removing inputs.
+		$GLOBALS['decendent_groups_string'] = "";
 		$GLOBALS['child_groups_string'] = "";
 		$GLOBALS['child_agents_string'] = "";
 		
@@ -204,8 +205,8 @@ END;
 			
 			GroupPrinter::printGroup($group, $harmoni,
 											2,
-											"group_membershipAction::printGroup", 
-											"group_membershipAction::printMember");
+											array($this, "printGroup"), 
+											array($this, "printMember"));
 			$groupLayout = new Block(ob_get_contents(), STANDARD_BLOCK);
 			ob_end_clean();
 			$pageRows->add($groupLayout, "100%", null, LEFT, CENTER);	
