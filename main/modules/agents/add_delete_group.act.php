@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add_delete_group.act.php,v 1.15 2007/09/19 14:04:52 adamfranco Exp $
+ * @version $Id: add_delete_group.act.php,v 1.16 2007/10/25 14:58:34 adamfranco Exp $
  */
 
 require_once(HARMONI."/GUIManager/Layouts/YLayout.class.php");
@@ -29,7 +29,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add_delete_group.act.php,v 1.15 2007/09/19 14:04:52 adamfranco Exp $
+ * @version $Id: add_delete_group.act.php,v 1.16 2007/10/25 14:58:34 adamfranco Exp $
  */
 class add_delete_groupAction 
 	extends MainWindowAction
@@ -115,8 +115,8 @@ class add_delete_groupAction
 
 			GroupPrinter::printGroup($group, $harmoni,
 											2,
-											"add_delete_groupAction::printGroup",
-											"add_delete_groupAction::printMember");
+											array($this, "printGroup"),
+											array($this, "printMember"));
 			$groupLayout = new Block(ob_get_contents(), 4);
 			ob_end_clean();
 			$actionRows->add($groupLayout, "100%", null, LEFT, CENTER);

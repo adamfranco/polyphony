@@ -4,12 +4,20 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.106 2007/10/24 19:33:50 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.107 2007/10/25 14:58:26 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="0.10.2" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2007-10-25' ref='1820033' reftype='bug'>
+			AdminTools: Browse AZ user interface now uses proper callback functions.
+		</fix>
+	</version>
 	<version number="0.10.1" date="2007-10-24">
 		<releaseNotes>
 			This release fixes issues with log browsing, admin tools, and tags.

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_authorizations.act.php,v 1.25 2007/09/19 14:04:53 adamfranco Exp $
+ * @version $Id: browse_authorizations.act.php,v 1.26 2007/10/25 14:58:34 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_authorizations.act.php,v 1.25 2007/09/19 14:04:53 adamfranco Exp $
+ * @version $Id: browse_authorizations.act.php,v 1.26 2007/10/25 14:58:34 adamfranco Exp $
  */
 class browse_authorizationsAction 
 	extends MainWindowAction
@@ -111,9 +111,9 @@ class browse_authorizationsAction
 					ob_start();
 					HierarchyPrinter::printNode($qualifier, $harmoni,
 										2,
-										"browse_authorizationsAction::printQualifier",
-										"browse_authorizationsAction::hasChildQualifiers",
-										"browse_authorizationsAction::getChildQualifiers",
+										array($this, "printQualifier"),
+										array($this, "hasChildQualifiers"),
+										array($this, "getChildQualifiers"),
 										new HTMLColor("#ddd")
 									);
 																
