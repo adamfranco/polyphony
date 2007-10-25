@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.18 2007/10/11 17:38:49 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.19 2007/10/25 15:38:23 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.18 2007/10/11 17:38:49 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.19 2007/10/25 15:38:23 adamfranco Exp $
  */
 class browseAction 
 	extends MainWindowAction
@@ -176,8 +176,17 @@ class browseAction
 				$id =$idManager->getId(RequestContext::value('node_id'));
 				$url = $harmoni->request->quickURL("logs", "browse",
 								array(	"node_id" => ''));
-				$node =$hierarchyManager->getNode($id);
-				print $node->getDisplayName();
+				try {
+					$node = $hierarchyManager->getNode($id);
+					if ($node->getDisplayName())
+						print $node->getDisplayName();
+					else
+						print _("Id: ").$nodeId->getIdString();
+				} catch (UnknownIdException $e) {
+					print $id->getIdString();
+				} catch (UnimplementedException $e) {
+					print $id->getIdString();
+				}
 				print "\n\t\t\t\t<input type='button' onclick='window.location=\"";
 				print str_replace('&amp;', '&', $url);
 				print "\"' value='X'/>";

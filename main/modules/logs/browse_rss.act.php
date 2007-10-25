@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_rss.act.php,v 1.5 2007/09/19 14:04:56 adamfranco Exp $
+ * @version $Id: browse_rss.act.php,v 1.6 2007/10/25 15:38:23 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/RSSAction.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/RSSAction.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_rss.act.php,v 1.5 2007/09/19 14:04:56 adamfranco Exp $
+ * @version $Id: browse_rss.act.php,v 1.6 2007/10/25 15:38:23 adamfranco Exp $
  */
 class browse_rssAction 
 	extends RSSAction
@@ -161,11 +161,19 @@ class browse_rssAction
 			print "\n<p style='text-indent: 0.5in'>";
 			print _("Limited to node: ");
 			$id =$idManager->getId(RequestContext::value('node_id'));
-			$node =$hierarchyManager->getNode($id);
-			if ($node->getDisplayName())
-				print $node->getDisplayName();
-			else
-				print _("Id: ").$nodeId->getIdString();
+			
+			try {
+				$node = $hierarchyManager->getNode($id);
+				if ($node->getDisplayName())
+					print $node->getDisplayName();
+				else
+					print _("Id: ").$nodeId->getIdString();
+			} catch (UnknownIdException $e) {
+				print $id->getIdString();
+			} catch (UnimplementedException $e) {
+				print $id->getIdString();
+			}
+			
 			print "</p>";
 		}
 		if (RequestContext::value('category')) {

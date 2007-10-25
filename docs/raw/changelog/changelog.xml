@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.107 2007/10/25 14:58:26 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.108 2007/10/25 15:38:22 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -16,6 +16,9 @@
 		</releaseNotes>
 		<fix author='adam' date='2007-10-25' ref='1820033' reftype='bug'>
 			AdminTools: Browse AZ user interface now uses proper callback functions.
+		</fix>
+		<fix author='adam' date='2007-10-25' >
+			Logging: Now exceptions are caught if the node specified no longer exists.
 		</fix>
 	</version>
 	<version number="0.10.1" date="2007-10-24">
