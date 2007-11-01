@@ -4,15 +4,15 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.108 2007/10/25 15:38:22 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.109 2007/11/01 17:54:02 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="0.10.2" date="The Future">
+	<version number="0.10.2" date="2007-11-01">
 		<releaseNotes>
-			
+			This release includes some minor bug fixes and cleanup.
 		</releaseNotes>
 		<fix author='adam' date='2007-10-25' ref='1820033' reftype='bug'>
 			AdminTools: Browse AZ user interface now uses proper callback functions.
@@ -20,6 +20,9 @@
 		<fix author='adam' date='2007-10-25' >
 			Logging: Now exceptions are caught if the node specified no longer exists.
 		</fix>
+		<change author='adam' date='2007-10-25'>
+			Removed unused ui2/addplugin action.
+		</change>
 	</version>
 	<version number="0.10.1" date="2007-10-24">
 		<releaseNotes>

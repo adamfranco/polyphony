@@ -3,6 +3,11 @@ Name: Polyphony Release Notes
 (See the Polyphony change log for more details)
 
 
+v. 0.10.2 (2007-11-01)
+----------------------------------------------------
+This release includes some minor bug fixes and cleanup.
+
+
 v. 0.10.1 (2007-10-24)
 ----------------------------------------------------
 This release fixes issues with log browsing, admin tools, and tags.
