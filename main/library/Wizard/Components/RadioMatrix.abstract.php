@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.1 2007/11/05 21:03:35 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.2 2007/11/05 21:45:32 adamfranco Exp $
  */ 
 
 /**
@@ -29,7 +29,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.1 2007/11/05 21:03:35 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.2 2007/11/05 21:45:32 adamfranco Exp $
  */
 abstract class RadioMatrix
 	extends WizardComponent
@@ -124,6 +124,8 @@ abstract class RadioMatrix
 			$field->value = $this->getOptionNumber($initialValue);
 		$field->rule = $rule;
 		$field->spacerAfter = false;
+		
+		$field->disabledOptions = array();
 		$this->fields[] = $field;
 		
 		try {
@@ -158,6 +160,23 @@ abstract class RadioMatrix
 	}
 	
 	/**
+	 * Answer the index of the field specified by key
+	 * 
+	 * @param string $fieldKey
+	 * @return int
+	 * @access protected
+	 * @since 11/5/07
+	 */
+	protected function getFieldIndex ($fieldKey) {
+		for ($i = 0; $i < count ($this->fields); $i++) {
+			if ($this->fields[$i]->key === $fieldKey)
+				return $i;
+		}
+		
+		throw new Exception ("Unknown field, '$fieldKey'.");
+	}
+	
+	/**
 	 * Answer the number that corresponds to the option value-string passed
 	 * 
 	 * @param string $optionValue
@@ -172,6 +191,20 @@ abstract class RadioMatrix
 		}
 		
 		throw new Exception ("Unknown option, '$optionValue'.");
+	}
+	
+	/**
+	 * Disable an option for a field
+	 * 
+	 * @param string $fieldKey
+	 * @param string $optionValue
+	 * @return void
+	 * @access public
+	 * @since 11/5/07
+	 */
+	public function makeDisabled ($fieldKey, $optionValue) {
+		$field = $this->fields[$this->getFieldIndex($fieldKey)];
+		$field->disabledOptions[] = $this->getOptionNumber($optionValue);
 	}
 	
 	/**
@@ -420,7 +453,10 @@ abstract class RadioMatrix
 		if ($this->fields[$fieldIndex]->value == $optionIndex)
 			print " checked='checked'";
 		
-		print " onclick=\"window.".$componentId.".setField(this); \" ";
+		if (!$this->isEnabled() || in_array($optionIndex, $this->fields[$fieldIndex]->disabledOptions))
+			print " disabled='disabled'";
+		else
+			print " onclick=\"window.".$componentId.".setField(this); \" ";
 		print "/>";
 		return ob_get_clean();
 	}
@@ -465,7 +501,7 @@ abstract class RadioMatrix
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.1 2007/11/05 21:03:35 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.2 2007/11/05 21:45:32 adamfranco Exp $
  */
 class RuleValidationFailedException
 	extends Exception
