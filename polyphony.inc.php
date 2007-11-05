@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.44 2007/09/05 22:14:24 adamfranco Exp $
+ * @version $Id: polyphony.inc.php,v 1.45 2007/11/05 21:03:31 adamfranco Exp $
  */
 
 /**
@@ -55,6 +55,7 @@ require_once(dirname(__FILE__)."/main/library/Wizard/Components/WComponentCollec
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WAgentBrowser.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WColorWheel.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSaveWithChoiceButtonList.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/Components/RowRadioMatrix.class.php");
 
 //gui components
 require_once(POLYPHONY."/main/library/GUIWizardComponents/Generic/WStyleComponent.class.php");

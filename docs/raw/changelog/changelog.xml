@@ -4,12 +4,24 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.109 2007/11/01 17:54:02 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.110 2007/11/05 21:03:32 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="0.10.3" date="The Future">
+		<releaseNotes>
+			<##>
+		</releaseNotes>
+		<fix author='adam' date='2007-11-05'>
+			HierarchyPrinter: Now uses the call_user_func_array() function rather
+			that eval() to better support object methods.
+		</fix>
+		<new author='adam' date='2007-11-05' ref='1799950' reftype='segue_fr'>
+			Wizard: New RadioMatrix components provide a list of dependent options.
+		</new>
+	</version>
 	<version number="0.10.2" date="2007-11-01">
 		<releaseNotes>
 			This release includes some minor bug fixes and cleanup.
