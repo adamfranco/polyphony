@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_authorizations.act.php,v 1.26 2007/10/25 14:58:34 adamfranco Exp $
+ * @version $Id: browse_authorizations.act.php,v 1.27 2007/11/05 21:03:19 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_authorizations.act.php,v 1.26 2007/10/25 14:58:34 adamfranco Exp $
+ * @version $Id: browse_authorizations.act.php,v 1.27 2007/11/05 21:03:19 adamfranco Exp $
  */
 class browse_authorizationsAction 
 	extends MainWindowAction
@@ -194,8 +194,9 @@ class browse_authorizationsAction
 		$array = array();
 		$iterator =$qualifier->getChildren();
 		while ($iterator->hasNext()) {
-			$array[] =$iterator->next();
+			$array[] = $iterator->next();
 		}
+		
 		return $array;
 	}
 	

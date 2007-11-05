@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HierarchyPrinter.class.php,v 1.15 2007/10/16 20:10:18 adamfranco Exp $
+ * @version $Id: HierarchyPrinter.class.php,v 1.16 2007/11/05 21:02:44 adamfranco Exp $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HierarchyPrinter.class.php,v 1.15 2007/10/16 20:10:18 adamfranco Exp $
+ * @version $Id: HierarchyPrinter.class.php,v 1.16 2007/11/05 21:02:44 adamfranco Exp $
  */
 
 class HierarchyPrinter {
@@ -60,7 +60,7 @@ class HierarchyPrinter {
 		
 		print "\n\n<table>\n\t<tr><td valign='top'>";
 		// Print The node
-		eval('$hasChildren = '.$hasChildrenFunction.'($node);');
+		$hasChildren = call_user_func_array($hasChildrenFunction, array($node));
 		if ($hasChildren) {
 		?>
 
@@ -143,9 +143,9 @@ END;
 				$childColor = NULL;
 			}
 			
-			eval('$children = '.$getChildrenFunction.'($node);');
-			foreach (array_keys($children) as $key) {
-				HierarchyPrinter::printNode( $children[$key],														$harmoni, $startingPathInfoKey, $printFunction, $hasChildrenFunction,	$getChildrenFunction, $childColor );
+			$children = call_user_func_array($getChildrenFunction, array($node));
+			foreach ($children as $child) {
+				HierarchyPrinter::printNode( $child,														$harmoni, $startingPathInfoKey, $printFunction, $hasChildrenFunction,	$getChildrenFunction, $childColor );
 			}		
 			print "\n</div>";
 		}
