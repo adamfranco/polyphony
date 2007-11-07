@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.110 2007/11/05 21:03:32 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.111 2007/11/07 19:03:37 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -21,6 +21,10 @@
 		<new author='adam' date='2007-11-05' ref='1799950' reftype='segue_fr'>
 			Wizard: New RadioMatrix components provide a list of dependent options.
 		</new>
+		<fix author='adam' date='2007-11-07'>
+			AdminTools: Group-membership UIs now work with LDAP groups. Needed to fix
+			the way Ids were being passed through to the processing scripts.
+		</fix>
 	</version>
 	<version number="0.10.2" date="2007-11-01">
 		<releaseNotes>

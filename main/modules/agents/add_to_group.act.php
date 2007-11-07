@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add_to_group.act.php,v 1.11 2007/09/19 14:04:52 adamfranco Exp $
+ * @version $Id: add_to_group.act.php,v 1.12 2007/11/07 19:03:39 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add_to_group.act.php,v 1.11 2007/09/19 14:04:52 adamfranco Exp $
+ * @version $Id: add_to_group.act.php,v 1.12 2007/11/07 19:03:39 adamfranco Exp $
  */
  
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -33,7 +33,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add_to_group.act.php,v 1.11 2007/09/19 14:04:52 adamfranco Exp $
+ * @version $Id: add_to_group.act.php,v 1.12 2007/11/07 19:03:39 adamfranco Exp $
  */
 class add_to_groupAction 
 	extends MainWindowAction
@@ -84,21 +84,13 @@ class add_to_groupAction
 		$id =$idManager->getId(RequestContext::value('destinationgroup'));
 		$destGroup =$agentManager->getGroup($id);
 		
-		foreach ($harmoni->request->getKeys() as $idString) {
-		
-			$type = RequestContext::value($idString);
-		
-			if ($type == "group") {
-				$id =$idManager->getId(strval($idString));
-				$member =$agentManager->getGroup($id);
-				$destGroup->add($member);
-		
-			} else if ($type == "agent") {
-				$id =$idManager->getId(strval($idString));
-				$member =$agentManager->getAgent($id);
-				$destGroup->add($member);
-			}
+		$harmoni->request->startNamespace('polyphony-agents-agent_or_group');
+		foreach ($harmoni->request->getKeys() as $checkedAgentKey) {
+			$id = $idManager->getId(strval(RequestContext::value($checkedAgentKey)));
+			$member = $agentManager->getAgentOrGroup($id);
+			$destGroup->add($member);
 		}
+		$harmoni->request->endNamespace();
 		
 		$harmoni->request->endNamespace();
 		

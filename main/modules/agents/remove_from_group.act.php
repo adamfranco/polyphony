@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: remove_from_group.act.php,v 1.11 2007/09/19 14:04:52 adamfranco Exp $
+ * @version $Id: remove_from_group.act.php,v 1.12 2007/11/07 19:03:40 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: remove_from_group.act.php,v 1.11 2007/09/19 14:04:52 adamfranco Exp $
+ * @version $Id: remove_from_group.act.php,v 1.12 2007/11/07 19:03:40 adamfranco Exp $
  */
  
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -33,7 +33,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: remove_from_group.act.php,v 1.11 2007/09/19 14:04:52 adamfranco Exp $
+ * @version $Id: remove_from_group.act.php,v 1.12 2007/11/07 19:03:40 adamfranco Exp $
  */
 class remove_from_groupAction 
 	extends MainWindowAction
@@ -84,23 +84,13 @@ class remove_from_groupAction
 		$id =$idManager->getId(RequestContext::value('destinationgroup'));
 		$destGroup =$agentManager->getGroup($id);
 		
-		foreach ($harmoni->request->getKeys() as $idString) {
-		
-			$type = RequestContext::value($idString);
-			
-			if ($type == "group" || $type == "agent") {
-				$id =$idManager->getId(strval($idString));
-				
-				if ($type == "group") {
-					$member =$agentManager->getGroup($id);
-				} else {
-					$member =$agentManager->getAgent($id);
-				}
-					$destGroup->remove($member);
-			}
-			
-			
+		$harmoni->request->startNamespace('polyphony-agents-agent_or_group');
+		foreach ($harmoni->request->getKeys() as $checkedAgentKey) {
+			$id = $idManager->getId(strval(RequestContext::value($checkedAgentKey)));
+			$member = $agentManager->getAgentOrGroup($id);
+			$destGroup->remove($member);
 		}
+		$harmoni->request->endNamespace();
 		
 		$harmoni->request->endNamespace();
 		

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_membership.act.php,v 1.39 2007/10/24 17:48:19 adamfranco Exp $
+ * @version $Id: group_membership.act.php,v 1.40 2007/11/07 19:03:40 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_membership.act.php,v 1.39 2007/10/24 17:48:19 adamfranco Exp $
+ * @version $Id: group_membership.act.php,v 1.40 2007/11/07 19:03:40 adamfranco Exp $
  */
 class group_membershipAction 
 	extends MainWindowAction
@@ -267,7 +267,7 @@ END;
 					
 					if (element.type == 'checkbox' && element.checked == true) {
 						
-						if (element.value == 'group') {
+						if (element.className == 'group') {
 							// Check that the destination is not the new member
 							if ( element.id == destGroupId ) {
 								alert ("$cannotAddGroup " + element.id + " $toItsself. $deselecting...");
@@ -336,7 +336,7 @@ END;
 							continue;
 						}
 						
-						if (element.value == 'group') {					
+						if (element.className == 'group') {					
 							// Check that the new member is not already a child of the destination
 							if ( !in_array(element.id, childGroups[destGroupId]) ) {
 								alert ("$groupString " + element.id + " $notInGroup.  $deselecting...");
@@ -420,6 +420,7 @@ END;
 	 * @ignore
 	 */
 	function printGroup($group) {
+		$harmoni = Harmoni::instance();
 		$idManager = Services::getService("Id");
 		$everyoneId =$idManager->getId("edu.middlebury.agents.everyone");
 		$usersId =$idManager->getId("edu.middlebury.agents.users");
@@ -428,13 +429,15 @@ END;
 		$id =$group->getId();
 		$groupType =$group->getType();
 		
+		$harmoni->request->startNamespace('polyphony-agents-agent_or_group');
 		if ($id->isEqual($everyoneId) || $id->isEqual($usersId))
 			print "\n&nbsp; &nbsp; &nbsp;";
 		else
-			print "\n<input type='checkbox' id='".$id->getIdString()."' name='".RequestContext::name($id->getIdString())."' value='group' />";
+			print "\n<input type='checkbox' id=\"".$id->getIdString()."\" name=\"".RequestContext::name($id->getIdString())."\" value=\"".$id->getIdString()."\" class='group'/>";
+		$harmoni->request->endNamespace();
 		
-		print "\n<a title='".htmlspecialchars($groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()." - ".$groupType->getDescription())."'>";
-		print "\n<span style='text-decoration: underline; font-weight: bold;'>".$id->getIdString()." - ".htmlspecialchars($group->getDisplayName())."</span></a>";
+		print "\n<a title='".htmlspecialchars($groupType->getAuthority()." :: ".$groupType->getDomain()." :: ".$groupType->getKeyword()." - ".$groupType->getDescription())."' >";
+		print "\n<span style='text-decoration: underline; font-weight: bold;'>".htmlspecialchars($group->getDisplayName())."</span></a>";
 		
 		if (!$id->isEqual($everyoneId) && !$id->isEqual($usersId)) {
 			print "\n <input type='button' value='"._("Add checked")."'";
@@ -445,7 +448,10 @@ END;
 			print " />";
 		}
 		
-		print "\n - <em>".htmlspecialchars($group->getDescription())."</em>";
+		if ($group->getDescription())
+			print "\n - <em>".htmlspecialchars($group->getDescription())."</em>";
+		
+// 		print "\n - <em style='font-size: smaller;'>".htmlspecialchars($id->getIdString())."</em>";
 		
 		// print out the properties of the Agent
 		print "\n<em>";
@@ -476,7 +482,7 @@ END;
 		$idString = $id->getIdString();
 		print <<<END
 		
-			decendentGroups['$idString'] = new Array (
+			decendentGroups["$idString"] = new Array (
 
 END;
 		$groups =$group->getGroups(false);
@@ -484,7 +490,7 @@ END;
 		while($groups->hasNext()) {
 			$child =$groups->next();
 			$childId =$child->getId();
-			print (($i)?",\n\t\t\t\t":"\t\t\t\t")."'".$childId->getIdString()."'";
+			print (($i)?",\n\t\t\t\t":"\t\t\t\t")."\"".$childId->getIdString()."\"";
 			$i++;
 		}
 	
@@ -498,7 +504,7 @@ END;
 		$idString = $id->getIdString();
 		print <<<END
 		
-			childGroups['$idString'] = new Array (
+			childGroups["$idString"] = new Array (
 
 END;
 		$groups =$group->getGroups(FALSE);
@@ -506,7 +512,7 @@ END;
 		while($groups->hasNext()) {
 			$child =$groups->next();
 			$childId =$child->getId();
-			print (($i)?",\n\t\t\t\t":"\t\t\t\t")."'".$childId->getIdString()."'";
+			print (($i)?",\n\t\t\t\t":"\t\t\t\t")."\"".$childId->getIdString()."\"";
 			$i++;
 		}
 	
@@ -520,7 +526,7 @@ END;
 		$idString = $id->getIdString();
 		print <<<END
 		
-			childAgents['$idString'] = new Array (
+			childAgents["$idString"] = new Array (
 
 END;
 		$agents =$group->getMembers(FALSE);
@@ -528,7 +534,7 @@ END;
 		while($agents->hasNext()) {
 			$child =$agents->next();
 			$childId =$child->getId();
-			print (($i)?",\n\t\t\t\t":"\t\t\t\t")."'".$childId->getIdString()."'";
+			print (($i)?",\n\t\t\t\t":"\t\t\t\t")."\"".$childId->getIdString()."\"";
 			$i++;
 		}
 	
@@ -550,7 +556,9 @@ END;
 		$id =$member->getId();
 		
 		$memberType =$member->getType();
-		print "\n<input type='checkbox' id='".$id->getIdString()."' name='".RequestContext::name($id->getIdString())."' value='agent' />";
+		$harmoni->request->startNamespace('polyphony-agents-agent_or_group');
+		print "\n<input type='checkbox' id=\"".$id->getIdString()."\" name=\"".RequestContext::name($id->getIdString())."\" value=\"".$id->getIdString()."\" class='agent'/>";
+		$harmoni->request->endNamespace();
 		
 		$harmoni->history->markReturnURL("polyphony/agents/edit_agent_details");
 		
