@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.2 2007/11/05 21:45:32 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.3 2007/11/08 15:49:48 adamfranco Exp $
  */ 
 
 /**
@@ -29,7 +29,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.2 2007/11/05 21:45:32 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.3 2007/11/08 15:49:48 adamfranco Exp $
  */
 abstract class RadioMatrix
 	extends WizardComponent
@@ -123,6 +123,7 @@ abstract class RadioMatrix
 		else
 			$field->value = $this->getOptionNumber($initialValue);
 		$field->rule = $rule;
+		$field->spacerBefore = false;
 		$field->spacerAfter = false;
 		
 		$field->disabledOptions = array();
@@ -142,10 +143,23 @@ abstract class RadioMatrix
 	 * @access public
 	 * @since 11/2/07
 	 */
-	public function addSpacer () {
+	public function addSpacer ($text = '') {
 		if (!count($this->fields))
 			throw new Exception("Cannot add a spacer before any fields. Please add a field first.");
-		$this->fields[count($this->fields) - 1]->spacerAfter = true;
+		$this->fields[count($this->fields) - 1]->spacerAfter = $text;
+	}
+	
+	/**
+	 * Add a spacer before the most recently added field
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 11/2/07
+	 */
+	public function addSpacerBefore ($text = '') {
+		if (!count($this->fields))
+			throw new Exception("Cannot add a spacer before any fields. Please add a field first.");
+		$this->fields[count($this->fields) - 1]->spacerBefore = $text;
 	}
 	
 	/**
@@ -501,7 +515,7 @@ abstract class RadioMatrix
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.2 2007/11/05 21:45:32 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.3 2007/11/08 15:49:48 adamfranco Exp $
  */
 class RuleValidationFailedException
 	extends Exception

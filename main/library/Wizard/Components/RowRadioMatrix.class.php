@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RowRadioMatrix.class.php,v 1.1 2007/11/05 21:03:35 adamfranco Exp $
+ * @version $Id: RowRadioMatrix.class.php,v 1.2 2007/11/08 15:49:48 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RadioMatrix.abstract.php");
@@ -24,7 +24,7 @@ require_once(dirname(__FILE__)."/RadioMatrix.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RowRadioMatrix.class.php,v 1.1 2007/11/05 21:03:35 adamfranco Exp $
+ * @version $Id: RowRadioMatrix.class.php,v 1.2 2007/11/08 15:49:48 adamfranco Exp $
  */
 class RowRadioMatrix
 	extends RadioMatrix
@@ -71,15 +71,31 @@ class RowRadioMatrix
 		$fields = $this->getFields();
 		print "\n\t<tbody>";
 		for ($i = 0; $i < count($fields); $i++) {
+			if ($fields[$i]->spacerBefore !== false) {
+				print "\n\t</tbody>\n\t<tbody>";
+				print "\n\t\t<tr>\n\t\t\t<th colspan='".(count($options)+1)."' class='spacer'>";
+				if (strlen($fields[$i]->spacerBefore))
+					print $fields[$i]->spacerBefore;
+				else
+					print " &nbsp; ";
+				print "</th>\n\t\t</tr>";
+				print "\n\t</tbody>\n\t<tbody>";
+				
+			}
 			print "\n\t<tr>";
 			print "\n\t\t<th class='field'>".$fields[$i]->displayText."</th>";
 			for ($j = 0; $j < count($options); $j++) {
 				print "\n\t\t<td>".$this->getMatrixButton($fieldName, $i, $j)."</td>";
 			}
 			print "\n\t<tr>";
-			if ($fields[$i]->spacerAfter) {
+			if ($fields[$i]->spacerAfter !== false) {
 				print "\n\t</tbody>\n\t<tbody>";
-				print "\n\t\t<tr>\n\t\t\t<th colspan='".(count($options)+1)."' class='spacer'>&nbsp;</th>\n\t\t</tr>";
+				print "\n\t\t<tr>\n\t\t\t<th colspan='".(count($options)+1)."' class='spacer'>";
+				if (strlen($fields[$i]->spacerAfter))
+					print $fields[$i]->spacerAfter;
+				else
+					print " &nbsp; ";
+				print "</th>\n\t\t</tr>";
 				print "\n\t</tbody>\n\t<tbody>";
 				
 			}
