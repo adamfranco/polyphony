@@ -4,6 +4,25 @@ Name: Polyphony Change Log
 
 
 
+v. 0.10.3 (2007-11-09)
+----------------------------------------------------
+This release fixes a few bugs and adds a new Wizard component.
+		
+		
+	* Bug Fix: 
+		HierarchyPrinter: Now uses the call_user_func_array() function rather that
+		eval() to better support object methods.
+		(2007-11-05 - Adam Franco)
+		
+	* New feature: #1799950 
+		Wizard: New RadioMatrix components provide a list of dependent options.
+		(2007-11-05 - Adam Franco)
+		
+	* Bug Fix: 
+		AdminTools: Group-membership UIs now work with LDAP groups. Needed to fix
+		the way Ids were being passed through to the processing scripts.
+		(2007-11-07 - Adam Franco)
+	
 v. 0.10.2 (2007-11-01)
 ----------------------------------------------------
 This release includes some minor bug fixes and cleanup.
