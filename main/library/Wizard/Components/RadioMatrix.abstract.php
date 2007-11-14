@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.3 2007/11/08 15:49:48 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.4 2007/11/14 18:41:57 adamfranco Exp $
  */ 
 
 /**
@@ -29,7 +29,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.3 2007/11/08 15:49:48 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.4 2007/11/14 18:41:57 adamfranco Exp $
  */
 abstract class RadioMatrix
 	extends WizardComponent
@@ -64,7 +64,7 @@ abstract class RadioMatrix
 		ArgumentValidator::validate($displayText, NonZeroLengthStringValidatorRule::getRule());
 		ArgumentValidator::validate($description, OptionalRule::getRule(NonZeroLengthStringValidatorRule::getRule()));
 		
-		$option = new StdClass;
+		$option = new RadioMatrixOption;
 		$option->value = $value;
 		$option->displayText = $displayText;
 		$option->description = $description;
@@ -115,7 +115,7 @@ abstract class RadioMatrix
 			ArgumentValidator::validate($rule, ChoiceValidatorRule::getRule('<', '<=', '==', '>=', '>'));
 		}
 		
-		$field = new StdClass;
+		$field = new RadioMatrixField;
 		$field->key = $key;
 		$field->displayText = $displayText;
 		if (is_null($initialValue))
@@ -281,7 +281,7 @@ abstract class RadioMatrix
 	 * @access private
 	 * @since 11/1/07
 	 */
-	private function isRelationValid (StdClass $fieldBelow, StdClass $fieldAbove) {
+	private function isRelationValid (RadioMatrixField $fieldBelow, RadioMatrixField $fieldAbove) {
 		switch ($fieldBelow->rule) {
 			case '<':
 				return ($fieldBelow->value < $fieldAbove->value);
@@ -346,7 +346,7 @@ abstract class RadioMatrix
 	 * @access private
 	 * @since 11/1/07
 	 */
-	private function applyRuleToAbove (StdClass $fieldBelow, StdClass $fieldAbove) {
+	private function applyRuleToAbove (RadioMatrixField $fieldBelow, RadioMatrixField $fieldAbove) {
 		if (!$this->isRelationValid($fieldBelow, $fieldAbove)) {
 			switch ($fieldBelow->rule) {
 				case '<':
@@ -383,7 +383,7 @@ abstract class RadioMatrix
 	 * @access private
 	 * @since 11/1/07
 	 */
-	private function applyRuleToBelow (StdClass $fieldBelow, StdClass $fieldAbove) {
+	private function applyRuleToBelow (RadioMatrixField $fieldBelow, RadioMatrixField $fieldAbove) {
 		if (!$this->isRelationValid($fieldBelow, $fieldAbove)) {
 			switch ($fieldBelow->rule) {
 				case '<':
@@ -506,16 +506,172 @@ abstract class RadioMatrix
 	}
 }
 
+
 /**
- * An exception to catagorize our non-fatal exceptions
+ * A data container for options
  * 
- * @since 11/1/07
- * @package <##>
+ * @since 11/12/07
+ * @package polyphony.wizard.components
  * 
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.3 2007/11/08 15:49:48 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.4 2007/11/14 18:41:57 adamfranco Exp $
+ */
+class RadioMatrixOption {
+
+	/**
+	 * @var string $value;  
+	 * @access public
+	 * @since 11/13/07
+	 */
+	public $value;
+	
+	/**
+	 * @var string $displayText;  
+	 * @access public
+	 * @since 11/13/07
+	 */
+	public $displayText;
+	
+	/**
+	 * @var string $description;  
+	 * @access public
+	 * @since 11/13/07
+	 */
+	public $description;
+	
+	/**
+	 * Answer a value
+	 * 
+	 * @param string $key
+	 * @return mixed
+	 * @access public
+	 * @since 11/12/07
+	 */
+	public function __get ($key) {
+		throw new Exception ("Unknown Option property, '$key'.");
+	}
+	
+	/**
+	 * set a value
+	 * 
+	 * @param string $key
+	 * @return mixed
+	 * @access public
+	 * @since 11/12/07
+	 */
+	public function __set ($key, $value) {
+		throw new Exception ("Unknown Option property, '$key'.");
+	}
+}
+
+/**
+ * A data container for options
+ * 
+ * @since 11/12/07
+ * @package polyphony.wizard.components
+ * 
+ * @copyright Copyright &copy; 2007, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: RadioMatrix.abstract.php,v 1.4 2007/11/14 18:41:57 adamfranco Exp $
+ */
+class RadioMatrixField {
+	
+	/**
+	 * @var string $key;  
+	 * @access public
+	 * @since 11/13/07
+	 */
+	public $key;
+	
+	/**
+	 * @var string $value;  
+	 * @access public
+	 * @since 11/13/07
+	 */
+	public $value;
+	
+	/**
+	 * @var string $displayText;  
+	 * @access public
+	 * @since 11/13/07
+	 */
+	public $displayText;
+	
+	/**
+	 * @var string $rule;  
+	 * @access public
+	 * @since 11/13/07
+	 */
+	public $rule;
+	
+	/**
+	 * @var string $spacerBefore;  
+	 * @access public
+	 * @since 11/13/07
+	 */
+	public $spacerBefore;
+	
+	/**
+	 * @var string $spacerAfter;  
+	 * @access public
+	 * @since 11/13/07
+	 */
+	public $spacerAfter;
+	
+	/**
+	 * @var string $fieldname;  
+	 * @access public
+	 * @since 11/13/07
+	 */
+	public $fieldname;
+	
+	/**
+	 * @var array $disabledOptions;  
+	 * @access public
+	 * @since 11/12/07
+	 */
+	public $disabledOptions = array();
+	
+	
+	/**
+	 * Answer a value
+	 * 
+	 * @param string $key
+	 * @return mixed
+	 * @access public
+	 * @since 11/12/07
+	 */
+	public function __get ($key) {
+		throw new Exception ("Unknown Field property, '$key'.");
+	}
+	
+	/**
+	 * set a value
+	 * 
+	 * @param string $key
+	 * @return mixed
+	 * @access public
+	 * @since 11/12/07
+	 */
+	public function __set ($key, $value) {
+		throw new Exception ("Unknown Field property, '$key'.");
+	}
+}
+
+
+/**
+ * An exception to catagorize our non-fatal exceptions
+ * 
+ * @since 11/1/07
+ * @package polyphony.wizard.components
+ * 
+ * @copyright Copyright &copy; 2007, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: RadioMatrix.abstract.php,v 1.4 2007/11/14 18:41:57 adamfranco Exp $
  */
 class RuleValidationFailedException
 	extends Exception
