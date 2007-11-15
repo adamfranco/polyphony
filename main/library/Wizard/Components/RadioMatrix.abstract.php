@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.5 2007/11/15 16:20:50 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.6 2007/11/15 19:19:35 adamfranco Exp $
  */ 
 
 /**
@@ -29,7 +29,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.5 2007/11/15 16:20:50 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.6 2007/11/15 19:19:35 adamfranco Exp $
  */
 abstract class RadioMatrix
 	extends WizardComponent
@@ -50,6 +50,13 @@ abstract class RadioMatrix
 	protected $fields;
 	
 	/**
+	 * @var string $jsClass;  
+	 * @access protected
+	 * @since 11/15/07
+	 */
+	protected $jsClass;
+	
+	/**
 	 * Constructor
 	 * 
 	 * @return void
@@ -59,6 +66,7 @@ abstract class RadioMatrix
 	public function __construct () {
 		$this->options = array();
 		$this->fields = array();
+		$this->jsClass = 'RadioMatrix';
 	}
 	
 	/**
@@ -139,6 +147,9 @@ abstract class RadioMatrix
 		$field->spacerAfter = false;
 		
 		$field->disabledOptions = array();
+		
+		$field->index = count($this->fields);
+		
 		$this->fields[] = $field;
 		
 		try {
@@ -497,7 +508,7 @@ abstract class RadioMatrix
 		if (!$this->isEnabled() || in_array($optionIndex, $this->fields[$fieldIndex]->disabledOptions))
 			print " disabled='disabled'";
 		else
-			print " onclick=\"window.".$componentId.".setField(this); \" ";
+			print " onclick=\"window.".$componentId.".setField(this, event); \" ";
 		print "/>";
 		return ob_get_clean();
 	}
@@ -519,10 +530,10 @@ abstract class RadioMatrix
 ";
 		print file_get_contents(POLYPHONY."/javascript/RadioMatrix.js");
 		
-		print "\nwindow.".$componentId." = new RadioMatrix(";
+		print "\nwindow.".$componentId." = new ".$this->jsClass."(";
 		print "\n\t".json_encode($this->options).", ";
-		foreach ($this->fields as $fieldIndex => $field)
-			$field->fieldname = RequestContext::name($fieldName."_".$fieldIndex);
+		foreach ($this->fields as $field)
+			$field->setFieldname($fieldName);
 		print "\n\t".json_encode($this->fields)."\n); ";
 		
 		print "
@@ -543,7 +554,7 @@ abstract class RadioMatrix
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.5 2007/11/15 16:20:50 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.6 2007/11/15 19:19:35 adamfranco Exp $
  */
 class RadioMatrixOption {
 
@@ -602,7 +613,7 @@ class RadioMatrixOption {
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.5 2007/11/15 16:20:50 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.6 2007/11/15 19:19:35 adamfranco Exp $
  */
 class RadioMatrixField {
 	
@@ -633,6 +644,13 @@ class RadioMatrixField {
 	 * @since 11/13/07
 	 */
 	public $rule;
+	
+	/**
+	 * @var int $index;  
+	 * @access public
+	 * @since 11/13/07
+	 */
+	public $index;
 	
 	/**
 	 * @var string $spacerBefore;  
@@ -673,6 +691,17 @@ class RadioMatrixField {
 		$this->disabledOptions = array();
 	}
 	
+	/**
+	 * Set the fieldname
+	 * 
+	 * @param string $fieldname
+	 * @return void
+	 * @access public
+	 * @since 11/15/07
+	 */
+	public function setFieldname ($fieldname) {
+		$this->fieldname = RequestContext::name($fieldname."_".$this->index);
+	}
 	
 	/**
 	 * Answer a value
@@ -709,7 +738,7 @@ class RadioMatrixField {
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.5 2007/11/15 16:20:50 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.6 2007/11/15 19:19:35 adamfranco Exp $
  */
 class RuleValidationFailedException
 	extends Exception
