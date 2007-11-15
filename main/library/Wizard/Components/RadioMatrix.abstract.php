@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.4 2007/11/14 18:41:57 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.5 2007/11/15 16:20:50 adamfranco Exp $
  */ 
 
 /**
@@ -29,7 +29,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.4 2007/11/14 18:41:57 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.5 2007/11/15 16:20:50 adamfranco Exp $
  */
 abstract class RadioMatrix
 	extends WizardComponent
@@ -37,17 +37,29 @@ abstract class RadioMatrix
 	
 	/**
 	 * @var array $options; The options of the matrix 
-	 * @access private
+	 * @access protected
 	 * @since 11/1/07
 	 */
-	private $options = array();
+	protected $options;
 	
 	/**
 	 * @var array $fields; The fields of the matrix 
-	 * @access private
+	 * @access protected
 	 * @since 11/1/07
 	 */
-	private $fields = array();
+	protected $fields;
+	
+	/**
+	 * Constructor
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 11/15/07
+	 */
+	public function __construct () {
+		$this->options = array();
+		$this->fields = array();
+	}
 	
 	/**
 	 * Add a new option to the matrix
@@ -115,7 +127,7 @@ abstract class RadioMatrix
 			ArgumentValidator::validate($rule, ChoiceValidatorRule::getRule('<', '<=', '==', '>=', '>'));
 		}
 		
-		$field = new RadioMatrixField;
+		$field = $this->createField();
 		$field->key = $key;
 		$field->displayText = $displayText;
 		if (is_null($initialValue))
@@ -134,6 +146,19 @@ abstract class RadioMatrix
 		} catch (RuleValidationFailedException $e) {
 			throw new RuleValidationFailedException("Default state does not validate against the rules supplied. Please change either the default values of the fields or the rules in order to have a valid initial state.");
 		}
+		
+		return $field;
+	}
+	
+	/**
+	 * Create a new field object
+	 * 
+	 * @return RadioMatrixField
+	 * @access protected
+	 * @since 11/14/07
+	 */
+	protected function createField () {
+		return new RadioMatrixField;
 	}
 	
 	/**
@@ -278,10 +303,10 @@ abstract class RadioMatrix
 	 * @param object $fieldBelow
 	 * @param object $fieldAbove
 	 * @return boolean
-	 * @access private
+	 * @access protected
 	 * @since 11/1/07
 	 */
-	private function isRelationValid (RadioMatrixField $fieldBelow, RadioMatrixField $fieldAbove) {
+	protected function isRelationValid (RadioMatrixField $fieldBelow, RadioMatrixField $fieldAbove) {
 		switch ($fieldBelow->rule) {
 			case '<':
 				return ($fieldBelow->value < $fieldAbove->value);
@@ -343,10 +368,10 @@ abstract class RadioMatrix
 	 * @param object $fieldBelow
 	 * @param object $fieldAbove
 	 * @return void
-	 * @access private
+	 * @access protected
 	 * @since 11/1/07
 	 */
-	private function applyRuleToAbove (RadioMatrixField $fieldBelow, RadioMatrixField $fieldAbove) {
+	protected function applyRuleToAbove (RadioMatrixField $fieldBelow, RadioMatrixField $fieldAbove) {
 		if (!$this->isRelationValid($fieldBelow, $fieldAbove)) {
 			switch ($fieldBelow->rule) {
 				case '<':
@@ -380,10 +405,10 @@ abstract class RadioMatrix
 	 * @param object $fieldBelow
 	 * @param object $fieldAbove
 	 * @return void
-	 * @access private
+	 * @access protected
 	 * @since 11/1/07
 	 */
-	private function applyRuleToBelow (RadioMatrixField $fieldBelow, RadioMatrixField $fieldAbove) {
+	protected function applyRuleToBelow (RadioMatrixField $fieldBelow, RadioMatrixField $fieldAbove) {
 		if (!$this->isRelationValid($fieldBelow, $fieldAbove)) {
 			switch ($fieldBelow->rule) {
 				case '<':
@@ -437,7 +462,7 @@ abstract class RadioMatrix
 	 * @access public
 	 * @return boolean - TRUE if everything is OK
 	 */
-	public function update ($fieldName) {
+	public function update ($fieldName) {		
 		$initialState = $this->getState();
 		
 		for ($i = 0; $i < count($this->fields); $i++) {
@@ -446,6 +471,8 @@ abstract class RadioMatrix
 			if ($newValue !== false && $newValue !== null && $newValue != $initialState[$i]) 
 				$this->setField($i, intval($newValue));
 		}
+		
+		return true;
 	}
 	
 	/**
@@ -516,7 +543,7 @@ abstract class RadioMatrix
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.4 2007/11/14 18:41:57 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.5 2007/11/15 16:20:50 adamfranco Exp $
  */
 class RadioMatrixOption {
 
@@ -575,7 +602,7 @@ class RadioMatrixOption {
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.4 2007/11/14 18:41:57 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.5 2007/11/15 16:20:50 adamfranco Exp $
  */
 class RadioMatrixField {
 	
@@ -633,7 +660,18 @@ class RadioMatrixField {
 	 * @access public
 	 * @since 11/12/07
 	 */
-	public $disabledOptions = array();
+	public $disabledOptions;
+	
+	/**
+	 * Constructor
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 11/15/07
+	 */
+	public function __construct () {
+		$this->disabledOptions = array();
+	}
 	
 	
 	/**
@@ -671,7 +709,7 @@ class RadioMatrixField {
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.4 2007/11/14 18:41:57 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.5 2007/11/15 16:20:50 adamfranco Exp $
  */
 class RuleValidationFailedException
 	extends Exception
