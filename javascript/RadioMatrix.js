@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.js,v 1.1 2007/11/05 21:03:34 adamfranco Exp $
+ * @version $Id: RadioMatrix.js,v 1.2 2007/11/15 19:25:54 adamfranco Exp $
  */
 
 /**
@@ -23,7 +23,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.js,v 1.1 2007/11/05 21:03:34 adamfranco Exp $
+ * @version $Id: RadioMatrix.js,v 1.2 2007/11/15 19:25:54 adamfranco Exp $
  */
 function RadioMatrix ( options, fields ) {
 	if ( arguments.length > 0 ) {
@@ -66,12 +66,13 @@ function RadioMatrix ( options, fields ) {
 	/**
 	 * Set one of the fields to a given option
 	 * 
-	 * @param DOM_Element field
+	 * @param DOM_Element changedField
+	 * @param event
 	 * @return void
 	 * @access public
 	 * @since 11/2/07
 	 */
-	RadioMatrix.prototype.setField = function (changedField) {
+	RadioMatrix.prototype.setField = function (changedField, event) {
 		var initialState = this.getState();
 		var fieldIndex = this.getFieldIndexByName(changedField.name);
 		var optionIndex = changedField.value
@@ -94,6 +95,18 @@ function RadioMatrix ( options, fields ) {
 		this.validateState();
 		
 		// Apply the new state to the form fields
+		this.applyChangesToForm(changedField);
+	}
+	
+	/**
+	 * Apply changes to our internal field values to the form representation
+	 * 
+	 * @param DOM_Element changedField
+	 * @return void
+	 * @access public
+	 * @since 11/15/07
+	 */
+	RadioMatrix.prototype.applyChangesToForm = function (changedField) {
 		var form = changedField.form;
 		for (var i = 0; i < this.fields.length; i++) {
 			var fieldList = form[this.fields[i].fieldname];
@@ -277,3 +290,146 @@ function RadioMatrix ( options, fields ) {
 		descWindow.document.close();
 		descWindow.focus();
 	}
+
+
+/**
+ * @since 11/15/07
+ * @package polyphony.wizard.components
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: RadioMatrix.js,v 1.2 2007/11/15 19:25:54 adamfranco Exp $
+ */
+
+HierarchicalRadioMatrix.prototype = new RadioMatrix();
+HierarchicalRadioMatrix.prototype.constructor = HierarchicalRadioMatrix;
+HierarchicalRadioMatrix.superclass = RadioMatrix.prototype;
+
+/**
+ * <##>
+ * 
+ * @since 11/15/07
+ * @package polyphony.wizard.components
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: RadioMatrix.js,v 1.2 2007/11/15 19:25:54 adamfranco Exp $
+ */
+function HierarchicalRadioMatrix ( options, fields ) {
+	if ( arguments.length > 0 ) {
+		this.init( options, fields );
+	}
+}
+
+	/**
+	 * Validate the state of the fields. Throws an exception on failure.
+	 *
+	 * @return void
+	 * @access public
+	 * @since 11/2/07
+	 */
+	HierarchicalRadioMatrix.prototype.validateState = function () {
+		for (var i = 0; i < this.fields.length; i++) {
+			var field = this.fields[i];
+			
+			for (var j = 0; j < field.childFieldnames.length; j++) {
+				var child = this.fields[this.getFieldIndexByName(field.childFieldnames[j])];
+				if (!this.isRelationValid(child, field))
+					throw ("Rule validation failed");
+			}
+		}
+	}	
+	
+	/**
+	 * Set one of the fields to a given option
+	 * 
+	 * @param DOM_Element changedField
+	 * @param event
+	 * @return void
+	 * @access public
+	 * @since 11/2/07
+	 */
+	HierarchicalRadioMatrix.prototype.setField = function (changedField, event) {
+		var initialState = this.getState();
+		var fieldIndex = this.getFieldIndexByName(changedField.name);
+		var optionIndex = changedField.value
+		
+		
+		try {
+			this.fields[fieldIndex].value = Number(optionIndex);
+			
+			// if shift was held down, then set all child fields to the same option.
+			if (event.shiftKey) {
+				this.setFieldsDown(this.fields[fieldIndex], Number(optionIndex));
+			}
+			
+			// Apply the rules to previous fields
+			this.applyRulesUp(this.fields[fieldIndex]);
+			
+			// Apply the rules to child fields
+			this.applyRulesDown(this.fields[fieldIndex]);
+				
+		} catch (e) {
+			alert(e.message);
+			this.setState(initialState);
+		}
+		
+		this.validateState();
+		
+		this.applyChangesToForm(changedField);
+	}
+	
+	/**
+	 * Set the value of decendent fields to the same as the field passed
+	 * 
+	 * @param object field
+	 * @param integer optionIndex
+	 * @return void
+	 * @access public
+	 * @since 11/15/07
+	 */
+	HierarchicalRadioMatrix.prototype.setFieldsDown = function (field, optionIndex) {
+		for (var j = 0; j < field.childFieldnames.length; j++) {
+			var child = this.fields[this.getFieldIndexByName(field.childFieldnames[j])];
+			child.value = optionIndex;
+			this.setFieldsDown(child, optionIndex);
+		}
+	}
+	
+	/**
+	 * Apply Rules to parent fields
+	 * 
+	 * @param object field
+	 * @return void
+	 * @access public
+	 * @since 11/15/07
+	 */
+	HierarchicalRadioMatrix.prototype.applyRulesUp = function (field) {
+		if (!field.parentFieldname)
+			return;
+		
+		var parent = this.fields[this.getFieldIndexByName(field.parentFieldname)];
+		this.applyRuleToAbove(field, parent);
+		this.applyRulesUp(parent);
+		this.applyRulesDown(parent);
+	}
+	
+	/**
+	 * Apply Rules to parent fields
+	 * 
+	 * @param object field
+	 * @return void
+	 * @access public
+	 * @since 11/15/07
+	 */
+	HierarchicalRadioMatrix.prototype.applyRulesDown = function (field) {
+		for (var j = 0; j < field.childFieldnames.length; j++) {
+			var child = this.fields[this.getFieldIndexByName(field.childFieldnames[j])];
+			
+			this.applyRuleToBelow(child, field);
+			this.applyRulesDown(child);
+		}
+	}
+

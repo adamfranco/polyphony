@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.45 2007/11/05 21:03:31 adamfranco Exp $
+ * @version $Id: polyphony.inc.php,v 1.46 2007/11/15 19:24:46 adamfranco Exp $
  */
 
 /**
@@ -26,6 +26,7 @@ define("POLYPHONY", dirname(__FILE__));
 
 
 require_once(dirname(__FILE__)."/main/library/Wizard/SimpleStepWizard.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/SingleStepWizard.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/LogicStepWizard.class.php"); 
 // components:
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WizardStep.class.php");
@@ -56,6 +57,7 @@ require_once(dirname(__FILE__)."/main/library/Wizard/Components/WAgentBrowser.cl
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WColorWheel.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSaveWithChoiceButtonList.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/RowRadioMatrix.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/Components/RowHierarchicalRadioMatrix.class.php");
 
 //gui components
 require_once(POLYPHONY."/main/library/GUIWizardComponents/Generic/WStyleComponent.class.php");
