@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCancelButton.class.php,v 1.8 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WCancelButton.class.php,v 1.9 2007/11/16 15:59:10 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCancelButton.class.php,v 1.8 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WCancelButton.class.php,v 1.9 2007/11/16 15:59:10 adamfranco Exp $
  */
 class WCancelButton extends WEventButton {
 	function WCancelButton($label=null) {
@@ -32,6 +32,20 @@ class WCancelButton extends WEventButton {
 		$this->addOnClick("ignoreValidation(this.form);");
 	}
 
+	/**
+	 * Virtual constructor for a custom label
+	 * 
+	 * @param string $label
+	 * @return object WSaveButton
+	 * @access public
+	 * @static
+	 * @since 7/27/05
+	 */
+	static function withLabel($label) {
+		$button = new WCancelButton();
+		$button->setLabel($label);
+		return $button;
+	}
 }
 
 ?>

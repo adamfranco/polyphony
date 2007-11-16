@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SingleStepWizard.class.php,v 1.4 2007/10/10 22:58:55 adamfranco Exp $
+ * @version $Id: SingleStepWizard.class.php,v 1.5 2007/11/16 15:59:09 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SimpleStepWizard.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/SimpleStepWizard.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SingleStepWizard.class.php,v 1.4 2007/10/10 22:58:55 adamfranco Exp $
+ * @version $Id: SingleStepWizard.class.php,v 1.5 2007/11/16 15:59:09 adamfranco Exp $
  */
 class SingleStepWizard 
 	extends SimpleStepWizard
@@ -39,6 +39,19 @@ class SingleStepWizard
 			throwError(new Error("SingleStepWizards can only have one step. Cannot add '".$name."' step.", "Wizard"));
 		}
 		return parent::addStep($name, $step);
+	}
+	
+	/**
+	 * Create a new SingleStepWizard with the text-passed as the layout
+	 * 
+	 * @param string $text
+	 * @return object 
+	 * @access public
+	 * @static
+	 * @since 11/15/07
+	 */
+	public static function withText ($text, $class = 'SingleStepWizard') {
+		return parent::withText($text, $class);
 	}
 	
 	/**
