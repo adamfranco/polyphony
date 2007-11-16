@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ButtonPressedListener.class.php,v 1.1 2007/11/16 18:50:59 adamfranco Exp $
+ * @version $Id: ButtonPressedListener.class.php,v 1.2 2007/11/16 20:23:04 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ButtonPressedListener.class.php,v 1.1 2007/11/16 18:50:59 adamfranco Exp $
+ * @version $Id: ButtonPressedListener.class.php,v 1.2 2007/11/16 20:23:04 adamfranco Exp $
  */
 class ButtonPressedListener
 	extends WizardEventListener
@@ -150,7 +150,7 @@ class ButtonPressedListener
 	public function handleEvent ($eventType, $source, $context) {
 		if (is_null($this->eventType))
 			throw new Exception("Invalid listener configuration, no event type set.");
-			
+		
 		if ($eventType == $this->eventType) {
 			$this->pressed = true;
 		}

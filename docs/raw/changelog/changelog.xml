@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.115 2007/11/16 18:50:55 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.116 2007/11/16 20:23:02 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -14,6 +14,11 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<change author='adam' date='2007-11-16'>
+			AbstractActions: WizardAction now retrieves the return URL before
+			destroying the wizard object. This allows data submitted in the Wizard
+			to be used for determining the return URL.
+		</change>
 		<change author='adam' date='2007-11-16'>
 			Wizard: Moved EventListeners to their own directory.
 		</change>

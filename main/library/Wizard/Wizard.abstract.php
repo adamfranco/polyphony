@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.21 2007/11/16 18:50:56 adamfranco Exp $
+ * @version $Id: Wizard.abstract.php,v 1.22 2007/11/16 20:23:04 adamfranco Exp $
  */
 
 /*
@@ -31,7 +31,7 @@ require_once(POLYPHONY."/main/library/Wizard/Listeners/WUpdateListener.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.21 2007/11/16 18:50:56 adamfranco Exp $
+ * @version $Id: Wizard.abstract.php,v 1.22 2007/11/16 20:23:04 adamfranco Exp $
  * @author Gabe Schine
  * @abstract
  */
@@ -340,7 +340,9 @@ END;
 	 */
 	function addEventListener ($eventListener) {
 		ArgumentValidator::validate($eventListener, HasMethodsValidatorRule::getRule("handleEvent"), true);
-		$this->_eventListeners[] =$eventListener;
+		$this->_eventListeners[] = $eventListener;
+		
+		return $eventListener;
 	}
 	
 	/**
