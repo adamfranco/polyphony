@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.114 2007/11/16 18:39:35 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.115 2007/11/16 18:50:55 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -14,6 +14,9 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<change author='adam' date='2007-11-16'>
+			Wizard: Moved EventListeners to their own directory.
+		</change>
 		<change author='adam' date='2007-11-16'>
 			Wizard: EventButton class hierarchy has been cleaned up a bit to 
 			allow support for a button press to trigger multiple events.

@@ -7,10 +7,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WUpdateListener.class.php,v 1.4 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WUpdateListener.class.php,v 1.1 2007/11/16 18:50:59 adamfranco Exp $
  */ 
 
-require_once(POLYPHONY."/main/library/Wizard/Components/WizardEventListener.abstract.php");
+require_once(POLYPHONY."/main/library/Wizard/Listeners/WizardEventListener.abstract.php");
 
 /**
  * Supplies an event listener to a {@link Wizard} for update events, this will
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WizardEventListener.abst
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WUpdateListener.class.php,v 1.4 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WUpdateListener.class.php,v 1.1 2007/11/16 18:50:59 adamfranco Exp $
  */
 class WUpdateListener 
 	extends WizardEventListener 

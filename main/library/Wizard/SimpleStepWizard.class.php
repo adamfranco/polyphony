@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleStepWizard.class.php,v 1.14 2007/10/10 22:58:54 adamfranco Exp $
+ * @version $Id: SimpleStepWizard.class.php,v 1.15 2007/11/16 18:50:56 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/SimpleWizard.class.php");
@@ -17,7 +17,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WPreviousStepButton.clas
 require_once(POLYPHONY."/main/library/Wizard/Components/WSaveButton.class.php");
 require_once(POLYPHONY."/main/library/Wizard/Components/WCancelButton.class.php");
 require_once(POLYPHONY."/main/library/Wizard/Components/WStepDisplayBar.class.php");
-require_once(POLYPHONY."/main/library/Wizard/Components/WStepChangedListener.class.php");
+require_once(POLYPHONY."/main/library/Wizard/Listeners/WStepChangedListener.class.php");
 
 /**
  * typecomment
@@ -28,7 +28,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WStepChangedListener.cla
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleStepWizard.class.php,v 1.14 2007/10/10 22:58:54 adamfranco Exp $
+ * @version $Id: SimpleStepWizard.class.php,v 1.15 2007/11/16 18:50:56 adamfranco Exp $
  */
 class SimpleStepWizard extends SimpleWizard {
 	var $_stepContainer;

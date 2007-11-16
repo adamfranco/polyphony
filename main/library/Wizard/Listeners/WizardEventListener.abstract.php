@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardEventListener.abstract.php,v 1.3 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WizardEventListener.abstract.php,v 1.1 2007/11/16 18:50:59 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -22,7 +22,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WizardEventListener.abstract.php,v 1.3 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WizardEventListener.abstract.php,v 1.1 2007/11/16 18:50:59 adamfranco Exp $
  */
 class WizardEventListener 
 	extends WizardComponent 

@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.46 2007/11/15 19:24:46 adamfranco Exp $
+ * @version $Id: polyphony.inc.php,v 1.47 2007/11/16 18:50:55 adamfranco Exp $
  */
 
 /**
@@ -41,7 +41,7 @@ require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSelectList.clas
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSelectOrNew.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WTextArea.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WVerticalRadioList.class.php");
-require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSaveCancelListener.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/Listeners/WSaveCancelListener.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WRepeatableComponentCollection.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WOrderedRepeatableComponentCollection.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WNewOnlyEditableRepeatableComponentCollection.class.php");
@@ -58,6 +58,8 @@ require_once(dirname(__FILE__)."/main/library/Wizard/Components/WColorWheel.clas
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSaveWithChoiceButtonList.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/RowRadioMatrix.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/RowHierarchicalRadioMatrix.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/Listeners/ButtonPressedListener.class.php");
+
 
 //gui components
 require_once(POLYPHONY."/main/library/GUIWizardComponents/Generic/WStyleComponent.class.php");

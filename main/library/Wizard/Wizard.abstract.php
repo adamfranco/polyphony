@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.20 2007/10/16 15:13:49 adamfranco Exp $
+ * @version $Id: Wizard.abstract.php,v 1.21 2007/11/16 18:50:56 adamfranco Exp $
  */
 
 /*
@@ -15,7 +15,7 @@
 
 require_once(HARMONI."/GUIManager/Components/Block.class.php");
 require_once(POLYPHONY."/main/library/Wizard/WizardComponentWithChildren.abstract.php");
-require_once(POLYPHONY."/main/library/Wizard/Components/WUpdateListener.class.php");
+require_once(POLYPHONY."/main/library/Wizard/Listeners/WUpdateListener.class.php");
 
 /**
  * The Wizard class provides a system for posting, retrieving, and
@@ -31,7 +31,7 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WUpdateListener.class.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.20 2007/10/16 15:13:49 adamfranco Exp $
+ * @version $Id: Wizard.abstract.php,v 1.21 2007/11/16 18:50:56 adamfranco Exp $
  * @author Gabe Schine
  * @abstract
  */
