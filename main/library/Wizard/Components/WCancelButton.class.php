@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCancelButton.class.php,v 1.9 2007/11/16 15:59:10 adamfranco Exp $
+ * @version $Id: WCancelButton.class.php,v 1.10 2007/11/16 18:39:40 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php");
@@ -21,10 +21,15 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCancelButton.class.php,v 1.9 2007/11/16 15:59:10 adamfranco Exp $
+ * @version $Id: WCancelButton.class.php,v 1.10 2007/11/16 18:39:40 adamfranco Exp $
  */
-class WCancelButton extends WEventButton {
-	function WCancelButton($label=null) {
+class WCancelButton 
+	extends WEventButton 
+{
+
+	function __construct($label=null) {
+		parent::__construct();
+		
 		if(is_null($label)){
 			$label = dgettext("polyphony", "Cancel");
 		}

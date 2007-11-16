@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WChooseOptionButton.class.php,v 1.5 2007/10/10 22:58:55 adamfranco Exp $
+ * @version $Id: WChooseOptionButton.class.php,v 1.6 2007/11/16 18:39:40 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/WEventButton.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/WEventButton.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WChooseOptionButton.class.php,v 1.5 2007/10/10 22:58:55 adamfranco Exp $
+ * @version $Id: WChooseOptionButton.class.php,v 1.6 2007/11/16 18:39:40 adamfranco Exp $
  */
 class WChooseOptionButton 
 	extends WEventButton
@@ -80,13 +80,10 @@ class WChooseOptionButton
 	 * @return boolean - TRUE if everything is OK
 	 */
 	function update ($fieldName) {
+		parent::update($fieldName);
 		$val = RequestContext::value($fieldName);
 		$option = stripslashes(RequestContext::value($fieldName."_option"));
 		if ($val) {
-			// trigger the save event on the wizard
-			$wizard =$this->getWizard();
-			$wizard->triggerLater($this->_event, $wizard);
-			$this->_pressed = true;
 			$this->_option = $option;
 		}
 	}

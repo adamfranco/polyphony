@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveContinueButton.class.php,v 1.8 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WSaveContinueButton.class.php,v 1.9 2007/11/16 18:39:40 adamfranco Exp $
  */ 
 
 /**
@@ -18,13 +18,15 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveContinueButton.class.php,v 1.8 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WSaveContinueButton.class.php,v 1.9 2007/11/16 18:39:40 adamfranco Exp $
  */
  
 require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php");
 
  
-class WSaveContinueButton extends WEventButton {
+class WSaveContinueButton 
+	extends WEventButton 
+{
 	
 	
 	
@@ -39,7 +41,9 @@ class WSaveContinueButton extends WEventButton {
 	 * @access public
 	 * @since 5/31/06
 	 */
-	function WSaveContinueButton ($stepContainer) {		
+	function __construct ($stepContainer) {		
+		parent::__construct();
+		
 		$this->setEventAndLabel("edu.middlebury.polyphony.wizard.save",'Save Changes and Continue');
 		$this->_stepContainer =$stepContainer;
 	}

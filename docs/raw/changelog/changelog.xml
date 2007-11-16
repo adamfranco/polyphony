@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.113 2007/11/15 19:25:45 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.114 2007/11/16 18:39:35 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -14,6 +14,14 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<change author='adam' date='2007-11-16'>
+			Wizard: EventButton class hierarchy has been cleaned up a bit to 
+			allow support for a button press to trigger multiple events.
+		</change>
+		<change author='adam' date='2007-11-16'>
+			Wizard: Added SingleStepWizard::withText() and WCancelButton::withLabel()
+			methods to enable customization by actions who use them.
+		</change>
 		<new author='adam' date='2007-11-15' ref='1828372' reftype='segue_fr'>
 			Wizard: New HierarchicalRadioMatrix component provides a hierarchically-dependent
 			list of options.

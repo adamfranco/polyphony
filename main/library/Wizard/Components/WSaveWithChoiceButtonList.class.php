@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveWithChoiceButtonList.class.php,v 1.4 2007/10/10 22:58:56 adamfranco Exp $
+ * @version $Id: WSaveWithChoiceButtonList.class.php,v 1.5 2007/11/16 18:39:40 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
@@ -23,7 +23,7 @@ require_once(POLYPHONY.'/main/library/Wizard/WizardComponent.abstract.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveWithChoiceButtonList.class.php,v 1.4 2007/10/10 22:58:56 adamfranco Exp $
+ * @version $Id: WSaveWithChoiceButtonList.class.php,v 1.5 2007/11/16 18:39:40 adamfranco Exp $
  */
 class WSaveWithChoiceButtonList
 	extends WizardComponent
@@ -38,9 +38,8 @@ class WSaveWithChoiceButtonList
 	
 	var $_items = array();
 	var $_extendedHtml = array();
-	
 	var $_event = "edu.middlebury.polyphony.wizard.save";
-	
+		
 	/**
 	 * Virtual constructor - creates this object with the specified layout.
 	 * @param string $pre A string to prepend onto the markup block (ex, "<ul>")
@@ -67,7 +66,9 @@ class WSaveWithChoiceButtonList
 	 * @access public
 	 * @return WRadioList
 	 */
-	function WSaveWithChoiceButtonList () {
+	public function __construct () {
+// 		parent::__construct();
+		
 		$this->_pre = $this->_post = '';
 		$this->_eachPost = "\n<br/>";
 	}

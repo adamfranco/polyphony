@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WPreviousStepButton.class.php,v 1.8 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WPreviousStepButton.class.php,v 1.9 2007/11/16 18:39:40 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php");
@@ -20,9 +20,11 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WPreviousStepButton.class.php,v 1.8 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WPreviousStepButton.class.php,v 1.9 2007/11/16 18:39:40 adamfranco Exp $
  */
-class WPreviousStepButton extends WEventButton {
+class WPreviousStepButton 
+	extends WEventButton 
+{
 	var $_stepContainer;
 
 	/**
@@ -31,7 +33,9 @@ class WPreviousStepButton extends WEventButton {
 	 * @access public
 	 * @return void
 	 */
-	function WPreviousStepButton ($stepContainer) {
+	function __construct ($stepContainer) {
+		parent::__construct();
+		
 		$this->setLabel(_("Previous"));
 		$this->_stepContainer =$stepContainer;
 	}

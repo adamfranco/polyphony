@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.class.php,v 1.16 2007/10/10 22:58:55 adamfranco Exp $
+ * @version $Id: WEventButton.class.php,v 1.17 2007/11/16 18:39:40 adamfranco Exp $
  */ 
 
 /**
@@ -19,15 +19,26 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WEventButton.class.php,v 1.16 2007/10/10 22:58:55 adamfranco Exp $
+ * @version $Id: WEventButton.class.php,v 1.17 2007/11/16 18:39:40 adamfranco Exp $
  */
 class WEventButton 
 	extends WizardComponent
 {
-	var $_event = "nop";
+	private $events;
 	var $_label = "NO LABEL";
 	var $_pressed = false;
 	var $_onclick = null;
+	
+	/**
+	 * Constructor
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 11/16/07
+	 */
+	public function __construct () {
+		$this->events = array("nop");
+	}
 	
 	/**
 	 * virtual constructor
@@ -66,8 +77,45 @@ class WEventButton
 	 * @return void
 	 */
 	function setEventAndLabel ($event, $label) {
-		$this->_label = $label;
-		$this->_event = $event;
+		$this->setLabel($label);
+		$this->setEvent($event);
+	}
+	
+	/**
+	 * Set the event type for the button
+	 * 
+	 * @param string $event
+	 * @return void
+	 * @access public
+	 * @since 11/16/07
+	 */
+	public function setEvent ($event) {
+		ArgumentValidator::validate($event, NonZeroLengthStringValidatorRule::getRule());
+		$this->events = array($event);
+	}
+	
+	/**
+	 * Add an event type for the button
+	 * 
+	 * @param string $event
+	 * @return void
+	 * @access public
+	 * @since 11/16/07
+	 */
+	public function addEvent ($event) {
+		ArgumentValidator::validate($event, NonZeroLengthStringValidatorRule::getRule());
+		$this->events[] = $event;
+	}
+	
+	/**
+	 * Answer the events triggered by this button
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 11/16/07
+	 */
+	public function getEvents () {
+		return $this->events;
 	}
 	
 	/**
@@ -120,7 +168,8 @@ class WEventButton
 		if ($val) {
 			// trigger the save event on the wizard
 			$wizard =$this->getWizard();
-			$wizard->triggerLater($this->_event, $wizard);
+			foreach ($this->getEvents() as $event)
+				$wizard->triggerLater($event, $wizard);
 			$this->_pressed = true;
 		}
 	}

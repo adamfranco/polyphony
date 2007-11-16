@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveButton.class.php,v 1.6 2007/10/10 22:58:56 adamfranco Exp $
+ * @version $Id: WSaveButton.class.php,v 1.7 2007/11/16 18:39:40 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php");
@@ -21,10 +21,15 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WEventButton.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSaveButton.class.php,v 1.6 2007/10/10 22:58:56 adamfranco Exp $
+ * @version $Id: WSaveButton.class.php,v 1.7 2007/11/16 18:39:40 adamfranco Exp $
  */
-class WSaveButton extends WEventButton {
-	function WSaveButton() {
+class WSaveButton 
+	extends WEventButton 
+{
+
+	function __construct() {
+		parent::__construct();
+		
 		$this->setEventAndLabel("edu.middlebury.polyphony.wizard.save", dgettext("polyphony","Save"));
 	}
 	

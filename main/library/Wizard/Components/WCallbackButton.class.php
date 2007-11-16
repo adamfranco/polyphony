@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCallbackButton.class.php,v 1.2 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WCallbackButton.class.php,v 1.3 2007/11/16 18:39:39 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WCallbackButton.class.php,v 1.2 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WCallbackButton.class.php,v 1.3 2007/11/16 18:39:39 adamfranco Exp $
  */
 class WCallbackButton 
 	extends WEventButton
@@ -38,7 +38,11 @@ class WCallbackButton
 	function update ($fieldName) {
 		$val = RequestContext::value($fieldName);
 		if ($val) {
-			return eval($this->_event);
+			$events = $this->getEvents();
+			if (count($events) !== 1)
+				throw new Exception("WCallbackButton must have one and only one event.");
+				
+			return eval($events[0]);
 		}
 		return true;
 	}

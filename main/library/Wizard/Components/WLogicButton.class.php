@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicButton.class.php,v 1.9 2007/10/10 22:58:56 adamfranco Exp $
+ * @version $Id: WLogicButton.class.php,v 1.10 2007/11/16 18:39:40 adamfranco Exp $
  */ 
 
  require_once(POLYPHONY."/main/library/Wizard/Components/WLogicRule.class.php");
@@ -20,9 +20,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WLogicButton.class.php,v 1.9 2007/10/10 22:58:56 adamfranco Exp $
+ * @version $Id: WLogicButton.class.php,v 1.10 2007/11/16 18:39:40 adamfranco Exp $
  */
-class WLogicButton extends WEventButton {
+class WLogicButton 
+	extends WEventButton 
+{
 		
 	var $_logic = null;
 	var $_label = "NO LABEL";
