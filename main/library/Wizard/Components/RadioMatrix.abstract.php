@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.6 2007/11/15 19:19:35 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.7 2007/11/27 22:04:20 adamfranco Exp $
  */ 
 
 /**
@@ -29,7 +29,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.6 2007/11/15 19:19:35 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.7 2007/11/27 22:04:20 adamfranco Exp $
  */
 abstract class RadioMatrix
 	extends WizardComponent
@@ -122,7 +122,7 @@ abstract class RadioMatrix
 	 * @param string $displayText
 	 * @param optional mixed $initialValue null or an option value.
 	 * @param optional mixed $rule One of null, '<', '<=', '==', '>=', '>'.
-	 * @return void
+	 * @return object RadioMatrixField
 	 * @access public
 	 * @since 11/1/07
 	 */
@@ -255,6 +255,20 @@ abstract class RadioMatrix
 	public function makeDisabled ($fieldKey, $optionValue) {
 		$field = $this->fields[$this->getFieldIndex($fieldKey)];
 		$field->disabledOptions[] = $this->getOptionNumber($optionValue);
+	}
+	
+	/**
+	 * Make the values of a field hidden. The values will be validated against, but not
+	 * shown to the user.
+	 * 
+	 * @param string $fieldKey
+	 * @return void
+	 * @access public
+	 * @since 11/26/07
+	 */
+	public function makeValuesHidden ($fieldKey) {
+		$field = $this->fields[$this->getFieldIndex($fieldKey)];
+		$field->valuesHidden = true;
 	}
 	
 	/**
@@ -497,6 +511,10 @@ abstract class RadioMatrix
 	 * @since 11/1/07
 	 */
 	protected function getMatrixButton ($fieldName, $fieldIndex, $optionIndex) {
+		// return an empty string if the value is hidden
+		if ($this->fields[$fieldIndex]->valuesHidden)
+			return '';
+		
 		$componentId = RequestContext::name($fieldName);
 		ob_start();
 		print "<input type='radio' ";
@@ -532,8 +550,10 @@ abstract class RadioMatrix
 		
 		print "\nwindow.".$componentId." = new ".$this->jsClass."(";
 		print "\n\t".json_encode($this->options).", ";
-		foreach ($this->fields as $field)
+		foreach ($this->fields as $field) {
+			// @todo - Hidden fields should not have their values exposed.
 			$field->setFieldname($fieldName);
+		}
 		print "\n\t".json_encode($this->fields)."\n); ";
 		
 		print "
@@ -554,7 +574,7 @@ abstract class RadioMatrix
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.6 2007/11/15 19:19:35 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.7 2007/11/27 22:04:20 adamfranco Exp $
  */
 class RadioMatrixOption {
 
@@ -613,7 +633,7 @@ class RadioMatrixOption {
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.6 2007/11/15 19:19:35 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.7 2007/11/27 22:04:20 adamfranco Exp $
  */
 class RadioMatrixField {
 	
@@ -681,6 +701,13 @@ class RadioMatrixField {
 	public $disabledOptions;
 	
 	/**
+	 * @var boolean $valuesHidden;  
+	 * @access public
+	 * @since 11/15/07
+	 */
+	public $valuesHidden = false;
+	
+	/**
 	 * Constructor
 	 * 
 	 * @return void
@@ -738,7 +765,7 @@ class RadioMatrixField {
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.6 2007/11/15 19:19:35 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.7 2007/11/27 22:04:20 adamfranco Exp $
  */
 class RuleValidationFailedException
 	extends Exception

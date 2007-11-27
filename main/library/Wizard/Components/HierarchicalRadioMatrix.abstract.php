@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HierarchicalRadioMatrix.abstract.php,v 1.1 2007/11/15 19:25:57 adamfranco Exp $
+ * @version $Id: HierarchicalRadioMatrix.abstract.php,v 1.2 2007/11/27 22:04:20 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RadioMatrix.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/RadioMatrix.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HierarchicalRadioMatrix.abstract.php,v 1.1 2007/11/15 19:25:57 adamfranco Exp $
+ * @version $Id: HierarchicalRadioMatrix.abstract.php,v 1.2 2007/11/27 22:04:20 adamfranco Exp $
  */
 abstract class HierarchicalRadioMatrix
 	extends RadioMatrix
@@ -78,7 +78,7 @@ abstract class HierarchicalRadioMatrix
 	 * @param string $displayText
 	 * @param optional mixed $initialValue null or an option value.
 	 * @param optional mixed $rule One of null, '<', '<=', '==', '>=', '>'.
-	 * @return void
+	 * @return object RadioMatrixField
 	 * @access public
 	 * @since 11/1/07
 	 */
@@ -87,13 +87,16 @@ abstract class HierarchicalRadioMatrix
 			parent::addField($key, $displayText, $initialValue, $rule);
 		} catch (RuleValidationFailedException $e) {}
 		
-		$this->rootFields[] = $this->fields[count($this->fields) - 1];
+		$field = $this->fields[count($this->fields) - 1];
+		$this->rootFields[] = $field;
 		
 		try {
 			$this->validateState();
 		} catch (RuleValidationFailedException $e) {
 			throw new RuleValidationFailedException("Default state does not validate against the rules supplied. Please change either the default values of the fields or the rules in order to have a valid initial state.");
 		}
+		
+		return $field;
 	}
 		
 	/**
@@ -117,7 +120,7 @@ abstract class HierarchicalRadioMatrix
 	 * @param string $displayText
 	 * @param optional mixed $initialValue null or an option value.
 	 * @param optional mixed $rule One of null, '<', '<=', '==', '>=', '>'.
-	 * @return void
+	 * @return object RadioMatrixField
 	 * @access public
 	 * @since 11/1/07
 	 */
@@ -142,6 +145,8 @@ abstract class HierarchicalRadioMatrix
 		} catch (RuleValidationFailedException $e) {
 			throw new RuleValidationFailedException("Default state does not validate against the rules supplied. Please change either the default values of the fields or the rules in order to have a valid initial state.");
 		}
+		
+		return $field;
 	}
 	
 	/**
@@ -249,7 +254,7 @@ abstract class HierarchicalRadioMatrix
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HierarchicalRadioMatrix.abstract.php,v 1.1 2007/11/15 19:25:57 adamfranco Exp $
+ * @version $Id: HierarchicalRadioMatrix.abstract.php,v 1.2 2007/11/27 22:04:20 adamfranco Exp $
  */
 class HierarchicalRadioMatrixField
 	extends RadioMatrixField 

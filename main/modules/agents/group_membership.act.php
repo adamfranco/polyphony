@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_membership.act.php,v 1.40 2007/11/07 19:03:40 adamfranco Exp $
+ * @version $Id: group_membership.act.php,v 1.41 2007/11/27 22:04:20 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: group_membership.act.php,v 1.40 2007/11/07 19:03:40 adamfranco Exp $
+ * @version $Id: group_membership.act.php,v 1.41 2007/11/27 22:04:20 adamfranco Exp $
  */
 class group_membershipAction 
 	extends MainWindowAction
@@ -134,7 +134,9 @@ END;
 		if (($search_criteria = $harmoni->request->get('search_criteria')) && ($search_type = $harmoni->request->get('search_type'))) {
 			$typeParts = explode("::", @html_entity_decode($search_type, ENT_COMPAT, 'UTF-8'));
 			$searchType = new HarmoniType($typeParts[0], $typeParts[1], $typeParts[2]);
-			$agents =$agentManager->getAgentsBySearch($search_criteria, $searchType);
+			$agents = new MultiIteratorIterator;
+			$agents->addIterator($agentManager->getAgentsBySearch($search_criteria, $searchType));
+			$agents->addIterator($agentManager->getGroupsBySearch($search_criteria, $searchType));
 			print "search: " . $search_criteria;
 			
 			print <<<END
