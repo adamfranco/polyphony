@@ -4,15 +4,15 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.117 2007/11/29 17:50:17 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.118 2007/11/29 21:08:34 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="0.10.4" date="The Future">
+	<version number="0.10.4" date="2007-11-29">
 		<releaseNotes>
-			
+			This release fixes a number of wizard issues.
 		</releaseNotes>
 		<change author='adam' date='2007-11-16'>
 			AbstractActions: WizardAction now retrieves the return URL before

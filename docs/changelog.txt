@@ -4,6 +4,40 @@ Name: Polyphony Change Log
 
 
 
+v. 0.10.4 (2007-11-29)
+----------------------------------------------------
+This release fixes a number of wizard issues.
+		
+		
+	* Change: 
+		AbstractActions: WizardAction now retrieves the return URL before destroying
+		the wizard object. This allows data submitted in the Wizard to be used for
+		determining the return URL.
+		(2007-11-16 - Adam Franco)
+		
+	* Change: 
+		Wizard: Moved EventListeners to their own directory.
+		(2007-11-16 - Adam Franco)
+		
+	* Change: 
+		Wizard: EventButton class hierarchy has been cleaned up a bit to allow
+		support for a button press to trigger multiple events.
+		(2007-11-16 - Adam Franco)
+		
+	* Change: 
+		Wizard: Added SingleStepWizard::withText() and WCancelButton::withLabel()
+		methods to enable customization by actions who use them.
+		(2007-11-16 - Adam Franco)
+		
+	* New feature: #1828372 
+		Wizard: New HierarchicalRadioMatrix component provides a
+		hierarchically-dependent list of options.
+		(2007-11-15 - Adam Franco)
+		
+	* New feature: #1828372 
+		Wizard: New WSearchField component.
+		(2007-11-27 - Adam Franco)
+	
 v. 0.10.3 (2007-11-09)
 ----------------------------------------------------
 This release fixes a few bugs and adds a new Wizard component.

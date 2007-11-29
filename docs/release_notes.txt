@@ -3,6 +3,11 @@ Name: Polyphony Release Notes
 (See the Polyphony change log for more details)
 
 
+v. 0.10.4 (2007-11-29)
+----------------------------------------------------
+This release fixes a number of wizard issues.
+
+
 v. 0.10.3 (2007-11-09)
 ----------------------------------------------------
 This release fixes a few bugs and adds a new Wizard component.

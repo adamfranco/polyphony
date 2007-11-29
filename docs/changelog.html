@@ -23,7 +23,27 @@
 </head>
 <body>
 <h1>Polyphony Change Log</h1>
-<h2>Version 0.10.3</h2>
+<h2>Version 0.10.4</h2>
+<h3>2007-11-29</h3>
+<p>This release fixes a number of wizard issues.</p>
+<ul>
+		
+		<li>
+<b>Change:</b> AbstractActions: WizardAction now retrieves the return URL before destroying the wizard object. This allows data submitted in the Wizard to be used for determining the return URL. (<em>2007-11-16 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Wizard: Moved EventListeners to their own directory. (<em>2007-11-16 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Wizard: EventButton class hierarchy has been cleaned up a bit to allow support for a button press to trigger multiple events. (<em>2007-11-16 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Wizard: Added SingleStepWizard::withText() and WCancelButton::withLabel() methods to enable customization by actions who use them. (<em>2007-11-16 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1828372&amp;group_id=&amp;atid=">
+        			#1828372</a> Wizard: New HierarchicalRadioMatrix component provides a hierarchically-dependent list of options. (<em>2007-11-15 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1828372&amp;group_id=&amp;atid=">
+        			#1828372</a> Wizard: New WSearchField component. (<em>2007-11-27 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 0.10.3</h2>
 <h3>2007-11-09</h3>
 <p>This release fixes a few bugs and adds a new Wizard component.</p>
 <ul>
