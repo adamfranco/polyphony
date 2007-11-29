@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.js,v 1.3 2007/11/29 17:50:19 adamfranco Exp $
+ * @version $Id: RadioMatrix.js,v 1.4 2007/11/29 18:06:01 adamfranco Exp $
  */
 
 /**
@@ -23,7 +23,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.js,v 1.3 2007/11/29 17:50:19 adamfranco Exp $
+ * @version $Id: RadioMatrix.js,v 1.4 2007/11/29 18:06:01 adamfranco Exp $
  */
 function RadioMatrix ( options, fields ) {
 	if ( arguments.length > 0 ) {
@@ -110,8 +110,11 @@ function RadioMatrix ( options, fields ) {
 		var form = changedField.form;
 		for (var i = 0; i < this.fields.length; i++) {
 			var fieldList = form[this.fields[i].fieldname];
-			if (!fieldList)
+			if (!fieldList) {
+				// Continue to allow the case of non-displayed fields
+				continue;
 				throw ("RadioGroup '"+this.fields[i].fieldname+"' was not found in the form.");
+			}
 			if (this.fields[i].value < 0 || this.fields[i].value >= fieldList.length)
 				throw ("Value " + this.fields[i].value + " is out of range for the radiogroup " + this.fields[i].fieldname);
 				
@@ -299,7 +302,7 @@ function RadioMatrix ( options, fields ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.js,v 1.3 2007/11/29 17:50:19 adamfranco Exp $
+ * @version $Id: RadioMatrix.js,v 1.4 2007/11/29 18:06:01 adamfranco Exp $
  */
 
 HierarchicalRadioMatrix.prototype = new RadioMatrix();
@@ -315,7 +318,7 @@ HierarchicalRadioMatrix.superclass = RadioMatrix.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.js,v 1.3 2007/11/29 17:50:19 adamfranco Exp $
+ * @version $Id: RadioMatrix.js,v 1.4 2007/11/29 18:06:01 adamfranco Exp $
  */
 function HierarchicalRadioMatrix ( options, fields ) {
 	if ( arguments.length > 0 ) {
