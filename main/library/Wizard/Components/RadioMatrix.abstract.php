@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.7 2007/11/27 22:04:20 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.8 2007/11/29 17:50:19 adamfranco Exp $
  */ 
 
 /**
@@ -29,7 +29,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.7 2007/11/27 22:04:20 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.8 2007/11/29 17:50:19 adamfranco Exp $
  */
 abstract class RadioMatrix
 	extends WizardComponent
@@ -248,13 +248,14 @@ abstract class RadioMatrix
 	 * 
 	 * @param string $fieldKey
 	 * @param string $optionValue
+	 * @param optional string $message
 	 * @return void
 	 * @access public
 	 * @since 11/5/07
 	 */
-	public function makeDisabled ($fieldKey, $optionValue) {
+	public function makeDisabled ($fieldKey, $optionValue, $message = true) {
 		$field = $this->fields[$this->getFieldIndex($fieldKey)];
-		$field->disabledOptions[] = $this->getOptionNumber($optionValue);
+		$field->disabledOptions[$this->getOptionNumber($optionValue)] = $message;
 	}
 	
 	/**
@@ -515,19 +516,28 @@ abstract class RadioMatrix
 		if ($this->fields[$fieldIndex]->valuesHidden)
 			return '';
 		
+		$field = $this->fields[$fieldIndex];
 		$componentId = RequestContext::name($fieldName);
 		ob_start();
-		print "<input type='radio' ";
+		print "&nbsp;&nbsp;<input type='radio' ";
 		print "name='".RequestContext::name($fieldName."_".$fieldIndex)."' ";
 		print "value='".$optionIndex."' ";
-		if ($this->fields[$fieldIndex]->value == $optionIndex)
+		if ($field->value == $optionIndex)
 			print " checked='checked'";
 		
-		if (!$this->isEnabled() || in_array($optionIndex, $this->fields[$fieldIndex]->disabledOptions))
+		if (!$this->isEnabled() || in_array($optionIndex, array_keys($field->disabledOptions))) {
 			print " disabled='disabled'";
-		else
+			print "/>";
+			if (is_string($field->disabledOptions[$optionIndex])) {
+				print "<a href='#' onclick=\"RadioMatrix.openDescriptionWindow(this, this.nextSibling); return false;\">";
+				print _("?")."</a>";
+				print "<textarea style='display: none;'>".$field->disabledOptions[$optionIndex]."</textarea>";
+			} else
+				print "&nbsp;&nbsp;";
+		} else {
 			print " onclick=\"window.".$componentId.".setField(this, event); \" ";
-		print "/>";
+			print "/>&nbsp;&nbsp;";
+		}
 		return ob_get_clean();
 	}
 	
@@ -574,7 +584,7 @@ abstract class RadioMatrix
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.7 2007/11/27 22:04:20 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.8 2007/11/29 17:50:19 adamfranco Exp $
  */
 class RadioMatrixOption {
 
@@ -633,7 +643,7 @@ class RadioMatrixOption {
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.7 2007/11/27 22:04:20 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.8 2007/11/29 17:50:19 adamfranco Exp $
  */
 class RadioMatrixField {
 	
@@ -765,7 +775,7 @@ class RadioMatrixField {
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.7 2007/11/27 22:04:20 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.8 2007/11/29 17:50:19 adamfranco Exp $
  */
 class RuleValidationFailedException
 	extends Exception

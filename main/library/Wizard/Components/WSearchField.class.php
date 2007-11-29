@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSearchField.class.php,v 1.1 2007/11/27 22:04:59 adamfranco Exp $
+ * @version $Id: WSearchField.class.php,v 1.2 2007/11/29 17:50:20 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSearchField.class.php,v 1.1 2007/11/27 22:04:59 adamfranco Exp $
+ * @version $Id: WSearchField.class.php,v 1.2 2007/11/29 17:50:20 adamfranco Exp $
  */
 class WSearchField
 	extends WizardComponent
@@ -126,12 +126,15 @@ class WSearchField
 		ob_start();
 		
 		
-		print "\n\t<input id='".RequestContext::name($fieldName)."' name='".RequestContext::name($fieldName)."' type='text' value=\"".$this->searchTerm."\" onchange='this.controller.update();'/>";
+		print "\n\t<input id='".RequestContext::name($fieldName)."' ";
+		print "name='".RequestContext::name($fieldName)."' type='text' value=\"".$this->searchTerm."\" ";
+// 		print " onchange='this.controller.update();'";
+		print "/>";
 		print "\n\t<input type='submit' value=\""._("Search")."\"/>";
 		
 		print $this->searchSource->getResultsMarkup($fieldName, $this->searchResults);
 		
-		print $this->getJS($fieldName);
+// 		print $this->getJS($fieldName);
 		
 		return ob_get_clean();
 	}
@@ -180,7 +183,7 @@ class WSearchField
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSearchField.class.php,v 1.1 2007/11/27 22:04:59 adamfranco Exp $
+ * @version $Id: WSearchField.class.php,v 1.2 2007/11/29 17:50:20 adamfranco Exp $
  */
 interface WSearchSource {
 		
@@ -229,7 +232,7 @@ interface WSearchSource {
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSearchField.class.php,v 1.1 2007/11/27 22:04:59 adamfranco Exp $
+ * @version $Id: WSearchField.class.php,v 1.2 2007/11/29 17:50:20 adamfranco Exp $
  */
 interface WSearchResult {
 		

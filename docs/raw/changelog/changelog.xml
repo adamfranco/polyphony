@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.116 2007/11/16 20:23:02 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.117 2007/11/29 17:50:17 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -33,6 +33,9 @@
 		<new author='adam' date='2007-11-15' ref='1828372' reftype='segue_fr'>
 			Wizard: New HierarchicalRadioMatrix component provides a hierarchically-dependent
 			list of options.
+		</new>
+		<new author='adam' date='2007-11-27' ref='1828372' reftype='segue_fr'>
+			Wizard: New WSearchField component.
 		</new>
 	</version>
 	<version number="0.10.3" date="2007-11-09">
