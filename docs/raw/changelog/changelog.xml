@@ -4,12 +4,23 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.118 2007/11/29 21:08:34 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.119 2007/12/03 21:57:36 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="0.10.5" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2007-11-30' ref='1841763' reftype='bug'>
+			Fixed a few errors in the Agent editing UI.
+		</fix>
+		<fix author='adam' date='2007-12-03'>
+			Wizard: Fixed tabbing in the HierarchicalRowMatrix.
+		</fix>
+	</version>
 	<version number="0.10.4" date="2007-11-29">
 		<releaseNotes>
 			This release fixes a number of wizard issues.

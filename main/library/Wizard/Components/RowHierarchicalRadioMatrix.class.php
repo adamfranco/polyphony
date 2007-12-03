@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RowHierarchicalRadioMatrix.class.php,v 1.1 2007/11/15 19:25:58 adamfranco Exp $
+ * @version $Id: RowHierarchicalRadioMatrix.class.php,v 1.2 2007/12/03 21:57:36 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/HierarchicalRadioMatrix.abstract.php");
@@ -24,7 +24,7 @@ require_once(dirname(__FILE__)."/HierarchicalRadioMatrix.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RowHierarchicalRadioMatrix.class.php,v 1.1 2007/11/15 19:25:58 adamfranco Exp $
+ * @version $Id: RowHierarchicalRadioMatrix.class.php,v 1.2 2007/12/03 21:57:36 adamfranco Exp $
  */
 class RowHierarchicalRadioMatrix
 	extends HierarchicalRadioMatrix
@@ -88,12 +88,15 @@ class RowHierarchicalRadioMatrix
 				print ' parent';
 			else
 				print ' leaf';
-			print "'>";
+			print "' ";
 			$parent = $fields[$i]->getParent();
+			$numParents = 0;
 			while ($parent) {
-				print "&nbsp;&nbsp;&nbsp;&nbsp;";
+				$numParents++;
 				$parent = $parent->getParent();
 			}
+			print " style='padding-left: ".($numParents * 20)."px;'";
+			print ">";
 			print $fields[$i]->displayText."</th>";
 			for ($j = 0; $j < count($options); $j++) {
 				print "\n\t\t<td";
