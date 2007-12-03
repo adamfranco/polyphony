@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.23 2007/09/19 14:04:52 adamfranco Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.24 2007/12/03 21:56:12 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/modules/coursemanagement/suck_by_agent.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_agent_details.act.php,v 1.23 2007/09/19 14:04:52 adamfranco Exp $
+ * @version $Id: edit_agent_details.act.php,v 1.24 2007/12/03 21:56:12 adamfranco Exp $
  */
 class edit_agent_detailsAction 
 	extends MainWindowAction
@@ -386,7 +386,7 @@ class edit_agent_detailsAction
 	 * in that case, I've arbitrarily entered "Immutable Reality" under type
 	 */
 	 
-	function editAgent($agent){
+	public static function editAgent($agent){
 		
 		//to get the username and maybe the password.
 		$tokenMappingManager = Services::getService("AgentTokenMappingManager");
@@ -538,7 +538,7 @@ class edit_agent_detailsAction
 		}
 		
 		//back to the form
-		editAgent($agent);
+		self::editAgent($agent);
 		
 		return;
 	}
@@ -563,7 +563,7 @@ class edit_agent_detailsAction
 		}
 		
 		//back to the editing form
-		editAgent($agent);
+		self::editAgent($agent);
 		
 		return;
 	 }
@@ -584,7 +584,7 @@ class edit_agent_detailsAction
 			print "Could not delete property.";
 		}
 		
-		editAgent($agent);
+		self::editAgent($agent);
 		
 		return;
 	 
@@ -597,7 +597,7 @@ class edit_agent_detailsAction
 	  function updateDisplayName($agent){
 		if(!RequestContext::value('display_name')){
 			print "If you want to update the display name you'll need to enter a new one!";
-			editAgent($agent);
+			self::editAgent($agent);
 			return false;
 		}
 			
@@ -607,7 +607,7 @@ class edit_agent_detailsAction
 			print "Failed to change display name.";
 		}
 		
-		editAgent($agent);
+		self::editAgent($agent);
 		return;
 		
 	  }
@@ -618,7 +618,7 @@ class edit_agent_detailsAction
 	 * preserving most of the information from the object modify at will
 	 */
 			
-	function _getUsableProperties($agent){
+	public static function _getUsableProperties($agent){
 		$propertiesArray=array();
 		
 		$propertiesIterator =$agent->getProperties();

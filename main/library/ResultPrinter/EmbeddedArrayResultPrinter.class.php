@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.14 2007/10/18 14:24:24 adamfranco Exp $
+ * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.15 2007/12/03 21:55:53 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -18,7 +18,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.14 2007/10/18 14:24:24 adamfranco Exp $
+ * @version $Id: EmbeddedArrayResultPrinter.class.php,v 1.15 2007/12/03 21:55:53 adamfranco Exp $
  */
 
 class EmbeddedArrayResultPrinter 
@@ -265,8 +265,8 @@ class EmbeddedArrayResultPrinter
 			}
 			
 			// find the count of items 
-			while (true) {
-				$item =$this->_array[key($this->_array)];
+			while (true && isset($this->_array[key($this->_array)])) {
+				$item = $this->_array[key($this->_array)];
 				if (!$item) break;
 				next($this->_array);
 				// Ignore this if it should be filtered.
