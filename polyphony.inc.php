@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.48 2007/11/27 22:04:16 adamfranco Exp $
+ * @version $Id: polyphony.inc.php,v 1.49 2007/12/04 18:54:02 adamfranco Exp $
  */
 
 /**
@@ -88,6 +88,8 @@ require_once(dirname(__FILE__)."/main/library/ResultPrinter/EmbeddedArrayResultP
 require_once(dirname(__FILE__)."/main/library/Basket/Basket.class.php");
 
 require_once(dirname(__FILE__)."/main/library/AuthZPrinter.abstract.php");
+
+require_once(dirname(__FILE__)."/main/modules/help/Help.class.php");
 
 
 require_once(dirname(__FILE__)."/main/library/RepositoryInputOutputModules/RepositoryInputOutputModuleManager.class.php");

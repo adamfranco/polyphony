@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.11 2007/10/10 22:58:57 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.12 2007/12/04 18:54:04 adamfranco Exp $
  */
  
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -34,7 +34,7 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.11 2007/10/10 22:58:57 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.12 2007/12/04 18:54:04 adamfranco Exp $
  */
 class browse_helpAction 
 	extends Action
@@ -323,10 +323,11 @@ class browse_helpAction
 		
 		$document =$this->getTopicXmlDocument($topic);
 		
-		$bodyElements =$document->getElementsByPath("/html/body");
-		$body =$bodyElements->item(0);
-				
-		$this->updateSrcTags($document->documentElement, $tocPart->urlPath."/");
+		$bodyElements = $document->getElementsByPath("/html/body");
+		$body = $bodyElements->item(0);
+		
+		if ($tocPart)
+			$this->updateSrcTags($document->documentElement, $tocPart->urlPath."/");
 		
 		// put custom style sheets in the page's head
 		$headElements =$document->getElementsByPath("/html/head");
@@ -482,7 +483,7 @@ class browse_helpAction
 		
 		$tocPart = $this->_tableOfContents->getTableOfContentsPart($topic);
 		
-		if (!$tocPart->file || !file_exists($tocPart->file)) {
+		if (!$tocPart || !$tocPart->file || !file_exists($tocPart->file)) {
 			ob_start();
 			print 	"<html>\n";
 			print 	"	<head>\n";
@@ -520,7 +521,7 @@ class browse_helpAction
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.11 2007/10/10 22:58:57 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.12 2007/12/04 18:54:04 adamfranco Exp $
  */
 class TableOfContentsPart {
 		
