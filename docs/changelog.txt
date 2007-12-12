@@ -4,6 +4,28 @@ Name: Polyphony Change Log
 
 
 
+v. 0.10.5 (2007-12-12)
+----------------------------------------------------
+This release fixes a few minor bugs and adds a new Wizard component.
+		
+		
+	* New feature: #1844322 
+		Wizard: New SearchList component that allows the user to build a list of
+		items over the course of several searches with one or more search terms.
+		(2007-12-12 - Adam Franco)
+		
+	* New feature: #1799957 
+		Help: New Help class with static methods for generating help links.
+		(2007-12-04 - Adam Franco)
+		
+	* Bug Fix: #1841763 
+		Fixed a few errors in the Agent editing UI.
+		(2007-11-30 - Adam Franco)
+		
+	* Bug Fix: 
+		Wizard: Fixed tabbing in the HierarchicalRowMatrix.
+		(2007-12-03 - Adam Franco)
+	
 v. 0.10.4 (2007-11-29)
 ----------------------------------------------------
 This release fixes a number of wizard issues.
