@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSearchField.class.php,v 1.2 2007/11/29 17:50:20 adamfranco Exp $
+ * @version $Id: WSearchField.class.php,v 1.3 2007/12/12 17:19:23 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSearchField.class.php,v 1.2 2007/11/29 17:50:20 adamfranco Exp $
+ * @version $Id: WSearchField.class.php,v 1.3 2007/12/12 17:19:23 adamfranco Exp $
  */
 class WSearchField
 	extends WizardComponent
@@ -28,24 +28,24 @@ class WSearchField
 	
 	/**
 	 * @var object SearchSource $searchSource;  
-	 * @access private
+	 * @access protected
 	 * @since 11/27/07
 	 */
-	private $searchSource;
+	protected $searchSource;
 	
 	/**
 	 * @var string $searchTerm; The term entered 
-	 * @access private
+	 * @access protected
 	 * @since 11/27/07
 	 */
-	private $searchTerm = '';
+	protected $searchTerm = '';
 	
 	/**
 	 * @var array $searchResults;  
-	 * @access private
+	 * @access protected
 	 * @since 11/27/07
 	 */
-	private $searchResults;
+	protected $searchResults;
 	
 	/**
 	 * Constructor
@@ -59,11 +59,9 @@ class WSearchField
 	}
 	
 	/**
-	 * Set the search module, action, and term-field
+	 * Set the search source
 	 * 
-	 * @param string $module
-	 * @param string $action
-	 * @param string $termField
+	 * @param object WSearchSource $searchSource
 	 * @return void
 	 * @access public
 	 * @since 11/27/07
@@ -183,7 +181,7 @@ class WSearchField
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSearchField.class.php,v 1.2 2007/11/29 17:50:20 adamfranco Exp $
+ * @version $Id: WSearchField.class.php,v 1.3 2007/12/12 17:19:23 adamfranco Exp $
  */
 interface WSearchSource {
 		
@@ -232,7 +230,7 @@ interface WSearchSource {
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSearchField.class.php,v 1.2 2007/11/29 17:50:20 adamfranco Exp $
+ * @version $Id: WSearchField.class.php,v 1.3 2007/12/12 17:19:23 adamfranco Exp $
  */
 interface WSearchResult {
 		

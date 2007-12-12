@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.120 2007/12/04 18:54:04 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.121 2007/12/12 17:19:22 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -14,6 +14,10 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<new author='adam' date='2007-12-12' ref='1844322' reftype='segue_fr'>
+			Wizard: New SearchList component that allows the user to build a list of
+			items over the course of several searches with one or more search terms.
+		</new>
 		<new author='adam' date='2007-12-04' ref='1799957' reftype='segue_fr'>
 			Help: New Help class with static methods for generating help links.
 		</new>

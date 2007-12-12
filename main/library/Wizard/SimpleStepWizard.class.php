@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleStepWizard.class.php,v 1.15 2007/11/16 18:50:56 adamfranco Exp $
+ * @version $Id: SimpleStepWizard.class.php,v 1.16 2007/12/12 17:19:23 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/SimpleWizard.class.php");
@@ -28,7 +28,7 @@ require_once(POLYPHONY."/main/library/Wizard/Listeners/WStepChangedListener.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleStepWizard.class.php,v 1.15 2007/11/16 18:50:56 adamfranco Exp $
+ * @version $Id: SimpleStepWizard.class.php,v 1.16 2007/12/12 17:19:23 adamfranco Exp $
  */
 class SimpleStepWizard extends SimpleWizard {
 	var $_stepContainer;
@@ -77,6 +77,17 @@ class SimpleStepWizard extends SimpleWizard {
 	 */
 	function setStep ($name) {
 		$this->_stepContainer->setStep($name);
+	}
+	
+	/**
+	 * Answers the step container
+	 * 
+	 * @return array the steps for this wizard
+	 * @access public
+	 * @since 5/5/06
+	 */
+	function getSteps () {
+		return $this->_stepContainer->getSteps();
 	}
 	
 	/**

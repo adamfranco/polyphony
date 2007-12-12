@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.49 2007/12/04 18:54:02 adamfranco Exp $
+ * @version $Id: polyphony.inc.php,v 1.50 2007/12/12 17:19:21 adamfranco Exp $
  */
 
 /**
@@ -60,6 +60,7 @@ require_once(dirname(__FILE__)."/main/library/Wizard/Components/RowRadioMatrix.c
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/RowHierarchicalRadioMatrix.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Listeners/ButtonPressedListener.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSearchField.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSearchList.class.php");
 
 
 //gui components
