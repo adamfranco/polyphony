@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login_type.act.php,v 1.20 2007/10/12 19:18:50 adamfranco Exp $
+ * @version $Id: login_type.act.php,v 1.21 2007/12/17 16:15:20 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: login_type.act.php,v 1.20 2007/10/12 19:18:50 adamfranco Exp $
+ * @version $Id: login_type.act.php,v 1.21 2007/12/17 16:15:20 adamfranco Exp $
  */
 class login_typeAction
 	extends Action
@@ -92,7 +92,7 @@ class login_typeAction
 				ob_start();
 				
 				print "<p>";
-				print _("Log in failed.");
+				print _("Log in failed. Either your username or password was invalid for this login type.");
 				print "\n<br /><a href='".$harmoni->history->getReturnURL("polyphony/login")."'>";
 				print _("Go Back");
 				print "</a> ";

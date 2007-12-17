@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: logout.act.php,v 1.12 2007/10/16 21:13:15 adamfranco Exp $
+ * @version $Id: logout.act.php,v 1.13 2007/12/17 16:15:20 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: logout.act.php,v 1.12 2007/10/16 21:13:15 adamfranco Exp $
+ * @version $Id: logout.act.php,v 1.13 2007/12/17 16:15:20 adamfranco Exp $
  */
 class logoutAction
 	extends Action
@@ -53,7 +53,7 @@ class logoutAction
 		$authN->destroyAuthentication();
 		
 		// Send us back to where we were
-		$harmoni->history->goBack("polyphony/login");
+		$harmoni->history->goBack("polyphony/display_login");
 		
 		$null = null;
 		return $null;
