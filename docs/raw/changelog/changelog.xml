@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.123 2007/12/17 15:52:04 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.124 2007/12/17 16:16:14 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -14,6 +14,9 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2007-12-17' ref='1844330' reftype='segue_bug'>
+			Logout now directs properly
+		</fix>
 		<fix author='adam' date='2007-12-17' ref='1831272' reftype='segue_bug'>
 			Language: Now doesn't throw an exception when changing the language.
 		</fix>
