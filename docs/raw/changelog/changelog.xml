@@ -4,12 +4,20 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.122 2007/12/12 18:20:32 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.123 2007/12/17 15:52:04 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="0.10.6" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2007-12-17' ref='1831272' reftype='segue_bug'>
+			Language: Now doesn't throw an exception when changing the language.
+		</fix>
+	</version>
 	<version number="0.10.5" date="2007-12-12">
 		<releaseNotes>
 			This release fixes a few minor bugs and adds a new Wizard component.
