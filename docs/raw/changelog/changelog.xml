@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.125 2007/12/17 16:17:30 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.126 2007/12/17 22:25:14 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -14,6 +14,9 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<change author='adam' date='2007-12-17'>
+			UI2: Upgraded Scriptaculous library to latest version.
+		</change>
 		<fix author='adam' date='2007-12-17' ref='1844330' reftype='segue_bug'>
 			Logout now directs properly.
 		</fix>
