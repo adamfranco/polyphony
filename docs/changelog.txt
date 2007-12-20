@@ -4,6 +4,27 @@ Name: Polyphony Change Log
 
 
 
+v. 0.10.6 (2007-12-20)
+----------------------------------------------------
+This release fixes a few minor bugs.
+		
+		
+	* Change: 
+		UI2: Upgraded Scriptaculous library to latest version.
+		(2007-12-17 - Adam Franco)
+		
+	* Bug Fix: #1844330 
+		Logout now directs properly.
+		(2007-12-17 - Adam Franco)
+		
+	* Bug Fix: #1831272 
+		Language: Now doesn't throw an exception when changing the language.
+		(2007-12-17 - Adam Franco)
+		
+	* New feature: 
+		Javascript: Inclusion of the brwsniff.js browser sniffer library.
+		(2007-12-20 - Adam Franco)
+	
 v. 0.10.5 (2007-12-12)
 ----------------------------------------------------
 This release fixes a few minor bugs and adds a new Wizard component.

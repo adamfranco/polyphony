@@ -4,15 +4,15 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.126 2007/12/17 22:25:14 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.127 2007/12/20 21:52:55 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="0.10.6" date="The Future">
+	<version number="0.10.6" date="2007-12-20">
 		<releaseNotes>
-			
+			This release fixes a few minor bugs.
 		</releaseNotes>
 		<change author='adam' date='2007-12-17'>
 			UI2: Upgraded Scriptaculous library to latest version.
@@ -23,6 +23,9 @@
 		<fix author='adam' date='2007-12-17' ref='1831272' reftype='segue_bug'>
 			Language: Now doesn't throw an exception when changing the language.
 		</fix>
+		<new author='adam' date='2007-12-20'>
+			Javascript: Inclusion of the brwsniff.js browser sniffer library.
+		</new>
 	</version>
 	<version number="0.10.5" date="2007-12-12">
 		<releaseNotes>
