@@ -4,6 +4,24 @@ Name: Polyphony Change Log
 
 
 
+v. 0.10.7 (2008-01-14)
+----------------------------------------------------
+New Wizard abilities.
+		
+		
+	* Change: #1871488 
+		Wizard: FCK Editor now named 'Rich-Text' in the UI.
+		(2008-01-14 - Adam Franco)
+		
+	* Change: #1871485 
+		Wizard:The HtmlTextArea now allows for prepending or appending HTML markup.
+		(2008-01-14 - Adam Franco)
+		
+	* New feature: 
+		Wizard: New RequiredStepWizard will not allow saving until certain steps
+		have been visited.
+		(2008-01-14 - Adam Franco)
+	
 v. 0.10.6 (2007-12-20)
 ----------------------------------------------------
 This release fixes a few minor bugs.
