@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.22 2007/11/16 20:23:04 adamfranco Exp $
+ * @version $Id: Wizard.abstract.php,v 1.23 2008/01/14 21:23:25 adamfranco Exp $
  */
 
 /*
@@ -31,7 +31,7 @@ require_once(POLYPHONY."/main/library/Wizard/Listeners/WUpdateListener.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Wizard.abstract.php,v 1.22 2007/11/16 20:23:04 adamfranco Exp $
+ * @version $Id: Wizard.abstract.php,v 1.23 2008/01/14 21:23:25 adamfranco Exp $
  * @author Gabe Schine
  * @abstract
  */
@@ -297,6 +297,35 @@ END;
 	 	}
 	 	
 		return $workingText;
+	 }
+	 
+	 /**
+	  * Similar to parse-text, but only parses fieldname:xxxxxx values and does not
+	  * check for field existance.
+	  * 
+	  * @param string $text
+	  * @param optional string $prepend Optionally prepends the string passed to the field names.
+	  * @return string
+	  * @access public
+	  * @since 1/14/08
+	  * @static
+	  */
+	 public static function parseFieldNameText ($text, $prepend = '') {
+	 	// first get all of the tags we have to work with
+	 	preg_match_all("/\[{2}[^\[]*\]{2}/", $text, $matches);
+	 	
+	 	// to though each of the matches and get the required string
+	 	$workingText = $text;
+	 	foreach ($matches[0] as $match) {
+	 		if (preg_match("/\[{2}fieldname:([^|]*)\]{2}/", $match, $parts)) {
+	 			$propName = $parts[1];
+	 			// fieldname:xxxx 
+				$markup = $prepend.$propName;
+			}
+	 		$workingText = str_replace($match, $markup, $workingText);
+	 	}
+	 	
+	 	return $workingText;
 	 }
 	
 	/**

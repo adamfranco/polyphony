@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HtmlTextArea.class.php,v 1.5 2008/01/14 20:57:19 adamfranco Exp $
+ * @version $Id: HtmlTextArea.class.php,v 1.6 2008/01/14 21:23:26 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/FckTextArea.class.php");
@@ -23,7 +23,7 @@ require_once(dirname(__FILE__)."/FckTextArea.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HtmlTextArea.class.php,v 1.5 2008/01/14 20:57:19 adamfranco Exp $
+ * @version $Id: HtmlTextArea.class.php,v 1.6 2008/01/14 21:23:26 adamfranco Exp $
  */
 class HtmlTextArea
 	extends WTextArea
@@ -86,8 +86,8 @@ class HtmlTextArea
 		$this->editorChoice = new WSelectList;
 		$this->editorChoice->addOnChange('this.form.submit();');
 		
-		$this->addEditor('none', _('None'), new WTextArea);
-		$this->addEditor('fck', _('FCK Editor'), new FckTextarea);
+		$this->addEditor('none', _('Plain-Text'), new WTextArea);
+		$this->addEditor('fck', _('Rich-Text'), new FckTextarea);
 		
 		$this->chooseEditor('none');
 	}
@@ -276,9 +276,9 @@ class HtmlTextArea
 		print _("Choose editor: ");
 		print $this->editorChoice->getMarkup($fieldName.'_choice');
 		print "\n</div>";
-		print $this->getCurrentPreHtml();
+		print $this->getCurrentPreHtml($fieldName);
 		print $this->getCurrentEditor()->getMarkup($fieldName);
-		print $this->getCurrentPostHtml();
+		print $this->getCurrentPostHtml($fieldName);
 		return ob_get_clean();
 	}
 	
@@ -323,11 +323,12 @@ class HtmlTextArea
 	/**
 	 * Answer the XHTML prefix markup for the current editor
 	 * 
+	 * @param string $fieldName The name we are rendering this instance with.
 	 * @return string
 	 * @access public
 	 * @since 1/14/08
 	 */
-	public function getCurrentPreHtml () {
+	public function getCurrentPreHtml ($fieldName) {
 		try {
 			$currentEditorName = $this->editorChoice->getAllValues();
 			if (!$currentEditorName)
@@ -344,17 +345,18 @@ class HtmlTextArea
 	/**
 	 * Answer the XHTML postfix markup for the current editor
 	 * 
+	 * @param string $fieldName The name we are rendering this instance with.
 	 * @return string
 	 * @access public
 	 * @since 1/14/08
 	 */
-	public function getCurrentPostHtml () {
+	public function getCurrentPostHtml ($fieldName) {
 		try {
 			$currentEditorName = $this->editorChoice->getAllValues();
 			if (!$currentEditorName)
 				throw new Exception("No current editor set.");
 			if (isset($this->postfixes[$currentEditorName]))
-				return $this->postfixes[$currentEditorName];
+				return Wizard::parseFieldNameText($this->postfixes[$currentEditorName], $fieldName);
 			else
 				return '';
 		} catch (Exception $e) {
