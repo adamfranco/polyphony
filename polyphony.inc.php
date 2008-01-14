@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: polyphony.inc.php,v 1.50 2007/12/12 17:19:21 adamfranco Exp $
+ * @version $Id: polyphony.inc.php,v 1.51 2008/01/14 20:57:17 adamfranco Exp $
  */
 
 /**
@@ -26,6 +26,7 @@ define("POLYPHONY", dirname(__FILE__));
 
 
 require_once(dirname(__FILE__)."/main/library/Wizard/SimpleStepWizard.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/RequiredStepWizard.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/SingleStepWizard.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/LogicStepWizard.class.php"); 
 // components:

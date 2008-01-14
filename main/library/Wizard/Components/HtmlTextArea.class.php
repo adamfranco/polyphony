@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HtmlTextArea.class.php,v 1.4 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: HtmlTextArea.class.php,v 1.5 2008/01/14 20:57:19 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/FckTextArea.class.php");
@@ -23,7 +23,7 @@ require_once(dirname(__FILE__)."/FckTextArea.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HtmlTextArea.class.php,v 1.4 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: HtmlTextArea.class.php,v 1.5 2008/01/14 20:57:19 adamfranco Exp $
  */
 class HtmlTextArea
 	extends WTextArea
@@ -53,7 +53,21 @@ class HtmlTextArea
 	 * @access private
 	 * @since 9/5/07
 	 */
-	private $editors = array();
+	private $editors;
+	
+	/**
+	 * @var array $prefixes;  
+	 * @access private
+	 * @since 9/5/07
+	 */
+	private $prefixes;
+	
+	/**
+	 * @var array $postfixes;  
+	 * @access private
+	 * @since 9/5/07
+	 */
+	private $postfixes;
 	
 	/**
 	 * Constructor
@@ -63,6 +77,10 @@ class HtmlTextArea
 	 * @since 9/5/07
 	 */
 	public function __construct () {
+		$this->editors = array();
+		$this->prefixes = array();
+		$this->postfixes = array();
+		
 		parent::__construct();
 		
 		$this->editorChoice = new WSelectList;
@@ -258,8 +276,90 @@ class HtmlTextArea
 		print _("Choose editor: ");
 		print $this->editorChoice->getMarkup($fieldName.'_choice');
 		print "\n</div>";
+		print $this->getCurrentPreHtml();
 		print $this->getCurrentEditor()->getMarkup($fieldName);
+		print $this->getCurrentPostHtml();
 		return ob_get_clean();
+	}
+	
+	/**
+	 * Add XHTML markup in front of an editor.
+	 * 
+	 * @param string $name The name of the editor
+	 * @param string $prefix
+	 * @return void
+	 * @access public
+	 * @since 1/14/08
+	 */
+	public function addPreHtml ($name, $prefix) {
+		try {
+			$this->getEditor($name);
+		} catch (Exception $e) {
+			throw $e;
+		}
+		
+		$this->prefixes[$name] = $prefix;
+	}
+	
+	/**
+	 * Add XHTML markup in front of an editor.
+	 * 
+	 * @param string $name The name of the editor
+	 * @param string $postfix
+	 * @return void
+	 * @access public
+	 * @since 1/14/08
+	 */
+	public function addPostHtml ($name, $postfix) {
+		try {
+			$this->getEditor($name);
+		} catch (Exception $e) {
+			throw $e;
+		}
+		
+		$this->postfixes[$name] = $postfix;
+	}
+	
+	/**
+	 * Answer the XHTML prefix markup for the current editor
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/14/08
+	 */
+	public function getCurrentPreHtml () {
+		try {
+			$currentEditorName = $this->editorChoice->getAllValues();
+			if (!$currentEditorName)
+				throw new Exception("No current editor set.");
+			if (isset($this->prefixes[$currentEditorName]))
+				return $this->prefixes[$currentEditorName];
+			else
+				return '';
+		} catch (Exception $e) {
+			throw $e;
+		}
+	}
+	
+	/**
+	 * Answer the XHTML postfix markup for the current editor
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/14/08
+	 */
+	public function getCurrentPostHtml () {
+		try {
+			$currentEditorName = $this->editorChoice->getAllValues();
+			if (!$currentEditorName)
+				throw new Exception("No current editor set.");
+			if (isset($this->postfixes[$currentEditorName]))
+				return $this->postfixes[$currentEditorName];
+			else
+				return '';
+		} catch (Exception $e) {
+			throw $e;
+		}
 	}
 }
 

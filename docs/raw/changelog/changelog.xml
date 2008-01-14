@@ -4,12 +4,24 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.127 2007/12/20 21:52:55 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.128 2008/01/14 20:57:18 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="0.10.7" date="2008-01-14">
+		<releaseNotes>
+			New Wizard abilities.
+		</releaseNotes>
+		<change author='adam' date='2008-01-14' ref='1871485' reftype='segue_bug'>
+			Wizard: The HtmlTextArea now allows for prepending or appending HTML markup.
+		</change>
+		<new author='adam' date='2008-01-14'>
+			Wizard: New RequiredStepWizard will not allow saving until certain steps
+			have been visited.
+		</new>
+	</version>
 	<version number="0.10.6" date="2007-12-20">
 		<releaseNotes>
 			This release fixes a few minor bugs.

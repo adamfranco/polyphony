@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleStepWizard.class.php,v 1.16 2007/12/12 17:19:23 adamfranco Exp $
+ * @version $Id: SimpleStepWizard.class.php,v 1.17 2008/01/14 20:57:19 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Wizard/SimpleWizard.class.php");
@@ -28,7 +28,7 @@ require_once(POLYPHONY."/main/library/Wizard/Listeners/WStepChangedListener.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleStepWizard.class.php,v 1.16 2007/12/12 17:19:23 adamfranco Exp $
+ * @version $Id: SimpleStepWizard.class.php,v 1.17 2008/01/14 20:57:19 adamfranco Exp $
  */
 class SimpleStepWizard extends SimpleWizard {
 	var $_stepContainer;
@@ -115,8 +115,8 @@ class SimpleStepWizard extends SimpleWizard {
 	 * @return ref object
 	 * @static
 	 */
-	static function withText ($text) {
-		return parent::withText($text,"SimpleStepWizard");
+	static function withText ($text, $class="SimpleStepWizard" ) {
+		return parent::withText($text, $class);
 	}
 	
 	/**
@@ -127,8 +127,7 @@ class SimpleStepWizard extends SimpleWizard {
 	 * @static
 	 */
 	static function withTitleAndDefaultLayout ($title) {
-		$obj = SimpleStepWizard::withDefaultLayout("<h2>$title</h2>\n");
-		return $obj;
+		return self::withDefaultLayout("<h2>$title</h2>\n");
 	}
 	
 	/**
@@ -138,7 +137,7 @@ class SimpleStepWizard extends SimpleWizard {
 	 * @return ref object
 	 * @static
 	 */
-	static function withDefaultLayout ($pre = '') {
+	static function withDefaultLayout ($pre = '', $class="SimpleStepWizard") {
 		return parent::withText($pre . 
 				"<div>\n" .
 				"[[_stepsBar]]" .
@@ -156,7 +155,7 @@ class SimpleStepWizard extends SimpleWizard {
 				"<hr/>\n" .
 				"<div>\n" .
 				"[[_steps]]" .
-				"</div>\n", "SimpleStepWizard");
+				"</div>\n", $class);
 	}
 	
 	/**
