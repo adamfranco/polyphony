@@ -4,12 +4,21 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.129 2008/01/14 21:26:17 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.130 2008/01/23 16:46:54 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="0.10.8" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<change author='adam' date='2008-01-23' ref='1815898' reftype='fr'>
+			Help system now uses PHP5 DOM rather than the DOMIT libraries needed
+			under PHP 4.
+		</change>
+	</version>
 	<version number="0.10.7" date="2008-01-14">
 		<releaseNotes>
 			New Wizard abilities.

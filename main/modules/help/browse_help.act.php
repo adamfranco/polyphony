@@ -6,12 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.12 2007/12/04 18:54:04 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.13 2008/01/23 16:46:56 adamfranco Exp $
  */
  
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
-
-require_once(DOMIT);
 
 require_once(HARMONI."GUIManager/Container.class.php");
 require_once(HARMONI."GUIManager/Layouts/XLayout.class.php");
@@ -34,7 +32,7 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.12 2007/12/04 18:54:04 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.13 2008/01/23 16:46:56 adamfranco Exp $
  */
 class browse_helpAction 
 	extends Action
@@ -321,20 +319,30 @@ class browse_helpAction
 		
 		$tocPart = $this->_tableOfContents->getTableOfContentsPart($topic);
 		
-		$document =$this->getTopicXmlDocument($topic);
+		try {
+			$document =$this->getTopicXmlDocument($topic);
+		} catch (DOMException $e) {
+			$topicContainer->add(new Block(_("Could not load help topic:")."<br/><br/>".$e->getMessage(), STANDARD_BLOCK));
+			return $topicContainer;
+		}
 		
-		$bodyElements = $document->getElementsByPath("/html/body");
+		$xpath = new DOMXPath($document);
+		$bodyElements = $xpath->query("/html/body");
+		if (!$bodyElements->length) {
+			$topicContainer->add(new Block(_("This topic has no information yet."), STANDARD_BLOCK));
+			return $topicContainer;
+		}
 		$body = $bodyElements->item(0);
 		
-		if ($tocPart)
+		if ($tocPart && !is_null($document->documentElement)) 
 			$this->updateSrcTags($document->documentElement, $tocPart->urlPath."/");
 		
 		// put custom style sheets in the page's head
-		$headElements =$document->getElementsByPath("/html/head");
+		$headElements = $xpath->query("/html/head");
 		$head =$headElements->item(0);
 		$newHeadText = '';
-		for ($i = 0; $i < count($head->childNodes); $i++) {
-			$newHeadText .= $head->childNodes[$i]->toString()."\n\t\t";
+		foreach ($head->childNodes as $child) {
+			$newHeadText .= $document->saveXML($child)."\n\t\t";
 		}
 		
 		$harmoni = Harmoni::instance();
@@ -343,25 +351,24 @@ class browse_helpAction
 		
 		
 		ob_start();
-		for ($i = 0; $i < count($body->childNodes); $i++) {
-			$element =$body->childNodes[$i];
-			switch ($element->getTagName()) {
+		foreach ($body->childNodes as $element) {
+			switch ($element->nodeName) {
 
 				case 'h1':
-					$heading = new Heading($element->getText(), 1);
+					$heading = new Heading($element->textContent, 1);
 				case 'h2':
 					if (!isset($heading))
-						$heading = new Heading($element->getText(), 2);
+						$heading = new Heading($element->textContent, 2);
 				case 'h3':
 					if (!isset($heading))
-						$heading = new Heading($element->getText(), 3);
+						$heading = new Heading($element->textContent, 3);
 				case 'h4':
 					if (!isset($heading))
-						$heading = new Heading($element->getText(), 4);
+						$heading = new Heading($element->textContent, 4);
 					
 					$heading->setPreHTML(
 						"<a name=\""
-						.strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', $element->getText()))
+						.strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', $element->textContent))
 						."\"></a>");
 				
 				
@@ -381,7 +388,7 @@ class browse_helpAction
 					break;
 				
 				default:
-					print $element->toString(false, true)."\n";
+					print $element->textContent."\n";
 						
 			}
 		}
@@ -395,12 +402,13 @@ class browse_helpAction
 	 * Convert relative links in src tags to contain the full path needed to
 	 * use them.
 	 * 
-	 * @param object 
+	 * @param object DOMNode $element
+	 * @param string $path
 	 * @return void
 	 * @access public
 	 * @since 5/31/06
 	 */
-	function updateSrcTags ($element, $path) {
+	function updateSrcTags (DOMNode $element, $path) {
 		if (method_exists($element, 'hasAttribute')
 			&& $element->hasAttribute('src') 
 			&& !preg_match('/([a-z]+:\/\/.+)|(\/.+)/', $element->getAttribute('src')))
@@ -417,8 +425,10 @@ class browse_helpAction
 				$path.$element->getAttribute('href'));
 		}
 		
-		for ($i = 0; $i < count($element->childNodes); $i++)
-			$this->updateSrcTags($element->childNodes[$i], $path);
+		if ($element->nodeType == XML_ELEMENT_NODE) {
+			foreach ($element->childNodes as $child)
+				$this->updateSrcTags($child, $path);
+		}
 	}
 	
 	/**
@@ -471,15 +481,15 @@ class browse_helpAction
 	}
 	
 	/**
-	 * Answer a DOMIT XML Document for the given topic
+	 * Answer a DOM XML Document for the given topic
 	 * 
 	 * @param string $topic
-	 * @return object DOMIT_Document
+	 * @return object DOMDocument
 	 * @access public
 	 * @since 12/9/05
 	 */
 	function getTopicXmlDocument ($topic) {
-		$document = new DOMIT_Document();
+		$document = new DOMDocument();
 		
 		$tocPart = $this->_tableOfContents->getTableOfContentsPart($topic);
 		
@@ -501,13 +511,35 @@ class browse_helpAction
 			print 	"	</body>\n";
 			print 	"</html>\n";
 			
-			$document->parseXML(ob_get_contents());
-			ob_end_clean();
+			$document->loadXML(ob_get_clean());
 		} else {
-			$document->loadXML($tocPart->file);
+			$tmpErrorHandler = set_error_handler(array($this, 'handleLoadError'));
+			try {
+				$document->load($tocPart->file);
+			} catch (Exception $e) {
+				set_error_handler($tmpErrorHandler);
+				throw $e;
+			}
+			set_error_handler($tmpErrorHandler);
 		}
 			
 		return $document;
+	}
+	
+	/**
+	 * re-throw a DOM loading error as an exception.
+	 * 
+	 * @param int $errno
+	 * @pararm string $errstr
+	 * @param string $errfile
+	 * @param int $errline
+	  *@param array $errcontext
+	 * @return void
+	 * @access public
+	 * @since 1/23/08
+	 */
+	public function handleLoadError ($errno, $errstr, $errfile, $errline, array $errcontext) {
+		throw new DOMException($errstr, $errno);
 	}
 }
 
@@ -521,7 +553,7 @@ class browse_helpAction
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.12 2007/12/04 18:54:04 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.13 2008/01/23 16:46:56 adamfranco Exp $
  */
 class TableOfContentsPart {
 		
