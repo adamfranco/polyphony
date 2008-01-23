@@ -6,9 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.13 2008/01/23 16:46:56 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.14 2008/01/23 22:11:48 adamfranco Exp $
  */
- 
+
+require_once(HARMONI."utilities/Harmoni_DOMDocument.class.php"); 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
 
 require_once(HARMONI."GUIManager/Container.class.php");
@@ -32,7 +33,7 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.13 2008/01/23 16:46:56 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.14 2008/01/23 22:11:48 adamfranco Exp $
  */
 class browse_helpAction 
 	extends Action
@@ -489,7 +490,7 @@ class browse_helpAction
 	 * @since 12/9/05
 	 */
 	function getTopicXmlDocument ($topic) {
-		$document = new DOMDocument();
+		$document = new Harmoni_DOMDocument();
 		
 		$tocPart = $this->_tableOfContents->getTableOfContentsPart($topic);
 		
@@ -513,34 +514,12 @@ class browse_helpAction
 			
 			$document->loadXML(ob_get_clean());
 		} else {
-			$tmpErrorHandler = set_error_handler(array($this, 'handleLoadError'));
-			try {
-				$document->load($tocPart->file);
-			} catch (Exception $e) {
-				set_error_handler($tmpErrorHandler);
-				throw $e;
-			}
-			set_error_handler($tmpErrorHandler);
+			$document->load($tocPart->file);
 		}
 			
 		return $document;
 	}
-	
-	/**
-	 * re-throw a DOM loading error as an exception.
-	 * 
-	 * @param int $errno
-	 * @pararm string $errstr
-	 * @param string $errfile
-	 * @param int $errline
-	  *@param array $errcontext
-	 * @return void
-	 * @access public
-	 * @since 1/23/08
-	 */
-	public function handleLoadError ($errno, $errstr, $errfile, $errline, array $errcontext) {
-		throw new DOMException($errstr, $errno);
-	}
+
 }
 
 
@@ -553,7 +532,7 @@ class browse_helpAction
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.13 2008/01/23 16:46:56 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.14 2008/01/23 22:11:48 adamfranco Exp $
  */
 class TableOfContentsPart {
 		
