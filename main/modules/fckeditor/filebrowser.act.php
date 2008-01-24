@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: filebrowser.act.php,v 1.3 2007/09/25 18:31:46 adamfranco Exp $
+ * @version $Id: filebrowser.act.php,v 1.4 2008/01/24 14:27:51 adamfranco Exp $
  */ 
 
 /**
@@ -17,7 +17,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: filebrowser.act.php,v 1.3 2007/09/25 18:31:46 adamfranco Exp $
+ * @version $Id: filebrowser.act.php,v 1.4 2008/01/24 14:27:51 adamfranco Exp $
  * @since 4/28/05
  */
 class filebrowserAction
@@ -63,9 +63,8 @@ class filebrowserAction
 		$MYPATH = MYPATH;
 		
 		print <<<END
-
-
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title>$title</title>
 
