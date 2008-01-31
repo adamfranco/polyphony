@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WFileUploadField.class.php,v 1.5 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WFileUploadField.class.php,v 1.6 2008/01/31 15:33:39 adamfranco Exp $
  */
 
 require_once (POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once (POLYPHONY."/main/library/Wizard/WizardComponent.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WFileUploadField.class.php,v 1.5 2007/09/19 14:04:51 adamfranco Exp $
+ * @version $Id: WFileUploadField.class.php,v 1.6 2008/01/31 15:33:39 adamfranco Exp $
  */
 class WFileUploadField 
 	extends WizardComponent 
@@ -70,7 +70,7 @@ class WFileUploadField
 	 * @return void
 	 */
 	function setFile($path, $filename = null) {
-		$this->_filename = $filename != null ? $filename : basename($filename);
+		$this->_filename = (($filename != null )? $filename : basename($filename));
 		$this->_size = filesize($filename);
 		$this->_hdfile = $filename;
 	}
