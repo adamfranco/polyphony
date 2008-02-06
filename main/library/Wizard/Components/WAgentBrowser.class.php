@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WAgentBrowser.class.php,v 1.6 2007/10/10 22:58:55 adamfranco Exp $
+ * @version $Id: WAgentBrowser.class.php,v 1.7 2008/02/06 15:37:54 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/ResultPrinter/EmbeddedArrayResultPrinter.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/ResultPrinter/EmbeddedArrayResultPrinter.c
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WAgentBrowser.class.php,v 1.6 2007/10/10 22:58:55 adamfranco Exp $
+ * @version $Id: WAgentBrowser.class.php,v 1.7 2008/02/06 15:37:54 adamfranco Exp $
  */
 class WAgentBrowser
 	extends WizardComponent 
@@ -50,8 +50,8 @@ class WAgentBrowser
 		$count = 0;
 		while($searchTypes->hasNext()) {
 			$type =$searchTypes->next();
-			$this->_searchTypeSelector->addOption(urlencode(Type::typeToString($type)), Type::typeToString($type));
-			$this->_searchTypeSelector->setValue(urlencode(Type::typeToString($type)));
+			$this->_searchTypeSelector->addOption(urlencode($type->asString()), $type->asString());
+			$this->_searchTypeSelector->setValue(urlencode($type->asString()));
 			$count++;
 		}
 		if ($count < 2) $this->_oneType = true;
@@ -205,7 +205,7 @@ class WAgentBrowser
  * @copyright Copyright &copy; 2005, Middlebury College
  * @author Gabriel Schine
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- * @version $Id: WAgentBrowser.class.php,v 1.6 2007/10/10 22:58:55 adamfranco Exp $
+ * @version $Id: WAgentBrowser.class.php,v 1.7 2008/02/06 15:37:54 adamfranco Exp $
  */
 class AgentBrowserResultPrinter
 	extends EmbeddedArrayResultPrinter

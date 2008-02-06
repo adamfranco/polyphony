@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_properties.act.php,v 1.10 2007/09/19 14:04:52 adamfranco Exp $
+ * @version $Id: edit_properties.act.php,v 1.11 2008/02/06 15:37:54 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_properties.act.php,v 1.10 2007/09/19 14:04:52 adamfranco Exp $
+ * @version $Id: edit_properties.act.php,v 1.11 2008/02/06 15:37:54 adamfranco Exp $
  */
 class edit_propertiesAction 
 	extends MainWindowAction
@@ -151,7 +151,7 @@ END;
 			while($properties->hasNext()) {
 				$propObj =$properties->next();
 				$typeObj =$propObj->getType();
-				$typeString = Type::typeToString($typeObj);
+				$typeString = $typeObj->asString();
 				if (!isset($propArray[$typeString])) {
 					$propArray[$typeString] = array();
 				}
@@ -308,7 +308,7 @@ END;
 					$type = new Type("agent_properties", "harmoni", "custom", 
 						"Properties defined outside of an authentication system.");
 				
-				$valuesHandled[Type::typeToString($type)][$values['key']] = true;
+				$valuesHandled[$type->asString()][$values['key']] = true;
 				if (count($list) == 1 || $values['value_update']) {
 					$key = $values['key'];
 					$value = $values['value'];
@@ -329,7 +329,7 @@ END;
 					$property =$properties->next();
 					$keys = $property->getKeys();
 					$type =$property->getType();
-					$typeString = Type::typeToString($type);
+					$typeString = $type->asString();
 					while($keys->hasNext()) {
 						$key = $keys->next();
 						if (!isset($valuesHandled[$typeString][$key]) || !$valuesHandled[$typeString][$key]) {

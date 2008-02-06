@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: delete.act.php,v 1.4 2007/09/19 14:04:52 adamfranco Exp $
+ * @version $Id: delete.act.php,v 1.5 2008/02/06 15:37:54 adamfranco Exp $
  */
 
 require_once(HARMONI."/GUIManager/Layouts/YLayout.class.php");
@@ -29,7 +29,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: delete.act.php,v 1.4 2007/09/19 14:04:52 adamfranco Exp $
+ * @version $Id: delete.act.php,v 1.5 2008/02/06 15:37:54 adamfranco Exp $
  */
 class deleteAction 
 	extends MainWindowAction
@@ -102,7 +102,7 @@ class deleteAction
 					$authNTypes =$authNMethods->getAuthNTypes();
 					while($authNTypes->hasNext()) {
 						$authNType =$authNTypes->next();
-						print "checking type: " . Type::typeToString($authNType) . "<br/>";
+						print "checking type: " . $authNType->asString() . "<br/>";
 						$authNMethod =$authNMethods->getAuthNMethodForType($authNType);
 						if ($authNMethod->supportsTokenDeletion() && $authNMethod->tokensExist($tokens)) {
 							print "deleting tokens ... <br/>";

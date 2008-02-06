@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.19 2007/10/25 15:38:23 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.20 2008/02/06 15:37:55 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.19 2007/10/25 15:38:23 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.20 2008/02/06 15:37:55 adamfranco Exp $
  */
 class browseAction 
 	extends MainWindowAction
@@ -245,7 +245,7 @@ class browseAction
 						$string = "\n<a href='";
 						$string .= $harmoni->request->quickURL("logs", "browse",
 								array(	"log" => RequestContext::value("log"),
-										"priority" => Type::typeToString($priorityType)));
+										"priority" => $priorityType->asString()));
 						$string .= "'>".$priorityType->getKeyword()."</a>";
 					} else
 						$string = $priorityType->getKeyword();
@@ -320,7 +320,7 @@ END;
 			if (isset($currentLogName) && isset($currentPriorityType)) {
 				$url = $harmoni->request->quickURL('logs', 'browse_rss',
 						array("log" => $currentLogName,
-							"priority" => Type::typeToString($currentPriorityType)));
+							"priority" => $currentPriorityType->asString()));
 				$title = $currentLogName." ".$currentPriorityType->getKeyword()." "._("Logs");
 				
 				$outputHandler =$harmoni->getOutputHandler();

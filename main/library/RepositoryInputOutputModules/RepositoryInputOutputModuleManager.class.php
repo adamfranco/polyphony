@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.20 2007/10/10 22:58:50 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.21 2008/02/06 15:37:53 adamfranco Exp $
  */
 
 /**
@@ -23,8 +23,8 @@ require_once(HARMONI."/oki2/shared/MultiIteratorIterator.class.php");
  * appropriate RepositoryInputOutputModule based on their Schema Formats.
  * 
  * @package polyphony.repository.inputoutput
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.20 2007/10/10 22:58:50 adamfranco Exp $
- * @since $Date: 2007/10/10 22:58:50 $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.21 2008/02/06 15:37:53 adamfranco Exp $
+ * @since $Date: 2008/02/06 15:37:53 $
  * @copyright 2004 Middlebury College
  */
 
@@ -44,19 +44,19 @@ class RepositoryInputOutputModuleManager {
 					"edu.middlebury.harmoni", 
 					"DataManagerPrimatives", 
 					"RecordStructures stored in the Harmoni DataManager.");
- 		$this->_modules[Type::typeToString($type)] = new DataManagerPrimativesModule;
+ 		$this->_modules[$type->asString()] = new DataManagerPrimativesModule;
 		
 		$type = new Type("RecordStructures", 
 					"edu.middlebury.harmoni", 
 					"File", 
 					"RecordStructures that store files.");
- 		$this->_modules[Type::typeToString($type)] = new HarmoniFileModule;
+ 		$this->_modules[$type->asString()] = new HarmoniFileModule;
  		
  		$type = new Type("RecordStructures", 
 					"edu.middlebury.harmoni", 
 					"text/plain", 
 					"RecordStructures all values are strings.");
- 		$this->_modules[Type::typeToString($type)] = new PlainTextModule;
+ 		$this->_modules[$type->asString()] = new PlainTextModule;
  		
 	}
 	
@@ -229,10 +229,10 @@ class RepositoryInputOutputModuleManager {
 					"text/plain");
 		}
 		
-		if (!is_object($this->_modules[Type::typeToString($type)]))
-			throwError(new Error("Unsupported Format, '".Type::typeToString($type)."'", "RepositoryInputOutputModuleManager", true));
+		if (!is_object($this->_modules[$type->asString()]))
+			throwError(new Error("Unsupported Format, '".$type->asString()."'", "RepositoryInputOutputModuleManager", true));
 		
-		return $this->_modules[Type::typeToString($type)]->generateDisplayForPartStructures($repositoryId, $assetId, $record, $partStructures);
+		return $this->_modules[$type->asString()]->generateDisplayForPartStructures($repositoryId, $assetId, $record, $partStructures);
 	}
 	
 	
