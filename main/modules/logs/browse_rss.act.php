@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_rss.act.php,v 1.6 2007/10/25 15:38:23 adamfranco Exp $
+ * @version $Id: browse_rss.act.php,v 1.7 2008/02/07 20:09:19 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/RSSAction.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/RSSAction.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_rss.act.php,v 1.6 2007/10/25 15:38:23 adamfranco Exp $
+ * @version $Id: browse_rss.act.php,v 1.7 2008/02/07 20:09:19 adamfranco Exp $
  */
 class browse_rssAction 
 	extends RSSAction
@@ -98,7 +98,7 @@ class browse_rssAction
 			
 			// Priority Type
 			if (RequestContext::value("priority")) {
-				$currentPriorityType = Type::fromString(
+				$currentPriorityType = HarmoniType::fromString(
 											RequestContext::value("priority"));
 			} else {
 				$priorityTypes =$loggingManager->getPriorityTypes();

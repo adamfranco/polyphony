@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_properties.act.php,v 1.11 2008/02/06 15:37:54 adamfranco Exp $
+ * @version $Id: edit_properties.act.php,v 1.12 2008/02/07 20:09:18 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit_properties.act.php,v 1.11 2008/02/06 15:37:54 adamfranco Exp $
+ * @version $Id: edit_properties.act.php,v 1.12 2008/02/07 20:09:18 adamfranco Exp $
  */
 class edit_propertiesAction 
 	extends MainWindowAction
@@ -232,7 +232,7 @@ END;
 		foreach(array_keys($values) as $typeString) {
 			$typeArray = $values[$typeString];
 			$typeSameArray = $valuesSame[$typeString];
-			$typeObj = Type::fromString($typeString);
+			$typeObj = HarmoniType::fromString($typeString);
 			
 			// now the keys
 			foreach(array_keys($typeArray) as $key) {
@@ -303,7 +303,7 @@ END;
 			
 			foreach($props as $values) {
 				if ($values['type'])
-					$type = Type::fromString($values['type']);
+					$type = HarmoniType::fromString($values['type']);
 				else
 					$type = new Type("agent_properties", "harmoni", "custom", 
 						"Properties defined outside of an authentication system.");

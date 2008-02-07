@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.20 2008/02/06 15:37:55 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.21 2008/02/07 20:09:19 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."GUIManager/Components/Blank.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.20 2008/02/06 15:37:55 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.21 2008/02/07 20:09:19 adamfranco Exp $
  */
 class browseAction 
 	extends MainWindowAction
@@ -221,7 +221,7 @@ class browseAction
 			// Links to other priorities
 			print "<strong>"._("Priority: ")."</strong>";
 			if (RequestContext::value("priority")) {
-				$currentPriorityType = Type::fromString(
+				$currentPriorityType = HarmoniType::fromString(
 											RequestContext::value("priority"));
 				$entries =$log->getEntries($formatType, $currentPriorityType);
 				if (!$entries->hasNext()) {

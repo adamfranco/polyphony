@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WAgentBrowser.class.php,v 1.7 2008/02/06 15:37:54 adamfranco Exp $
+ * @version $Id: WAgentBrowser.class.php,v 1.8 2008/02/07 20:09:17 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/ResultPrinter/EmbeddedArrayResultPrinter.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/ResultPrinter/EmbeddedArrayResultPrinter.c
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WAgentBrowser.class.php,v 1.7 2008/02/06 15:37:54 adamfranco Exp $
+ * @version $Id: WAgentBrowser.class.php,v 1.8 2008/02/07 20:09:17 adamfranco Exp $
  */
 class WAgentBrowser
 	extends WizardComponent 
@@ -114,7 +114,7 @@ class WAgentBrowser
 		// perform the search, if necessary.
 		if ($this->_searchButton->getAllValues()) {
 			$query = $this->_searchField->getAllValues();
-			$type = Type::fromString(urldecode($this->_searchTypeSelector->getAllValues()));
+			$type = HarmoniType::fromString(urldecode($this->_searchTypeSelector->getAllValues()));
 			
 			$agentManager = Services::getService("Agent");
 			
@@ -205,7 +205,7 @@ class WAgentBrowser
  * @copyright Copyright &copy; 2005, Middlebury College
  * @author Gabriel Schine
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- * @version $Id: WAgentBrowser.class.php,v 1.7 2008/02/06 15:37:54 adamfranco Exp $
+ * @version $Id: WAgentBrowser.class.php,v 1.8 2008/02/07 20:09:17 adamfranco Exp $
  */
 class AgentBrowserResultPrinter
 	extends EmbeddedArrayResultPrinter
