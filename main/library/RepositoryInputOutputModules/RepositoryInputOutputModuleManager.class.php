@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.21 2008/02/06 15:37:53 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.22 2008/02/07 20:09:03 adamfranco Exp $
  */
 
 /**
@@ -16,6 +16,7 @@
 require_once(dirname(__FILE__)."/modules/DataManagerPrimativesModule.class.php");
 require_once(dirname(__FILE__)."/modules/HarmoniFileModule.class.php");
 require_once(dirname(__FILE__)."/modules/PlainTextModule.class.php");
+require_once(dirname(__FILE__)."/RepositoryInputOutputModule.interface.php");
 require_once(HARMONI."/oki2/shared/MultiIteratorIterator.class.php");
 
 /**
@@ -23,12 +24,14 @@ require_once(HARMONI."/oki2/shared/MultiIteratorIterator.class.php");
  * appropriate RepositoryInputOutputModule based on their Schema Formats.
  * 
  * @package polyphony.repository.inputoutput
- * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.21 2008/02/06 15:37:53 adamfranco Exp $
- * @since $Date: 2008/02/06 15:37:53 $
+ * @version $Id: RepositoryInputOutputModuleManager.class.php,v 1.22 2008/02/07 20:09:03 adamfranco Exp $
+ * @since $Date: 2008/02/07 20:09:03 $
  * @copyright 2004 Middlebury College
  */
 
-class RepositoryInputOutputModuleManager {
+class RepositoryInputOutputModuleManager 
+	implements RepositoryInputOutputModuleInterface
+{
 
 	/**
 	 * Constructor, set up the relations of the Formats to Modules
@@ -123,9 +126,7 @@ class RepositoryInputOutputModuleManager {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function createWizardStepsForPartStructures ( $record, $wizard, $partStructures ) {
-		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
-		ArgumentValidator::validate($wizard, new ExtendsValidatorRule("Wizard"));
+	function createWizardStepsForPartStructures ( Record $record, Wizard $wizard, array $partStructures ) {
 		ArgumentValidator::validate($partStructures, new ArrayValidatorRuleWithRule(new ExtendsValidatorRule("PartStructure")));
 		
 		$recordStructure =$record->getRecordStructure();
@@ -147,9 +148,7 @@ class RepositoryInputOutputModuleManager {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function createWizardSteps ( $record, $wizard ) {
-		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
-		ArgumentValidator::validate($wizard, new ExtendsValidatorRule("Wizard"));
+	function createWizardSteps ( Record $record, Wizard $wizard ) {
 				
 		$recordStructure =$record->getRecordStructure();
 		$format = $recordStructure->getFormat();
@@ -169,8 +168,7 @@ class RepositoryInputOutputModuleManager {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function updateFromWizard ( $record, $wizard ) {
-		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
+	function updateFromWizard ( Record $record, Wizard $wizard ) {
 		
 		$recordStructure =$record->getRecordStructure();
 		$format = $recordStructure->getFormat();
@@ -189,11 +187,7 @@ class RepositoryInputOutputModuleManager {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function generateDisplay ( $repositoryId, $assetId, $record ) {
-		ArgumentValidator::validate($repositoryId, new ExtendsValidatorRule("Id"));
-		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
-		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
-		
+	function generateDisplay ( Id $repositoryId, Id $assetId, Record $record ) {		
 		$recordStructure =$record->getRecordStructure();
 		$format = $recordStructure->getFormat();
 		
@@ -212,12 +206,9 @@ class RepositoryInputOutputModuleManager {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function generateDisplayForPartStructures ( $repositoryId, $assetId, 
-		$record, $partStructures ) 
+	function generateDisplayForPartStructures ( Id $repositoryId, Id $assetId, 
+		Record $record, array $partStructures ) 
 	{
-		ArgumentValidator::validate($repositoryId, new ExtendsValidatorRule("Id"));
-		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
-		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
 		ArgumentValidator::validate($partStructures, new ArrayValidatorRuleWithRule(new ExtendsValidatorRule("PartStructure")));
 		
 		$recordStructure =$record->getRecordStructure();

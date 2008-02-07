@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DataManagerPrimativesModule.class.php,v 1.14 2007/10/05 14:04:25 adamfranco Exp $
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.15 2008/02/07 20:09:07 adamfranco Exp $
  */
 
 /**
@@ -24,8 +24,8 @@ require_once(POLYPHONY."/main/library/DataManagerGUI/PrimitiveIO/inc.php");
  * InputOutput module for displaying generating forms for editing its data.
  * 
  * @package polyphony.repository.inputoutput
- * @version $Id: DataManagerPrimativesModule.class.php,v 1.14 2007/10/05 14:04:25 adamfranco Exp $
- * @since $Date: 2007/10/05 14:04:25 $
+ * @version $Id: DataManagerPrimativesModule.class.php,v 1.15 2008/02/07 20:09:07 adamfranco Exp $
+ * @since $Date: 2008/02/07 20:09:07 $
  * @copyright 2004 Middlebury College
  */
 
@@ -57,9 +57,7 @@ class DataManagerPrimativesModule
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function createWizardStepsForPartStructures ( $record, $wizard, $partStructures ) {
-		ArgumentValidator::validate($record, ExtendsValidatorRule::getRule("RecordInterface"));
-		ArgumentValidator::validate($wizard, ExtendsValidatorRule::getRule("Wizard"));
+	function createWizardStepsForPartStructures ( Record $record, Wizard $wizard, array $partStructures ) {
 		ArgumentValidator::validate($partStructures, ArrayValidatorRuleWithRule::getRule(ExtendsValidatorRule::getRule("PartStructure")));
 		
 		$recordStructure =$record->getRecordStructure();
@@ -92,8 +90,7 @@ class DataManagerPrimativesModule
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function createWizardSteps ( $record, $wizard ) {
-		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
+	function createWizardSteps ( Record $record, Wizard $wizard ) {
 		
 		$recordStructure =$record->getRecordStructure();
 		$recordStructureId =$recordStructure->getId();
@@ -117,7 +114,7 @@ class DataManagerPrimativesModule
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function updateFromWizard ( $record, $wizard ) {
+	function updateFromWizard ( Record $record, Wizard $wizard ) {
 		$recordStructure =$record->getRecordStructure();
 		$recordStructureId =$recordStructure->getId();
 		
@@ -165,11 +162,7 @@ class DataManagerPrimativesModule
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function generateDisplay ( Id $repositoryId, Id $assetId, RecordInterface $record ) {
-		ArgumentValidator::validate($repositoryId, new ExtendsValidatorRule("Id"));
-		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
-		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
-		
+	function generateDisplay ( Id $repositoryId, Id $assetId, Record $record ) {		
 		// Get all the partstructures
 		$recordStructure =$record->getRecordStructure();
 		$partStructureIterator =$recordStructure->getPartStructures();
@@ -190,10 +183,7 @@ class DataManagerPrimativesModule
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function generateDisplayForPartStructures ( Id $repositoryId, Id $assetId, RecordInterface $record, array $partStructures ) {
-		ArgumentValidator::validate($repositoryId, new ExtendsValidatorRule("Id"));
-		ArgumentValidator::validate($assetId, new ExtendsValidatorRule("Id"));
-		ArgumentValidator::validate($record, new ExtendsValidatorRule("RecordInterface"));
+	function generateDisplayForPartStructures ( Id $repositoryId, Id $assetId, Record $record, array $partStructures ) {
 		ArgumentValidator::validate($partStructures, new ArrayValidatorRuleWithRule(new ExtendsValidatorRule("PartStructure")));
 
 		$partIterator =$record->getParts();

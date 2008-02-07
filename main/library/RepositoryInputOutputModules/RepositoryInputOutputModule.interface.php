@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModule.interface.php,v 1.6 2007/10/05 14:04:24 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModule.interface.php,v 1.7 2008/02/07 20:09:03 adamfranco Exp $
  */
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryInputOutputModule.interface.php,v 1.6 2007/10/05 14:04:24 adamfranco Exp $
+ * @version $Id: RepositoryInputOutputModule.interface.php,v 1.7 2008/02/07 20:09:03 adamfranco Exp $
  */
 
 interface RepositoryInputOutputModuleInterface {
@@ -35,7 +35,7 @@ interface RepositoryInputOutputModuleInterface {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function createWizardSteps ( $record, $wizard ) ;
+	function createWizardSteps ( Record $record, Wizard $wizard ) ;
 	
 	/**
 	 * Create wizard steps for editing the values of the specified Record and
@@ -48,7 +48,7 @@ interface RepositoryInputOutputModuleInterface {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function createWizardStepsForPartStructures ( $record, $wizard, $partStructures );
+	function createWizardStepsForPartStructures ( Record $record, Wizard $wizard, array $partStructures );
 	
 	/**
 	 * Get the values submitted in the wizard and update the Record with them.
@@ -59,7 +59,7 @@ interface RepositoryInputOutputModuleInterface {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function updateFromWizard ( $record, $wizard );
+	function updateFromWizard ( Record $record, Wizard $wizard );
 	
 	/**
 	 * Generate HTML for displaying the Record
@@ -69,7 +69,7 @@ interface RepositoryInputOutputModuleInterface {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function generateDisplay ( Id $repositoryId, Id $assetId, RecordInterface $record );
+	function generateDisplay ( Id $repositoryId, Id $assetId, Record $record );
 	
 	/**
 	 * Generate HTML for displaying particular parts of the Record 
@@ -80,7 +80,7 @@ interface RepositoryInputOutputModuleInterface {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function generateDisplayForPartStructures ( Id $repositoryId, Id $assetId, RecordInterface $record, array $partStructures );
+	function generateDisplayForPartStructures ( Id $repositoryId, Id $assetId, Record $record, array $partStructures );
 }
 
 ?>
