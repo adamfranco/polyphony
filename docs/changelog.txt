@@ -4,6 +4,26 @@ Name: Polyphony Change Log
 
 
 
+v. 1.0.0 (2008-02-15)
+----------------------------------------------------
+This release includes a few minor improvements and has been updated to work with
+Harmoni 1.0.0.
+		
+		
+	* Change: #1815898 
+		Help system now uses PHP5 DOM rather than the DOMIT libraries needed under
+		PHP 4.
+		(2008-01-23 - Adam Franco)
+		
+	* Change: #1854967 
+		AbstractActions: XML action can now take an error type parameter.
+		(2008-02-15 - Adam Franco)
+		
+	* Change: 
+		Repository I/O: Viewing of files and thumbnails now returns a 'File not
+		found' GIF instead of leaving uncaught exceptions.
+		(2008-02-15 - Adam Franco)
+	
 v. 0.10.7 (2008-01-14)
 ----------------------------------------------------
 New Wizard abilities.

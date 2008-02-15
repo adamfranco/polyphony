@@ -4,15 +4,16 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.132 2008/02/15 17:27:25 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.133 2008/02/15 20:09:15 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="0.10.8" date="The Future">
+	<version number="1.0.0" date="2008-02-15">
 		<releaseNotes>
-			
+			This release includes a few minor improvements and has been updated to
+			work with Harmoni 1.0.0.
 		</releaseNotes>
 		<change author='adam' date='2008-01-23' ref='1815898' reftype='fr'>
 			Help system now uses PHP5 DOM rather than the DOMIT libraries needed
