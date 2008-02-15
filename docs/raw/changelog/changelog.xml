@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.130 2008/01/23 16:46:54 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.131 2008/02/15 16:47:27 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -17,6 +17,9 @@
 		<change author='adam' date='2008-01-23' ref='1815898' reftype='fr'>
 			Help system now uses PHP5 DOM rather than the DOMIT libraries needed
 			under PHP 4.
+		</change>
+		<change author='adam' date='2008-02-15' ref='1854967' reftype='segue_bug'>
+			AbstractActions: XML action can now take an error type parameter.
 		</change>
 	</version>
 	<version number="0.10.7" date="2008-01-14">

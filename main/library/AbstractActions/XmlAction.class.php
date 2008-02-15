@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlAction.class.php,v 1.6 2007/10/10 22:58:43 adamfranco Exp $
+ * @version $Id: XmlAction.class.php,v 1.7 2008/02/15 16:47:31 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY_DIR.'/main/library/AbstractActions/Action.class.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR.'/main/library/AbstractActions/Action.class.php');
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlAction.class.php,v 1.6 2007/10/10 22:58:43 adamfranco Exp $
+ * @version $Id: XmlAction.class.php,v 1.7 2008/02/15 16:47:31 adamfranco Exp $
  */
 abstract class XmlAction
 	extends Action
@@ -72,13 +72,14 @@ END;
 	 * Respond with an error
 	 * 
 	 * @param string $message
+	 * @param optional string $type Use this to pass the exception class if desired.
 	 * @return void
 	 * @access public
 	 * @since 11/29/06
 	 */
-	function error ($message) {
+	function error ($message, $type = 'Error') {
 		$this->start();
-		print "\n\t<error><![CDATA[".str_replace(']]>', '}}>', $message)."]]></error>";
+		print "\n\t<error type='$type'><![CDATA[".str_replace(']]>', '}}>', $message)."]]></error>";
 		$this->end();
 	}
 	
@@ -86,13 +87,14 @@ END;
 	 * Respond with a non-fatal error
 	 * 
 	 * @param string $message
+	 * @param optional string $type Use this to pass the exception class if desired.
 	 * @return void
 	 * @access public
 	 * @since 9/25/07
 	 */
-	public function nonFatalError ($message) {
+	public function nonFatalError ($message, $type = 'Error') {
 		$this->start();
-		print "\n\t<error><![CDATA[".str_replace(']]>', '}}>', $message)."]]></error>";
+		print "\n\t<error type='$type'><![CDATA[".str_replace(']]>', '}}>', $message)."]]></error>";
 	}
 }
 
