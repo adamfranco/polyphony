@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.15 2007/10/12 19:18:55 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.16 2008/02/15 17:27:29 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php"
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.15 2007/10/12 19:18:55 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.16 2008/02/15 17:27:29 adamfranco Exp $
  */
 class viewfileAction 
 	extends ForceAuthAction
@@ -44,9 +44,14 @@ class viewfileAction
 		$assetId =$idManager->getId(RequestContext::value("asset_id"));
 		$harmoni->request->endNamespace();
 		
-		return $authZManager->isUserAuthorized(
+		try {
+			return $authZManager->isUserAuthorized(
 					$idManager->getId("edu.middlebury.authorization.view"),
 					$assetId);
+		} catch (UnknownIdException $e) {
+			HarmoniErrorHandler::logException($e);
+			$this->getUnknownIdMessage();
+		}
 	}
 	
 	/**
@@ -59,6 +64,21 @@ class viewfileAction
 		header('Content-Disposition: filename="english.gif"');
 			
 		print file_get_contents(POLYPHONY.'/docs/images/unauthorized/english.gif');
+		exit;
+	}
+	
+	/**
+	 * Answer a junk image that says we don't know the Id of the file
+	 * 
+	 * @return void
+	 * @access protected
+	 * @since 2/15/08
+	 */
+	protected function getUnknownIdMessage () {
+		header("Content-Type: image/gif");
+		header('Content-Disposition: filename="english.gif"');
+			
+		print file_get_contents(POLYPHONY.'/docs/images/unknownid/english.gif');
 		exit;
 	}
 	
@@ -122,9 +142,14 @@ class viewfileAction
 			$websafe = FALSE;
 
 		// Get the requested record.
-		$repository =$repositoryManager->getRepository($repositoryId);
-		$asset =$repository->getAsset($assetId);
-		$record =$asset->getRecord($recordId);
+		try {
+			$repository =$repositoryManager->getRepository($repositoryId);
+			$asset =$repository->getAsset($assetId);
+			$record =$asset->getRecord($recordId);
+		} catch (UnknownIdException $e) {
+			HarmoniErrorHandler::logException($e);
+			$this->getUnknownIdMessage();
+		}
 		
 		// Make sure that the structure is the right one.
 		$structure =$record->getRecordStructure();
@@ -137,7 +162,12 @@ class viewfileAction
 			$urlPart =$urlParts->next();
 			header("Location: ".$urlPart->getValue());
 		} else if (!$fileId->isEqual($structure->getId())) {
-			print "The requested record is not of the FILE structure, and therefore cannot be displayed.";
+			try {
+				throw new Exception("The requested record is not of the FILE structure, and therefore cannot be displayed.");
+			} catch (Exception $e) {
+				HarmoniErrorHandler::logException($e);
+				$this->getUnknownIdMessage();
+			}
 		} else {
 		
 			// Get the parts for the record.
@@ -201,7 +231,7 @@ class viewfileAction
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.15 2007/10/12 19:18:55 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.16 2008/02/15 17:27:29 adamfranco Exp $
  */
 class RepositoryImageCache {
 	

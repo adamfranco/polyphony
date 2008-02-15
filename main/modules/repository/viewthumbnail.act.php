@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.13 2007/09/19 14:04:56 adamfranco Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.14 2008/02/15 17:27:29 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
@@ -25,7 +25,7 @@ require_once(POLYPHONY."/main/library/RepositoryInputOutputModules/RepositoryInp
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewthumbnail.act.php,v 1.13 2007/09/19 14:04:56 adamfranco Exp $
+ * @version $Id: viewthumbnail.act.php,v 1.14 2008/02/15 17:27:29 adamfranco Exp $
  */
 class viewthumbnailAction 
 	extends ForceAuthAction
@@ -46,9 +46,14 @@ class viewthumbnailAction
 		$assetId =$idManager->getId(RequestContext::value("asset_id"));
 		$harmoni->request->endNamespace();
 		
-		return $authZManager->isUserAuthorized(
+		try {
+			return $authZManager->isUserAuthorized(
 					$idManager->getId("edu.middlebury.authorization.view"),
 					$assetId);
+		} catch (UnknownIdException $e) {
+			HarmoniErrorHandler::logException($e);
+			$this->getUnknownIdMessage();
+		}
 	}
 	
 	/**
@@ -61,6 +66,21 @@ class viewthumbnailAction
 		header('Content-Disposition: filename="english.gif"');
 			
 		print file_get_contents(POLYPHONY.'/docs/images/unauthorized/english.gif');
+		exit;
+	}
+	
+	/**
+	 * Answer a junk image that says we don't know the Id of the file
+	 * 
+	 * @return void
+	 * @access protected
+	 * @since 2/15/08
+	 */
+	protected function getUnknownIdMessage () {
+		header("Content-Type: image/gif");
+		header('Content-Disposition: filename="english.gif"');
+			
+		print file_get_contents(POLYPHONY.'/docs/images/unknownid/english.gif');
 		exit;
 	}
 	
@@ -118,11 +138,16 @@ class viewthumbnailAction
 		}
 		
 		// Get the requested record.
-		if (RequestContext::value("record_id")) {
-			$recordId =$idManager->getId(RequestContext::value("record_id"));
-			$record =$asset->getRecord($recordId);
-		} else {
-			$record = RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset($asset);
+		try {
+			if (RequestContext::value("record_id")) {
+				$recordId =$idManager->getId(RequestContext::value("record_id"));
+				$record =$asset->getRecord($recordId);
+			} else {
+				$record = RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset($asset);
+			}
+		} catch (UnknownIdException $e) {
+			HarmoniErrorHandler::logException($e);
+			$this->getUnknownIdMessage();
 		}
 		
 				
@@ -133,7 +158,12 @@ class viewthumbnailAction
 		if (!$fileId->isEqual($structure->getId()) 
 			&& !$remoteFileId->isEqual($structure->getId())) 
 		{
-			print "The requested record is not of the FILE structure, and therefore cannot be displayed.";
+			try {
+				throw new Exception("The requested record is not of the FILE structure, and therefore cannot be displayed.");
+			} catch (Exception $e) {
+				HarmoniErrorHandler::logException($e);
+				$this->getUnknownIdMessage();
+			}
 		} else {
 		
 			// Get the parts for the record.
