@@ -4,12 +4,20 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.133 2008/02/15 20:09:15 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.134 2008/02/19 17:26:58 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.0.1" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-02-19' ref='1871490' reftype='segue_bug'>
+			Wizard: Rich-Text editor (FCKEditor) now can have configuration options set.
+		</fix>
+	</version>
 	<version number="1.0.0" date="2008-02-15">
 		<releaseNotes>
 			This release includes a few minor improvements and has been updated to

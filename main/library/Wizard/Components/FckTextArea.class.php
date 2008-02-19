@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: FckTextArea.class.php,v 1.3 2007/09/19 14:04:50 adamfranco Exp $
+ * @version $Id: FckTextArea.class.php,v 1.4 2008/02/19 17:27:05 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/WTextArea.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY.'/javascript/fckeditor/fckeditor.php');
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: FckTextArea.class.php,v 1.3 2007/09/19 14:04:50 adamfranco Exp $
+ * @version $Id: FckTextArea.class.php,v 1.4 2008/02/19 17:27:05 adamfranco Exp $
  */
 class FckTextArea
 	extends WTextArea
@@ -99,6 +99,31 @@ class FckTextArea
 		
 		$this->editor->Config['FlashBrowser'] = 'true';
 		$this->editor->Config['FlashBrowserURL'] = str_replace('&amp;', '&', $url);
+	}
+	
+	/**
+	 * Set an editor option not in the Config array.
+	 * 
+	 * @param string $toolBarName
+	 * @return void
+	 * @access public
+	 * @since 2/19/08
+	 */
+	public function setOption ($key, $value) {
+		$this->editor->$key = $value;
+	}
+	
+	/**
+	 * Set a editor config option, ex. 'CustomConfigurationsPath', 'http://www.example.edu/js/fck_config.js'
+	 * 
+	 * @param string $key
+	 * @param string $value
+	 * @return void
+	 * @access public
+	 * @since 2/19/08
+	 */
+	public function setConfigOption ($key, $value) {
+		$this->editor->Config[$key] = $value;
 	}
 	
 	/**
