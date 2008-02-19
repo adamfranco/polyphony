@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.5 2007/10/10 22:58:43 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.6 2008/02/19 19:49:17 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.5 2007/10/10 22:58:43 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.6 2008/02/19 19:49:17 adamfranco Exp $
  */
 abstract class RSSAction
 	extends ForceAuthAction
@@ -481,8 +481,9 @@ END;
 	 * @return void
 	 * @access public
 	 * @since 8/7/06
+	 * @static
 	 */
-	function printRSSTimestamp ($timestamp) {
+	static function printRSSTimestamp ($timestamp) {
 		print $timestamp->dayOfWeekAbbreviation().", ";
 		print str_pad($timestamp->dayOfMonth(), 2, '0', STR_PAD_LEFT)." ";
 		print $timestamp->monthAbbreviation()." ";
@@ -505,7 +506,7 @@ END;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.5 2007/10/10 22:58:43 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.6 2008/02/19 19:49:17 adamfranco Exp $
  */
 class RSSItem {
 	
