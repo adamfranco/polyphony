@@ -3,6 +3,12 @@ Name: Polyphony Release Notes
 (See the Polyphony change log for more details)
 
 
+v. 1.0.1 (2008-02-21)
+----------------------------------------------------
+This release adds the ability of the Rich-Text editor in the wizard to accept custom
+configuration options.
+
+
 v. 1.0.0 (2008-02-15)
 ----------------------------------------------------
 This release includes a few minor improvements and has been updated to work with

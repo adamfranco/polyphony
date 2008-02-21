@@ -4,6 +4,20 @@ Name: Polyphony Change Log
 
 
 
+v. 1.0.1 (2008-02-21)
+----------------------------------------------------
+This release adds the ability of the Rich-Text editor in the wizard to accept custom
+configuration options.
+		
+		
+	* Bug Fix: #1871490 
+		Wizard:Rich-Text editor (FCKEditor) now can have configuration options set.
+		(2008-02-19 - Adam Franco)
+		
+	* Bug Fix: 
+		AbstractActions: Fixed Runtime notice in RSSAction.
+		(2008-02-19 - Adam Franco)
+	
 v. 1.0.0 (2008-02-15)
 ----------------------------------------------------
 This release includes a few minor improvements and has been updated to work with

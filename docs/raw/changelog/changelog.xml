@@ -4,15 +4,16 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.135 2008/02/19 19:49:09 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.136 2008/02/21 20:41:05 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.0.1" date="The Future">
+	<version number="1.0.1" date="2008-02-21">
 		<releaseNotes>
-			
+			This release adds the ability of the Rich-Text editor in the wizard to
+			accept custom configuration options.
 		</releaseNotes>
 		<fix author='adam' date='2008-02-19' ref='1871490' reftype='segue_bug'>
 			Wizard: Rich-Text editor (FCKEditor) now can have configuration options set.
