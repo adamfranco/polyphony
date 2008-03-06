@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.16 2008/02/15 17:27:29 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.17 2008/03/06 21:11:12 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php"
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.16 2008/02/15 17:27:29 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.17 2008/03/06 21:11:12 adamfranco Exp $
  */
 class viewfileAction 
 	extends ForceAuthAction
@@ -181,7 +181,12 @@ class viewfileAction
 			}
 			
 			$imgProcessor = Services::getService("ImageProcessor");
-	
+			
+			// Headers for IE so that it won't freak out if saving a file over SSL
+			header('Cache-Control: ');
+			header('Pragma: ');
+			header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+			
 			// If we want to (and can) resize the file, do so
 			if (($size || $websafe)
 				&& $imgProcessor->isFormatSupported($parts['MIME_TYPE']->getValue())) 
@@ -231,7 +236,7 @@ class viewfileAction
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.16 2008/02/15 17:27:29 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.17 2008/03/06 21:11:12 adamfranco Exp $
  */
 class RepositoryImageCache {
 	

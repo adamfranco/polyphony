@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.139 2008/03/06 20:04:09 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.140 2008/03/06 21:11:10 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -34,6 +34,11 @@
 			RepositoryImporter: Tab delimited importing now works again. Was previously
 			not prepending the source directory to the file name and not properly 
 			locating files.
+		</fix>
+		<fix author='adam' date='2008-03-06' reporter='bryan_carson'>
+			RepositoryIO: File downloads now work in IE6. Cache-control problems
+			with IE's multiple-request download process where causing IE to delete
+			its download.
 		</fix>
 	</version>
 	<version number="1.0.1" date="2008-02-21">
@@ -870,6 +875,22 @@
 		<reporter short="chris_newton">
 			<name>Chris Newton</name>
 			<!-- <institution></institution> -->
+		</reporter>
+		<reporter short="alex">
+			<name>Alex Chapin</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="adam">
+			<name>Adam Franco</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="sarah_franco">
+			<name>Sarah Franco</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="bryan_carson">
+			<name>Bryan Carson</name>
+			<institution>Middlebury College</institution>
 		</reporter>
 	</reporters>
 	<reftypes>
