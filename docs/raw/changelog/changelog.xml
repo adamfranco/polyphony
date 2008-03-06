@@ -4,12 +4,24 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.136 2008/02/21 20:41:05 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.137 2008/03/06 15:02:50 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.0.2" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-03-06' ref='1908757' reftype='segue_bug'>
+			Wizard: Since internet explorer doesn't like &lt;input type='button'&gt;
+			elements and we need to use &lt;button&gt; elements, this screws up firefox's
+			submit-on-enter behavior. We need to add an onKeyDown event handler to force 
+			the search button to be triggered when enter (ASCII 13) is pressed in the 
+			search field.
+		</fix>
+	</version>
 	<version number="1.0.1" date="2008-02-21">
 		<releaseNotes>
 			This release adds the ability of the Rich-Text editor in the wizard to

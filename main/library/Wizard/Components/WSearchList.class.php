@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSearchList.class.php,v 1.1 2007/12/12 17:19:23 adamfranco Exp $
+ * @version $Id: WSearchList.class.php,v 1.2 2008/03/06 15:02:54 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/WSearchField.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/WSearchField.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSearchList.class.php,v 1.1 2007/12/12 17:19:23 adamfranco Exp $
+ * @version $Id: WSearchList.class.php,v 1.2 2008/03/06 15:02:54 adamfranco Exp $
  */
 class WSearchList
 	extends WSearchField
@@ -181,9 +181,15 @@ class WSearchList
 		print "\n<div style='margin-top:10px;'>";
 		print "\n\t<input id='".RequestContext::name($fieldName)."' ";
 		print "name='".RequestContext::name($fieldName)."' type='text' value=\"".$this->searchTerm."\" ";
-// 		print " onchange='this.controller.update();'";
+		
+		// Since internet explorer doesn't like <input type='button'> elements and
+		// we need to use <button> elements, this screws up firefox's submit-on-enter
+		// behavior. The following line forces the search button to be triggered
+		// when enter (ASCII 13) is pressed.
+		print " onkeydown='if (event.which == 13) { this.nextSibling.focus(); }'";
+		
 		print "/>";
-		print "\n\t<input type='submit' value=\""._("Search")."\"/>";
+		print "<input type='submit' value=\""._("Search")."\"/>";
 		print "\n</div>";
 		
 		print "\n\t<table class='search_results' cellspacing='0'>";

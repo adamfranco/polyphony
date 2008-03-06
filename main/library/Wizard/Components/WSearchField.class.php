@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSearchField.class.php,v 1.3 2007/12/12 17:19:23 adamfranco Exp $
+ * @version $Id: WSearchField.class.php,v 1.4 2008/03/06 15:02:54 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSearchField.class.php,v 1.3 2007/12/12 17:19:23 adamfranco Exp $
+ * @version $Id: WSearchField.class.php,v 1.4 2008/03/06 15:02:54 adamfranco Exp $
  */
 class WSearchField
 	extends WizardComponent
@@ -126,9 +126,15 @@ class WSearchField
 		
 		print "\n\t<input id='".RequestContext::name($fieldName)."' ";
 		print "name='".RequestContext::name($fieldName)."' type='text' value=\"".$this->searchTerm."\" ";
-// 		print " onchange='this.controller.update();'";
+		
+		// Since internet explorer doesn't like <input type='button'> elements and
+		// we need to use <button> elements, this screws up firefox's submit-on-enter
+		// behavior. The following line forces the search button to be triggered
+		// when enter (ASCII 13) is pressed.
+		print " onkeydown='if (event.which == 13) { this.nextSibling.focus(); }'";
+		
 		print "/>";
-		print "\n\t<input type='submit' value=\""._("Search")."\"/>";
+		print "<input type='submit' value=\""._("Search")."\"/>";
 		
 		print $this->searchSource->getResultsMarkup($fieldName, $this->searchResults);
 		
@@ -181,7 +187,7 @@ class WSearchField
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSearchField.class.php,v 1.3 2007/12/12 17:19:23 adamfranco Exp $
+ * @version $Id: WSearchField.class.php,v 1.4 2008/03/06 15:02:54 adamfranco Exp $
  */
 interface WSearchSource {
 		
@@ -230,7 +236,7 @@ interface WSearchSource {
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WSearchField.class.php,v 1.3 2007/12/12 17:19:23 adamfranco Exp $
+ * @version $Id: WSearchField.class.php,v 1.4 2008/03/06 15:02:54 adamfranco Exp $
  */
 interface WSearchResult {
 		
