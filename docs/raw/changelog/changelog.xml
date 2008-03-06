@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.138 2008/03/06 19:03:21 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.139 2008/03/06 20:04:09 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -29,6 +29,11 @@
 		</fix>
 		<fix author='adam' date='2008-03-06'>
 			RepositoryExporter now works with Harmoni 1.0.
+		</fix>
+		<fix author='adam' date='2008-03-06'>
+			RepositoryImporter: Tab delimited importing now works again. Was previously
+			not prepending the source directory to the file name and not properly 
+			locating files.
 		</fix>
 	</version>
 	<version number="1.0.1" date="2008-02-21">

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.20 2007/09/19 14:04:48 adamfranco Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.21 2008/03/06 20:04:10 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/RepositoryImporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TabRepositoryImporter.class.php,v 1.20 2007/09/19 14:04:48 adamfranco Exp $
+ * @version $Id: TabRepositoryImporter.class.php,v 1.21 2008/03/06 20:04:10 adamfranco Exp $
  */
 class TabRepositoryImporter
 	extends RepositoryImporter
@@ -94,10 +94,10 @@ class TabRepositoryImporter
 			$this->_fileStructureId = $this->matchSchema("File",
 				$this->_destinationRepository);
 			
-			$checkPartsArray = array("File Name","Thumbnail Data");
+			$checkPartsArray = array("File Name");
 			$this->_filePartIds = $this->matchPartStructures(
-				$this->_destinationRepository->getRecordStructure(
-				$this->_fileStructureId), $checkPartsArray);			
+				$this->_destinationRepository->getRecordStructure($this->_fileStructureId), 
+				$checkPartsArray);			
 
 			$this->_structureId = $this->matchSchema($schema,
 				$this->_destinationRepository);
@@ -115,10 +115,10 @@ class TabRepositoryImporter
 			}
 
 			$titles = explode ("\t", $titleline);
-			$partArray = array_slice($titles, 5);
+			$partArray = array_slice($titles, 4);
 			$this->_partStructureIds = $this->matchPartStructures(
-				$this->_destinationRepository->getRecordStructure(
-				$this->_structureId), $partArray);
+				$this->_destinationRepository->getRecordStructure($this->_structureId), 
+				$partArray);
 			
 			if (!$this->_partStructureIds) {
 				$this->addError("One or more of the Parts in the Tab-Delimited file for Schema: ".
@@ -133,19 +133,14 @@ class TabRepositoryImporter
 		}
 		if ($this->_structureId && $this->_partStructureIds) {
 			$recordList = array();
-	
 			if ($input[3] != "") {
-				if ($fileHandle = fopen($this->_srcDir.$input[3], "r")) {
-					fclose($fileHandle);
+				if (is_readable($this->_srcDir.$input[3])) {
 					$fileElement = array();
 					
 					$fileElement['structureId'] =$this->_fileStructureId;
 					$fileElement['partStructureIds'] =$this->_filePartIds;
 					$fileElementParts[] = $input[3];
-								
-					if ($input[4] != "") {
-						$fileElementParts[] = $input[4];
-					}
+					
 					$fileElement['parts'] = $fileElementParts;
 					$recordList[] = $fileElement;
 				}
@@ -163,11 +158,12 @@ class TabRepositoryImporter
 			}
 	
 			$partObjects = array();
+			
 			for ($i = 0; $i < count($this->_partStructureIds); $i++) {
 				$partObject = $this->getPartObject($this->_structureId,
-					$this->_partStructureIds[$i], $input[$i + 5]);
+					$this->_partStructureIds[$i], $input[$i + 4]);
 				if (!$partObject)
-					return $partObject; // false
+					continue;
 				$partObjects[] = $partObject;
 			}
 			
@@ -176,6 +172,7 @@ class TabRepositoryImporter
 			$recordListElement['partStructureIds'] =$this->_partStructureIds;
 			$recordListElement['parts'] = $partObjects;
 			$recordList[] =$recordListElement;
+			
 			return $recordList;
 		}
 	}
