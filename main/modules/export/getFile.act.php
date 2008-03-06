@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: getFile.act.php,v 1.3 2007/09/19 14:04:55 adamfranco Exp $
+ * @version $Id: getFile.act.php,v 1.4 2008/03/06 19:03:21 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -21,12 +21,23 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: getFile.act.php,v 1.3 2007/09/19 14:04:55 adamfranco Exp $
+ * @version $Id: getFile.act.php,v 1.4 2008/03/06 19:03:21 adamfranco Exp $
  */
 class getFileAction 
 	extends Action
 {
-		
+	
+	/**
+	 * Authorization
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 3/6/08
+	 */
+	public function isAuthorizedToExecute () {
+		return true;
+	}
+	
 	/**
 	 * Execute the action
 	 * 

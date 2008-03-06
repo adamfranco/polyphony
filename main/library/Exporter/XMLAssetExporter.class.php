@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetExporter.class.php,v 1.11 2007/09/19 14:04:44 adamfranco Exp $
+ * @version $Id: XMLAssetExporter.class.php,v 1.12 2008/03/06 19:03:21 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Exporter/XMLExporter.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLRemoteFileRecordExporter.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLAssetExporter.class.php,v 1.11 2007/09/19 14:04:44 adamfranco Exp $
+ * @version $Id: XMLAssetExporter.class.php,v 1.12 2008/03/06 19:03:21 adamfranco Exp $
  */
 class XMLAssetExporter extends XMLExporter {
 		
@@ -56,8 +56,9 @@ class XMLAssetExporter extends XMLExporter {
 	 * @param string
 	 * @access public
 	 * @since 10/31/05
+	 * @static
 	 */
-	function withCompression($compression, $class = 'XMLAssetExporter') {
+	static function withCompression($compression, $class = 'XMLAssetExporter') {
 		return parent::withCompression($compression, $class);
 	}	
 
@@ -69,8 +70,9 @@ class XMLAssetExporter extends XMLExporter {
 	 * @param string $fileDir the directory for the files to be written
 	 * @access public
 	 * @since 10/31/05
+	 * @static
 	 */
-	function withDir($xmlFile, $fileDir) {
+	static function withDir($xmlFile, $fileDir) {
 		$exporter = new XMLAssetExporter();
 		$exporter->_xml =$xmlFile;
 		$exporter->_fileDir = $fileDir;			

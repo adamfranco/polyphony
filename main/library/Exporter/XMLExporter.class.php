@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLExporter.class.php,v 1.14 2007/10/10 22:58:47 adamfranco Exp $
+ * @version $Id: XMLExporter.class.php,v 1.15 2008/03/06 19:03:21 adamfranco Exp $
  */ 
 
 require_once("Archive/Tar.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLRepositoryExporter.class.php")
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLExporter.class.php,v 1.14 2007/10/10 22:58:47 adamfranco Exp $
+ * @version $Id: XMLExporter.class.php,v 1.15 2008/03/06 19:03:21 adamfranco Exp $
  */
 class XMLExporter {
 		
@@ -47,15 +47,31 @@ class XMLExporter {
 		$this->_childElementList = array("repositories", "sets", "hierarchy", 
 			"groups", "agents");
 	}
+	
+	/**
+	 * Answer the temporary directory
+	 *
+	 * @return string
+	 * @access protected
+	 * @since 3/6/08
+	 * @static
+	 */
+	protected static function getTmpDir () {
+		if (defined('XML_EXPORT_TMP_DIR'))
+			return XML_EXPORT_TMP_DIR;
+		else
+			return '/tmp';
+	}
 
 	/**
-	 * Initializes the export by creating a dir in /tmp/
+	 * Initializes the export by creating a dir in the tmp dir
 	 * 
 	 * @param string
 	 * @access public
 	 * @since 10/31/05
+	 * @static
 	 */
-	function withCompression ($compression, $class = 'XMLExporter') {
+	static function withCompression ($compression, $class = 'XMLExporter') {
 		if (!(strtolower($class) == strtolower('XMLExporter')
 			|| is_subclass_of(new $class, 'XMLExporter')))
 		{
@@ -63,10 +79,10 @@ class XMLExporter {
 		}
 		$exporter = new $class;
 		$now = DateAndTime::now();
-		$exporter->_tmpDir = "/tmp/export_".$now->asString();
+		$exporter->_tmpDir = self::getTmpDir()."/export_".$now->asString();
 		while (file_exists($exporter->_tmpDir)) {
 			$now = DateAndTime::now();
-			$exporter->_tmpDir = "/tmp/export_".$now->asString();
+			$exporter->_tmpDir = self::getTmpDir()."/export_".$now->asString();
 		}		
 		
 		mkdir($exporter->_tmpDir);
@@ -162,7 +178,7 @@ class XMLExporter {
 	 * @access public
 	 * @since 12/12/06
 	 */
-	static function compressWithStatus () {
+	function compressWithStatus () {
 		$archiveBaseName = "export_".md5(time()." ".rand());
 		
 		// Get the number of files in the directory and initialize the status stars
@@ -173,7 +189,7 @@ class XMLExporter {
 		
 		
 		$PID = $this->run_in_background(
-			'tar -v -czf /tmp/'.$archiveBaseName.$this->_compression.
+			'tar -v -czf '.self::getTmpDir().'/'.$archiveBaseName.$this->_compression.
 			" -C ".str_replace(":", "\:", $this->_tmpDir)." . ",
 			0, str_replace(":", "\:", $this->_tmpDir)."-compress_status");
 		
@@ -195,7 +211,7 @@ class XMLExporter {
 		// Remove the source directory
 		shell_exec('rm -R '.str_replace(":", "\:", $this->_tmpDir));
 		
-		return '/tmp/'.$archiveBaseName.$this->_compression;
+		return self::getTmpDir().'/'.$archiveBaseName.$this->_compression;
 	}
 	
 	/**

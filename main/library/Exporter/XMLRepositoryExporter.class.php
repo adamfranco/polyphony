@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryExporter.class.php,v 1.13 2007/09/19 14:04:45 adamfranco Exp $
+ * @version $Id: XMLRepositoryExporter.class.php,v 1.14 2008/03/06 19:03:21 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/Exporter/XMLExporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/Exporter/XMLAssetExporter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XMLRepositoryExporter.class.php,v 1.13 2007/09/19 14:04:45 adamfranco Exp $
+ * @version $Id: XMLRepositoryExporter.class.php,v 1.14 2008/03/06 19:03:21 adamfranco Exp $
  */
 class XMLRepositoryExporter extends XMLExporter {
 		
@@ -59,8 +59,9 @@ class XMLRepositoryExporter extends XMLExporter {
 	 * @param string
 	 * @access public
 	 * @since 10/31/05
+	 * @static
 	 */
-	function withCompression($compression, $class = 'XMLRepositoryExporter') {
+	static function withCompression($compression, $class = 'XMLRepositoryExporter') {
 		return parent::withCompression($compression, $class);
 	}	
 
@@ -71,8 +72,9 @@ class XMLRepositoryExporter extends XMLExporter {
 	 * @param string
 	 * @access public
 	 * @since 10/31/05
+	 * @static
 	 */
-	function withDir($tmpDir, $class = 'XMLRepositoryExporter') {
+	static function withDir($tmpDir, $class = 'XMLRepositoryExporter') {
 		$exporter = new $class;
 		$exporter->_tmpDir = $tmpDir;
 		return $exporter;
@@ -168,7 +170,7 @@ class XMLRepositoryExporter extends XMLExporter {
 		if ($hasRootSearch) {
 			$criteria = NULL;
 			$children =$this->_object->getAssetsBySearch($criteria,
-				$rootSearchType, $searchProperties = NULL);
+				$rootSearchType, new HarmoniProperties(new Type('null', 'null', 'null')));
 		} else
 			$children =$this->_object->getAssets();
 		
