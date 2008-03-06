@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.14 2008/01/23 22:11:48 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.15 2008/03/06 19:03:01 adamfranco Exp $
  */
 
 require_once(HARMONI."utilities/Harmoni_DOMDocument.class.php"); 
@@ -33,7 +33,7 @@ require_once(HARMONI."GUIManager/Components/Footer.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.14 2008/01/23 22:11:48 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.15 2008/03/06 19:03:01 adamfranco Exp $
  */
 class browse_helpAction 
 	extends Action
@@ -389,7 +389,7 @@ class browse_helpAction
 					break;
 				
 				default:
-					print $element->textContent."\n";
+					print $document->saveXML($element)."\n";
 						
 			}
 		}
@@ -532,7 +532,7 @@ class browse_helpAction
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse_help.act.php,v 1.14 2008/01/23 22:11:48 adamfranco Exp $
+ * @version $Id: browse_help.act.php,v 1.15 2008/03/06 19:03:01 adamfranco Exp $
  */
 class TableOfContentsPart {
 		
