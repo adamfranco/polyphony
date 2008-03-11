@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.34 2008/03/06 20:04:10 adamfranco Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.35 2008/03/11 20:57:20 adamfranco Exp $
  */ 
 require_once(HARMONI."/utilities/Dearchiver.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/RepositoryImporter/ExifAssetIterator.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RepositoryImporter.class.php,v 1.34 2008/03/06 20:04:10 adamfranco Exp $
+ * @version $Id: RepositoryImporter.class.php,v 1.35 2008/03/11 20:57:20 adamfranco Exp $
  */
 class RepositoryImporter {
 	
@@ -306,7 +306,7 @@ class RepositoryImporter {
 					$j++;
 				}
 				else if ($entry['structureId']->isEqual($FILE_ID)) {
-					$filename = trim($entry['parts'][0]);
+					$filename = basename(trim($entry['parts'][0]));
 					$mimetype = $mime->getMIMETypeForFileName($filename);
 					$assetRecord->createPart($FILE_DATA_ID,
 						file_get_contents($this->_srcDir.$filename));
