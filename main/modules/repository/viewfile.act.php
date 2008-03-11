@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.17 2008/03/06 21:11:12 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.18 2008/03/11 21:00:22 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php"
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.17 2008/03/06 21:11:12 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.18 2008/03/11 21:00:22 adamfranco Exp $
  */
 class viewfileAction 
 	extends ForceAuthAction
@@ -236,7 +236,7 @@ class viewfileAction
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewfile.act.php,v 1.17 2008/03/06 21:11:12 adamfranco Exp $
+ * @version $Id: viewfile.act.php,v 1.18 2008/03/11 21:00:22 adamfranco Exp $
  */
 class RepositoryImageCache {
 	
@@ -321,8 +321,8 @@ class RepositoryImageCache {
 		$query = new SelectQuery;
 		$query->addColumn('dr_mime_type.type', 'mime_type');
 		$query->addTable('dr_file');
-		$query->addTable('dr_resized_cache', LEFT_JOIN, 'dr_file.id = dr_resized_cache.FK_file');
-		$query->addTable('dr_mime_type', LEFT_JOIN, 'dr_resized_cache.FK_mime_type = dr_mime_type.id');
+		$query->addTable('dr_resized_cache', LEFT_JOIN, 'dr_file.id = dr_resized_cache.fk_file');
+		$query->addTable('dr_mime_type', LEFT_JOIN, 'dr_resized_cache.fk_mime_type = dr_mime_type.id');
 		$query->addWhere("dr_file.id = '".addslashes($this->_id->getIdString())."'");
 		$query->addWhere("dr_file.mod_time < dr_resized_cache.cache_time");
 		$query->addWhere("dr_resized_cache.size = '".addslashes($this->_size)."'");
@@ -353,7 +353,7 @@ class RepositoryImageCache {
 		$query = new SelectQuery;
 		$query->addColumn('data');
 		$query->addTable('dr_resized_cache');
-		$query->addWhere("dr_resized_cache.FK_file = '".addslashes($this->_id->getIdString())."'");
+		$query->addWhere("dr_resized_cache.fk_file = '".addslashes($this->_id->getIdString())."'");
 		$query->addWhere("dr_resized_cache.size = '".addslashes($this->_size)."'");
 		$query->addWhere("dr_resized_cache.websafe = ".(($this->_websafe)?'1':'0'));
 		
@@ -375,7 +375,7 @@ class RepositoryImageCache {
 		
 		$query = new DeleteQuery;
 		$query->setTable('dr_resized_cache');
-		$query->addWhere("dr_resized_cache.FK_file = '".addslashes($this->_id->getIdString())."'");
+		$query->addWhere("dr_resized_cache.fk_file = '".addslashes($this->_id->getIdString())."'");
 		$query->addWhere("dr_resized_cache.size = '".addslashes($this->_size)."'");
 		$query->addWhere("dr_resized_cache.websafe = ".(($this->_websafe)?'1':'0'));
 		
@@ -383,11 +383,11 @@ class RepositoryImageCache {
 		
 		$query = new InsertQuery;
 		$query->setTable('dr_resized_cache');
-		$query->setColumns(array(	'FK_file',
+		$query->setColumns(array(	'fk_file',
 								'size',
 								'websafe',
 								'cache_time',
-								'FK_mime_type',
+								'fk_mime_type',
 								'data'));
 							
 		$values = array();

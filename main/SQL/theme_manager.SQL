@@ -34,7 +34,7 @@ CREATE TABLE tm_style_collection (
   collection_component varchar(255) NOT NULL default 'BLANK',
   collection_index varchar(255) NOT NULL,
   collection_class varchar(255) NOT NULL default '',
-  FK_theme_id varchar(255) NOT NULL
+  fk_theme_id varchar(255) NOT NULL
 ) 
 
 CREATE TABLE tm_style_property (
@@ -42,12 +42,12 @@ CREATE TABLE tm_style_property (
   property_name varchar(255),
   property_display_name varchar(255) default '',
   property_description text,
-  FK_collection_id varchar(75)
+  fk_collection_id varchar(75)
 ) 
 
 CREATE TABLE tm_style_component (
 	component_id varchar(75) NOT NULL default '0',
 	component_class_name varchar(255) NOT NULL,
 	component_value varchar(255) NOT NULL,
-	FK_property_id varchar(75) NOT NULL
+	fk_property_id varchar(75) NOT NULL
 ) 

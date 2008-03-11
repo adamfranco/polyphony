@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.142 2008/03/11 17:33:20 achapin Exp $
+ @version $Id: changelog.xml,v 1.143 2008/03/11 21:00:21 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -14,9 +14,16 @@
 		<releaseNotes>
 			
 		</releaseNotes>
-		<fix author='adam' date='2008-03-10'>
-			Fixed setCommentsLink validation in RSSAction class
+		<fix author='adam' date='2008-03-11' ref='1912165' reftype='concerto_bug'>
+			RepositoryImporter: Previous fixes to tab-delimited importing broke
+			single-asset importing. Now both are working.
 		</fix>
+		<fix author='adam' date='2008-03-10'>
+			Abstract Actions: Fixed setCommentsLink validation in RSSAction class.
+		</fix>
+		<change author='adam' date='2008-03-11'>
+			SQL: All column names are now lowercase.
+		</change>
 	</version>
 	<version number="1.0.2" date="2008-03-10">
 		<releaseNotes>
