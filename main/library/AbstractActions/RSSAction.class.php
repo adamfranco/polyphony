@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.6 2008/02/19 19:49:17 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.7 2008/03/11 17:33:21 achapin Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.6 2008/02/19 19:49:17 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.7 2008/03/11 17:33:21 achapin Exp $
  */
 abstract class RSSAction
 	extends ForceAuthAction
@@ -91,7 +91,7 @@ abstract class RSSAction
 	 * @access public
 	 * @since 4/26/05
 	 */
-	function execute () {
+	public final function execute () {
 		if (!$this->isAuthorizedToExecute()) {
 			header('HTTP/1.0 401 Unauthorized');
 			$this->setTitle(_("Unauthorized"));
@@ -104,6 +104,15 @@ abstract class RSSAction
 		$this->write();
 		exit;
 	}
+	
+	/**
+	 * Build the content for this action
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 4/26/05
+	 */
+	abstract public function buildFeed ();
 	
 	/**
 	 * Add an item to this feed
@@ -506,7 +515,7 @@ END;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RSSAction.class.php,v 1.6 2008/02/19 19:49:17 adamfranco Exp $
+ * @version $Id: RSSAction.class.php,v 1.7 2008/03/11 17:33:21 achapin Exp $
  */
 class RSSItem {
 	
@@ -699,7 +708,7 @@ class RSSItem {
 	 * @since 8/7/06
 	 */
 	function setCommentsLink ($commentsLink) {
-		ArgumentValidator::validate($category, StringValidatorRule::getRule());
+		ArgumentValidator::validate($commentsLink, StringValidatorRule::getRule());
 		
 		$this->_commentsLink = $commentsLink;
 	}

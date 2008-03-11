@@ -4,12 +4,20 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.141 2008/03/10 17:03:35 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.142 2008/03/11 17:33:20 achapin Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.0.3" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-03-10'>
+			Fixed setCommentsLink validation in RSSAction class
+		</fix>
+	</version>
 	<version number="1.0.2" date="2008-03-10">
 		<releaseNotes>
 			This release fixes a number of bugs, particularly with respect to
