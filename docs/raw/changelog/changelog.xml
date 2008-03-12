@@ -4,15 +4,15 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.143 2008/03/11 21:00:21 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.144 2008/03/12 15:07:28 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.0.3" date="The Future">
+	<version number="1.0.3" date="2008-03-12">
 		<releaseNotes>
-			
+			Fixes to a few bugs.
 		</releaseNotes>
 		<fix author='adam' date='2008-03-11' ref='1912165' reftype='concerto_bug'>
 			RepositoryImporter: Previous fixes to tab-delimited importing broke

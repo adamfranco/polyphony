@@ -4,6 +4,24 @@ Name: Polyphony Change Log
 
 
 
+v. 1.0.3 (2008-03-12)
+----------------------------------------------------
+Fixes to a few bugs.
+		
+		
+	* Bug Fix: #1912165 
+		RepositoryImporter: Previous fixes to tab-delimited importing broke
+		single-asset importing. Now both are working.
+		(2008-03-11 - Adam Franco)
+		
+	* Bug Fix: 
+		Abstract Actions: Fixed setCommentsLink validation in RSSAction class.
+		(2008-03-10 - Adam Franco)
+		
+	* Change: 
+		SQL: All column names are now lowercase.
+		(2008-03-11 - Adam Franco)
+	
 v. 1.0.2 (2008-03-10)
 ----------------------------------------------------
 This release fixes a number of bugs, particularly with respect to cross-browser
