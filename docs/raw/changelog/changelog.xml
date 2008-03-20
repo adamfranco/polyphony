@@ -4,12 +4,20 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.144 2008/03/12 15:07:28 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.145 2008/03/20 13:09:29 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.0.4" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-03-20'>
+			Wizard: Fixed XHTML validation errors in the RadioMatrix wizard component.
+		</fix>
+	</version>
 	<version number="1.0.3" date="2008-03-12">
 		<releaseNotes>
 			Fixes to a few bugs.

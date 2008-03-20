@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.8 2007/11/29 17:50:19 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.9 2008/03/20 13:09:31 adamfranco Exp $
  */ 
 
 /**
@@ -29,7 +29,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.8 2007/11/29 17:50:19 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.9 2008/03/20 13:09:31 adamfranco Exp $
  */
 abstract class RadioMatrix
 	extends WizardComponent
@@ -531,7 +531,7 @@ abstract class RadioMatrix
 			if (is_string($field->disabledOptions[$optionIndex])) {
 				print "<a href='#' onclick=\"RadioMatrix.openDescriptionWindow(this, this.nextSibling); return false;\">";
 				print _("?")."</a>";
-				print "<textarea style='display: none;'>".$field->disabledOptions[$optionIndex]."</textarea>";
+				print "<textarea style='display: none;' rows='1' cols='1'>".$field->disabledOptions[$optionIndex]."</textarea>";
 			} else
 				print "&nbsp;&nbsp;";
 		} else {
@@ -584,7 +584,7 @@ abstract class RadioMatrix
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.8 2007/11/29 17:50:19 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.9 2008/03/20 13:09:31 adamfranco Exp $
  */
 class RadioMatrixOption {
 
@@ -643,7 +643,7 @@ class RadioMatrixOption {
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.8 2007/11/29 17:50:19 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.9 2008/03/20 13:09:31 adamfranco Exp $
  */
 class RadioMatrixField {
 	
@@ -775,7 +775,7 @@ class RadioMatrixField {
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.abstract.php,v 1.8 2007/11/29 17:50:19 adamfranco Exp $
+ * @version $Id: RadioMatrix.abstract.php,v 1.9 2008/03/20 13:09:31 adamfranco Exp $
  */
 class RuleValidationFailedException
 	extends Exception

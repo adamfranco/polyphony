@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RowRadioMatrix.class.php,v 1.2 2007/11/08 15:49:48 adamfranco Exp $
+ * @version $Id: RowRadioMatrix.class.php,v 1.3 2008/03/20 13:09:31 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RadioMatrix.abstract.php");
@@ -24,7 +24,7 @@ require_once(dirname(__FILE__)."/RadioMatrix.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RowRadioMatrix.class.php,v 1.2 2007/11/08 15:49:48 adamfranco Exp $
+ * @version $Id: RowRadioMatrix.class.php,v 1.3 2008/03/20 13:09:31 adamfranco Exp $
  */
 class RowRadioMatrix
 	extends RadioMatrix
@@ -57,7 +57,7 @@ class RowRadioMatrix
 			print $options[$i]->displayText;
 			if (!is_null($options[$i]->description)) {
 				print "</a>";
-				print "<textarea name='option{$i}_desc' style='display: none;'>";
+				print "<textarea name='option{$i}_desc' style='display: none;' rows='1' cols='1'>";
 				print $options[$i]->description;
 				print "</textarea>";
 				print "\n\t\t\t";
@@ -87,7 +87,7 @@ class RowRadioMatrix
 			for ($j = 0; $j < count($options); $j++) {
 				print "\n\t\t<td>".$this->getMatrixButton($fieldName, $i, $j)."</td>";
 			}
-			print "\n\t<tr>";
+			print "\n\t</tr>";
 			if ($fields[$i]->spacerAfter !== false) {
 				print "\n\t</tbody>\n\t<tbody>";
 				print "\n\t\t<tr>\n\t\t\t<th colspan='".(count($options)+1)."' class='spacer'>";

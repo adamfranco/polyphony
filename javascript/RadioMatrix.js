@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.js,v 1.4 2007/11/29 18:06:01 adamfranco Exp $
+ * @version $Id: RadioMatrix.js,v 1.5 2008/03/20 13:09:30 adamfranco Exp $
  */
 
 /**
@@ -23,7 +23,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.js,v 1.4 2007/11/29 18:06:01 adamfranco Exp $
+ * @version $Id: RadioMatrix.js,v 1.5 2008/03/20 13:09:30 adamfranco Exp $
  */
 function RadioMatrix ( options, fields ) {
 	if ( arguments.length > 0 ) {
@@ -289,7 +289,7 @@ function RadioMatrix ( options, fields ) {
 	 */
 	RadioMatrix.openDescriptionWindow = function (link, descArea) {
 		var descWindow = window.open('', 'RadioMatrixDescription', 'width=300,height=200,resizable=yes');
-		descWindow.document.write("<h2>"+link.innerHTML+"</h2>\n<p>"+descArea.value+"</p>");
+		descWindow.document.write("<h2>"+link.innerHTML+"<"+"/h2>\n<p>"+descArea.value+"<"+"/p>");
 		descWindow.document.close();
 		descWindow.focus();
 	}
@@ -302,7 +302,7 @@ function RadioMatrix ( options, fields ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.js,v 1.4 2007/11/29 18:06:01 adamfranco Exp $
+ * @version $Id: RadioMatrix.js,v 1.5 2008/03/20 13:09:30 adamfranco Exp $
  */
 
 HierarchicalRadioMatrix.prototype = new RadioMatrix();
@@ -318,7 +318,7 @@ HierarchicalRadioMatrix.superclass = RadioMatrix.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RadioMatrix.js,v 1.4 2007/11/29 18:06:01 adamfranco Exp $
+ * @version $Id: RadioMatrix.js,v 1.5 2008/03/20 13:09:30 adamfranco Exp $
  */
 function HierarchicalRadioMatrix ( options, fields ) {
 	if ( arguments.length > 0 ) {
