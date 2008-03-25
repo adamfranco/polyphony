@@ -4,6 +4,15 @@ Name: Polyphony Change Log
 
 
 
+v. 1.0.4 (2008-03-25)
+----------------------------------------------------
+This release fixes a minor syntax error in the wizard.
+		
+		
+	* Bug Fix: 
+		Wizard: Fixed XHTML validation errors in the RadioMatrix wizard component.
+		(2008-03-20 - Adam Franco)
+	
 v. 1.0.3 (2008-03-12)
 ----------------------------------------------------
 Fixes to a few bugs.
