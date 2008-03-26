@@ -3,6 +3,11 @@ Name: Polyphony Release Notes
 (See the Polyphony change log for more details)
 
 
+v. 1.0.5 (2008-03-26)
+----------------------------------------------------
+This release adds a few javascript functions.
+
+
 v. 1.0.4 (2008-03-25)
 ----------------------------------------------------
 This release fixes a minor syntax error in the wizard.

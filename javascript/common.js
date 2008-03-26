@@ -8,7 +8,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: common.js,v 1.8 2007/09/19 20:49:48 adamfranco Exp $
+ * @version $Id: common.js,v 1.9 2008/03/26 18:35:57 adamfranco Exp $
  */
 
 /**
@@ -97,7 +97,7 @@ String.prototype.wordWrap = function(maxLength, breakWith, cutWords){
  * | Authors:   Stuart Wigley <stuartwigley@yahoo.co.uk>                     |
  * |            Randolph Fielding <gator4life@cinci.rr.com>                  |
  * +-------------------------------------------------------------------------+
- * $Id: common.js,v 1.8 2007/09/19 20:49:48 adamfranco Exp $
+ * $Id: common.js,v 1.9 2008/03/26 18:35:57 adamfranco Exp $
  *
  *
  * Replaces a small group of characters in this string defined in the HTML
@@ -954,3 +954,63 @@ function isValidMouseOut (source, event) {
 	
 	return true;
 }
+
+/*********************************************************
+ * Byte-Sizes
+ *********************************************************/
+/**
+ * Answer the string suffix for the desired muliple of 2^10 bytes
+ * i.e. 0 -> B, 10 -> kB, 20 -> MB, 30 -> GB, etc.
+ * 
+ * @param integer $power A multiple of 10; Range, 0-80
+ * @return string
+ * @access public
+ * @since 10/11/05
+ * @static
+ */
+Number.suffixForPower = function (power) {
+	var multiple = Math.round(power/10);
+	if (multiple < 0 || multiple > 8)
+		throw Error("Invalid power, " + power + ". Valid values are multiples of ten, 0-80.");
+	
+	var suffixes = new Array("B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB");
+	return suffixes[multiple];
+}
+
+/**
+ * Answer a String whose characters are a description of the receiver.
+ * Override this method as needed to provide a better representation
+ * 
+ * @return string
+ * @access public
+ * @since 7/11/05
+ */
+Number.prototype.asByteSizeString = function () {
+	for (var i = 0; i <= 80; i = i + 10) {
+		if (this < Math.pow(2, (i + 10)))
+			break;
+	}
+	
+	if (i == 0)
+		numString = this.multipleOfPowerOf2(i);
+	else
+		numString = Math.round(this.multipleOfPowerOf2(i));
+		
+	return numString + " " + Number.suffixForPower(i);
+}
+
+/**
+ * Answer the value as a multiple of 2^$power.
+ * Ex: for the number in kilo bytes (in computer-terms), $power = 10;
+ * 
+ * @param integer $power 0 for bytes, 10 for kilobyes, 20 for megabytes, etc.
+ * @return float
+ * @access public
+ * @since 10/11/05
+ */
+Number.prototype.multipleOfPowerOf2 = function ( power ) {
+	return this / Math.pow(2, power);
+}
+
+
+

@@ -4,12 +4,20 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.146 2008/03/25 16:29:06 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.147 2008/03/26 18:35:55 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.0.5" date="2008-03-26">
+		<releaseNotes>
+			This release adds a few javascript functions.
+		</releaseNotes>
+		<new author='adam' date='2008-03-26'>
+			Javascript: New common functions for printing file-size strings from integers.
+		</new>
+	</version>
 	<version number="1.0.4" date="2008-03-25">
 		<releaseNotes>
 			This release fixes a minor syntax error in the wizard.
