@@ -4,12 +4,20 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.147 2008/03/26 18:35:55 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.148 2008/04/03 12:34:48 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.0.6" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<change author='adam' date='2008-04-03'>
+			ResultPrinter: Now can access the number of results printed.
+		</change>
+	</version>
 	<version number="1.0.5" date="2008-03-26">
 		<releaseNotes>
 			This release adds a few javascript functions.

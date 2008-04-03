@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TableIteratorResultPrinter.class.php,v 1.20 2007/10/24 17:31:43 adamfranco Exp $
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.21 2008/04/03 12:34:50 adamfranco Exp $
  */
  
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TableIteratorResultPrinter.class.php,v 1.20 2007/10/24 17:31:43 adamfranco Exp $
+ * @version $Id: TableIteratorResultPrinter.class.php,v 1.21 2008/04/03 12:34:50 adamfranco Exp $
  */
 
 class TableIteratorResultPrinter 
@@ -181,6 +181,8 @@ class TableIteratorResultPrinter
 		print $rows;
 		print $linksRow;
 		print "\n</table>";		
+		
+		$this->numItemsPrinted = $numItems;
 		
 		textdomain($defaultTextDomain);
 		return ob_get_clean();

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ResultPrinter.abstract.php,v 1.8 2007/10/10 22:58:50 adamfranco Exp $
+ * @version $Id: ResultPrinter.abstract.php,v 1.9 2008/04/03 12:34:50 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ResultPrinter.abstract.php,v 1.8 2007/10/10 22:58:50 adamfranco Exp $
+ * @version $Id: ResultPrinter.abstract.php,v 1.9 2008/04/03 12:34:50 adamfranco Exp $
  */
 abstract class ResultPrinter {
 
@@ -228,6 +228,27 @@ abstract class ResultPrinter {
 		} else {
 			return "";
 		}
+	}
+	
+	/**
+	 * @var int $numItemsPrinted;  
+	 * @access protected
+	 * @since 4/3/08
+	 */
+	protected $numItemsPrinted;
+	
+	/**
+	 * Answer the number of items printed or throw an exception if not known.
+	 * 
+	 * @return int
+	 * @access public
+	 * @since 4/3/08
+	 */
+	public function getNumItemsPrinted () {
+		if (!isset($this->numItemsPrinted) || !is_int($this->numItemsPrinted)) 
+			throw new OperationFailedException("Printing not done or unknown number printed.");
+		
+		return $this->numItemsPrinted;
 	}
 	
 }

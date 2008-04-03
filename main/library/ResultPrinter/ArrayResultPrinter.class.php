@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.28 2007/10/18 14:24:24 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.29 2008/04/03 12:34:50 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/ResultPrinter.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrayResultPrinter.class.php,v 1.28 2007/10/18 14:24:24 adamfranco Exp $
+ * @version $Id: ArrayResultPrinter.class.php,v 1.29 2008/04/03 12:34:50 adamfranco Exp $
  */
 
 class ArrayResultPrinter 
@@ -255,9 +255,11 @@ class ArrayResultPrinter
 			$container->add($pageLinkBlock, null, null, CENTER, CENTER);
 		}
 		
+		$this->numItemsPrinted = $numItems;
+		
 		textdomain($defaultTextDomain);
 		return $container;
-	}	
+	}
 }
 
 ?>
