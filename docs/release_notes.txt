@@ -3,6 +3,11 @@ Name: Polyphony Release Notes
 (See the Polyphony change log for more details)
 
 
+v. 1.0.6 (2008-04-03)
+----------------------------------------------------
+This release adds a minor change needed by Segue 2 - beta 18.
+
+
 v. 1.0.5 (2008-03-26)
 ----------------------------------------------------
 This release adds a few javascript functions.
