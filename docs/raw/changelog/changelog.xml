@@ -4,12 +4,20 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.149 2008/04/03 17:17:24 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.149.2.1 2008/04/07 19:31:49 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.1.0" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<new author='adam' date='2008-04-07' ref='1814119' reftype='fr'>
+			Harmoni_Db: Test scripts for Harmoni_Db in main/modules/harmon_db/
+		</new>
+	</version>
 	<version number="1.0.6" date="2008-04-03">
 		<releaseNotes>
 			This release adds a minor change needed by Segue 2 - beta 18.
