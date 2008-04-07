@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.8 2007/10/24 17:57:57 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.9 2008/04/07 19:25:37 achapin Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.8 2007/10/24 17:57:57 adamfranco Exp $
+ * @version $Id: TagAction.abstract.php,v 1.9 2008/04/07 19:25:37 achapin Exp $
  */
 abstract class TagAction 
 	extends MainWindowAction
@@ -208,9 +208,52 @@ abstract class TagAction
 	 * @since 11/14/06
 	 * @static
 	 */
+	static function getReadOnlyTagCloudForItem ($item, $viewAction = 'view', $styles = null, $additionalParams = null) {
+		return self::getReadOnlyTagCloudForItems(array($item), $viewAction, $styles, $additionalParams);
+	}
+	
+	/**
+	 * Print the tag cloud and tagging link for an array of items
+	 * 
+	 * @param array $items An array of TaggedItem objects
+	 * @param optional string $viewAction The action to use when clicking on a tag. 
+	 *							 Usually view or viewuser
+	 * @param optional array $styles An array of style-strings to use for various 
+	 *						levels of of tag occurrances.
+	 * @return string
+	 * @access public
+	 * @since 11/14/06
+	 * @static
+	 */
+	static function getReadOnlyTagCloudForItems ($items, $viewAction = 'view', $styles = null, $additionalParams = null) {
+		ob_start();
+		print "\n<div>";
+		
+		$tagIterator = self::getTagsFromItems($items);
+		
+		print TagAction::getTagCloud($tagIterator, $viewAction, $styles, $additionalParams);
+		
+		print "\n</div>";
+		return ob_get_clean();
+	}
+	
+	/**
+	 * Print the tag cloud and tagging link for an item
+	 * 
+	 * @param object TaggedItem $item
+	 * @param optional string $viewAction The action to use when clicking on a tag. 
+	 *							 Usually view or viewuser
+	 * @param optional array $styles An array of style-strings to use for various 
+	 *						levels of of tag occurrances.
+	 * @return string
+	 * @access public
+	 * @since 11/14/06
+	 * @static
+	 */
 	static function getTagCloudForItem ($item, $viewAction = 'view', $styles = null, $additionalParams = null) {
 		ob_start();
 		print "\n<div>";
+		
 		print TagAction::getTagCloud($item->getTags(), $viewAction, $styles, $additionalParams);
 		
 		print "\n\t<span> &nbsp; ";
@@ -251,6 +294,33 @@ abstract class TagAction
 		print "\n\t</span>";
 		print "\n</div>";
 		return ob_get_clean();
+	}
+	
+	/**
+	 * Answer a iterator of tags combined from multiple items
+	 * 
+	 * @param array $items An array of TaggedItems
+	 * @return object Iterator
+	 * @access public
+	 * @since 4/7/08
+	 * @static
+	 */
+	static public function getTagsFromItems (array $items) {
+		$allTags = array();
+		foreach ($items as $item) {
+			$tags = $item->getTags();
+			while ($tags->hasNext()) {
+				$tag = $tags->next();
+				if (!isset($allTags[$tag->getValue()])) {
+					$allTags[$tag->getValue()] = $tag;
+				} else {
+					$allTags[$tag->getValue()]->setOccurances(
+						$allTags[$tag->getValue()]->getOccurances()
+						+ $tag->getOccurances());
+				}
+			}
+		}
+		return new HarmoniIterator($allTags);
 	}
 	
 	/**
