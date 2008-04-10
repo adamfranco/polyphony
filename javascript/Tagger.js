@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.5 2007/10/10 23:57:00 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.6 2008/04/10 19:18:15 achapin Exp $
  */
 
 Tagger.prototype = new Panel();
@@ -21,7 +21,7 @@ Tagger.superclass = Panel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.5 2007/10/10 23:57:00 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.6 2008/04/10 19:18:15 achapin Exp $
  */
 function Tagger ( itemId, system, positionElement, containerElement ) {
 	if ( arguments.length > 0 ) {
@@ -653,7 +653,7 @@ function Tagger ( itemId, system, positionElement, containerElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.5 2007/10/10 23:57:00 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.6 2008/04/10 19:18:15 achapin Exp $
  */
 function Tag ( value, occurances ) {
 	if ( arguments.length > 0 ) {
@@ -698,7 +698,7 @@ function Tag ( value, occurances ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.5 2007/10/10 23:57:00 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.6 2008/04/10 19:18:15 achapin Exp $
  */
 function TagCloud ( container ) {
 	if ( arguments.length > 0 ) {
@@ -798,11 +798,11 @@ TagRenameDialog.superclass = Panel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Tagger.js,v 1.5 2007/10/10 23:57:00 adamfranco Exp $
+ * @version $Id: Tagger.js,v 1.6 2008/04/10 19:18:15 achapin Exp $
  */
-function TagRenameDialog ( tag, positionElement ) {
+function TagRenameDialog ( tag, positionElement, viewAction ) {
 	if ( arguments.length > 0 ) {
-		this.init( tag, positionElement );
+		this.init( tag, positionElement, viewAction );
 	}
 }
 
@@ -816,11 +816,11 @@ function TagRenameDialog ( tag, positionElement ) {
 	 * @access public
 	 * @since 11/27/06
 	 */
-	TagRenameDialog.run = function (tag, positionElement ) {
+	TagRenameDialog.run = function (tag, positionElement, viewAction ) {
 		if (positionElement.panel) {
 			positionElement.panel.open();
 		} else {
-			var tagger = new TagRenameDialog(tag, positionElement );
+			var tagger = new TagRenameDialog(tag, positionElement, viewAction );
 		}
 	}
 
@@ -833,7 +833,7 @@ function TagRenameDialog ( tag, positionElement ) {
 	 * @access public
 	 * @since 11/27/06
 	 */
-	TagRenameDialog.prototype.init = function ( tag, positionElement ) {
+	TagRenameDialog.prototype.init = function ( tag, positionElement, viewAction ) {
 		this.origTag = tag;
 		
 		TagRenameDialog.superclass.init.call(this, 
@@ -842,6 +842,10 @@ function TagRenameDialog ( tag, positionElement ) {
 								300,
 								positionElement);
 		
+		if (!(viewAction))
+			this.viewAction = 'viewuser';
+		else
+			this.viewAction = viewAction;
 		
 		// rename form
 		this.renameForm = document.createElement("form");
@@ -868,6 +872,8 @@ function TagRenameDialog ( tag, positionElement ) {
 			tagRenameDialog.renameForm.innerHTML = 'working...';
 			return false;
 		}
+		
+		this.newTagField.focus();
 	}
 	
 	/**
@@ -898,7 +904,7 @@ function TagRenameDialog ( tag, positionElement ) {
 					// only if we get a good load should we continue.
 					if (req.status == 200) {
 // 						alert('All occurances of tag ' + tagRenameDialog.origTag.value + ' have been renamed to ' + newTag.value);
-						window.location =  Harmoni.quickUrl('tags', 'viewuser', 
+						window.location =  Harmoni.quickUrl('tags', tagRenameDialog.viewAction, 
 							{'tag': newTag.value}, 'polyphony-tags');
 					} else {
 						alert("There was a problem retrieving the XML data:\n" +
