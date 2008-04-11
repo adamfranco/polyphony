@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.9 2008/04/07 19:25:37 achapin Exp $
+ * @version $Id: TagAction.abstract.php,v 1.10 2008/04/11 19:50:02 achapin Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagAction.abstract.php,v 1.9 2008/04/07 19:25:37 achapin Exp $
+ * @version $Id: TagAction.abstract.php,v 1.10 2008/04/11 19:50:02 achapin Exp $
  */
 abstract class TagAction 
 	extends MainWindowAction
@@ -227,7 +227,7 @@ abstract class TagAction
 	 */
 	static function getReadOnlyTagCloudForItems ($items, $viewAction = 'view', $styles = null, $additionalParams = null) {
 		ob_start();
-		print "\n<div>";
+		print "\n<div class='tag_cloud'>";
 		
 		$tagIterator = self::getTagsFromItems($items);
 		
