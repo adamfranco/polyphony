@@ -4,19 +4,26 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.150 2008/04/08 19:43:45 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.151 2008/04/11 21:25:28 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.1.0" date="The Future">
+	<version number="1.1.0" date="2008-04-11">
 		<releaseNotes>
 			
 		</releaseNotes>
 		<new author='adam' date='2008-04-07' ref='1814119' reftype='fr'>
 			Harmoni_Db: Test scripts for Harmoni_Db in main/modules/harmon_db/
 		</new>
+		<change author='adam,alex' date='2008-04-11' ref='' reftype='fr'>
+			Tagging: Changes to the tag-printing methods to add support for 
+			read-only tag clouds.
+		</change>
+		<change author='adam' date='2008-04-11' ref='' reftype='fr'>
+			Tagging: Tagger Javascript window can now take a variable 'view tags' action.
+		</change>
 	</version>
 	<version number="1.0.6" date="2008-04-03">
 		<releaseNotes>
