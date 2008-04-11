@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Harmoni.js.inc.php,v 1.4 2007/09/04 20:27:57 adamfranco Exp $
+ * @version $Id: Harmoni.js.inc.php,v 1.5 2008/04/11 21:50:24 adamfranco Exp $
  */ 
 
 	// Additional Files
@@ -68,9 +68,11 @@
 			Harmoni.quickUrl = function (module, action, parameters, namespace) {
 				<?php 
 					$harmoni = Harmoni::instance();
+					$harmoni->request->startNameSpace(null);
 					$url = $harmoni->request->quickURL('xxMODULExx', 'xxACTIONxx', 
 						array('xxKEY1xx'=> 'xxVALUE1xx', 'xxKEY2xx' => 'xxVALUE2xx'));
 					print "\n\t\t\t\tvar normalUrl = '".$url."';";
+					$harmoni->request->endNameSpace();
 					
 					$harmoni->request->startNameSpace('xxnamespacexx');
 					$url = $harmoni->request->quickURL('xxMODULExx', 'xxACTIONxx', 

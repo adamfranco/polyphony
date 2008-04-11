@@ -22,6 +22,11 @@ This release add a few minor changes to tagging actions.
 		Tagging: Tagger Javascript window can now take a variable 'view tags'
 		action. 
 		(2008-04-11 - Adam Franco)
+		
+	* Change: #1940459 
+		Javascript: Harmoni.quickURL() now will be set-up properly even if a
+		namespace is set when it is called.
+		(2008-04-11 - Adam Franco)
 	
 v. 1.0.6 (2008-04-03)
 ----------------------------------------------------

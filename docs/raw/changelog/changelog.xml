@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.152 2008/04/11 21:34:05 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.153 2008/04/11 21:50:24 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -23,6 +23,10 @@
 		</change>
 		<change author='adam' date='2008-04-11' ref='' reftype='fr'>
 			Tagging: Tagger Javascript window can now take a variable 'view tags' action.
+		</change>
+		<change author='adam' date='2008-04-11' ref='1940459' reftype='segue_fr'>
+			Javascript: Harmoni.quickURL() now will be set-up properly even if a
+			namespace is set when it is called.
 		</change>
 	</version>
 	<version number="1.0.6" date="2008-04-03">
