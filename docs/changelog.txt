@@ -4,6 +4,25 @@ Name: Polyphony Change Log
 
 
 
+v. 1.1.0 (2008-04-11)
+----------------------------------------------------
+This release add a few minor changes to tagging actions.
+		
+		
+	* New feature: #1814119 
+		Harmoni_Db: Test scripts for Harmoni_Db in main/modules/harmon_db/
+		(2008-04-07 - Adam Franco)
+		
+	* Change: # 
+		Tagging: Changes to the tag-printing methods to add support for read-only
+		tag clouds.
+		(2008-04-11 - Adam Franco, Alex Chapin)
+		
+	* Change: # 
+		Tagging: Tagger Javascript window can now take a variable 'view tags'
+		action. 
+		(2008-04-11 - Adam Franco)
+	
 v. 1.0.6 (2008-04-03)
 ----------------------------------------------------
 This release adds a minor change needed by Segue 2 - beta 18.

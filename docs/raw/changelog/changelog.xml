@@ -4,7 +4,7 @@
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- @version $Id: changelog.xml,v 1.151 2008/04/11 21:25:28 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.152 2008/04/11 21:34:05 adamfranco Exp $
  -->
  
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
@@ -12,7 +12,7 @@
 <changelog name="Polyphony">
 	<version number="1.1.0" date="2008-04-11">
 		<releaseNotes>
-			
+			This release add a few minor changes to tagging actions.
 		</releaseNotes>
 		<new author='adam' date='2008-04-07' ref='1814119' reftype='fr'>
 			Harmoni_Db: Test scripts for Harmoni_Db in main/modules/harmon_db/
