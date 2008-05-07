@@ -9,6 +9,7 @@
  * @version $Id$
  */ 
 
+require_once(POLYPHONY.'/main/library/AbstractActions/Action.class.php');
 
 /**
  * <##>
