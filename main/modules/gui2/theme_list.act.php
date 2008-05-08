@@ -69,23 +69,43 @@ class theme_listAction
 	public function getThemeListing (Harmoni_Gui2_ThemeInterface $theme) {
 		ob_start();
 		try {
-			print "<h2>".$theme->getDisplayName()."</h2>";
+			print "\n\t<h2>".$theme->getDisplayName()."</h2>";
 		} catch (UnimplementedException $e) {
-			print "<div style='font-style: italic'>"._("Display-Name not available.")."</div>";
+			print "\n\t<div style='font-style: italic'>"._("Display-Name not available.")."</div>";
 		}
 		try {
 			$thumb = $theme->getThumbnail();
 			$harmoni = Harmoni::instance();
-			print "<img src='".$harmoni->request->quickUrl('gui2', 'theme_thumbnail', array('theme' => $theme->getIdString()))."' style='float: left;'/>";
+			print "\n\t<img src='".$harmoni->request->quickUrl('gui2', 'theme_thumbnail', array('theme' => $theme->getIdString()))."' style='float: left; width: 200px; margin-right: 10px;'/>";
 		} catch (UnimplementedException $e) {
-			print "<div style='font-style: italic'>"._("Thumbnail not available.")."</div>";
+			print "\n\t<div style='font-style: italic'>"._("Thumbnail not available.")."</div>";
+		} catch (OperationFailedException $e) {
+			print "\n\t<div style='font-style: italic'>"._("Thumbnail not available.")."</div>";
 		}
 		print _("Id").": ".$theme->getIdString();
 		try {
-			print "<p>".$theme->getDescription()."</p>";
+			print "\n\t<p>".$theme->getDescription()."</p>";
 		} catch (UnimplementedException $e) {
-			print "<div style='font-style: italic'>"._("Description not available.")."</div>";
+			print "\n\t<div style='font-style: italic'>"._("Description not available.")."</div>";
 		}
+		
+		try {
+			$history = $theme->getHistory();
+			print "\n\t<h4>"._("History")."</h4>";
+			print "\n\t<ul>";
+			foreach ($history as $entry) {
+				print "\n\t\t<li style='margin-left: 20px;'>";
+				print $entry->getDateAndTime()->ymdString();
+				print " - ";
+				print $entry->getName();
+				print "<br/><em>".$entry->getComment()."</em>";
+				print "</li>";
+			}
+			print "\n\t</ul>";
+		} catch (UnimplementedException $e) {
+			print "\n\t<div style='font-style: italic'>"._("History not available.")."</div>";
+		}
+		
 		return new Block(ob_get_clean(), STANDARD_BLOCK);
 		
 	}
