@@ -34,7 +34,7 @@ class theme_listAction
 	 * @since 5/6/08
 	 */
 	public function isAuthorizedToExecute () {
-		return true;
+		return false;
 	}
 	
 	/**
