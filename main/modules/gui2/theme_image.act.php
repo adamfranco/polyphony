@@ -9,7 +9,7 @@
  * @version $Id$
  */ 
 
-require_once(POLYPHONY.'/main/library/AbstractActions/Action.class.php');
+require_once(dirname(__FILE__).'/theme_css.act.php');
 
 /**
  * <##>
@@ -23,7 +23,7 @@ require_once(POLYPHONY.'/main/library/AbstractActions/Action.class.php');
  * @version $Id$
  */
 class theme_imageAction
-	extends Action
+	extends theme_cssAction
 {
 		
 	/**
@@ -38,24 +38,44 @@ class theme_imageAction
 	}
 	
 	/**
-	 * Execute
+	 * Answer the last-modified timestamp for this action/id.
+	 * 
+	 * @return object DateAndTime
+	 * @access public
+	 * @since 5/13/08
+	 */
+	public function getModifiedDateAndTime () {
+		return $this->getImage()->getModificationDate();
+	}
+	
+	/**
+	 * Output the content
 	 * 
 	 * @return null
 	 * @access public
 	 * @since 5/6/08
 	 */
-	public function execute () {
-		$guiMgr = Services::getService("GUIManager");
-		$theme = $guiMgr->getTheme(RequestContext::value('theme'));
-		$image = $theme->getImage(RequestContext::value('file'));
+	public function outputContent () {
 		
-		// Enable browser-based HTTP caching
-		// @todo
-		
+		$image = $this->getImage();
 		header("Content-Type: ".$image->getMimeType());
 		header("Content-Length: ".$image->getSize());
 		print $image->getContents();
 		exit;
+	}
+	
+	/**
+	 * Answer the image requested
+	 * 
+	 * @return object Harmoni_Filing_FileInterface
+	 * @access protected
+	 * @since 5/13/08
+	 */
+	protected function getImage () {
+		if (!isset($this->image)) {
+			$this->image = $this->getTheme()->getImage(RequestContext::value('file'));
+		}
+		return $this->image;
 	}
 	
 }

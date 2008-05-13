@@ -9,7 +9,7 @@
  * @version $Id$
  */ 
 
-require_once(POLYPHONY.'/main/library/AbstractActions/Action.class.php');
+require_once(POLYPHONY.'/main/library/AbstractActions/ConditionalGetAction.abstract.php');
 
 /**
  * Answer a css file for a theme
@@ -23,7 +23,7 @@ require_once(POLYPHONY.'/main/library/AbstractActions/Action.class.php');
  * @version $Id$
  */
 class theme_cssAction
-	extends Action
+	extends ConditionalGetAction
 {
 		
 	/**
@@ -38,25 +38,48 @@ class theme_cssAction
 	}
 	
 	/**
-	 * Execute
+	 * Answer the last-modified timestamp for this action/id.
+	 * 
+	 * @return object DateAndTime
+	 * @access public
+	 * @since 5/13/08
+	 */
+	public function getModifiedDateAndTime () {
+		if (!isset($this->modDate))
+			$this->modDate = $this->getTheme()->getModificationDate();
+		return $this->modDate;
+	}
+	
+	/**
+	 * Output the content
 	 * 
 	 * @return null
 	 * @access public
 	 * @since 5/6/08
 	 */
-	public function execute () {
-		$guiMgr = Services::getService("GUIManager");
-		$theme = $guiMgr->getTheme(RequestContext::value('theme'));
-		
-		// Enable browser-based HTTP caching
-		// @todo
-		
+	public function outputContent () {
+		$theme = $this->getTheme();		
 		$css = $theme->getCSS();
 		
 		header("Content-Type: text/plain");
 		header("Content-Length: ".strlen($css));
 		print $css;
 		exit;
+	}
+	
+	/**
+	 * Answer the theme
+	 * 
+	 * @return object Harmoni_Gui2_ThemeInterface
+	 * @access protected
+	 * @since 5/13/08
+	 */
+	protected function getTheme () {
+		if (!isset($this->theme)) {
+			$guiMgr = Services::getService("GUIManager");
+			$this->theme = $guiMgr->getTheme(RequestContext::value('theme'));
+		}
+		return $this->theme;
 	}
 	
 }

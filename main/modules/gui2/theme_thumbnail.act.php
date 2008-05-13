@@ -9,7 +9,7 @@
  * @version $Id$
  */ 
 
-require_once(POLYPHONY.'/main/library/AbstractActions/Action.class.php');
+require_once(dirname(__FILE__).'/theme_image.act.php');
 
 /**
  * Answer a thumbnail image for a theme.
@@ -23,39 +23,21 @@ require_once(POLYPHONY.'/main/library/AbstractActions/Action.class.php');
  * @version $Id$
  */
 class theme_thumbnailAction
-	extends Action
+	extends theme_imageAction
 {
 		
 	/**
-	 * AuthZ
+	 * Answer the image requested
 	 * 
-	 * @return boolean
-	 * @access public
-	 * @since 5/6/08
+	 * @return object Harmoni_Filing_FileInterface
+	 * @access protected
+	 * @since 5/13/08
 	 */
-	public function isAuthorizedToExecute () {
-		return true;
-	}
-	
-	/**
-	 * Execute
-	 * 
-	 * @return null
-	 * @access public
-	 * @since 5/6/08
-	 */
-	public function execute () {
-		$guiMgr = Services::getService("GUIManager");
-		$theme = $guiMgr->getTheme(RequestContext::value('theme'));
-		$image = $theme->getThumbnail();
-		
-		// Enable browser-based HTTP caching
-		// @todo
-		
-		header("Content-Type: ".$image->getMimeType());
-		header("Content-Length: ".$image->getSize());
-		print $image->getContents();
-		exit;
+	protected function getImage () {
+		if (!isset($this->image)) {
+			$this->image = $this->getTheme()->getThumbnail();
+		}
+		return $this->image;
 	}
 	
 }
