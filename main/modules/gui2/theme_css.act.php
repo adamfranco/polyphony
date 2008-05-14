@@ -51,6 +51,20 @@ class theme_cssAction
 	}
 	
 	/**
+	 * Answer the delay (in seconds) that the modification time should be cached without
+	 * checking the source again. 
+	 * 
+	 * @return object Duration
+	 * @access public
+	 * @since 5/13/08
+	 */
+	public function getCacheDuration () {
+		// A default of 1 minute is used. Override this method to add longer
+		// or shorter times.
+		return Duration::withHours(2);
+	}
+	
+	/**
 	 * Output the content
 	 * 
 	 * @return null
