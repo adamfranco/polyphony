@@ -141,10 +141,8 @@ abstract class ForceAuthConditionalGetAction
 		
 		// Check the HTTP 1.1 ETag/If None Match parts first.
 		$eTag = md5($this->getTimestampString($timestamp));
-		
 		if (isset($clientETag) && $clientETag == $eTag) {
 			return false;
-			
 		}
 		
 		// Check the HTTP 1.0 Modification date
