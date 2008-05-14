@@ -10,13 +10,16 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.1.1" date="The Future">
+	<version number="1.2.0" date="The Future">
 		<releaseNotes>
 			
 		</releaseNotes>
 		<new author='adam' date='2008-05-13' ref='1941513' reftype='segue_fr'>
 			AbstractActions: New ConditionalGet action enables browser-caching of
 			content.
+		</new>
+		<new author='adam' date='2008-05-13' ref='' reftype='fr'>
+			Gui2: New actions for accessing Gui2 theme images and CSS.
 		</new>
 		<change author='adam' date='2008-05-13' ref='1941513' reftype='segue_fr'>
 			Repository: View-File and View-Thumbnail now support browser-caching 
