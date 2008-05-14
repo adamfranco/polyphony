@@ -9,7 +9,7 @@
  * @version $Id: RSSAction.class.php,v 1.7 2008/03/11 17:33:21 achapin Exp $
  */ 
  
-require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
+require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthConditionalGetAction.class.php");
 require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
 
 /**
@@ -24,7 +24,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @version $Id: RSSAction.class.php,v 1.7 2008/03/11 17:33:21 achapin Exp $
  */
 abstract class RSSAction
-	extends ForceAuthAction
+	extends ForceAuthConditionalGetAction
 {
 	
 	/**
@@ -83,6 +83,33 @@ abstract class RSSAction
 	 */
 	var $_skipDays = array();
 	
+	/**
+	 * Answer the unauthorized message
+	 * 
+	 * @return null
+	 * @access public
+	 * @since 5/13/08
+	 */
+	public function getUnauthorizedMessage () {
+		header('HTTP/1.0 401 Unauthorized');
+		$this->setTitle(_("Unauthorized"));
+		$this->setDescription(_("You are not authorized to view this feed."));
+		$this->write();
+		exit;
+	}
+	
+	/**
+	 * Answer the modification date to use with caching. Override this to return
+	 * a DateAndTime object if your feed can determine that without doing all of
+	 * the work of building.
+	 * 
+	 * @return object DateAndTime
+	 * @access public
+	 * @since 5/13/08
+	 */
+	public function getModifiedDateAndTime () {
+		throw new UnimplementedException("This action does not support conditional GET.");
+	}
 	
 	/**
 	 * Build the content for this action
@@ -91,14 +118,7 @@ abstract class RSSAction
 	 * @access public
 	 * @since 4/26/05
 	 */
-	public final function execute () {
-		if (!$this->isAuthorizedToExecute()) {
-			header('HTTP/1.0 401 Unauthorized');
-			$this->setTitle(_("Unauthorized"));
-			$this->setDescription(_("You are not authorized to view this feed."));
-			$this->write();
-			exit;
-		}
+	public final function outputContent () {
 		
 		$this->buildFeed();
 		$this->write();

@@ -9,7 +9,7 @@
  * @version $Id: viewthumbnail.act.php,v 1.14 2008/02/15 17:27:29 adamfranco Exp $
  */ 
 
-require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
+require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthConditionalGetAction.class.php");
 require_once(POLYPHONY."/main/library/RepositoryInputOutputModules/RepositoryInputOutputModuleManager.class.php");
 
 
@@ -28,7 +28,7 @@ require_once(POLYPHONY."/main/library/RepositoryInputOutputModules/RepositoryInp
  * @version $Id: viewthumbnail.act.php,v 1.14 2008/02/15 17:27:29 adamfranco Exp $
  */
 class viewthumbnailAction 
-	extends ForceAuthAction
+	extends ForceAuthConditionalGetAction
 {
 	/**
 	 * Check Authorizations
@@ -107,6 +107,16 @@ class viewthumbnailAction
 		return 'viewthumbnailAction::getUnauthorizedMessage();';
 	}
 	
+	/**
+	 * Answer the last-modified timestamp for this action/id.
+	 * 
+	 * @return object DateAndTime
+	 * @access public
+	 * @since 5/13/08
+	 */
+	public function getModifiedDateAndTime () {
+		return $this->getAsset()->getModificationDate();
+	}
 	
 	/**
 	 * Build the content for this action
@@ -115,30 +125,18 @@ class viewthumbnailAction
 	 * @access public
 	 * @since 4/26/05
 	 */
-	function execute () {
-		if (!$this->isAuthorizedToExecute())
-			$this->getUnauthorizedMessage();
+	function outputContent () {
 		
 		$defaultTextDomain = textdomain("polyphony");
-		
 		$harmoni = Harmoni::instance();
 		$idManager = Services::getService("Id");
-		$repositoryManager = Services::getService("Repository");
 		
 		$harmoni->request->startNamespace("polyphony-repository");
 		
-		$assetId =$idManager->getId(RequestContext::value("asset_id"));
-		if (RequestContext::value("repository_id")) {
-			$repositoryId =$idManager->getId(RequestContext::value("repository_id"));
-			$repository =$repositoryManager->getRepository($repositoryId);
-			$asset =$repository->getAsset($assetId);
-		} else {
-			$repositoryManager = Services::getService("RepositoryManager");
-			$asset =$repositoryManager->getAsset($assetId);
-		}
-		
 		// Get the requested record.
 		try {
+			$asset = $this->getAsset();
+			
 			if (RequestContext::value("record_id")) {
 				$recordId =$idManager->getId(RequestContext::value("record_id"));
 				$record =$asset->getRecord($recordId);
@@ -261,6 +259,36 @@ class viewthumbnailAction
 		$harmoni->request->endNamespace();
 		textdomain($defaultTextDomain);
 		exit;
+	}
+	
+	/**
+	 * Answer the Asset requested
+	 * 
+	 * @return object Asset
+	 * @access private
+	 * @since 5/13/08
+	 */
+	private function getAsset () {
+		if (!isset($this->asset)) {
+			$harmoni = Harmoni::instance();
+			$idManager = Services::getService("Id");
+			$repositoryManager = Services::getService("Repository");
+			
+			$harmoni->request->startNamespace("polyphony-repository");
+			
+			$assetId =$idManager->getId(RequestContext::value("asset_id"));
+			if (RequestContext::value("repository_id")) {
+				$repositoryId =$idManager->getId(RequestContext::value("repository_id"));
+				$repository =$repositoryManager->getRepository($repositoryId);
+				$this->asset =$repository->getAsset($assetId);
+			} else {
+				$repositoryManager = Services::getService("RepositoryManager");
+				$this->asset =$repositoryManager->getAsset($assetId);
+			}
+			
+			$harmoni->request->endNamespace();
+		}
+		return $this->asset;
 	}
 }
 ?>

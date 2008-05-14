@@ -10,6 +10,19 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.1.1" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<new author='adam' date='2008-05-13' ref='1941513' reftype='segue_fr'>
+			AbstractActions: New ConditionalGet action enables browser-caching of
+			content.
+		</new>
+		<change author='adam' date='2008-05-13' ref='1941513' reftype='segue_fr'>
+			Repository: View-File and View-Thumbnail now support browser-caching 
+			via conditional-GET.
+		</change>
+	</version>
 	<version number="1.1.0" date="2008-04-11">
 		<releaseNotes>
 			This release add a few minor changes to tagging actions.

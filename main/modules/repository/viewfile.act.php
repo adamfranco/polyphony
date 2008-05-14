@@ -9,7 +9,7 @@
  * @version $Id: viewfile.act.php,v 1.18 2008/03/11 21:00:22 adamfranco Exp $
  */ 
 
-require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php");
+require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthConditionalGetAction.class.php");
 
 /**
  * Display the file in the specified record.
@@ -26,7 +26,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/ForceAuthAction.class.php"
  * @version $Id: viewfile.act.php,v 1.18 2008/03/11 21:00:22 adamfranco Exp $
  */
 class viewfileAction 
-	extends ForceAuthAction
+	extends ForceAuthConditionalGetAction
 {
 	/**
 	 * Check Authorizations
@@ -106,26 +106,32 @@ class viewfileAction
 	}
 	
 	/**
+	 * Answer the last-modified timestamp for this action/id.
+	 * 
+	 * @return object DateAndTime
+	 * @access public
+	 * @since 5/13/08
+	 */
+	public function getModifiedDateAndTime () {
+		return $this->getAsset()->getModificationDate();
+	}
+	
+	/**
 	 * Build the content for this action
 	 * 
 	 * @return void
 	 * @access public
 	 * @since 4/26/05
 	 */
-	function execute () {
-		if (!$this->isAuthorizedToExecute())
-			$this->getUnauthorizedMessage();
+	function outputContent () {
 		
 		$defaultTextDomain = textdomain("polyphony");
 		
 		$harmoni = Harmoni::instance();
 		$idManager = Services::getService("Id");
-		$repositoryManager = Services::getService("Repository");
 		
 		$harmoni->request->startNamespace("polyphony-repository");
 		
-		$repositoryId =$idManager->getId(RequestContext::value("repository_id"));
-		$assetId =$idManager->getId(RequestContext::value("asset_id"));
 		$recordId =$idManager->getId(RequestContext::value("record_id"));
 		$size = RequestContext::value("size");
 		$websafe = RequestContext::value("websafe");
@@ -143,8 +149,7 @@ class viewfileAction
 
 		// Get the requested record.
 		try {
-			$repository =$repositoryManager->getRepository($repositoryId);
-			$asset =$repository->getAsset($assetId);
+			$asset = $this->getAsset();
 			$record =$asset->getRecord($recordId);
 		} catch (UnknownIdException $e) {
 			HarmoniErrorHandler::logException($e);
@@ -219,6 +224,37 @@ class viewfileAction
 		$harmoni->request->endNamespace();
 		textdomain($defaultTextDomain);
 		exit;
+	}
+	
+		
+	/**
+	 * Answer the Asset requested
+	 * 
+	 * @return object Asset
+	 * @access private
+	 * @since 5/13/08
+	 */
+	private function getAsset () {
+		if (!isset($this->asset)) {
+			$harmoni = Harmoni::instance();
+			$idManager = Services::getService("Id");
+			$repositoryManager = Services::getService("Repository");
+			
+			$harmoni->request->startNamespace("polyphony-repository");
+			
+			$assetId =$idManager->getId(RequestContext::value("asset_id"));
+			if (RequestContext::value("repository_id")) {
+				$repositoryId =$idManager->getId(RequestContext::value("repository_id"));
+				$repository =$repositoryManager->getRepository($repositoryId);
+				$this->asset =$repository->getAsset($assetId);
+			} else {
+				$repositoryManager = Services::getService("RepositoryManager");
+				$this->asset =$repositoryManager->getAsset($assetId);
+			}
+			
+			$harmoni->request->endNamespace();
+		}
+		return $this->asset;
 	}
 }
 
