@@ -124,7 +124,7 @@ function printAssetShort($assetId, $num) {
 	$repositoryManager = Services::getService("Repository");
 	$asset = $repositoryManager->getAsset($assetId);
 	
-	$container = new Container(new YLayout, BLOCK, EMPHASIZED_BLOCK);
+	$container = new Container(new YLayout, BLOCK, STANDARD_BLOCK);
 	$fillContainerSC = new StyleCollection("*.fillcontainer", "fillcontainer", "Fill Container", "Elements with this style will fill their container.");
 	$fillContainerSC->addSP(new MinHeightSP("88%"));
 	$container->addStyle($fillContainerSC);

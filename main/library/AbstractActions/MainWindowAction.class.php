@@ -80,7 +80,7 @@ abstract class MainWindowAction
 		
 		// Check authorization
 		if (!$this->isAuthorizedToExecute()) {
-			$actionRows->add(new Block($this->getUnauthorizedMessage(), EMPHASIZED_BLOCK),
+			$actionRows->add(new Block($this->getUnauthorizedMessage(), ALERT_BLOCK),
 				"100%", null, CENTER, TOP);
 			return $actionRows;
 		}
