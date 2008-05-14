@@ -108,7 +108,7 @@ abstract class RSSAction
 	 * @since 5/13/08
 	 */
 	public function getModifiedDateAndTime () {
-		throw new UnimplementedException("This action does not support conditional GET.");
+		throw new UnimplementedException("This action does not support conditional GET.", -304);
 	}
 	
 	/**

@@ -42,7 +42,16 @@ abstract class ForceAuthConditionalGetAction
 		$helper = new ConditionalGetHelper(	array($this, 'outputContent'),
 											array($this, 'getModifiedDateAndTime'),
 											array($this, 'getCacheDuration'));
-		$helper->execute();
+		try {
+			$helper->execute();
+		} catch (UnimplementedException $e) {
+			// If this Action just doesn't support a getModifiedDateAndTime() method
+			// allow us to just continue and output the content
+			if ($e->getCode() == -304)
+				$this->outputContent();
+			else
+				throw $e;
+		}
 	}
 	
 	/**
