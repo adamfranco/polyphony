@@ -167,9 +167,9 @@ abstract class ForceAuthConditionalGetAction
 			.sprintf('%02d', $timestamp->dayOfMonth()).' '
 			.$timestamp->monthAbbreviation().' '
 			.$timestamp->year().' '
-			.$timestamp->hour24().':'
-			.$timestamp->minute().':'
-			.$timestamp->second().' '
+			.sprintf('%02d', $timestamp->hour24()).':'
+			.sprintf('%02d', $timestamp->minute()).':'
+			.sprintf('%02d', $timestamp->second()).' '
 			.'GMT';
 	}
 }
