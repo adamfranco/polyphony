@@ -49,7 +49,7 @@ abstract class ConditionalGetAction
 		
 		// Send a HTTP 304 Not Modified Header if the data hasn't changed.
 		try {
-			if (!$this->changed($this->getModifiedDateAndTime())) {
+			if (!$this->changed($this->getLastModifiedTime())) {
 				header('HTTP/1.0 304 Not Modified');
 				exit;
 			}
@@ -94,6 +94,23 @@ abstract class ConditionalGetAction
 	}
 	
 	/**
+	 * Answer the later of the modified date and time and the user-login.
+	 * 
+	 * @return object DateAndTime
+	 * @access private
+	 * @since 5/13/08
+	 */
+	private function getLastModifiedTime () {
+		$authN = Services::getService('AuthN');
+		$userId = $authN->getFirstUserId();
+		if (!isset($_SESSION['COND_GET_USER']) || !$userId->isEqual($_SESSION['COND_GET_USER']['userId'])) {
+			$_SESSION['COND_GET_USER'] = array('userId' => $userId, 'login_time' => DateAndTime::now());
+		}
+		
+		return $this->getModifiedDateAndTime()->max($_SESSION['COND_GET_USER']['login_time']);
+	}
+	
+	/**
 	 * Answer a last-modified string for the request
 	 * 
 	 * @return string
@@ -106,11 +123,11 @@ abstract class ConditionalGetAction
 // 		{
 // 			$_SESSION['POLYPHONY_COND_GET_TIMES'][$_SERVER['PHP_SELF']] = array(
 // 				'checkTime' => TimeStamp::now()->asUnixTimeStamp(),
-// 				'modTime' => $this->getTimestampString($this->getModifiedDateAndTime()));
+// 				'modTime' => $this->getTimestampString($this->getLastModifiedTime()));
 // 		}
 // 		return $_SESSION['POLYPHONY_COND_GET_TIMES'][$_SERVER['PHP_SELF']]['modTime'];
 		
-		return $this->getTimestampString($this->getModifiedDateAndTime());
+		return $this->getTimestampString($this->getLastModifiedTime());
 	}
 	
 	/**
@@ -162,9 +179,9 @@ abstract class ConditionalGetAction
 			.sprintf('%02d', $timestamp->dayOfMonth()).' '
 			.$timestamp->monthAbbreviation().' '
 			.$timestamp->year().' '
-			.$timestamp->hour24().':'
-			.$timestamp->minute().':'
-			.$timestamp->second().' '
+			.sprintf('%02d', $timestamp->hour24()).':'
+			.sprintf('%02d', $timestamp->minute()).':'
+			.sprintf('%02d', $timestamp->second()).' '
 			.'GMT';
 	}
 }

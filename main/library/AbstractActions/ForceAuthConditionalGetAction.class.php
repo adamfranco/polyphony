@@ -56,7 +56,7 @@ abstract class ForceAuthConditionalGetAction
 			
 			// Send a HTTP 304 Not Modified Header if the data hasn't changed.
 			try {
-				if (!$this->changed($this->getModifiedDateAndTime())) {
+				if (!$this->changed($this->getLastModifiedTime())) {
 					header('HTTP/1.0 304 Not Modified');
 					exit;
 				} 
@@ -99,7 +99,24 @@ abstract class ForceAuthConditionalGetAction
 	 * @since 5/13/08
 	 */
 	private function getLastModifiedString () {
-		return $this->getTimestampString($this->getModifiedDateAndTime());
+		return $this->getTimestampString($this->getLastModifiedTime());
+	}
+	
+	/**
+	 * Answer the later of the modified date and time and the user-login.
+	 * 
+	 * @return object DateAndTime
+	 * @access private
+	 * @since 5/13/08
+	 */
+	private function getLastModifiedTime () {
+		$authN = Services::getService('AuthN');
+		$userId = $authN->getFirstUserId();
+		if (!isset($_SESSION['COND_GET_USER']) || !$userId->isEqual($_SESSION['COND_GET_USER']['userId'])) {
+			$_SESSION['COND_GET_USER'] = array('userId' => $userId, 'login_time' => DateAndTime::now());
+		}
+		
+		return $this->getModifiedDateAndTime()->max($_SESSION['COND_GET_USER']['login_time']);
 	}
 	
 	/**

@@ -102,7 +102,7 @@ class viewfileAction
 	 * @since 8/7/06
 	 */
 	function getCancelFunction () {
-		return 'viewfileAction::getUnauthorizedMessage();';
+		return array($this, 'getUnauthorizedMessage');
 	}
 	
 	/**
