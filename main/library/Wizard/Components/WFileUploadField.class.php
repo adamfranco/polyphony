@@ -132,6 +132,17 @@ class WFileUploadField
 			if (is_uploaded_file($uploadFile)) {
 				if ($val['error'] == 0) {
 					// no error!
+					
+					// Check that our file is one of our allowed types
+					if (isset($this->_accept) && is_array($this->_accept) && count($this->_accept) && !in_array($val['type'], $this->_accept))
+					{
+						
+						$this->_errString = dgettext("polyphony", "File '%1' of type '%2' is not allowed. Allowed types: %3");
+						$this->_errString = str_replace('%1', $val['name'], $this->_errString);
+						$this->_errString = str_replace('%2', $val['type'], $this->_errString);
+						$this->_errString = str_replace('%3', implode(', ', $this->_accept), $this->_errString);
+						return false;
+					}
 
 					// get a new temp filename so PHP doesn't delete the uploaded file
 					$tmpDir = dirname($uploadFile);
