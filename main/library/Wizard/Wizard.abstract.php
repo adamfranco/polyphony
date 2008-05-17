@@ -176,7 +176,7 @@ class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 
 			var errEl = getWizardElement(errorID);
 		//	errEl.style.position = "absolute";
-			errEl.style.visibility = (displayError?"visible":"hidden");
+			errEl.style.display = (displayError?"inline":"none");
 			
 			
 			
@@ -219,9 +219,9 @@ class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 					if (!el._ruleCheck(el)) {						
 						ok = false;
 						// show the error div
-						errDiv.style.visibility = "visible";
+						errDiv.style.display = "inline";
 					} else {
-						errDiv.style.visibility = "hidden";
+						errDiv.style.display = "none";
 					}
 				}
 			}
