@@ -81,6 +81,8 @@ abstract class WTextInput
 		{
 			$this->_value = $val;
 		}
+		
+		return $this->validate();
 	}
 	
 	/**
@@ -90,8 +92,9 @@ abstract class WTextInput
 	 * @return boolean
 	 */
 	function validate () {
-		$rule =$this->getErrorRule();
-		if (!$rule) return true;
+		$rule = $this->getErrorRule();
+		if (!$rule) 
+			return true;
 		$valid = $rule->checkValue($this);
 		if (!$valid){
 			 $this->_showError = true;

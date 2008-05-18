@@ -41,6 +41,9 @@ require_once(dirname(__FILE__)."/main/library/Wizard/Components/WPasswordField.c
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSelectList.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSelectOrNew.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WTextArea.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSafeHtmlTextArea.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSafeHtmlTextField.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSafeCssTextArea.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WVerticalRadioList.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Listeners/WSaveCancelListener.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WRepeatableComponentCollection.class.php");
@@ -82,7 +85,6 @@ require_once(POLYPHONY."/main/library/GUIWizardComponents/Utilities/GUIComponent
 require_once(dirname(__FILE__)."/main/library/Wizard/ErrorCheckingRules/WECRegex.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/ErrorCheckingRules/WECNonZeroRegex.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/ErrorCheckingRules/WECOptionalRegex.class.php");
-require_once(dirname(__FILE__)."/main/library/Wizard/ErrorCheckingRules/SafeHtmlRule.class.php");
 
 require_once(dirname(__FILE__)."/main/library/ResultPrinter/IteratorResultPrinter.class.php");
 require_once(dirname(__FILE__)."/main/library/ResultPrinter/ArrayResultPrinter.class.php");
