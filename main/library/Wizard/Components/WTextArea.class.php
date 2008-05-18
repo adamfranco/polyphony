@@ -101,6 +101,7 @@ class WTextArea
 		
 		$m = "\n\t\t\t<textarea rows='".$this->_rows."' cols='".$this->_cols."'";
 		$m .= "\n\t\t\t\tname='$name'";
+		$m .= "\n\t\t\t\tid='$name'";
 		$m .= (!$this->isEnabled()?" readonly='readonly'":"");
 		
 		if ($this->_style) {

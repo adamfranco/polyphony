@@ -171,6 +171,8 @@ class Wizard extends WizardComponentWithChildren/*, EventTrigger*/ {
 
 		function addWizardRule(elementID, rule, errorID, displayError) {
 			var element = getWizardElement(elementID);
+			if (!element)
+				alert('WizardError: Could not find element ' + elementID);
 			element._ruleCheck = rule;
 			element._ruleErrorID = errorID;
 
