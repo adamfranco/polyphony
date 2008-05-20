@@ -86,6 +86,7 @@ require_once(POLYPHONY."/main/library/GUIWizardComponents/Utilities/GUIComponent
 require_once(dirname(__FILE__)."/main/library/Wizard/ErrorCheckingRules/WECRegex.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/ErrorCheckingRules/WECNonZeroRegex.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/ErrorCheckingRules/WECOptionalRegex.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/ErrorCheckingRules/XmlSchemaRule.class.php");
 
 require_once(dirname(__FILE__)."/main/library/ResultPrinter/IteratorResultPrinter.class.php");
 require_once(dirname(__FILE__)."/main/library/ResultPrinter/ArrayResultPrinter.class.php");
