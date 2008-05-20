@@ -78,6 +78,21 @@ class WTextArea
 	}
 	
 	/**
+	 * Sets a text-wrap attrtibute for the text area or null to unset.
+	 *
+	 * @param string $wrapStyle null, 'hard', 'soft', 'virtual', 'off', 'physical'
+	 * @access public
+	 * @return void
+	 */
+	function setWrap ($wrapStyle = null) {
+		$styles = array(null, 'hard', 'soft', 'virtual', 'off', 'physical');
+		if (!in_array($wrapStyle, $styles))
+			throw new InvalidArgumentException("'$wrapStyle' is not one of ".implode(", ", $styles));
+			
+		$this->_wrapStyle = $wrapStyle;
+	}
+	
+	/**
 	 * Sets the size of this text area. This method allows Text-Areas to be used
 	 * more interchangebly with text-fields
 	 * @param int $size
@@ -100,6 +115,8 @@ class WTextArea
 		$name = RequestContext::name($fieldName);
 		
 		$m = "\n\t\t\t<textarea rows='".$this->_rows."' cols='".$this->_cols."'";
+		if (isset($this->_wrapStyle) && is_string($this->_wrapStyle))
+			$m .= " wrap='".$this->_wrapStyle."'";
 		$m .= "\n\t\t\t\tname='$name'";
 		$m .= "\n\t\t\t\tid='$name'";
 		$m .= (!$this->isEnabled()?" readonly='readonly'":"");
