@@ -45,6 +45,10 @@ class WSafeHtmlTextArea
 			if (trim($this->_value) != trim($val)) {
 				$this->_origErrorText = $this->getErrorText();
 				$this->setErrorText(dgettext('polyphony', "The value you entered has been reformatted to meet XHTML validity standards."));
+				// Add both error text if validation failed as well.
+				if (!$this->validate()) {
+					$this->setErrorText($this->getErrorText()." ".$this->_origErrorText);
+				}
 				$this->_showError = true;
 				// Add a dummy rule if needed.
 				if (!$this->getErrorRule())
