@@ -21,7 +21,7 @@
  * @version $Id$
  */
 class WSafeHtmlTextField
-	extends WTextArea
+	extends WTextField
 {
 		
 	/**
