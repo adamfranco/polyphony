@@ -35,6 +35,7 @@ require_once(dirname(__FILE__)."/main/library/Wizard/Components/WTextField.class
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WCheckBox.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WFileUploadField.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WHorizontalRadioList.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/Components/WRadioListWithDelete.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WizardStep.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WMultiSelectList.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WPasswordField.class.php");

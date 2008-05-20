@@ -23,8 +23,8 @@ require_once(POLYPHONY."/main/library/Wizard/Components/WRadioList.class.php");
  * @version $Id: WVerticalRadioList.class.php,v 1.3 2007/09/19 14:04:51 adamfranco Exp $
  */
 class WVerticalRadioList extends WRadioList {
-	function WVeriticalRadioList() {
-		parent::WRadioList();
+	function __construct() {
+		parent::__construct();
 		
 		$this->_eachPost = "<br/>\n";
 	}

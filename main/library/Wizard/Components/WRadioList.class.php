@@ -63,7 +63,7 @@ class WRadioList
 	 * @access public
 	 * @return WRadioList
 	 */
-	function WRadioList () {
+	function __construct () {
 		$this->_pre = $this->_post = '';
 		$this->_eachPost = "\n<br/>";
 	}
@@ -159,7 +159,7 @@ class WRadioList
 		}
 		foreach (array_keys($this->_items) as $key) {
 			$disp = $this->_items[$key];
-			$extendedHtml = $this->_extendedHtml[$key];
+			$extendedHtml = $this->getExtendedHtml($fieldName, $key);
 			$checked = $this->_value==$key?" checked='checked'":"";
 			$val = htmlspecialchars($key, ENT_QUOTES);
 			
@@ -185,6 +185,19 @@ class WRadioList
 		$m .= $this->_post;
 				
 		return $m;
+	}
+	
+	/**
+	 * Answer the extended HTML for an item
+	 * 
+	 * @param string $fieldName The field name to use when outputting form data or
+	 * @param string $key
+	 * @return string
+	 * @access protected
+	 * @since 5/19/08
+	 */
+	protected function getExtendedHtml ($fieldName, $key) {
+		return $this->_extendedHtml[$key];
 	}
 }
 
