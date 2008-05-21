@@ -26,7 +26,7 @@ Quisque sed odio. Nullam posuere eleifend leo. Proin adipiscing nunc et pede.
 @package harmoni.docs
 @copyright Copyright &copy; 2007, Middlebury College
 @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
-@version $Id: paragraphs.xsl,v 1.1 2007/10/09 18:46:49 adamfranco Exp $
+@version $Id: paragraphs.xsl,v 1.1 2007/10/09 16:16:53 adamfranco Exp $
 
 -->
 
