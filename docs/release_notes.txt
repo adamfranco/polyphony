@@ -3,6 +3,12 @@ Name: Polyphony Release Notes
 (See the Polyphony change log for more details)
 
 
+v. 1.2.0 (2008-05-20)
+----------------------------------------------------
+This release adds support for the new Gui2 theming in Harmoni and used by Segue 2.
+Also added are a number of new Wizard components and improvements.
+
+
 v. 1.1.0 (2008-04-11)
 ----------------------------------------------------
 This release add a few minor changes to tagging actions.
@@ -31,7 +37,7 @@ Fixes to a few bugs.
 v. 1.0.2 (2008-03-10)
 ----------------------------------------------------
 This release fixes a number of bugs, particularly with respect to cross-browser
-compatability and Repository Importer issues.
+compatibility and Repository Importer issues.
 
 
 v. 1.0.1 (2008-02-21)

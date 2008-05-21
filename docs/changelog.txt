@@ -4,6 +4,63 @@ Name: Polyphony Change Log
 
 
 
+v. 1.2.0 (2008-05-20)
+----------------------------------------------------
+This release adds support for the new Gui2 theming in Harmoni and used by Segue 2.
+Also added are a number of new Wizard components and improvements.
+		
+		
+	* New feature: #1941513 
+		AbstractActions: New ConditionalGet action enables browser-caching of
+		content. 
+		(2008-05-13 - Adam Franco)
+		
+	* New feature: # 
+		Gui2: New actions for accessing Gui2 theme images and CSS.
+		(2008-05-13 - Adam Franco)
+		
+	* Change: # 
+		Gui/Gui2: The EMPHASIZED_BLOCK has be deprecated and a SIDEBAR_BLOCK added
+		to enable better syntactical alignment between usage and theme definition.
+		(2008-05-20 - Adam Franco)
+		
+	* Change: #1941513 
+		Repository: View-File and View-Thumbnail now support browser-caching via
+		conditional-GET. 
+		(2008-05-13 - Adam Franco)
+		
+	* Change: # 
+		Wizard: FileUploadField now validates MIME types when they are specified.
+		(2008-05-20 - Adam Franco)
+		
+	* Bug Fix: # 
+		Wizard: Error text now doesn't take up space when not shown.
+		(2008-05-20 - Adam Franco)
+		
+	* Bug Fix: # 
+		Wizard: Text-Areas now have id attributes set, enabling error checking rules
+		to work.
+		(2008-05-20 - Adam Franco)
+		
+	* New feature: # 
+		Wizard: New Wizard Components for text areas and fields with HTML cleaning.
+		(2008-05-20 - Adam Franco)
+		
+	* New feature: # 
+		Wizard: WRadioListWithDelete Wizard component added. This component is
+		needed to enable the deletion of user-created themes.
+		(2008-05-20 - Adam Franco)
+		
+	* New feature: # 
+		Wizard: Text-Areas can now have a wrap attribute set to control
+		text-wrapping. This does not result in valid XHTML, but is the only known
+		way to control wrapping in a text-area.
+		(2008-05-20 - Adam Franco)
+		
+	* New feature: # 
+		Wizard: New XML Schema validator rule for wizard.
+		(2008-05-20 - Adam Franco)
+	
 v. 1.1.0 (2008-04-11)
 ----------------------------------------------------
 This release add a few minor changes to tagging actions.
@@ -77,7 +134,7 @@ Fixes to a few bugs.
 v. 1.0.2 (2008-03-10)
 ----------------------------------------------------
 This release fixes a number of bugs, particularly with respect to cross-browser
-compatability and Repository Importer issues.
+compatibility and Repository Importer issues.
 		
 		
 	* Bug Fix: 
@@ -319,8 +376,8 @@ they implement all abstract methods.
 		(2007-10-16 - Adam Franco)
 		
 	* Bug Fix: 
-		CreateAgent, now doesn't die when encountering the changeuser authentication
-		type. 
+		CreateAgent, now doesn't die when encountering the change-user
+		authentication type.
 		(2007-10-01 - Adam Franco)
 		(reported by Chris Newton)
 		
@@ -343,7 +400,7 @@ they implement all abstract methods.
 		(2007-10-12 - Adam Franco)
 		
 	* Bug Fix: #1811204 
-		Wizard step links are now working in namespaced wizards.
+		Wizard step links are now working in name-spaced wizards.
 		(2007-10-16 - Adam Franco)
 		
 	* Bug Fix: #1811216 
@@ -373,7 +430,7 @@ v. 0.9.3 (2007-09-25)
 		(2007-09-25 - Adam Franco)
 		
 	* Change: 
-		FileBrowser: Now namespacing the assetId parameter.
+		FileBrowser: Now name-spacing the assetId parameter.
 		(2007-09-25 - Adam Franco)
 	
 v. 0.9.2 (2007-09-20)
@@ -382,7 +439,7 @@ v. 0.9.2 (2007-09-20)
 		
 	* Bug Fix: 
 		Javascript: document.getHeight() method now reliably returns the height of
-		the document whether the window is larger or smaller than the hieght.
+		the document whether the window is larger or smaller than the height.
 		(2007-09-19 - Adam Franco)
 	
 v. 0.9.1 (2007-09-13)
@@ -402,12 +459,12 @@ v. 0.9.0 (2007-09-07)
 
 		
 	* Change: 
-		Removing ampersands for compatability with other PHP5 code. The BBEdit-grep
+		Removing ampersands for compatibility with other PHP5 code. The BBEdit-grep
 		string used for the find and replace was: (function
 		)&amp;|(=\s?)&amp;([^a-z#])|([^&amp;])&amp;\s?(\$) replaced with \1\2\3\4\5
 		
 		Special Changes were made to the following files to fix problems
-		introduced in the search and repace for ampersands: -
+		introduced in the search and replace for ampersands: -
 		polyphony/main/library/ResultPrinter/ArrayResultPrinter.class.php -
 		getLayout() - $item = $this-&gt;_array[key($this-&gt;_array)]; ====== + $item = current($this-&gt;_array);
 		
@@ -429,7 +486,7 @@ v. 0.9.0 (2007-09-07)
 		(2007-09-05 - Adam Franco)
 		
 	* New feature: 
-		Javascript: Now provides functions for namespacing of form fields.
+		Javascript: Now provides functions for name-spacing of form fields.
 		(Adam Franco)
 		
 	* New feature: 
@@ -838,7 +895,7 @@ v. 0.6.0 (2006-06-16)
 		
 	* Change: 
 		Help: Improving the parsing and display of help files to support relative
-		links to images, stylesheets, and other files. Better generation of menus
+		links to images, style sheets, and other files. Better generation of menus
 		too. 
 		(Adam Franco)
 		
@@ -883,7 +940,7 @@ v. 0.5.1 (2006-05-19)
 		(Adam Franco)
 		
 	* Change: 
-		Wizard: now suports dropdown-menu reordering rather than just
+		Wizard: now supports drop-down-menu reordering rather than just
 		move-up/move-down. 
 		(Adam Franco)
 		
@@ -906,8 +963,8 @@ v. 0.5.0 (2006-05-05)
 		
 	* Change: 
 		Reworked the basket library be more straight-forward, getting rid of the
-		uneeded "BasketManager" and putting all of the functionality in the "Basket"
-		singleton. 
+		unneeded "BasketManager" and putting all of the functionality in the
+		"Basket" singleton.
 		(Adam Franco)
 		
 	* Change: 
@@ -1121,7 +1178,7 @@ v. 0.2.1 (2005-04-11)
 		(Adam Franco)
 		
 	* Change: 
-		Fixed some references to the non-existant "SharedManager"
+		Fixed some references to the non-existent "SharedManager"
 		(Adam Franco)
 	
 v. 0.2.0 (2005-04-07)
@@ -1173,7 +1230,7 @@ v. 0.1.0 (2004-10-26)
 	* New feature: 
 		The Wizard library provides a system for the generation of dynamic
 		Multi-step wizards. The Wizard library handles the catching, storing, and
-		validating of form submitions, as well as handle user-progress through the
+		validating of form submissions, as well as handle user-progress through the
 		wizard. 
 		(Adam Franco)
 		
