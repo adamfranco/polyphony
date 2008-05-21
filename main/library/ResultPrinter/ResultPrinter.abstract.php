@@ -105,7 +105,7 @@ abstract class ResultPrinter {
 				$harmoni->request->startNamespace($this->_namespace);
 			
 			ob_start();
-			print "\n<table width='100%'>";
+			print "\n<table class='pagination_links' width='100%'>";
 			print "\n\t<tr>";
 			print "\n\t\t<td>";
 			$numPages = ceil($numItems/$this->_pageSize);

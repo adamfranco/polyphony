@@ -243,7 +243,7 @@ class ArrayResultPrinter
  		if ($linksHTML = $this->getPageLinks($startingNumber, $numItems)) {
 			
 			// Add the links to the page
-			$pageLinkBlock = new Block($linksHTML, BACKGROUND_BLOCK);
+			$pageLinkBlock = new UnstyledBlock($linksHTML, BLANK);
 			$container->add($pageLinkBlock, "100%", null, CENTER, CENTER);
 			
 			$pageLinkBlock->addStyle($this->_linksStyleCollection);
