@@ -30,6 +30,11 @@ Also added are a number of new Wizard components and improvements.
 		(2008-05-13 - Adam Franco)
 		
 	* Change: # 
+		ResultPrinter: Added a class name to enable CSS styling and changed the
+		block type for page links to UnstyledBlock from Background_Block.
+		(2008-05-20 - Alex Chapin)
+		
+	* Change: # 
 		Wizard: FileUploadField now validates MIME types when they are specified.
 		(2008-05-20 - Adam Franco)
 		

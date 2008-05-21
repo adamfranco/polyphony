@@ -32,6 +32,10 @@
 			Repository: View-File and View-Thumbnail now support browser-caching 
 			via conditional-GET.
 		</change>
+		<change author='alex' date='2008-05-20' ref='' reftype='fr'>
+			ResultPrinter: Added a class name to enable CSS styling and changed the
+			block type for page links to UnstyledBlock from Background_Block.
+		</change>
 		<change author='adam' date='2008-05-20' ref='' reftype='fr'>
 			Wizard: FileUploadField now validates MIME types when they are specified.
 		</change>
