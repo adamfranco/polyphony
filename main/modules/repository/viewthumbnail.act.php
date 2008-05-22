@@ -104,7 +104,7 @@ class viewthumbnailAction
 	 * @since 8/7/06
 	 */
 	function getCancelFunction () {
-		return array($this, 'getUnauthorizedMessage';
+		return array($this, 'getUnauthorizedMessage');
 	}
 	
 	/**

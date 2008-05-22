@@ -10,6 +10,14 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.2.1" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-05-21' ref='' reftype='bug'>
+			Repository: Fixed parse error in View-Thumbnail action.
+		</fix>
+	</version>
 	<version number="1.2.0" date="2008-05-20">
 		<releaseNotes>
 			This release adds support for the new Gui2 theming in Harmoni and
