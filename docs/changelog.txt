@@ -2,6 +2,18 @@
 Polyphony Change Log
 
 
+v. 1.2.1 (2008-05-22)
+----------------------------------------------------
+A parse error had snuck into the thumbnail viewing action. This is now fixed.
+		
+		
+	* Bug Fix: # 
+		Repository: Fixed parse error in View-Thumbnail action.
+		(2008-05-21 - Adam Franco)
+	
+
+
+
 v. 1.2.0 (2008-05-20)
 ----------------------------------------------------
 This release adds support for the new Gui2 theming in Harmoni and used by Segue 2.

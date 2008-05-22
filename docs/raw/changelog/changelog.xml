@@ -10,9 +10,10 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.2.1" date="The Future">
+	<version number="1.2.1" date="2008-05-22">
 		<releaseNotes>
-			
+			A parse error had snuck into the thumbnail viewing action. This is now
+			fixed.
 		</releaseNotes>
 		<fix author='adam' date='2008-05-21' ref='' reftype='bug'>
 			Repository: Fixed parse error in View-Thumbnail action.

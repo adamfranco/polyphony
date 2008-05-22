@@ -1,5 +1,5 @@
 
-Polyphony v. 1.2.0 (2008-05-20)
+Polyphony v. 1.2.1 (2008-05-22)
 =================================
 
 What is Polyphony?
@@ -42,8 +42,7 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This release adds support for the new Gui2 theming in Harmoni and used by Segue 2.
-Also added are a number of new Wizard components and improvements.
+A parse error had snuck into the thumbnail viewing action. This is now fixed.
 
 
 Downloads
@@ -74,6 +73,12 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.2.1 (2008-05-22)
+----------------------------------------------------
+A parse error had snuck into the thumbnail viewing action. This is now fixed.
+
 
 
 v. 1.2.0 (2008-05-20)
