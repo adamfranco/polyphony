@@ -38,6 +38,21 @@ class theme_imageAction
 	}
 	
 	/**
+	 * Answer a junk image that says we don't know the Id of the file
+	 * 
+	 * @return void
+	 * @access protected
+	 * @since 2/15/08
+	 */
+	protected function getUnknownIdMessage () {
+		header("Content-Type: image/gif");
+		header('Content-Disposition: filename="english.gif"');
+			
+		print file_get_contents(POLYPHONY.'/docs/images/unknownid/english.gif');
+		exit;
+	}
+	
+	/**
 	 * Answer the last-modified timestamp for this action/id.
 	 * 
 	 * @return object DateAndTime
@@ -45,7 +60,15 @@ class theme_imageAction
 	 * @since 5/13/08
 	 */
 	public function getModifiedDateAndTime () {
-		return $this->getImage()->getModificationDate();
+		try {
+			return $this->getImage()->getModificationDate();
+		} 
+		// Don't log errors as any garbage CSS could be pointing to things
+		// that don't exist.
+		catch (UnknownIdException $e) {
+			header('HTTP/1.1 404 Not Found');
+			$this->getUnknownIdMessage();
+		}
 	}
 	
 	/**
@@ -56,11 +79,19 @@ class theme_imageAction
 	 * @since 5/6/08
 	 */
 	public function outputContent () {
+		try {		
+			$image = $this->getImage();
+			header("Content-Type: ".$image->getMimeType());
+			header("Content-Length: ".$image->getSize());
+			print $image->getContents();
 		
-		$image = $this->getImage();
-		header("Content-Type: ".$image->getMimeType());
-		header("Content-Length: ".$image->getSize());
-		print $image->getContents();
+		} 
+		// Don't log errors as any garbage CSS could be pointing to things
+		// that don't exist.
+		catch (UnknownIdException $e) {
+			header('HTTP/1.1 404 Not Found');
+			$this->getUnknownIdMessage();
+		}
 		exit;
 	}
 	
