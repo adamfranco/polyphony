@@ -1,5 +1,5 @@
 
-Polyphony v. 1.2.1 (2008-05-22)
+Polyphony v. 1.2.2 (2008-05-23)
 =================================
 
 What is Polyphony?
@@ -42,7 +42,7 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-A parse error had snuck into the thumbnail viewing action. This is now fixed.
+Missing theme images now do not fill the logs with errors.
 
 
 Downloads
@@ -73,6 +73,12 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.2.2 (2008-05-23)
+----------------------------------------------------
+Missing theme images now do not fill the logs with errors.
+
 
 
 v. 1.2.1 (2008-05-22)

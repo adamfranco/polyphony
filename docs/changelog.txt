@@ -2,6 +2,20 @@
 Polyphony Change Log
 
 
+v. 1.2.2 (2008-05-23)
+----------------------------------------------------
+Missing theme images now do not fill the logs with errors.
+		
+		
+	* Change: # 
+		Gui2: Missing theme images now return a 404 error and a 'file not found'
+		image and do not log an error. Simple CSS errors in user-entered CSS can
+		cause lots of access to bad urls, so don't fill up the logs with errors.
+		(2008-05-22 - Adam Franco)
+	
+
+
+
 v. 1.2.1 (2008-05-22)
 ----------------------------------------------------
 A parse error had snuck into the thumbnail viewing action. This is now fixed.
