@@ -83,7 +83,8 @@ class getFileAction
 			set_time_limit(0);
 			print fread($handle, 8192);
 			flush();
-			@ob_flush();
+			if (ob_get_length())
+				ob_end_flush();
 		}
 		fclose($handle);
 		

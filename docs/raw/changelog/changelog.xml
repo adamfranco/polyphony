@@ -15,6 +15,10 @@
 			
 		</releaseNotes>
 		<fix author='adam' date='2008-06-02' ref='' reftype='bug'>
+			RepositoryExporter: Now exports seem to work. There was an issue
+			with the output buffering.
+		</fix>
+		<fix author='adam' date='2008-06-02' ref='' reftype='bug'>
 			RepositoryImporter: Fixing notices and improving robustness of 
 			Tab-Delimited importing.
 			
