@@ -209,7 +209,7 @@ class XMLExporter {
 		unlink($this->_tmpDir."-compress_status");
 		
 		// Remove the source directory
-		shell_exec('rm -R '.str_replace(":", "\:", $this->_tmpDir));
+		$this->deleteRecursive($this->_tmpDir);
 		
 		return self::getTmpDir().'/'.$archiveBaseName.$this->_compression;
 	}
@@ -279,6 +279,28 @@ class XMLExporter {
 		}
 		
 		return $numFiles;
+	}
+	
+	/**
+	 * Recursively delete a directory
+	 * 
+	 * @param string $path
+	 * @return void
+	 * @access protected
+	 * @since 1/18/08
+	 */
+	protected function deleteRecursive ($path) {
+		if (is_dir($path)) {
+			$entries = scandir($path);
+			foreach ($entries as $entry) {
+				if ($entry != '.' && $entry != '..') {
+					$this->deleteRecursive($path.DIRECTORY_SEPARATOR.$entry);
+				}
+			}
+			rmdir($path);
+		} else {
+			unlink($path);
+		}
 	}
 }
 ?>
