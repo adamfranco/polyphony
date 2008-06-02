@@ -160,8 +160,11 @@ class TabRepositoryImporter
 			$partObjects = array();
 			
 			for ($i = 0; $i < count($this->_partStructureIds); $i++) {
-				$partObject = $this->getPartObject($this->_structureId,
-					$this->_partStructureIds[$i], $input[$i + 4]);
+				if (isset($input[$i + 4]))
+					$partObject = $this->getPartObject($this->_structureId,
+						$this->_partStructureIds[$i], $input[$i + 4]);
+				else
+					$partObject = null;
 				if (!$partObject)
 					continue;
 				$partObjects[] = $partObject;

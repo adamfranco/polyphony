@@ -10,6 +10,18 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.2.3" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-06-02' ref='' reftype='bug'>
+			RepositoryImporter: Fixing notices and improving robustness of 
+			Tab-Delimited importing.
+			
+			Schema and Part names are now trimmed for matching. Array indexes are 
+			now checked before access to avoid notices.
+		</fix>
+	</version>
 	<version number="1.2.2" date="2008-05-23">
 		<releaseNotes>
 			Missing theme images now do not fill the logs with errors.

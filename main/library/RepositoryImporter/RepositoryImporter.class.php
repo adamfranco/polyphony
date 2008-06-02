@@ -210,7 +210,7 @@ class RepositoryImporter {
 		$stop = true;
 		while($structures->hasNext()) {
 			$testStructure = $structures->next();
-			if($testStructure->getDisplayName() == $schema) {
+			if(strtolower(trim($testStructure->getDisplayName())) == strtolower(trim($schema))) {
 				$structureId = $testStructure->getId();
 				return $structureId;
 			}
@@ -233,14 +233,18 @@ class RepositoryImporter {
 			$partStructures =$schema->getPartStructures();
 			while ($partStructures->hasNext()) {
 				$partStructure = $partStructures->next();
-				if ($part == $partStructure->getDisplayName()) {
+				if (strtolower(trim($part) == strtolower(trim($partStructure->getDisplayName())))) {
 					$partStructureIds[] = $partStructure->getId();
 					$stop = false;
 					break;
 				}	
 			}
-		if ($stop)
-			return false;
+			if ($stop) {
+				$this->addError("Part '$part' for schema '".
+					$schema->getDisplayName()."' in the Tab-Delimited file was not found in matched in the '".
+					$schema->getDisplayName()."' in Concerto.");
+				return false;
+			}
 		}
 		return $partStructureIds;
 	}
@@ -291,53 +295,57 @@ class RepositoryImporter {
 		}
 		$this->addGoodAssetId($asset->getId());
 		RecordManager::setCacheMode(false);
-		foreach($recordList as $entry) {
-			$assetRecord =$asset->createRecord($entry['structureId']);
-			$j = 0;
-			printpre("creating record for: "); printpre($entry['structureId']);
-			foreach ($entry['partStructureIds'] as $id) {
-				if(!($entry['structureId']->isEqual($FILE_ID))) {
-					if (is_array($entry['parts'][$j])) {
-						for ($k = 0; $k < count($entry['parts'][$j]); $k++)
-							$assetRecord->createPart($id, $entry['parts'][$j][$k]);
-					} else {
-						$assetRecord->createPart($id, $entry['parts'][$j]);
-					}
-					$j++;
-				}
-				else if ($entry['structureId']->isEqual($FILE_ID)) {
-					$filename = basename(trim($entry['parts'][0]));
-					$mimetype = $mime->getMIMETypeForFileName($filename);
-					$assetRecord->createPart($FILE_DATA_ID,
-						file_get_contents($this->_srcDir.$filename));
-					$assetRecord->createPart($FILE_NAME_ID,
-						basename($filename));
-					$assetRecord->createPart($MIME_TYPE_ID,
-						$mimetype);
-					$imageProcessor = Services::getService("ImageProcessor");
-					if(isset($entry['parts'][1]) && $entry['parts'][1] != "") {
-						$assetRecord->createPart(
-							$THUMBNAIL_DATA_ID,
-							file_get_contents($this->_srcDir.
-								$entry['parts'][1]));
-					}
-					else if ($imageProcessor->isFormatSupported($mimetype)) {
-						try {
-							$thumbData = $imageProcessor->generateThumbnailData($mimetype,
-								file_get_contents($this->_srcDir.$filename));
-						} catch (ImageProcessingFailedException $e) {
-							$thumbData = null;
+		if (is_array($recordList)) {
+			foreach($recordList as $entry) {
+				$assetRecord =$asset->createRecord($entry['structureId']);
+				$j = 0;
+// 				printpre("creating record for: "); printpre($entry['structureId']);
+				foreach ($entry['partStructureIds'] as $id) {
+					if(!($entry['structureId']->isEqual($FILE_ID))) {
+						if (isset($entry['parts'][$j])) {
+							if (is_array($entry['parts'][$j])) {
+								for ($k = 0; $k < count($entry['parts'][$j]); $k++)
+									$assetRecord->createPart($id, $entry['parts'][$j][$k]);
+							} else {
+								$assetRecord->createPart($id, $entry['parts'][$j]);
+							}
 						}
-						if ($thumbData) {
+						$j++;
+					}
+					else if ($entry['structureId']->isEqual($FILE_ID)) {
+						$filename = basename(trim($entry['parts'][0]));
+						$mimetype = $mime->getMIMETypeForFileName($filename);
+						$assetRecord->createPart($FILE_DATA_ID,
+							file_get_contents($this->_srcDir.$filename));
+						$assetRecord->createPart($FILE_NAME_ID,
+							basename($filename));
+						$assetRecord->createPart($MIME_TYPE_ID,
+							$mimetype);
+						$imageProcessor = Services::getService("ImageProcessor");
+						if(isset($entry['parts'][1]) && $entry['parts'][1] != "") {
 							$assetRecord->createPart(
 								$THUMBNAIL_DATA_ID,
-								$thumbData);
-							$assetRecord->createPart(
-								$THUMBNAIL_MIME_TYPE_ID,
-								$imageProcessor->getThumbnailFormat());
+								file_get_contents($this->_srcDir.
+									$entry['parts'][1]));
 						}
+						else if ($imageProcessor->isFormatSupported($mimetype)) {
+							try {
+								$thumbData = $imageProcessor->generateThumbnailData($mimetype,
+									file_get_contents($this->_srcDir.$filename));
+							} catch (ImageProcessingFailedException $e) {
+								$thumbData = null;
+							}
+							if ($thumbData) {
+								$assetRecord->createPart(
+									$THUMBNAIL_DATA_ID,
+									$thumbData);
+								$assetRecord->createPart(
+									$THUMBNAIL_MIME_TYPE_ID,
+									$imageProcessor->getThumbnailFormat());
+							}
+						}
+						break;
 					}
-					break;
 				}
 			}
 		}
