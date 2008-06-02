@@ -210,7 +210,7 @@ class RepositoryImporter {
 		$stop = true;
 		while($structures->hasNext()) {
 			$testStructure = $structures->next();
-			if(strtolower(trim($testStructure->getDisplayName())) == strtolower(trim($schema))) {
+			if(trim($testStructure->getDisplayName()) == trim($schema)) {
 				$structureId = $testStructure->getId();
 				return $structureId;
 			}
@@ -233,7 +233,7 @@ class RepositoryImporter {
 			$partStructures =$schema->getPartStructures();
 			while ($partStructures->hasNext()) {
 				$partStructure = $partStructures->next();
-				if (strtolower(trim($part) == strtolower(trim($partStructure->getDisplayName())))) {
+				if (trim($part) == trim($partStructure->getDisplayName())) {
 					$partStructureIds[] = $partStructure->getId();
 					$stop = false;
 					break;
