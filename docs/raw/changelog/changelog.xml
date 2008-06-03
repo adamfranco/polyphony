@@ -14,6 +14,15 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2008-06-03' ref='' reftype='bug'>
+			SafeMode/RepositoryExporter: Fixed safe-mode restrictions that were preventing
+			exports from completing. With Safe Mode on, compression of the archive
+			is no longer a background process, removing the need for shell_exec().
+		</fix>
+		<fix author='adam' date='2008-06-03' ref='' reftype='bug'>
+			SafeMode/RepositoryExporter: Now doesn't try to use set_time_limit()
+			if Safe Mode is on.
+		</fix>
 		<fix author='adam' date='2008-06-02' ref='' reftype='bug'>
 			RepositoryExporter: Now exports seem to work. There was an issue
 			with the output buffering.

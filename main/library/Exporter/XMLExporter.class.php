@@ -79,10 +79,10 @@ class XMLExporter {
 		}
 		$exporter = new $class;
 		$now = DateAndTime::now();
-		$exporter->_tmpDir = self::getTmpDir()."/export_".$now->asString();
+		$exporter->_tmpDir = self::getTmpDir()."/export_".str_replace(':', '-', $now->asString());
 		while (file_exists($exporter->_tmpDir)) {
 			$now = DateAndTime::now();
-			$exporter->_tmpDir = self::getTmpDir()."/export_".$now->asString();
+			$exporter->_tmpDir = self::getTmpDir()."/export_".str_replace(':', '-', $now->asString());
 		}		
 		
 		mkdir($exporter->_tmpDir);
@@ -187,26 +187,47 @@ class XMLExporter {
 		$status->initializeStatistics($numFiles);
 		$filesSeen = 1;
 		
-		
-		$PID = $this->run_in_background(
-			'tar -v -czf '.self::getTmpDir().'/'.$archiveBaseName.$this->_compression.
-			" -C ".str_replace(":", "\:", $this->_tmpDir)." . ",
-			0, str_replace(":", "\:", $this->_tmpDir)."-compress_status");
-		
-		while($this->is_process_running($PID))	{
-			$lines = count(file($this->_tmpDir."-compress_status"));
-			for ($i = $filesSeen; $i < $lines; $i++) {
+		// With safe-mode we can't easily get the PID to monitor the compression status, 
+		// so just execute the compression command.
+		if (ini_get('safe_mode')) {
+			if (!defined('XML_EXPORT_EXEC_PATH'))
+				throw new ConfigurationErrorException("XML_EXPORT_EXEC_PATH must be defined for exporting to work with SafeMode on. The tar command must exist in the XML_EXPORT_EXEC_PATH.");
+			
+			$command = rtrim(XML_EXPORT_EXEC_PATH, '/').'/tar -v -czf '.self::getTmpDir().'/'.$archiveBaseName.$this->_compression." -C ".$this->_tmpDir." . ";
+// 			printpre(escapeshellcmd($command));
+			exec($command, $result, $return);
+			
+			if ($return)
+				throw new OperationFailedException("Could not compress the export archive. 'tar' unavailable in XML_EXPORT_EXEC_PATH or exited with an error.", $return);
+			
+			// Update our statistics to fill the screen even though they will just be
+			// happening at the end.
+			for ($i = 0; $i < $numFiles; $i++) {
 				$status->updateStatistics();
-				$filesSeen++;
 			}
-			sleep(1);
 		}
-		// Finish off any last statistics
-		for ($i = $filesSeen; $i <= $numFiles; $i++)
-			$status->updateStatistics();
-		
-		// Remove our status file
-		unlink($this->_tmpDir."-compress_status");
+		// Without safe-mode we can easily get the PID and give a status of the compression step
+		else {
+			$PID = $this->run_in_background(
+				'tar -v -czf '.self::getTmpDir().'/'.$archiveBaseName.$this->_compression.
+				" -C ".str_replace(":", "\:", $this->_tmpDir)." . ",
+				0, str_replace(":", "\:", $this->_tmpDir)."-compress_status");
+			
+			while($this->is_process_running($PID))	{
+				$lines = count(file($this->_tmpDir."-compress_status"));
+				for ($i = $filesSeen; $i < $lines; $i++) {
+					$status->updateStatistics();
+					$filesSeen++;
+				}
+				sleep(1);
+			}
+			// Finish off any last statistics
+			for ($i = $filesSeen; $i <= $numFiles; $i++)
+				$status->updateStatistics();
+			
+			// Remove our status file
+			unlink($this->_tmpDir."-compress_status");
+		}
 		
 		// Remove the source directory
 		$this->deleteRecursive($this->_tmpDir);
@@ -229,11 +250,12 @@ class XMLExporter {
 	 */
 	function run_in_background($Command, $Priority = 0, $outputFile = '/dev/null')
 	{
-	   if($Priority)
-		   $PID = shell_exec("nohup nice -n $Priority $Command > $outputFile & echo $!");
-	   else
-		   $PID = shell_exec("nohup $Command > $outputFile & echo $!");
-	   return($PID);
+		
+		if($Priority)
+			$PID = shell_exec("nohup nice -n $Priority $Command > $outputFile & echo $!");
+		else
+			$PID = shell_exec("nohup $Command > $outputFile & echo $!");
+		return($PID);
 	}
 	
 	/**

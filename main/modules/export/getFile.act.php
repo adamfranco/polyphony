@@ -65,7 +65,7 @@ class getFileAction
 			print "<p style=''><a href='".$harmoni->request->quickURL("collections", "namebrowse")."'>"._("&lt;-- Return")."</a></p>";
 			print "<hr/>";
 			
-			throwError(new Error($file." is not in the allowed list to download.", "Exporter"));
+			throw new OperationFailedException("Could not download export. ".$file." is not in the allowed list to download.");
 		}
 		
 		header("Content-type: ".$_SESSION['EXPORTED_FILES'][$file]['mime']);
@@ -80,7 +80,8 @@ class getFileAction
 		
 		$handle =fopen($_SESSION['EXPORTED_FILES'][$file]['file'], "rb");
 		while (!feof($handle)) {
-			set_time_limit(0);
+			if (!ini_get('safe_mode'))
+				set_time_limit(0);
 			print fread($handle, 8192);
 			flush();
 			if (ob_get_length())
