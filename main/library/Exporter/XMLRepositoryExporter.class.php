@@ -170,7 +170,7 @@ class XMLRepositoryExporter extends XMLExporter {
 		if ($hasRootSearch) {
 			$criteria = NULL;
 			$children =$this->_object->getAssetsBySearch($criteria,
-				$rootSearchType, new HarmoniProperties(new Type('null', 'null', 'null')));
+				$rootSearchType, new HarmoniProperties(new Type('Repository', 'edu.middlebury', 'null')));
 		} else
 			$children =$this->_object->getAssets();
 		
