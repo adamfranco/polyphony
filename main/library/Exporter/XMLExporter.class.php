@@ -9,7 +9,6 @@
  * @version $Id: XMLExporter.class.php,v 1.15 2008/03/06 19:03:21 adamfranco Exp $
  */ 
 
-require_once("Archive/Tar.php");
 require_once(HARMONI."/Primitives/Chronology/DateAndTime.class.php");
 require_once(POLYPHONY."/main/library/Exporter/XMLRepositoryExporter.class.php");
 
