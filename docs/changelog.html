@@ -23,7 +23,27 @@
 </head>
 <body>
 <h1>Polyphony Change Log</h1>
-<h2>Version 1.2.2</h2>
+<h2>Version 1.2.3</h2>
+<h3>2008-06-03</h3>
+<p>This release fixes a few issues that were affecting Concerto's import and export functions.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82873&amp;atid=567473">
+        			#</a> SafeMode/RepositoryExporter: Fixed safe-mode restrictions that were preventing exports from completing. With Safe Mode on, compression of the archive is no longer a background process, removing the need for shell_exec(). (<em>2008-06-03 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82873&amp;atid=567473">
+        			#</a> SafeMode/RepositoryExporter: Now doesn't try to use set_time_limit() if Safe Mode is on. (<em>2008-06-03 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82873&amp;atid=567473">
+        			#</a> RepositoryExporter: Now exports seem to work. There was an issue with the output buffering. (<em>2008-06-02 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82873&amp;atid=567473">
+        			#</a> RepositoryImporter: Fixing notices and improving robustness of Tab-Delimited importing.
+<br>
+<br>Schema and Part names are now trimmed for matching. Array indexes are now checked before access to avoid notices. (<em>2008-06-02 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 1.2.2</h2>
 <h3>2008-05-23</h3>
 <p>Missing theme images now do not fill the logs with errors.</p>
 <ul>

@@ -10,9 +10,10 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.2.3" date="The Future">
+	<version number="1.2.3" date="2008-06-03">
 		<releaseNotes>
-			
+			This release fixes a few issues that were affecting Concerto's import
+			and export functions.
 		</releaseNotes>
 		<fix author='adam' date='2008-06-03' ref='' reftype='bug'>
 			SafeMode/RepositoryExporter: Fixed safe-mode restrictions that were preventing

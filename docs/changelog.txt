@@ -2,6 +2,39 @@
 Polyphony Change Log
 
 
+v. 1.2.3 (2008-06-03)
+----------------------------------------------------
+This release fixes a few issues that were affecting Concerto's import and export
+functions. 
+		
+		
+	* Bug Fix: # 
+		SafeMode/RepositoryExporter: Fixed safe-mode restrictions that were
+		preventing exports from completing. With Safe Mode on, compression of the
+		archive is no longer a background process, removing the need for
+		shell_exec(). 
+		(2008-06-03 - Adam Franco)
+		
+	* Bug Fix: # 
+		SafeMode/RepositoryExporter: Now doesn't try to use set_time_limit() if Safe
+		Mode is on.
+		(2008-06-03 - Adam Franco)
+		
+	* Bug Fix: # 
+		RepositoryExporter: Now exports seem to work. There was an issue with the
+		output buffering.
+		(2008-06-02 - Adam Franco)
+		
+	* Bug Fix: # 
+		RepositoryImporter: Fixing notices and improving robustness of Tab-Delimited importing.
+		
+		Schema and Part names are now trimmed for matching. Array indexes are now
+		checked before access to avoid notices.
+		(2008-06-02 - Adam Franco)
+	
+
+
+
 v. 1.2.2 (2008-05-23)
 ----------------------------------------------------
 Missing theme images now do not fill the logs with errors.

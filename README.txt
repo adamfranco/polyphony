@@ -1,5 +1,5 @@
 
-Polyphony v. 1.2.2 (2008-05-23)
+Polyphony v. 1.2.3 (2008-06-03)
 =================================
 
 What is Polyphony?
@@ -42,7 +42,8 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-Missing theme images now do not fill the logs with errors.
+This release fixes a few issues that were affecting Concerto's import and export
+functions. 
 
 
 Downloads
@@ -73,6 +74,13 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.2.3 (2008-06-03)
+----------------------------------------------------
+This release fixes a few issues that were affecting Concerto's import and export
+functions. 
+
 
 
 v. 1.2.2 (2008-05-23)
