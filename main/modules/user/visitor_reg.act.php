@@ -65,9 +65,10 @@ class visitor_regAction
 	public function createWizard () {
 		$wizard = SimpleWizard::withText(
 			"\n<h2>"._("Visitor Registration")."</h2>".
+			"\n<p>"._("Please fill out the form below. After you click the 'Register' button an email will be sent with a link to confirm your registration. You must confirm your registration before you will be able to log in.")."</p>".
 			"\n<table class='visitor_registration'>".
-			"\n\t<tr>\n\t\t<th>"._("EMail Address: <br/>(must be valid)")."</th>\n\t\t<td>[[email]]</td>\n\t</tr>".
-			"\n\t<tr>\n\t\t<th>"._("Name:")."</th>\n\t\t<td>[[name]]</td>\n\t</tr>".
+			"\n\t<tr>\n\t\t<th>"._("EMail Address:<br/>(This is your login handle)")."</th>\n\t\t<td>[[email]]</td>\n\t</tr>".
+			"\n\t<tr>\n\t\t<th>"._("Full Name:")."</th>\n\t\t<td>[[name]]</td>\n\t</tr>".
 			"\n\t<tr>\n\t\t<th>"._("Password:")."<br/>"._("Password Again:")."</th>\n\t\t<td>[[password]]</td>\n\t</tr>".
 			"\n</table>".
 			"\n[[captcha]]".
@@ -81,10 +82,12 @@ class visitor_regAction
 			"</td></tr></table>");
 		
 		$property = $wizard->addComponent("email", new WTextField());
+		$property->setStartingDisplayText(_("john_doe@example.com"));
 		$property->setErrorText(_("A valid email address is required."));
 		$property->setErrorRule(new WECNonZeroRegex("^(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.+)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+@((\w+\-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6}$"));
 		
 		$property = $wizard->addComponent("name", new WTextField());
+		$property->setStartingDisplayText(_("John Doe"));
 		$property->setErrorText(_("A value for this field is required - allowed characters: letters, spaces, ,.'-."));
 		$property->setErrorRule(new WECNonZeroRegex("^[\\w\\040,\.'-]{3,}$"));
 		
@@ -118,9 +121,48 @@ class visitor_regAction
 		if (!$wizard->validate())
 			return false;
 		
-		$properties = $wizard->getAllValues();
-		printpre($properties);
-		return false;
+		$values = $wizard->getAllValues();
+		printpre($values);
+		
+		$authNMgr = Services::getService("AuthN");
+		$authNMethodMgr = Services::getService("AuthNMethodManager");
+		$tokenMgr = Services::getService("AgentTokenMapping");
+		$visitorAuthType = new Type ("Authentication", "edu.middlebury.harmoni",
+			"Visitors");
+		$authMethod = $authNMethodMgr->getAuthNMethodForType($visitorAuthType);
+		
+		$tokens = $authMethod->createTokensObject();
+		$tokens->initializeForTokens(array('username' => $values['email'], 'password' => $values['password']));
+		
+		// Check for previous registration
+		if ($authMethod->tokensExist($tokens)) {
+			print "\n<div class='error'>\n\t";
+			print _("This email address has already been registered.");
+			print "\n</div>";
+			
+			if (!$authMethod->isEmailConfirmed($tokens)) {
+				print "\n<div class='error'>\n\t";
+				print _("Re-send confirmation email?");
+				$harmoni = Harmoni::instance();
+				print " <a href='".$harmoni->request->quickURL('user', 'send_confirmation', array('email' => $values['email']))."'><button>";
+				print _("Send");
+				print "</button></a>";
+				print "\n</div>";
+			}
+			
+			return false;
+		}
+		
+		// Add the new tokens
+		if (!$authMethod->supportsTokenAddition())
+			throw new OperationFailedException("Could not add users with the ".$visitorAuthType->asString()." authentication method.");
+		
+		$authMethod->addTokens($tokens);
+		$properties = $authMethod->getPropertiesForTokens($tokens);
+		$properties->addProperty('name', $values['name']);
+		$authMethod->updatePropertiesForTokens($tokens, $properties);
+		
+		$this->success = true;
 		
 		return true;
 	}
@@ -135,7 +177,10 @@ class visitor_regAction
 	function getReturnUrl () {
 		$harmoni = Harmoni::instance();
 		
-		return $harmoni->request->quickURL("user", "main");
+		if ($this->success)
+			return $harmoni->request->quickURL("user", "visitor_reg_success");
+		else
+			return $harmoni->request->quickURL("user", "main");
 	}
 	
 }
