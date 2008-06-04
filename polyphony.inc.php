@@ -67,6 +67,7 @@ require_once(dirname(__FILE__)."/main/library/Wizard/Components/RowHierarchicalR
 require_once(dirname(__FILE__)."/main/library/Wizard/Listeners/ButtonPressedListener.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSearchField.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSearchList.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/Components/WReCaptcha.class.php");
 
 
 //gui components

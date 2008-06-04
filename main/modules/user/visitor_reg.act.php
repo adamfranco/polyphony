@@ -70,7 +70,8 @@ class visitor_regAction
 			"\n\t<tr>\n\t\t<th>"._("Name:")."</th>\n\t\t<td>[[name]]</td>\n\t</tr>".
 			"\n\t<tr>\n\t\t<th>"._("Password:")."<br/>"._("Password Again:")."</th>\n\t\t<td>[[password]]</td>\n\t</tr>".
 			"\n</table>".
-			"<table width='100%' border='0' style='margin-top:20px' >\n".
+			"\n[[captcha]]".
+			"\n<table width='100%' border='0' style='margin-top:20px' >\n".
 			"<tr>\n".
 			"</td>\n".
 			"<td align='left' width='50%'>\n".
@@ -90,6 +91,12 @@ class visitor_regAction
 		$property = $wizard->addComponent("password", new WPasswordPair());
 		$property->setErrorText(_("Passwords must be between 8 and 100 characters."));
 		$property->setErrorRule(new WECNonZeroRegex("^.{8,100}$"));
+		
+		if (!defined('RECAPTCHA_PUBLIC_KEY'))
+			throw new ConfigurationErrorException("RECAPTCHA_PUBLIC_KEY not defined.");
+		if (!defined('RECAPTCHA_PRIVATE_KEY'))
+			throw new ConfigurationErrorException("RECAPTCHA_PRIVATE_KEY not defined.");
+		$property = $wizard->addComponent("captcha", new WReCaptcha(RECAPTCHA_PUBLIC_KEY, RECAPTCHA_PRIVATE_KEY));
 		
 		$wizard->addComponent("_save", WSaveButton::withLabel("Register"));
 		$wizard->addComponent("_cancel", new WCancelButton());
