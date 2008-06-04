@@ -87,7 +87,7 @@ class change_passwordAction
 		$harmoni = Harmoni::Instance();
 		$wizard = SimpleWizard::withText(
 			"\n<h2>"._("Old Password")."</h2>".
-			"\n<br \>[[old_password]]".
+			"\n<br />[[old_password]]".
 			"\n<h2>"._("New Password")."</h2>".
 			"\n"._("Please enter your new password twice").
 			"\n<br />[[new_password]]".
