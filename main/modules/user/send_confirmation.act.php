@@ -55,6 +55,7 @@ class send_confirmationAction
 		
 		ob_start();
 		
+		
 		if (RequestContext::value('email')) {
 			$authMethod = $authNMethodMgr->getAuthNMethodForType($visitorAuthType);
 			$tokens = $authMethod->createTokensObject();
@@ -67,8 +68,16 @@ class send_confirmationAction
 					$authMethod->sendConfirmationEmail($tokens, $harmoni->request->mkURL('user', 'confirm_email'));
 					
 					print "\n<div class=''>\n\t";
-					print dgettext("polyphony", "Confirmation email sent.");
-					print "\n</div>";					
+					print dgettext("polyphony", "A confirmation email has been sent to you.")." <br/>";
+		print dgettext("polyphony", "You must click on the confirmation link in the email before you will be able to log in.");
+					print "\n</div>";
+					print "\n\n<p>";
+					print dgettext("polyphony", "Re-send confirmation email?");
+					$harmoni = Harmoni::instance();
+					print " <a href='".$harmoni->request->quickURL('user', 'send_confirmation', array('email' => RequestContext::value('email')))."'><button>";
+					print dgettext("polyphony", "Send");
+					print "</button></a>";
+					print "</p>";
 				} else {
 					print "\n<div class='error'>\n\t";
 					print dgettext("polyphony", "Error: Email address already confirmed.");
