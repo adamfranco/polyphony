@@ -62,7 +62,7 @@ class confirm_emailAction
 			// Check for previous registration
 			if ($authMethod->tokensExist($tokens)) {
 				if (!$authMethod->isEmailConfirmed($tokens)) {
-					if ($authMethod->confirmEmail($tokens, RequestContext::value('code'))) {
+					if ($authMethod->confirmEmail($tokens, RequestContext::value('confirmation_code'))) {
 						print "\n<div class=''>\n\t";
 						print dgettext("polyphony", "Email address confirmed.");
 						print "\n</div>";
@@ -123,6 +123,8 @@ class confirm_emailAction
 				}
 			}
 		}
+		
+		printpre($harmoni->request->quickURL($harmoni->config->get('defaultModule'), $harmoni->config->get('defaultAction')));
 		if ($users != '') {
 			print "\n<div class='' style='margin-top: 10px;'>";
 			print "<strong>".dgettext("polyphony", "Logged in as:")."</strong> &nbsp;";
@@ -135,7 +137,8 @@ class confirm_emailAction
 				"logout")."'>".dgettext("polyphony", "Log Out")."</a></div>";
 		} else {
 			// set bookmarks for success and failure
-			$harmoni->history->markReturnURL("polyphony/display_login", $harmoni->request->quickURL($harmoni->config->get('defaultModule'), $harmoni->config->get('defaultAction')));
+			$harmoni->history->markReturnURL("polyphony/display_login", 
+				$harmoni->request->quickURL($harmoni->config->get('defaultModule'), $harmoni->config->get('defaultAction')));
 			$harmoni->history->markReturnURL("polyphony/login_fail",
 				$harmoni->request->quickURL("user", "main", array('login_failed' => 'true')));
 	
