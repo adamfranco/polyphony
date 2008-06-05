@@ -51,12 +51,12 @@ class visitor_reg_successAction
 		
 		$centerPane =$this->getActionRows();
 		
-		$centerPane->add(new Heading(_("Registration Success"), 1));
+		$centerPane->add(new Heading(dgettext("polyphony", "Registration Success"), 1));
 		
 		ob_start();
-		print _("Visitor registration was successful.")." <br/>";
-		print _("A confirmation email has been sent to you.")." <br/>";
-		print _("You must click on the confirmation link in the email before you will be able to log in.");
+		print dgettext("polyphony", "Visitor registration was successful.")." <br/>";
+		print dgettext("polyphony", "A confirmation email has been sent to you.")." <br/>";
+		print dgettext("polyphony", "You must click on the confirmation link in the email before you will be able to log in.");
 		
 		if (RequestContext::value('email')) {
 			$authMethod = $authNMethodMgr->getAuthNMethodForType($visitorAuthType);
@@ -68,10 +68,10 @@ class visitor_reg_successAction
 				&& !$authMethod->isEmailConfirmed($tokens)) 
 			{
 				print "\n\n<p>";
-				print _("Re-send confirmation email?");
+				print dgettext("polyphony", "Re-send confirmation email?");
 				$harmoni = Harmoni::instance();
 				print " <a href='".$harmoni->request->quickURL('user', 'send_confirmation', array('email' => RequestContext::value('email')))."'><button>";
-				print _("Send");
+				print dgettext("polyphony", "Send");
 				print "</button></a>";
 				print "</p>";
 			}

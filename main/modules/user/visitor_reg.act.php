@@ -64,12 +64,12 @@ class visitor_regAction
 	 */
 	public function createWizard () {
 		$wizard = SimpleWizard::withText(
-			"\n<h2>"._("Visitor Registration")."</h2>".
-			"\n<p>"._("Please fill out the form below. After you click the 'Register' button an email will be sent with a link to confirm your registration. You must confirm your registration before you will be able to log in.")."</p>".
+			"\n<h2>".dgettext("polyphony", "Visitor Registration")."</h2>".
+			"\n<p>".dgettext("polyphony", "Please fill out the form below. After you click the 'Register' button an email will be sent with a link to confirm your registration. You must confirm your registration before you will be able to log in.")."</p>".
 			"\n<table class='visitor_registration'>".
-			"\n\t<tr>\n\t\t<th>"._("EMail Address:<br/>(This is your login handle)")."</th>\n\t\t<td>[[email]]</td>\n\t</tr>".
-			"\n\t<tr>\n\t\t<th>"._("Full Name:")."</th>\n\t\t<td>[[name]]</td>\n\t</tr>".
-			"\n\t<tr>\n\t\t<th>"._("Password:")."<br/>"._("Password Again:")."</th>\n\t\t<td>[[password]]</td>\n\t</tr>".
+			"\n\t<tr>\n\t\t<th>".dgettext("polyphony", "EMail Address:<br/>(This is your login handle)")."</th>\n\t\t<td>[[email]]</td>\n\t</tr>".
+			"\n\t<tr>\n\t\t<th>".dgettext("polyphony", "Full Name:")."</th>\n\t\t<td>[[name]]</td>\n\t</tr>".
+			"\n\t<tr>\n\t\t<th>".dgettext("polyphony", "Password:")."<br/>".dgettext("polyphony", "Password Again:")."</th>\n\t\t<td>[[password]]</td>\n\t</tr>".
 			"\n</table>".
 			"\n[[captcha]]".
 			"\n<table width='100%' border='0' style='margin-top:20px' >\n".
@@ -82,17 +82,17 @@ class visitor_regAction
 			"</td></tr></table>");
 		
 		$property = $wizard->addComponent("email", new WTextField());
-		$property->setStartingDisplayText(_("john_doe@example.com"));
-		$property->setErrorText(_("A valid email address is required."));
+		$property->setStartingDisplayText(dgettext("polyphony", "john_doe@example.com"));
+		$property->setErrorText(dgettext("polyphony", "A valid email address is required."));
 		$property->setErrorRule(new WECNonZeroRegex("^(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.+)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+@((\w+\-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6}$"));
 		
 		$property = $wizard->addComponent("name", new WTextField());
-		$property->setStartingDisplayText(_("John Doe"));
-		$property->setErrorText(_("A value for this field is required - allowed characters: letters, spaces, ,.'-."));
+		$property->setStartingDisplayText(dgettext("polyphony", "John Doe"));
+		$property->setErrorText(dgettext("polyphony", "A value for this field is required - allowed characters: letters, spaces, ,.'-."));
 		$property->setErrorRule(new WECNonZeroRegex("^[\\w\\040,\.'-]{3,}$"));
 		
 		$property = $wizard->addComponent("password", new WPasswordPair());
-		$property->setErrorText(_("Passwords must be between 8 and 100 characters."));
+		$property->setErrorText(dgettext("polyphony", "Passwords must be between 8 and 100 characters."));
 		$property->setErrorRule(new WECNonZeroRegex("^.{8,100}$"));
 		
 		if (!defined('RECAPTCHA_PUBLIC_KEY'))
@@ -133,18 +133,19 @@ class visitor_regAction
 		$tokens = $authMethod->createTokensObject();
 		$tokens->initializeForTokens(array('username' => $values['email'], 'password' => $values['password']));
 		
+		$harmoni = Harmoni::instance();
+		
 		// Check for previous registration
 		if ($authMethod->tokensExist($tokens)) {
 			print "\n<div class='error'>\n\t";
-			print _("This email address has already been registered.");
+			print dgettext("polyphony", "This email address has already been registered.");
 			print "\n</div>";
 			
 			if (!$authMethod->isEmailConfirmed($tokens)) {
 				print "\n<div class='error'>\n\t";
-				print _("Re-send confirmation email?");
-				$harmoni = Harmoni::instance();
+				print dgettext("polyphony", "Re-send confirmation email?");
 				print " <a href='".$harmoni->request->quickURL('user', 'send_confirmation', array('email' => $values['email']))."'><button>";
-				print _("Send");
+				print dgettext("polyphony", "Send");
 				print "</button></a>";
 				print "\n</div>";
 			}
@@ -161,7 +162,10 @@ class visitor_regAction
 		$properties->addProperty('name', $values['name']);
 		$authMethod->updatePropertiesForTokens($tokens, $properties);
 		
+		$authMethod->sendConfirmationEmail($tokens, $harmoni->request->mkURL('user', 'confirm_email'));
+		
 		$this->success = true;
+		$this->email = $values['email'];
 		
 		return true;
 	}
@@ -177,7 +181,7 @@ class visitor_regAction
 		$harmoni = Harmoni::instance();
 		
 		if ($this->success)
-			return $harmoni->request->quickURL("user", "visitor_reg_success");
+			return $harmoni->request->quickURL("user", "visitor_reg_success", array('email' => $this->email));
 		else
 			return $harmoni->request->quickURL("user", "main");
 	}
