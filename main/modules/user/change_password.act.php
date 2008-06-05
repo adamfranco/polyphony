@@ -27,6 +27,39 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
 class change_passwordAction 
 	extends MainWindowAction
 {
+	
+	/**
+	 * Answer the current AuthNMethod
+	 * 
+	 * @return object AuthMethod
+	 * @access protected
+	 * @since 6/5/08
+	 */
+	protected function getMethod () {
+		if (!isset($this->_method)) {
+			$authN = Services::getService("AuthN");
+			$types = $authN->getAuthenticationTypes();
+			while ($types->hasNext()) {
+				$type = $types->next();
+				if ($authN->isUserAuthenticated($type)) {
+					$methodMgr = Services::getService("AuthNMethodManager");
+					$this->_method = $methodMgr->getAuthNMethodForType($type);
+					return $this->_method;
+				}
+			}
+			throw new OperationFailedException("Must be authenticated.");
+		}
+		
+		return $this->_method;
+	}
+	
+	/**
+	 * @var object AuthMethod $_method;  
+	 * @access private
+	 * @since 6/5/08
+	 */
+	private $_method;
+	
 	/**
 	 * Check Authorizations
 	 * 
@@ -35,13 +68,16 @@ class change_passwordAction
 	 * @since 4/26/05
 	 */
 	function isAuthorizedToExecute () {
-		$authN = Services::getService("AuthN");
-		return $authN->isUserAuthenticated(new Type ("Authentication", 
-			"edu.middlebury.harmoni", "Harmoni DB"));
+		try {
+			$method = $this->getMethod();
+			return $method->supportsTokenUpdates();
+		} catch (OperationFailedException $e) {
+			return false;
+		}
 	}
 	
 	function getUnauthorizedMessage() {
-		return _("You must be currently Authenticated under 'Harmoni DB'");
+		return dgettext("polyphony", "You must be Authenticated with a type that supports password changing.");
 	}
 	
 	/**
@@ -52,7 +88,12 @@ class change_passwordAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		return _("Change Your 'Harmoni DB' Password");
+		try {
+			$keyword = $this->getMethod()->getType()->getKeyword();
+			return str_replace('%1', $keyword, dgettext("polyphony", "Change Your '%1' Password"));
+		} catch (OperationFailedException $e) {
+			return dgettext("polyphony", "Change Your Password");
+		}
 	}
 	
 	/**
@@ -65,12 +106,11 @@ class change_passwordAction
 	function buildContent () {
 		$authN = Services::getService("AuthN");
 		
-		$dbAuthType = new Type ("Authentication", "edu.middlebury.harmoni",
-			"Harmoni DB");
+		$type = $this->getMethod()->getType();
 		
 		$centerPane =$this->getActionRows();
 		
-		$id =$authN->getUserId($dbAuthType);
+		$id =$authN->getUserId($type);
 		$cacheName = 'change_password_wizard_'.$id->getIdString();
 		
 		$this->runWizard($cacheName, $centerPane);
@@ -86,10 +126,10 @@ class change_passwordAction
 	function createWizard() {
 		$harmoni = Harmoni::Instance();
 		$wizard = SimpleWizard::withText(
-			"\n<h2>"._("Old Password")."</h2>".
+			"\n<h2>".dgettext("polyphony", "Old Password")."</h2>".
 			"\n<br \>[[old_password]]".
-			"\n<h2>"._("New Password")."</h2>".
-			"\n"._("Please enter your new password twice").
+			"\n<h2>".dgettext("polyphony", "New Password")."</h2>".
+			"\n".dgettext("polyphony", "Please enter your new password twice").
 			"\n<br />[[new_password]]".
 			"\n<br />[[n_p_again]]".
 			"<table width='100%' border='0' style='margin-top:20px' >\n".
@@ -133,30 +173,28 @@ class change_passwordAction
 		
 		$properties = $wizard->getAllValues();
 		
-		$dbAuthType = new Type ("Authentication", "edu.middlebury.harmoni",
-			"Harmoni DB");		
-		$id =$authN->getUserId($dbAuthType);
+		$type = $this->getMethod()->getType();		
+		$id =$authN->getUserId($type);
 		$it =$tokenM->getMappingsForAgentId($id);
 
 		while ($it->hasNext()) {
 			$mapping =$it->next();
 			
-			if ($mapping->getAuthenticationType() == $dbAuthType)
+			if ($mapping->getAuthenticationType() == $type)
 				$tokens =$mapping->getTokens();
 		}
 		if (isset($tokens)) {
-			$authNMethodManager = Services::getService("AuthNMethodManager");
-			$dbAuthMethod =$authNMethodManager->getAuthNMethodForType($dbAuthType);
+			$method = $this->getMethod();
 				
 			$uname = $tokens->getUsername();
 			
 			// Validate the old password
-			$oldTokens = $dbAuthMethod->createTokens(
+			$oldTokens = $method->createTokens(
 							array(	'username' => $uname, 
 									'password' => $properties['old_password']));
-			if (!$dbAuthMethod->authenticateTokens($oldTokens)) {
+			if (!$method->authenticateTokens($oldTokens)) {
 				$error = "Invalid old password";
-				$localizedError = _("Invalid old password, please try again.")."\n<br/>";
+				$localizedError = dgettext("polyphony", "Invalid old password, please try again.")."\n<br/>";
 			}
 			
 			// Reset the password if old tokens are valid and new tokens are valid
@@ -172,7 +210,7 @@ class change_passwordAction
 					$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
 									"Normal events.");
 					
-					$item = new AgentNodeEntryItem("Modify Agent", "Password changed for:\n<br/>&nbsp; &nbsp; &nbsp;".$uname."\n<br/>&nbsp; &nbsp; &nbsp;".$dbAuthType->getKeyword());
+					$item = new AgentNodeEntryItem("Modify Agent", "Password changed for:\n<br/>&nbsp; &nbsp; &nbsp;".$uname."\n<br/>&nbsp; &nbsp; &nbsp;".$type->getKeyword());
 					$item->addAgentId($id);
 					
 					$log->appendLogWithTypes($item,	$formatType, $priorityType);
@@ -180,23 +218,23 @@ class change_passwordAction
 
 				$t_array = array("username" => $uname, 
 					"password" => $properties['new_password']);
-				$authNTokens =$dbAuthMethod->createTokens($t_array);
+				$authNTokens = $method->createTokens($t_array);
 				
 				// Add it to the system and login with new password
-				if ($dbAuthMethod->supportsTokenUpdates()) {
-					$dbAuthMethod->updateTokens($tokens, $authNTokens);
+				if ($method->supportsTokenUpdates()) {
+					$method->updateTokens($tokens, $authNTokens);
 					$harmoni->request->startNamespace("harmoni-authentication");
 					$harmoni->request->set("username", $uname);
 					$harmoni->request->set("password", 
 						$properties['new_password']);
 					$harmoni->request->endNamespace();
-					$authN->authenticateUser($dbAuthType);
+					$authN->authenticateUser($type);
 					return TRUE;
 				}
 				
 			} else {
 				$error = "Invalid new password";
-				$localizedError = _("Invalid new password, please try again.")."\n<br/>";
+				$localizedError = dgettext("polyphony", "Invalid new password, please try again.")."\n<br/>";
 			}
 		 } 
 		 if (isset($error)) {
@@ -209,7 +247,7 @@ class change_passwordAction
 				$priorityType = new Type("logging", "edu.middlebury", "Error",
 								"Normal events.");
 				
-				$item = new AgentNodeEntryItem("Modify Agent", "Password change error:\n<br/>&nbsp; &nbsp; &nbsp;".$error."\n<br/>for:\n<br/>&nbsp; &nbsp; &nbsp;".$uname."\n<br/>&nbsp; &nbsp; &nbsp;".$dbAuthType->getKeyword());
+				$item = new AgentNodeEntryItem("Modify Agent", "Password change error:\n<br/>&nbsp; &nbsp; &nbsp;".$error."\n<br/>for:\n<br/>&nbsp; &nbsp; &nbsp;".$uname."\n<br/>&nbsp; &nbsp; &nbsp;".$type->getKeyword());
 				$item->addAgentId($id);
 				
 				$log->appendLogWithTypes($item,	$formatType, $priorityType);
