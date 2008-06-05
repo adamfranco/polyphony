@@ -39,6 +39,7 @@ require_once(dirname(__FILE__)."/main/library/Wizard/Components/WRadioListWithDe
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WizardStep.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WMultiSelectList.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WPasswordField.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/Components/WPasswordPair.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSelectList.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSelectOrNew.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WTextArea.class.php");
@@ -66,6 +67,7 @@ require_once(dirname(__FILE__)."/main/library/Wizard/Components/RowHierarchicalR
 require_once(dirname(__FILE__)."/main/library/Wizard/Listeners/ButtonPressedListener.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSearchField.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSearchList.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/Components/WReCaptcha.class.php");
 
 
 //gui components
