@@ -124,7 +124,6 @@ class confirm_emailAction
 			}
 		}
 		
-		printpre($harmoni->request->quickURL($harmoni->config->get('defaultModule'), $harmoni->config->get('defaultAction')));
 		if ($users != '') {
 			print "\n<div class='' style='margin-top: 10px;'>";
 			print "<strong>".dgettext("polyphony", "Logged in as:")."</strong> &nbsp;";
