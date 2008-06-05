@@ -126,7 +126,6 @@ class visitor_regAction
 		
 		$authNMgr = Services::getService("AuthN");
 		$authNMethodMgr = Services::getService("AuthNMethodManager");
-		$tokenMgr = Services::getService("AgentTokenMapping");
 		$visitorAuthType = new Type ("Authentication", "edu.middlebury.harmoni",
 			"Visitors");
 		$authMethod = $authNMethodMgr->getAuthNMethodForType($visitorAuthType);
