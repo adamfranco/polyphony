@@ -34,7 +34,28 @@ class visitor_regAction
 	 * @since 6/4/08
 	 */
 	function isAuthorizedToExecute () {
-		return true;
+		$authNManager = Services::getService("AuthN");
+		$authTypes = $authNManager->getAuthenticationTypes();
+		$visitorType = new Type ("Authentication", "edu.middlebury.harmoni", "Visitors");
+		while($authTypes->hasNext()) {
+			$authType = $authTypes->next();
+			if ($visitorType->isEqual($authType)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Answer the unauthorized Message
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 6/5/08
+	 */
+	public function getUnauthorizedMessage () {
+		return dgettext("polyphony", "Visitor registration is not enabled.");
 	}
 	
 	/**

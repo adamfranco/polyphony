@@ -10,6 +10,17 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.2.4" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<new author='adam' date='2008-06-05' ref='1820894' reftype='segue_fr'>
+			User-Tools: New Visitor registration actions.
+		</new>
+		<new author='adam' date='2008-06-05' ref='1820894' reftype='segue_fr'>
+			Wizard: New ReCaptcha component for adding CAPTCHA support to wizards.
+		</new>
+	</version>
 	<version number="1.2.3" date="2008-06-03">
 		<releaseNotes>
 			This release fixes a few issues that were affecting Concerto's import
