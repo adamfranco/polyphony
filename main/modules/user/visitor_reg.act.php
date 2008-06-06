@@ -174,11 +174,19 @@ class visitor_regAction
 			return false;
 		}
 		
-		// Add the new tokens
+		// Check that addition is supported
 		if (!$authMethod->supportsTokenAddition())
 			throw new OperationFailedException("Could not add users with the ".$visitorAuthType->asString()." authentication method.");
 		
-		$authMethod->addTokens($tokens);
+		// Add the new tokens
+		try {
+			$authMethod->addTokens($tokens);
+		} catch (OperationFailedException $e) {
+			print "\n<div class='error'>\n\t";
+			print $e->getMessage();
+			print "\n</div>";
+			return false;
+		}
 		$properties = $authMethod->getPropertiesForTokens($tokens);
 		$properties->addProperty('name', $values['name']);
 		$authMethod->updatePropertiesForTokens($tokens, $properties);
