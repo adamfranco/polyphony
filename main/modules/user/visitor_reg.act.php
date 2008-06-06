@@ -143,7 +143,7 @@ class visitor_regAction
 			return false;
 		
 		$values = $wizard->getAllValues();
-		printpre($values);
+// 		printpre($values);
 		
 		$authNMgr = Services::getService("AuthN");
 		$authNMethodMgr = Services::getService("AuthNMethodManager");
