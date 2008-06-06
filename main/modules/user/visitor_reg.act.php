@@ -66,10 +66,11 @@ class visitor_regAction
 	 * @since 6/4/08
 	 */
 	function buildContent () {
-// 		$authN = Services::getService("AuthN");
-// 		$visitorAuthType = new Type ("Authentication", "edu.middlebury.harmoni",
-// 			"Visitor");
-		
+		$harmoni = Harmoni::instance();
+		$harmoni->request->passthrough('returnModule');
+		$harmoni->request->passthrough('returnAction');
+		$harmoni->request->passthrough('returnKey');
+		$harmoni->request->passthrough('returnValue');
 		
 		$centerPane =$this->getActionRows();
 		$cacheName = 'visitor_registration_wizard';
@@ -211,8 +212,21 @@ class visitor_regAction
 		
 		if ($this->success)
 			return $harmoni->request->quickURL("user", "visitor_reg_success", array('email' => $this->email));
-		else
-			return $harmoni->request->quickURL("user", "main");
+		
+		$harmoni->request->forget('returnModule');
+		$harmoni->request->forget('returnAction');
+		$harmoni->request->forget('returnKey');
+		$harmoni->request->forget('returnValue');
+		
+		if (RequestContext::value('returnModule') && RequestContext::value('returnAction') 
+				&& RequestContext::value('returnKey')) 
+			return $harmoni->request->quickURL(RequestContext::value('returnModule'), RequestContext::value('returnAction'), array(RequestContext::value('returnKey') => RequestContext::value('returnValue')));
+		
+		if (RequestContext::value('returnModule') && RequestContext::value('returnAction')) 
+			return $harmoni->request->quickURL(RequestContext::value('returnModule'), RequestContext::value('returnAction'));
+		
+		return $harmoni->request->quickURL("user", "main");
+		
 	}
 	
 }

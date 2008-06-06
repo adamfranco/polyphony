@@ -45,6 +45,12 @@ class visitor_reg_successAction
 	 * @since 6/4/08
 	 */
 	function buildContent () {
+		$harmoni = Harmoni::instance();
+		$harmoni->request->passthrough('returnModule');
+		$harmoni->request->passthrough('returnAction');
+		$harmoni->request->passthrough('returnKey');
+		$harmoni->request->passthrough('returnValue');
+		
 		$authNMethodMgr = Services::getService("AuthNMethodManager");
 		$visitorAuthType = new Type ("Authentication", "edu.middlebury.harmoni",
 			"Visitors");
@@ -77,7 +83,37 @@ class visitor_reg_successAction
 			}
 		}
 		
+		$returnUrl = $this->getReturnUrl();
+		if ($returnUrl) {
+			print "\n<p><a href='$returnUrl'>".dgettext("polphony", "Return to original location.")."</a></p>";
+		}
+		
 		$centerPane->add(new Block(ob_get_clean(), STANDARD_BLOCK));
+	}
+	
+	/**
+	 * Answer a return Url if we have return information, null otherwise
+	 * 
+	 * @return string
+	 * @access protected
+	 * @since 6/6/08
+	 */
+	public function getReturnUrl () {
+		$harmoni = Harmoni::instance();
+		
+		$harmoni->request->forget('returnModule');
+		$harmoni->request->forget('returnAction');
+		$harmoni->request->forget('returnKey');
+		$harmoni->request->forget('returnValue');
+		
+		if (RequestContext::value('returnModule') && RequestContext::value('returnAction') 
+				&& RequestContext::value('returnKey')) 
+			return $harmoni->request->quickURL(RequestContext::value('returnModule'), RequestContext::value('returnAction'), array(RequestContext::value('returnKey') => RequestContext::value('returnValue')));
+		
+		if (RequestContext::value('returnModule') && RequestContext::value('returnAction')) 
+			return $harmoni->request->quickURL(RequestContext::value('returnModule'), RequestContext::value('returnAction'));
+		
+		return null;
 	}
 	
 }

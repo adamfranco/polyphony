@@ -45,6 +45,12 @@ class send_confirmationAction
 	 * @since 6/4/08
 	 */
 	function buildContent () {
+		$harmoni = Harmoni::instance();
+		$harmoni->request->passthrough('returnModule');
+		$harmoni->request->passthrough('returnAction');
+		$harmoni->request->passthrough('returnKey');
+		$harmoni->request->passthrough('returnValue');
+		
 		$authNMethodMgr = Services::getService("AuthNMethodManager");
 		$visitorAuthType = new Type ("Authentication", "edu.middlebury.harmoni",
 			"Visitors");
@@ -89,6 +95,11 @@ class send_confirmationAction
 			}
 		} else {
 			throw new InvalidArgumentException(dgettext("polyphony", "No email address specified."));
+		}
+		
+		$returnUrl = $this->getReturnUrl();
+		if ($returnUrl) {
+			print "\n<p><a href='$returnUrl'>".dgettext("polphony", "Return to original location.")."</a></p>";
 		}
 		
 		$centerPane->add(new Block(ob_get_clean(), STANDARD_BLOCK));
