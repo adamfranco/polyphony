@@ -10,9 +10,9 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.2.4" date="The Future">
+	<version number="1.2.4" date="2008-06-09">
 		<releaseNotes>
-			
+			This release add new user interfaces used for visitor registration.
 		</releaseNotes>
 		<new author='adam' date='2008-06-05' ref='1820894' reftype='segue_fr'>
 			User-Tools: New Visitor registration actions.

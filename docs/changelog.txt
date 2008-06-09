@@ -2,6 +2,22 @@
 Polyphony Change Log
 
 
+v. 1.2.4 (2008-06-09)
+----------------------------------------------------
+This release add new user interfaces used for visitor registration.
+		
+		
+	* New feature: #1820894 
+		User-Tools: New Visitor registration actions.
+		(2008-06-05 - Adam Franco)
+		
+	* New feature: #1820894 
+		Wizard: New ReCaptcha component for adding CAPTCHA support to wizards.
+		(2008-06-05 - Adam Franco)
+	
+
+
+
 v. 1.2.3 (2008-06-03)
 ----------------------------------------------------
 This release fixes a few issues that were affecting Concerto's import and export

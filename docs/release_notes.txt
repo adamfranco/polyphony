@@ -1,5 +1,5 @@
 
-Polyphony v. 1.2.3 (2008-06-03)
+Polyphony v. 1.2.4 (2008-06-09)
 =================================
 
 What is Polyphony?
@@ -42,8 +42,7 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This release fixes a few issues that were affecting Concerto's import and export
-functions. 
+This release add new user interfaces used for visitor registration.
 
 
 Downloads
@@ -74,6 +73,12 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.2.4 (2008-06-09)
+----------------------------------------------------
+This release add new user interfaces used for visitor registration.
+
 
 
 v. 1.2.3 (2008-06-03)
