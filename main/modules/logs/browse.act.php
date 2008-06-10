@@ -146,65 +146,100 @@ class browseAction
 		</tr>
 ";
 		
-		if (RequestContext::value('agent_id') || RequestContext::value('node_id') 
-			|| RequestContext::value('category')) 
-		{
-			print "
+		print "
 		<tr>
 			<th>"._("Filters:")."</th>
 			<td>
 ";		
 	
-			if (RequestContext::value('agent_id')) {
-				print "\n\t\t\t";
-				$id =$idManager->getId(RequestContext::value('agent_id'));
-				$url = $harmoni->request->quickURL("logs", "browse",
-								array(	"agent_id" => ''));
-				$agent =$agentManager->getAgent($id);
-				print $agent->getDisplayName();
-				print "\n\t\t\t\t<input type='button' onclick='window.location=\"";
-				print str_replace('&amp;', '&', $url);
-				print "\"' value='X'/>";
-				
+		if (RequestContext::value('agent_id')) {
+			print "\n\t\t\t";
+			$id =$idManager->getId(RequestContext::value('agent_id'));
+			$url = $harmoni->request->mkURL("logs", "browse");
+			$url->setValue('agent_id', null);
+			$agent =$agentManager->getAgent($id);
+			print $agent->getDisplayName();
+			print "\n\t\t\t\t<input type='button' onclick='window.location=\"";
+			print str_replace('&amp;', '&', $url->write());
+			print "\"' value='X'/>";
+			
+		}
+		
+		if (RequestContext::value('agent_id') && RequestContext::value('node_id'))
+			print "\n\t\t\t &nbsp; &nbsp; &nbsp; &nbsp; ";
+		
+		if (RequestContext::value('node_id')) {
+			print "\n\t\t\t";
+			$id =$idManager->getId(RequestContext::value('node_id'));
+			$url = $harmoni->request->mkURL("logs", "browse");
+			$url->setValue('node_id', null);
+			try {
+				$node = $hierarchyManager->getNode($id);
+				if ($node->getDisplayName())
+					print $node->getDisplayName();
+				else
+					print _("Id: ").$nodeId->getIdString();
+			} catch (UnknownIdException $e) {
+				print $id->getIdString();
+			} catch (UnimplementedException $e) {
+				print $id->getIdString();
 			}
-			
-			if (RequestContext::value('agent_id') && RequestContext::value('node_id'))
-				print "\n\t\t\t &nbsp; &nbsp; &nbsp; &nbsp; ";
-			
-			if (RequestContext::value('node_id')) {
-				print "\n\t\t\t";
-				$id =$idManager->getId(RequestContext::value('node_id'));
-				$url = $harmoni->request->quickURL("logs", "browse",
-								array(	"node_id" => ''));
-				try {
-					$node = $hierarchyManager->getNode($id);
-					if ($node->getDisplayName())
-						print $node->getDisplayName();
-					else
-						print _("Id: ").$nodeId->getIdString();
-				} catch (UnknownIdException $e) {
-					print $id->getIdString();
-				} catch (UnimplementedException $e) {
-					print $id->getIdString();
+			print "\n\t\t\t\t<input type='button' onclick='window.location=\"";
+			print str_replace('&amp;', '&', $url->write());
+			print "\"' value='X'/>";
+		}
+		
+		if ((RequestContext::value('agent_id') || RequestContext::value('node_id')) && RequestContext::value('category'))
+			print "\n\t\t\t &nbsp; &nbsp; &nbsp; &nbsp; ";
+		
+		if (RequestContext::value('category')) {
+			print "\n\t\t\t";
+			$url = $harmoni->request->mkURL("logs", "browse");
+			$url->setValue('category', null);
+			print  urldecode(RequestContext::value('category'));
+			print "\n\t\t\t\t<input type='button' onclick='window.location=\"";
+			print str_replace('&amp;', '&', $url->write());
+			print "\"' value='X'/>";
+		}
+		
+		print "\n<br/><br/>";
+		if (isset($currentLogName)) {
+			$log = $loggingManager->getLogForReading($currentLogName);
+			if (method_exists($log, 'getCategories')) {
+				print "\n\t\t\t\t<form action='";
+				$url = $harmoni->request->mkURL('logs', 'browse'); 
+				$url->setValue('category', null);
+				print $url->write();
+				print "' method='post'>";
+				print "\n\t\t\t\t\t<input type='submit' value='"._('Set Category Filter:')."'/>";
+				print "\n\t\t\t\t\t<select name='".RequestContext::name('category')."'>";
+				foreach ($log->getCategories() as $category) {
+					print "\n\t\t\t\t\t\t<option value='$category'>$category</option>";
 				}
-				print "\n\t\t\t\t<input type='button' onclick='window.location=\"";
-				print str_replace('&amp;', '&', $url);
-				print "\"' value='X'/>";
-			}
-			
-			if ((RequestContext::value('agent_id') || RequestContext::value('node_id')) && RequestContext::value('category'))
-				print "\n\t\t\t &nbsp; &nbsp; &nbsp; &nbsp; ";
-			
-			if (RequestContext::value('category')) {
-				print "\n\t\t\t";
-				$url = $harmoni->request->quickURL("logs", "browse",
-								array(	"category" => ''));
-				print  urldecode(RequestContext::value('category'));
-				print "\n\t\t\t\t<input type='button' onclick='window.location=\"";
-				print str_replace('&amp;', '&', $url);
-				print "\"' value='X'/>";
+				print "\n\t\t\t\t\t</select>";
+				print "\n\t\t\t\t</form>";
 			}
 		}
+		
+		print "\n\t\t\t\t<form action='";
+		$url = $harmoni->request->mkURL('logs', 'browse'); 
+		$url->setValue('node_id', null);
+		print $url->write();
+		print "' method='post'>";
+		print "\n\t\t\t\t\t<input type='submit' value='"._('Set Node Id Filter:')."'/>";
+		print "\n\t\t\t\t\t<input name='".RequestContext::name('node_id')."' type='text'/>";
+		print "\n\t\t\t\t</form>";
+		
+		print "\n\t\t\t\t<form action='";
+		$url = $harmoni->request->mkURL('logs', 'browse'); 
+		$url->setValue('agent_id', null);
+		print $url->write();
+		print "' method='post'>";
+		print "\n\t\t\t\t\t<input type='submit' value='"._('Set Agent Id Filter:')."'/>";
+		print "\n\t\t\t\t\t<input name='".RequestContext::name('agent_id')."' type='text'/>";
+		print "\n\t\t\t\t</form>";
+		
+		print "\n\t\t\t</td></tr>";
 		
 		print "\n\t</table>";
 		
@@ -330,7 +365,7 @@ END;
 				
 				print "\n\t\t<div style='text-align: right'>";
 				print "\n\t\t<a href='".$url."' style='white-space: nowrap;' title='".$title."'>";
-				print "\n\t\t\t<img src='".POLYPHONY_PATH."icons/rss_icon02.png' border='0'/>";
+				print "\n\t\t\t<img src='".POLYPHONY_PATH."icons/rss_icon02.png' border='0' alt='RSS Icon'/>";
 				print "\n\t\t\t"._("Subscribe to the RSS feed of this log");
 				print "\n\t\t</a>";
 				print "\n\t\t</div>";

@@ -14,6 +14,9 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<new author='adam' date='2008-06-10'>
+			Logging: Can now set Category, Node Id, and Agent Id filters manually.
+		</new>
 		<change author='adam' date='2008-06-10' ref='' reftype='fr'>
 			User-Tools: Visitor registration now informs the user that their username
 			is their email.
