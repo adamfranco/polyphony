@@ -181,7 +181,7 @@ class confirm_emailAction
 				"\n<form action='".
 				$harmoni->request->quickURL("auth", "login").
 				"' style='' method='post'>".
-				"\n\t".dgettext("polyphony", "Username:")." <input class='' type='text' size='8' 
+				"\n\t".dgettext("polyphony", "Username (email address):")." <input class='' type='text' size='8' 
 					name='$usernameField'/>".
 				"\n\t".dgettext("polyphony", "Password:")." <input class='' type='password' size ='8' 
 					name='$passwordField'/>".
