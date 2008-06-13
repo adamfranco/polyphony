@@ -129,7 +129,7 @@ abstract class MainWindowAction
 	 */
 	function getActionRows () {
 		if (!is_object($this->_actionRows))
-			$this->_actionRows = new Container(new YLayout(), BLOCK, BACKGROUND_BLOCK);
+			$this->_actionRows = new Container(new YLayout(), BLANK, 1);
 		
 		return $this->_actionRows;
 	}
