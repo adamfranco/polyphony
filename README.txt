@@ -1,5 +1,5 @@
 
-Polyphony v. 1.2.4 (2008-06-09)
+Polyphony v. 1.2.5 (2008-06-13)
 =================================
 
 What is Polyphony?
@@ -42,7 +42,7 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This release add new user interfaces used for visitor registration.
+This release adds some minor improvements.
 
 
 Downloads
@@ -73,6 +73,12 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.2.5 (2008-06-13)
+----------------------------------------------------
+This release adds some minor improvements.
+
 
 
 v. 1.2.4 (2008-06-09)

@@ -10,9 +10,9 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.2.5" date="The Future">
+	<version number="1.2.5" date="2008-06-13">
 		<releaseNotes>
-			
+			This release adds some minor improvements.
 		</releaseNotes>
 		<new author='adam' date='2008-06-10'>
 			Logging: Can now set Category, Node Id, and Agent Id filters manually.

@@ -2,6 +2,23 @@
 Polyphony Change Log
 
 
+v. 1.2.5 (2008-06-13)
+----------------------------------------------------
+This release adds some minor improvements.
+		
+		
+	* New feature: 
+		Logging: Can now set Category, Node Id, and Agent Id filters manually.
+		(2008-06-10 - Adam Franco)
+		
+	* Change: # 
+		User-Tools: Visitor registration now informs the user that their username is
+		their email.
+		(2008-06-10 - Adam Franco)
+	
+
+
+
 v. 1.2.4 (2008-06-09)
 ----------------------------------------------------
 This release add new user interfaces used for visitor registration.
