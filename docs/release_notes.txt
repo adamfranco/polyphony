@@ -1,5 +1,5 @@
 
-Polyphony v. 1.2.5 (2008-06-13)
+Polyphony v. 1.2.6 (2008-06-16)
 =================================
 
 What is Polyphony?
@@ -42,7 +42,7 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This release adds some minor improvements.
+This release adds a new multiple checkbox wizard component.
 
 
 Downloads
@@ -73,6 +73,12 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.2.6 (2008-06-16)
+----------------------------------------------------
+This release adds a new multiple checkbox wizard component.
+
 
 
 v. 1.2.5 (2008-06-13)

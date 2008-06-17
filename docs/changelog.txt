@@ -2,6 +2,19 @@
 Polyphony Change Log
 
 
+v. 1.2.6 (2008-06-16)
+----------------------------------------------------
+This release adds a new multiple checkbox wizard component.
+		
+		
+	* New feature: #1993278 
+		Wizard: New WMultiCheckList wizard component works like a multi-select list,
+		but with more user-friendly checkboxes.
+		(2008-06-16 - Adam Franco)
+	
+
+
+
 v. 1.2.5 (2008-06-13)
 ----------------------------------------------------
 This release adds some minor improvements.

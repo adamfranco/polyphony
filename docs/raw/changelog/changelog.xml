@@ -10,12 +10,12 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.2.6" date="The Future">
+	<version number="1.2.6" date="2008-06-16">
 		<releaseNotes>
-			
+			This release adds a new multiple checkbox wizard component.
 		</releaseNotes>
 		<new author='adam' date='2008-06-16' ref='1993278' reftype='segue_bug'>
-			Wizard: New MultiCheckList wizard component works like a multi-select 
+			Wizard: New WMultiCheckList wizard component works like a multi-select 
 			list, but with more user-friendly checkboxes.
 		</new>
 	</version>
