@@ -790,21 +790,21 @@ class RSSItem {
 		print "\n\t\t<item>";
 		
 		if (isset($this->_title))
-			print "\n\t\t<title>".htmlentities($this->_title)."</title>";
+			print "\n\t\t\t<title>".htmlentities($this->_title)."</title>";
 		else if (!isset($this->_description))
-			print "\n\t\t<title>"._("Untitled")."</title>";
+			print "\n\t\t\t<title>"._("Untitled")."</title>";
 		
 		if (isset($this->_link))
-			print "\n\t\t<link>".$this->_link."</link>";
+			print "\n\t\t\t<link>".$this->_link."</link>";
 		
 		if (isset($this->_description) && is_object($this->_description)) {
-			print "\n\t\t<description>";
+			print "\n\t\t\t<description>";
 			print htmlentities($this->_description->asString());
 			print "</description>";
 		}
 		
 		if (isset($this->_authorName) || isset($this->_authorEmail)) {
-			print "\n\t\t<author>";
+			print "\n\t\t\t<author>";
 			print $this->_authorName;
 			if ($this->_authorEmail && $this->_authorName)
 				print ' - '.$this->_authorEmail;
@@ -818,20 +818,20 @@ class RSSItem {
 				$category = $categoryArray['category'];
 				$domain = $categoryArray['domain'];
 				if ($domain == '_no_domain_')
-					print "\n\t\t<category>";
+					print "\n\t\t\t<category>";
 				else
-					print "\n\t\t<category domain='".$domain."'>";
+					print "\n\t\t\t<category domain='".$domain."'>";
 				
 				print $category."</category>";
 			}
 		}
 		
 		if (isset($this->_commentsLink))
-			print "\n\t\t<comments>".$this->_commentsLink."</comments>";
+			print "\n\t\t\t<comments>".$this->_commentsLink."</comments>";
 		
 		if (count($this->_enclosures)) {
 			foreach ($this->_enclosures as $enclosure) {
-				print "\n\t\t<enclosure ";
+				print "\n\t\t\t<enclosure ";
 				print " url='".$enclosure['url']."'";
 				print " length='".$enclosure['length']."'";
 				print " type='".$enclosure['mimeType']."'";			
@@ -840,18 +840,18 @@ class RSSItem {
 		}
 			
 		if (isset($this->_guid)) {
-			print "\n\t\t<guid isPermaLink='".(($this->_isPermaLink)?"true":"false")."'>";
+			print "\n\t\t\t<guid isPermaLink='".(($this->_isPermaLink)?"true":"false")."'>";
 			print $this->_guid."</guid>";
 		}
 		
 		if (isset($this->_pubDate) && is_object($this->_pubDate)) {
-			print "\n\t\t<pubDate>";
+			print "\n\t\t\t<pubDate>";
 			RSSAction::printRSSTimestamp($this->_pubDate);
 			print "</pubDate>";
 		}
 		
 		if (isset($this->_sourceLink)) {
-			print "\n\t\t<source url='".$this->_sourceLink."'>";
+			print "\n\t\t\t<source url='".$this->_sourceLink."'>";
 			if (isset($this->_sourceTitle))
 				print htmlentities($this->_sourceTitle);
 			else
