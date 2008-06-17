@@ -38,6 +38,7 @@ require_once(dirname(__FILE__)."/main/library/Wizard/Components/WHorizontalRadio
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WRadioListWithDelete.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WizardStep.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WMultiSelectList.class.php");
+require_once(dirname(__FILE__)."/main/library/Wizard/Components/WMultiCheckList.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WPasswordField.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WPasswordPair.class.php");
 require_once(dirname(__FILE__)."/main/library/Wizard/Components/WSelectList.class.php");
