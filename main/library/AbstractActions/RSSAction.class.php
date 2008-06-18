@@ -163,6 +163,7 @@ abstract class RSSAction
 		ArgumentValidator::validate($title, StringValidatorRule::getRule());
 		
 		$tmp = HtmlString::fromString(str_replace("&nbsp;", "&#160;", $title));
+		$tmp->makeUtf8();
 		$this->_title = $tmp->stripTagsAndTrim(20);
 	}
 	
@@ -198,6 +199,7 @@ abstract class RSSAction
 		
 		$this->_description = HtmlString::fromString(
 								str_replace("&nbsp;", "&#160;", $description));
+		$this->_description->makeUtf8();
 		$this->_description->clean();
 	}
 	
@@ -357,12 +359,12 @@ abstract class RSSAction
 <rss version="2.0">
 	<channel>
 END;
-		print "\n\t\t<title>".htmlentities($this->_title)."</title>";
+		print "\n\t\t<title>".htmlspecialchars($this->_title)."</title>";
 		
 		print "\n\t\t<link>".$this->_link."</link>";
 		
 		if (isset($this->_description))
-			print "\n\t\t<description>".htmlentities($this->_description->asString())."</description>";
+			print "\n\t\t<description>".htmlspecialchars($this->_description->asString())."</description>";
 		else
 			print "\n\t\t<description></description>";
 		
@@ -419,9 +421,9 @@ END;
 			print "\n\t\t\t<url>".$this->_imageURL."</url>";
 		
 			if (isset($this->_imageTitle))
-				print "\n\t\t\t<title>".htmlentities($this->_imageTitle)."</title>";
+				print "\n\t\t\t<title>".htmlspecialchars($this->_imageTitle)."</title>";
 			else
-				print "\n\t\t\t<title>".htmlentities($this->_title)."</title>";
+				print "\n\t\t\t<title>".htmlspecialchars($this->_title)."</title>";
 		
 			if (isset($this->_imageLink))
 				print "\n\t\t\t<link>".$this->_imageLink."</link>";
@@ -430,11 +432,11 @@ END;
 		
 			if (isset($this->_imageDescription)) {
 				print "\n\t\t\t<description>";
-				print htmlentities($this->_imageDescription);
+				print htmlspecialchars($this->_imageDescription);
 				print "</description>";
 			} else if (isset($this->_description) && is_object($this->_description)) {
 				print "\n\t\t\t<description>";
-				print htmlentities($this->_description->stripTagsAndTrim(20));
+				print htmlspecialchars($this->_description->stripTagsAndTrim(20));
 				print "</description>";
 			}
 			
@@ -448,7 +450,7 @@ END;
 		}
 			
 		if (isset($this->_copyright))
-			print "\n\t\t<copyright>".htmlentities($this->_copyright)."</copyright>";
+			print "\n\t\t<copyright>".htmlspecialchars($this->_copyright)."</copyright>";
 			
 		if (count($this->_skipHours)) {
 			print "\n\t\t<skipHours>";
@@ -572,6 +574,7 @@ class RSSItem {
 		ArgumentValidator::validate($title, StringValidatorRule::getRule());
 		
 		$tmp = HtmlString::fromString(str_replace("&nbsp;", "&#160;", $title));
+		$tmp->makeUtf8();
 		$this->_title = $tmp->stripTagsAndTrim(20);
 	}
  	
@@ -588,6 +591,7 @@ class RSSItem {
 		
 		$this->_description = HtmlString::fromString(
 								str_replace("&nbsp;", "&#160;", $description));
+		$this->_description->makeUtf8();
 		$this->_description->clean();
 	}
 	
@@ -790,7 +794,7 @@ class RSSItem {
 		print "\n\t\t<item>";
 		
 		if (isset($this->_title))
-			print "\n\t\t<title>".htmlentities($this->_title)."</title>";
+			print "\n\t\t<title>".htmlspecialchars($this->_title)."</title>";
 		else if (!isset($this->_description))
 			print "\n\t\t<title>"._("Untitled")."</title>";
 		
@@ -799,7 +803,7 @@ class RSSItem {
 		
 		if (isset($this->_description) && is_object($this->_description)) {
 			print "\n\t\t<description>";
-			print htmlentities($this->_description->asString());
+			print htmlspecialchars($this->_description->asString());
 			print "</description>";
 		}
 		
@@ -853,7 +857,7 @@ class RSSItem {
 		if (isset($this->_sourceLink)) {
 			print "\n\t\t<source url='".$this->_sourceLink."'>";
 			if (isset($this->_sourceTitle))
-				print htmlentities($this->_sourceTitle);
+				print htmlspecialchars($this->_sourceTitle);
 			else
 				print _("Untitled Source");
 			print "</source>";
