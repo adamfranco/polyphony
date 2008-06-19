@@ -75,7 +75,7 @@ class theme_cssAction
 		$theme = $this->getTheme();		
 		$css = $theme->getCSS();
 		
-		header("Content-Type: text/plain");
+		header("Content-Type: text/css");
 		header("Content-Length: ".strlen($css));
 		print $css;
 		exit;
