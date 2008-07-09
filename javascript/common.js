@@ -41,6 +41,16 @@ String.prototype.urlDecodeAmpersands = function () {
 	return this.replaceAll(/&amp;/, '&');
 }
 
+/**
+ * Strip HTML tags from a string
+ * 
+ * @return string
+ * @access public
+ * @since 7/7/08
+ */
+String.prototype.stripTags = function () {
+	return this.replaceAll(/<(.|\n)*?>/, '');
+}
 
 /**
  * wrap on a word:

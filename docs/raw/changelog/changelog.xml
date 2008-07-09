@@ -17,6 +17,9 @@
 		<fix author='adam' date='2008-06-18' >
 			GUI2: theme_css action now sends proper 'text/css' mime-type header.
 		</fix>
+		<new author='adam' date='2008-07-08'>
+			Javascript: Added a stripTags() function to the String class.
+		</new>
 	</version>
 	<version number="1.2.6" date="2008-06-16">
 		<releaseNotes>
