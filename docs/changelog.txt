@@ -2,6 +2,22 @@
 Polyphony Change Log
 
 
+v. 1.2.7 (2008-07-10)
+----------------------------------------------------
+This release adds a few minor fixes to support Segue.
+		
+		
+	* Bug Fix: 
+		GUI2: theme_css action now sends proper 'text/css' mime-type header.
+		(2008-06-18 - Adam Franco)
+		
+	* New feature: 
+		Javascript: Added a stripTags() function to the String class.
+		(2008-07-08 - Adam Franco)
+	
+
+
+
 v. 1.2.6 (2008-06-16)
 ----------------------------------------------------
 This release adds a new multiple checkbox wizard component.

@@ -10,9 +10,9 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.2.7" date="The Future">
+	<version number="1.2.7" date="2008-07-10">
 		<releaseNotes>
-			
+			This release adds a few minor fixes to support Segue.
 		</releaseNotes>
 		<fix author='adam' date='2008-06-18' >
 			GUI2: theme_css action now sends proper 'text/css' mime-type header.
