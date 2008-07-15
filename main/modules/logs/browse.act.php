@@ -375,6 +375,7 @@ END;
 		}
  		
  		textdomain($defaultTextDomain);
+ 		$harmoni->request->endNamespace();
 	}
 	
 	/**

@@ -10,6 +10,14 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.2.8" date="2008-07-14">
+		<releaseNotes>
+			This release fixes a minor issue with log-browsing.
+		</releaseNotes>
+		<fix author='adam' date='2008-07-14'>
+			Logs: Added missing call to endNamespace() to prevent broken theming.
+		</fix>
+	</version>
 	<version number="1.2.7" date="2008-07-10">
 		<releaseNotes>
 			This release adds a few minor fixes to support Segue.

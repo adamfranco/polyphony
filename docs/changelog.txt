@@ -2,6 +2,18 @@
 Polyphony Change Log
 
 
+v. 1.2.8 (2008-07-14)
+----------------------------------------------------
+This release fixes a minor issue with log-browsing.
+		
+		
+	* Bug Fix: 
+		Logs: Added missing call to endNamespace() to prevent broken theming.
+		(2008-07-14 - Adam Franco)
+	
+
+
+
 v. 1.2.7 (2008-07-10)
 ----------------------------------------------------
 This release adds a few minor fixes to support Segue.
