@@ -10,6 +10,15 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.2.9" date="The Future">
+		<releaseNotes>
+			<##>
+		</releaseNotes>
+		<fix author='adam' date='2008-07-14'>
+			Logs: Browsing is now restricted to admins again. Cascading-up view
+			authorizations were providing log access to all.
+		</fix>
+	</version>
 	<version number="1.2.8" date="2008-07-14">
 		<releaseNotes>
 			This release fixes a minor issue with log-browsing.
