@@ -14,6 +14,10 @@
 		<releaseNotes>
 			This release fixes a fiew bugs to support Segue and Concerto.
 		</releaseNotes>
+		<fix author='adam' date='2008-07-17'>
+			Basket: Several to basket empty and export actions to fix errors that
+			became apparent in PHP 5.
+		</fix>
 		<fix author='adam' date='2008-07-17' ref='2018193' reftype='concerto_bug'>
 			Wizard: Fixed reference errors in the RepeatableComponentCollections.
 			
