@@ -10,6 +10,14 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.2.10" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-07-17' ref='2018232' reftype='segue_bug'>
+			GUI2: Theme CSS action now accepts specification of theme options in its URL.
+		</fix>
+	</version>
 	<version number="1.2.9" date="2008-07-17">
 		<releaseNotes>
 			This release fixes a fiew bugs to support Segue and Concerto.
