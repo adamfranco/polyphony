@@ -2,6 +2,20 @@
 Polyphony Change Log
 
 
+v. 1.2.10 (2008-07-17)
+----------------------------------------------------
+This release fixes an issue with theme CSS loading that was preventing theme options
+from taking effect.
+		
+		
+	* Bug Fix: #2018232 
+		GUI2: Theme CSS action now accepts specification of theme options in its
+		URL. 
+		(2008-07-17 - Adam Franco)
+	
+
+
+
 v. 1.2.9 (2008-07-17)
 ----------------------------------------------------
 This release fixes a fiew bugs to support Segue and Concerto.

@@ -10,9 +10,10 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.2.10" date="The Future">
+	<version number="1.2.10" date="2008-07-17">
 		<releaseNotes>
-			
+			This release fixes an issue with theme CSS loading that was preventing theme 
+			options from taking effect.
 		</releaseNotes>
 		<fix author='adam' date='2008-07-17' ref='2018232' reftype='segue_bug'>
 			GUI2: Theme CSS action now accepts specification of theme options in its URL.

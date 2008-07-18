@@ -1,5 +1,5 @@
 
-Polyphony v. 1.2.9 (2008-07-17)
+Polyphony v. 1.2.10 (2008-07-17)
 =================================
 
 What is Polyphony?
@@ -42,7 +42,8 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This release fixes a fiew bugs to support Segue and Concerto.
+This release fixes an issue with theme CSS loading that was preventing theme options
+from taking effect.
 
 
 Downloads
@@ -73,6 +74,13 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.2.10 (2008-07-17)
+----------------------------------------------------
+This release fixes an issue with theme CSS loading that was preventing theme options
+from taking effect.
+
 
 
 v. 1.2.9 (2008-07-17)
