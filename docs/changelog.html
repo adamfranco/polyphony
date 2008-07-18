@@ -23,7 +23,22 @@
 </head>
 <body>
 <h1>Polyphony Change Log</h1>
-<h2>Version 1.2.8</h2>
+<h2>Version 1.2.9</h2>
+<h3>2008-07-17</h3>
+<p>This release fixes a fiew bugs to support Segue and Concerto.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b> Basket: Several to basket empty and export actions to fix errors that became apparent in PHP 5. (<em>2008-07-17 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2018193&amp;group_id=88266&amp;atid=586054">
+        			#2018193</a> Wizard: Fixed reference errors in the RepeatableComponentCollections.
+<br>
+<br>These wizard components pass around arrays by reference these references were accidentally removed in polyphony 0.9 (commit b6059bbd53e1c0e4c6033f05da45580a4fdb6f0d) when extra ampersands were removed since objects in PHP 5 are automatically passed by reference. Arrays however, are not automatically passed by reference and ampersands needed to be added back in to pass these arrays by reference. (<em>2008-07-17 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Logs: Browsing is now restricted to admins again. Cascading-up view authorizations were providing log access to all. (<em>2008-07-14 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 1.2.8</h2>
 <h3>2008-07-14</h3>
 <p>This release fixes a minor issue with log-browsing.</p>
 <ul>

@@ -1,5 +1,5 @@
 
-Polyphony v. 1.2.8 (2008-07-14)
+Polyphony v. 1.2.9 (2008-07-17)
 =================================
 
 What is Polyphony?
@@ -42,7 +42,7 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This release fixes a minor issue with log-browsing.
+This release fixes a fiew bugs to support Segue and Concerto.
 
 
 Downloads
@@ -73,6 +73,12 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.2.9 (2008-07-17)
+----------------------------------------------------
+This release fixes a fiew bugs to support Segue and Concerto.
+
 
 
 v. 1.2.8 (2008-07-14)
