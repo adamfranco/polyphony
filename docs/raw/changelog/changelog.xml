@@ -10,10 +10,19 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.2.9" date="The Future">
+	<version number="1.2.9" date="2008-07-17">
 		<releaseNotes>
-			<##>
+			This release fixes a fiew bugs to support Segue and Concerto.
 		</releaseNotes>
+		<fix author='adam' date='2008-07-17' ref='2018193' reftype='concerto_bug'>
+			Wizard: Fixed reference errors in the RepeatableComponentCollections.
+			
+			These wizard components pass around arrays by reference these references
+			were accidentally removed in polyphony 0.9 (commit b6059bbd53e1c0e4c6033f05da45580a4fdb6f0d) when extra ampersands were
+			removed since objects in PHP 5 are automatically passed by reference.
+			Arrays however, are not automatically passed by reference and ampersands
+			needed to be added back in to pass these arrays by reference.
+		</fix>
 		<fix author='adam' date='2008-07-14'>
 			Logs: Browsing is now restricted to admins again. Cascading-up view
 			authorizations were providing log access to all.

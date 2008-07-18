@@ -43,14 +43,14 @@ class WOrderedRepeatableComponentCollection
 	 * @access private
 	 * @return void
 	 */
-	function _addElement ($removable = true) {
+	function &_addElement ($removable = true) {
 		if ($this->_max != -1 && $this->_num == $this->_max - 1) return;
 
 		// clone our base set (the getChildren() array)
 		$newArray = array();
 		$base =$this->getChildren();
 		foreach (array_keys($base) as $key) {
-			$newArray[$key] =$base[$key]->copy();
+			$newArray[$key] = $base[$key]->copy();
 			$newArray[$key]->setParent($this);
 		}
 		$newArray["_remove"] = WEventButton::withLabel($this->_removeLabel);
@@ -58,7 +58,7 @@ class WOrderedRepeatableComponentCollection
 		$newArray["_remove"]->addOnClick("ignoreValidation(this.form);");
 		$newArray["_remove"]->setEnabled($removable, !$removable);
 		
-		$this->_collections[$this->_nextId] =$newArray;
+		$this->_collections[$this->_nextId] =& $newArray;
 		$idManager = Services::getService("Id");
 		$this->_orderedSet->addItem($idManager->getId(strval($this->_nextId)));
 		$this->_nextId++;

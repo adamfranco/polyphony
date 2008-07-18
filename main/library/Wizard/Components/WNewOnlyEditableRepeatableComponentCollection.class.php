@@ -36,7 +36,7 @@ class WNewOnlyEditableRepeatableComponentCollection
 	 */
 	function addValueCollection ($collection, $removable = true) {
 		// @todo - make sure that the correct fields/classes are represented
-		$newCollection =$this->_addElement($removable);
+		$newCollection =& $this->_addElement($removable);
 		foreach (array_keys($newCollection) as $key) {
 			if (isset($collection[$key]))
 				$newCollection[$key]->setValue($collection[$key]);

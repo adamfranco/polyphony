@@ -158,9 +158,9 @@ class WRepeatableComponentCollection
 	 * @access public
 	 * @return ref array An array of the components created with the values passed.
 	 */
-	function addValueCollection ($collection, $removable = true) {
+	function &addValueCollection ($collection, $removable = true) {
 		// @todo - make sure that the correct fields/classes are represented
-		$newCollection =$this->_addElement($removable);
+		$newCollection =& $this->_addElement($removable);
 		foreach (array_keys($newCollection) as $key) {
 			if (isset($collection[$key]))
 				$newCollection[$key]->setValue($collection[$key]);
@@ -191,7 +191,7 @@ class WRepeatableComponentCollection
 	 * @access private
 	 * @return void
 	 */
-	function _addElement ($removable = true) {
+	function &_addElement ($removable = true) {
 		if ($this->_max != -1 && $this->_num == $this->_max - 1) return;
 
 		// clone our base set (the getChildren() array)
@@ -210,7 +210,7 @@ class WRepeatableComponentCollection
 		else
 			$newArray["_remove"]->setEnabled($removable, !$removable);
 
-		$this->_collections[] =$newArray;
+		$this->_collections[] =& $newArray;
 		$this->_num++;
 
 		return $newArray;
