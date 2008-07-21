@@ -10,9 +10,9 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.2.11" date="The Future">
+	<version number="1.2.11" date="2008-07-21">
 		<releaseNotes>
-			
+			This release fixes an issue with file uploads under safe mode.
 		</releaseNotes>
 		<new author='adam' date='2008-07-21'>
 			Wizard: File upload temporary directory is now configurable via the 

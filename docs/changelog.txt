@@ -2,6 +2,20 @@
 Polyphony Change Log
 
 
+v. 1.2.11 (2008-07-21)
+----------------------------------------------------
+This release fixes an issue with file uploads under safe mode.
+		
+		
+	* New feature: 
+		Wizard: File upload temporary directory is now configurable via the
+		POLYPHONY_TMP_DIR constant. Set this constant to enable custom temporary
+		directories if needed for Safe Mode operation.
+		(2008-07-21 - Adam Franco)
+	
+
+
+
 v. 1.2.10 (2008-07-17)
 ----------------------------------------------------
 This release fixes an issue with theme CSS loading that was preventing theme options

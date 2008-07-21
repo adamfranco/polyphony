@@ -1,5 +1,5 @@
 
-Polyphony v. 1.2.10 (2008-07-17)
+Polyphony v. 1.2.11 (2008-07-21)
 =================================
 
 What is Polyphony?
@@ -42,8 +42,7 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This release fixes an issue with theme CSS loading that was preventing theme options
-from taking effect.
+This release fixes an issue with file uploads under safe mode.
 
 
 Downloads
@@ -74,6 +73,12 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.2.11 (2008-07-21)
+----------------------------------------------------
+This release fixes an issue with file uploads under safe mode.
+
 
 
 v. 1.2.10 (2008-07-17)
