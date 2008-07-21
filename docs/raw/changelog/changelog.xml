@@ -10,6 +10,16 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.2.11" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<new author='adam' date='2008-07-21'>
+			Wizard: File upload temporary directory is now configurable via the 
+			POLYPHONY_TMP_DIR constant. Set this constant to enable custom temporary
+			directories if needed for Safe Mode operation.
+		</new>
+	</version>
 	<version number="1.2.10" date="2008-07-17">
 		<releaseNotes>
 			This release fixes an issue with theme CSS loading that was preventing theme 

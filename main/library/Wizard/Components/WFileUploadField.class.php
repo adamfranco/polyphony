@@ -143,9 +143,14 @@ class WFileUploadField
 						$this->_errString = str_replace('%3', implode(', ', $this->_accept), $this->_errString);
 						return false;
 					}
-
+					
+					// Get the temporary directory to use.
+					if (defined('POLYPHONY_TMP_DIR'))
+						$tmpDir = POLYPHONY_TMP_DIR;
+					else
+						$tmpDir = dirname($uploadFile);
+					
 					// get a new temp filename so PHP doesn't delete the uploaded file
-					$tmpDir = dirname($uploadFile);
 					$newFile = tempnam($tmpDir, "WU");
 					if (file_exists($newFile))
 						@ unlink($newFile);
