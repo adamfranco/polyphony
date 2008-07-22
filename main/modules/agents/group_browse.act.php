@@ -209,6 +209,7 @@ END;
  		$actionRows->add($pageRows, null, null,CENTER, CENTER);	
  		
  		textdomain($defaultTextDomain);
+ 		$harmoni->request->endNamespace();
 	}
 	
 	

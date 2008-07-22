@@ -10,6 +10,14 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.2.13" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-07-22'>
+			AgentEditing: Added missing endNamespace() call to prevent theme breakage.
+		</fix>
+	</version>
 	<version number="1.2.12" date="2008-07-22">
 		<releaseNotes>
 			This release fixes an issue that was causing problems in Concerto.
