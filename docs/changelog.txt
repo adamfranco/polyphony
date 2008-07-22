@@ -2,6 +2,20 @@
 Polyphony Change Log
 
 
+v. 1.2.12 (2008-07-22)
+----------------------------------------------------
+This release fixes an issue that was causing problems in Concerto.
+		
+		
+	* Bug Fix: 
+		Datamanager Primitives: Null dates now don't crash the system. This issue
+		was preventing editing of some assets in Concerto.
+		(2008-07-22 - Adam Franco)
+		(reported by Robert Schine of Middlebury College)
+	
+
+
+
 v. 1.2.11 (2008-07-21)
 ----------------------------------------------------
 This release fixes an issue with file uploads under safe mode.

@@ -1,5 +1,5 @@
 
-Polyphony v. 1.2.11 (2008-07-21)
+Polyphony v. 1.2.12 (2008-07-22)
 =================================
 
 What is Polyphony?
@@ -42,7 +42,7 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This release fixes an issue with file uploads under safe mode.
+This release fixes an issue that was causing problems in Concerto.
 
 
 Downloads
@@ -73,6 +73,12 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.2.12 (2008-07-22)
+----------------------------------------------------
+This release fixes an issue that was causing problems in Concerto.
+
 
 
 v. 1.2.11 (2008-07-21)

@@ -10,9 +10,9 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.2.12" date="The Future">
+	<version number="1.2.12" date="2008-07-22">
 		<releaseNotes>
-			
+			This release fixes an issue that was causing problems in Concerto.
 		</releaseNotes>
 		<fix author='adam' date='2008-07-22' reporter='robert_schine'>
 			Datamanager Primitives: Null dates now don't crash the system.
