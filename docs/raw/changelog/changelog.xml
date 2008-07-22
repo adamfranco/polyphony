@@ -10,6 +10,15 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.2.12" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-07-22' reporter='robert_schine'>
+			Datamanager Primitives: Null dates now don't crash the system.
+			This issue was preventing editing of some assets in Concerto.
+		</fix>
+	</version>
 	<version number="1.2.11" date="2008-07-21">
 		<releaseNotes>
 			This release fixes an issue with file uploads under safe mode.
@@ -1181,6 +1190,10 @@
 		</reporter>
 		<reporter short="bryan_carson">
 			<name>Bryan Carson</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="robert_schine">
+			<name>Robert Schine</name>
 			<institution>Middlebury College</institution>
 		</reporter>
 	</reporters>

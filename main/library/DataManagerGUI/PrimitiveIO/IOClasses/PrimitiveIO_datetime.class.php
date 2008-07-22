@@ -33,6 +33,9 @@ class PrimitiveIO_datetime extends WTextField /* implements PrimitiveIO */ {
 	 * @return boolean
 	 */
 	function validate () {
+		if (is_null($this->_value))
+			return false;
+		
 		$parse = StringParser::getParserFor($this->_value);
 		if (!$parse) {
 			$this->_showError = true;
@@ -70,6 +73,9 @@ class PrimitiveIO_datetime extends WTextField /* implements PrimitiveIO */ {
 	 * @return mixed
 	 */
 	function getAllValues () {
+		if (is_null($this->_value))
+			return null;
+		
 		$obj = DateAndTime::fromString($this->_value);
 // 		print "<pre>"; var_dump($this->_value); print "</pre>";
 // 		printpre($obj);
