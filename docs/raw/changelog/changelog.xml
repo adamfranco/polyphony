@@ -10,9 +10,10 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.3.0" date="The Future">
+	<version number="1.3.0" date="2008-07-24">
 		<releaseNotes>
-			
+			This release includes several updates to the Javascript library and
+			Wizard to support Segue 2. See the change-log for details.
 		</releaseNotes>
 		<new author='adam' date='2008-07-24' ref='2021654' reftype='segue_fr'>
 			Wizard: SimpleWizard now has an addConfimLeavingMessage($message) method

@@ -23,7 +23,30 @@
 </head>
 <body>
 <h1>Polyphony Change Log</h1>
-<h2>Version 1.2.12</h2>
+<h2>Version 1.3.0</h2>
+<h3>2008-07-24</h3>
+<p>This release includes several updates to the Javascript library and Wizard to support Segue 2. See the change-log for details.</p>
+<ul>
+		
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2021654&amp;group_id=82171&amp;atid=565237">
+        			#2021654</a> Wizard: SimpleWizard now has an addConfimLeavingMessage($message) method that will prompt the user if they try to leave the wizard without using the save or cancel buttons. (<em>2008-07-24 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2021654&amp;group_id=82171&amp;atid=565237">
+        			#2021654</a> Wizard: Wizard component now properly call the saveWizard(form) function instead of calling form.submit(). This provides a hook for submit handlers to execute actions before form submission. (<em>2008-07-24 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2021654&amp;group_id=82171&amp;atid=565237">
+        			#2021654</a> Javascript: New common functions for attaching confirmation checks to the window before unloading it. These are used by Segue for preventing accidental back-button keystrokes from leaving a page with an editor open, causing a loss of work.
+<br>
+<br>window.addOnBeforeUnload(onBeforeUnloadFunction)
+<br>
+<br>window.addUnloadConfirmationForElement(elementId, message)
+<br>
+<br>window.removeUnloadConfirmationForElement(elementId) (<em>2008-07-24 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> AgentEditing: Added missing endNamespace() call to prevent theme breakage. (<em>2008-07-22 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 1.2.12</h2>
 <h3>2008-07-22</h3>
 <p>This release fixes an issue that was causing problems in Concerto.</p>
 <ul>

@@ -1,5 +1,5 @@
 
-Polyphony v. 1.2.12 (2008-07-22)
+Polyphony v. 1.3.0 (2008-07-24)
 =================================
 
 What is Polyphony?
@@ -42,7 +42,8 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This release fixes an issue that was causing problems in Concerto.
+This release includes several updates to the Javascript library and Wizard to
+support Segue 2. See the change-log for details.
 
 
 Downloads
@@ -73,6 +74,13 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.3.0 (2008-07-24)
+----------------------------------------------------
+This release includes several updates to the Javascript library and Wizard to
+support Segue 2. See the change-log for details.
+
 
 
 v. 1.2.12 (2008-07-22)
