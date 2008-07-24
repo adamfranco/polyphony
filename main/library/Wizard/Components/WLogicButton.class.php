@@ -169,7 +169,7 @@ class WLogicButton
 		$onclick = '';
 		if ($this->_onclick) $onclick = addslashes($this->_onclick) . ";";
 		$m = "<input type='hidden' name='$name' id='$name' value='0' />\n";
-		$m .= "<input type='button' value='$label' onclick='$onclick if (validateWizard(this.form)) { getWizardElement(\"$name\").value=\"1\"; this.form.submit(); }'".($this->isEnabled()?"":" disabled='disabled'")." />";
+		$m .= "<input type='button' value='$label' onclick='$onclick if (validateWizard(this.form)) { getWizardElement(\"$name\").value=\"1\"; submitWizard(this.form); }'".($this->isEnabled()?"":" disabled='disabled'")." />";
 		return $m;
 	}
 

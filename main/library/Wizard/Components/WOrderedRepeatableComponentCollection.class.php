@@ -104,7 +104,7 @@ class WOrderedRepeatableComponentCollection
 				}
 			}
 			
-			this.form.submit();
+			submitWizard(this.form);
 		
 		';
 		$positionList->addOnChange(preg_replace("/\s{2,}/", " ", preg_replace("/[\n\r\t]/", " ", $js)));

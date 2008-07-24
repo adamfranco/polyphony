@@ -10,10 +10,15 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.2.13" date="The Future">
+	<version number="1.3.0" date="The Future">
 		<releaseNotes>
 			
 		</releaseNotes>
+		<change author='adam' date='2008-07-24' ref='2021654' reftype='segue_fr'>
+			Wizard: Wizard component now properly call the saveWizard(form) function
+			instead of calling form.submit(). This provides a hook for submit
+			handlers to execute actions before form submission.
+		</change>
 		<new author='adam' date='2008-07-24' ref='2021654' reftype='segue_fr'>
 			Javascript: New common functions for attaching confirmation checks to
 			the window before unloading it. These are used by Segue for preventing
