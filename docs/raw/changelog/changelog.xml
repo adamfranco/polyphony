@@ -14,6 +14,11 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<new author='adam' date='2008-07-24' ref='2021654' reftype='segue_fr'>
+			Wizard: SimpleWizard now has an addConfimLeavingMessage($message) method
+			that will prompt the user if they try to leave the wizard without using
+			the save or cancel buttons.
+		</new>
 		<change author='adam' date='2008-07-24' ref='2021654' reftype='segue_fr'>
 			Wizard: Wizard component now properly call the saveWizard(form) function
 			instead of calling form.submit(). This provides a hook for submit
