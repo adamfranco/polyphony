@@ -365,6 +365,80 @@ window.getScrollX = function () {
 }
 
 
+/**
+ * Add an element Id to check the existance of before unloading the page.
+ * If the element is not found in the page, no message will be shown.
+ * 
+ * @param string elementId
+ * @param string message
+ * @return void
+ * @access public
+ * @since 7/23/08
+ */
+window.addUnloadConfirmationForElement = function (elementId, message) {
+	var checkElementFunction = function() {
+		if (document.get_element_by_id(elementId)) {
+			return message;
+		}
+	}
+	checkElementFunction.elementId = elementId;
+	window.addOnBeforeUnload(checkElementFunction);
+}
+
+/**
+ * Remove an element-based confirmation that was added with window.addUnloadConfirmation().
+ * 
+ * @param string elementId
+ * @return void
+ * @access public
+ * @since 7/23/08
+ */
+window.removeUnloadConfirmationForElement = function (elementId) {
+	var newUnloadConfirmations = new Array();
+	for (var i = 0; i < window.beforeUnloadConfirmations.length; i++) {
+		var conf = window.beforeUnloadConfirmations[i];
+		if (!conf.elementId || conf.elementId != elementId) {
+			newUnloadConfirmations.push(conf);
+		}
+	}
+	
+	window.beforeUnloadConfirmations = newUnloadConfirmations;
+}
+
+/**
+ * Add an onbeforeunload confirmation function to the window. This function
+ * should return a confirmation message or nothing if unloading should continue.
+ * 
+ * @param function onBeforeUnloadFunction
+ * @return function The function added.
+ * @access public
+ * @since 7/23/08
+ */
+window.addOnBeforeUnload = function (onBeforeUnloadFunction) {
+	if (!window.beforeUnloadConfirmations)
+		window.beforeUnloadConfirmations = new Array;
+	
+	window.beforeUnloadConfirmations.push(onBeforeUnloadFunction);
+	return onBeforeUnloadFunction;
+}
+
+/**
+ * This method sets the before unload handler to check for confirmations.
+ * 
+ * @return mixed
+ * @access public
+ * @since 7/23/08
+ */
+window.onbeforeunload = function (e) {
+	if (window.beforeUnloadConfirmations) {
+		for (var i = 0; i < window.beforeUnloadConfirmations.length; i++) {
+			var result = window.beforeUnloadConfirmations[i]();
+			if (result)
+				return result;
+		}
+	}
+}
+
 /*********************************************************
  * Date Functions - Start
  *********************************************************/

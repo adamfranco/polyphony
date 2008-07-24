@@ -14,6 +14,18 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<new author='adam' date='2008-07-24' ref='2021654' reftype='segue_fr'>
+			Javascript: New common functions for attaching confirmation checks to
+			the window before unloading it. These are used by Segue for preventing
+			accidental back-button keystrokes from leaving a page with an editor open,
+			causing a loss of work.
+			
+			window.addOnBeforeUnload(onBeforeUnloadFunction)
+			
+			window.addUnloadConfirmationForElement(elementId, message)
+			
+			window.removeUnloadConfirmationForElement(elementId)
+		</new>
 		<fix author='adam' date='2008-07-22'>
 			AgentEditing: Added missing endNamespace() call to prevent theme breakage.
 		</fix>
