@@ -117,11 +117,11 @@ function Panel ( title, height, width, positionElement, classNames ) {
 		
 		var topRight = row1.appendChild(document.createElement('td'));
 		topRight.className = 'close';
-		var cancel = topRight.appendChild(document.createElement("a"));
+		this.cancel = topRight.appendChild(document.createElement("a"));
 		var panel = this;	// define a variable for panel that will be in the
 							// scope of the onclick.
-		cancel.onclick = function () {panel.close();}
-		cancel.innerHTML = 'Close';
+		this.cancel.onclick = function () {panel.close();}
+		this.cancel.innerHTML = 'Close';
 		
 		// Content container
 		this.contentElement = document.createElement("div");
