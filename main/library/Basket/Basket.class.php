@@ -105,18 +105,7 @@ class Basket
 			$level);
 		
 		// controlling JS
-		ob_start();
-		$harmoni = Harmoni::instance();
-		
-		$placeHolderUrl = POLYPHONY_PATH."/icons/1x1.png";
-		
-		$harmoni->request->startNamespace("basket");
-		$addBasketURL = str_replace("&amp;", "&", 
-			$harmoni->request->quickURL("basket", "addAjax", array("assets" => "xxxxx")));
-		$emptyBasketURL = str_replace("&amp;", "&", 
-			$harmoni->request->quickURL("basket", "emptyAjax"));
-		$harmoni->request->endNamespace();
-		
+		ob_start();		
 		print<<<END
 
 <script type='text/javascript'>
@@ -158,15 +147,14 @@ class Basket
 			elem.style.height = '60px';
 			elem.style.width = '60px';
 			elem.style.verticalAlign = 'middle';
-			elem.src = '$placeHolderUrl';
+			elem.src = Harmoni.POLYPHONY_PATH + "/icons/1x1.png";
 			basketContentsElement.appendChild(elem);
 			basketContentsElement.appendChild(document.createTextNode("\\n"));
 		}
 		
 		// Build the destination url
-		var addBasketURL = new String('$addBasketURL');
-		var regex = new RegExp("xxxxx");
-		addBasketURL = addBasketURL.replace(regex, idArray.join(','));
+		var addBasketURL = Harmoni.quickUrl('basket', 'addAjax', 
+			{assets: idArray.join(',')}, 'basket');
 		Basket.reload(addBasketURL);
 	}
 	
@@ -178,7 +166,8 @@ class Basket
 	 * @since 5/5/06
 	 */
 	Basket.empty = function () {
-		Basket.reload('$emptyBasketURL');
+		var emptyBasketURL = Harmoni.quickUrl('basket', 'emptyAjax', {}, 'basket');
+		Basket.reload(emptyBasketURL);
 	}
 	
 	/**
