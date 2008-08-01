@@ -364,7 +364,9 @@ window.getScrollX = function () {
 		return 0;
 }
 
-
+/*********************************************************
+ * Unload Confirmations
+ *********************************************************/
 /**
  * Add an element Id to check the existance of before unloading the page.
  * If the element is not found in the page, no message will be shown.
@@ -432,7 +434,43 @@ window.addOnBeforeUnload = function (onBeforeUnloadFunction) {
 window.onbeforeunload = function (e) {
 	if (window.beforeUnloadConfirmations) {
 		for (var i = 0; i < window.beforeUnloadConfirmations.length; i++) {
-			var result = window.beforeUnloadConfirmations[i]();
+			var result = window.beforeUnloadConfirmations[i](e);
+			if (result)
+				return result;
+		}
+	}
+}
+
+/*********************************************************
+ * OnLoad functions
+ *********************************************************/
+/**
+ * Add a function to exectute on window load to a queue of onload functions.
+ * 
+ * @param function onLoadFunction
+ * @return void
+ * @access public
+ * @since 8/1/08
+ */
+window.addOnLoad = function (onLoadFunction) {
+	if (!window.onLoadFunctions)
+		window.onLoadFunctions = new Array;
+	
+	window.onLoadFunctions.push(onLoadFunction);
+	return onLoadFunction;
+}
+
+/**
+ * This method sets the onload handler to check for functions to execute.
+ * 
+ * @return mixed
+ * @access public
+ * @since 7/23/08
+ */
+window.onload = function (e) {
+	if (window.onLoadFunctions) {
+		for (var i = 0; i < window.onLoadFunctions.length; i++) {
+			var result = window.onLoadFunctions[i](e);
 			if (result)
 				return result;
 		}
