@@ -193,8 +193,20 @@ document.getOffsetTop = function (element) {
 	if (element.offsetTop)
 		offset = offset + element.offsetTop;
 	
-	if (element.offsetParent)
-		offset = offset + document.getOffsetTop(element.offsetParent);	
+/*********************************************************
+ * This elegant recursive algorithm maxes out IE's small 
+ * execution stack, so use the iterative version below...
+ *********************************************************/
+// 	if (element.offsetParent)
+// 		offset = offset + document.getOffsetTop(element.offsetParent);	
+	
+	// Iterative version for IE
+	var parent = element.offsetParent;
+	while (parent) {
+		if (parent.offsetTop)
+			offset = offset + parent.offsetTop;
+		parent = parent.offsetParent;
+	}
 		
 	return offset;
 }
@@ -213,9 +225,21 @@ document.getOffsetLeft = function (element) {
 	if (element.offsetLeft)
 		offset = offset + element.offsetLeft;
 	
-	if (element.offsetParent)
-		offset = offset + document.getOffsetLeft(element.offsetParent);	
-		
+/*********************************************************
+ * This elegant recursive algorithm maxes out IE's small 
+ * execution stack, so use the iterative version below...
+ *********************************************************/
+// 	if (element.offsetParent)
+// 		offset = offset + document.getOffsetLeft(element.offsetParent);	
+	
+	// Iterative version for IE
+	var parent = element.offsetParent;
+	while (parent) {
+		if (parent.offsetLeft)
+			offset = offset + parent.offsetLeft;
+		parent = parent.offsetParent;
+	}
+	
 	return offset;
 }
 
