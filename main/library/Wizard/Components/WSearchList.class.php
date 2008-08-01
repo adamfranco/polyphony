@@ -166,7 +166,7 @@ class WSearchList
 			print "chosenVal.name = '".RequestContext::name($fieldName."_remove")."'; ";
 			print "chosenVal.value = '".$result->getIdString()."'; ";
 			print "this.parentNode.appendChild(chosenVal); ";
-			print "this.form.submit(); ";
+			print "submitWizard(this.form); ";
 			print "return true; ";
 			print "\"/>";
 			print " &nbsp; ";
@@ -207,7 +207,7 @@ class WSearchList
 			print "chosenVal.name = '".RequestContext::name($fieldName."_add")."'; ";
 			print "chosenVal.value = '".$result->getIdString()."'; ";
 			print "this.parentNode.appendChild(chosenVal); ";
-			print "this.form.submit(); ";
+			print "submitWizard(this.form); ";
 			print "return true; ";
 			print "\"/>";
 			print " &nbsp; ";

@@ -92,6 +92,18 @@ class theme_cssAction
 		if (!isset($this->theme)) {
 			$guiMgr = Services::getService("GUIManager");
 			$this->theme = $guiMgr->getTheme(RequestContext::value('theme'));
+			
+			// If the theme has non-default options, we need to get those.
+			if ($this->theme->supportsOptions()) {
+				$optionsSess = $this->theme->getOptionsSession();
+				$harmoni = Harmoni::instance();
+				$harmoni->request->startNamespace('theme_options');
+				foreach ($optionsSess->getOptions() as $option) {
+					if (RequestContext::value($option->getIdString()))
+						$option->setValue(RequestContext::value($option->getIdString()));
+				}
+				$harmoni->request->endNamespace();
+			}
 		}
 		return $this->theme;
 	}

@@ -9,7 +9,7 @@
  * @version $Id: emptyAjax.act.php,v 1.5 2007/09/19 14:04:54 adamfranco Exp $
  */ 
 
-require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
+require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
 require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
 
 /**
@@ -24,7 +24,7 @@ require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
  * @version $Id: emptyAjax.act.php,v 1.5 2007/09/19 14:04:54 adamfranco Exp $
  */
 class emptyAjaxAction 
-	extends MainWindowAction {
+	extends Action {
 
 	/**
 	 * Check Authorizations

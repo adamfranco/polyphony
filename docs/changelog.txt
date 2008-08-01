@@ -2,6 +2,174 @@
 Polyphony Change Log
 
 
+v. 1.3.1 (2008-08-01)
+----------------------------------------------------
+This release fixes a number of Javascript issues that were causing problems in Segue
+2. See the change-log for details.
+		
+		
+	* Bug Fix: #2034201 
+		Javascript: Now using iterative algorithm for element position determination
+		as the recursive algorithm was maxing out IE's small execution stack for
+		deeply nested elements.
+		(2008-08-01 - Adam Franco)
+		
+	* Change: # 
+		Javascript: Harmoni Javascript object now includes POLYPHONY_PATH and MYPATH
+		properties to enable access of these values by statically loaded javascript
+		files. 
+		(2008-08-01 - Adam Franco)
+		
+	* Change: 
+		Javascript: Panel class now keeps a reference to its 'close' button so that
+		descendants can hide it.
+		(2008-07-29 - Adam Franco)
+		
+	* Change: 
+		Authentication: Now stops authenticating against auth-types after one
+		success. 
+		(2008-08-01 - Adam Franco)
+	
+
+
+
+v. 1.3.0 (2008-07-24)
+----------------------------------------------------
+This release includes several updates to the Javascript library and Wizard to
+support Segue 2. See the change-log for details.
+		
+		
+	* New feature: #2021654 
+		Wizard: SimpleWizard now has an addConfimLeavingMessage($message) method
+		that will prompt the user if they try to leave the wizard without using the
+		save or cancel buttons.
+		(2008-07-24 - Adam Franco)
+		
+	* Change: #2021654 
+		Wizard: Wizard component now properly call the saveWizard(form) function
+		instead of calling form.submit(). This provides a hook for submit handlers
+		to execute actions before form submission.
+		(2008-07-24 - Adam Franco)
+		
+	* New feature: #2021654 
+		Javascript: New common functions for attaching confirmation checks to the
+		window before unloading it. These are used by Segue for preventing
+		accidental back-button keystrokes from leaving a page with an editor open,
+		causing a loss of work.
+		
+		window.addOnBeforeUnload(onBeforeUnloadFunction)
+		
+		window.addUnloadConfirmationForElement(elementId, message)
+		
+		window.removeUnloadConfirmationForElement(elementId) 
+		(2008-07-24 - Adam Franco)
+		
+	* Bug Fix: 
+		AgentEditing: Added missing endNamespace() call to prevent theme breakage.
+		(2008-07-22 - Adam Franco)
+	
+
+
+
+v. 1.2.12 (2008-07-22)
+----------------------------------------------------
+This release fixes an issue that was causing problems in Concerto.
+		
+		
+	* Bug Fix: 
+		Datamanager Primitives: Null dates now don't crash the system. This issue
+		was preventing editing of some assets in Concerto.
+		(2008-07-22 - Adam Franco)
+		(reported by Robert Schine of Middlebury College)
+	
+
+
+
+v. 1.2.11 (2008-07-21)
+----------------------------------------------------
+This release fixes an issue with file uploads under safe mode.
+		
+		
+	* New feature: 
+		Wizard: File upload temporary directory is now configurable via the
+		POLYPHONY_TMP_DIR constant. Set this constant to enable custom temporary
+		directories if needed for Safe Mode operation.
+		(2008-07-21 - Adam Franco)
+	
+
+
+
+v. 1.2.10 (2008-07-17)
+----------------------------------------------------
+This release fixes an issue with theme CSS loading that was preventing theme options
+from taking effect.
+		
+		
+	* Bug Fix: #2018232 
+		GUI2: Theme CSS action now accepts specification of theme options in its
+		URL. 
+		(2008-07-17 - Adam Franco)
+	
+
+
+
+v. 1.2.9 (2008-07-17)
+----------------------------------------------------
+This release fixes a few bugs to support Segue and Concerto.
+		
+		
+	* Bug Fix: 
+		Basket: Several to basket empty and export actions to fix errors that became
+		apparent in PHP 5.
+		(2008-07-17 - Adam Franco)
+		
+	* Bug Fix: #2018193 
+		Wizard: Fixed reference errors in the RepeatableComponentCollections.
+		
+		These wizard components pass around arrays by reference these references
+		were accidentally removed in polyphony 0.9 (commit
+		b6059bbd53e1c0e4c6033f05da45580a4fdb6f0d) when extra ampersands were removed
+		since objects in PHP 5 are automatically passed by reference. Arrays
+		however, are not automatically passed by reference and ampersands needed to
+		be added back in to pass these arrays by reference.
+		(2008-07-17 - Adam Franco)
+		
+	* Bug Fix: 
+		Logs: Browsing is now restricted to admins again. Cascading-up view
+		authorizations were providing log access to all.
+		(2008-07-14 - Adam Franco)
+	
+
+
+
+v. 1.2.8 (2008-07-14)
+----------------------------------------------------
+This release fixes a minor issue with log-browsing.
+		
+		
+	* Bug Fix: 
+		Logs: Added missing call to endNamespace() to prevent broken theming.
+		(2008-07-14 - Adam Franco)
+	
+
+
+
+v. 1.2.7 (2008-07-10)
+----------------------------------------------------
+This release adds a few minor fixes to support Segue.
+		
+		
+	* Bug Fix: 
+		GUI2: theme_css action now sends proper 'text/css' mime-type header.
+		(2008-06-18 - Adam Franco)
+		
+	* New feature: 
+		Javascript: Added a stripTags() function to the String class.
+		(2008-07-08 - Adam Franco)
+	
+
+
+
 v. 1.2.6 (2008-06-16)
 ----------------------------------------------------
 This release adds a new multiple checkbox wizard component.

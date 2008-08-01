@@ -84,7 +84,7 @@ class HtmlTextArea
 		parent::__construct();
 		
 		$this->editorChoice = new WSelectList;
-		$this->editorChoice->addOnChange('this.form.submit();');
+		$this->editorChoice->addOnChange('submitWizard(this.form);');
 		
 		$this->addEditor('none', _('Plain-Text'), new WTextArea);
 		$this->addEditor('fck', _('Rich-Text'), new FckTextarea);

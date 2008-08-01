@@ -41,6 +41,16 @@ String.prototype.urlDecodeAmpersands = function () {
 	return this.replaceAll(/&amp;/, '&');
 }
 
+/**
+ * Strip HTML tags from a string
+ * 
+ * @return string
+ * @access public
+ * @since 7/7/08
+ */
+String.prototype.stripTags = function () {
+	return this.replaceAll(/<(.|\n)*?>/, '');
+}
 
 /**
  * wrap on a word:
@@ -183,8 +193,20 @@ document.getOffsetTop = function (element) {
 	if (element.offsetTop)
 		offset = offset + element.offsetTop;
 	
-	if (element.offsetParent)
-		offset = offset + document.getOffsetTop(element.offsetParent);	
+/*********************************************************
+ * This elegant recursive algorithm maxes out IE's small 
+ * execution stack, so use the iterative version below...
+ *********************************************************/
+// 	if (element.offsetParent)
+// 		offset = offset + document.getOffsetTop(element.offsetParent);	
+	
+	// Iterative version for IE
+	var parent = element.offsetParent;
+	while (parent) {
+		if (parent.offsetTop)
+			offset = offset + parent.offsetTop;
+		parent = parent.offsetParent;
+	}
 		
 	return offset;
 }
@@ -203,9 +225,21 @@ document.getOffsetLeft = function (element) {
 	if (element.offsetLeft)
 		offset = offset + element.offsetLeft;
 	
-	if (element.offsetParent)
-		offset = offset + document.getOffsetLeft(element.offsetParent);	
-		
+/*********************************************************
+ * This elegant recursive algorithm maxes out IE's small 
+ * execution stack, so use the iterative version below...
+ *********************************************************/
+// 	if (element.offsetParent)
+// 		offset = offset + document.getOffsetLeft(element.offsetParent);	
+	
+	// Iterative version for IE
+	var parent = element.offsetParent;
+	while (parent) {
+		if (parent.offsetLeft)
+			offset = offset + parent.offsetLeft;
+		parent = parent.offsetParent;
+	}
+	
 	return offset;
 }
 
@@ -354,6 +388,118 @@ window.getScrollX = function () {
 		return 0;
 }
 
+/*********************************************************
+ * Unload Confirmations
+ *********************************************************/
+/**
+ * Add an element Id to check the existance of before unloading the page.
+ * If the element is not found in the page, no message will be shown.
+ * 
+ * @param string elementId
+ * @param string message
+ * @return void
+ * @access public
+ * @since 7/23/08
+ */
+window.addUnloadConfirmationForElement = function (elementId, message) {
+	var checkElementFunction = function() {
+		if (document.get_element_by_id(elementId)) {
+			return message;
+		}
+	}
+	checkElementFunction.elementId = elementId;
+	window.addOnBeforeUnload(checkElementFunction);
+}
+
+/**
+ * Remove an element-based confirmation that was added with window.addUnloadConfirmation().
+ * 
+ * @param string elementId
+ * @return void
+ * @access public
+ * @since 7/23/08
+ */
+window.removeUnloadConfirmationForElement = function (elementId) {
+	var newUnloadConfirmations = new Array();
+	for (var i = 0; i < window.beforeUnloadConfirmations.length; i++) {
+		var conf = window.beforeUnloadConfirmations[i];
+		if (!conf.elementId || conf.elementId != elementId) {
+			newUnloadConfirmations.push(conf);
+		}
+	}
+	
+	window.beforeUnloadConfirmations = newUnloadConfirmations;
+}
+
+/**
+ * Add an onbeforeunload confirmation function to the window. This function
+ * should return a confirmation message or nothing if unloading should continue.
+ * 
+ * @param function onBeforeUnloadFunction
+ * @return function The function added.
+ * @access public
+ * @since 7/23/08
+ */
+window.addOnBeforeUnload = function (onBeforeUnloadFunction) {
+	if (!window.beforeUnloadConfirmations)
+		window.beforeUnloadConfirmations = new Array;
+	
+	window.beforeUnloadConfirmations.push(onBeforeUnloadFunction);
+	return onBeforeUnloadFunction;
+}
+
+/**
+ * This method sets the before unload handler to check for confirmations.
+ * 
+ * @return mixed
+ * @access public
+ * @since 7/23/08
+ */
+window.onbeforeunload = function (e) {
+	if (window.beforeUnloadConfirmations) {
+		for (var i = 0; i < window.beforeUnloadConfirmations.length; i++) {
+			var result = window.beforeUnloadConfirmations[i](e);
+			if (result)
+				return result;
+		}
+	}
+}
+
+/*********************************************************
+ * OnLoad functions
+ *********************************************************/
+/**
+ * Add a function to exectute on window load to a queue of onload functions.
+ * 
+ * @param function onLoadFunction
+ * @return void
+ * @access public
+ * @since 8/1/08
+ */
+window.addOnLoad = function (onLoadFunction) {
+	if (!window.onLoadFunctions)
+		window.onLoadFunctions = new Array;
+	
+	window.onLoadFunctions.push(onLoadFunction);
+	return onLoadFunction;
+}
+
+/**
+ * This method sets the onload handler to check for functions to execute.
+ * 
+ * @return mixed
+ * @access public
+ * @since 7/23/08
+ */
+window.onload = function (e) {
+	if (window.onLoadFunctions) {
+		for (var i = 0; i < window.onLoadFunctions.length; i++) {
+			var result = window.onLoadFunctions[i](e);
+			if (result)
+				return result;
+		}
+	}
+}
 
 /*********************************************************
  * Date Functions - Start

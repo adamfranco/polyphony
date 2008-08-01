@@ -1,5 +1,5 @@
 
-Polyphony v. 1.2.6 (2008-06-16)
+Polyphony v. 1.3.1 (2008-08-01)
 =================================
 
 What is Polyphony?
@@ -42,7 +42,8 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This release adds a new multiple checkbox wizard component.
+This release fixes a number of Javascript issues that were causing problems in Segue
+2. See the change-log for details.
 
 
 Downloads
@@ -73,6 +74,57 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.3.1 (2008-08-01)
+----------------------------------------------------
+This release fixes a number of Javascript issues that were causing problems in Segue
+2. See the change-log for details.
+
+
+
+v. 1.3.0 (2008-07-24)
+----------------------------------------------------
+This release includes several updates to the Javascript library and Wizard to
+support Segue 2. See the change-log for details.
+
+
+
+v. 1.2.12 (2008-07-22)
+----------------------------------------------------
+This release fixes an issue that was causing problems in Concerto.
+
+
+
+v. 1.2.11 (2008-07-21)
+----------------------------------------------------
+This release fixes an issue with file uploads under safe mode.
+
+
+
+v. 1.2.10 (2008-07-17)
+----------------------------------------------------
+This release fixes an issue with theme CSS loading that was preventing theme options
+from taking effect.
+
+
+
+v. 1.2.9 (2008-07-17)
+----------------------------------------------------
+This release fixes a few bugs to support Segue and Concerto.
+
+
+
+v. 1.2.8 (2008-07-14)
+----------------------------------------------------
+This release fixes a minor issue with log-browsing.
+
+
+
+v. 1.2.7 (2008-07-10)
+----------------------------------------------------
+This release adds a few minor fixes to support Segue.
+
 
 
 v. 1.2.6 (2008-06-16)

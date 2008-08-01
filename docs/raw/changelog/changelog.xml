@@ -10,13 +10,127 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.2.7" date="The Future">
+	<version number="1.3.1" date="2008-08-01">
 		<releaseNotes>
+			This release fixes a number of Javascript issues that were causing
+			problems in Segue 2. See the change-log for details.
+		</releaseNotes>
+		<fix author='adam' date='2008-08-01' ref='2034201' reftype='segue_bug'>
+			Javascript: Now using iterative algorithm for element position determination
+			as the recursive algorithm was maxing out IE's small execution stack
+			for deeply nested elements.
+		</fix>
+		<change author='adam' date='2008-08-01' ref='' reftype='fr'>
+			Javascript: Harmoni Javascript object now includes POLYPHONY_PATH and MYPATH
+			properties to enable access of these values by statically loaded javascript files.
+		</change>
+		<change author='adam' date='2008-07-29'>
+			Javascript: Panel class now keeps a reference to its 'close' button
+			so that descendants can hide it.
+		</change>
+		<change author='adam' date='2008-08-01'>
+			Authentication: Now stops authenticating against auth-types after one success.
+		</change>
+	</version>
+	<version number="1.3.0" date="2008-07-24">
+		<releaseNotes>
+			This release includes several updates to the Javascript library and
+			Wizard to support Segue 2. See the change-log for details.
+		</releaseNotes>
+		<new author='adam' date='2008-07-24' ref='2021654' reftype='segue_fr'>
+			Wizard: SimpleWizard now has an addConfimLeavingMessage($message) method
+			that will prompt the user if they try to leave the wizard without using
+			the save or cancel buttons.
+		</new>
+		<change author='adam' date='2008-07-24' ref='2021654' reftype='segue_fr'>
+			Wizard: Wizard component now properly call the saveWizard(form) function
+			instead of calling form.submit(). This provides a hook for submit
+			handlers to execute actions before form submission.
+		</change>
+		<new author='adam' date='2008-07-24' ref='2021654' reftype='segue_fr'>
+			Javascript: New common functions for attaching confirmation checks to
+			the window before unloading it. These are used by Segue for preventing
+			accidental back-button keystrokes from leaving a page with an editor open,
+			causing a loss of work.
 			
+			window.addOnBeforeUnload(onBeforeUnloadFunction)
+			
+			window.addUnloadConfirmationForElement(elementId, message)
+			
+			window.removeUnloadConfirmationForElement(elementId)
+		</new>
+		<fix author='adam' date='2008-07-22'>
+			AgentEditing: Added missing endNamespace() call to prevent theme breakage.
+		</fix>
+	</version>
+	<version number="1.2.12" date="2008-07-22">
+		<releaseNotes>
+			This release fixes an issue that was causing problems in Concerto.
+		</releaseNotes>
+		<fix author='adam' date='2008-07-22' reporter='robert_schine'>
+			Datamanager Primitives: Null dates now don't crash the system.
+			This issue was preventing editing of some assets in Concerto.
+		</fix>
+	</version>
+	<version number="1.2.11" date="2008-07-21">
+		<releaseNotes>
+			This release fixes an issue with file uploads under safe mode.
+		</releaseNotes>
+		<new author='adam' date='2008-07-21'>
+			Wizard: File upload temporary directory is now configurable via the 
+			POLYPHONY_TMP_DIR constant. Set this constant to enable custom temporary
+			directories if needed for Safe Mode operation.
+		</new>
+	</version>
+	<version number="1.2.10" date="2008-07-17">
+		<releaseNotes>
+			This release fixes an issue with theme CSS loading that was preventing theme 
+			options from taking effect.
+		</releaseNotes>
+		<fix author='adam' date='2008-07-17' ref='2018232' reftype='segue_bug'>
+			GUI2: Theme CSS action now accepts specification of theme options in its URL.
+		</fix>
+	</version>
+	<version number="1.2.9" date="2008-07-17">
+		<releaseNotes>
+			This release fixes a few bugs to support Segue and Concerto.
+		</releaseNotes>
+		<fix author='adam' date='2008-07-17'>
+			Basket: Several to basket empty and export actions to fix errors that
+			became apparent in PHP 5.
+		</fix>
+		<fix author='adam' date='2008-07-17' ref='2018193' reftype='concerto_bug'>
+			Wizard: Fixed reference errors in the RepeatableComponentCollections.
+			
+			These wizard components pass around arrays by reference these references
+			were accidentally removed in polyphony 0.9 (commit b6059bbd53e1c0e4c6033f05da45580a4fdb6f0d) when extra ampersands were
+			removed since objects in PHP 5 are automatically passed by reference.
+			Arrays however, are not automatically passed by reference and ampersands
+			needed to be added back in to pass these arrays by reference.
+		</fix>
+		<fix author='adam' date='2008-07-14'>
+			Logs: Browsing is now restricted to admins again. Cascading-up view
+			authorizations were providing log access to all.
+		</fix>
+	</version>
+	<version number="1.2.8" date="2008-07-14">
+		<releaseNotes>
+			This release fixes a minor issue with log-browsing.
+		</releaseNotes>
+		<fix author='adam' date='2008-07-14'>
+			Logs: Added missing call to endNamespace() to prevent broken theming.
+		</fix>
+	</version>
+	<version number="1.2.7" date="2008-07-10">
+		<releaseNotes>
+			This release adds a few minor fixes to support Segue.
 		</releaseNotes>
 		<fix author='adam' date='2008-06-18' >
 			GUI2: theme_css action now sends proper 'text/css' mime-type header.
 		</fix>
+		<new author='adam' date='2008-07-08'>
+			Javascript: Added a stripTags() function to the String class.
+		</new>
 	</version>
 	<version number="1.2.6" date="2008-06-16">
 		<releaseNotes>
@@ -1129,6 +1243,10 @@
 		</reporter>
 		<reporter short="bryan_carson">
 			<name>Bryan Carson</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="robert_schine">
+			<name>Robert Schine</name>
 			<institution>Middlebury College</institution>
 		</reporter>
 	</reporters>

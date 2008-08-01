@@ -214,7 +214,7 @@ class WEventButton
 		$m .= 	$onclick;
 		$m .= 	" if (validateWizard(this.form)) { ";
 		$m .= 		" getWizardElement(\"$name\").value=\"1\";";
-		$m .=		" this.form.submit();";
+		$m .=		" submitWizard(this.form);";
 		$m .= 	" }";
 		$m .= " }";
 		

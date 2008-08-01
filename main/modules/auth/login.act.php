@@ -70,6 +70,7 @@ class loginAction
 			// If they are authenticated, quit
 			if ($authN->isUserAuthenticated($authType)) {
 				$isAuthenticated = TRUE;
+				break;
 			}
 		}
 

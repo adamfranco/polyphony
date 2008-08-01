@@ -90,7 +90,7 @@ class WStepDisplayBar
 				print "<a href='#' onclick=\"";
 				print "var input = this.parentNode.firstChild; ";
 				print "input.value = '".$stepKey."'; ";
-				print "input.form.submit(); ";
+				print "submitWizard(input.form); ";
 				print "return false; \">";
 			}
 			
