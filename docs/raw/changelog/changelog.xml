@@ -14,9 +14,18 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2008-08-01' ref='2034201' reftype='segue_bug'>
+			Javascript: Now using iterative algorithm for element position determination
+			as the recursive algorithm was maxing out IE's small execution stack
+			for deeply nested elements.
+		</fix>
+		<change author='adam' date='2008-08-01' ref='' reftype='fr'>
+			Javascript: Harmoni Javascript object now includes POLYPHONY_PATH and MYPATH
+			properties to enable access of these values by statically loaded javascript files.
+		</change>
 		<change author='adam' date='2008-07-29'>
 			Javascript: Panel class now keeps a reference to its 'close' button
-			so that descendents can hide it.
+			so that descendants can hide it.
 		</change>
 	</version>
 	<version number="1.3.0" date="2008-07-24">
@@ -80,7 +89,7 @@
 	</version>
 	<version number="1.2.9" date="2008-07-17">
 		<releaseNotes>
-			This release fixes a fiew bugs to support Segue and Concerto.
+			This release fixes a few bugs to support Segue and Concerto.
 		</releaseNotes>
 		<fix author='adam' date='2008-07-17'>
 			Basket: Several to basket empty and export actions to fix errors that
