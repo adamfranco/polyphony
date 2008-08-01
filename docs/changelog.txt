@@ -2,6 +2,37 @@
 Polyphony Change Log
 
 
+v. 1.3.1 (2008-08-01)
+----------------------------------------------------
+This release fixes a number of Javascript issues that were causing problems in Segue
+2. See the change-log for details.
+		
+		
+	* Bug Fix: #2034201 
+		Javascript: Now using iterative algorithm for element position determination
+		as the recursive algorithm was maxing out IE's small execution stack for
+		deeply nested elements.
+		(2008-08-01 - Adam Franco)
+		
+	* Change: # 
+		Javascript: Harmoni Javascript object now includes POLYPHONY_PATH and MYPATH
+		properties to enable access of these values by statically loaded javascript
+		files. 
+		(2008-08-01 - Adam Franco)
+		
+	* Change: 
+		Javascript: Panel class now keeps a reference to its 'close' button so that
+		descendants can hide it.
+		(2008-07-29 - Adam Franco)
+		
+	* Change: 
+		Authentication: Now stops authenticating against auth-types after one
+		success. 
+		(2008-08-01 - Adam Franco)
+	
+
+
+
 v. 1.3.0 (2008-07-24)
 ----------------------------------------------------
 This release includes several updates to the Javascript library and Wizard to
@@ -84,7 +115,7 @@ from taking effect.
 
 v. 1.2.9 (2008-07-17)
 ----------------------------------------------------
-This release fixes a fiew bugs to support Segue and Concerto.
+This release fixes a few bugs to support Segue and Concerto.
 		
 		
 	* Bug Fix: 

@@ -10,9 +10,10 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.3.1" date="The Future">
+	<version number="1.3.1" date="2008-08-01">
 		<releaseNotes>
-			
+			This release fixes a number of Javascript issues that were causing
+			problems in Segue 2. See the change-log for details.
 		</releaseNotes>
 		<fix author='adam' date='2008-08-01' ref='2034201' reftype='segue_bug'>
 			Javascript: Now using iterative algorithm for element position determination

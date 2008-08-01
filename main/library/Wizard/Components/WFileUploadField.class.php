@@ -166,6 +166,8 @@ class WFileUploadField
 						$this->_mimetype = $val['type'];
 						$this->_size = $val['size'];
 						return true;
+					} else {
+						HarmoniErrorHandler::logException(new OperationFailedException("Could not move file from '".$uploadFile."' to '".$newFile."'"));
 					}
 				} else {
 					// generate an error string for display
