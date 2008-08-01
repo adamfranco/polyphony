@@ -46,8 +46,10 @@ function Panel ( title, height, width, positionElement, classNames ) {
 	Panel.prototype.init = function ( title, height, width, positionElement, 
 		classNames ) 
 	{
-		this.positionElement = positionElement;
-		this.positionElement.panel = this;
+		if (positionElement) {
+			this.positionElement = positionElement;
+			this.positionElement.panel = this;
+		}
 		
 		this.title = title;
 		this.height = height;
@@ -96,12 +98,7 @@ function Panel ( title, height, width, positionElement, classNames ) {
 		else
 			this.mainElement.className = 'panel';
 		
-// 		this.mainElement.style.height = this.height + 'px';
-		this.mainElement.style.width = this.width + 'px';
-		this.mainElement.style.position = 'absolute';
-		this.mainElement.style.overflow = 'auto';
-		this.mainElement.style.top = this.getTop() + "px";
-		this.mainElement.style.left = this.getLeft() + "px";
+		this.positionMainElement();
 		
 		// Top bar
 		this.topBar = this.mainElement.appendChild(document.createElement("table"));
@@ -114,6 +111,7 @@ function Panel ( title, height, width, positionElement, classNames ) {
 		var topLeft = row1.appendChild(document.createElement('td'));
 		topLeft.className = 'title';
 		topLeft.innerHTML = this.title;
+		this.titleElement = topLeft;
 		
 		var topRight = row1.appendChild(document.createElement('td'));
 		topRight.className = 'close';
@@ -129,6 +127,22 @@ function Panel ( title, height, width, positionElement, classNames ) {
 		this.contentElement.className = 'container';
 		
 		document.body.appendChild(this.mainElement);
+	}
+	
+	/**
+	 * Position the main element
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 7/31/08
+	 */
+	Panel.prototype.positionMainElement = function () {
+// 		this.mainElement.style.height = this.height + 'px';
+		this.mainElement.style.width = this.width + 'px';
+		this.mainElement.style.position = 'absolute';
+		this.mainElement.style.overflow = 'auto';
+		this.mainElement.style.top = this.getTop() + "px";
+		this.mainElement.style.left = this.getLeft() + "px";
 	}
 	
 	/**

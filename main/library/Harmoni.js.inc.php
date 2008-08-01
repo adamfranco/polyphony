@@ -37,6 +37,9 @@
 				alert('Error: Harmoni is a static class. Do not instantiate');
 			}
 			
+			Harmoni.POLYPHONY_PATH = "<?php print rtrim(POLYPHONY_PATH, '/'); ?>";
+			Harmoni.MYPATH = "<?php print rtrim(MYPATH, '/'); ?>";
+			
 			/**
 			 * Create an XML HTTP request object
 			 * 
