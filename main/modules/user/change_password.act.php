@@ -210,7 +210,7 @@ class change_passwordAction
 					$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
 									"Normal events.");
 					
-					$item = new AgentNodeEntryItem("Modify Agent", "Password changed for:\n<br/>&nbsp; &nbsp; &nbsp;".$uname."\n<br/>&nbsp; &nbsp; &nbsp;".$type->getKeyword());
+					$item = new AgentNodeEntryItem("Modify Agent", "Password changed for:\n<br/>&nbsp; &nbsp; &nbsp;".htmlspecialchars($uname)."\n<br/>&nbsp; &nbsp; &nbsp;".htmlspecialchars($type->getKeyword()));
 					$item->addAgentId($id);
 					
 					$log->appendLogWithTypes($item,	$formatType, $priorityType);
@@ -247,7 +247,7 @@ class change_passwordAction
 				$priorityType = new Type("logging", "edu.middlebury", "Error",
 								"Normal events.");
 				
-				$item = new AgentNodeEntryItem("Modify Agent", "Password change error:\n<br/>&nbsp; &nbsp; &nbsp;".$error."\n<br/>for:\n<br/>&nbsp; &nbsp; &nbsp;".$uname."\n<br/>&nbsp; &nbsp; &nbsp;".$type->getKeyword());
+				$item = new AgentNodeEntryItem("Modify Agent", "Password change error:\n<br/>&nbsp; &nbsp; &nbsp;".htmlspecialchars($error)."\n<br/>for:\n<br/>&nbsp; &nbsp; &nbsp;".$uname."\n<br/>&nbsp; &nbsp; &nbsp;".htmlspecialchars($type->getKeyword()));
 				$item->addAgentId($id);
 				
 				$log->appendLogWithTypes($item,	$formatType, $priorityType);

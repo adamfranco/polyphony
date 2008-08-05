@@ -171,7 +171,7 @@ class XMLImporter {
 				$this->addError("This file can not be handled by this importer");
 				// log error
 				$item = new AgentNodeEntryItem("XMLImporter Error",
-					"Improper Import Format: ".$this->_xmlFile.".");
+					"Improper Import Format: ".htmlspecialchars($this->_xmlFile).".");
 				if (isset($log))
 					$log->appendLogWithTypes($item, $formatType, $priorityType);
 			}
@@ -179,7 +179,7 @@ class XMLImporter {
 				$this->addError("There are no Importables in this file");
 				// log error
 				$item = new AgentNodeEntryItem("XMLImporter Error",
-					"No Importables in the file: ".$this->_xmlFile.".");
+					"No Importables in the file: ".htmlspecialchars($this->_xmlFile).".");
 				if (isset($log))
 					$log->appendLogWithTypes($item, $formatType, $priorityType);
 			} else {
@@ -232,7 +232,7 @@ class XMLImporter {
 				$this->addError("This file can not be handled by this importer");
 				// log error
 				$item = new AgentNodeEntryItem("XMLImporter Error",
-					"Improper Import Format: ".$this->_xmlFile.".");
+					"Improper Import Format: ".htmlspecialchars($this->_xmlFile).".");
 				if (isset($log))
 					$log->appendLogWithTypes($item, $formatType, $priorityType);
 			}
@@ -240,7 +240,7 @@ class XMLImporter {
 				$this->addError("There are no Importables in this file");
 				// log error
 				$item = new AgentNodeEntryItem("XMLImporter Error",
-					"No Importables in the file: ".$this->_xmlFile.".");
+					"No Importables in the file: ".htmlspecialchars($this->_xmlFile).".");
 				if (isset($log))
 					$log->appendLogWithTypes($item, $formatType, $priorityType);
 			} else {
@@ -465,7 +465,7 @@ class XMLImporter {
 						$priorityType = new Type("logging", "edu.middlebury",
 							"Error","Events involving critical system errors.");
 						$item = new AgentNodeEntryItem("XMLImporter Error",
-							"Function, '$helper' does not exist");
+							"Function, '".htmlspecialchars($helper)."' does not exist");
 						$log->appendLogWithTypes($item, $formatType,
 							$priorityType);
 					}
@@ -601,7 +601,7 @@ class XMLImporter {
 				$priorityType = new Type("logging", "edu.middlebury", "Error",
 					"Events involving critical system errors.");
 				$item = new AgentNodeEntryItem("XMLImporter Dearchiver Error",
-					"Failed to decompress file: $filepath.  Unsupported archive extension.");
+					"Failed to decompress file: ".htmlspecialchars($filepath).".  Unsupported archive extension.");
 				$log->appendLogWithTypes($item, $formatType, $priorityType);
 			}
 		}
@@ -707,7 +707,7 @@ class XMLImporter {
 					$this->addError("There are no Importables in this file");
 					// log error
 					$item = new AgentNodeEntryItem("XMLImporter Error",
-						"No Importables in the file: ".$path.".");
+						"No Importables in the file: ".htmlspecialchars($path).".");
 					if (isset($log))
 						$log->appendLogWithTypes($item, $formatType, $priorityType);
 				} else {

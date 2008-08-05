@@ -135,7 +135,7 @@ class XMLAssetImporter extends XMLImporter {
 				$priorityType = new Type("logging", "edu.middlebury",
 					"Event_Notice",	"Normal events.");
 				$item = new AgentNodeEntryItem("Create Node",
-					"Asset: ".$this->_myId->getIdString()." created.");
+					"Asset: ".htmlspecialchars($this->_myId->getIdString())." created.");
 				$item->addNodeId($this->_myId);
 				$item->addNodeId($this->_parent->getId());
 			}	
@@ -245,7 +245,7 @@ class XMLAssetImporter extends XMLImporter {
 							"Normal Events.");
 			
 			$item = new AgentNodeEntryItem("Modified Node", "Asset: ".
-				$this->_myId->getIdString()." modified.");
+				htmlspecialchars($this->_myId->getIdString())." modified.");
 			$item->addNodeId($this->_myId);
 			
 			$log->appendLogWithTypes($item,	$formatType, $priorityType);

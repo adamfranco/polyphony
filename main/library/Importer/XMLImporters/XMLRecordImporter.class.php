@@ -134,7 +134,7 @@ class XMLRecordImporter extends XMLImporter {
 				$priorityType = new Type("logging", "edu.middlebury", "Error",
 								"Events involving critical system errors.");
 				
-				$item = new AgentNodeEntryItem("RecordImport Error", "Bad XML IDREF: $id");
+				$item = new AgentNodeEntryItem("RecordImport Error", "Bad XML IDREF: ".htmlspecialchars($id));
 				$item->addNodeId($this->_parent->getId());
 				
 				$log->appendLogWithTypes($item,	$formatType, $priorityType);

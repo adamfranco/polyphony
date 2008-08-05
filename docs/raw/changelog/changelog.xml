@@ -10,6 +10,14 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.3.2" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-08-05'>
+			Logging: Log messages are now filtered to prevent Javascript insertion.
+		</fix>
+	</version>
 	<version number="1.3.1" date="2008-08-01">
 		<releaseNotes>
 			This release fixes a number of Javascript issues that were causing
