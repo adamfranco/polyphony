@@ -17,7 +17,7 @@
 		<fix author='adam' date='2008-08-05'>
 			Logging: Log messages are now filtered to prevent Javascript insertion.
 		</fix>
-		<fix author='adam' date='2008-08-06' ref='2040303' reftype='security'>
+		<fix author='adam' date='2008-08-06' ref='2040303' reftype='segue_security'>
 			Security: Fixed Cross-Site Scripting vulnerability in all usage of HTTP_REFERER.
 		</fix>
 	</version>
@@ -1273,5 +1273,6 @@
 		<reftype name="segue_bug" group="82171" tracker='565234'/>
 		<reftype name="segue_fr" group="82171" tracker='565237'/>
 		<reftype name="segue_patch" group="82171" tracker='565236'/>
+		<reftype name="segue_security" group="82171" tracker='1098812'/>
 	</reftypes>
 </changelog>
