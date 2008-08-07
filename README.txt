@@ -1,5 +1,5 @@
 
-Polyphony v. 1.3.1 (2008-08-01)
+Polyphony v. 1.3.2 (2008-08-07)
 =================================
 
 What is Polyphony?
@@ -42,8 +42,8 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This release fixes a number of Javascript issues that were causing problems in Segue
-2. See the change-log for details.
+This release fixes several cross-site scripting vulnerabilities in code related to
+logging and error display. See the change log for details
 
 
 Downloads
@@ -74,6 +74,13 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.3.2 (2008-08-07)
+----------------------------------------------------
+This release fixes several cross-site scripting vulnerabilities in code related to
+logging and error display. See the change log for details
+
 
 
 v. 1.3.1 (2008-08-01)

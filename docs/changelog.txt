@@ -2,6 +2,24 @@
 Polyphony Change Log
 
 
+v. 1.3.2 (2008-08-07)
+----------------------------------------------------
+This release fixes several cross-site scripting vulnerabilities in code related to
+logging and error display. See the change log for details
+		
+		
+	* Bug Fix: #2040255 
+		Logging: Log messages are now filtered to prevent Javascript insertion.
+		(2008-08-05 - Adam Franco)
+		
+	* Bug Fix: #2040303 
+		Security: Fixed Cross-Site Scripting vulnerability in all usage of
+		HTTP_REFERER. 
+		(2008-08-06 - Adam Franco)
+	
+
+
+
 v. 1.3.1 (2008-08-01)
 ----------------------------------------------------
 This release fixes a number of Javascript issues that were causing problems in Segue

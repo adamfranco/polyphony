@@ -10,11 +10,12 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.3.2" date="The Future">
+	<version number="1.3.2" date="2008-08-07">
 		<releaseNotes>
-			
+			This release fixes several cross-site scripting vulnerabilities in code 
+			related to logging and error display. See the change log for details
 		</releaseNotes>
-		<fix author='adam' date='2008-08-05'>
+		<fix author='adam' date='2008-08-05' ref='2040255' reftype='segue_security'>
 			Logging: Log messages are now filtered to prevent Javascript insertion.
 		</fix>
 		<fix author='adam' date='2008-08-06' ref='2040303' reftype='segue_security'>
