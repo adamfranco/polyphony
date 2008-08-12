@@ -128,6 +128,7 @@ class browse_helpAction
 			
 			
 			if ($tocPart->heading) {
+				return null;
 				$url .= "#".strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', strip_tags($tocPart->heading)));
 				$title = $tocPart->heading;
 			} else {
@@ -350,6 +351,54 @@ class browse_helpAction
 		$outputHandler =$harmoni->getOutputHandler();
 		$outputHandler->setHead($outputHandler->getHead().$newHeadText);
 		
+		/*********************************************************
+		 * Page TOC
+		 *********************************************************/
+		$currentLevel = 1;
+		$toc = new TOC_Printer;
+		foreach ($body->childNodes as $element) {
+			unset($level);
+			switch ($element->nodeName) {
+				case 'h1':
+					$level = 1;
+				case 'h2':
+					if (!isset($level))
+						$level = 2;
+				case 'h3':
+					if (!isset($level))
+						$level = 3;
+				case 'h4':
+					if (!isset($level))
+						$level = 4;
+					
+					$heading = $element->textContent;
+					$anchor = strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', $element->textContent));
+						
+					if ($level > $currentLevel) {
+						while ($level > $currentLevel) {
+							$toc = $toc->addLevel();
+							$currentLevel++;
+						}
+					} else if ($level < $currentLevel) {
+						while ($level < $currentLevel) {
+							$toc = $toc->removeLevel();
+							$currentLevel--;
+						}
+					}
+					
+					$toc->addHtml("<a href='#$anchor'>$heading</a>");
+					
+			}
+		}
+		
+		$toc = $toc->getRoot();
+		
+		$topicContainer->add(new Block($toc->getHtml(), STANDARD_BLOCK));
+		
+		
+		/*********************************************************
+		 * Content of the page
+		 *********************************************************/
 		
 		ob_start();
 		foreach ($body->childNodes as $element) {
@@ -632,4 +681,144 @@ class TableOfContentsPart {
 	}
 }
 
-?>
+
+/**
+ * This class aids the building of an HTML table of contents (TOC)
+ * 
+ * @since 8/12/08
+ * @package polyphony.help
+ * 
+ * @copyright Copyright &copy; 2007, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id$
+ */
+class TOC_Printer {
+		
+	/**
+	 * Create a new Printer with the parent given.
+	 * 
+	 * @param optional object TOC_Printer $parent
+	 * @return void
+	 * @access public
+	 * @since 8/12/08
+	 */
+	public function __construct (TOC_Printer $parent = null) {
+		$this->parent = $parent;
+		$this->children = array();
+	}
+	
+	/**
+	 * Add html text.
+	 * 
+	 * @param string $text
+	 * @return void
+	 * @access public
+	 * @since 8/12/08
+	 */
+	public function addHtml ($text) {
+		ArgumentValidator::validate($text, StringValidatorRule::getRule());
+		$this->children[] = $text;
+	}
+	
+	/**
+	 * Add a new level to the table of contents and return it.
+	 * 
+	 * @return object TOC_Printer
+	 * @access public
+	 * @since 8/12/08
+	 */
+	public function addLevel () {
+		$toc = new TOC_Printer($this);
+		$this->children[] = $toc;
+		return $toc;
+	}
+	
+	/**
+	 * Return our parent
+	 * 
+	 * @return object TOCPrinter
+	 * @access public
+	 * @since 8/12/08
+	 */
+	public function removeLevel () {
+		return $this->getParent();
+	}
+	
+	/**
+	 * Answer the parent of this TOC if exists
+	 * 
+	 * @return object TOC_Printer or null;
+	 * @access public
+	 * @since 8/12/08
+	 */
+	public function getParent () {
+		return $this->parent;
+	}
+	
+	/**
+	 * Answer the level of depth of this toc 0 is the top level
+	 * 
+	 * @return int
+	 * @access public
+	 * @since 8/12/08
+	 */
+	public function getLevel () {
+		if (is_null($this->parent))
+			return 0;
+		else
+			return $this->parent->getLevel() + 1;
+	}
+	
+	/**
+	 * Answer the root of the TOC tree.
+	 * 
+	 * @return object TOC_Printer
+	 * @access public
+	 * @since 8/12/08
+	 */
+	public function getRoot () {
+		if (is_null($this->parent))
+			return $this;
+		else
+			return $this->parent->getRoot();
+	}
+	
+	/**
+	 * Print out the TOC
+	 * 
+	 * @return string 
+	 * @access public
+	 * @since 8/12/08
+	 */
+	public function getHtml () {
+		ob_start();
+		print "\n".str_repeat("\t", $this->getLevel())."<ol>";
+		
+		$opened = false;
+		foreach ($this->children as $i => $child) {
+			if (!$opened) {
+				print "\n".str_repeat("\t", $this->getLevel())."\t<li>";
+				$opened = true;
+			}
+				
+			if (is_string($child)) {
+				print $child;
+			} else {
+				print $child->getHtml();
+			}
+			
+			if (isset($this->children[$i + 1]) && !is_object($this->children[$i + 1])) {
+				print "\n".str_repeat("\t", $this->getLevel())."\t</li>";
+				$opened = false;
+			}
+		}
+		
+		if ($opened) 
+			print "\n".str_repeat("\t", $this->getLevel())."\t</li>";
+		
+		print "\n".str_repeat("\t", $this->getLevel())."</ol>";
+		return ob_get_clean();
+	}
+}
+
