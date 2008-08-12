@@ -10,6 +10,14 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.3.3" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-08-12' ref='2024873' reftype='segue_bug'>
+			Repository: Added custom icon for powerpoint files.
+		</fix>
+	</version>
 	<version number="1.3.2" date="2008-08-07">
 		<releaseNotes>
 			This release fixes several cross-site scripting vulnerabilities in code 

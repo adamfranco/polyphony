@@ -218,7 +218,8 @@ class viewthumbnailAction
 					"application/vnd.ms-word" => "wordprocessing.png",
 					"application/vnd.ms-excel" => "spreadsheet.png",
 					"application/msword" => "wordprocessing.png",
-					"application/msword" => "wordprocessing.png",
+					"application/vnd.ms-powerpoint" => "kpresenter_kpr.png",
+					"application/mspowerpoint" => "kpresenter_kpr.png",
 					
 					"application/pdf" => "pdf.png",
 					
