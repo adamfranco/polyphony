@@ -2,6 +2,32 @@
 Polyphony Change Log
 
 
+v. 1.3.3 (2008-08-13)
+----------------------------------------------------
+This release adds a number of fixes to the help-system to support Segue 2.
+		
+		
+	* Bug Fix: #2024873 
+		Repository: Added custom icon for powerpoint files.
+		(2008-08-12 - Adam Franco)
+		
+	* Change: 
+		Help: Help browsing now shows just top-level topics in menu and puts
+		sub-topics in a table-of-contents at the top of the page.
+		(2008-08-12 - Adam Franco)
+		
+	* Bug Fix: 
+		Help: Improved intra-help wiki-linking. Now supports alternate display-text
+		and <nowiki> tags.
+		(2008-08-13 - Adam Franco)
+		
+	* Change: 
+		Help: Now is a smaller popup window rather than a full window.
+		(2008-08-13 - Adam Franco)
+	
+
+
+
 v. 1.3.2 (2008-08-07)
 ----------------------------------------------------
 This release fixes several cross-site scripting vulnerabilities in code related to
