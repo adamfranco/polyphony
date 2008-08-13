@@ -80,7 +80,7 @@ class browse_helpAction
 		
 		$actionCols =$actionRows->add(new Container(new XLayout, BLANK, 1));
 		
-		$actionCols->add($this->getHelpMenu(), "250px", null, null, TOP);
+		$actionCols->add($this->getHelpMenu(), "150px", null, null, TOP);
 		
 		$actionCols->add($this->getTopicContents($this->getTopic()), null, null, null, TOP);
 		
@@ -138,7 +138,8 @@ class browse_helpAction
 			$menuItem = new MenuItemLink(
 				$title, 
 				$url, 
-				(RequestContext::value("topic") == $tocPart->topic && RequestContext::value("heading") == $tocPart->heading)?TRUE:FALSE,
+				(strtolower(RequestContext::value("topic")) == strtolower($tocPart->topic) 
+					&& strtolower(RequestContext::value("heading")) == strtolower($tocPart->heading))?TRUE:FALSE,
 				$tocPart->level + 2);
 		}
 		
@@ -547,16 +548,19 @@ class browse_helpAction
 			print $harmoni->request->quickURL(
 							"help", "browse_help", 
 							array("topic" => $matches[1]));
-			print '#';
-			print strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', $matches[2]));
+			
+			if (isset($matches[2])) {
+				print '#';
+				print strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', $matches[2]));
+			}
 			print '">';
 			
-			if ($matches[3]) {
+			if (isset($matches[3]) && $matches[3]) {
 				print $matches[3];
 			} else {
 				print $matches[1];
 			
-				if ($matches[2])
+				if (isset($matches[2]) && $matches[2])
 					print ': '.$matches[2];
 			}
 			
@@ -743,7 +747,8 @@ class TableOfContentsPart {
 	 * @since 5/31/06
 	 */
 	function getTableOfContentsPart ($topic, $heading = null) {
-		if ($topic == $this->topic && $heading == $this->heading)
+		if (strtolower($topic) == strtolower($this->topic) 
+				&& strtolower($heading) == strtolower($this->heading))
 			return $this;
 		
 		foreach (array_keys($this->children) as $key) {

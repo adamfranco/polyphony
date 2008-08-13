@@ -45,7 +45,8 @@ class Help {
 		
 		print "var url='$url'; ";
 		print "url = url.urlDecodeAmpersands(); ";
-		print "window.open(url, 'help'); ";
+		print "var helpWindow = window.open(url, 'help', 'width=700,height=600,scrollbars=yes,resizable=yes'); ";
+		print "helpWindow.focus(); ";
 		print "return false; ";
 		
 		print "\">"._("Help")."</a>";
