@@ -36,7 +36,10 @@ class Help {
 		
 		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace(null);
-		$url = $harmoni->request->quickURL('help', 'browse_help', array('topic' => $topic));
+		if (strlen($topic))
+			$url = $harmoni->request->quickURL('help', 'browse_help', array('topic' => $topic));
+		else
+			$url = $harmoni->request->quickURL('help', 'browse_help');
 		$harmoni->request->endNamespace();
 		
 		ob_start();
