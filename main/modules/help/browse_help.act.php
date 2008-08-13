@@ -392,8 +392,8 @@ class browse_helpAction
 		}
 		
 		$toc = $toc->getRoot();
-		
-		$topicContainer->add(new Block($toc->getHtml(), STANDARD_BLOCK));
+		if ($toc->numChildren() > 1 || $toc->hasMoreLevels())
+			$topicContainer->add(new Block($toc->getHtml(), STANDARD_BLOCK));
 		
 		
 		/*********************************************************
@@ -485,49 +485,87 @@ class browse_helpAction
 	 * Convert links of the form [[title]] or [[title#heading]] to html links
 	 * of the form <a href='link'>title: heading</a>
 	 * 
-	 * @param string $inputText
+	 * @param string $text
 	 * @return string
 	 * @access public
 	 * @since 1/6/06
 	 */
-	function linkify ( $inputText ) {
+	function linkify ( $text ) {
+		// loop through the text and look for wiki markup.
+		self::mb_preg_match_all('/(<nowiki>)?(\[\[[^\]]+\]\])(<\/nowiki>)?/', $text, $matches,  PREG_SET_ORDER | PREG_OFFSET_CAPTURE);
+		
+		$offsetDiff = 0;
+		// for each wiki link replace it with the HTML link text
+		foreach ($matches as $match) {
+			$offset = $match[0][1] + $offsetDiff;
+			$wikiText = $match[0][0];
+			
+			// Ignore markup surrounded by nowiki tags
+			if (!strlen($match[1][0]) && (!isset($match[3]) || !strlen($match[3][0]))) {
+				$output = $this->makeHtmlLink($wikiText);
+				
+				$offsetDiff = $offsetDiff + mb_strlen($output) - mb_strlen($wikiText);
+				$text = substr_replace($text, $output, $offset, mb_strlen($wikiText));
+			}
+			// Remove the nowiki tag from the markup.
+			else {
+				$output = $match[2][0];
+				
+				$offsetDiff = $offsetDiff + mb_strlen($output) - mb_strlen($wikiText);
+				$text = substr_replace($text, $output, $offset, mb_strlen($wikiText));
+			}
+		}
+		
+		return $text;
+	}
+	
+	/**
+	 * Make an HTML version of a link from wikitext
+	 * 
+	 * @param string $wikitext
+	 * @return string
+	 * @access protected
+	 * @since 8/13/08
+	 */
+	protected function makeHtmlLink ($wikiText) {
+		
 		// Find all link-holders
 		$regex = 
 '/
 	\[\[
-	([^\]\#]+)		# Match the title
-	(?:
-		\#
-		([^\]]+)	# Match the heading
-	)?
+	([^\]\#|]+)			# Match the title
+	(?:	\#([^\]|]+)	)?			# Match the heading
+	(?: \s*\|\s* ([^\]]+) )?	# The optional link-text to display instead of the title
 	\]\]
 /ix';
 		
-		if (preg_match_all($regex, $inputText, $matches)) {
+		if (preg_match($regex, $wikiText, $matches)) {
 			$harmoni = Harmoni::instance();
-			for ($i = 0; $i < count($matches[0]); $i++) {
-				ob_start();
-				
-				print '<a href="';
-				print $harmoni->request->quickURL(
-								"help", "browse_help", 
-								array("topic" => $matches[1][$i]));
-				print '#';
-				print strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', $matches[2][$i]));
-				print '">';
-				
-				print $matches[1][$i];
-				
-				if ($matches[2][$i])
-					print ': '.$matches[2][$i];
-				
-				print '</a>';
-				
-				$inputText = str_replace($matches[0][$i], ob_get_clean(), $inputText);
+			ob_start();
+			
+			print '<a href="';
+			print $harmoni->request->quickURL(
+							"help", "browse_help", 
+							array("topic" => $matches[1]));
+			print '#';
+			print strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', $matches[2]));
+			print '">';
+			
+			if ($matches[3]) {
+				print $matches[3];
+			} else {
+				print $matches[1];
+			
+				if ($matches[2])
+					print ': '.$matches[2];
 			}
+			
+			print '</a>';
+			
+			return ob_get_clean();
 		}
 		
-		return $inputText;
+		return $wikiText;
 	}
 	
 	/**
@@ -567,6 +605,44 @@ class browse_helpAction
 		}
 			
 		return $document;
+	}
+	
+	/**
+	 * This is a function to convert byte offsets into (UTF-8) character offsets 
+	 * (this is reagardless of whether you use /u modifier:
+	 *
+	 * Posted by chuckie to php.net on 2006-12-06.
+	 * 
+	 * @param string $ps_pattern
+	 * @param string $ps_subject
+	 * @param array $pa_matches
+	 * @param int $pn_flags
+	 * @param int $pn_offset
+	 * @param string $ps_encoding
+	 * @return mixed int or false
+	 * @access public
+	 * @static
+	 * @since 7/18/08
+	 */
+	public static function mb_preg_match_all($ps_pattern, $ps_subject, &$pa_matches, $pn_flags = PREG_PATTERN_ORDER, $pn_offset = 0, $ps_encoding = NULL) {
+		// WARNING! - All this function does is to correct offsets, nothing else:
+		//
+		if (is_null($ps_encoding))
+			$ps_encoding = mb_internal_encoding();
+		
+		$pn_offset = strlen(mb_substr($ps_subject, 0, $pn_offset, $ps_encoding));
+		$ret = preg_match_all($ps_pattern, $ps_subject, $pa_matches, $pn_flags, $pn_offset);
+		if ($ret && ($pn_flags & PREG_OFFSET_CAPTURE))
+			foreach($pa_matches as &$ha_match)
+				foreach($ha_match as &$ha_match) {
+					if (is_array($ha_match) && !(strlen($ha_match[0]) == 0 && $ha_match[1] == -1)) {
+						$ha_match[1] = mb_strlen(substr($ps_subject, 0, $ha_match[1]), $ps_encoding);
+					}
+				}
+		
+		// (code is independent of PREG_PATTER_ORDER / PREG_SET_ORDER)
+		
+		return $ret;
 	}
 
 }
@@ -819,6 +895,32 @@ class TOC_Printer {
 		
 		print "\n".str_repeat("\t", $this->getLevel())."</ol>";
 		return ob_get_clean();
+	}
+	
+	/**
+	 * Answer true if the TOC_Printer has child printers
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 8/13/08
+	 */
+	public function hasMoreLevels () {
+		foreach ($this->children as $child) {
+			if (is_object($child))
+				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Answer the number of children
+	 * 
+	 * @return int
+	 * @access public
+	 * @since 8/13/08
+	 */
+	public function numChildren () {
+		return count($this->children);
 	}
 }
 
