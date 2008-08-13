@@ -35,8 +35,9 @@ class Help {
 		ArgumentValidator::validate($topic, StringValidatorRule::getRule());
 		
 		$harmoni = Harmoni::instance();
-		
+		$harmoni->request->startNamespace(null);
 		$url = $harmoni->request->quickURL('help', 'browse_help', array('topic' => $topic));
+		$harmoni->request->endNamespace();
 		
 		ob_start();
 		print "<a href='$url' ";
