@@ -264,6 +264,17 @@ class edit_authorizationsAction
 	 */
 	function printQualifierRows( $qualifier, $functionOrder, $depth=0 ) {
 		$qualifierId =$qualifier->getId();
+		
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("IdManager");
+		
+		if (!$authZ->isUserAuthorized(
+					$idManager->getId("edu.middlebury.authorization.view"),
+					$qualifierId)) 
+		{
+			return;
+		}
+		
 		$type =$qualifier->getQualifierType();
 		
 		$title = _("Id: ").$qualifierId->getIdString()." ";

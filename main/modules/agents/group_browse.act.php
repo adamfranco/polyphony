@@ -39,7 +39,7 @@ class group_browseAction
  		$authZManager = Services::getService("AuthZ");
  		$idManager = Services::getService("IdManager");
  		if ($authZManager->isUserAuthorized(
- 					$idManager->getId("edu.middlebury.authorization.view"),
+ 					$idManager->getId("edu.middlebury.authorization.modify_group_membership"),
  					$idManager->getId("edu.middlebury.authorization.root")))
  		{
 			return TRUE;

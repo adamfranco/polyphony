@@ -39,7 +39,7 @@ class edit_agentsAction
  		$authZManager = Services::getService("AuthZ");
  		$idManager = Services::getService("IdManager");
  		return $authZManager->isUserAuthorized(
- 					$idManager->getId("edu.middlebury.authorization.view"),
+ 					$idManager->getId("edu.middlebury.authorization.modify_agent"),
  					$idManager->getId("edu.middlebury.authorization.root"));
 	}
 
