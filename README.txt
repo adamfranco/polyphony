@@ -1,5 +1,5 @@
 
-Polyphony v. 1.3.3 (2008-08-13)
+Polyphony v. 1.4.0 (2008-08-14)
 =================================
 
 What is Polyphony?
@@ -42,7 +42,15 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This release adds a number of fixes to the help-system to support Segue 2.
+This release fixes a number of security issues.
+
+Security issues fixed: 
+
+- Cross-Site Request Forgeries (CSRF) are now eliminated from data-modification
+actions. Read about CSRF at: http://shiflett.org/articles/cross-site-request-forgeries
+
+- Admin actions are now restricted to prevent listing of users and ids in the
+system. 
 
 
 Downloads
@@ -73,6 +81,20 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.4.0 (2008-08-14)
+----------------------------------------------------
+This release fixes a number of security issues.
+
+Security issues fixed: 
+
+- Cross-Site Request Forgeries (CSRF) are now eliminated from data-modification
+actions. Read about CSRF at: http://shiflett.org/articles/cross-site-request-forgeries
+
+- Admin actions are now restricted to prevent listing of users and ids in the
+system. 
+
 
 
 v. 1.3.3 (2008-08-13)

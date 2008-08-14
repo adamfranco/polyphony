@@ -10,15 +10,23 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.4.0" date="The Future">
+	<version number="1.4.0" date="2008-08-14">
 		<releaseNotes>
+			This release fixes a number of security issues.
 			
+			Security issues fixed: 
+						
+			- Cross-Site Request Forgeries (CSRF) are now eliminated from data-modification
+			actions. Read about CSRF at: http://shiflett.org/articles/cross-site-request-forgeries
+						
+			- Admin actions are now restricted to prevent listing of users and
+			ids in the system.
 		</releaseNotes>
-		<change author='adam' date='2008-08-14' ref='2040513' reftype='segue_security'>
+		<change author='adam' date='2008-08-14' ref='2040513' reftype='segue_security' reporter='josh_abraham'>
 			Security: Actions that involve data modification now require per-user
 			tokens in the request to prevent Cross-Site Request Forgeries.
 		</change>
-		<change author='adam' date='2008-08-14' ref='2040324' reftype='segue_security'>
+		<change author='adam' date='2008-08-14' ref='2040324' reftype='segue_security' reporter='josh_abraham'>
 			Security: Polyphony Admin actions now require authorizations at the 
 			root of the authorization hierarchy to execute. This prevents unauthorized
 			users from listing all users and asset ids in the system.
@@ -48,10 +56,10 @@
 			This release fixes several cross-site scripting vulnerabilities in code 
 			related to logging and error display. See the change log for details
 		</releaseNotes>
-		<fix author='adam' date='2008-08-05' ref='2040255' reftype='segue_security'>
+		<fix author='adam' date='2008-08-05' ref='2040255' reftype='segue_security' reporter='josh_abraham'>
 			Logging: Log messages are now filtered to prevent Javascript insertion.
 		</fix>
-		<fix author='adam' date='2008-08-06' ref='2040303' reftype='segue_security'>
+		<fix author='adam' date='2008-08-06' ref='2040303' reftype='segue_security' reporter='josh_abraham'>
 			Security: Fixed Cross-Site Scripting vulnerability in all usage of HTTP_REFERER.
 		</fix>
 	</version>
@@ -1293,6 +1301,10 @@
 		<reporter short="robert_schine">
 			<name>Robert Schine</name>
 			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="josh_abraham">
+			<name>Josh Abraham</name>
+			<institution>Rapid7, LLC.</institution>
 		</reporter>
 	</reporters>
 	<reftypes>
