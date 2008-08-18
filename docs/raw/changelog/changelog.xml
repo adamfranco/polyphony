@@ -10,6 +10,14 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.4.1" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-08-18'>
+			Visitor Registration: Fixed PHP notice.
+		</fix>
+	</version>
 	<version number="1.4.0" date="2008-08-14">
 		<releaseNotes>
 			This release fixes a number of security issues.
