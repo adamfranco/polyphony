@@ -1,5 +1,5 @@
 
-Polyphony v. 1.4.0 (2008-08-14)
+Polyphony v. 1.4.1 (2008-08-20)
 =================================
 
 What is Polyphony?
@@ -42,15 +42,7 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This release fixes a number of security issues.
-
-Security issues fixed: 
-
-- Cross-Site Request Forgeries (CSRF) are now eliminated from data-modification
-actions. Read about CSRF at: http://shiflett.org/articles/cross-site-request-forgeries
-
-- Admin actions are now restricted to prevent listing of users and ids in the
-system. 
+This release fixes a minor PHP notice
 
 
 Downloads
@@ -81,6 +73,12 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.4.1 (2008-08-20)
+----------------------------------------------------
+This release fixes a minor PHP notice
+
 
 
 v. 1.4.0 (2008-08-14)

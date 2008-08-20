@@ -2,6 +2,18 @@
 Polyphony Change Log
 
 
+v. 1.4.1 (2008-08-20)
+----------------------------------------------------
+This release fixes a minor PHP notice
+		
+		
+	* Bug Fix: 
+		Visitor Registration: Fixed PHP notice.
+		(2008-08-18 - Adam Franco)
+	
+
+
+
 v. 1.4.0 (2008-08-14)
 ----------------------------------------------------
 This release fixes a number of security issues.
