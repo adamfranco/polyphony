@@ -108,7 +108,9 @@
 				
 				if (parameters) {
 					for (var key in parameters) {
-						newUrl += parts.parameterSeparator + key + parts.keyValueSeparator + parameters[key];
+						var val = new String(parameters[key]);
+						if (val.length)
+							newUrl += parts.parameterSeparator + key + parts.keyValueSeparator + val;
 					}
 				}
 				

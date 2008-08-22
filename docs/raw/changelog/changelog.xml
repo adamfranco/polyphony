@@ -10,6 +10,16 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.4.2" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-08-22' ref='2068136' reftype='segue_bug'>
+			Javascript: PathInfo URLs now do not include empty values as these will 
+			break the order of arguments on the receiver side since PHP converts
+			double-slashes (//) to a single slash (/) in the PATH_INFO variable.
+		</fix>
+	</version>
 	<version number="1.4.1" date="2008-08-20">
 		<releaseNotes>
 			This release fixes a minor PHP notice
