@@ -1,5 +1,5 @@
 
-Polyphony v. 1.4.1 (2008-08-20)
+Polyphony v. 1.4.2 (2008-08-25)
 =================================
 
 What is Polyphony?
@@ -42,7 +42,7 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This release fixes a minor PHP notice
+This release includes a few fixes needed by Segue 2.
 
 
 Downloads
@@ -73,6 +73,12 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.4.2 (2008-08-25)
+----------------------------------------------------
+This release includes a few fixes needed by Segue 2.
+
 
 
 v. 1.4.1 (2008-08-20)

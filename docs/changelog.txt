@@ -2,6 +2,24 @@
 Polyphony Change Log
 
 
+v. 1.4.2 (2008-08-25)
+----------------------------------------------------
+This release includes a few fixes needed by Segue 2.
+		
+		
+	* Bug Fix: #2068136 
+		Javascript: PathInfo URLs now do not include empty values as these will
+		break the order of arguments on the receiver side since PHP converts
+		double-slashes (//) to a single slash (/) in the PATH_INFO variable.
+		(2008-08-22 - Adam Franco)
+		
+	* Bug Fix: 
+		Login form now says Username/Email instead of just 'username'.
+		(2008-08-25 - Adam Franco)
+	
+
+
+
 v. 1.4.1 (2008-08-20)
 ----------------------------------------------------
 This release fixes a minor PHP notice
