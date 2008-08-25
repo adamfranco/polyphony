@@ -65,7 +65,7 @@ class username_password_formAction
 		$action = $harmoni->history->getReturnURL("polyphony/authentication");
 		$usernameField = $harmoni->request->getName("username");
 		$passwordField = $harmoni->request->getName("password");
-		$usernameText = _("Username");
+		$usernameText = _("Username/Email");
 		$passwordText = _("Password");
 		print<<<END
 		
