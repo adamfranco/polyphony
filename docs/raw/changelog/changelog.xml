@@ -10,6 +10,14 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.4.3" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<new author='adam' date='2008-08-26' ref='1820865' reftype='segue_fr'>
+			Repository: New actions for accessing files from Flash.
+		</new>
+	</version>
 	<version number="1.4.2" date="2008-08-25">
 		<releaseNotes>
 			This release includes a few fixes needed by Segue 2.
