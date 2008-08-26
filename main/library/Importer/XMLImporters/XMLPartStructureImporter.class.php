@@ -139,7 +139,7 @@ class XMLPartStructureImporter extends XMLImporter {
 				$priorityType = new Type("logging", "edu.middlebury", "Error",
 								"Events involving critical system errors.");
 				
-				$item = new AgentNodeEntryItem("PartStructure Importer", "Bad PartStructure DataType: ".$this->_info['type']->getKeyword()." undefined");				
+				$item = new AgentNodeEntryItem("PartStructure Importer", "Bad PartStructure DataType: ".htmlspecialchars($this->_info['type']->getKeyword())." undefined");				
 				$log->appendLogWithTypes($item,	$formatType, $priorityType);
 			}
 		}

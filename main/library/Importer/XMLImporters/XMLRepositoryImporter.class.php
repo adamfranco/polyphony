@@ -167,7 +167,7 @@ class XMLRepositoryImporter extends XMLImporter {
 				$priorityType = new Type("logging", "edu.middlebury",
 					"Event_Notice",	"Normal events.");
 				$item = new AgentNodeEntryItem("Create Node",
-					"Repository: ".$this->_myId->getIdString()." created.");
+					"Repository: ".htmlspecialchars($this->_myId->getIdString())." created.");
 				$item->addNodeId($this->_myId);
 				$log->appendLogWithTypes($item, $formatType, $priorityType);
 			}
@@ -257,7 +257,7 @@ class XMLRepositoryImporter extends XMLImporter {
 			$priorityType = new Type("logging", "edu.middlebury",
 				"Event_Notice",	"Normal events.");
 			$item = new AgentNodeEntryItem("Modify Node",
-				"Repository: ".$this->_myId->getIdString()." modified.");
+				"Repository: ".htmlspecialchars($this->_myId->getIdString())." modified.");
 			$item->addNodeId($this->_myId);
 			$log->appendLogWithTypes($item, $formatType, $priorityType);
 		}

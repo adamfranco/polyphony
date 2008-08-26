@@ -60,7 +60,7 @@ class getFileAction
 			print "<h2>"._("Download Error")."</h2>";
 			print "<p>"._("This download is not currently available. It may have been already downloaded and removed.")."</p>";
 			
-			print "<p style='margin: 10px; margin-left: 20px;'><a href='".$_SERVER['HTTP_REFERER']."'>"._("Download again")."</a></p>";
+			print "<p style='margin: 10px; margin-left: 20px;'><a href='".strip_tags($_SERVER['HTTP_REFERER'])."'>"._("Download again")."</a></p>";
 			
 			print "<p style=''><a href='".$harmoni->request->quickURL("collections", "namebrowse")."'>"._("&lt;-- Return")."</a></p>";
 			print "<hr/>";

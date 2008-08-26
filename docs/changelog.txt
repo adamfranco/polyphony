@@ -2,6 +2,111 @@
 Polyphony Change Log
 
 
+v. 1.4.2 (2008-08-25)
+----------------------------------------------------
+This release includes a few fixes needed by Segue 2.
+		
+		
+	* Bug Fix: #2068136 
+		Javascript: PathInfo URLs now do not include empty values as these will
+		break the order of arguments on the receiver side since PHP converts
+		double-slashes (//) to a single slash (/) in the PATH_INFO variable.
+		(2008-08-22 - Adam Franco)
+		
+	* Bug Fix: 
+		Login form now says Username/Email instead of just 'username'.
+		(2008-08-25 - Adam Franco)
+	
+
+
+
+v. 1.4.1 (2008-08-20)
+----------------------------------------------------
+This release fixes a minor PHP notice
+		
+		
+	* Bug Fix: 
+		Visitor Registration: Fixed PHP notice.
+		(2008-08-18 - Adam Franco)
+	
+
+
+
+v. 1.4.0 (2008-08-14)
+----------------------------------------------------
+This release fixes a number of security issues.
+
+Security issues fixed: 
+
+- Cross-Site Request Forgeries (CSRF) are now eliminated from data-modification
+actions. Read about CSRF at: http://shiflett.org/articles/cross-site-request-forgeries
+
+- Admin actions are now restricted to prevent listing of users and ids in the
+system. 
+		
+		
+	* Change: #2040513 
+		Security: Actions that involve data modification now require per-user tokens
+		in the request to prevent Cross-Site Request Forgeries.
+		(2008-08-14 - Adam Franco)
+		(reported by Josh Abraham of Rapid7, LLC.)
+		
+	* Change: #2040324 
+		Security: Polyphony Admin actions now require authorizations at the root of
+		the authorization hierarchy to execute. This prevents unauthorized users
+		from listing all users and asset ids in the system.
+		(2008-08-14 - Adam Franco)
+		(reported by Josh Abraham of Rapid7, LLC.)
+	
+
+
+
+v. 1.3.3 (2008-08-13)
+----------------------------------------------------
+This release adds a number of fixes to the help-system to support Segue 2.
+		
+		
+	* Bug Fix: #2024873 
+		Repository: Added custom icon for powerpoint files.
+		(2008-08-12 - Adam Franco)
+		
+	* Change: 
+		Help: Help browsing now shows just top-level topics in menu and puts
+		sub-topics in a table-of-contents at the top of the page.
+		(2008-08-12 - Adam Franco)
+		
+	* Bug Fix: 
+		Help: Improved intra-help wiki-linking. Now supports alternate display-text
+		and <nowiki> tags.
+		(2008-08-13 - Adam Franco)
+		
+	* Change: 
+		Help: Now is a smaller popup window rather than a full window.
+		(2008-08-13 - Adam Franco)
+	
+
+
+
+v. 1.3.2 (2008-08-07)
+----------------------------------------------------
+This release fixes several cross-site scripting vulnerabilities in code related to
+logging and error display. See the change log for details
+		
+		
+	* Bug Fix: #2040255 
+		Logging: Log messages are now filtered to prevent Javascript insertion.
+		(2008-08-05 - Adam Franco)
+		(reported by Josh Abraham of Rapid7, LLC.)
+		
+	* Bug Fix: #2040303 
+		Security: Fixed Cross-Site Scripting vulnerability in all usage of
+		HTTP_REFERER. 
+		(2008-08-06 - Adam Franco)
+		(reported by Josh Abraham of Rapid7, LLC.)
+	
+
+
+
 v. 1.3.1 (2008-08-01)
 ----------------------------------------------------
 This release fixes a number of Javascript issues that were causing problems in Segue

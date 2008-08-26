@@ -210,7 +210,7 @@ class visitor_regAction
 	function getReturnUrl () {
 		$harmoni = Harmoni::instance();
 		
-		if ($this->success)
+		if (isset($this->success) && $this->success)
 			return $harmoni->request->quickURL("user", "visitor_reg_success", array('email' => $this->email));
 		
 		$harmoni->request->forget('returnModule');

@@ -10,6 +10,80 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.4.2" date="2008-08-25">
+		<releaseNotes>
+			This release includes a few fixes needed by Segue 2.
+		</releaseNotes>
+		<fix author='adam' date='2008-08-22' ref='2068136' reftype='segue_bug'>
+			Javascript: PathInfo URLs now do not include empty values as these will 
+			break the order of arguments on the receiver side since PHP converts
+			double-slashes (//) to a single slash (/) in the PATH_INFO variable.
+		</fix>
+		<fix author='adam' date='2008-08-25'>
+			Login form now says Username/Email instead of just 'username'.
+		</fix>
+	</version>
+	<version number="1.4.1" date="2008-08-20">
+		<releaseNotes>
+			This release fixes a minor PHP notice
+		</releaseNotes>
+		<fix author='adam' date='2008-08-18'>
+			Visitor Registration: Fixed PHP notice.
+		</fix>
+	</version>
+	<version number="1.4.0" date="2008-08-14">
+		<releaseNotes>
+			This release fixes a number of security issues.
+			
+			Security issues fixed: 
+						
+			- Cross-Site Request Forgeries (CSRF) are now eliminated from data-modification
+			actions. Read about CSRF at: http://shiflett.org/articles/cross-site-request-forgeries
+						
+			- Admin actions are now restricted to prevent listing of users and
+			ids in the system.
+		</releaseNotes>
+		<change author='adam' date='2008-08-14' ref='2040513' reftype='segue_security' reporter='josh_abraham'>
+			Security: Actions that involve data modification now require per-user
+			tokens in the request to prevent Cross-Site Request Forgeries.
+		</change>
+		<change author='adam' date='2008-08-14' ref='2040324' reftype='segue_security' reporter='josh_abraham'>
+			Security: Polyphony Admin actions now require authorizations at the 
+			root of the authorization hierarchy to execute. This prevents unauthorized
+			users from listing all users and asset ids in the system.
+		</change>
+	</version>
+	<version number="1.3.3" date="2008-08-13">
+		<releaseNotes>
+			This release adds a number of fixes to the help-system to support Segue 2.
+		</releaseNotes>
+		<fix author='adam' date='2008-08-12' ref='2024873' reftype='segue_bug'>
+			Repository: Added custom icon for powerpoint files.
+		</fix>
+		<change author='adam' date='2008-08-12'>
+			Help: Help browsing now shows just top-level topics in menu and
+			puts sub-topics in a table-of-contents at the top of the page.
+		</change>
+		<fix author='adam' date='2008-08-13'>
+			Help: Improved intra-help wiki-linking. Now supports alternate display-text
+			and &lt;nowiki&gt; tags.
+		</fix>
+		<change author='adam' date='2008-08-13'>
+			Help: Now is a smaller popup window rather than a full window.
+		</change>
+	</version>
+	<version number="1.3.2" date="2008-08-07">
+		<releaseNotes>
+			This release fixes several cross-site scripting vulnerabilities in code 
+			related to logging and error display. See the change log for details
+		</releaseNotes>
+		<fix author='adam' date='2008-08-05' ref='2040255' reftype='segue_security' reporter='josh_abraham'>
+			Logging: Log messages are now filtered to prevent Javascript insertion.
+		</fix>
+		<fix author='adam' date='2008-08-06' ref='2040303' reftype='segue_security' reporter='josh_abraham'>
+			Security: Fixed Cross-Site Scripting vulnerability in all usage of HTTP_REFERER.
+		</fix>
+	</version>
 	<version number="1.3.1" date="2008-08-01">
 		<releaseNotes>
 			This release fixes a number of Javascript issues that were causing
@@ -1249,6 +1323,10 @@
 			<name>Robert Schine</name>
 			<institution>Middlebury College</institution>
 		</reporter>
+		<reporter short="josh_abraham">
+			<name>Josh Abraham</name>
+			<institution>Rapid7, LLC.</institution>
+		</reporter>
 	</reporters>
 	<reftypes>
 		<reftype name="bug" group="82873" tracker='567473'/>
@@ -1262,5 +1340,6 @@
 		<reftype name="segue_bug" group="82171" tracker='565234'/>
 		<reftype name="segue_fr" group="82171" tracker='565237'/>
 		<reftype name="segue_patch" group="82171" tracker='565236'/>
+		<reftype name="segue_security" group="82171" tracker='1098812'/>
 	</reftypes>
 </changelog>

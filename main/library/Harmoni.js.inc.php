@@ -82,33 +82,94 @@
 						array('xxKEY1xx'=> 'xxVALUE1xx', 'xxKEY2xx' => 'xxVALUE2xx'));
 					$harmoni->request->endNameSpace();
 					print "\n\t\t\t\tvar namespacedUrl = '".$url."';";
+					
+					// Request token support.
+					$harmoni->request->startNamespace('request');
+					print "\n\t\t\t\tvar requestTokenKey = '".$harmoni->request->_mkFullName('token')."';";
+					$harmoni->request->endNamespace();
+					print "\n\t\t\t\tvar requestToken = '".$harmoni->ActionHandler->getRequestToken()."';";
+					if (count($harmoni->ActionHandler->getRequestTokenRequired()))
+						print "\n\t\t\t\tvar requestTokenRequired = ['".implode("', '", $harmoni->ActionHandler->getRequestTokenRequired())."'];";
+					else
+						print "\n\t\t\t\tvar requestTokenRequired = [];";
+					
 				?>
+				
 				var debug = '';
 				if (namespace) {
-					var url = namespacedUrl.replaceAll(/xxnamespacexx/, namespace);
+					var parts = Harmoni.getUrlParts(
+						namespacedUrl.replaceAll(/xxnamespacexx/, namespace));
 					debug += "\nnamespaced";
 				} else
-					var url = normalUrl;
+					var parts = Harmoni.getUrlParts(normalUrl);
 				
-				url = url.urlDecodeAmpersands();
-				
-				var result = url.match(/^.+xxACTIONxx/);
-				var baseUrl = result[0];
-				var result = url.match(/xxVALUE1xx(.+)xxKEY2xx/);
-				var parameterSeparator = result[1];
-				var result = url.match(/xxKEY1xx(.+)xxVALUE1xx/);
-				var keyValueSeparator = result[1];
-				
-				var newUrl = baseUrl.replace(/xxMODULExx/, module);
+				var newUrl = parts.baseUrl.replace(/xxMODULExx/, module);
 				newUrl = newUrl.replace(/xxACTIONxx/, action);
 				
 				if (parameters) {
 					for (var key in parameters) {
-						newUrl += parameterSeparator + key + keyValueSeparator + parameters[key];
+						var val = new String(parameters[key]);
+						if (val.length)
+							newUrl += parts.parameterSeparator + key + parts.keyValueSeparator + val;
 					}
 				}
 				
+				// Add the request token if needed.
+				if (Harmoni.isActionInArray(module, action, requestTokenRequired)) {
+					var normalParts = Harmoni.getUrlParts(normalUrl);
+					newUrl += normalParts.parameterSeparator + requestTokenKey + normalParts.keyValueSeparator + requestToken;
+				}
+				
 				return newUrl;
+			}
+			
+			/**
+			 * Answer a list of parts from a url that contains placeholders
+			 * 
+			 * @param string url
+			 * @return object
+			 * @access private
+			 * @since 8/14/08
+			 */
+			Harmoni.getUrlParts = function (url) {
+				url = url.urlDecodeAmpersands();
+				
+				var parts = {};
+				
+				var result = url.match(/^.+xxACTIONxx/);
+				parts.baseUrl = result[0];
+				
+				var result = url.match(/xxVALUE1xx(.+)xxKEY2xx/);
+				parts.parameterSeparator = result[1];
+				
+				var result = url.match(/xxKEY1xx(.+)xxVALUE1xx/);
+				parts.keyValueSeparator = result[1];
+				
+				return parts;
+			}
+			
+			/**
+			 * Answer true if the module and action passed require a request token.
+			 * 
+			 * @param string module
+			 * @param string action
+			 * @param array tokensRequired
+			 * @return boolean
+			 * @access private
+			 * @since 8/14/08
+			 */
+			Harmoni.isActionInArray = function (module, action, tokensRequired) {
+				if (tokensRequired.elementExists(module + '.' + action))
+					return true;
+				
+				// Look for wildcard actions
+				for (var i = 0; i < tokensRequired.length; i++) {
+					var results = tokensRequired[i].match(/(.+)\.(.+)/);
+					if (results[1] == module && results[2] == '*')
+						return true;
+				}
+				
+				return false;
 			}
 			
 			/**

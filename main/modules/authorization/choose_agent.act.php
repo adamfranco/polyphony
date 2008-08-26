@@ -37,6 +37,13 @@ class choose_agentAction
 	 * @since 4/26/05
 	 */
 	function isAuthorizedToExecute () {
+		// Check for authorization
+ 		$authZManager = Services::getService("AuthZ");
+ 		$idManager = Services::getService("IdManager");
+ 		return $authZManager->isUserAuthorized(
+ 					$idManager->getId("edu.middlebury.authorization.view_authorizations"),
+ 					$idManager->getId("edu.middlebury.authorization.root"));
+ 		
 		$authN = Services::getService("AuthN");
 		$idM = Services::getService("Id");
 		$authTypes =$authN->getAuthenticationTypes();

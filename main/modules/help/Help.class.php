@@ -35,8 +35,12 @@ class Help {
 		ArgumentValidator::validate($topic, StringValidatorRule::getRule());
 		
 		$harmoni = Harmoni::instance();
-		
-		$url = $harmoni->request->quickURL('help', 'browse_help', array('topic' => $topic));
+		$harmoni->request->startNamespace(null);
+		if (strlen($topic))
+			$url = $harmoni->request->quickURL('help', 'browse_help', array('topic' => $topic));
+		else
+			$url = $harmoni->request->quickURL('help', 'browse_help');
+		$harmoni->request->endNamespace();
 		
 		ob_start();
 		print "<a href='$url' ";
@@ -44,7 +48,8 @@ class Help {
 		
 		print "var url='$url'; ";
 		print "url = url.urlDecodeAmpersands(); ";
-		print "window.open(url, 'help'); ";
+		print "var helpWindow = window.open(url, 'help', 'width=700,height=600,scrollbars=yes,resizable=yes'); ";
+		print "helpWindow.focus(); ";
 		print "return false; ";
 		
 		print "\">"._("Help")."</a>";

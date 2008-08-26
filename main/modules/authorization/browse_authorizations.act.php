@@ -105,9 +105,10 @@ class browse_authorizationsAction
 				$qualifier =$qualifiers->next();
 				//print get_class($qualifier);
 				// Create a layout for this qualifier
-// 				if ($authZManager->isUserAuthorizedInChildren(
-// 					$idManager->getId("edu.middlebury.authorization.view"),
-// 					$qualifier->getId())) {
+				if ($authZManager->isUserAuthorized(
+					$idManager->getId("edu.middlebury.authorization.view"),
+					$qualifier->getId())) 
+				{
 					ob_start();
 					HierarchyPrinter::printNode($qualifier, $harmoni,
 										2,
@@ -119,7 +120,7 @@ class browse_authorizationsAction
 																
 					$actionRows->add(new Block(ob_get_contents(), STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 					ob_end_clean();		
-// 				}
+				}
 			}
 		}
 		
@@ -145,28 +146,33 @@ class browse_authorizationsAction
 	 * @ignore
 	 */
 	function printQualifier($qualifier) {
-		$id =$qualifier->getId();
-		$type =$qualifier->getQualifierType();
-		
-		$title = _("Id: ").$id->getIdString()." ";
-		$title .= _("Type: ").$type->getDomain()."::".$type->getAuthority()."::".$type->getKeyword();
-	
-		print "\n<a title='$title'><strong>".$qualifier->getReferenceName()."</strong></a>";
-	
-		// Check that the current user is authorized to see the authorizations.
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
 		if ($authZ->isUserAuthorized(
-					$idManager->getId("edu.middlebury.authorization.view_authorizations"),
-					$id))
+			$idManager->getId("edu.middlebury.authorization.view"),
+			$qualifier->getId())) 
 		{
-			print "\n<div style='margin-left: 10px;'>";
-			browse_authorizationsAction::printEditOptions($qualifier);
-			print "\n</div>";
-		}
-		// If they are not authorized to view the AZs, notify
-		else {
-			print " <em>"._("You are not authorized to view authorizations here.")."<em>";
+			$id =$qualifier->getId();
+			$type =$qualifier->getQualifierType();
+			
+			$title = _("Id: ").$id->getIdString()." ";
+			$title .= _("Type: ").$type->getDomain()."::".$type->getAuthority()."::".$type->getKeyword();
+		
+			print "\n<a title='$title'><strong>".$qualifier->getReferenceName()."</strong></a>";
+		
+			// Check that the current user is authorized to see the authorizations.
+			if ($authZ->isUserAuthorized(
+						$idManager->getId("edu.middlebury.authorization.view_authorizations"),
+						$id))
+			{
+				print "\n<div style='margin-left: 10px;'>";
+				browse_authorizationsAction::printEditOptions($qualifier);
+				print "\n</div>";
+			}
+			// If they are not authorized to view the AZs, notify
+			else {
+				print " <em>"._("You are not authorized to view authorizations here.")."<em>";
+			}
 		}
 	}
 	
@@ -179,7 +185,15 @@ class browse_authorizationsAction
 	 * @ignore
 	 */
 	function hasChildQualifiers($qualifier) {
-		return $qualifier->isParent();
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.view"),
+			$qualifier->getId())) 
+		{
+			return $qualifier->isParent();
+		}
+		return false;
 	}
 	
 	/**

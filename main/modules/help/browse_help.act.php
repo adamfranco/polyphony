@@ -80,7 +80,7 @@ class browse_helpAction
 		
 		$actionCols =$actionRows->add(new Container(new XLayout, BLANK, 1));
 		
-		$actionCols->add($this->getHelpMenu(), "250px", null, null, TOP);
+		$actionCols->add($this->getHelpMenu(), "150px", null, null, TOP);
 		
 		$actionCols->add($this->getTopicContents($this->getTopic()), null, null, null, TOP);
 		
@@ -128,6 +128,7 @@ class browse_helpAction
 			
 			
 			if ($tocPart->heading) {
+				return null;
 				$url .= "#".strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', strip_tags($tocPart->heading)));
 				$title = $tocPart->heading;
 			} else {
@@ -137,7 +138,8 @@ class browse_helpAction
 			$menuItem = new MenuItemLink(
 				$title, 
 				$url, 
-				(RequestContext::value("topic") == $tocPart->topic && RequestContext::value("heading") == $tocPart->heading)?TRUE:FALSE,
+				(strtolower(RequestContext::value("topic")) == strtolower($tocPart->topic) 
+					&& strtolower(RequestContext::value("heading")) == strtolower($tocPart->heading))?TRUE:FALSE,
 				$tocPart->level + 2);
 		}
 		
@@ -350,6 +352,54 @@ class browse_helpAction
 		$outputHandler =$harmoni->getOutputHandler();
 		$outputHandler->setHead($outputHandler->getHead().$newHeadText);
 		
+		/*********************************************************
+		 * Page TOC
+		 *********************************************************/
+		$currentLevel = 1;
+		$toc = new TOC_Printer;
+		foreach ($body->childNodes as $element) {
+			unset($level);
+			switch ($element->nodeName) {
+				case 'h1':
+					$level = 1;
+				case 'h2':
+					if (!isset($level))
+						$level = 2;
+				case 'h3':
+					if (!isset($level))
+						$level = 3;
+				case 'h4':
+					if (!isset($level))
+						$level = 4;
+					
+					$heading = $element->textContent;
+					$anchor = strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', $element->textContent));
+						
+					if ($level > $currentLevel) {
+						while ($level > $currentLevel) {
+							$toc = $toc->addLevel();
+							$currentLevel++;
+						}
+					} else if ($level < $currentLevel) {
+						while ($level < $currentLevel) {
+							$toc = $toc->removeLevel();
+							$currentLevel--;
+						}
+					}
+					
+					$toc->addHtml("<a href='#$anchor'>$heading</a>");
+					
+			}
+		}
+		
+		$toc = $toc->getRoot();
+		if ($toc->numChildren() > 1 || $toc->hasMoreLevels())
+			$topicContainer->add(new Block($toc->getHtml(), STANDARD_BLOCK));
+		
+		
+		/*********************************************************
+		 * Content of the page
+		 *********************************************************/
 		
 		ob_start();
 		foreach ($body->childNodes as $element) {
@@ -436,49 +486,90 @@ class browse_helpAction
 	 * Convert links of the form [[title]] or [[title#heading]] to html links
 	 * of the form <a href='link'>title: heading</a>
 	 * 
-	 * @param string $inputText
+	 * @param string $text
 	 * @return string
 	 * @access public
 	 * @since 1/6/06
 	 */
-	function linkify ( $inputText ) {
+	function linkify ( $text ) {
+		// loop through the text and look for wiki markup.
+		self::mb_preg_match_all('/(<nowiki>)?(\[\[[^\]]+\]\])(<\/nowiki>)?/', $text, $matches,  PREG_SET_ORDER | PREG_OFFSET_CAPTURE);
+		
+		$offsetDiff = 0;
+		// for each wiki link replace it with the HTML link text
+		foreach ($matches as $match) {
+			$offset = $match[0][1] + $offsetDiff;
+			$wikiText = $match[0][0];
+			
+			// Ignore markup surrounded by nowiki tags
+			if (!strlen($match[1][0]) && (!isset($match[3]) || !strlen($match[3][0]))) {
+				$output = $this->makeHtmlLink($wikiText);
+				
+				$offsetDiff = $offsetDiff + mb_strlen($output) - mb_strlen($wikiText);
+				$text = substr_replace($text, $output, $offset, mb_strlen($wikiText));
+			}
+			// Remove the nowiki tag from the markup.
+			else {
+				$output = $match[2][0];
+				
+				$offsetDiff = $offsetDiff + mb_strlen($output) - mb_strlen($wikiText);
+				$text = substr_replace($text, $output, $offset, mb_strlen($wikiText));
+			}
+		}
+		
+		return $text;
+	}
+	
+	/**
+	 * Make an HTML version of a link from wikitext
+	 * 
+	 * @param string $wikitext
+	 * @return string
+	 * @access protected
+	 * @since 8/13/08
+	 */
+	protected function makeHtmlLink ($wikiText) {
+		
 		// Find all link-holders
 		$regex = 
 '/
 	\[\[
-	([^\]\#]+)		# Match the title
-	(?:
-		\#
-		([^\]]+)	# Match the heading
-	)?
+	([^\]\#|]+)			# Match the title
+	(?:	\#([^\]|]+)	)?			# Match the heading
+	(?: \s*\|\s* ([^\]]+) )?	# The optional link-text to display instead of the title
 	\]\]
 /ix';
 		
-		if (preg_match_all($regex, $inputText, $matches)) {
+		if (preg_match($regex, $wikiText, $matches)) {
 			$harmoni = Harmoni::instance();
-			for ($i = 0; $i < count($matches[0]); $i++) {
-				ob_start();
-				
-				print '<a href="';
-				print $harmoni->request->quickURL(
-								"help", "browse_help", 
-								array("topic" => $matches[1][$i]));
+			ob_start();
+			
+			print '<a href="';
+			print $harmoni->request->quickURL(
+							"help", "browse_help", 
+							array("topic" => $matches[1]));
+			
+			if (isset($matches[2])) {
 				print '#';
-				print strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', $matches[2][$i]));
-				print '">';
-				
-				print $matches[1][$i];
-				
-				if ($matches[2][$i])
-					print ': '.$matches[2][$i];
-				
-				print '</a>';
-				
-				$inputText = str_replace($matches[0][$i], ob_get_clean(), $inputText);
+				print strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', $matches[2]));
 			}
+			print '">';
+			
+			if (isset($matches[3]) && $matches[3]) {
+				print $matches[3];
+			} else {
+				print $matches[1];
+			
+				if (isset($matches[2]) && $matches[2])
+					print ': '.$matches[2];
+			}
+			
+			print '</a>';
+			
+			return ob_get_clean();
 		}
 		
-		return $inputText;
+		return $wikiText;
 	}
 	
 	/**
@@ -518,6 +609,44 @@ class browse_helpAction
 		}
 			
 		return $document;
+	}
+	
+	/**
+	 * This is a function to convert byte offsets into (UTF-8) character offsets 
+	 * (this is reagardless of whether you use /u modifier:
+	 *
+	 * Posted by chuckie to php.net on 2006-12-06.
+	 * 
+	 * @param string $ps_pattern
+	 * @param string $ps_subject
+	 * @param array $pa_matches
+	 * @param int $pn_flags
+	 * @param int $pn_offset
+	 * @param string $ps_encoding
+	 * @return mixed int or false
+	 * @access public
+	 * @static
+	 * @since 7/18/08
+	 */
+	public static function mb_preg_match_all($ps_pattern, $ps_subject, &$pa_matches, $pn_flags = PREG_PATTERN_ORDER, $pn_offset = 0, $ps_encoding = NULL) {
+		// WARNING! - All this function does is to correct offsets, nothing else:
+		//
+		if (is_null($ps_encoding))
+			$ps_encoding = mb_internal_encoding();
+		
+		$pn_offset = strlen(mb_substr($ps_subject, 0, $pn_offset, $ps_encoding));
+		$ret = preg_match_all($ps_pattern, $ps_subject, $pa_matches, $pn_flags, $pn_offset);
+		if ($ret && ($pn_flags & PREG_OFFSET_CAPTURE))
+			foreach($pa_matches as &$ha_match)
+				foreach($ha_match as &$ha_match) {
+					if (is_array($ha_match) && !(strlen($ha_match[0]) == 0 && $ha_match[1] == -1)) {
+						$ha_match[1] = mb_strlen(substr($ps_subject, 0, $ha_match[1]), $ps_encoding);
+					}
+				}
+		
+		// (code is independent of PREG_PATTER_ORDER / PREG_SET_ORDER)
+		
+		return $ret;
 	}
 
 }
@@ -618,7 +747,8 @@ class TableOfContentsPart {
 	 * @since 5/31/06
 	 */
 	function getTableOfContentsPart ($topic, $heading = null) {
-		if ($topic == $this->topic && $heading == $this->heading)
+		if (strtolower($topic) == strtolower($this->topic) 
+				&& strtolower($heading) == strtolower($this->heading))
 			return $this;
 		
 		foreach (array_keys($this->children) as $key) {
@@ -632,4 +762,170 @@ class TableOfContentsPart {
 	}
 }
 
-?>
+
+/**
+ * This class aids the building of an HTML table of contents (TOC)
+ * 
+ * @since 8/12/08
+ * @package polyphony.help
+ * 
+ * @copyright Copyright &copy; 2007, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id$
+ */
+class TOC_Printer {
+		
+	/**
+	 * Create a new Printer with the parent given.
+	 * 
+	 * @param optional object TOC_Printer $parent
+	 * @return void
+	 * @access public
+	 * @since 8/12/08
+	 */
+	public function __construct (TOC_Printer $parent = null) {
+		$this->parent = $parent;
+		$this->children = array();
+	}
+	
+	/**
+	 * Add html text.
+	 * 
+	 * @param string $text
+	 * @return void
+	 * @access public
+	 * @since 8/12/08
+	 */
+	public function addHtml ($text) {
+		ArgumentValidator::validate($text, StringValidatorRule::getRule());
+		$this->children[] = $text;
+	}
+	
+	/**
+	 * Add a new level to the table of contents and return it.
+	 * 
+	 * @return object TOC_Printer
+	 * @access public
+	 * @since 8/12/08
+	 */
+	public function addLevel () {
+		$toc = new TOC_Printer($this);
+		$this->children[] = $toc;
+		return $toc;
+	}
+	
+	/**
+	 * Return our parent
+	 * 
+	 * @return object TOCPrinter
+	 * @access public
+	 * @since 8/12/08
+	 */
+	public function removeLevel () {
+		return $this->getParent();
+	}
+	
+	/**
+	 * Answer the parent of this TOC if exists
+	 * 
+	 * @return object TOC_Printer or null;
+	 * @access public
+	 * @since 8/12/08
+	 */
+	public function getParent () {
+		return $this->parent;
+	}
+	
+	/**
+	 * Answer the level of depth of this toc 0 is the top level
+	 * 
+	 * @return int
+	 * @access public
+	 * @since 8/12/08
+	 */
+	public function getLevel () {
+		if (is_null($this->parent))
+			return 0;
+		else
+			return $this->parent->getLevel() + 1;
+	}
+	
+	/**
+	 * Answer the root of the TOC tree.
+	 * 
+	 * @return object TOC_Printer
+	 * @access public
+	 * @since 8/12/08
+	 */
+	public function getRoot () {
+		if (is_null($this->parent))
+			return $this;
+		else
+			return $this->parent->getRoot();
+	}
+	
+	/**
+	 * Print out the TOC
+	 * 
+	 * @return string 
+	 * @access public
+	 * @since 8/12/08
+	 */
+	public function getHtml () {
+		ob_start();
+		print "\n".str_repeat("\t", $this->getLevel())."<ol>";
+		
+		$opened = false;
+		foreach ($this->children as $i => $child) {
+			if (!$opened) {
+				print "\n".str_repeat("\t", $this->getLevel())."\t<li>";
+				$opened = true;
+			}
+				
+			if (is_string($child)) {
+				print $child;
+			} else {
+				print $child->getHtml();
+			}
+			
+			if (isset($this->children[$i + 1]) && !is_object($this->children[$i + 1])) {
+				print "\n".str_repeat("\t", $this->getLevel())."\t</li>";
+				$opened = false;
+			}
+		}
+		
+		if ($opened) 
+			print "\n".str_repeat("\t", $this->getLevel())."\t</li>";
+		
+		print "\n".str_repeat("\t", $this->getLevel())."</ol>";
+		return ob_get_clean();
+	}
+	
+	/**
+	 * Answer true if the TOC_Printer has child printers
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 8/13/08
+	 */
+	public function hasMoreLevels () {
+		foreach ($this->children as $child) {
+			if (is_object($child))
+				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Answer the number of children
+	 * 
+	 * @return int
+	 * @access public
+	 * @since 8/13/08
+	 */
+	public function numChildren () {
+		return count($this->children);
+	}
+}
+

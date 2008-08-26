@@ -135,4 +135,24 @@ else
 require_once(dirname(__FILE__)."/main/modules/help/browse_help.act.php");
 
 
+/*********************************************************
+ * Set a list of actions that require request tokens to prevent 
+ * Cross-Site Request Forgery attacks. All actions that 
+ * could potentially change data should require this.
+ *
+ * Actions in this list will not be able to be loaded directly.
+ *********************************************************/
+$harmoni->ActionHandler->addRequestTokenRequiredActions(array(
+		"agents.*",
+		"authorization.clear_authorizations",
+		"authorization.edit_authorizations",
+		"authorization.process_authorizations",
+		"coursemanagement.*",
+		"tags.addTag",
+		"tags.deleteUser",
+		"tags.removeTag",
+		"tags.renameUser"
+	));
+
+
 ?>
