@@ -1,5 +1,5 @@
 
-Polyphony v. 1.4.2 (2008-08-25)
+Polyphony v. 1.4.3 (2008-08-27)
 =================================
 
 What is Polyphony?
@@ -42,7 +42,7 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This release includes a few fixes needed by Segue 2.
+This release add new actions for accessing files from Flash.
 
 
 Downloads
@@ -73,6 +73,12 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.4.3 (2008-08-27)
+----------------------------------------------------
+This release add new actions for accessing files from Flash.
+
 
 
 v. 1.4.2 (2008-08-25)

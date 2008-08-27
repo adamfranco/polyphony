@@ -2,6 +2,18 @@
 Polyphony Change Log
 
 
+v. 1.4.3 (2008-08-27)
+----------------------------------------------------
+This release add new actions for accessing files from Flash.
+		
+		
+	* New feature: #1820865 
+		Repository: New actions for accessing files from Flash.
+		(2008-08-26 - Adam Franco)
+	
+
+
+
 v. 1.4.2 (2008-08-25)
 ----------------------------------------------------
 This release includes a few fixes needed by Segue 2.
