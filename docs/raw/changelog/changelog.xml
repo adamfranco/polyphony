@@ -14,6 +14,11 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<change author='adam' date='2008-09-16'>
+			Repository: View-File now does not include the 'attachment' Content-Disposition
+			header unless specifically requested by passing a value for the 'attachment'
+			parameter.
+		</change>
 		<fix author='adam' date='2008-09-16'>
 			Logs: Log browsing date-range form now doesn't double up date parameters
 			in URL and form fields.

@@ -146,6 +146,11 @@ class viewfileAction
 			$websafe = TRUE;
 		else
 			$websafe = FALSE;
+		
+		if (RequestContext::value('attachment'))
+			$attachment = true;
+		else
+			$attachment = false;
 
 		// Get the requested record.
 		try {
@@ -194,10 +199,16 @@ class viewfileAction
 				$imageCache = new RepositoryImageCache($record->getId(), $size, $websafe, $parts);
 				
 				header("Content-Type: ".$imageCache->getCachedMimeType());
-				header('Content-Disposition: attachment; filename="'.
-							$imageCache->getCachedFileName().'"');					
+				if ($attachment)
+					header('Content-Disposition: attachment; filename="'.
+							$imageCache->getCachedFileName().'"');
+				else
+					header('Content-Disposition: filename="'.
+							$imageCache->getCachedFileName().'"');
 				
-				print $imageCache->getCachedImageData();
+				$data = $imageCache->getCachedImageData();
+				header('Content-Length: '.strlen($data));
+				print $data;
 			}
 			// Otherwise, just send the original file
 			else {
@@ -210,9 +221,14 @@ class viewfileAction
 					$filename = _("Untitled").".".$extension;
 				}
 				
-				header('Content-Disposition: attachment; filename="'.$filename.'"');
+				if ($attachment)
+					header('Content-Disposition: attachment; filename="'.$filename.'"');
+				else
+					header('Content-Disposition: filename="'.$filename.'"');
 			
-				print $parts['FILE_DATA']->getValue();
+				$data = $parts['FILE_DATA']->getValue();
+				header('Content-Length: '.strlen($data));
+				print $data;
 			}
 		}
 		
