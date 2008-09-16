@@ -442,7 +442,22 @@ END;
 		$harmoni = Harmoni::instance();
 		
 		print "\n<form action='";
-		print $harmoni->request->quickURL('logs', 'browse'); 
+		
+		$harmoni->request->forget('startYear');
+		$harmoni->request->forget('startMonth');
+		$harmoni->request->forget('startDay');
+		$harmoni->request->forget('startHour');
+		$harmoni->request->forget('endYear');
+		$harmoni->request->forget('endMonth');
+		$harmoni->request->forget('endDay');
+		$harmoni->request->forget('endHour');
+		
+		print $harmoni->request->quickURL('logs', 'browse');
+		
+		$harmoni->request->passthrough('log', 'priority',
+			'startYear', 'startMonth', 'startDay', 'startHour',
+			'endYear', 'endMonth', 'endDay', 'endHour',
+			'agent_id', 'node_id', 'category');
 		print "' method='post'>";
 		
 		print "\n\t<select name='".RequestContext::name("startMonth")."'>";

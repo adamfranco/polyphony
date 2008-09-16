@@ -10,6 +10,15 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.4.4" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-09-16'>
+			Logs: Log browsing date-range form now doesn't double up date parameters
+			in URL and form fields.
+		</fix>
+	</version>
 	<version number="1.4.3" date="2008-08-27">
 		<releaseNotes>
 			This release add new actions for accessing files from Flash.
