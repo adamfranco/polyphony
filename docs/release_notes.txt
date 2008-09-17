@@ -1,5 +1,5 @@
 
-Polyphony v. 1.4.3 (2008-08-27)
+Polyphony v. 1.4.4 (2008-09-17)
 =================================
 
 What is Polyphony?
@@ -42,7 +42,7 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This release add new actions for accessing files from Flash.
+Thisrelease fixes an issue with file viewing that was causing issues for IE6 users.
 
 
 Downloads
@@ -73,6 +73,12 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.4.4 (2008-09-17)
+----------------------------------------------------
+Thisrelease fixes an issue with file viewing that was causing issues for IE6 users.
+
 
 
 v. 1.4.3 (2008-08-27)

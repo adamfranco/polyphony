@@ -2,6 +2,25 @@
 Polyphony Change Log
 
 
+v. 1.4.4 (2008-09-17)
+----------------------------------------------------
+Thisrelease fixes an issue with file viewing that was causing issues for IE6 users.
+		
+		
+	* Change: 
+		Repository: View-File now does not include the 'attachment'
+		Content-Disposition header unless specifically requested by passing a value
+		for the 'attachment' parameter.
+		(2008-09-16 - Adam Franco)
+		
+	* Bug Fix: 
+		Logs: Log browsing date-range form now doesn't double up date parameters in
+		URL and form fields.
+		(2008-09-16 - Adam Franco)
+	
+
+
+
 v. 1.4.3 (2008-08-27)
 ----------------------------------------------------
 This release add new actions for accessing files from Flash.

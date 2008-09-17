@@ -10,9 +10,10 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.4.4" date="The Future">
+	<version number="1.4.4" date="2008-09-17">
 		<releaseNotes>
-			
+			This release fixes an issue with file viewing that was causing issues
+			for IE6 users.
 		</releaseNotes>
 		<change author='adam' date='2008-09-16'>
 			Repository: View-File now does not include the 'attachment' Content-Disposition
