@@ -63,7 +63,7 @@ class preferencesAction
 		
 		ob_start();
 		
-		$userPrefs = UserPreferences::instance();
+		$userPrefs = UserData::instance();
 		
 // 		$userPrefs->setPreference('test_pref2', 'goodbye world');
 
