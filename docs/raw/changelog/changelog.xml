@@ -10,6 +10,18 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.4.5" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-09-23' ref='2123504' reftype='segue_bug'>
+			This release includes a new version (2.6.3) of the FCKEditor that fixes
+			an issue with the return key causing the page to jump in Firefox 3.
+		</fix>
+		<new author='adam' date='2008-09-23'>
+			Added support for accessing and writing user-preferences from Javascript.
+		</new>
+	</version>
 	<version number="1.4.4" date="2008-09-17">
 		<releaseNotes>
 			This release fixes an issue with file viewing that was causing issues
