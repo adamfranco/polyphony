@@ -10,9 +10,10 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.4.5" date="The Future">
+	<version number="1.4.5" date="2008-09-24">
 		<releaseNotes>
-			
+			This release fixes a number of small usability issues and adds support
+			for user-preferences.
 		</releaseNotes>
 		<fix author='adam' date='2008-09-23' ref='2123504' reftype='segue_bug'>
 			This release includes a new version (2.6.3) of the FCKEditor that fixes
@@ -23,6 +24,12 @@
 		</new>
 		<change author='adam' date='2008-09-24'>
 			Javascript: Panels can now position themselves to the front when opened.
+		</change>
+		<change author='adam' date='2008-09-24'>
+			AuthZPanel: Now includes a classname in the icon markup.
+		</change>
+		<change author='adam' date='2008-09-24'>
+			AuthZPanel: Now includes 'edu.middlebury.institute' as an institute id.
 		</change>
 	</version>
 	<version number="1.4.4" date="2008-09-17">

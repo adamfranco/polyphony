@@ -2,6 +2,36 @@
 Polyphony Change Log
 
 
+v. 1.4.5 (2008-09-24)
+----------------------------------------------------
+This release fixes a number of small usability issues and adds support for
+user-preferences. 
+		
+		
+	* Bug Fix: #2123504 
+		This release includes a new version (2.6.3) of the FCKEditor that fixes an
+		issue with the return key causing the page to jump in Firefox 3.
+		(2008-09-23 - Adam Franco)
+		
+	* New feature: 
+		Added support for accessing and writing user-preferences from Javascript.
+		(2008-09-23 - Adam Franco)
+		
+	* Change: 
+		Javascript: Panels can now position themselves to the front when opened.
+		(2008-09-24 - Adam Franco)
+		
+	* Change: 
+		AuthZPanel: Now includes a classname in the icon markup.
+		(2008-09-24 - Adam Franco)
+		
+	* Change: 
+		AuthZPanel: Now includes 'edu.middlebury.institute' as an institute id.
+		(2008-09-24 - Adam Franco)
+	
+
+
+
 v. 1.4.4 (2008-09-17)
 ----------------------------------------------------
 Thisrelease fixes an issue with file viewing that was causing issues for IE6 users.
