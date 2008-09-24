@@ -21,6 +21,9 @@
 		<new author='adam' date='2008-09-23'>
 			Added support for accessing and writing user-preferences from Javascript.
 		</new>
+		<change author='adam' date='2008-09-24'>
+			Javascript: Panels can now position themselves to the front when opened.
+		</change>
 	</version>
 	<version number="1.4.4" date="2008-09-17">
 		<releaseNotes>

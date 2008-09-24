@@ -126,6 +126,7 @@ function Panel ( title, height, width, positionElement, classNames ) {
 		this.mainElement.appendChild(this.contentElement);
 		this.contentElement.className = 'container';
 		
+		this.moveToFront();
 		document.body.appendChild(this.mainElement);
 	}
 	
@@ -143,6 +144,25 @@ function Panel ( title, height, width, positionElement, classNames ) {
 		this.mainElement.style.overflow = 'auto';
 		this.mainElement.style.top = this.getTop() + "px";
 		this.mainElement.style.left = this.getLeft() + "px";
+	}
+	
+	/**
+	 * Give the panel a z-index greater than any other item.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 9/24/08
+	 */
+	Panel.prototype.moveToFront = function () {
+		var elements = document.getElementsByTagName("*");
+		var maxZIndex = 0;
+		for (var i = 0; i < elements.length; i++) {
+			if (elements[i] !== this.mainElement) {
+				maxZIndex = Math.max(elements[i].style.zIndex, maxZIndex);
+			}
+		}
+		
+		this.mainElement.style.zIndex = maxZIndex + 1;
 	}
 	
 	/**
@@ -206,6 +226,7 @@ function Panel ( title, height, width, positionElement, classNames ) {
 	 */
 	Panel.prototype.open = function () {
 		this.mainElement.style.display = 'block';
+		this.moveToFront();
 		if (this.onOpen) {
 			this.onOpen();
 		}
