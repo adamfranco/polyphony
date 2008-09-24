@@ -60,15 +60,19 @@ abstract class AuthZPrinter {
 			$isPublicAuthorized = true;
 		}
 		if ($isPublicAuthorized) {
-			print "\n<img src='".POLYPHONY_PATH."/icons/view_public.gif' alt='".("Public-Viewable")."' title='".("Public-Viewable")."' ".$onclick."/> ";
+			print "\n<img class='az_icon' src='".POLYPHONY_PATH."/icons/view_public.gif' alt='".("Public-Viewable")."' title='".("Public-Viewable")."' ".$onclick."/> ";
 		} else if ($authZ->isAuthorized(
 				$idManager->getId("edu.middlebury.agents.users"),
 				$idManager->getId("edu.middlebury.authorization.view"), 
+				$qualifierId)
+			|| $authZ->isAuthorized(
+				$idManager->getId("edu.middlebury.institute"),
+				$idManager->getId("edu.middlebury.authorization.view"), 
 				$qualifierId))
 		{
-			print "\n<img src='".POLYPHONY_PATH."/icons/view_institute.gif' alt='".("Institution-Viewable")."' title='".("Institution-Viewable")."' ".$onclick."/> ";
+			print "\n<img class='az_icon' src='".POLYPHONY_PATH."/icons/view_institute.gif' alt='".("Institution-Viewable")."' title='".("Institution-Viewable")."' ".$onclick."/> ";
 		} else {
-			print "\n<img src='".POLYPHONY_PATH."/icons/view_limited.gif' alt='".("Viewable by some people")."' title='".("Viewable by some people")."' ".$onclick."/> ";
+			print "\n<img class='az_icon' src='".POLYPHONY_PATH."/icons/view_limited.gif' alt='".("Viewable by some people")."' title='".("Viewable by some people")."' ".$onclick."/> ";
 		}
 		
 		return ob_get_clean();
