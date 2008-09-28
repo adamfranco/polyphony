@@ -139,9 +139,17 @@ abstract class TagAction
 				print str_replace('%2', $tag->getOccurances(), 
 						str_replace('%1', $tag->getValue(),
 							_("View items tagged with '%1'. ")."("._("Frequency").": %2)"));
-				print "\" style='".$style."'>";
+				print "\" style='".$style."'";
+				print " cloudStyle='";
+				$ref = array();
+				preg_match("([0-9]+)",$style,$ref);
+				print $ref[0];
+				print "%'";
+				print ">";
 				print $tag->getValue()."</a> ";
+				print str_replace('%1', $tag->getOccurances(),"<span rel='list' frequency='%1'></span>");
 			}
+			print "<span></span>";
 			$harmoni->request->endNamespace();
 		}
 		
@@ -189,6 +197,15 @@ abstract class TagAction
 		print " | ";
 		print "\n\t\t<a onclick='if (this.parentNode.sortOrder != \"freq\") { var cloud = new TagCloud(this.parentNode.parentNode); cloud.orderFreq(); this.parentNode.sortOrder=\"freq\";}'>";
 		print _('freq');
+		print "</a>";
+		print " ";
+		print "Display: ";
+		print "\n\t\t<a onclick='if (this.parentNode.displayType != \"cloud\") {var cloud = new TagCloud(this.parentNode.parentNode); cloud.displayAsCloud();this.parentNode.displayType=\"cloud\";}'>";
+		print "cloud";
+		print "</a>";
+		print " | ";
+		print "\n\t\t<a onclick='var cloud = new TagCloud(this.parentNode.parentNode); cloud.displayAsList(); this.parentNode.displayType=\"list\";'>";
+		print "list";
 		print "</a>";
 		print "\n\t</div>";
 		print "\n</div>";

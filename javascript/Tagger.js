@@ -716,8 +716,75 @@ function TagCloud ( container ) {
 	 */
 	TagCloud.prototype.init = function ( container ) {
 		this.container = container;
+		this.sizes = new Array();
+		/* Display: How the tags are being displayed.
+		This should be handled entirely internally and
+		those who use this class should use the methods
+		displayAsCloud and displayAsList. 
+			0 => Cloud
+			1 => List
+		*/
+		this.displayStyle = 0;
+		var item = this.container.firstChild;
+		while(item){
+			if(item.innerHTML){
+				this.sizes[item.innerHTML]  = item.style.fontSize;
+			}
+			item = item.nextSibling;
+		}
 	}
-	
+
+	/**
+	 * Returns whether the tags are being displayed as a list
+	 * or a cloud.
+	 *
+	 * @return True, if the tags are displayed as a cloud, False otherwise.
+	 * @access public
+	 * @since 9/25/08
+	 */
+	TagCloud.prototype.isDisplayedAsCloudF = function () {
+		return (this.displayStyle == 0);
+	}
+
+	/**
+	 * Display the tags in cloud format
+	 *
+	 * @return void
+	 * @acess public
+	 * @since 9/25/08
+	 */
+	TagCloud.prototype.displayAsCloud = function () {
+		this.isDisplayedAsCloud = 1;
+		this.updateTagDisplay();
+	}
+
+	/** 
+	 * Display the tags in list format
+	 * @return void
+	 * @access public
+	 * @since 9/25/08
+	 */
+	TagCloud.prototype.displayAsList = function () {
+		this.isDisplayedAsCloud = 0;
+		this.updateTagDisplay();
+	}
+
+	TagCloud.prototype.updateTagDisplay = function() {
+		var item = this.container.firstChild;
+		while (item) {
+			if(item.getAttribute){
+				if(item.getAttribute('rel') == 'tag'){
+					item.style.fontSize = (this.isDisplayedAsCloud) ? item.getAttribute('cloudStyle') : "";	
+				}	
+				if(item.getAttribute('rel') == 'list'){
+					item.innerHTML = (this.isDisplayedAsCloud) ? "" : ("("+item.getAttribute('frequency')+")<br/>");
+				}
+			}
+			item = item.nextSibling;
+		}
+	}	
+
+
 	/**
 	 * Order the tag cloud in alphabetical order.
 	 * 
@@ -730,21 +797,29 @@ function TagCloud ( container ) {
 		var keys = new Array();
 		var item = this.container.firstChild;
 		var positionElement = null;
-		
 		while (item) {
 			if (item.nodeName == 'A' && item.getAttribute && item.getAttribute('rel') == 'tag') {
-				elements[item.innerHTML] = item;
-				keys.push(item.innerHTML);
-				
-			} else if (item.nodeType == 1 && !positionElement) {
+				var oldItem = item;
+				keys.push(oldItem.innerHTML);
+				var newItem = item.nextSibling;
+				while(newItem){
+					if(newItem.getAttribute && newItem.getAttribute('rel') == 'list'){
+						break;
+					}
+					newItem = newItem.nextSibling;
+				}
+				elements[oldItem.innerHTML] = new Array(oldItem,newItem);
+//			} else if (item.nodeType == 1 && !positionElement) {
+			} else if (item.nodeType == 1){
 				positionElement = item;
 			}
 			item = item.nextSibling;
 		}
 		
 		quick_sort(keys);
-		for (var i = 0; i < keys.length; i++) {
-			this.container.insertBefore(elements[keys[i]], positionElement);
+		for (var i = 0; i < keys.length; i++){
+			this.container.insertBefore(elements[keys[i]][0], positionElement);
+			this.container.insertBefore(elements[keys[i]][1], positionElement);
 			this.container.insertBefore(document.createTextNode(' '), positionElement);
 		}
 	}
@@ -765,10 +840,19 @@ function TagCloud ( container ) {
 		
 		while (item) {
 			if (item.nodeName == 'A' && item.getAttribute && item.getAttribute('rel') == 'tag' && item.innerHTML) {
-				elements[item.innerHTML] = item;
+				var oldItem = item;
 				var matches = item.getAttribute('title').match( /\(.+: ([0-9]+)\)/ );
 				relation.push({'key': item.innerHTML, 'value': Math.round(matches[1])});
-			} else if (item.nodeType == 1 && !positionElement) {
+				var newItem = item;
+				while(newItem){
+					if(newItem.getAttribute && newItem.getAttribute('rel') == 'list'){
+						break;
+					}
+					newItem = newItem.nextSibling;
+				}
+				elements[oldItem.innerHTML] = new Array(oldItem,newItem);
+//			} else if (item.nodeType == 1 && !positionElement) {
+			} else if (item.nodeType == 1){
 				positionElement = item;
 			}
 			item = item.nextSibling;
@@ -777,7 +861,8 @@ function TagCloud ( container ) {
 		quick_sortValue(relation);
 		
 		for (var i = relation.length - 1; i >= 0; i--) {
-			this.container.insertBefore(elements[relation[i].key], positionElement);
+			this.container.insertBefore(elements[relation[i].key][0], positionElement);
+			this.container.insertBefore(elements[relation[i].key][1], positionElement);
 			this.container.insertBefore(document.createTextNode(' '), positionElement);
 		}		
 	}
