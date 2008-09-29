@@ -600,4 +600,3 @@ class HarmoniFileModule
 	}
 }
 
-?>

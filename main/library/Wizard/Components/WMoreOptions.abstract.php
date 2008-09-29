@@ -174,4 +174,3 @@ class WMoreOptions extends WizardComponentWithChildren {
 	
 }
 
-?>

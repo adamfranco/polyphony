@@ -250,4 +250,3 @@ class create_agentAction
 	}
 }
 
-?>

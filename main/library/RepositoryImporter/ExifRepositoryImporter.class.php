@@ -436,4 +436,3 @@ class ExifRepositoryImporter
 	}
 }
 
-?>

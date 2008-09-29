@@ -79,4 +79,3 @@ class WizardStep extends WizardComponentWithChildren {
 	}
 }
 
-?>

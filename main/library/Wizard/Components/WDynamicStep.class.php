@@ -72,4 +72,3 @@ class WDynamicStep extends WizardStep {
 	
 }
 
-?>
