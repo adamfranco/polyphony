@@ -149,7 +149,7 @@ abstract class TagAction
 				print $tag->getValue()."</a> ";
 				print str_replace('%1', $tag->getOccurances(),"<span rel='list' frequency='%1'></span>");
 			}
-			print "<span></span>";
+			print "<span isDisplayedAsCloud='1' collapsedList='1'></span>";
 			$harmoni->request->endNamespace();
 		}
 		
