@@ -401,11 +401,13 @@ class RepositoryInputOutputModuleManager
 		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("polyphony-repository");
 		
+		$filename = $fileRecord->getPartsByPartStructure($idManager->getId("FILE_NAME"))->next()->getValue();
 		$url = $harmoni->request->quickURL("repository", "viewfile", 
 				array(
 					"repository_id" => $repositoryId->getIdString(),
 					"asset_id" => $assetId->getIdString(),
-					"record_id" => $fileRecordId->getIdString()));
+					"record_id" => $fileRecordId->getIdString(),
+					"file_name" => $filename));
 		
 		
 		$harmoni->request->endNamespace();

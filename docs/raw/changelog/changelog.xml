@@ -27,6 +27,9 @@
 			properties can be given:
 				{key1: 'value1', key2: {value: 'value2', namespace: 'foo'}}
 		</change>
+		<change author='adam' date='2008-09-30' ref='2138652' reftype='fr'>
+			RepositoryIO: File URLs now include the filename at the end for clarity.
+		</change>
 	</version>
 	<version number="1.4.5" date="2008-09-24">
 		<releaseNotes>
