@@ -63,7 +63,16 @@
 			 * Answer a harmoni URL
 			 * 
 			 * @param string action
-			 * @param optional array parameters
+			 * @param optional object parameters
+			 *					parameters should be an object string keys and values:
+			 *					{key1: 'value1', key2: 'value2'}
+			 *					
+			 *					Optionally, some values may be objects with value and 
+			 *					namespace properties to allow for passing parameters
+			 *					under mixed namespaces:
+			 *					{key1: 'value1', key2: {value: 'value2', namespace: 'tags'}}
+			 *	
+			 * @param optional string namespace
 			 * @return string
 			 * @access public
 			 * @since 11/10/06
@@ -108,9 +117,33 @@
 				
 				if (parameters) {
 					for (var key in parameters) {
-						var val = new String(parameters[key]);
-						if (val.length)
-							newUrl += parts.parameterSeparator + key + parts.keyValueSeparator + val;
+						// Allow passing of objects that specify an arbitrary
+						// namespace.
+						if (typeof parameters[key] == 'object' 
+							&& typeof parameters[key].value == 'string'
+							&& typeof parameters[key].namespace != 'undefined')
+						{
+							var val = new String(parameters[key].value);
+							if (val.length) {
+								if (typeof parameters[key].namespace == 'string'
+									&& parameters[key].namespace.length)
+								{
+									var tmpParts = Harmoni.getUrlParts(
+										namespacedUrl.replaceAll(/xxnamespacexx/, 
+											parameters[key].namespace));
+								} else {
+									var tmpParts = Harmoni.getUrlParts(normalUrl);
+								}
+								
+								newUrl += tmpParts.parameterSeparator + key + tmpParts.keyValueSeparator + val;
+							}
+						} 
+						// Normal case for string values
+						else {
+							var val = new String(parameters[key]);
+							if (val.length)
+								newUrl += parts.parameterSeparator + key + parts.keyValueSeparator + val;
+						}
 					}
 				}
 				

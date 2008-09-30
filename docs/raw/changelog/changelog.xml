@@ -10,6 +10,21 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.4.6" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<change author='adam' date='2008-09-30' ref='1939677' reftype='segue_bug'>
+			Javascript: Harmoni.quickURL() now supports parameters with mixed namespaces.
+			
+			Normal parameters are still specified as:
+				{key1: 'value1', key2: 'value2'}
+			
+			Rather than specifying a string value, an object with 'value' and 'namespace'
+			properties can be given:
+				{key1: 'value1', key2: {value: 'value2', namespace: 'foo'}}
+		</change>
+	</version>
 	<version number="1.4.5" date="2008-09-24">
 		<releaseNotes>
 			This release fixes a number of small usability issues and adds support
