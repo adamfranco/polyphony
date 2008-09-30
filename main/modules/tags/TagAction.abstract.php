@@ -287,7 +287,22 @@ abstract class TagAction
 			print "}); ";
 		}
 		
-		print "Tagger.run('".$item->getIdString()."', '".$item->getSystem()."', this, this.parentNode.parentNode);";
+		print "Tagger.run('".$item->getIdString()."', '".$item->getSystem()."', this, this.parentNode.parentNode";
+		
+		// Add Context parameters to the urls generated when re-writing the tag cloud.
+		$harmoni = Harmoni::instance();
+		$contextInfo = $harmoni->request->getContextInfo();
+		if (count($contextInfo)) {
+			print ", {";
+			$params = array();
+			foreach ($contextInfo as $info) {
+				$params[] = $info->name.": {value: '".$info->value."', namespace: '".$info->namespace."'}";
+			}
+			print implode(', ', $params);
+			print "}";
+		}
+		
+		print ");";
 		print "\" title='"._("Add Tags to this Item")."'";
 		print " style='font-weight: bold;'>";
 		print _("+Tag")."</a>";

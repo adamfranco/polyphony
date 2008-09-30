@@ -14,6 +14,9 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2008-09-30' ref='1939677' reftype='segue_bug'>
+			Tagging: Tag clouds written by Javascript now include passed-through parameters.
+		</fix>
 		<change author='adam' date='2008-09-30' ref='1939677' reftype='segue_bug'>
 			Javascript: Harmoni.quickURL() now supports parameters with mixed namespaces.
 			

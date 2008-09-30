@@ -127,11 +127,13 @@ function Tagger ( itemId, system, positionElement, containerElement ) {
 	 * @since 11/9/06
 	 * @static
 	 */
-	Tagger.run = function ( itemId, system, positionElement, containerElement ) {
+	Tagger.run = function ( itemId, system, positionElement, containerElement, additionalParams ) {
 		if (positionElement.panel) {
 			positionElement.panel.open();
 		} else {
 			var tagger = new Tagger(itemId, system, positionElement, containerElement);
+			if (additionalParams)
+				tagger.additionalParams = additionalParams;
 		}
 	}
 	
@@ -414,14 +416,23 @@ function Tagger ( itemId, system, positionElement, containerElement ) {
 				incrementSize = 1;
 			
 			// Add in new tags
+			var parameters = {};
+			if (this.additionalParams) {
+				for (var key in this.additionalParams) {
+					parameters[key] = this.additionalParams[key];
+				}
+			}
+			
 			for (var i = 0; i < tags.length; i++) {
 				var element = document.createElement('a');
 				element.innerHTML = tags[i].value;
 				element.setAttribute('rel', 'tag');
  				element.setAttribute('title', "View items tagged with '" + tags[i].value + "'");
+ 				
+ 				parameters.tag = tags[i].value;
 				element.setAttribute('href', 
 						Harmoni.quickUrl('tags', this.positionElement.viewAction, 
-							{'tag': tags[i].value}, 'polyphony-tags'));
+							parameters, 'polyphony-tags'));
 				
 				// styles for the cloud
 				var group = 0;
