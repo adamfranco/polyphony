@@ -27,9 +27,12 @@
 			properties can be given:
 				{key1: 'value1', key2: {value: 'value2', namespace: 'foo'}}
 		</change>
-		<change author='adam' date='2008-09-30' ref='2138652' reftype='fr'>
+		<change author='adam' date='2008-09-30' ref='2138652' reftype='segue_bug'>
 			RepositoryIO: File URLs now include the filename at the end for clarity.
 		</change>
+		<fix author='adam' date='2008-10-02' ref='2138939' reftype='segue_fr'>
+			Javascript: New document.get_elements_by_class() function.
+		</fix>
 	</version>
 	<version number="1.4.5" date="2008-09-24">
 		<releaseNotes>
