@@ -2,6 +2,38 @@
 Polyphony Change Log
 
 
+v. 1.4.6 (2008-10-03)
+----------------------------------------------------
+This release fixes a few small issues relating to tagging, javascript, and file
+access. See the change log for details.
+		
+		
+	* Bug Fix: #1939677 
+		Tagging: Tag clouds written by Javascript now include passed-through
+		parameters. 
+		(2008-09-30 - Adam Franco)
+		
+	* Change: #1939677 
+		Javascript: Harmoni.quickURL() now supports parameters with mixed namespaces.
+		
+		Normal parameters are still specified as: {key1: 'value1', key2: 'value2'}
+		
+		Rather than specifying a string value, an object with 'value' and
+		'namespace' properties can be given: {key1: 'value1', key2: {value:
+		'value2', namespace: 'foo'}}
+		(2008-09-30 - Adam Franco)
+		
+	* Change: #2138652 
+		RepositoryIO: File URLs now include the filename at the end for clarity.
+		(2008-09-30 - Adam Franco)
+		
+	* Bug Fix: #2138939 
+		Javascript: New document.get_elements_by_class() function.
+		(2008-10-02 - Adam Franco)
+	
+
+
+
 v. 1.4.5 (2008-09-24)
 ----------------------------------------------------
 This release fixes a number of small usability issues and adds support for

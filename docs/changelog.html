@@ -23,7 +23,29 @@
 </head>
 <body>
 <h1>Polyphony Change Log</h1>
-<h2>Version 1.4.5</h2>
+<h2>Version 1.4.6</h2>
+<h3>2008-10-03</h3>
+<p>This release fixes a few small issues relating to tagging, javascript, and file access. See the change log for details.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1939677&amp;group_id=82171&amp;atid=565234">
+        			#1939677</a> Tagging: Tag clouds written by Javascript now include passed-through parameters. (<em>2008-09-30 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1939677&amp;group_id=82171&amp;atid=565234">
+        			#1939677</a> Javascript: Harmoni.quickURL() now supports parameters with mixed namespaces.
+<br>
+<br>Normal parameters are still specified as: {key1: 'value1', key2: 'value2'}
+<br>
+<br>Rather than specifying a string value, an object with 'value' and 'namespace' properties can be given: {key1: 'value1', key2: {value: 'value2', namespace: 'foo'}} (<em>2008-09-30 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2138652&amp;group_id=82171&amp;atid=565234">
+        			#2138652</a> RepositoryIO: File URLs now include the filename at the end for clarity. (<em>2008-09-30 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2138939&amp;group_id=82171&amp;atid=565237">
+        			#2138939</a> Javascript: New document.get_elements_by_class() function. (<em>2008-10-02 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 1.4.5</h2>
 <h3>2008-09-24</h3>
 <p>This release fixes a number of small usability issues and adds support for user-preferences.</p>
 <ul>

@@ -10,9 +10,10 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.4.6" date="The Future">
+	<version number="1.4.6" date="2008-10-03">
 		<releaseNotes>
-			
+			This release fixes a few small issues relating to tagging, javascript,
+			and file access. See the change log for details.
 		</releaseNotes>
 		<fix author='adam' date='2008-09-30' ref='1939677' reftype='segue_bug'>
 			Tagging: Tag clouds written by Javascript now include passed-through parameters.

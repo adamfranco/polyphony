@@ -1,5 +1,5 @@
 
-Polyphony v. 1.4.5 (2008-09-24)
+Polyphony v. 1.4.6 (2008-10-03)
 =================================
 
 What is Polyphony?
@@ -42,8 +42,8 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This release fixes a number of small usability issues and adds support for
-user-preferences. 
+This release fixes a few small issues relating to tagging, javascript, and file
+access. See the change log for details.
 
 
 Downloads
@@ -74,6 +74,13 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.4.6 (2008-10-03)
+----------------------------------------------------
+This release fixes a few small issues relating to tagging, javascript, and file
+access. See the change log for details.
+
 
 
 v. 1.4.5 (2008-09-24)
