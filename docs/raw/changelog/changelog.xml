@@ -10,6 +10,15 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.4.7" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-10-06'>
+			Repository: View-File action now uses the first file record if no record-id 
+			is specified rather than throwing an exception.
+		</fix>
+	</version>
 	<version number="1.4.6" date="2008-10-03">
 		<releaseNotes>
 			This release fixes a few small issues relating to tagging, javascript,

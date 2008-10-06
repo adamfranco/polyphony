@@ -132,7 +132,6 @@ class viewfileAction
 		
 		$harmoni->request->startNamespace("polyphony-repository");
 		
-		$recordId =$idManager->getId(RequestContext::value("record_id"));
 		$size = RequestContext::value("size");
 		$websafe = RequestContext::value("websafe");
 		
@@ -155,7 +154,20 @@ class viewfileAction
 		// Get the requested record.
 		try {
 			$asset = $this->getAsset();
-			$record =$asset->getRecord($recordId);
+			try {
+				$recordId =$idManager->getId(RequestContext::value("record_id"));
+				$record = $asset->getRecord($recordId);
+			} catch (InvalidArgumentException $e) {
+				// If no record id is specified, use the first file record available
+				$record = RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset($asset);
+				if (!$record)
+					throw $e;
+			} catch (UnknownIdException $e) {
+				// If no record id is specified, use the first file record available
+				$record = RepositoryInputOutputModuleManager::getFirstImageOrFileRecordForAsset($asset);
+				if (!$record)
+					throw $e;
+			}
 		} catch (UnknownIdException $e) {
 			HarmoniErrorHandler::logException($e);
 			$this->getUnknownIdMessage();
