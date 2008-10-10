@@ -38,7 +38,7 @@ class browse_rssAction
  		$authZManager = Services::getService("AuthZ");
  		$idManager = Services::getService("IdManager");
  		if ($authZManager->isUserAuthorized(
- 					$idManager->getId("edu.middlebury.authorization.view"),
+ 					$idManager->getId("edu.middlebury.authorization.modify"),
  					$idManager->getId("edu.middlebury.authorization.root")))
  		{
 			return TRUE;

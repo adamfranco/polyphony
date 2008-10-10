@@ -18,6 +18,9 @@
 			Repository: View-File action now uses the first file record if no record-id 
 			is specified rather than throwing an exception.
 		</fix>
+		<fix author='adam' date='2008-10-10'>
+			Logs: Browsing of logs is now properly restricted to administrators.
+		</fix>
 	</version>
 	<version number="1.4.6" date="2008-10-03">
 		<releaseNotes>
