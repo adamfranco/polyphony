@@ -2,6 +2,23 @@
 Polyphony Change Log
 
 
+v. 1.4.7 (2008-10-13)
+----------------------------------------------------
+This release fixes a few small issues. See the change-log for details.
+		
+		
+	* Bug Fix: 
+		Repository: View-File action now uses the first file record if no record-id
+		is specified rather than throwing an exception.
+		(2008-10-06 - Adam Franco)
+		
+	* Bug Fix: 
+		Logs: Browsing of logs is now properly restricted to administrators.
+		(2008-10-10 - Adam Franco)
+	
+
+
+
 v. 1.4.6 (2008-10-03)
 ----------------------------------------------------
 This release fixes a few small issues relating to tagging, javascript, and file

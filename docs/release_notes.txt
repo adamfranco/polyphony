@@ -1,5 +1,5 @@
 
-Polyphony v. 1.4.6 (2008-10-03)
+Polyphony v. 1.4.7 (2008-10-13)
 =================================
 
 What is Polyphony?
@@ -42,8 +42,7 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This release fixes a few small issues relating to tagging, javascript, and file
-access. See the change log for details.
+This release fixes a few small issues. See the change-log for details.
 
 
 Downloads
@@ -74,6 +73,12 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.4.7 (2008-10-13)
+----------------------------------------------------
+This release fixes a few small issues. See the change-log for details.
+
 
 
 v. 1.4.6 (2008-10-03)

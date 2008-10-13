@@ -10,9 +10,9 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.4.7" date="The Future">
+	<version number="1.4.7" date="2008-10-13">
 		<releaseNotes>
-			
+			This release fixes a few small issues. See the change-log for details.
 		</releaseNotes>
 		<fix author='adam' date='2008-10-06'>
 			Repository: View-File action now uses the first file record if no record-id 
