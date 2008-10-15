@@ -67,12 +67,13 @@ class username_password_formAction
 		$passwordField = $harmoni->request->getName("password");
 		$usernameText = _("Username/Email");
 		$passwordText = _("Password");
+		$submitLabel = _('Log In');
 		print<<<END
 		
 		<center><form name='login' action='$action' method='post'>
 			$usernameText: <input type='text' name='$usernameField' />
 			<br />$passwordText: <input type='password' name='$passwordField' />
-			<br /><input type='submit' />
+			<br /><input type='submit' value='$submitLabel'/>
 		</form></center>
 		
 END;

@@ -10,6 +10,15 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.4.8" date="2008-10-15">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-10-15' ref='2033088' reftype='segue_bug'>
+			All submit buttons have been labeled to reflect their action rather
+			than simply saying 'Submit'.
+		</fix>
+	</version>
 	<version number="1.4.7" date="2008-10-13">
 		<releaseNotes>
 			This release fixes a few small issues. See the change-log for details.

@@ -83,7 +83,7 @@ class PartAndValuesModule {
 		
 		$this->createSearchFields($repository);
 		
-		print "\t<input type='submit' />\n";
+		print "\t<input type='submit' value='".dgettext('polyphony', 'Search')."'/>\n";
 		print "</div>\n</form>";
 		
 		return ob_get_clean();

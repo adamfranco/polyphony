@@ -544,7 +544,7 @@ END;
 		}
 		print "\n\t</select>";
 		
-		print "\n\t<input type='submit' value='"._("Submit")."'/>";
+		print "\n\t<input type='submit' value='"._("Set Range")."'/>";
 		
 		print "\n\t<a href='";
 		print $harmoni->request->quickURL('logs', 'browse', array(

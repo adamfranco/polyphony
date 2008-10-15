@@ -2,6 +2,19 @@
 Polyphony Change Log
 
 
+v. 1.4.8 (2008-10-15)
+----------------------------------------------------
+
+		
+		
+	* Bug Fix: #2033088 
+		All submit buttons have been labeled to reflect their action rather than
+		simply saying 'Submit'.
+		(2008-10-15 - Adam Franco)
+	
+
+
+
 v. 1.4.7 (2008-10-13)
 ----------------------------------------------------
 This release fixes a few small issues. See the change-log for details.

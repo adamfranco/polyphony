@@ -130,7 +130,7 @@ extends MainWindowAction
 		print "\n</table>";
 
 
-		print "\n\t<p><input type='submit' value='"._("Search!")."'/></p>";
+		print "\n\t<p><input type='submit' value='"._("Search")."'/></p>";
 		
 		print "\n\t</div></form>";
 

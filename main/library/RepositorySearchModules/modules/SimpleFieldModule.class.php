@@ -74,7 +74,7 @@ class SimpleFieldModule {
 		
 		$this->createSearchFields($repository);
 		
-		print "\t<input type='submit' />\n";
+		print "\t<input type='submit' value='".dgettext('polyphony', 'Search')."' />\n";
 		print "</div>\n</form>";
 		
 		$form = ob_get_contents();
