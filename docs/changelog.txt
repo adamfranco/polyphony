@@ -11,6 +11,7 @@ v. 1.4.8 (2008-10-15)
 		All submit buttons have been labeled to reflect their action rather than
 		simply saying 'Submit'.
 		(2008-10-15 - Adam Franco)
+		(reported by Alex Chapin of Middlebury College)
 	
 
 
@@ -161,10 +162,10 @@ This release fixes a number of security issues.
 
 Security issues fixed: 
 
-- Cross-Site Request Forgeries (CSRF) are now eliminated from data-modification
+ * Cross-Site Request Forgeries (CSRF) are now eliminated from data-modification
 actions. Read about CSRF at: http://shiflett.org/articles/cross-site-request-forgeries
 
-- Admin actions are now restricted to prevent listing of users and ids in the
+ * Admin actions are now restricted to prevent listing of users and ids in the
 system. 
 		
 		
@@ -242,7 +243,7 @@ This release fixes a number of Javascript issues that were causing problems in S
 		deeply nested elements.
 		(2008-08-01 - Adam Franco)
 		
-	* Change: # 
+	* Change: 
 		Javascript: Harmoni Javascript object now includes POLYPHONY_PATH and MYPATH
 		properties to enable access of these values by statically loaded javascript
 		files. 
@@ -420,7 +421,7 @@ This release adds some minor improvements.
 		Logging: Can now set Category, Node Id, and Agent Id filters manually.
 		(2008-06-10 - Adam Franco)
 		
-	* Change: # 
+	* Change: 
 		User-Tools: Visitor registration now informs the user that their username is
 		their email.
 		(2008-06-10 - Adam Franco)
@@ -450,24 +451,24 @@ This release fixes a few issues that were affecting Concerto's import and export
 functions. 
 		
 		
-	* Bug Fix: # 
+	* Bug Fix: 
 		SafeMode/RepositoryExporter: Fixed safe-mode restrictions that were
 		preventing exports from completing. With Safe Mode on, compression of the
 		archive is no longer a background process, removing the need for
 		shell_exec(). 
 		(2008-06-03 - Adam Franco)
 		
-	* Bug Fix: # 
+	* Bug Fix: 
 		SafeMode/RepositoryExporter: Now doesn't try to use set_time_limit() if Safe
 		Mode is on.
 		(2008-06-03 - Adam Franco)
 		
-	* Bug Fix: # 
+	* Bug Fix: 
 		RepositoryExporter: Now exports seem to work. There was an issue with the
 		output buffering.
 		(2008-06-02 - Adam Franco)
 		
-	* Bug Fix: # 
+	* Bug Fix: 
 		RepositoryImporter: Fixing notices and improving robustness of Tab-Delimited importing.
 		
 		Schema and Part names are now trimmed for matching. Array indexes are now
@@ -482,7 +483,7 @@ v. 1.2.2 (2008-05-23)
 Missing theme images now do not fill the logs with errors.
 		
 		
-	* Change: # 
+	* Change: 
 		Gui2: Missing theme images now return a 404 error and a 'file not found'
 		image and do not log an error. Simple CSS errors in user-entered CSS can
 		cause lots of access to bad urls, so don't fill up the logs with errors.
@@ -496,7 +497,7 @@ v. 1.2.1 (2008-05-22)
 A parse error had snuck into the thumbnail viewing action. This is now fixed.
 		
 		
-	* Bug Fix: # 
+	* Bug Fix: 
 		Repository: Fixed parse error in View-Thumbnail action.
 		(2008-05-21 - Adam Franco)
 	
@@ -514,11 +515,11 @@ Also added are a number of new Wizard components and improvements.
 		content. 
 		(2008-05-13 - Adam Franco)
 		
-	* New feature: # 
+	* New feature: 
 		Gui2: New actions for accessing Gui2 theme images and CSS.
 		(2008-05-13 - Adam Franco)
 		
-	* Change: # 
+	* Change: 
 		Gui/Gui2: The EMPHASIZED_BLOCK has be deprecated and a SIDEBAR_BLOCK added
 		to enable better syntactical alignment between usage and theme definition.
 		(2008-05-20 - Adam Franco)
@@ -528,40 +529,40 @@ Also added are a number of new Wizard components and improvements.
 		conditional-GET. 
 		(2008-05-13 - Adam Franco)
 		
-	* Change: # 
+	* Change: 
 		ResultPrinter: Added a class name to enable CSS styling and changed the
 		block type for page links to UnstyledBlock from Background_Block.
 		(2008-05-20 - Alex Chapin)
 		
-	* Change: # 
+	* Change: 
 		Wizard: FileUploadField now validates MIME types when they are specified.
 		(2008-05-20 - Adam Franco)
 		
-	* Bug Fix: # 
+	* Bug Fix: 
 		Wizard: Error text now doesn't take up space when not shown.
 		(2008-05-20 - Adam Franco)
 		
-	* Bug Fix: # 
+	* Bug Fix: 
 		Wizard: Text-Areas now have id attributes set, enabling error checking rules
 		to work.
 		(2008-05-20 - Adam Franco)
 		
-	* New feature: # 
+	* New feature: 
 		Wizard: New Wizard Components for text areas and fields with HTML cleaning.
 		(2008-05-20 - Adam Franco)
 		
-	* New feature: # 
+	* New feature: 
 		Wizard: WRadioListWithDelete Wizard component added. This component is
 		needed to enable the deletion of user-created themes.
 		(2008-05-20 - Adam Franco)
 		
-	* New feature: # 
+	* New feature: 
 		Wizard: Text-Areas can now have a wrap attribute set to control
 		text-wrapping. This does not result in valid XHTML, but is the only known
 		way to control wrapping in a text-area.
 		(2008-05-20 - Adam Franco)
 		
-	* New feature: # 
+	* New feature: 
 		Wizard: New XML Schema validator rule for wizard.
 		(2008-05-20 - Adam Franco)
 	
@@ -577,12 +578,12 @@ This release add a few minor changes to tagging actions.
 		Harmoni_Db: Test scripts for Harmoni_Db in main/modules/harmon_db/
 		(2008-04-07 - Adam Franco)
 		
-	* Change: # 
+	* Change: 
 		Tagging: Changes to the tag-printing methods to add support for read-only
 		tag clouds.
 		(2008-04-11 - Adam Franco, Alex Chapin)
 		
-	* Change: # 
+	* Change: 
 		Tagging: Tagger Javascript window can now take a variable 'view tags'
 		action. 
 		(2008-04-11 - Adam Franco)
@@ -1028,14 +1029,15 @@ v. 0.9.0 (2007-09-07)
 		)&|(=\s?)&([^a-z#])|([^&])&\s?(\$) replaced with \1\2\3\4\5
 		
 		Special Changes were made to the following files to fix problems
-		introduced in the search and replace for ampersands: -
-		polyphony/main/library/ResultPrinter/ArrayResultPrinter.class.php -
+		introduced in the search and replace for ampersands:
+		
+		 * polyphony/main/library/ResultPrinter/ArrayResultPrinter.class.php -
 		getLayout() - $item = $this->_array[key($this->_array)]; ====== + $item = current($this->_array);
 		
-		- harmoni/core/oki2/repository/HarmoniRecord.class.php - getParts() Moved
+		* harmoni/core/oki2/repository/HarmoniRecord.class.php - getParts() Moved
 		the following line out of the if-statement: $activeValue = $allRecordFieldValues[$key]->getActiveVersion();
 		
-		- harmoni/core/oki2/hierarchy/tree/Tree.class.php - _traverse() Kept the
+		* harmoni/core/oki2/hierarchy/tree/Tree.class.php - _traverse() Kept the
 		first parameter being passed by reference. Needed in this case.
 		(Adam Franco)
 		

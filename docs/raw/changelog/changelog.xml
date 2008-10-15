@@ -14,7 +14,7 @@
 		<releaseNotes>
 			
 		</releaseNotes>
-		<fix author='adam' date='2008-10-15' ref='2033088' reftype='segue_bug'>
+		<fix author='adam' date='2008-10-15' ref='2033088' reftype='segue_bug' reporter='alex_chapin'>
 			All submit buttons have been labeled to reflect their action rather
 			than simply saying 'Submit'.
 		</fix>
@@ -127,11 +127,9 @@
 			This release fixes a number of security issues.
 			
 			Security issues fixed: 
-						
-			- Cross-Site Request Forgeries (CSRF) are now eliminated from data-modification
+			* Cross-Site Request Forgeries (CSRF) are now eliminated from data-modification
 			actions. Read about CSRF at: http://shiflett.org/articles/cross-site-request-forgeries
-						
-			- Admin actions are now restricted to prevent listing of users and
+			* Admin actions are now restricted to prevent listing of users and
 			ids in the system.
 		</releaseNotes>
 		<change author='adam' date='2008-08-14' ref='2040513' reftype='segue_security' reporter='josh_abraham'>
@@ -757,16 +755,16 @@
 			
 			Special Changes were made to the following files to fix problems introduced 
 			in the search and replace for ampersands:
-					- polyphony/main/library/ResultPrinter/ArrayResultPrinter.class.php - getLayout()
+					* polyphony/main/library/ResultPrinter/ArrayResultPrinter.class.php - getLayout()
 							- $item = $this->_array[key($this->_array)];
 							======
 							+ $item = current($this->_array);
 					
-					- harmoni/core/oki2/repository/HarmoniRecord.class.php - getParts()
+					* harmoni/core/oki2/repository/HarmoniRecord.class.php - getParts()
 							Moved the following line out of the if-statement:
 							$activeValue = $allRecordFieldValues[$key]->getActiveVersion();
 					
-					- harmoni/core/oki2/hierarchy/tree/Tree.class.php - _traverse()
+					* harmoni/core/oki2/hierarchy/tree/Tree.class.php - _traverse()
 							Kept the first parameter being passed by reference. Needed in this case.
 		</change>
 		
@@ -1390,6 +1388,22 @@
 		<name short="john">John Lee</name>
 	</authors>
 	<reporters>
+		<reporter short="alex">
+			<name>Alex Chapin</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="alex_chapin">
+			<name>Alex Chapin</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="adam">
+			<name>Adam Franco</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="adam_franco">
+			<name>Adam Franco</name>
+			<institution>Middlebury College</institution>
+		</reporter>
 		<reporter short="chris_newton">
 			<name>Chris Newton</name>
 			<!-- <institution></institution> -->

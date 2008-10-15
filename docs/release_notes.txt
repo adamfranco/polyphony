@@ -131,10 +131,10 @@ This release fixes a number of security issues.
 
 Security issues fixed: 
 
-- Cross-Site Request Forgeries (CSRF) are now eliminated from data-modification
+ * Cross-Site Request Forgeries (CSRF) are now eliminated from data-modification
 actions. Read about CSRF at: http://shiflett.org/articles/cross-site-request-forgeries
 
-- Admin actions are now restricted to prevent listing of users and ids in the
+ * Admin actions are now restricted to prevent listing of users and ids in the
 system. 
 
 

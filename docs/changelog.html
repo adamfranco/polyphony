@@ -30,7 +30,7 @@
 		
 		<li>
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2033088&amp;group_id=82171&amp;atid=565234">
-        			#2033088</a> All submit buttons have been labeled to reflect their action rather than simply saying 'Submit'. (<em>2008-10-15 - Adam Franco</em>)</li>
+        			#2033088</a> All submit buttons have been labeled to reflect their action rather than simply saying 'Submit'. (<em>2008-10-15 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
 	</ul>
 <br><h2>Version 1.4.7</h2>
 <h3>2008-10-13</h3>
@@ -125,9 +125,9 @@
 <br>
 <br>Security issues fixed: 
 <br>
-<br>- Cross-Site Request Forgeries (CSRF) are now eliminated from data-modification actions. Read about CSRF at: http://shiflett.org/articles/cross-site-request-forgeries
+<br> * Cross-Site Request Forgeries (CSRF) are now eliminated from data-modification actions. Read about CSRF at: http://shiflett.org/articles/cross-site-request-forgeries
 <br>
-<br>- Admin actions are now restricted to prevent listing of users and ids in the system.</p>
+<br> * Admin actions are now restricted to prevent listing of users and ids in the system.</p>
 <ul>
 		
 		<li>
@@ -173,8 +173,7 @@
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2034201&amp;group_id=82171&amp;atid=565234">
         			#2034201</a> Javascript: Now using iterative algorithm for element position determination as the recursive algorithm was maxing out IE's small execution stack for deeply nested elements. (<em>2008-08-01 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82873&amp;atid=567476">
-        			#</a> Javascript: Harmoni Javascript object now includes POLYPHONY_PATH and MYPATH properties to enable access of these values by statically loaded javascript files. (<em>2008-08-01 - Adam Franco</em>)</li>
+<b>Change:</b> Javascript: Harmoni Javascript object now includes POLYPHONY_PATH and MYPATH properties to enable access of these values by statically loaded javascript files. (<em>2008-08-01 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> Javascript: Panel class now keeps a reference to its 'close' button so that descendants can hide it. (<em>2008-07-29 - Adam Franco</em>)</li>
 		<li>
@@ -278,8 +277,7 @@
 		<li>
 <b>New feature:</b> Logging: Can now set Category, Node Id, and Agent Id filters manually. (<em>2008-06-10 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82873&amp;atid=567476">
-        			#</a> User-Tools: Visitor registration now informs the user that their username is their email. (<em>2008-06-10 - Adam Franco</em>)</li>
+<b>Change:</b> User-Tools: Visitor registration now informs the user that their username is their email. (<em>2008-06-10 - Adam Franco</em>)</li>
 	</ul>
 <br><h2>Version 1.2.4</h2>
 <h3>2008-06-09</h3>
@@ -299,17 +297,13 @@
 <ul>
 		
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82873&amp;atid=567473">
-        			#</a> SafeMode/RepositoryExporter: Fixed safe-mode restrictions that were preventing exports from completing. With Safe Mode on, compression of the archive is no longer a background process, removing the need for shell_exec(). (<em>2008-06-03 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> SafeMode/RepositoryExporter: Fixed safe-mode restrictions that were preventing exports from completing. With Safe Mode on, compression of the archive is no longer a background process, removing the need for shell_exec(). (<em>2008-06-03 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82873&amp;atid=567473">
-        			#</a> SafeMode/RepositoryExporter: Now doesn't try to use set_time_limit() if Safe Mode is on. (<em>2008-06-03 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> SafeMode/RepositoryExporter: Now doesn't try to use set_time_limit() if Safe Mode is on. (<em>2008-06-03 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82873&amp;atid=567473">
-        			#</a> RepositoryExporter: Now exports seem to work. There was an issue with the output buffering. (<em>2008-06-02 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> RepositoryExporter: Now exports seem to work. There was an issue with the output buffering. (<em>2008-06-02 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82873&amp;atid=567473">
-        			#</a> RepositoryImporter: Fixing notices and improving robustness of Tab-Delimited importing.
+<b>Bug Fix:</b> RepositoryImporter: Fixing notices and improving robustness of Tab-Delimited importing.
 <br>
 <br>Schema and Part names are now trimmed for matching. Array indexes are now checked before access to avoid notices. (<em>2008-06-02 - Adam Franco</em>)</li>
 	</ul>
@@ -319,8 +313,7 @@
 <ul>
 		
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82873&amp;atid=567476">
-        			#</a> Gui2: Missing theme images now return a 404 error and a 'file not found' image and do not log an error. Simple CSS errors in user-entered CSS can cause lots of access to bad urls, so don't fill up the logs with errors. (<em>2008-05-22 - Adam Franco</em>)</li>
+<b>Change:</b> Gui2: Missing theme images now return a 404 error and a 'file not found' image and do not log an error. Simple CSS errors in user-entered CSS can cause lots of access to bad urls, so don't fill up the logs with errors. (<em>2008-05-22 - Adam Franco</em>)</li>
 	</ul>
 <br><h2>Version 1.2.1</h2>
 <h3>2008-05-22</h3>
@@ -328,8 +321,7 @@
 <ul>
 		
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82873&amp;atid=567473">
-        			#</a> Repository: Fixed parse error in View-Thumbnail action. (<em>2008-05-21 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> Repository: Fixed parse error in View-Thumbnail action. (<em>2008-05-21 - Adam Franco</em>)</li>
 	</ul>
 <br><h2>Version 1.2.0</h2>
 <h3>2008-05-20</h3>
@@ -340,38 +332,28 @@
 <b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1941513&amp;group_id=82171&amp;atid=565237">
         			#1941513</a> AbstractActions: New ConditionalGet action enables browser-caching of content. (<em>2008-05-13 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82873&amp;atid=567476">
-        			#</a> Gui2: New actions for accessing Gui2 theme images and CSS. (<em>2008-05-13 - Adam Franco</em>)</li>
+<b>New feature:</b> Gui2: New actions for accessing Gui2 theme images and CSS. (<em>2008-05-13 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82873&amp;atid=567476">
-        			#</a> Gui/Gui2: The EMPHASIZED_BLOCK has be deprecated and a SIDEBAR_BLOCK added to enable better syntactical alignment between usage and theme definition. (<em>2008-05-20 - Adam Franco</em>)</li>
+<b>Change:</b> Gui/Gui2: The EMPHASIZED_BLOCK has be deprecated and a SIDEBAR_BLOCK added to enable better syntactical alignment between usage and theme definition. (<em>2008-05-20 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1941513&amp;group_id=82171&amp;atid=565237">
         			#1941513</a> Repository: View-File and View-Thumbnail now support browser-caching via conditional-GET. (<em>2008-05-13 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82873&amp;atid=567476">
-        			#</a> ResultPrinter: Added a class name to enable CSS styling and changed the block type for page links to UnstyledBlock from Background_Block. (<em>2008-05-20 - Alex Chapin</em>)</li>
+<b>Change:</b> ResultPrinter: Added a class name to enable CSS styling and changed the block type for page links to UnstyledBlock from Background_Block. (<em>2008-05-20 - Alex Chapin</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82873&amp;atid=567476">
-        			#</a> Wizard: FileUploadField now validates MIME types when they are specified. (<em>2008-05-20 - Adam Franco</em>)</li>
+<b>Change:</b> Wizard: FileUploadField now validates MIME types when they are specified. (<em>2008-05-20 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82873&amp;atid=567473">
-        			#</a> Wizard: Error text now doesn't take up space when not shown. (<em>2008-05-20 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> Wizard: Error text now doesn't take up space when not shown. (<em>2008-05-20 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82873&amp;atid=567473">
-        			#</a> Wizard: Text-Areas now have id attributes set, enabling error checking rules to work. (<em>2008-05-20 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> Wizard: Text-Areas now have id attributes set, enabling error checking rules to work. (<em>2008-05-20 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82873&amp;atid=567476">
-        			#</a> Wizard: New Wizard Components for text areas and fields with HTML cleaning. (<em>2008-05-20 - Adam Franco</em>)</li>
+<b>New feature:</b> Wizard: New Wizard Components for text areas and fields with HTML cleaning. (<em>2008-05-20 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82873&amp;atid=567476">
-        			#</a> Wizard: WRadioListWithDelete Wizard component added. This component is needed to enable the deletion of user-created themes. (<em>2008-05-20 - Adam Franco</em>)</li>
+<b>New feature:</b> Wizard: WRadioListWithDelete Wizard component added. This component is needed to enable the deletion of user-created themes. (<em>2008-05-20 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82873&amp;atid=567476">
-        			#</a> Wizard: Text-Areas can now have a wrap attribute set to control text-wrapping. This does not result in valid XHTML, but is the only known way to control wrapping in a text-area. (<em>2008-05-20 - Adam Franco</em>)</li>
+<b>New feature:</b> Wizard: Text-Areas can now have a wrap attribute set to control text-wrapping. This does not result in valid XHTML, but is the only known way to control wrapping in a text-area. (<em>2008-05-20 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82873&amp;atid=567476">
-        			#</a> Wizard: New XML Schema validator rule for wizard. (<em>2008-05-20 - Adam Franco</em>)</li>
+<b>New feature:</b> Wizard: New XML Schema validator rule for wizard. (<em>2008-05-20 - Adam Franco</em>)</li>
 	</ul>
 <br><h2>Version 1.1.0</h2>
 <h3>2008-04-11</h3>
@@ -382,11 +364,9 @@
 <b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1814119&amp;group_id=82873&amp;atid=567476">
         			#1814119</a> Harmoni_Db: Test scripts for Harmoni_Db in main/modules/harmon_db/ (<em>2008-04-07 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82873&amp;atid=567476">
-        			#</a> Tagging: Changes to the tag-printing methods to add support for read-only tag clouds. (<em>2008-04-11 - Adam Franco, Alex Chapin</em>)</li>
+<b>Change:</b> Tagging: Changes to the tag-printing methods to add support for read-only tag clouds. (<em>2008-04-11 - Adam Franco, Alex Chapin</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82873&amp;atid=567476">
-        			#</a> Tagging: Tagger Javascript window can now take a variable 'view tags' action. (<em>2008-04-11 - Adam Franco</em>)</li>
+<b>Change:</b> Tagging: Tagger Javascript window can now take a variable 'view tags' action. (<em>2008-04-11 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940459&amp;group_id=82171&amp;atid=565237">
         			#1940459</a> Javascript: Harmoni.quickURL() now will be set-up properly even if a namespace is set when it is called. (<em>2008-04-11 - Adam Franco</em>)</li>
@@ -643,11 +623,13 @@
 		<li>
 <b>Change:</b> Removing ampersands for compatibility with other PHP5 code. The BBEdit-grep string used for the find and replace was: (function )&amp;|(=\s?)&amp;([^a-z#])|([^&amp;])&amp;\s?(\$) replaced with \1\2\3\4\5
 <br>
-<br>Special Changes were made to the following files to fix problems introduced in the search and replace for ampersands: - polyphony/main/library/ResultPrinter/ArrayResultPrinter.class.php - getLayout() - $item = $this-&gt;_array[key($this-&gt;_array)]; ====== + $item = current($this-&gt;_array);
+<br>Special Changes were made to the following files to fix problems introduced in the search and replace for ampersands:
 <br>
-<br>- harmoni/core/oki2/repository/HarmoniRecord.class.php - getParts() Moved the following line out of the if-statement: $activeValue = $allRecordFieldValues[$key]-&gt;getActiveVersion();
+<br> * polyphony/main/library/ResultPrinter/ArrayResultPrinter.class.php - getLayout() - $item = $this-&gt;_array[key($this-&gt;_array)]; ====== + $item = current($this-&gt;_array);
 <br>
-<br>- harmoni/core/oki2/hierarchy/tree/Tree.class.php - _traverse() Kept the first parameter being passed by reference. Needed in this case. (<em>Adam Franco</em>)</li>
+<br>* harmoni/core/oki2/repository/HarmoniRecord.class.php - getParts() Moved the following line out of the if-statement: $activeValue = $allRecordFieldValues[$key]-&gt;getActiveVersion();
+<br>
+<br>* harmoni/core/oki2/hierarchy/tree/Tree.class.php - _traverse() Kept the first parameter being passed by reference. Needed in this case. (<em>Adam Franco</em>)</li>
 		
 		<li>
 <b>New feature:</b> Wizard: Adding the HtmlTextArea component for switching between multiple text editors, some WYSIWYG, some not. (<em>2007-09-05 - Adam Franco</em>)</li>
