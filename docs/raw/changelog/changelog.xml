@@ -12,7 +12,8 @@
 <changelog name="Polyphony">
 	<version number="1.4.8" date="2008-10-15">
 		<releaseNotes>
-			
+			This improves the usability of controls by changing all submit buttons
+			to be labeled to reflect their action rather than simply saying 'Submit'.
 		</releaseNotes>
 		<fix author='adam' date='2008-10-15' ref='2033088' reftype='segue_bug' reporter='alex_chapin'>
 			All submit buttons have been labeled to reflect their action rather
