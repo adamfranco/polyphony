@@ -318,8 +318,11 @@ END;
 		$groupType =$group->getType();
 		print "<input type='radio' id='agentId' name='".RequestContext::name("agentId")."' value='".$id->getIdString()."' />";
 		print "<a title='".$id->getIdString()."'>";
-		print "<span style='text-decoration: underline; font-weight: bold;'>".$group->getDisplayName()."</span></a>";	
-		print " - <em>".$groupType->getDescription()."</em>";
+		print "<span style='text-decoration: underline; font-weight: bold;'>".$group->getDisplayName()."</span></a>";
+		if ($group->getDescription())
+			print " - <em>".$group->getDescription()."</em>";
+		if ($groupType->getDescription())
+			print " - <em>(".$groupType->getDescription().")</em>";
 	}
 	
 	/**

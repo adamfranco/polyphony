@@ -2,6 +2,19 @@
 Polyphony Change Log
 
 
+v. 1.4.9 (The Future)
+----------------------------------------------------
+
+		
+		
+	* Bug Fix: 
+		AuthZ: Choose-Agent UI now includes group descriptions as well as type
+		descriptions. 
+		(2008-10-20 - Adam Franco)
+	
+
+
+
 v. 1.4.8 (2008-10-15)
 ----------------------------------------------------
 This improves the usability of controls by changing all submit buttons to be labeled

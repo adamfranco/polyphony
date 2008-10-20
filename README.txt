@@ -1,5 +1,5 @@
 
-Polyphony v. 1.4.8 (2008-10-15)
+Polyphony v. 1.4.9 (The Future)
 =================================
 
 What is Polyphony?
@@ -42,8 +42,7 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This improves the usability of controls by changing all submit buttons to be labeled
-to reflect their action rather than simply saying 'Submit'.
+
 
 
 Downloads
@@ -74,6 +73,12 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.4.9 (The Future)
+----------------------------------------------------
+
+
 
 
 v. 1.4.8 (2008-10-15)

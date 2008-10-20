@@ -10,6 +10,14 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.4.9" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-10-20' ref='' reftype='bug'  reporter=''>
+			AuthZ: Choose-Agent UI now includes group descriptions as well as type descriptions.
+		</fix>
+	</version>
 	<version number="1.4.8" date="2008-10-15">
 		<releaseNotes>
 			This improves the usability of controls by changing all submit buttons
