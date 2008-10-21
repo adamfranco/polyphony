@@ -161,6 +161,24 @@ Array.prototype.elementExists = function (value) {
 }
 
 /**
+ * Allow access to child elements by tag name
+ * 
+ * @param string tagName
+ * @return Array
+ * @access public
+ * @since 10/21/08
+ */
+Element.prototype.getChildrenByTagName = function (tagName) {
+	var results = [];
+	for (var i = 0; i < this.childNodes.length; i++) {
+		var child = this.childNodes[i];
+		if (child.nodeType == 1 && child.nodeName == tagName)
+			results.push(child);
+	}
+	return results;
+}
+
+/**
  * Answer the element of the document by id.
  * 
  * @param string id
