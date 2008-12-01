@@ -135,14 +135,14 @@
 									var tmpParts = Harmoni.getUrlParts(normalUrl);
 								}
 								
-								newUrl += tmpParts.parameterSeparator + key + tmpParts.keyValueSeparator + val;
+								newUrl += tmpParts.parameterSeparator + key + tmpParts.keyValueSeparator + escape(val);
 							}
 						} 
 						// Normal case for string values
 						else {
 							var val = new String(parameters[key]);
 							if (val.length)
-								newUrl += parts.parameterSeparator + key + parts.keyValueSeparator + val;
+								newUrl += parts.parameterSeparator + key + parts.keyValueSeparator + escape(val);
 						}
 					}
 				}
