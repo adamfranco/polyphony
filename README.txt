@@ -1,5 +1,5 @@
 
-Polyphony v. 1.4.9 (The Future)
+Polyphony v. 1.4.9 (2009-01-09)
 =================================
 
 What is Polyphony?
@@ -42,7 +42,7 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-
+This release improves some of the group-browsing displays.
 
 
 Downloads
@@ -75,9 +75,9 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 ===================================================================
 
 
-v. 1.4.9 (The Future)
+v. 1.4.9 (2009-01-09)
 ----------------------------------------------------
-
+This release improves some of the group-browsing displays.
 
 
 

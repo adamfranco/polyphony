@@ -2,9 +2,9 @@
 Polyphony Change Log
 
 
-v. 1.4.9 (The Future)
+v. 1.4.9 (2009-01-09)
 ----------------------------------------------------
-
+This release improves some of the group-browsing displays.
 		
 		
 	* Bug Fix: 

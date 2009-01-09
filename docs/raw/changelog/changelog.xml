@@ -10,9 +10,9 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.4.9" date="The Future">
+	<version number="1.4.9" date="2009-01-09">
 		<releaseNotes>
-			
+			This release improves some of the group-browsing displays.
 		</releaseNotes>
 		<fix author='adam' date='2008-10-20' ref='' reftype='bug'  reporter=''>
 			AuthZ: Choose-Agent UI now includes group descriptions as well as type descriptions.
