@@ -10,6 +10,15 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.4.10" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<change author='adam' date='2009-01-14' ref='' reftype='fr'  reporter=''>
+			UserData: New access method for returning UserData javascript.
+			The writeHeadJs() method now only writes the javascript once.
+		</change>
+	</version>
 	<version number="1.4.9" date="2009-01-09">
 		<releaseNotes>
 			This release improves some of the group-browsing displays.

@@ -21,7 +21,8 @@
  * @version $Id$
  */
 class UserDataHelper {
-		
+	
+	private static $headJsWritten = false;
 	/**
 	 * Write Javascript needed for supporting user-data to the page head.
 	 * 
@@ -31,9 +32,26 @@ class UserDataHelper {
 	 * @static
 	 */
 	public static function writeHeadJs () {
-		$harmoni = Harmoni::instance();
-		$userData = UserData::instance();
+		if (self::$headJsWritten) 
+			return;
 		
+		$harmoni = Harmoni::instance();		
+
+		$outputHandler = $harmoni->getOutputHandler();
+		$outputHandler->setHead($outputHandler->getHead().self::getHeadJs());
+		
+		self::$headJsWritten = true;
+	}
+	
+	/**
+	 * Answer the head JS
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/13/09
+	 * @static
+	 */
+	public static function getHeadJs () {
 		ob_start();
 		print "\n\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/UserData.js'></script>";
 		
@@ -43,6 +61,7 @@ class UserDataHelper {
 		
 			var userData = UserData.instance();
 ";
+		$userData = UserData::instance();
 		
 		foreach ($userData->getPreferenceKeys() as $key) {
 			print "\n\t\t\tuserData.prefs['$key'] = '".addslashes($userData->getPreference($key))."';";
@@ -53,9 +72,7 @@ class UserDataHelper {
 		// ]]>
 		</script>
 ";
-
-		$outputHandler = $harmoni->getOutputHandler();
-		$outputHandler->setHead($outputHandler->getHead().ob_get_clean());
+		return ob_get_clean();
 	}
 	
 }
