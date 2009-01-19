@@ -188,25 +188,73 @@ abstract class TagAction
 	 */
 	static function getTagCloudDiv ($tags, $viewAction = 'view', $styles = null, $additionalParams = null) {
 		ob_start();
+		print "<script type='text/javascript'>";
+		?>
+function toggleSameControls(node){
+	/* first figure out what the toggle type is */
+	var toggleType;
+	try{
+		toggleType = node.getAttribute('toggleType');
+	} catch (err){
+		return;
+	}
+	var container = node.parentNode;
+	var finger = container.firstChild;
+	while(finger){
+		try{
+			if(finger.getAttribute('suppressedLink') && finger.getAttribute('toggleType') == toggleType){
+				var newNode = document.createElement('a');
+				newNode.setAttribute('onclick',finger.getAttribute('clickhandler'));
+				newNode.setAttribute('toggleType',finger.getAttribute('toggleType'));
+				newNode.innerHTML = finger.innerHTML;
+				container.insertBefore(newNode,finger);
+				/* we have to get a reference to the next sibling before
+				we remove the child (since we need it) */
+				var nextSibling = finger.nextSibling;
+				container.removeChild(finger);
+				finger = nextSibling;
+				continue;
+			}
+		} catch(err){}
+		finger = finger.nextSibling;
+	}
+	/* now toggle the node itself */
+	var newNode = document.createElement('span');
+	newNode.setAttribute('clickhandler',node.getAttribute('onclick'));
+	newNode.setAttribute('toggleType',node.getAttribute('toggleType'));
+	newNode.setAttribute('suppressedLink','1');
+	newNode.innerHTML = node.innerHTML;
+	container.insertBefore(newNode,node);
+	container.removeChild(node);
+}
+		<?
+		print "</script>";
+	
+
+
 		print "\n<div style='text-align: justify'>";
 		print TagAction::getTagCloud($tags, $viewAction, $styles, $additionalParams);
 		print "\n\t<div style='margin-top: 5px;'>"._('Sort: ');
-		print "\n\t\t<a onclick='var cloud = new TagCloud(this.parentNode.parentNode); cloud.orderAlpha(); this.parentNode.sortOrder=\"alpha\";'>";
+		print "\n\t\t<a onclick='var cloud = new TagCloud(this.parentNode.parentNode); cloud.orderAlpha();toggleSameControls(this);' toggleType='sort'>";
 		print _('alpha');
 		print "</a>";
 		print " | ";
-		print "\n\t\t<a onclick='if (this.parentNode.sortOrder != \"freq\") { var cloud = new TagCloud(this.parentNode.parentNode); cloud.orderFreq(); this.parentNode.sortOrder=\"freq\";}'>";
+		/* we start out sorting by frequency, so make it an unclickable link that our code can pick up and turn into a link */
+		print "\n\t\t<span clickhandler='var cloud = new TagCloud(this.parentNode.parentNode); cloud.orderFreq();toggleSameControls(this);' toggleType='sort' suppressedLink='1'>";
 		print _('freq');
-		print "</a>";
+		print "</span>";
 		print " ";
-		print "Display: ";
-		print "\n\t\t<a onclick='if (this.parentNode.displayType != \"cloud\") {var cloud = new TagCloud(this.parentNode.parentNode); cloud.displayAsCloud();this.parentNode.displayType=\"cloud\";}'>";
-		print "cloud";
-		print "</a>";
-		print " | ";
-		print "\n\t\t<a onclick='var cloud = new TagCloud(this.parentNode.parentNode); cloud.displayAsList(); this.parentNode.displayType=\"list\";'>";
-		print "list";
-		print "</a>";
+		if($tags->count() > 8){
+			print "Display: ";
+			/* we start out as a cloud */
+			print "\n\t\t<span clickhandler='var cloud = new TagCloud(this.parentNode.parentNode); cloud.displayAsCloud();toggleSameControls(this);' toggleType='display' suppressedLink='1'>";
+			print "cloud";
+			print "</span>";
+			print " | ";
+			print "\n\t\t<a onclick='var cloud = new TagCloud(this.parentNode.parentNode); cloud.displayAsList();toggleSameControls(this);' toggleType='display'>";
+			print "list";
+			print "</a>";
+		}
 		print "\n\t</div>";
 		print "\n</div>";
 		return ob_get_clean();
