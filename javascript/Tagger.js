@@ -729,7 +729,7 @@ function TagCloud ( container ) {
 		this.container = container;
 		
 		this.collapsedList = 1;
-		this.hideAfter = 6;
+		this.hideAfter = 15;
 
 		this.dataNode = null;
 		this.loadData();
