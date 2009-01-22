@@ -772,8 +772,14 @@ function TagCloud ( container ) {
 		}
 		if(targetNode == null){
 			this.collapsedList = 1;
-			/* Default dislay should be list for less then 15 tags 
-			and cloud for more than 15*/
+			
+			/**
+			 * Should modify such that either:
+			 * 1. Default dislay should be list for less then 15 tags 
+			 * and cloud for more than 15 OR
+			 * 2. plugin has options for default display as cloud or list
+			 */
+			 
 			this.isDisplayedAsCloud = 1;
 			this.dataNode = document.createElement("span");
 			this.dataNode.setAttribute("collapsedList",1);
