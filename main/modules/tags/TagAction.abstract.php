@@ -253,6 +253,8 @@ function toggleSameControls(node){
 		
 		/******************************************************************************
 		 * link for frequency sort of tags (default)
+		 * Better defaults would be dependant on number of tags
+		 * if # of tags < 15, then display as list sorted by frequency else alpha cloud
 		 ******************************************************************************/
 
 		print "\n\t\t<span clickhandler='var cloud = new TagCloud(this.parentNode.parentNode); 
@@ -261,12 +263,14 @@ function toggleSameControls(node){
 		print "</span>";
 		print "<br/>";
 		
-		if($tags->count() > 1){
+		if ($tags->count() > 1) {
 		
 			print _('View as: ');
 			
 			/******************************************************************************
 			 * link for cloud display of tags (default)
+			 * Better defaults would be dependant on number of tags
+			 * if # of tags < 15, then display as list sorted by frequency else alpha cloud
 			 ******************************************************************************/
 
 			print "\n\t\t<span clickhandler='var cloud = new TagCloud(this.parentNode.parentNode); cloud.displayAsCloud();toggleSameControls(this);' toggleType='display' suppressedLink='1'>";
