@@ -772,6 +772,8 @@ function TagCloud ( container ) {
 		}
 		if(targetNode == null){
 			this.collapsedList = 1;
+			/* Default dislay should be list for less then 15 tags 
+			and cloud for more than 15*/
 			this.isDisplayedAsCloud = 1;
 			this.dataNode = document.createElement("span");
 			this.dataNode.setAttribute("collapsedList",1);
