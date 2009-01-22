@@ -229,31 +229,36 @@ function toggleSameControls(node){
 }
 		<?
 		print "</script>";
-	
-
-
-		print "\n<div style='text-align: justify'>";
+		print "\n<div class='tag_cloud'>";
 		print TagAction::getTagCloud($tags, $viewAction, $styles, $additionalParams);
-		print "\n\t<div style='margin-top: 5px;'>"._('Sort: ');
+		print "\n\t<div class='tags_display_options'>"._('Sort by: ');
 		print "\n\t\t<a onclick='var cloud = new TagCloud(this.parentNode.parentNode); cloud.orderAlpha();toggleSameControls(this);' toggleType='sort'>";
-		print _('alpha');
+		print _('a-z');
 		print "</a>";
 		print " | ";
-		/* we start out sorting by frequency, so make it an unclickable link that our code can pick up and turn into a link */
+		
+		/******************************************************************************
+		 * we start out sorting by frequency, so make it an unclickable link 
+		 * that our code can pick up and turn into a link
+		 ******************************************************************************/
+
 		print "\n\t\t<span clickhandler='var cloud = new TagCloud(this.parentNode.parentNode); cloud.orderFreq();toggleSameControls(this);' toggleType='sort' suppressedLink='1'>";
-		print _('freq');
+		print _('count');
 		print "</span>";
-		print " ";
-		if($tags->count() > 8){
-			print "Display: ";
-			/* we start out as a cloud */
+		print "<br/>";
+		
+		if($tags->count() > 1){
+			print _('View as: ');
+			
+			// if more than 15 tags, make tag cloud be the default else display as list
+
 			print "\n\t\t<span clickhandler='var cloud = new TagCloud(this.parentNode.parentNode); cloud.displayAsCloud();toggleSameControls(this);' toggleType='display' suppressedLink='1'>";
-			print "cloud";
+			print _('cloud');
 			print "</span>";
 			print " | ";
 			print "\n\t\t<a onclick='var cloud = new TagCloud(this.parentNode.parentNode); cloud.displayAsList();toggleSameControls(this);' toggleType='display'>";
-			print "list";
-			print "</a>";
+			print _('list');
+			print "</a>";								
 		}
 		print "\n\t</div>";
 		print "\n</div>";
