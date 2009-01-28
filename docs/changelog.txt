@@ -2,6 +2,30 @@
 Polyphony Change Log
 
 
+v. 1.4.10 (2009-01-28)
+----------------------------------------------------
+This update fixes bugs in the Panel and User-Data Javascript and in the
+Group-Membership display. See the change-log for details.
+		
+		
+	* Change: 
+		UserData: New access method for returning UserData javascript. The
+		writeHeadJs() method now only writes the javascript once.
+		(2009-01-14 - Adam Franco)
+		
+	* Bug Fix: 
+		Agents: Group-membership screen now doesn't crash on groups that do not
+		support properties fetching.
+		(2009-01-27 - Adam Franco)
+		
+	* Bug Fix: 
+		Javascript: CenteredPanel.moveToFront() now sets the zIndex of the screen as
+		well. 
+		(2009-01-28 - Adam Franco)
+	
+
+
+
 v. 1.4.9 (2009-01-09)
 ----------------------------------------------------
 This release improves some of the group-browsing displays.

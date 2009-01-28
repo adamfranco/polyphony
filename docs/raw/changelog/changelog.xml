@@ -10,9 +10,10 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.4.10" date="The Future">
+	<version number="1.4.10" date="2009-01-28">
 		<releaseNotes>
-			
+			This update fixes bugs in the Panel and User-Data Javascript and
+			in the Group-Membership display. See the change-log for details.
 		</releaseNotes>
 		<change author='adam' date='2009-01-14' ref='' reftype='fr'  reporter=''>
 			UserData: New access method for returning UserData javascript.

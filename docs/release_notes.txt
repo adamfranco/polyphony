@@ -1,5 +1,5 @@
 
-Polyphony v. 1.4.9 (2009-01-09)
+Polyphony v. 1.4.10 (2009-01-28)
 =================================
 
 What is Polyphony?
@@ -42,7 +42,8 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This release improves some of the group-browsing displays.
+This update fixes bugs in the Panel and User-Data Javascript and in the
+Group-Membership display. See the change-log for details.
 
 
 Downloads
@@ -73,6 +74,13 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.4.10 (2009-01-28)
+----------------------------------------------------
+This update fixes bugs in the Panel and User-Data Javascript and in the
+Group-Membership display. See the change-log for details.
+
 
 
 v. 1.4.9 (2009-01-09)
