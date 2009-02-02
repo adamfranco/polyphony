@@ -2,6 +2,18 @@
 Polyphony Change Log
 
 
+v. 1.4.11 (2009-02-02)
+----------------------------------------------------
+This update adds a minor function to the Javascript Panel's TabbedContent
+		
+		
+	* New feature: 
+		Javascript TabbedContent now supports a getSelected() function.
+		(2009-02-02 - Adam Franco)
+	
+
+
+
 v. 1.4.10 (2009-01-28)
 ----------------------------------------------------
 This update fixes bugs in the Panel and User-Data Javascript and in the

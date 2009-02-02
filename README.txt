@@ -1,5 +1,5 @@
 
-Polyphony v. 1.4.10 (2009-01-28)
+Polyphony v. 1.4.11 (2009-02-02)
 =================================
 
 What is Polyphony?
@@ -42,8 +42,7 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This update fixes bugs in the Panel and User-Data Javascript and in the
-Group-Membership display. See the change-log for details.
+This update adds a minor function to the Javascript Panel's TabbedContent
 
 
 Downloads
@@ -74,6 +73,12 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.4.11 (2009-02-02)
+----------------------------------------------------
+This update adds a minor function to the Javascript Panel's TabbedContent
+
 
 
 v. 1.4.10 (2009-01-28)
