@@ -251,10 +251,10 @@ function toggleSameControls(node){
 		 ******************************************************************************/
 		
 		print "\n\t<div class='tags_display_options'>"._('Sort by: ');		
-		print "\n\t\t<a onclick='var cloud = new TagCloud(this.parentNode.parentNode); 
-		cloud.orderAlpha();toggleSameControls(this);' toggleType='sort'>";
+		print "\n\t\t<span clickhandler='var cloud = new TagCloud(this.parentNode.parentNode); 
+		cloud.orderAlpha();toggleSameControls(this);' toggleType='sort' suppressedLink='1'>";
 		print _('a-z');
-		print "</a>";
+		print "</span>";
 		print " | ";
 		
 		/******************************************************************************
@@ -263,10 +263,10 @@ function toggleSameControls(node){
 		 * if # of tags < 15, then display as list sorted by frequency else alpha cloud
 		 ******************************************************************************/
 
-		print "\n\t\t<span clickhandler='var cloud = new TagCloud(this.parentNode.parentNode); 
-		cloud.orderFreq();toggleSameControls(this);' toggleType='sort' suppressedLink='1'>";
+		print "\n\t\t<a onclick='var cloud = new TagCloud(this.parentNode.parentNode); 
+		cloud.orderFreq();toggleSameControls(this);' toggleType='sort'>";
 		print _('count');
-		print "</span>";
+		print "</a>";
 		print "<br/>";
 		
 		if ($tags->count() > 1) {
