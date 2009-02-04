@@ -201,9 +201,12 @@ abstract class TagAction
 	 */
 	static function getTagCloudDiv ($tags, $viewAction = 'view', $styles = null, $additionalParams = null) {
 		ob_start();
-		print "<script type='text/javascript'>";
 		
 		?>
+<script type='text/javascript'>
+// <![CDATA[
+		
+
 function toggleSameControls(node){
 	/* first figure out what the toggle type is */
 	var toggleType;
@@ -241,8 +244,11 @@ function toggleSameControls(node){
 	container.insertBefore(newNode,node);
 	container.removeChild(node);
 }
+
+// ]]>
+</script>
+
 		<?
-		print "</script>";
 		print "\n<div class='tag_cloud'>";
 		print TagAction::getTagCloud($tags, $viewAction, $styles, $additionalParams);
 		
