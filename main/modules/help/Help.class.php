@@ -52,7 +52,7 @@ class Help {
 		print "helpWindow.focus(); ";
 		print "return false; ";
 		
-		print "\">"._("Help")."</a>";
+		print "\">"._("help")."</a>";
 		
 		return ob_get_clean();
 	}
