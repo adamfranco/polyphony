@@ -82,13 +82,17 @@ abstract class TagAction
 			$harmoni->request->startNamespace("polyphony-tags");
 			$tagArray = array();
 			$occArray = array();
+			$nameArray = array();
 			$tag = $tags->next();
 			$tagArray[] =$tag;
+			$nameArray[] = $tag->getValue();
+			$occArray[] = $tag->getOccurances();
 			$minFreq = $maxFreq = $tag->getOccurances();
 			
 			while ($tags->hasNext()) {
 				$tag =$tags->next();
-				$tagArray[] =$tag;
+				$tagArray[] = $tag;
+				$nameArray[] = $tag->getValue();
 				$occArray[] = $tag->getOccurances();
 				if ($tag->getOccurances() < $minFreq)
 					$minFreq = $tag->getOccurances();
@@ -112,6 +116,8 @@ abstract class TagAction
 			
 // 			printpre(TagAction::average($occArray));
 // 			printpre($incrementSize);
+
+			array_multisort($nameArray, $tagArray);
 			
 			for ($key=0; $key < count($tagArray); $key++) {
 				$tag =$tagArray[$key];
