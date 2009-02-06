@@ -679,8 +679,10 @@ function formatDate(date,format) {
 	value["k"]=H+1;
 	value["KK"]=LZ(value["K"]);
 	value["kk"]=LZ(value["k"]);
-	if (H > 11) { value["a"]="PM"; }
-	else { value["a"]="AM"; }
+	if (H > 11) { value["A"]="PM"; }
+	else { value["A"]="AM"; }
+	if (H > 11) { value["a"]="pm"; }
+	else { value["a"]="pm"; }
 	value["m"]=m;
 	value["mm"]=LZ(m);
 	value["s"]=s;

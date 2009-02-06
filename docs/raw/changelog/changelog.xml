@@ -10,9 +10,34 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.4.9" date="The Future">
+	<version number="1.4.11" date="2009-02-02">
 		<releaseNotes>
-			
+			This update adds a minor function to the Javascript Panel's TabbedContent
+		</releaseNotes>
+		<new author='adam' date='2009-02-02' ref='' reftype='fr'  reporter=''>
+			Javascript TabbedContent now supports a getSelected() function.
+		</new>
+	</version>
+	<version number="1.4.10" date="2009-01-28">
+		<releaseNotes>
+			This update fixes bugs in the Panel and User-Data Javascript and
+			in the Group-Membership display. See the change-log for details.
+		</releaseNotes>
+		<change author='adam' date='2009-01-14' ref='' reftype='fr'  reporter=''>
+			UserData: New access method for returning UserData javascript.
+			The writeHeadJs() method now only writes the javascript once.
+		</change>
+		<fix author='adam' date='2009-01-27' ref='' reftype='bug'  reporter=''>
+			Agents: Group-membership screen now doesn't crash on groups that do not 
+			support properties fetching.
+		</fix>
+		<fix author='adam' date='2009-01-28' ref='' reftype='bug'  reporter=''>
+			Javascript: CenteredPanel.moveToFront() now sets the zIndex of the screen as well.
+		</fix>
+	</version>
+	<version number="1.4.9" date="2009-01-09">
+		<releaseNotes>
+			This release improves some of the group-browsing displays.
 		</releaseNotes>
 		<fix author='adam' date='2008-10-20' ref='' reftype='bug'  reporter=''>
 			AuthZ: Choose-Agent UI now includes group descriptions as well as type descriptions.

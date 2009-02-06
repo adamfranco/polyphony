@@ -143,6 +143,24 @@ function TabbedContent () {
 		
 		return this.tabs[name];
 	}
+	
+	/**
+	 * Answer the current tab
+	 * 
+	 * @return Tab
+	 * @access public
+	 * @since 2/2/09
+	 */
+	TabbedContent.prototype.getSelected = function () {
+		if (this.selectedTabName) {
+			if (!this.tabs[this.selectedTabName]) {
+				throw new Error("Tried to get a non-existant tab, '" + this.selectedTabName + "'.");
+			}
+			return this.tabs[this.selectedTabName];
+		}
+		
+		throw new Error("No tab selected");
+	}
 
 
 /**

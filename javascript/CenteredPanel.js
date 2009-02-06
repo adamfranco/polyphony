@@ -92,6 +92,26 @@ function CenteredPanel ( title, height, width, callingElement, classNames ) {
 	}
 	
 	/**
+	 * Give the panel a z-index greater than any other item.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 9/24/08
+	 */
+	CenteredPanel.prototype.moveToFront = function () {
+		CenteredPanel.superclass.moveToFront.call(this);
+		
+		var frontIndex = new Number(this.mainElement.style.zIndex);
+		
+		// Move our main element forward one more
+		this.mainElement.style.zIndex = frontIndex + 1;
+		
+		// Move our screen forward to just behind our panel.
+		if (this.screen)
+			this.screen.style.zIndex = frontIndex;
+	}
+	
+	/**
 	 * Answer the number of pixels from the top of the screen to position the
 	 * panel.
 	 * 
