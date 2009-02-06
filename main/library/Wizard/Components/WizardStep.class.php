@@ -75,7 +75,19 @@ class WizardStep extends WizardComponentWithChildren {
 	 * @return string
 	 */
 	function getMarkup ($fieldName) {
-		return Wizard::parseText($this->_contentText, $this->getChildren(), $fieldName."_");
+		$this->_currentFieldName = $fieldName;
+		return Wizard::parseText($this->_contentText, $this->getChildren(), $this->getFieldName());
+	}
+	
+	/**
+	 * Answer the current fieldName
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 2/5/09
+	 */
+	public function getFieldName () {
+		return $this->_currentFieldName."_";
 	}
 }
 

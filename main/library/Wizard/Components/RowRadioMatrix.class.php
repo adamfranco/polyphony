@@ -83,7 +83,11 @@ class RowRadioMatrix
 				
 			}
 			print "\n\t<tr>";
-			print "\n\t\t<th class='field'>".$fields[$i]->displayText."</th>";
+			if (method_exists($this->_parent, 'getFieldName'))
+				$displayText = Wizard::parseText($fields[$i]->displayText, $this->_parent->getChildren(), $this->_parent->getFieldName());
+			else
+				$displayText = $fields[$i]->displayText;
+			print "\n\t\t<th class='field'>".$displayText."</th>";
 			for ($j = 0; $j < count($options); $j++) {
 				print "\n\t\t<td>".$this->getMatrixButton($fieldName, $i, $j)."</td>";
 			}
