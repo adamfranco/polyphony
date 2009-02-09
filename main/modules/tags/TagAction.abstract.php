@@ -125,13 +125,12 @@ abstract class TagAction
 			
 			for ($key=0; $key < count($tagArray); $key++) {
 				$tag =$tagArray[$key];
-				$group = 0;
-				$style = $styles[0];
-				
+				$group = -1;
 				for ($i=$minFreq; $i < $tag->getOccurances() && $group < count($styles); $i = $i + $incrementSize) {
-					$style = $styles[$group];
 					$group++;
 				}
+				$group = max(0, $group);
+				$style = $styles[$group];
 				
 				$url = $harmoni->request->mkURL('tags', $viewAction);
 				if (RequestContext::value('agent_id'))
@@ -163,16 +162,10 @@ abstract class TagAction
 							
 				// span styles cloudStyle, rel and frequency NOT validating
 				print "\" style='".$style."'";
-				print " cloudStyle='";
-				$ref = array();
-				preg_match("([0-9]+)",$style,$ref);
-				print $ref[0];
-				print "%'";
+				print " class='tag_cloud_group_".$group." tag_frequency_".$tag->getOccurances()."'";
 				print ">";
 				print $tag->getValue()."</a> ";
-				print str_replace('%1', $tag->getOccurances(),"<span rel='list' frequency='%1'></span>");
 			}
-			print "<span isDisplayedAsCloud='1' collapsedList='1'></span>";
 			$harmoni->request->endNamespace();
 		}
 		
@@ -240,31 +233,31 @@ abstract class TagAction
 		print "</a>";
 		print "<br/>";
 		
-		if ($tags->count() > 1) {
-		
-			print _('View as: ');
-			
-			/******************************************************************************
-			 * link for cloud display of tags (default)
-			 * Better defaults would be dependant on number of tags
-			 * if # of tags < 15, then display as list sorted by frequency else alpha cloud
-			 ******************************************************************************/
-
-			print "Display: ";
-			print "\n\t\t<a onclick='if (this.parentNode.displayType != \"cloud\") {var cloud = new TagCloud(this.parentNode.parentNode); cloud.displayAsCloud();this.parentNode.displayType=\"cloud\";}'>";
-			print "cloud";
-			print "</a>";
-			
-			print " | ";
-			
-			/******************************************************************************
-			 * link for list display of tags
-			 ******************************************************************************/
-			
-			print "\n\t\t<a onclick='var cloud = new TagCloud(this.parentNode.parentNode); cloud.displayAsList(); this.parentNode.displayType=\"list\";'>";
-			print _('list');
-			print "</a>";								
-		}
+// 		if ($tags->count() > 1) {
+// 		
+// 			print _('View as: ');
+// 			
+// 			/******************************************************************************
+// 			 * link for cloud display of tags (default)
+// 			 * Better defaults would be dependant on number of tags
+// 			 * if # of tags < 15, then display as list sorted by frequency else alpha cloud
+// 			 ******************************************************************************/
+// 
+// 			print "Display: ";
+// 			print "\n\t\t<a onclick='if (this.parentNode.displayType != \"cloud\") {var cloud = new TagCloud(this.parentNode.parentNode); cloud.displayAsCloud();this.parentNode.displayType=\"cloud\";}'>";
+// 			print "cloud";
+// 			print "</a>";
+// 			
+// 			print " | ";
+// 			
+// 			/******************************************************************************
+// 			 * link for list display of tags
+// 			 ******************************************************************************/
+// 			
+// 			print "\n\t\t<a onclick='var cloud = new TagCloud(this.parentNode.parentNode); cloud.displayAsList(); this.parentNode.displayType=\"list\";'>";
+// 			print _('list');
+// 			print "</a>";								
+// 		}
 		print "\n\t</div>";
 		print "\n</div>";
 		return ob_get_clean();

@@ -727,285 +727,8 @@ function TagCloud ( container ) {
 	 */
 	TagCloud.prototype.init = function ( container ) {
 		this.container = container;
-		
-		this.collapsedList = 1;
-		this.hideAfter = 15;
-
-		this.dataNode = null;
-		this.loadData();
-		/* We do updateTagDisplay here, this may cause various
-		things to be repeated*/
 	}
-
-	/** 
-	 * Attempt to load data from a data node, which is indicated
-	 * by the presence of an attribute named 'collapsedList'. This
-	 * data node is used to simplify data storage across instances of
-	 * TagClouds (as a new instance is created each time that a function
-	 * on the cloud is called).
- 	 *
-	 * If the node isn't found, the defaults of collapsedList = 1, and 
-	 * isDisplayedAsCloud = 1 are loaded and the node is created. 
-	 * 
-	 * If the node is found, then the values in it are found.
-	 * @return void
-	 * @access public
-	 * @since 9/29/08
-	 */
-	TagCloud.prototype.loadData = function(){
-		var item = this.container.firstChild;
-		var targetNode = null;
-		while(item){
-			if(item.getAttribute){
-				/* item.hasAttribute(attr) isn't supported
-				by ie 6 and ie 7, so instead we'll use try
-				and catch with getAttribute */
-				try{
-					if(item.getAttribute('collapsedList')){
-						targetNode = item;
-						break;
-					}
-				} catch(err) {
-				 }
-			}	
-			item = item.nextSibling;
-		}
-		if(targetNode == null){
-			this.collapsedList = 1;
-			
-			/**
-			 * Should modify such that either:
-			 * 1. Default dislay should be list for less then 15 tags 
-			 * and cloud for more than 15 OR
-			 * 2. plugin has options for default display as cloud or list
-			 */
-			 
-			this.isDisplayedAsCloud = 1;
-			this.dataNode = document.createElement("span");
-			this.dataNode.setAttribute("collapsedList",1);
-			this.dataNode.setAttribute("isDisplayedAsCloud",1);
-			return;
-		}
-		this.dataNode = targetNode;
-		this.collapsedList = parseInt(this.dataNode.getAttribute('collapsedList'));
-		this.isDisplayedAsCloud = parseInt(this.dataNode.getAttribute('isDisplayedAsCloud'));
-	}
-
-
-	/**
-	 * Display the tags in cloud format
-	 *
-	 * @return void
-	 * @acess public
-	 * @since 9/25/08
-	 */
-	TagCloud.prototype.displayAsCloud = function () {
-		this.isDisplayedAsCloud = 1;
-		this.dataNode.setAttribute('isDisplayedAsCloud','1');
-		this.updateTagDisplay();
-	}
-
-	/** 
-	 * Display the tags in list format
-	 * @return void
-	 * @access public
-	 * @since 9/25/08
-	 */
-	TagCloud.prototype.displayAsList = function () {
-		this.isDisplayedAsCloud = 0;
-		this.dataNode.setAttribute('isDisplayedAsCloud','0');
-		this.updateTagDisplay();
-	}
-
-	/**
-	 * Update our entire display. 
-	 * First eliminate the control (i.e. less/more) tags
-	 * Then, depending on whether we're a cloud or list,
-	 * change the font size and some other stuff.
-	 * Then, call alter visibility to change how much
-	 * of a list we're showing (if we're showing a list at all).
-	 * @return void
-	 * @access public
-	 * @since 9/29/08
-	 */
-	TagCloud.prototype.updateTagDisplay = function() {
-		this.clearControlNodes();
-		this.restoreInnerHTML();
-		var item = this.container.firstChild;
-		while (item) {
-			if(item.getAttribute){
-				if(item.getAttribute('rel') == 'tag'){
-					item.style.fontSize = (this.isDisplayedAsCloud) ? item.getAttribute('cloudStyle') : "100%";	
-				}	
-				if(item.getAttribute('rel') == 'list'){
-					item.innerHTML = (this.isDisplayedAsCloud) ? "" : ("("+item.getAttribute('frequency')+")<br/>");
-					item.style.fontSize = "100%";
-				}
-			}
-			item = item.nextSibling;
-		}
-		this.alterVisibility();
-	}	
-
-	/**
-	 * Restores the inner html of tags that have had their inner html
-	 * stripped in order to hide them.
-	 * @return void
-	 * @access public
-	 * @since 9/29/08
-	 */ 
-	TagCloud.prototype.restoreInnerHTML = function(){
-		var item = this.container.firstChild;
-		while(item){
-			if(item.innerHTML == "" && item.getAttribute('data')){
-				item.innerHTML = item.getAttribute('data');	
-				item.setAttribute('data','');
-			}
-			item = item.nextSibling;
-		}
-	}
-
-	/**
-	 * Alters how much of the list we're showing, if
-	 * we're displaying a list.
-	 * First, if our list isn't collapsed (i.e. we're showing
-	 *    all items), go through the list and figure out how many
-	 *    tags we have. Then if the list can even be collapsed, we'll
-	 *    output a control for hiding more of the list. We then return.
-	 * Then, (i.e. if we're hiding stuff), go through the list, and hide
-	 *    all of the items that are after our hideAfter point. Then, stick
-	 *    in a control to show those items.
-	 * @return void
-	 * @access public
-	 * @since 9/29/08
-	 */
-	TagCloud.prototype.alterVisibility = function() {
-		if(this.isDisplayedAsCloud){
-			return;
-		}
-		var item = this.container.firstChild;
-		var i = 0;
-		if(this.collapsedList == 0){
-			var positionElement;
-			while(item) {
-				if(item.getAttribute && item.getAttribute('rel') == 'tag'){
-					if(item.innerHTML == "" && item.getAttribute('data')){
-						item.innerHTML = item.getAttribute('data');	
-						item.setAttribute('data','');
-					}
-				}
-				if(item.getAttribute && item.getAttribute('rel') == 'list'){
-					i++;	
-				}
-				if(item.nodeType == 1){
-					positionElement = item;
-				}
-				item = item.nextSibling;
-			}
-			if(i >= this.hideAfter){
-				var newNode = document.createElement("a");
-				newNode.setAttribute('rel','control');
-				newNode.setAttribute('onClick','var cloud = new TagCloud(this.parentNode); cloud.showLess();');
-				newNode.onclick = function(){ var cloud = new TagCloud(this.parentNode); cloud.showLess();};
-				var newNodeText = document.createTextNode("-less-");
-				newNode.appendChild(newNodeText);
-				this.container.insertBefore(newNode,positionElement);
-			}
-			return;
-		}
-		var moreShown = 0;
-		while(item) {
-			if(item.getAttribute){
-				if(item.getAttribute('rel') == 'tag'){
-					if( i >= this.hideAfter){
-						/* unfortunately, ie 6 and 7 don't have hasAttribute
-						which makes this code more complicated than it should
-						be */
-						try{
-							var data = item.getAttribute('data');
-							if(data == '' || data == null){
-								item.setAttribute("data",item.innerHTML);
-								item.innerHTML = "";
-							}
-						} catch(err){
-							item.setAttribute("data",item.innerHTML);
-							item.innerHTML = "";
-						}
-					} 
-				}
-				if(item.getAttribute('rel') == 'list'){
-					if( i >= this.hideAfter){
-						item.style.fontSize = "0%";
-						item.innerHTML = "";
-					}  else {
-						item.style.fontSize = "100%";
-					}
-					i++; 
-				}
-				if((i == this.hideAfter) && (moreShown == 0)){
-					var newNode = document.createElement("a");
-					newNode.setAttribute('rel','control');
-					newNode.setAttribute('onClick','var cloud = new TagCloud(this.parentNode); cloud.showMore();');
-					newNode.onclick = function(){ var cloud = new TagCloud(this.parentNode); cloud.showMore();};
-					var newNodeText = document.createTextNode("-more-");
-					newNode.appendChild(newNodeText);
-					this.container.insertBefore(newNode,item.nextSibling);	
-					moreShown = 1;
-				}
-			}
-			item = item.nextSibling;
-		}
-	}
-
-	/**
-	 * Remove all of the controls (i.e. more or less in the tag cloud
-	 * @return void
-	 * @access public
-	 * @since 9/29/08
-	 */
-	TagCloud.prototype.clearControlNodes = function(){
-		var item = this.container.firstChild;
-		while(item){
-			if(item.getAttribute){
-				if(item.getAttribute('rel') == 'control'){
-					this.container.removeChild(item);
-				}	
-			}
-			item = item.nextSibling;
-		}
-	}
-
-	/**
-	 * Show more of a collapsed list.	
-	 * Set the variable for the cloud and the data node and
-	 * then update the display of the cloud.
-	 *
-	 * @return void
-	 * @access public
-	 * @since 9/29/08
-	 */
-	TagCloud.prototype.showMore = function(){
-		this.collapsedList = 0;	
-		this.dataNode.setAttribute("collapsedList","0");
-		this.updateTagDisplay();
-	}
-
-	/**
-	 * Show less of a collapsed list.
-	 * Set the variable for the cloud and the data node and
-	 * then update the display of the cloud.
-	 *
-	 * @return void
-	 * @access public
-	 * @since 9/29/08
-	 */
-	TagCloud.prototype.showLess = function(){
-		this.collapsedList = 1;
-		this.dataNode.setAttribute("collapsedList","1");
-		this.updateTagDisplay();
-	}
-
-
+	
 	/**
 	 * Order the tag cloud in alphabetical order.
 	 * 
@@ -1014,39 +737,29 @@ function TagCloud ( container ) {
 	 * @since 11/20/06
 	 */
 	TagCloud.prototype.orderAlpha = function () {
-		this.restoreInnerHTML();
 		var elements = new Array();
 		var keys = new Array();
 		var item = this.container.firstChild;
 		var positionElement = null;
+		
 		while (item) {
 			if (item.nodeName == 'A' && item.getAttribute && item.getAttribute('rel') == 'tag') {
-				var oldItem = item;
-				keys.push(oldItem.innerHTML);
-				var newItem = item.nextSibling;
-				while(newItem){
-					if(newItem.getAttribute && newItem.getAttribute('rel') == 'list'){
-						break;
-					}
-					newItem = newItem.nextSibling;
-				}
-				elements[oldItem.innerHTML] = new Array(oldItem,newItem);
-			} else if (item.nodeType == 1){
+				elements[item.innerHTML] = item;
+				keys.push(item.innerHTML);
+				
+			} else if (item.nodeType == 1 && !positionElement) {
 				positionElement = item;
 			}
 			item = item.nextSibling;
 		}
-		this.dataNode = positionElement;	
+		
 		quick_sort(keys);
-		for (var i = 0; i < keys.length; i++){
-			this.container.insertBefore(elements[keys[i]][0], positionElement);
-			this.container.insertBefore(elements[keys[i]][1], positionElement);
+		for (var i = 0; i < keys.length; i++) {
+			this.container.insertBefore(elements[keys[i]], positionElement);
 			this.container.insertBefore(document.createTextNode(' '), positionElement);
-		}	
-		this.updateTagDisplay();
+		}
 	}
 		
-
 	/**
 	 * Order the tag cloud in frequency order.
 	 * 
@@ -1055,7 +768,7 @@ function TagCloud ( container ) {
 	 * @since 11/20/06
 	 */
 	TagCloud.prototype.orderFreq = function () {
-		this.restoreInnerHTML();
+		
 		var elements = new Array();
 		var relation = new Array();
 		var item = this.container.firstChild;
@@ -1063,34 +776,21 @@ function TagCloud ( container ) {
 		
 		while (item) {
 			if (item.nodeName == 'A' && item.getAttribute && item.getAttribute('rel') == 'tag' && item.innerHTML) {
-				var oldItem = item;
+				elements[item.innerHTML] = item;
 				var matches = item.getAttribute('title').match( /\(.+: ([0-9]+)\)/ );
 				relation.push({'key': item.innerHTML, 'value': Math.round(matches[1])});
-				var newItem = item;
-				while(newItem){
-					if(newItem.getAttribute && newItem.getAttribute('rel') == 'list'){
-						break;
-					}
-					newItem = newItem.nextSibling;
-				}
-				elements[oldItem.innerHTML] = new Array(oldItem,newItem);
-//			} else if (item.nodeType == 1 && !positionElement) {
-			} else if (item.nodeType == 1){
+			} else if (item.nodeType == 1 && !positionElement) {
 				positionElement = item;
 			}
 			item = item.nextSibling;
 		}
 
-		this.dataNode = positionElement;	
-
 		quick_sortValue(relation);
 		
 		for (var i = relation.length - 1; i >= 0; i--) {
-			this.container.insertBefore(elements[relation[i].key][0], positionElement);
-			this.container.insertBefore(elements[relation[i].key][1], positionElement);
+			this.container.insertBefore(elements[relation[i].key], positionElement);
 			this.container.insertBefore(document.createTextNode(' '), positionElement);
 		}		
-		this.updateTagDisplay();
 	}
 
 
