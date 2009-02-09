@@ -744,6 +744,19 @@ function TagCloud ( container ) {
 	 */
 	TagCloud.prototype.init = function ( container ) {
 		this.container = container;
+		this.tagList = new TagList(this);
+	}
+	
+	/**
+	 * Commands to run after sorting or tag cloud additions
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 2/9/09
+	 */
+	TagCloud.prototype.onChange = function () {
+		if (this.tagList.displayed())
+			this.tagList.display();
 	}
 	
 	/**
@@ -780,8 +793,9 @@ function TagCloud ( container ) {
 		}
 		
 		this.sortOrder = 'alpha';
+		this.onChange();
 	}
-		
+	
 	/**
 	 * Order the tag cloud in frequency order.
 	 * 
@@ -817,8 +831,185 @@ function TagCloud ( container ) {
 		}
 		
 		this.sortOrder = 'freq';
+		this.onChange();
+	}
+	
+	/**
+	 * Answer an array of the tags in this cloud
+	 * 
+	 * @return Array
+	 * @access public
+	 * @since 2/9/09
+	 */
+	TagCloud.prototype.getTags = function () {
+		var tags = new Array();
+		var tagElements = this.getTagElements();
+		for (var i = 0; i < tagElements.length; i++) {
+			var item = tagElements[i];
+			
+			var matches = item.getAttribute('title').match( /\(.+: ([0-9]+)\)/ );
+			var tag = new Tag(item.innerHTML, Math.round(matches[1]))
+			tag.url = item.getAttribute('href');
+			tags.push(tag);
+		}
+		
+		return tags;
+	}
+	
+	/**
+	 * Show a list instead of our cloud
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 2/9/09
+	 */
+	TagCloud.prototype.showList = function () {
+		this.hideCloudItems();
+		this.tagList.display();
+	}
+	
+	/**
+	 * Hide the list and show the cloud
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 2/9/09
+	 */
+	TagCloud.prototype.showCloud = function () {
+		this.tagList.hide();
+		this.showCloudItems();
+	}
+	
+	/**
+	 * Hide the tag Cloud.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 2/9/09
+	 */
+	TagCloud.prototype.hideCloudItems = function () {
+		var tagElements = this.getTagElements();
+		for (var i = 0; i < tagElements.length; i++) {
+			tagElements[i].style.display = 'none';
+		}
+	}
+	
+	/**
+	 * Show the tag Cloud.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 2/9/09
+	 */
+	TagCloud.prototype.showCloudItems = function () {
+		var tagElements = this.getTagElements();
+		for (var i = 0; i < tagElements.length; i++) {
+			tagElements[i].style.display = 'inline';
+		}
+	}
+	
+	/**
+	 * Answer all of the tag elements
+	 * 
+	 * @return Array
+	 * @access public
+	 * @since 2/9/09
+	 */
+	TagCloud.prototype.getTagElements = function () {
+		var tags = new Array();
+		var item = this.container.firstChild;
+		while (item) {
+			if (item.nodeName == 'A' && item.getAttribute && item.getAttribute('rel') == 'tag' && item.innerHTML) {
+				tags.push(item);
+			}
+			item = item.nextSibling;
+		}
+		
+		return tags;
 	}
 
+/**
+ * A list of tags as an alternate to the cloud.
+ * 
+ * @since 2/9/09
+ * @package polyphony.tagging
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id$
+ */
+function TagList ( tagCloud ) {
+	if ( arguments.length > 0 ) {
+		this.init( tagCloud );
+	}
+}
+
+	/**
+	 * Initialize this object
+	 * 
+	 * @param TagCloud tagCloud
+	 * @return void
+	 * @access public
+	 * @since 2/9/09
+	 */
+	TagList.prototype.init = function ( tagCloud ) {
+		this.tagCloud = tagCloud;
+		
+		// create our hidden list container.
+		var tagElems = this.tagCloud.getTagElements();
+		if (tagElems.length)
+			var positionElement = tagElems[tagElems.length - 1].nextSibling
+		else
+			var positionElement = null;
+		
+		this.container = this.tagCloud.container.insertBefore(document.createElement('div'), positionElement);
+		this.container.style.display = 'none';
+	}
+
+	/**
+	 * Display the tag list.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 2/9/09
+	 */
+	TagList.prototype.display = function () {
+		this.container.innerHTML = '';
+		var tags = this.tagCloud.getTags();
+		for (var i = 0; i < tags.length; i++) {
+			var tag = tags[i];
+			
+			var tagDiv = this.container.appendChild(document.createElement('div'));
+			var tagLink = tagDiv.appendChild(document.createElement('a'));
+			tagLink.innerHTML = tag.value;
+			tagLink.href = tag.url;
+			tagDiv.appendChild(document.createTextNode(' (' + tag.occurances + ')'));
+		}
+		this.container.style.display = 'block';
+	}
+	
+	/**
+	 * Answer true if the list is displayed
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 2/9/09
+	 */
+	TagList.prototype.displayed = function () {
+		return (this.container.style.display == 'block');
+	}
+	
+	/**
+	 * Hide the list
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 2/9/09
+	 */
+	TagList.prototype.hide = function () {
+		this.container.style.display = 'none';
+	}
 
 
 

@@ -233,31 +233,31 @@ abstract class TagAction
 		print "</a>";
 		print "<br/>";
 		
-// 		if ($tags->count() > 1) {
-// 		
-// 			print _('View as: ');
-// 			
-// 			/******************************************************************************
-// 			 * link for cloud display of tags (default)
-// 			 * Better defaults would be dependant on number of tags
-// 			 * if # of tags < 15, then display as list sorted by frequency else alpha cloud
-// 			 ******************************************************************************/
-// 
-// 			print "Display: ";
-// 			print "\n\t\t<a onclick='if (this.parentNode.displayType != \"cloud\") {var cloud = new TagCloud(this.parentNode.parentNode); cloud.displayAsCloud();this.parentNode.displayType=\"cloud\";}'>";
-// 			print "cloud";
-// 			print "</a>";
-// 			
-// 			print " | ";
-// 			
-// 			/******************************************************************************
-// 			 * link for list display of tags
-// 			 ******************************************************************************/
-// 			
-// 			print "\n\t\t<a onclick='var cloud = new TagCloud(this.parentNode.parentNode); cloud.displayAsList(); this.parentNode.displayType=\"list\";'>";
-// 			print _('list');
-// 			print "</a>";								
-// 		}
+		if ($tags->count() > 1) {
+		
+			print _('View as: ');
+			
+			/******************************************************************************
+			 * link for cloud display of tags (default)
+			 * Better defaults would be dependant on number of tags
+			 * if # of tags < 15, then display as list sorted by frequency else alpha cloud
+			 ******************************************************************************/
+
+			print "Display: ";
+			print "\n\t\t<a onclick='var cloud = TagCloud.forContainer(this.parentNode.parentNode); cloud.showCloud();'>";
+			print "cloud";
+			print "</a>";
+			
+			print " | ";
+			
+			/******************************************************************************
+			 * link for list display of tags
+			 ******************************************************************************/
+			
+			print "\n\t\t<a onclick='var cloud = TagCloud.forContainer(this.parentNode.parentNode); cloud.showList();'>";
+			print _('list');
+			print "</a>";								
+		}
 		print "\n\t</div>";
 		print "\n</div>";
 		return ob_get_clean();
