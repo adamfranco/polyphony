@@ -217,7 +217,7 @@ abstract class TagAction
 		 ******************************************************************************/
 		
 		print "\n\t<div class='tags_display_options'>"._('Sort by: ');
-		print "\n\t\t<a onclick='var cloud = TagCloud.forContainer(this.parentNode.parentNode); cloud.orderAlpha();'>";
+		print "\n\t\t<a href='#' onclick='var cloud = TagCloud.forContainer(this.parentNode.parentNode); cloud.orderAlpha(); return false;'>";
 		print _('a-z');
 		print "</a>";
 		print " | ";
@@ -228,7 +228,7 @@ abstract class TagAction
 		 * if # of tags < 15, then display as list sorted by frequency else alpha cloud
 		 ******************************************************************************/
 		
-		print "\n\t\t<a onclick='var cloud = TagCloud.forContainer(this.parentNode.parentNode); cloud.orderFreq();'>";
+		print "\n\t\t<a href='#' onclick='var cloud = TagCloud.forContainer(this.parentNode.parentNode); cloud.orderFreq(); return false;'>";
 		print _('count');
 		print "</a>";
 		print "<br/>";
@@ -244,7 +244,7 @@ abstract class TagAction
 			 ******************************************************************************/
 
 			print "Display: ";
-			print "\n\t\t<a onclick='var cloud = TagCloud.forContainer(this.parentNode.parentNode); cloud.showCloud();'>";
+			print "\n\t\t<a href='#' onclick='var cloud = TagCloud.forContainer(this.parentNode.parentNode); cloud.showCloud(); return false;'>";
 			print "cloud";
 			print "</a>";
 			
@@ -254,7 +254,7 @@ abstract class TagAction
 			 * link for list display of tags
 			 ******************************************************************************/
 			
-			print "\n\t\t<a onclick='var cloud = TagCloud.forContainer(this.parentNode.parentNode); cloud.showList();'>";
+			print "\n\t\t<a href='#' onclick='var cloud = TagCloud.forContainer(this.parentNode.parentNode); cloud.showList(); return false;'>";
 			print _('list');
 			print "</a>";								
 		}
