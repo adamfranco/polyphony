@@ -980,6 +980,26 @@ function TagList ( tagCloud ) {
 		}
 		this.limitControl.style.display = 'none';
 	}
+	
+	/**
+	 * Set the limit ammount
+	 * 
+	 * @param integer limit Zero or NULL will show all by default
+	 * @return void
+	 * @access public
+	 * @since 2/9/09
+	 */
+	TagList.prototype.setLimit = function (limit) {
+		if (!limit) {
+			this.limitedMax = 15;
+			this.limit = false;
+			this.limitControl.innerHTML = "-less-";
+		} else {
+			this.limitedMax = limit;
+			this.limit = true;
+			this.limitControl.innerHTML = "-more-";
+		}
+	}
 
 	/**
 	 * Display the tag list.
