@@ -22,6 +22,9 @@
 			Javascript: document.get_elements_by_class() now accepts an optional
 			root element for the search.
 		</change>
+		<change author='adam' date='2009-02-09' ref='' reftype='fr'  reporter=''>
+			Actions: Can now support a page-title different from the heading.
+		</change>
 	</version>
 	<version number="1.4.11" date="2009-02-02">
 		<releaseNotes>

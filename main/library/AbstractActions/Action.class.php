@@ -67,6 +67,17 @@ abstract class Action {
 	}
 	
 	/**
+	 * Return the title-text for this action, or an empty string.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 2/9/09
+	 */
+	function getTitleText () {
+		return $this->getHeadingText();
+	}
+	
+	/**
 	 * Execute this action.
 	 * 
 	 * @return mixed
