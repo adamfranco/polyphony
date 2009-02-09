@@ -965,6 +965,20 @@ function TagList ( tagCloud ) {
 		
 		this.container = this.tagCloud.container.insertBefore(document.createElement('div'), positionElement);
 		this.container.style.display = 'none';
+		
+		this.limit = true;
+		this.limitedMax = 15;
+		
+		this.limitControl = this.tagCloud.container.insertBefore(document.createElement('a'), positionElement);
+		this.limitControl.style.marginTop = '10px';
+		this.limitControl.href = '#';
+		this.limitControl.innerHTML = "-more-";
+		var list = this;
+		this.limitControl.onclick = function() {
+			list.toggleLimit();
+			return false;
+		}
+		this.limitControl.style.display = 'none';
 	}
 
 	/**
@@ -977,7 +991,13 @@ function TagList ( tagCloud ) {
 	TagList.prototype.display = function () {
 		this.container.innerHTML = '';
 		var tags = this.tagCloud.getTags();
-		for (var i = 0; i < tags.length; i++) {
+		
+		if (this.limit)
+			var max = this.limitedMax;
+		else
+			var max = tags.length;
+		
+		for (var i = 0; i < tags.length && i < max; i++) {
 			var tag = tags[i];
 			
 			var tagDiv = this.container.appendChild(document.createElement('div'));
@@ -987,6 +1007,26 @@ function TagList ( tagCloud ) {
 			tagDiv.appendChild(document.createTextNode(' (' + tag.occurances + ')'));
 		}
 		this.container.style.display = 'block';
+		this.limitControl.style.display = 'block';
+	}
+	
+	/**
+	 * Toggle between showing a limited list and the full list.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 2/9/09
+	 */
+	TagList.prototype.toggleLimit = function () {
+		if (this.limit) {
+			this.limit = false;
+			this.limitControl.innerHTML = "-less-";
+		} else {
+			this.limit = true;
+			this.limitControl.innerHTML = "-more-";
+		}
+		
+		this.display();
 	}
 	
 	/**
@@ -1009,6 +1049,7 @@ function TagList ( tagCloud ) {
 	 */
 	TagList.prototype.hide = function () {
 		this.container.style.display = 'none';
+		this.limitControl.style.display = 'none';
 	}
 
 
