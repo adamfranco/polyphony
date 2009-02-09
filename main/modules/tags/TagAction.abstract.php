@@ -216,53 +216,6 @@ abstract class TagAction
 	static function getTagCloudDiv ($tags, $viewAction = 'view', $styles = null, $additionalParams = null, array $additionalNamespacedParams = array()) {
 		ob_start();
 		
-		?>
-<script type='text/javascript'>
-// <![CDATA[
-		
-
-function toggleSameControls(node){
-	/* first figure out what the toggle type is */
-	var toggleType;
-	try{
-		toggleType = node.getAttribute('toggleType');
-	} catch (err){
-		return;
-	}
-	var container = node.parentNode;
-	var finger = container.firstChild;
-	while(finger){
-		try{
-			if(finger.getAttribute('suppressedLink') && finger.getAttribute('toggleType') == toggleType){
-				var newNode = document.createElement('a');
-				newNode.setAttribute('onclick',finger.getAttribute('clickhandler'));
-				newNode.setAttribute('toggleType',finger.getAttribute('toggleType'));
-				newNode.innerHTML = finger.innerHTML;
-				container.insertBefore(newNode,finger);
-				/* we have to get a reference to the next sibling before
-				we remove the child (since we need it) */
-				var nextSibling = finger.nextSibling;
-				container.removeChild(finger);
-				finger = nextSibling;
-				continue;
-			}
-		} catch(err){}
-		finger = finger.nextSibling;
-	}
-	/* now toggle the node itself */
-	var newNode = document.createElement('span');
-	newNode.setAttribute('clickhandler',node.getAttribute('onclick'));
-	newNode.setAttribute('toggleType',node.getAttribute('toggleType'));
-	newNode.setAttribute('suppressedLink','1');
-	newNode.innerHTML = node.innerHTML;
-	container.insertBefore(newNode,node);
-	container.removeChild(node);
-}
-
-// ]]>
-</script>
-
-		<?
 		print "\n<div class='tag_cloud'>";
 		print TagAction::getTagCloud($tags, $viewAction, $styles, $additionalParams, $additionalNamespacedParams);
 		
@@ -270,11 +223,10 @@ function toggleSameControls(node){
 		 * link for alpha sort of tags
 		 ******************************************************************************/
 		
-		print "\n\t<div class='tags_display_options'>"._('Sort by: ');		
-		print "\n\t\t<span clickhandler='var cloud = new TagCloud(this.parentNode.parentNode); 
-		cloud.orderAlpha();toggleSameControls(this);' toggleType='sort' suppressedLink='1'>";
+		print "\n\t<div class='tags_display_options'>"._('Sort by: ');
+		print "\n\t\t<a onclick='var cloud = new TagCloud(this.parentNode.parentNode); cloud.orderAlpha(); this.parentNode.sortOrder=\"alpha\";'>";
 		print _('a-z');
-		print "</span>";
+		print "</a>";
 		print " | ";
 		
 		/******************************************************************************
@@ -282,9 +234,8 @@ function toggleSameControls(node){
 		 * Better defaults would be dependant on number of tags
 		 * if # of tags < 15, then display as list sorted by frequency else alpha cloud
 		 ******************************************************************************/
-
-		print "\n\t\t<a onclick='var cloud = new TagCloud(this.parentNode.parentNode); 
-		cloud.orderFreq();toggleSameControls(this);' toggleType='sort'>";
+		
+		print "\n\t\t<a onclick='if (this.parentNode.sortOrder != \"freq\") { var cloud = new TagCloud(this.parentNode.parentNode); cloud.orderFreq(); this.parentNode.sortOrder=\"freq\";}'>";
 		print _('count');
 		print "</a>";
 		print "<br/>";
@@ -299,17 +250,18 @@ function toggleSameControls(node){
 			 * if # of tags < 15, then display as list sorted by frequency else alpha cloud
 			 ******************************************************************************/
 
-			print "\n\t\t<span clickhandler='var cloud = new TagCloud(this.parentNode.parentNode); cloud.displayAsCloud();toggleSameControls(this);' toggleType='display' suppressedLink='1'>";
-			print _('cloud');
-			print "</span>";
+			print "Display: ";
+			print "\n\t\t<a onclick='if (this.parentNode.displayType != \"cloud\") {var cloud = new TagCloud(this.parentNode.parentNode); cloud.displayAsCloud();this.parentNode.displayType=\"cloud\";}'>";
+			print "cloud";
+			print "</a>";
+			
 			print " | ";
 			
 			/******************************************************************************
 			 * link for list display of tags
 			 ******************************************************************************/
-
-			print "\n\t\t<a onclick='var cloud = new TagCloud(this.parentNode.parentNode); 
-			cloud.displayAsList();toggleSameControls(this);' toggleType='display'>";
+			
+			print "\n\t\t<a onclick='var cloud = new TagCloud(this.parentNode.parentNode); cloud.displayAsList(); this.parentNode.displayType=\"list\";'>";
 			print _('list');
 			print "</a>";								
 		}
