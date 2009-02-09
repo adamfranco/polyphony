@@ -10,10 +10,14 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.5.0" date="The Future">
+	<version number="1.5.0" date="2009-02-09">
 		<releaseNotes>
-			
+			This release includes a number of improvements to tagging and a few
+			other fixes. See the change-log for details.
 		</releaseNotes>
+		<new author='adam' date='2009-02-09' ref='' reftype='fr'  reporter=''>
+			Tagging: Can now display a list of tags in addition to the cloud.
+		</new>
 		<fix author='adam' date='2009-02-09' ref='' reftype='bug'  reporter=''>
 			Tagging: TagCloud writing now can take in a 2D array of name-spaced 
 			parameters to pass through to the links in the tag cloud.
