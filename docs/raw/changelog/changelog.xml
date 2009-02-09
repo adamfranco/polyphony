@@ -10,6 +10,15 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2009-02-09' ref='' reftype='bug'  reporter=''>
+			Tagging: TagCloud writing now can take in a 2D array of name-spaced 
+			parameters to pass through to the links in the tag cloud.
+		</fix>
+	</version>
 	<version number="1.4.9" date="2009-01-09">
 		<releaseNotes>
 			This release improves some of the group-browsing displays.

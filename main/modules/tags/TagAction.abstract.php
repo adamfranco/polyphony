@@ -70,12 +70,16 @@ abstract class TagAction
 	 *							 Usually view or viewuser
 	 * @param optional array $styles An array of style-strings to use for various 
 	 *						levels of of tag occurrances.
+	 * @param optional array $additionalParams An array of parameters to pass in the same namespace
+	 * @param optional array $additionalNamespacedParams A two-dimensional array. Keys of the top 
+	 *						array are the namespaces, the values of the top array are arrays 
+	 * 						of key/value pairs in that namespace.
 	 * @return string
 	 * @access public
 	 * @static
 	 * @since 11/7/06
 	 */
-	static function getTagCloud ($tags, $viewAction = 'view', $styles = null, $additionalParams = null) {		
+	static function getTagCloud ($tags, $viewAction = 'view', $styles = null, $additionalParams = null, array $additionalNamespacedParams = array()) {		
 		ob_start();
 		if ($tags->hasNext()) {
 			$harmoni = Harmoni::instance();
@@ -129,19 +133,25 @@ abstract class TagAction
 					$group++;
 				}
 				
-				$parameters = array();
+				$url = $harmoni->request->mkURL('tags', $viewAction);
 				if (RequestContext::value('agent_id'))
-					$parameters['agent_id'] = RequestContext::value('agent_id');
-				if (is_array($additionalParams) && count($additionalParams)) {
+					$url->setValue('agent_id', RequestContext::value('agent_id'));
+				if (is_array($additionalParams)) {
 					foreach ($additionalParams as $name => $value)
-						$parameters[$name] = $value;
+						$url->setValue($name, $value);
 				}
 				
-				$parameters["tag"] = $tag->getValue();
+				foreach ($additionalNamespacedParams as $namespace => $params) {
+					$harmoni->request->startNamespace($namespace);
+					foreach ($params as $name => $value) {
+						$url->setValue($name, $value);
+					}
+					$harmoni->request->endNamespace();
+				}
 				
-				// url contains unencoded ampersand &node
-				$url = $harmoni->request->quickURL('tags', $viewAction, $parameters);
-				print "\n\t<a rel='tag' href='".$url."' ";
+				$url->setValue("tag", $tag->getValue());
+				
+				print "\n\t<a rel='tag' href='".$url->write()."' ";
 				print " title=\"";
 // 				print $group." ";
 // 				print str_replace('%2', $tag->getValue(),
@@ -194,12 +204,16 @@ abstract class TagAction
 	 *							 Usually view or viewuser
 	 * @param optional array $styles An array of style-strings to use for various 
 	 *						levels of of tag occurrances.
+	 * @param optional array $additionalParams An array of parameters to pass in the same namespace
+	 * @param optional array $additionalNamespacedParams A two-dimensional array. Keys of the top 
+	 *						array are the namespaces, the values of the top array are arrays 
+	 * 						of key/value pairs in that namespace.
 	 * @return string
 	 * @access public
 	 * @since 11/14/06
 	 * @static
 	 */
-	static function getTagCloudDiv ($tags, $viewAction = 'view', $styles = null, $additionalParams = null) {
+	static function getTagCloudDiv ($tags, $viewAction = 'view', $styles = null, $additionalParams = null, array $additionalNamespacedParams = array()) {
 		ob_start();
 		
 		?>
@@ -250,7 +264,7 @@ function toggleSameControls(node){
 
 		<?
 		print "\n<div class='tag_cloud'>";
-		print TagAction::getTagCloud($tags, $viewAction, $styles, $additionalParams);
+		print TagAction::getTagCloud($tags, $viewAction, $styles, $additionalParams, $additionalNamespacedParams);
 		
 		/******************************************************************************
 		 * link for alpha sort of tags
