@@ -217,7 +217,7 @@ abstract class TagAction
 		 ******************************************************************************/
 		
 		print "\n\t<div class='tags_display_options'>"._('Sort by: ');
-		print "\n\t\t<a onclick='var cloud = new TagCloud(this.parentNode.parentNode); cloud.orderAlpha(); this.parentNode.sortOrder=\"alpha\";'>";
+		print "\n\t\t<a onclick='var cloud = TagCloud.forContainer(this.parentNode.parentNode); cloud.orderAlpha();'>";
 		print _('a-z');
 		print "</a>";
 		print " | ";
@@ -228,7 +228,7 @@ abstract class TagAction
 		 * if # of tags < 15, then display as list sorted by frequency else alpha cloud
 		 ******************************************************************************/
 		
-		print "\n\t\t<a onclick='if (this.parentNode.sortOrder != \"freq\") { var cloud = new TagCloud(this.parentNode.parentNode); cloud.orderFreq(); this.parentNode.sortOrder=\"freq\";}'>";
+		print "\n\t\t<a onclick='var cloud = TagCloud.forContainer(this.parentNode.parentNode); cloud.orderFreq();'>";
 		print _('count');
 		print "</a>";
 		print "<br/>";

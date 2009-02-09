@@ -718,6 +718,23 @@ function TagCloud ( container ) {
 }
 
 	/**
+	 * Answer a tag cloud attached to a particular container, creating a new
+	 * one if necessary
+	 * 
+	 * @param DOM_Element container
+	 * @return void
+	 * @access public
+	 * @since 2/9/09
+	 * @static
+	 */
+	TagCloud.forContainer = function (container) {
+		if (!container.tagCloud) {
+			container.tagCloud = new TagCloud(container);
+		}
+		return container.tagCloud;
+	}
+
+	/**
 	 * Initialize this object
 	 * 
 	 * @param DOM_Element container
@@ -737,6 +754,9 @@ function TagCloud ( container ) {
 	 * @since 11/20/06
 	 */
 	TagCloud.prototype.orderAlpha = function () {
+		if (this.sortOrder == 'alpha')
+			return;
+		
 		var elements = new Array();
 		var keys = new Array();
 		var item = this.container.firstChild;
@@ -758,6 +778,8 @@ function TagCloud ( container ) {
 			this.container.insertBefore(elements[keys[i]], positionElement);
 			this.container.insertBefore(document.createTextNode(' '), positionElement);
 		}
+		
+		this.sortOrder = 'alpha';
 	}
 		
 	/**
@@ -768,6 +790,8 @@ function TagCloud ( container ) {
 	 * @since 11/20/06
 	 */
 	TagCloud.prototype.orderFreq = function () {
+		if (this.sortOrder == 'freq')
+			return;
 		
 		var elements = new Array();
 		var relation = new Array();
@@ -790,7 +814,9 @@ function TagCloud ( container ) {
 		for (var i = relation.length - 1; i >= 0; i--) {
 			this.container.insertBefore(elements[relation[i].key], positionElement);
 			this.container.insertBefore(document.createTextNode(' '), positionElement);
-		}		
+		}
+		
+		this.sortOrder = 'freq';
 	}
 
 
