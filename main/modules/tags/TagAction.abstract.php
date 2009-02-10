@@ -126,7 +126,7 @@ abstract class TagAction
 			for ($key=0; $key < count($tagArray); $key++) {
 				$tag =$tagArray[$key];
 				$group = -1;
-				for ($i=$minFreq; $i < $tag->getOccurances() && $group < count($styles); $i = $i + $incrementSize) {
+				for ($i = $minFreq; $i <= $tag->getOccurances() && $group < (count($styles) - 1); $i = $i + $incrementSize) {
 					$group++;
 				}
 				$group = max(0, $group);

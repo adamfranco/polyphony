@@ -10,6 +10,15 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.5.1" date="2009-02-10">
+		<releaseNotes>
+			This release fixes a minor bug in the tag-cloud printing.
+		</releaseNotes>
+		<fix author='adam' date='2009-02-10' ref='' reftype='bug'  reporter=''>
+			Tagging: Tag grouping for the cloud will now not exceed the number of styles
+			defined.
+		</fix>
+	</version>
 	<version number="1.5.0" date="2009-02-09">
 		<releaseNotes>
 			This release includes a number of improvements to tagging and a few
