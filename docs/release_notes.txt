@@ -1,5 +1,5 @@
 
-Polyphony v. 1.5.0 (2009-02-09)
+Polyphony v. 1.5.1 (2009-02-10)
 =================================
 
 What is Polyphony?
@@ -42,8 +42,7 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This release includes a number of improvements to tagging and a few other fixes. See
-the change-log for details.
+This release fixes a minor bug in the tag-cloud printing.
 
 
 Downloads
@@ -74,6 +73,12 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.5.1 (2009-02-10)
+----------------------------------------------------
+This release fixes a minor bug in the tag-cloud printing.
+
 
 
 v. 1.5.0 (2009-02-09)

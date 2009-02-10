@@ -2,6 +2,19 @@
 Polyphony Change Log
 
 
+v. 1.5.1 (2009-02-10)
+----------------------------------------------------
+This release fixes a minor bug in the tag-cloud printing.
+		
+		
+	* Bug Fix: 
+		Tagging: Tag grouping for the cloud will now not exceed the number of styles
+		defined. 
+		(2009-02-10 - Adam Franco)
+	
+
+
+
 v. 1.5.0 (2009-02-09)
 ----------------------------------------------------
 This release includes a number of improvements to tagging and a few other fixes. See
