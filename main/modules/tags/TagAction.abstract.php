@@ -70,25 +70,33 @@ abstract class TagAction
 	 *							 Usually view or viewuser
 	 * @param optional array $styles An array of style-strings to use for various 
 	 *						levels of of tag occurrances.
+	 * @param optional array $additionalParams An array of parameters to pass in the same namespace
+	 * @param optional array $additionalNamespacedParams A two-dimensional array. Keys of the top 
+	 *						array are the namespaces, the values of the top array are arrays 
+	 * 						of key/value pairs in that namespace.
 	 * @return string
 	 * @access public
 	 * @static
 	 * @since 11/7/06
 	 */
-	static function getTagCloud ($tags, $viewAction = 'view', $styles = null, $additionalParams = null) {		
+	static function getTagCloud ($tags, $viewAction = 'view', $styles = null, $additionalParams = null, array $additionalNamespacedParams = array()) {		
 		ob_start();
 		if ($tags->hasNext()) {
 			$harmoni = Harmoni::instance();
 			$harmoni->request->startNamespace("polyphony-tags");
 			$tagArray = array();
 			$occArray = array();
+			$nameArray = array();
 			$tag = $tags->next();
 			$tagArray[] =$tag;
+			$nameArray[] = $tag->getValue();
+			$occArray[] = $tag->getOccurances();
 			$minFreq = $maxFreq = $tag->getOccurances();
 			
 			while ($tags->hasNext()) {
 				$tag =$tags->next();
-				$tagArray[] =$tag;
+				$tagArray[] = $tag;
+				$nameArray[] = $tag->getValue();
 				$occArray[] = $tag->getOccurances();
 				if ($tag->getOccurances() < $minFreq)
 					$minFreq = $tag->getOccurances();
@@ -112,25 +120,37 @@ abstract class TagAction
 			
 // 			printpre(TagAction::average($occArray));
 // 			printpre($incrementSize);
+
+			array_multisort($nameArray, $tagArray);
 			
 			for ($key=0; $key < count($tagArray); $key++) {
 				$tag =$tagArray[$key];
-				$group = 0;
-				$style = $styles[0];
-				for ($i=$minFreq; $i < $tag->getOccurances() && $group < count($styles); $i = $i + $incrementSize) {
-					$style = $styles[$group];
+				$group = -1;
+				for ($i = $minFreq; $i <= $tag->getOccurances() && $group < (count($styles) - 1); $i = $i + $incrementSize) {
 					$group++;
 				}
-				$parameters = array();
+				$group = max(0, $group);
+				$style = $styles[$group];
+				
+				$url = $harmoni->request->mkURL('tags', $viewAction);
 				if (RequestContext::value('agent_id'))
-					$parameters['agent_id'] = RequestContext::value('agent_id');
-				if (is_array($additionalParams) && count($additionalParams)) {
+					$url->setValue('agent_id', RequestContext::value('agent_id'));
+				if (is_array($additionalParams)) {
 					foreach ($additionalParams as $name => $value)
-						$parameters[$name] = $value;
+						$url->setValue($name, $value);
 				}
-				$parameters["tag"] = $tag->getValue();
-				$url = $harmoni->request->quickURL('tags', $viewAction, $parameters);
-				print "\n\t<a rel='tag' href='".$url."' ";
+				
+				foreach ($additionalNamespacedParams as $namespace => $params) {
+					$harmoni->request->startNamespace($namespace);
+					foreach ($params as $name => $value) {
+						$url->setValue($name, $value);
+					}
+					$harmoni->request->endNamespace();
+				}
+				
+				$url->setValue("tag", $tag->getValue());
+				
+				print "\n\t<a rel='tag' href='".$url->write()."' ";
 				print " title=\"";
 // 				print $group." ";
 // 				print str_replace('%2', $tag->getValue(),
@@ -139,7 +159,11 @@ abstract class TagAction
 				print str_replace('%2', $tag->getOccurances(), 
 						str_replace('%1', $tag->getValue(),
 							_("View items tagged with '%1'. ")."("._("Frequency").": %2)"));
-				print "\" style='".$style."'>";
+							
+				// span styles cloudStyle, rel and frequency NOT validating
+				print "\" style='".$style."'";
+				print " class='tag_cloud_group_".$group." tag_frequency_".$tag->getOccurances()."'";
+				print ">";
 				print $tag->getValue()."</a> ";
 			}
 			$harmoni->request->endNamespace();
@@ -173,23 +197,67 @@ abstract class TagAction
 	 *							 Usually view or viewuser
 	 * @param optional array $styles An array of style-strings to use for various 
 	 *						levels of of tag occurrances.
+	 * @param optional array $additionalParams An array of parameters to pass in the same namespace
+	 * @param optional array $additionalNamespacedParams A two-dimensional array. Keys of the top 
+	 *						array are the namespaces, the values of the top array are arrays 
+	 * 						of key/value pairs in that namespace.
 	 * @return string
 	 * @access public
 	 * @since 11/14/06
 	 * @static
 	 */
-	static function getTagCloudDiv ($tags, $viewAction = 'view', $styles = null, $additionalParams = null) {
+	static function getTagCloudDiv ($tags, $viewAction = 'view', $styles = null, $additionalParams = null, array $additionalNamespacedParams = array()) {
 		ob_start();
-		print "\n<div style='text-align: justify'>";
-		print TagAction::getTagCloud($tags, $viewAction, $styles, $additionalParams);
-		print "\n\t<div style='margin-top: 5px;'>"._('Sort: ');
-		print "\n\t\t<a onclick='var cloud = new TagCloud(this.parentNode.parentNode); cloud.orderAlpha(); this.parentNode.sortOrder=\"alpha\";'>";
-		print _('alpha');
+		
+		print "\n<div class='tag_cloud'>";
+		print TagAction::getTagCloud($tags, $viewAction, $styles, $additionalParams, $additionalNamespacedParams);
+		
+		/******************************************************************************
+		 * link for alpha sort of tags
+		 ******************************************************************************/
+		
+		print "\n\t<div class='tags_display_options'>"._('Sort by: ');
+		print "\n\t\t<a href='#' onclick='var cloud = TagCloud.forContainer(this.parentNode.parentNode); cloud.orderAlpha(); return false;'>";
+		print _('a-z');
 		print "</a>";
 		print " | ";
-		print "\n\t\t<a onclick='if (this.parentNode.sortOrder != \"freq\") { var cloud = new TagCloud(this.parentNode.parentNode); cloud.orderFreq(); this.parentNode.sortOrder=\"freq\";}'>";
-		print _('freq');
+		
+		/******************************************************************************
+		 * link for frequency sort of tags (default)
+		 * Better defaults would be dependant on number of tags
+		 * if # of tags < 15, then display as list sorted by frequency else alpha cloud
+		 ******************************************************************************/
+		
+		print "\n\t\t<a href='#' onclick='var cloud = TagCloud.forContainer(this.parentNode.parentNode); cloud.orderFreq(); return false;'>";
+		print _('count');
 		print "</a>";
+		print "<br/>";
+		
+		if ($tags->count() > 1) {
+		
+			print _('View as: ');
+			
+			/******************************************************************************
+			 * link for cloud display of tags (default)
+			 * Better defaults would be dependant on number of tags
+			 * if # of tags < 15, then display as list sorted by frequency else alpha cloud
+			 ******************************************************************************/
+
+			print "Display: ";
+			print "\n\t\t<a href='#' onclick='var cloud = TagCloud.forContainer(this.parentNode.parentNode); cloud.showCloud(); return false;'>";
+			print "cloud";
+			print "</a>";
+			
+			print " | ";
+			
+			/******************************************************************************
+			 * link for list display of tags
+			 ******************************************************************************/
+			
+			print "\n\t\t<a href='#' onclick='var cloud = TagCloud.forContainer(this.parentNode.parentNode); cloud.showList(); return false;'>";
+			print _('list');
+			print "</a>";								
+		}
 		print "\n\t</div>";
 		print "\n</div>";
 		return ob_get_clean();

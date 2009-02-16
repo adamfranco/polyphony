@@ -201,12 +201,17 @@ document.get_element_by_id = function (id) {
  * Answer an array of elements with the class.
  * 
  * @param string className
+ * @param optional Element rootElement
  * @return Array
  * @access public
  * @since 10/2/08
  */
-document.get_elements_by_class = function (className) {
-	var all = document.getElementsByTagName('*');
+document.get_elements_by_class = function (className, rootElement) {
+	if (rootElement)
+		var all = rootElement.getElementsByTagName('*');
+	else
+		var all = document.getElementsByTagName('*');
+
 	var found = [];
 	for (var i = 0; i < all.length; i++) {
 		if (all[i].className == className)

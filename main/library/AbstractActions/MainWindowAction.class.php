@@ -93,9 +93,10 @@ abstract class MainWindowAction
 				null, 
 				LEFT, 
 				CENTER);
-			
-			$pageTitle .= ": ".$headingText;
 		}
+		
+		if ($this->getTitleText())
+			$pageTitle .= ": ".$this->getTitleText();
 		
 		// Set the page title and other new header items
 		$outputHandler =$harmoni->getOutputHandler();

@@ -10,6 +10,35 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.5.1" date="2009-02-10">
+		<releaseNotes>
+			This release fixes a minor bug in the tag-cloud printing.
+		</releaseNotes>
+		<fix author='adam' date='2009-02-10' ref='' reftype='bug'  reporter=''>
+			Tagging: Tag grouping for the cloud will now not exceed the number of styles
+			defined.
+		</fix>
+	</version>
+	<version number="1.5.0" date="2009-02-09">
+		<releaseNotes>
+			This release includes a number of improvements to tagging and a few
+			other fixes. See the change-log for details.
+		</releaseNotes>
+		<new author='adam' date='2009-02-09' ref='' reftype='fr'  reporter=''>
+			Tagging: Can now display a list of tags in addition to the cloud.
+		</new>
+		<fix author='adam' date='2009-02-09' ref='' reftype='bug'  reporter=''>
+			Tagging: TagCloud writing now can take in a 2D array of name-spaced 
+			parameters to pass through to the links in the tag cloud.
+		</fix>
+		<change author='adam' date='2009-02-09' ref='' reftype='fr'  reporter=''>
+			Javascript: document.get_elements_by_class() now accepts an optional
+			root element for the search.
+		</change>
+		<change author='adam' date='2009-02-09' ref='' reftype='fr'  reporter=''>
+			Actions: Can now support a page-title different from the heading.
+		</change>
+	</version>
 	<version number="1.4.11" date="2009-02-02">
 		<releaseNotes>
 			This update adds a minor function to the Javascript Panel's TabbedContent
