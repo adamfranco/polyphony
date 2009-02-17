@@ -10,6 +10,17 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.5.2" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<new author='adam' date='2009-02-17' ref='' reftype='fr'  reporter=''>
+			Agent: New Agent-Info panel for displaying details about an agent.
+		</new>
+		<change author='adam' date='2009-02-17' ref='' reftype='fr'  reporter=''>
+			Wizard: The RowRadioMatrix now supports embedding of components in its descriptions.
+		</change>
+	</version>
 	<version number="1.5.1" date="2009-02-10">
 		<releaseNotes>
 			This release fixes a minor bug in the tag-cloud printing.
