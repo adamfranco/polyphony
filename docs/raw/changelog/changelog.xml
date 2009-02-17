@@ -20,6 +20,9 @@
 		<change author='adam' date='2009-02-17' ref='' reftype='fr'  reporter=''>
 			Wizard: The RowRadioMatrix now supports embedding of components in its descriptions.
 		</change>
+		<new author='adam' date='2009-02-17' ref='' reftype='fr'  reporter=''>
+			Javascript: New utility method document.getChildrenByTagName(target, tagName).
+		</new>
 	</version>
 	<version number="1.5.1" date="2009-02-10">
 		<releaseNotes>
