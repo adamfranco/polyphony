@@ -168,10 +168,10 @@ Array.prototype.elementExists = function (value) {
  * @access public
  * @since 10/21/08
  */
-Element.prototype.getChildrenByTagName = function (tagName) {
+document.getChildrenByTagName = function (targetElement, tagName) {
 	var results = [];
-	for (var i = 0; i < this.childNodes.length; i++) {
-		var child = this.childNodes[i];
+	for (var i = 0; i < targetElement.childNodes.length; i++) {
+		var child = targetElement.childNodes[i];
 		if (child.nodeType == 1 && child.nodeName == tagName)
 			results.push(child);
 	}

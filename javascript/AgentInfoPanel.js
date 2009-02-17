@@ -130,11 +130,11 @@ function AgentInfoPanel ( agentId, agentDisplayName, positionElement ) {
 		}
 		
 		var response = xmldoc.documentElement;
-		var agents = response.getChildrenByTagName('group');
+		var agents = document.getChildrenByTagName(response, 'group');
 		if (agents.length) {
 			var agent = agents[0];
 		} else {
-			var agents = response.getChildrenByTagName('agent');
+			var agents = document.getChildrenByTagName(response, 'agent');
 			if (agents.length) {
 				var agent = agents[0];
 			} else {
@@ -159,14 +159,14 @@ function AgentInfoPanel ( agentId, agentDisplayName, positionElement ) {
 			var term = dl.appendChild(document.createElement('dt'));
 			term.innerHTML = "Description:";
 			var datum = dl.appendChild(document.createElement('dd'));
-			var nameElements = agent.getChildrenByTagName('description');
+			var nameElements = document.getChildrenByTagName(agent, 'description');
 			datum.innerHTML = nameElements[0].firstChild.nodeValue;
 		
 			var term = dl.appendChild(document.createElement('dt'));
 			term.innerHTML = "Members:";
 			var datum = dl.appendChild(document.createElement('dd'));
 			
-			var groupsElements = agent.getChildrenByTagName('groups');
+			var groupsElements = document.getChildrenByTagName(agent, 'groups');
 			if (groupsElements[0].getElementsByTagName('notice').length) {
 				datum.innerHTML = groupsElements[0].getElementsByTagName('notice').item(0).firstChild.nodeValue;
 			} else {
@@ -179,7 +179,7 @@ function AgentInfoPanel ( agentId, agentDisplayName, positionElement ) {
 			
 			
 			
-			var groupsElements = agent.getChildrenByTagName('members');
+			var groupsElements = document.getChildrenByTagName(agent, 'members');
 			if (groupsElements[0].getElementsByTagName('notice').length) {
 				datum.innerHTML = groupsElements[0].getElementsByTagName('notice').item(0).firstChild.nodeValue;
 			} else {
@@ -199,7 +199,7 @@ function AgentInfoPanel ( agentId, agentDisplayName, positionElement ) {
 	 * @since 10/21/08
 	 */
 	AgentInfoPanel.prototype.getAgentDisplayName = function (agent) {
-		var nameElements = agent.getChildrenByTagName('displayName');
+		var nameElements = document.getChildrenByTagName(agent, 'displayName');
 		return nameElements[0].firstChild.nodeValue;
 	}
 	
