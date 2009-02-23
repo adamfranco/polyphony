@@ -48,6 +48,8 @@ class login_typeAction
 	function execute () {
 		$harmoni = Harmoni::instance();
 		
+		unset($_SESSION['polyphony/login_failed']);
+		
 		//$isAuthenticated = FALSE;
 		$authN = Services::getService("AuthN");
 
@@ -88,6 +90,8 @@ class login_typeAction
 				$defaultTextDomain = textdomain("polyphony");
 				
 				$harmoni->request->startNamespace("polyphony");
+				
+				$_SESSION['polyphony/login_failed'] = true;
 				
 				ob_start();
 				

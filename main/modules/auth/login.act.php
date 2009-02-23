@@ -15,7 +15,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * Change the language to the one specified by the user
  * 
  * @since 7/21/05
- * @package polyphony.language
+ * @package polyphony.authentication
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
@@ -48,6 +48,8 @@ class loginAction
 	function execute () {
 		$harmoni = Harmoni::instance();
 		
+		unset($_SESSION['polyphony/login_failed']);
+		
 		// If we are using only cookies, but cookies aren't enabled
 		// (and hence not set), print an error message.
 		if ($harmoni->config->get("sessionUseOnlyCookies")
@@ -79,6 +81,7 @@ class loginAction
 			// (usually where we were)
 			$harmoni->history->goBack("polyphony/display_login");
 		} else {
+			$_SESSION['polyphony/login_failed'] = true;
 			// send us to where we want to be if we failed
 			// (possibly some form of authentication viewer)
 			$harmoni->history->goBack("polyphony/login_fail");

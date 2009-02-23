@@ -49,6 +49,8 @@ class logoutAction
 		$harmoni = Harmoni::instance();
 		$authN = Services::getService("AuthN");
 		
+		unset($_SESSION['polyphony/login_failed']);
+		
 		// dethenticate. :-)
 		$authN->destroyAuthentication();
 		

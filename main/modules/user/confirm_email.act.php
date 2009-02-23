@@ -165,6 +165,11 @@ class confirm_emailAction
 			print " | <a href='".$harmoni->request->quickURL("auth",
 				"logout")."'>".dgettext("polyphony", "Log Out")."</a></div>";
 		} else {
+			if (PolyphonyLogin::instance()->hasLoginFailed())
+				$message = "<span class='error'>"._("Login Failed")."</span> &nbsp; &nbsp;";
+			else
+				$message = "";
+				
 			// set bookmarks for success and failure
 			$harmoni->history->markReturnURL("polyphony/display_login", 
 				$harmoni->request->quickURL($harmoni->config->get('defaultModule'), $harmoni->config->get('defaultAction')));
@@ -180,7 +185,7 @@ class confirm_emailAction
 				"\n\t<strong>Login:</strong>".
 				"\n<form action='".
 				$harmoni->request->quickURL("auth", "login").
-				"' style='' method='post'>".
+				"' style='' method='post'>".$message.
 				"\n\t".dgettext("polyphony", "Username (email address):")." <input class='' type='text' size='8' 
 					name='$usernameField'/>".
 				"\n\t".dgettext("polyphony", "Password:")." <input class='' type='password' size ='8' 

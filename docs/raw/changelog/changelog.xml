@@ -23,6 +23,9 @@
 		<new author='adam' date='2009-02-17' ref='' reftype='fr'  reporter=''>
 			Javascript: New utility method document.getChildrenByTagName(target, tagName).
 		</new>
+		<new author='adam' date='2009-02-23' ref='' reftype='fr'  reporter=''>
+			Authentication: New PolyphonyLogin class to allow client apps to assess if a login attempt has just failed.
+		</new>
 	</version>
 	<version number="1.5.1" date="2009-02-10">
 		<releaseNotes>

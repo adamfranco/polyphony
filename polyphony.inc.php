@@ -101,6 +101,8 @@ require_once(dirname(__FILE__)."/main/library/AuthZPrinter.abstract.php");
 
 require_once(dirname(__FILE__)."/main/modules/help/Help.class.php");
 
+require_once(dirname(__FILE__)."/main/modules/auth/PolyphonyLogin.class.php");
+
 
 require_once(dirname(__FILE__)."/main/library/RepositoryInputOutputModules/RepositoryInputOutputModuleManager.class.php");
 Services::registerService("InOutModules", "RepositoryInputOutputModuleManager");
