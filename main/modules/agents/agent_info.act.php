@@ -127,11 +127,14 @@ class agent_infoAction
 			
 			if ($includeChildren) {
 				$canView = $authZ->isUserAuthorized(
-					$idMgr->getId("edu.middlebury.authorization.view_group_membership"),
+					$idMgr->getId("edu.middlebury.authorization.view"),
 					$agent->getId());
+				if ($agent->getId()->isEqual(new HarmoniId('edu.middlebury.agents.everyone')))
+					$canView = false;
+					
 // 					$canView = true;
 				
-				print "\n\t\t\t<groups>";
+				print "\n\t\t<groups>";
 				if ($canView) {
 					$names = array();
 					$strings = array();
@@ -148,9 +151,9 @@ class agent_infoAction
 				} else {
 					print "\n\t\t\t\t<notice>"._("Unauthorized to view group membership.")."</notice>";
 				}
-				print "\n\t\t\t</groups>";
+				print "\n\t\t</groups>";
 				
-				print "\n\t\t\t<members>";
+				print "\n\t\t<members>";
 				if ($canView) {
 					$names = array();
 					$strings = array();
@@ -167,7 +170,7 @@ class agent_infoAction
 				} else {
 					print "\n\t\t\t\t<notice>"._("Unauthorized to view group membership.")."</notice>";
 				}
-				print "\n\t\t\t</members>";
+				print "\n\t\t</members>";
 			}
 			print "\n\t</group>";
 		}

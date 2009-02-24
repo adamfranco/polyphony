@@ -184,7 +184,7 @@ function AgentInfoPanel ( agentId, agentDisplayName, positionElement ) {
 			if (groupsElements[0].getElementsByTagName('notice').length) {
 				datum.innerHTML = groupsElements[0].getElementsByTagName('notice').item(0).firstChild.nodeValue;
 			} else {
-				var groupElements = groupsElements[0].getChildrenByTagName('group');
+				var groupElements = document.getChildrenByTagName(groupsElements[0], 'group');
 				for (var i = 0; i < groupElements.length; i++) 
 					this.addAgent(datum, groupElements[i]);
 				if (groupElements.length)
@@ -197,7 +197,7 @@ function AgentInfoPanel ( agentId, agentDisplayName, positionElement ) {
 			if (groupsElements[0].getElementsByTagName('notice').length) {
 				datum.innerHTML = groupsElements[0].getElementsByTagName('notice').item(0).firstChild.nodeValue;
 			} else {
-				var groupElements = groupsElements[0].getChildrenByTagName('agent');
+				var groupElements = document.getChildrenByTagName(groupsElements[0], 'agent');
 				for (var i = 0; i < groupElements.length; i++) 
 					this.addAgent(datum, groupElements[i]);
 			}
