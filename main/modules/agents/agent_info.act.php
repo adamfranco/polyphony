@@ -97,80 +97,80 @@ class agent_infoAction
 	 */
 	protected function printAgent (Agent $agent, $includeChildren = false) {
 		if ($agent->isAgent())
-				print "\n\t<agent";
-			else
-				print "\n\t<group";
-			print " id=\"".$agent->getId()->getIdString()."\">";
+			print "\n\t<agent";
+		else
+			print "\n\t<group";
+		print " id=\"".$agent->getId()->getIdString()."\">";
+		
+		print "\n\t\t<displayName><![CDATA[".$agent->getDisplayName()."]]></displayName>";
+		
+		$type = $agent->getType();
+		print "\n\t\t<type>";
+		print "\n\t\t\t<domain><![CDATA[".$type->getDomain()."]]></domain>";
+		print "\n\t\t\t<authority><![CDATA[".$type->getAuthority()."]]></authority>";
+		print "\n\t\t\t<keyword><![CDATA[".$type->getKeyword()."]]></keyword>";
+		print "\n\t\t\t<description><![CDATA[".$type->getDescription()."]]></description>";
+		print "\n\t\t</type>";
+		
+		try {
+			print "\n\t\t<email>".$this->getAgentEmail($agent)."</email>";
+		} catch (OperationFailedException $e) {
+		}
+		
+		if ($agent->isAgent()) {
+			print "\n\t</agent>";	
+		} else {
+			print "\n\t\t<description><![CDATA[".$agent->getDescription()."]]></description>";
 			
-			print "\n\t\t<displayName><![CDATA[".$agent->getDisplayName()."]]></displayName>";
+			$authZ = Services::getService("AuthZ");
+			$idMgr = Services::getService("Id");
 			
-			$type = $agent->getType();
-			print "\n\t\t\t<type>";
-			print "\n\t\t\t\t<domain><![CDATA[".$type->getDomain()."]]></domain>";
-			print "\n\t\t\t\t<authority><![CDATA[".$type->getAuthority()."]]></authority>";
-			print "\n\t\t\t\t<keyword><![CDATA[".$type->getKeyword()."]]></keyword>";
-			print "\n\t\t\t\t<description><![CDATA[".$type->getDescription()."]]></description>";
-			print "\n\t\t\t</type>";
-			
-			try {
-				print "\n\t\t<email>".$this->getAgentEmail($agent)."</email>";
-			} catch (OperationFailedException $e) {
-			}
-			
-			if ($agent->isAgent())
-				print "\n\t</agent>";
-			else {
-				print "\n\t\t<description><![CDATA[".$agent->getDescription()."]]></description>";
-				
-				$authZ = Services::getService("AuthZ");
-				$idMgr = Services::getService("Id");
-				
-				if ($includeChildren) {
-					$canView = $authZ->isUserAuthorized(
-						$idMgr->getId("edu.middlebury.authorization.view_group_membership"),
-						$agent->getId());
+			if ($includeChildren) {
+				$canView = $authZ->isUserAuthorized(
+					$idMgr->getId("edu.middlebury.authorization.view_group_membership"),
+					$agent->getId());
 // 					$canView = true;
-					
-					print "\n\t\t\t<groups>";
-					if ($canView) {
-						$names = array();
-						$strings = array();
-						$children = $agent->getGroups(false);
-						while ($children->hasNext()) {
-							$child = $children->next();
-							ob_start();
-							$this->printAgent($child);
-							$names[] = $child->getDisplayName();
-							$strings[] = ob_get_clean();
-						}
-						array_multisort($names, array_keys($strings), $strings);
-						print implode('', $strings);
-					} else {
-						print "\n\t\t\t\t<notice>"._("Unauthorized to view group membership.")."</notice>";
+				
+				print "\n\t\t\t<groups>";
+				if ($canView) {
+					$names = array();
+					$strings = array();
+					$children = $agent->getGroups(false);
+					while ($children->hasNext()) {
+						$child = $children->next();
+						ob_start();
+						$this->printAgent($child);
+						$names[] = $child->getDisplayName();
+						$strings[] = ob_get_clean();
 					}
-					print "\n\t\t\t</groups>";
-					
-					print "\n\t\t\t<members>";
-					if ($canView) {
-						$names = array();
-						$strings = array();
-						$children = $agent->getMembers(false);
-						while ($children->hasNext()) {
-							$child = $children->next();
-							ob_start();
-							$this->printAgent($child);
-							$names[] = $child->getDisplayName();
-							$strings[] = ob_get_clean();
-						}
-						array_multisort($names, array_keys($strings), $strings);
-						print implode('', $strings);
-					} else {
-						print "\n\t\t\t\t<notice>"._("Unauthorized to view group membership.")."</notice>";
-					}
-					print "\n\t\t\t</members>";
+					array_multisort($names, array_keys($strings), $strings);
+					print implode('', $strings);
+				} else {
+					print "\n\t\t\t\t<notice>"._("Unauthorized to view group membership.")."</notice>";
 				}
-				print "\n\t</group>";
+				print "\n\t\t\t</groups>";
+				
+				print "\n\t\t\t<members>";
+				if ($canView) {
+					$names = array();
+					$strings = array();
+					$children = $agent->getMembers(false);
+					while ($children->hasNext()) {
+						$child = $children->next();
+						ob_start();
+						$this->printAgent($child);
+						$names[] = $child->getDisplayName();
+						$strings[] = ob_get_clean();
+					}
+					array_multisort($names, array_keys($strings), $strings);
+					print implode('', $strings);
+				} else {
+					print "\n\t\t\t\t<notice>"._("Unauthorized to view group membership.")."</notice>";
+				}
+				print "\n\t\t\t</members>";
 			}
+			print "\n\t</group>";
+		}
 	}
 	
 	/**
