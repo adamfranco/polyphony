@@ -150,17 +150,31 @@ function AgentInfoPanel ( agentId, agentDisplayName, positionElement ) {
 		var datum = dl.appendChild(document.createElement('dd'));
 		datum.innerHTML = this.getAgentDisplayName(agent); 
 		
+		var emailElements = document.getChildrenByTagName(agent, 'email');
+		if (emailElements.length) {
+			var term = dl.appendChild(document.createElement('dt'));
+			term.innerHTML = "Email:";
+			for (var i = 0; i < emailElements.length; i++) {
+				var datum = dl.appendChild(document.createElement('dd'));
+				var email = emailElements[i].firstChild.nodeValue;
+				datum.innerHTML = '<a href="mailto:' + email + '">' + email + '</a>';
+			}
+		}
+		
 		var term = dl.appendChild(document.createElement('dt'));
 		term.innerHTML = "ID:";
 		var datum = dl.appendChild(document.createElement('dd'));
 		datum.innerHTML = agent.getAttribute('id');
 		
 		if (agent.nodeName == 'group') {
-			var term = dl.appendChild(document.createElement('dt'));
-			term.innerHTML = "Description:";
-			var datum = dl.appendChild(document.createElement('dd'));
 			var nameElements = document.getChildrenByTagName(agent, 'description');
-			datum.innerHTML = nameElements[0].firstChild.nodeValue;
+			var description = nameElements[0].firstChild.nodeValue;
+			if (description) {
+				var term = dl.appendChild(document.createElement('dt'));
+				term.innerHTML = "Description:";
+				var datum = dl.appendChild(document.createElement('dd'));
+				datum.innerHTML = nameElements[0].firstChild.nodeValue;
+			}
 		
 			var term = dl.appendChild(document.createElement('dt'));
 			term.innerHTML = "Members:";

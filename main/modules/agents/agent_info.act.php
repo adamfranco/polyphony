@@ -111,7 +111,12 @@ class agent_infoAction
 			print "\n\t\t\t\t<keyword><![CDATA[".$type->getKeyword()."]]></keyword>";
 			print "\n\t\t\t\t<description><![CDATA[".$type->getDescription()."]]></description>";
 			print "\n\t\t\t</type>";
-					
+			
+			try {
+				print "\n\t\t<email>".$this->getAgentEmail($agent)."</email>";
+			} catch (OperationFailedException $e) {
+			}
+			
 			if ($agent->isAgent())
 				print "\n\t</agent>";
 			else {
@@ -168,6 +173,25 @@ class agent_infoAction
 			}
 	}
 	
+	/**
+	 * Answer the email address of an agent
+	 * 
+	 * @param Agent $agent
+	 * @return string
+	 * @access protected
+	 * @since 2/19/09
+	 */
+	protected function getAgentEmail (Agent $agent) {
+		$properties = $agent->getProperties();		
+		$email = null;
+		while ($properties->hasNext()) {
+			$email = $properties->next()->getProperty("email");
+			if (preg_match('/^[^\s@]+@[^\s@]+$/', $email))
+				return $email;
+		}
+		
+		throw new OperationFailedException("No email found for agent, '".$agent->getDisplayName()."'.");
+	}
 }
 
 ?>
