@@ -1,5 +1,5 @@
 
-Polyphony v. 1.5.1 (2009-02-10)
+Polyphony v. 1.5.2 (2009-02-25)
 =================================
 
 What is Polyphony?
@@ -42,7 +42,8 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This release fixes a minor bug in the tag-cloud printing.
+This release adds a new agent information panel and adds a few features required by
+Segue. See the change log for details.
 
 
 Downloads
@@ -73,6 +74,13 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.5.2 (2009-02-25)
+----------------------------------------------------
+This release adds a new agent information panel and adds a few features required by
+Segue. See the change log for details.
+
 
 
 v. 1.5.1 (2009-02-10)

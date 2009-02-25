@@ -2,6 +2,34 @@
 Polyphony Change Log
 
 
+v. 1.5.2 (2009-02-25)
+----------------------------------------------------
+This release adds a new agent information panel and adds a few features required by
+Segue. See the change log for details.
+		
+		
+	* New feature: 
+		Agent: New Agent-Info panel for displaying details about an agent.
+		(2009-02-17 - Adam Franco)
+		
+	* Change: 
+		Wizard: The RowRadioMatrix now supports embedding of components in its
+		descriptions. 
+		(2009-02-17 - Adam Franco)
+		
+	* New feature: 
+		Javascript: New utility method document.getChildrenByTagName(target,
+		tagName). 
+		(2009-02-17 - Adam Franco)
+		
+	* New feature: 
+		Authentication: New PolyphonyLogin class to allow client apps to assess if a
+		login attempt has just failed.
+		(2009-02-23 - Adam Franco)
+	
+
+
+
 v. 1.5.1 (2009-02-10)
 ----------------------------------------------------
 This release fixes a minor bug in the tag-cloud printing.

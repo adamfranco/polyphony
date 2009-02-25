@@ -10,9 +10,10 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
-	<version number="1.5.2" date="The Future">
+	<version number="1.5.2" date="2009-02-25">
 		<releaseNotes>
-			
+			This release adds a new agent information panel and adds a few features
+			required by Segue. See the change log for details.
 		</releaseNotes>
 		<new author='adam' date='2009-02-17' ref='' reftype='fr'  reporter=''>
 			Agent: New Agent-Info panel for displaying details about an agent.
