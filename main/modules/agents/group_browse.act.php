@@ -247,24 +247,28 @@ END;
 		print "\n - <em>".htmlspecialchars($group->getDescription())."</em>";
 		
 		// print out the properties of the Agent
-		print "\n<em>";
-		$propertiesIterator =$group->getProperties();
 		
-		while($propertiesIterator->hasNext()) {
-			$properties =$propertiesIterator->next();
-			$propertiesType =$properties->getType();
-			print "\n\t(<a title='".htmlspecialchars($propertiesType->getDomain()." :: ".$propertiesType->getAuthority()." :: ".$propertiesType->getKeyword()." - ".$propertiesType->getDescription())."'>";
+		print "\n<em>";
+		try {
+			$propertiesIterator =$group->getProperties();
 			
-			$keys =$properties->getKeys();
-			$i = 0;
-			
-			while ($keys->hasNext()) {
-				$key =$keys->next();			
-				print htmlspecialchars("\n\t\t".(($i)?", ":"").$key.": ".$properties->getProperty($key));
-				$i++;
+			while($propertiesIterator->hasNext()) {
+				$properties =$propertiesIterator->next();
+				$propertiesType =$properties->getType();
+				print "\n\t(<a title='".htmlspecialchars($propertiesType->getDomain()." :: ".$propertiesType->getAuthority()." :: ".$propertiesType->getKeyword()." - ".$propertiesType->getDescription())."'>";
+				
+				$keys =$properties->getKeys();
+				$i = 0;
+				
+				while ($keys->hasNext()) {
+					$key =$keys->next();			
+					print htmlspecialchars("\n\t\t".(($i)?", ":"").$key.": ".$properties->getProperty($key));
+					$i++;
+				}
+				
+				print "\n\t</a>)";
 			}
-			
-			print "\n\t</a>)";
+		} catch(OperationFailedException $e) {
 		}
 		print "\n</em>";
 	}
