@@ -10,6 +10,19 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.5.3" date="2009-10-09">
+		<releaseNotes>
+			This release makes a small fix to the Agent support and adds needed search action
+			and javascript dependencies required by Harmoni-1.10.0's reworked admin-act-as-user
+			authentication.
+		</releaseNotes>
+		<fix author='adam' date='2009-10-09' ref='' reftype='bug'  reporter=''>
+			Agent: Group brows UI now doesn't die if group properties aren't available.
+		</fix>
+		<new author='adam' date='2009-10-09' ref='' reftype='fr'  reporter=''>
+			Authentication: Added search_users action and jquery dependencies for new Admin-Act-As-User authentication.
+		</new>
+	</version>
 	<version number="1.5.2" date="2009-02-25">
 		<releaseNotes>
 			This release adds a new agent information panel and adds a few features

@@ -2,6 +2,25 @@
 Polyphony Change Log
 
 
+v. 1.5.3 (2009-10-09)
+----------------------------------------------------
+This release makes a small fix to the Agent support and adds needed search action
+and javascript dependencies required by Harmoni-1.10.0's reworked admin-act-as-user
+authentication. 
+		
+		
+	* Bug Fix: 
+		Agent: Group brows UI now doesn't die if group properties aren't available.
+		(2009-10-09 - Adam Franco)
+		
+	* New feature: 
+		Authentication: Added search_users action and jquery dependencies for new
+		Admin-Act-As-User authentication.
+		(2009-10-09 - Adam Franco)
+	
+
+
+
 v. 1.5.2 (2009-02-25)
 ----------------------------------------------------
 This release adds a new agent information panel and adds a few features required by
