@@ -71,7 +71,7 @@ class search_usersAction
 			$foundTokens = $method->getTokensBySearch($query);
 			while ($foundTokens->hasNext()) {
 				$tokens = $foundTokens->next();
-				print $method->getDisplayNameForTokens($tokens)." (".$type->getKeyword().")|type=\"".$type->asString()."\" id=\"".$tokens->getIdentifier()."\"";
+				print $method->getDisplayNameForTokens($tokens)." (".$type->getKeyword().")|type=\"".$type->asString()."\" id=\"".$tokens->getIdentifier()."\"\n";
 			}
 		}
 		exit;
