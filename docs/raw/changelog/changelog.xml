@@ -10,6 +10,15 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.5.4" date="2009-11-18">
+		<releaseNotes>
+			This release makes a small fix to the authentication support for searching users.
+		</releaseNotes>
+		<fix author='adam' date='2009-10-28' ref='' reftype='bug'  reporter=''>
+			Change-user results are now printed one per line.
+			Fixes issue: http://chisel.middlebury.edu/pool/show_bug.cgi?id=353
+		</fix>
+	</version>
 	<version number="1.5.3" date="2009-10-09">
 		<releaseNotes>
 			This release makes a small fix to the Agent support and adds needed search action

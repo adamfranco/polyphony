@@ -1,5 +1,5 @@
 
-Polyphony v. 1.5.3 (2009-10-09)
+Polyphony v. 1.5.4 (2009-11-18)
 =================================
 
 What is Polyphony?
@@ -42,9 +42,7 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This release makes a small fix to the Agent support and adds needed search action
-and javascript dependencies required by Harmoni-1.10.0's reworked admin-act-as-user
-authentication. 
+This release makes a small fix to the authentication support for searching users.
 
 
 Downloads
@@ -75,6 +73,12 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.5.4 (2009-11-18)
+----------------------------------------------------
+This release makes a small fix to the authentication support for searching users.
+
 
 
 v. 1.5.3 (2009-10-09)

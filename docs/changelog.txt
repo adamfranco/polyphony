@@ -2,6 +2,19 @@
 Polyphony Change Log
 
 
+v. 1.5.4 (2009-11-18)
+----------------------------------------------------
+This release makes a small fix to the authentication support for searching users.
+		
+		
+	* Bug Fix: 
+		Change-user results are now printed one per line. Fixes issue:
+		http://chisel.middlebury.edu/pool/show_bug.cgi?id=353 
+		(2009-10-28 - Adam Franco)
+	
+
+
+
 v. 1.5.3 (2009-10-09)
 ----------------------------------------------------
 This release makes a small fix to the Agent support and adds needed search action
