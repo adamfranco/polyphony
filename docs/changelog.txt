@@ -2,6 +2,21 @@
 Polyphony Change Log
 
 
+v. 1.5.5 (2010-03-04)
+----------------------------------------------------
+This release fixes a minor issue with CAS authentication and visitor support.
+		
+		
+	* Bug Fix: 
+		The visitor login form now doesn't cycle through all authentication methods.
+		
+		 The CAS AuthNMethod was getting called first and forwarding visitors to
+		CAS where they wouldn't be able to log in.
+		(2010-03-04 - Adam Franco)
+	
+
+
+
 v. 1.5.4 (2009-11-18)
 ----------------------------------------------------
 This release makes a small fix to the authentication support for searching users.

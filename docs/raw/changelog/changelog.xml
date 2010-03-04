@@ -10,6 +10,17 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Polyphony">
+	<version number="1.5.5" date="2010-03-04">
+		<releaseNotes>
+			This release fixes a minor issue with CAS authentication and visitor support.
+		</releaseNotes>
+		<fix author='adam' date='2010-03-04' ref='' reftype='bug'  reporter=''>
+			The visitor login form now doesn't cycle through all authentication methods.
+			
+   			The CAS AuthNMethod was getting called first and forwarding visitors to CAS
+   			where they wouldn't be able to log in.
+		</fix>
+	</version>
 	<version number="1.5.4" date="2009-11-18">
 		<releaseNotes>
 			This release makes a small fix to the authentication support for searching users.

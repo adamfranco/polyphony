@@ -1,5 +1,5 @@
 
-Polyphony v. 1.5.4 (2009-11-18)
+Polyphony v. 1.5.5 (2010-03-04)
 =================================
 
 What is Polyphony?
@@ -42,7 +42,7 @@ used independently of the other.
 
 Current Version Notes
 ---------------------
-This release makes a small fix to the authentication support for searching users.
+This release fixes a minor issue with CAS authentication and visitor support.
 
 
 Downloads
@@ -73,6 +73,12 @@ https://sourceforge.net/tracker/?group_id=82873&atid=567473
 | Prior Polyphony Release Notes
 | (See the Polyphony change log for more details)
 ===================================================================
+
+
+v. 1.5.5 (2010-03-04)
+----------------------------------------------------
+This release fixes a minor issue with CAS authentication and visitor support.
+
 
 
 v. 1.5.4 (2009-11-18)
