@@ -181,10 +181,12 @@ class confirm_emailAction
 			$passwordField = $harmoni->request->getName("password");
 			$harmoni->request->endNamespace();
 			$harmoni->request->startNamespace("polyphony");
+			$visitorAuthType = new Type ("Authentication", "edu.middlebury.harmoni",
+			"Visitors");
 			print  "\n<div style='margin-top: 10px;'>".
-				"\n\t<strong>Login:</strong>".
+				"\n\t<strong>Visitor Login:</strong>".
 				"\n<form action='".
-				$harmoni->request->quickURL("auth", "login").
+				$harmoni->request->quickURL("auth", "login_type", array('type' => $visitorAuthType->asString())).
 				"' style='' method='post'>".$message.
 				"\n\t".dgettext("polyphony", "Username (email address):")." <input class='' type='text' size='8' 
 					name='$usernameField'/>".
