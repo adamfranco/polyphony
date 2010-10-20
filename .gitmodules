@@ -1,0 +1,3 @@
+[submodule "javascript/fckeditor"]
+	path = javascript/fckeditor
+	url = http://community.middlebury.edu/~afranco/git/external/fckeditor.git

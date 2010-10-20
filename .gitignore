@@ -1,6 +1,4 @@
-# Ignore external libraries
-javascript/fckeditor*
-
+P
 # Ignore custom configs (ignore all, then don't ignore defaults)
 config/*.conf.php
 !config/*_default.conf.php
