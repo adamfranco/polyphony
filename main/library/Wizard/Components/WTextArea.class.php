@@ -37,7 +37,7 @@ class WTextArea
 	 * @return ref object
 	 * @static
 	 */
-	static static function withRowsAndColumns ($rows, $cols, $class = 'WTextArea') {
+	static function withRowsAndColumns ($rows, $cols, $class = 'WTextArea') {
 		$obj = new $class();
 		$obj->setRows($rows);
 		$obj->setColumns($cols);
