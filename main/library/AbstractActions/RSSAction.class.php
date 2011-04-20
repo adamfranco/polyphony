@@ -771,7 +771,7 @@ class RSSItem {
 		ArgumentValidator::validate($url, StringValidatorRule::getRule());
 		ArgumentValidator::validate($length, IntegerValidatorRule::getRule());
 		ArgumentValidator::validate($mimeType, RegexValidatorRule::getRule(
-			'^(text|image|audio|video|application)/.+$'));
+			'/^(text|image|audio|video|application)/.+$/'));
 		
 		$this->_enclosures[] = array(
 			'url' => $url,
