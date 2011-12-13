@@ -697,7 +697,7 @@ class XMLImporter {
 		for ($i = 0; $i < $moreXML->getLength(); $i++) {
 			$element =$moreXML->item($i);
 			$path = $element->getText();
-			if (!ereg("^([a-zA-Z]+://|[a-zA-Z]+:\\|/)", $path))
+			if (!preg_match("#^([a-zA-Z]+://|[a-zA-Z]+:\\|/)#", $path))
 				$path = $element->ownerDocument->xmlPath.$path;			
 		
 			$import = new DOMIT_Document();

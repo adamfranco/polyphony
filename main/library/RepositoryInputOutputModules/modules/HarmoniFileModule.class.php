@@ -415,7 +415,7 @@ class HarmoniFileModule
 		
 		// if the "use custom" box was checked store the height.
 		if ($values['use_custom_height']
-			&& ereg("^([0-9]+)px$", $values['height'], $matches)) 
+			&& preg_match("/^([0-9]+)px$/", $values['height'], $matches)) 
 		{
 			$dimArray = $parts['DIMENSIONS']->getValue();
 			$dimArray[1] = $matches[1];
@@ -426,7 +426,7 @@ class HarmoniFileModule
 		
 		// if the "use custom" box was checked store the width.
 		if ($values['use_custom_width']
-			&& ereg("^([0-9]+)px$", $values['width'], $matches)) 
+			&& preg_match("/^([0-9]+)px$/", $values['width'], $matches)) 
 		{
 			$dimArray = $parts['DIMENSIONS']->getValue();
 			$dimArray[0] = $matches[1];
@@ -437,7 +437,7 @@ class HarmoniFileModule
 		
 		// if the "use custom" box was checked store the height.
 		if ($values['use_custom_thumbnail_height']
-			&& ereg("^([0-9]+)px$", $values['thumbnail_height'], $matches)) 
+			&& preg_match("/^([0-9]+)px$/", $values['thumbnail_height'], $matches)) 
 		{
 			$dimArray = $parts['THUMBNAIL_DIMENSIONS']->getValue();
 			$dimArray[1] = $matches[1];
@@ -448,7 +448,7 @@ class HarmoniFileModule
 		
 		// if the "use custom" box was checked store the width.
 		if ($values['use_custom_thumbnail_width']
-			&& ereg("^([0-9]+)px$", $values['thumbnail_width'], $matches)) 
+			&& preg_match("/^([0-9]+)px$/", $values['thumbnail_width'], $matches)) 
 		{
 			$dimArray = $parts['THUMBNAIL_DIMENSIONS']->getValue();
 			$dimArray[0] = $matches[1];
@@ -563,7 +563,7 @@ class HarmoniFileModule
 			print ")'>";
 			$harmoni->request->startNamespace($ns);
 			// If we have a thumbnail with a valid mime type, print a link to that.
-			$thumbnailName = ereg_replace("\.[^\.]+$", "", 
+			$thumbnailName = preg_replace("/\.[^\.]+$/", "", 
 											$parts['FILE_NAME'][0]->getValue());
 			if ($thumbnailMimeType = $parts['THUMBNAIL_MIME_TYPE'][0]->getValue()) {
 				$mime = Services::getService("MIME");

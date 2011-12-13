@@ -87,8 +87,8 @@ class TabRepositoryImporter
 			if($this->_dataDir !== NULL){
 				$this->_srcDir = $this->_dataDir;
 			}
-			$schema = ereg_replace("[\n\r]*$","",fgets($meta));
-			$titleline = ereg_replace("[\n\r]*$", "", fgets($meta));
+			$schema = preg_replace("/[\n\r]*$/","",fgets($meta));
+			$titleline = preg_replace("/[\n\r]*$/", "", fgets($meta));
 			fclose($meta);
 			
 			$this->_fileStructureId = $this->matchSchema("File",

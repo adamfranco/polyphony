@@ -80,7 +80,7 @@ class XMLRepositoryFileImporter extends XMLImporter {
 	 */
 	function import ($topImporter, $node, $type, $parent) {
 		$path = $node->getText();
-		if (!ereg("^([a-zA-Z]+://|[a-zA-Z]+:\\|/)", $path))
+		if (!preg_match("#^([a-zA-Z]+://|[a-zA-Z]+:\\|/)#", $path))
 			$path = $node->ownerDocument->xmlPath.$path;
 	// @todo keep the topImporter passing down to new importer hierarchies!!!
 		$imp = XMLRepositoryImporter::withFile($this->_existingArray, $path,

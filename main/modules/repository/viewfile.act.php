@@ -227,7 +227,7 @@ class viewfileAction
 				header("Content-Type: ".$parts['MIME_TYPE']->getValue());
 				
 				$filename = $parts['FILE_NAME']->getValue();
-				if (!ereg("[^\\w]", $filename)) {
+				if (!preg_match("/[^\\w]/", $filename)) {
 					$mime = Services::getService("MIME");
 					$extension = $mime->getExtensionForMIMEType($parts['MIME_TYPE']->getValue());
 					$filename = _("Untitled").".".$extension;
@@ -358,9 +358,9 @@ class RepositoryImageCache {
 		$mime = Services::getService("MIME");
 		
 		$extension = $mime->getExtensionForMIMEType($this->getCachedMimeType());
-		if (eregi("^.+\.".$extension."$", $this->_parts['FILE_NAME']->getValue())) {
+		if (preg_match("/^.+\.".$extension."$/i", $this->_parts['FILE_NAME']->getValue())) {
 			return $this->_parts['FILE_NAME']->getValue();
-		} else if (ereg("^[^\\w]+$", $this->_parts['FILE_NAME']->getValue())) {
+		} else if (preg_match("/^[^\\w]+$/", $this->_parts['FILE_NAME']->getValue())) {
 			return $this->_parts['FILE_NAME']->getValue().".".$extension;
 		} else {
 			return _("Untitled").".".$extension;

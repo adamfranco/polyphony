@@ -109,7 +109,7 @@ class XMLThumbpathPartImporter extends XMLImporter {
 	function getNodeInfo () {
 		$mime = Services::getService("MIME");
 		$path = $this->_node->getText();
-		if (!ereg("^([a-zA-Z]+://|[a-zA-Z]+:\\|/)", $path))
+		if (!preg_match("#^([a-zA-Z]+://|[a-zA-Z]+:\\|/)#", $path))
 			$path = $this->_node->ownerDocument->xmlPath.$path;
 		
 		$this->_info['filepath'] = $path;

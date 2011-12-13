@@ -57,7 +57,7 @@ class XMLRecordStructureExporter {
 "\t<recordstructure ".
 "id=\"".$idString."\" ".
 "xml:id=\"".$idString."\"");
-		if (!ereg("^Repository", $idString))
+		if (!preg_match("/^Repository/", $idString))
 			fwrite($this->_xml,
 " isGlobal=\"TRUE\"");
 		fwrite($this->_xml,

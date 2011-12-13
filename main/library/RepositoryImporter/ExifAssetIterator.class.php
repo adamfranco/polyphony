@@ -82,7 +82,7 @@ class ExifAssetIterator
 		);
 		$dir = opendir($dirName);
 		while($file = readdir($dir)) {
-			if (ereg('^[^\.]', $file) && !in_array($file, $toIgnore)) {
+			if (preg_match('/^[^\.]/', $file) && !in_array($file, $toIgnore)) {
 				$path = $dirName.$file;
 				if (!is_dir($path))
 					$this->_assetList[] = $path;

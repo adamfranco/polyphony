@@ -22,7 +22,7 @@ class PrimitiveIO_integer extends PrimitiveIO_shortstring {
 
 	function PrimitiveIO_integer() {
 		$this->setErrorText(dgettext("polyphony", "Enter a valid integer (no commas)."));
-		$this->setErrorRule(new WECRegex("^[0-9]+\$"));
+		$this->setErrorRule(new WECRegex("^[0-9]+$"));
 	}
 
 	/**
@@ -66,7 +66,7 @@ class PrimitiveIO_integer extends PrimitiveIO_shortstring {
 	 * @return boolean
 	 */
 	function validate () {
-		$val = ereg("^[0-9]+\$", $this->_value);
+		$val = preg_match("/^[0-9]+$/", $this->_value);
 		if (!$val) $this->_showError = true;
 		return $val;
 	}
@@ -80,7 +80,7 @@ class PrimitiveIO_float extends PrimitiveIO_integer {
 
 	function PrimitiveIO_float() {
 		$this->setErrorText(dgettext("polyphony", "Enter a valid integer (no commas)."));
-		$this->setErrorRule(new WECRegex("^[0-9\\.]+\$"));
+		$this->setErrorRule(new WECRegex("^[0-9\\.]+$"));
 	}
 
 	/**
@@ -124,7 +124,7 @@ class PrimitiveIO_float extends PrimitiveIO_integer {
 	 * @return boolean
 	 */
 	function validate () {
-		$val = ereg("^[0-9\\.]+\$", $this->_value);
+		$val = preg_match("/^[0-9\\.]+$/", $this->_value);
 		if (!$val) $this->_showError = true;
 		return $val;
 	}

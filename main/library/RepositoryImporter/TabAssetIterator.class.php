@@ -59,7 +59,7 @@ extends HarmoniIterator
 			fgets($meta);
 			fgets($meta);
 			
-			while ($line = ereg_replace("[\n\r]*$","",fgets($meta))) {
+			while ($line = preg_replace("/[\n\r]*$/","",fgets($meta))) {
 				$metadata = explode("\t", $line);
 				$this->_assetList[] = $metadata;
 			}

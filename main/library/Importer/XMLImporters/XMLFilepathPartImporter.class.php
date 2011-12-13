@@ -110,7 +110,7 @@ class XMLFilepathPartImporter extends XMLImporter {
 	 */
 	function getNodeInfo () {
 		$path = $this->_node->getText();
-		if (!ereg("^([a-zA-Z]+://|[a-zA-Z]+:\\|/)", $path))
+		if (!preg_match("#^([a-zA-Z]+://|[a-zA-Z]+:\\|/)#", $path))
 			$path = $this->_node->ownerDocument->xmlPath.$path;
 
 		$this->_info['filepath'] = $path;
