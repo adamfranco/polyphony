@@ -91,7 +91,7 @@ abstract class ForceAuthAction
 		
 		// Reconfigure the AuthNManager to use HTTP Auth rather than forms
 		// :: Start the AuthenticationManager OSID Impl.
-		$configuration = new ConfigurationProperties;
+		$configuration = $authN->getConfiguration();
 		$tokenCollectors = array();
 		$authNTypes =$authN->getAuthenticationTypes();
 		while ($authNTypes->hasNext()) {
@@ -99,6 +99,7 @@ abstract class ForceAuthAction
 				new HTTPAuthNamePassTokenCollector($this->getRelm(),
 					$this->getCancelFunction());
 		}
+		$configuration->deleteProperty('token_collectors');
 		$configuration->addProperty('token_collectors', $tokenCollectors);
 		$authN->assignConfiguration($configuration);
 		
