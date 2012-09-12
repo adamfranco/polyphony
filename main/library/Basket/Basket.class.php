@@ -222,14 +222,15 @@ END;
 	 * @since 7/31/08
 	 */
 	protected function addHeadJavascript () {
-		if (!isset($this->headJsAdded) || !$this->headJsAdded) {
+		static $headJsAdded = false;
+		if (!$headJsAdded) {
 			$harmoni = Harmoni::instance();
 			$outputHandler = $harmoni->getOutputHandler();
 			$outputHandler->setHead(
 				$outputHandler->getHead()
 				."\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/Basket.js'></script>");
 			
-			$this->headJsAdded = true;
+			$headJsAdded = true;
 		}
 	}	
 }
