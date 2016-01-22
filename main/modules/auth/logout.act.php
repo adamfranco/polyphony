@@ -53,10 +53,18 @@ class logoutAction
 		
 		// dethenticate. :-)
 		$authN->destroyAuthentication();
-		
-		// Send us back to where we were
-		$harmoni->history->goBack("polyphony/display_login");
-		
+
+		global $authNMethod;
+
+		if(get_class($authNMethod) == "CASAuthNMethod") {
+			// force logout of CAS, send back to index.php
+			phpCAS::logoutWithUrl(MYURL);
+		}
+		else {
+			// Send us back to where we were
+			$harmoni->history->goBack("polyphony/display_login");
+        }
+
 		$null = null;
 		return $null;
 	}
