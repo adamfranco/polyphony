@@ -19,6 +19,7 @@
 	print "\n\t\t\t<link rel='stylesheet' type='text/css' href='".POLYPHONY_PATH."javascript/Panel.css' />";
 	print "\n\t\t\t<script type='text/javascript' src='".POLYPHONY_PATH."javascript/Tagger.js'></script>";
 	print "\n\t\t\t<script type='text/javascript' src='".POLYPHONY_PATH."javascript/AuthZViewer.js'></script>";
+	print "\n\t\t\t<script type='text/javascript' src='".POLYPHONY_PATH."javascript/AgentInfoPanel.js'></script>";
 	print "\n\t\t\t<script type='text/javascript' src='".POLYPHONY_PATH."javascript/quicksort.js'></script>";
 
 ?>
