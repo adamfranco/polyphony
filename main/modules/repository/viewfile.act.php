@@ -382,9 +382,9 @@ class RepositoryImageCache {
 		$query->addTable('dr_file');
 		$query->addTable('dr_resized_cache', LEFT_JOIN, 'dr_file.id = dr_resized_cache.fk_file');
 		$query->addTable('dr_mime_type', LEFT_JOIN, 'dr_resized_cache.fk_mime_type = dr_mime_type.id');
-		$query->addWhere("dr_file.id = '".addslashes($this->_id->getIdString())."'");
+		$query->addWhereEqual("dr_file.id", $this->_id->getIdString());
 		$query->addWhere("dr_file.mod_time < dr_resized_cache.cache_time");
-		$query->addWhere("dr_resized_cache.size = '".addslashes($this->_size)."'");
+		$query->addWhereEqual("dr_resized_cache.size", $this->_size);
 		$query->addWhere("dr_resized_cache.websafe = ".(($this->_websafe)?'1':'0'));
 		
 		$result =$dbc->query($query, $this->getDBIndex());
@@ -412,8 +412,8 @@ class RepositoryImageCache {
 		$query = new SelectQuery;
 		$query->addColumn('data');
 		$query->addTable('dr_resized_cache');
-		$query->addWhere("dr_resized_cache.fk_file = '".addslashes($this->_id->getIdString())."'");
-		$query->addWhere("dr_resized_cache.size = '".addslashes($this->_size)."'");
+		$query->addWhereEqual("dr_resized_cache.fk_file", $this->_id->getIdString());
+		$query->addWhereEqual("dr_resized_cache.size", $this->_size);
 		$query->addWhere("dr_resized_cache.websafe = ".(($this->_websafe)?'1':'0'));
 		
 		$result =$dbc->query($query, $this->getDBIndex());
@@ -434,8 +434,8 @@ class RepositoryImageCache {
 		
 		$query = new DeleteQuery;
 		$query->setTable('dr_resized_cache');
-		$query->addWhere("dr_resized_cache.fk_file = '".addslashes($this->_id->getIdString())."'");
-		$query->addWhere("dr_resized_cache.size = '".addslashes($this->_size)."'");
+		$query->addWhereEqual("dr_resized_cache.fk_file", $this->_id->getIdString());
+		$query->addWhereEqual("dr_resized_cache.size", $this->_size);
 		$query->addWhere("dr_resized_cache.websafe = ".(($this->_websafe)?'1':'0'));
 		
 		$dbc->query($query, $this->getDBIndex());
@@ -508,7 +508,7 @@ class RepositoryImageCache {
 			$query = new SelectQuery;
 			$query->addTable("dr_mime_type");
 			$query->addColumn("id");
-			$query->addWhere("type = '".$this->_mimeType."'");
+			$query->addWhereEqual("type", $this->_mimeType);
 			$result =$dbc->query($query, $this->getDBIndex());
 			
 			// If it doesn't exist, insert it.
