@@ -389,7 +389,7 @@ class RepositoryImporter {
 				return $obj;
 				break;
 			case "float":
-				$obj = Float::withValue($part);
+				$obj = HarmoniFloat::withValue($part);
 				return $obj;
 				break;
 			case "datetime":

@@ -112,7 +112,7 @@ class PrimitiveIO_float extends PrimitiveIO_integer {
 	 * @return mixed
 	 */
 	function getAllValues () {
-		$obj = Float::withValue($this->_value?floatval($this->_value):0);
+		$obj = HarmoniFloat::withValue($this->_value?floatval($this->_value):0);
 		return $obj;
 	}
 	
