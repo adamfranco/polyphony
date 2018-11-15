@@ -377,7 +377,7 @@ class RepositoryImporter {
 		switch($typeString) {
 			case "shortstring":
 			case "string":
-				$obj = String::withValue($part);
+				$obj = HarmoniString::withValue($part);
 				return $obj;
 				break;
 			case "integer":

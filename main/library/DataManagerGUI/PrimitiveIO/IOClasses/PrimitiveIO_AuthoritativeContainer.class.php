@@ -33,7 +33,7 @@ class PrimitiveIO_AuthoritativeContainer
 	 */
 	function _init () {
 		$this->_select->addOption('__NEW_VALUE__', (dgettext("polyphony", "* New Value *")));
-		$this->_select->setValue(String::fromString('__NEW_VALUE__'));
+		$this->_select->setValue(HarmoniString::fromString('__NEW_VALUE__'));
 	}
 	
 	/**
@@ -46,13 +46,13 @@ class PrimitiveIO_AuthoritativeContainer
      */
     function setValue ($value) {
     	if (is_string($value))
-    		$value = String::fromString($value);
+    		$value = HarmoniString::fromString($value);
     		
     	if ($this->_select->isOption($value)) {
 			$this->_select->setValue($value);
-			$this->_new->setValue(String::fromString(''));
+			$this->_new->setValue(HarmoniString::fromString(''));
 		} else {
-			$this->_select->setValue(String::fromString('__NEW_VALUE__'));
+			$this->_select->setValue(HarmoniString::fromString('__NEW_VALUE__'));
 			$this->_new->setValue($value);
 		}
     }
@@ -132,8 +132,8 @@ class PrimitiveIO_AuthoritativeContainer
 		if ($this->_select->isStartingDisplay())
 			return false;
 		
-		$newOption = String::fromString('__NEW_VALUE__');
-		$emptyOption = String::fromString('');
+		$newOption = HarmoniString::fromString('__NEW_VALUE__');
+		$emptyOption = HarmoniString::fromString('');
 // 		print "<pre>"; var_dump($this->_select->getAllValues()); print "</pre>";
 		return (!$this->_select->getAllValues() 
 				|| $newOption->isEqualTo($this->_select->getAllValues()) 
