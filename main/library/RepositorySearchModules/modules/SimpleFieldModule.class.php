@@ -30,7 +30,7 @@ class SimpleFieldModule {
 	 * @access public
 	 * @since 10/28/04
 	 */
-	function SimpleFieldModule ( $fieldName ) {
+	function __construct ( $fieldName ) {
 		$this->_fieldname = $fieldName;
 		$this->_initilaized = false;
 	}

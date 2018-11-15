@@ -34,7 +34,7 @@ class WGUISelectList
 	* styles can be an array indexed just as options is with styles as strings, can be set to a string to describe
 	* the appropriate style property to automatically generate styles, or set to false to just leave them off.
 	*/
-	function WGUISelectList($callBack, $collectionSelector, $styleProperty, $componentClass, $options, $styles = false){
+	function __construct($callBack, $collectionSelector, $styleProperty, $componentClass, $options, $styles = false){
 		
 				
 		$input = new WSelectList();		

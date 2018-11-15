@@ -41,7 +41,7 @@ class IteratorResultPrinter
 	 * @access public
 	 * @date 8/5/04
 	 */
-	function IteratorResultPrinter ($iterator, $numColumns, 
+	function __construct ($iterator, $numColumns, 
 									$numResultsPerPage, $callbackFunction) {
 		ArgumentValidator::validate($iterator, new HasMethodsValidatorRule("hasNext", "next"));
 		ArgumentValidator::validate($numColumns, new IntegerValidatorRule);
@@ -218,4 +218,3 @@ class IteratorResultPrinter
 	}	
 	
 }
-

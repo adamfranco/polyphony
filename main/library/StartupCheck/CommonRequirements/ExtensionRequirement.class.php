@@ -26,7 +26,7 @@ class ExtensionRequirement extends StartupRequirement {
 	 * Constructor
 	 * @param string $extension The name of the extension that must be loaded (case-sensitive)
 	 */
-	function ExtensionRequirement($extension) {
+	function __construct($extension) {
 		$this->_extension = $extension;
 	}
 	

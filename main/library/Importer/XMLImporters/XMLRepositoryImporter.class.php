@@ -34,8 +34,8 @@ class XMLRepositoryImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/5/05
 	 */
-	function XMLRepositoryImporter ($existingArray) {
-		parent::XMLImporter($existingArray);
+	function __construct ($existingArray) {
+		parent::__construct($existingArray);
 	}
 
 	/**

@@ -33,7 +33,7 @@ class WECRegex
 	 * @access public
 	 * @return void
 	 */
-	function WECRegex ($regex) {
+	function __construct ($regex) {
 		$this->_regex = $regex;
 	}
 	

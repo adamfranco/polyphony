@@ -93,7 +93,7 @@ class StartupCheck {
 	var $_currentWizard;
 	
 
-	function StartupCheck() {
+	function __construct() {
 		$this->_requirements = array();
 		$this->_status = array();
 	}

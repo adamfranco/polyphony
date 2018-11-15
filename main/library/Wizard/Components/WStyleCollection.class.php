@@ -35,7 +35,7 @@ class WStyleCollection extends WRepeatableComponentCollection {
 	 * @access public
 	 * @since 6/2/06
 	 */
-	function WStyleCollection ($style) {
+	function __construct ($style) {
 		$gui = Services::getService("GUI");
 		
 		// grab the list of supported SPs

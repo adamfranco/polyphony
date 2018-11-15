@@ -20,7 +20,7 @@
  */
 class PrimitiveIO_boolean extends WRadioList /* implements PrimitiveIO */ {
 	
-	function PrimitiveIO_boolean () {
+	function __construct () {
 		$this->_eachPost = '';
 		
 		$this->addOption("1", "true");

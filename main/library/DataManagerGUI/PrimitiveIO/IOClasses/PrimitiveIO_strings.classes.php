@@ -62,7 +62,7 @@ class PrimitiveIO_shortstring extends WTextField {
  */
 class PrimitiveIO_string extends WTextArea {
 	
-	function PrimitiveIO_string () {
+	function __construct () {
 		$this->setRows(5);
 		$this->setColumns(70);
 	}

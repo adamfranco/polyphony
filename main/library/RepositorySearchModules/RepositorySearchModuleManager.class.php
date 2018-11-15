@@ -35,7 +35,7 @@ class RepositorySearchModuleManager {
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function RepositorySearchModuleManager () {
+	function __construct () {
 		$this->_modules = array();
 		$this->_modules["Repository::edu.middlebury.harmoni::Keyword"] = new SimpleFieldModule("Keyword");
 		$this->_modules["Repository::edu.middlebury.harmoni::DisplayName"] = new SimpleFieldModule("DisplayName");

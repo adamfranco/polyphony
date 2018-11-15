@@ -50,7 +50,7 @@ class WCheckBox
 	 * @access public
 	 * @return WCheckBox
 	 */
-	function WCheckBox () {
+	function __construct () {
 		$this->_value = false;
 	}
 	

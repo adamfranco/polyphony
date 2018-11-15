@@ -27,7 +27,7 @@ class WLogicRule {
 	/**
 	 * Default constructor, added for testing
 	 **/
-	function WLogicRule() {
+	function __construct() {
 	}
 	
 	

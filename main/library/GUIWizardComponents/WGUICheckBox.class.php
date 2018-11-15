@@ -30,7 +30,7 @@ class WGUICheckbox
 	var $_checkedVal;
 	var $_unCheckedVal;
 
-	function WGUICheckbox($callBack, $collectionSelector, $styleProperty, $componentClass, $checked, $unchecked){
+	function __construct($callBack, $collectionSelector, $styleProperty, $componentClass, $checked, $unchecked){
 		
 		
 		$this->_wizardComponent = new WCheckBox();

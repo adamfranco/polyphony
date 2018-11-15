@@ -54,7 +54,7 @@ class ConfigSystem {
 	* The constructor.
 	* @param string $program The name of the program to setup configuration for, such as "Segue" or "Concerto".
 	**/
-	function ConfigSystem($program) {
+	function __construct($program) {
 		// here we need to get/create a Schema for this setup
 		if (!Services::serviceAvailable("SchemaManager")) {
 			throwError(

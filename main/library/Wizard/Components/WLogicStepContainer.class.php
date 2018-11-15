@@ -41,8 +41,8 @@ class WLogicStepContainer extends WizardStepContainer {
 	 * @access public
 	 * @since 5/31/06
 	 */
-	function WLogicStepContainer () {
-		parent::WizardStepContainer();
+	function __construct () {
+		parent::__construct();
 		$this->_currStep = null;
 		$this->_stepStack = array();
 		$this->_backNamesStack = array();

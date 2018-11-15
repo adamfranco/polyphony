@@ -42,7 +42,7 @@ class WSelectOrNew
 	 * @access public
 	 * @since 4/28/06
 	 */
-	function WSelectOrNew () {
+	function __construct () {
 		$this->_select = new WSelectList;
 		$this->_select->setParent($this);
 		$this->_new = new WTextField;

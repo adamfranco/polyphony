@@ -38,7 +38,7 @@ class WStepChangedListener
 	 * @access public
 	 * @since 8/04/06
 	 */
-	function WStepChangedListener ($callBack) {
+	function __construct ($callBack) {
 		$this->_callBackFunction = $callBack;
 	}	
 		

@@ -58,7 +58,7 @@ class Basket
 	 **/
 	private function __construct() {
 		$idManager = Services::getService("Id");
-		$this->OrderedSet($idManager->getId("__basket"));	
+		parent::__construct($idManager->getId("__basket"));	
 	}
 	
 	/**

@@ -23,7 +23,7 @@ class PrimitiveIO_okitype extends WizardComponentWithChildren {
 	var $_authority;
 	var $_keyword;
 
-	function PrimitiveIO_okitype() {
+	function __construct() {
 		$rule = new WECNonZeroRegex("[\\w]+");
 		$this->_domain = new WTextField();
 		$this->_domain->setErrorRule($rule);

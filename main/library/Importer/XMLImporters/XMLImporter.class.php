@@ -44,7 +44,7 @@ class XMLImporter {
  	 * @access public
  	 * @since 10/5/05
  	 */
- 	function XMLImporter ($existingArray) {
+ 	function __construct ($existingArray) {
 	 	$this->setupSelf();		// gives the importer knowledge about itself
 	 	$this->_errors = array();	// end-user friendly error handling
 	 	$this->_existingArray =$existingArray;

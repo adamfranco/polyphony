@@ -32,8 +32,8 @@ class XMLPartImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function XMLPartImporter ($existingArray) {
-		parent::XMLImporter($existingArray);
+	function __construct ($existingArray) {
+		parent::__construct($existingArray);
 	}
 	
 	/**

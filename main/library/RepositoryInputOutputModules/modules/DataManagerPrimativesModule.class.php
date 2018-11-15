@@ -40,7 +40,7 @@ class DataManagerPrimativesModule
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function DataManagerPrimativesModule () {
+	function __construct () {
 		
 	}
 	
@@ -357,4 +357,3 @@ class DataManagerPrimativesModule
 		*/
 	}
 }
-

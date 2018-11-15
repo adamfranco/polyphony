@@ -37,7 +37,7 @@ class WStyleComponent
 	var $_showError;
 	
 	
-	function WStyleComponent ($callBack, $component, $property, $collection) {
+	function __construct ($callBack, $component, $property, $collection) {
 		$this->_getThemeCallBack = $callBack;
 		$this->_collection = $collection;
 		$this->_property = $property;

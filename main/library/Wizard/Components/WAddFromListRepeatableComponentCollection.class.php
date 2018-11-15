@@ -26,8 +26,8 @@
 class WAddFromListRepeatableComponentCollection
 	extends WRepeatableComponentCollection 
 {
-	function WAddFromListRepeatableComponentCollection() {
-		parent::WRepeatableComponentCollection();
+	function __construct() {
+		parent::__construct();
     	$this->_addButton = WChooseOptionButton::withLabel($this->_addLabel);
     	$this->_addButton->setParent($this);
     }

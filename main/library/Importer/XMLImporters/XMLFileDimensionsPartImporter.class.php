@@ -31,8 +31,8 @@ class XMLFileDimensionsPartImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/10/05
 	 */
-	function XMLFileDimensionsPartImporter ($existingArray) {
-		parent::XMLImporter($existingArray);
+	function __construct ($existingArray) {
+		parent::__construct($existingArray);
 	}
 
 	/**

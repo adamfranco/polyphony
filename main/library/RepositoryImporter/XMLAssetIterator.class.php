@@ -34,7 +34,7 @@ extends HarmoniIterator
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function XMLAssetIterator ($srcDir, $parentRepositoryImporter) {		
+	function __construct ($srcDir, $parentRepositoryImporter) {		
 		$import = new DOMIT_Document();
 		
 		if ($import->loadXML($srcDir."metadata.xml")) {

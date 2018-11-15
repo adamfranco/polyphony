@@ -30,7 +30,7 @@ class PartAndValuesModule {
 	 * @access public
 	 * @since 04/25/06
 	 */
-	function PartAndValuesModule ( $partStructFieldName, $valueFieldName ) {
+	function __construct ( $partStructFieldName, $valueFieldName ) {
 		$this->_partStructFieldName = $partStructFieldName;
 		$this->_valueFieldName = $valueFieldName;
 		$this->_initilaized = false;

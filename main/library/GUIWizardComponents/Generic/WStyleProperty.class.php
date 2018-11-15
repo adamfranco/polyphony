@@ -36,7 +36,7 @@ class WStyleProperty
 	
 	
 	
-	function WStyleProperty ($callBack, $property, $collection) {
+	function __construct ($callBack, $property, $collection) {
 		$this->_getThemeCallBack = $callBack;
 		
 		

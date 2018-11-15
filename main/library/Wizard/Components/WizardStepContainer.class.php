@@ -31,7 +31,7 @@ class WizardStepContainer extends WizardComponent {
 	 * @access public
 	 * @return void
 	 */
-	function WizardStepContainer () {
+	function __construct () {
 		$this->_currStep = 0;
 		$this->_steps = array();
 		$this->_stepNames = array();

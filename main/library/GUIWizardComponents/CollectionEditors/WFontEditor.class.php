@@ -36,7 +36,7 @@ extends WMoreOptions
 	
 
 
-	function WFontEditor ($callBack, $collectionName, $thingsToApplyCollectionTo) {
+	function __construct ($callBack, $collectionName, $thingsToApplyCollectionTo) {
 		$this->init();
 		
 		

@@ -42,7 +42,7 @@ class SimpleStepWizard extends SimpleWizard {
 	 * @access public
 	 * @return void
 	 */
-	function SimpleStepWizard () {
+	function __construct () {
 		$this->_stepContainer = new WizardStepContainer();
 		$this->_nextButton = new WNextStepButton($this->_stepContainer);
 		$this->_prevButton = new WPreviousStepButton($this->_stepContainer);

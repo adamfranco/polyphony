@@ -39,7 +39,7 @@ class TableIteratorResultPrinter
 	 * @access public
 	 * @date 8/5/04
 	 */
-	function TableIteratorResultPrinter ($iterator, $headRow, $numResultsPerPage, 
+	function __construct ($iterator, $headRow, $numResultsPerPage, 
 		$callbackFunction, $tableBorder = 0) 
 	{
 		ArgumentValidator::validate($iterator, new HasMethodsValidatorRule("hasNext", "next"));
@@ -189,4 +189,3 @@ class TableIteratorResultPrinter
 	}	
 	
 }
-

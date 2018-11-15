@@ -40,7 +40,7 @@ class RepositoryInputOutputModuleManager
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function RepositoryInputOutputModuleManager () {
+	function __construct () {
 		$this->_modules = array();
 		
 		$type = new Type("RecordStructures", 

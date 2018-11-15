@@ -45,7 +45,7 @@ extends WMoreOptions
 	*
 	* The last three are booleans.  False means they are hidden under "More Options."
 	*/
-	function WMultiCollection ($callBack, $uniqueName, $thingsToApplyCollectionsTo,$font,$bg,$text) {
+	function __construct ($callBack, $uniqueName, $thingsToApplyCollectionsTo,$font,$bg,$text) {
 
 		$this->init();
 

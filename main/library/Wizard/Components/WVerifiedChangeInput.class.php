@@ -75,7 +75,7 @@ class WVerifiedChangeInput
      * @access public
      * @since 10/20/05
      */
-    function WVerifiedChangeInput() {
+    function __construct() {
     	$this->_checkbox = new WCheckBox;
     	$this->_checkbox->setParent($this);
     	$this->_label = dgettext("polyphony", "Apply to All");

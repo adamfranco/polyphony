@@ -34,7 +34,7 @@ class WRepeatableComponentCollection
     
     var $_addButton;
     
-    function WRepeatableComponentCollection() {
+    function __construct() {
     	$this->_addLabel = dgettext("polyphony", "Add");
     	$this->_removeLabel = dgettext("polyphony", "Remove");
     	

@@ -35,7 +35,7 @@ class WStyleCollection
 	
 	
 	
-	function WStyleCollection ($callBack, $collection) {
+	function __construct ($callBack, $collection) {
 		$this->_getThemeCallBack = $callBack;
 		
 		

@@ -36,7 +36,7 @@ class RepositoryImporter {
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function RepositoryImporter ($filepath, $repositoryId, $dieOnError = false) {
+	function __construct ($filepath, $repositoryId, $dieOnError = false) {
 		$this->_filepath = $filepath;
 		$this->_repositoryId =$repositoryId;
 		$this->_dieOnError = $dieOnError;

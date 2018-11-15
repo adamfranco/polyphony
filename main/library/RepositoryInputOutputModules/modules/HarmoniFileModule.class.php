@@ -39,7 +39,7 @@ class HarmoniFileModule
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function HarmoniFileModule () {
+	function __construct () {
 		
 	}
 	
@@ -599,4 +599,3 @@ class HarmoniFileModule
 		return $html;
 	}
 }
-

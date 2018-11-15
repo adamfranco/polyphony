@@ -33,7 +33,7 @@ class XMLRecordStructureExporter {
 	 * @access public
 	 * @since 10/17/05
 	 */
-	function XMLRecordStructureExporter ($xmlFile) {
+	function __construct ($xmlFile) {
 		$this->_xml =$xmlFile;
 		
 		$this->_childExporterList = array("XMLPartStructureExporter");

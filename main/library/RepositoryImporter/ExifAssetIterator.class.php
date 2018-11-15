@@ -32,7 +32,7 @@ class ExifAssetIterator
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function ExifAssetIterator ($srcDir) {		
+	function __construct ($srcDir) {		
 		$this->_addFiles($srcDir);
 		$this->_current = 0;
 	}

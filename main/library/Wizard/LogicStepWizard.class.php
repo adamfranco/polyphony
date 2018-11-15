@@ -50,7 +50,7 @@ class LogicStepWizard extends StepWizard {
 	 * @access public
 	 * @since 5/31/06
 	 */
-	function LogicStepWizard () {
+	function __construct () {
 		$this->_stepContainer = new WLogicStepContainer();
 		$this->addComponent('_steps', $this->_stepContainer);
 		

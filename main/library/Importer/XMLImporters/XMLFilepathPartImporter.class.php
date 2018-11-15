@@ -31,8 +31,8 @@ class XMLFilepathPartImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/6/05
 	 */
-	function XMLFilepathPartImporter ($existingArray) {
-		parent::XMLImporter($existingArray);
+	function __construct ($existingArray) {
+		parent::__construct($existingArray);
 	}
 	
 	/**

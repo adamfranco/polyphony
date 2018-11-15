@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/DataManagerGUI/PrimitiveIO/IOClasses/Primi
  */
 class PrimitiveIO_integer extends PrimitiveIO_shortstring {
 
-	function PrimitiveIO_integer() {
+	function __construct() {
 		$this->setErrorText(dgettext("polyphony", "Enter a valid integer (no commas)."));
 		$this->setErrorRule(new WECRegex("^[0-9]+$"));
 	}
@@ -78,7 +78,7 @@ class PrimitiveIO_integer extends PrimitiveIO_shortstring {
  */
 class PrimitiveIO_float extends PrimitiveIO_integer {
 
-	function PrimitiveIO_float() {
+	function __construct() {
 		$this->setErrorText(dgettext("polyphony", "Enter a valid integer (no commas)."));
 		$this->setErrorRule(new WECRegex("^[0-9\\.]+$"));
 	}
