@@ -119,7 +119,7 @@ class RepositorySearchModuleManager {
 					."::".$searchType->getKeyword();
 		
 		if (!is_object($this->_modules[$typeKey]))
-			throwError(new Error("Unsupported Search Type, '$typeKey'", "RepositorySearchModuleManager", true));
+			throwError(new HarmoniError("Unsupported Search Type, '$typeKey'", "RepositorySearchModuleManager", true));
 		
 		return $this->_modules[$typeKey]->createSearchForm($repository, $action);
 		
@@ -144,7 +144,7 @@ class RepositorySearchModuleManager {
 					."::".$searchType->getKeyword();
 		
 		if (!is_object($this->_modules[$typeKey]))
-			throwError(new Error("Unsupported Search Type, '$typeKey'", "RepositorySearchModuleManager", true));
+			throwError(new HarmoniError("Unsupported Search Type, '$typeKey'", "RepositorySearchModuleManager", true));
 		
 		return $this->_modules[$typeKey]->createSearchFields($repository);
 	}
@@ -165,7 +165,7 @@ class RepositorySearchModuleManager {
 					."::".$searchType->getKeyword();
 		
 		if (!is_object($this->_modules[$typeKey]))
-			throwError(new Error("Unsupported Search Type, '$typeKey'", "RepositorySearchModuleManager", true));
+			throwError(new HarmoniError("Unsupported Search Type, '$typeKey'", "RepositorySearchModuleManager", true));
 		
 		return $this->_modules[$typeKey]->getSearchCriteria($repository);
 	}
@@ -187,7 +187,7 @@ class RepositorySearchModuleManager {
 					."::".$searchType->getKeyword();
 		
 		if (!is_object($this->_modules[$typeKey]))
-			throwError(new Error("Unsupported Search Type, '$typeKey'", "RepositorySearchModuleManager", true));
+			throwError(new HarmoniError("Unsupported Search Type, '$typeKey'", "RepositorySearchModuleManager", true));
 		
 		return $this->_modules[$typeKey]->getCurrentValues();
 	}
@@ -211,7 +211,7 @@ class RepositorySearchModuleManager {
 					."::".$searchType->getKeyword();
 		
 		if (!is_object($this->_modules[$typeKey]))
-			throwError(new Error("Unsupported Search Type, '$typeKey'", "RepositorySearchModuleManager", true));
+			throwError(new HarmoniError("Unsupported Search Type, '$typeKey'", "RepositorySearchModuleManager", true));
 		
 		return $this->_modules[$typeKey]->setCurrentValues($values);
 	}

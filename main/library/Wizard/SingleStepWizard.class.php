@@ -36,7 +36,7 @@ class SingleStepWizard
 	 */
 	function addStep ($name, $step) {
 		if (count($this->getSteps())) {
-			throwError(new Error("SingleStepWizards can only have one step. Cannot add '".$name."' step.", "Wizard"));
+			throwError(new HarmoniError("SingleStepWizards can only have one step. Cannot add '".$name."' step.", "Wizard"));
 		}
 		return parent::addStep($name, $step);
 	}

@@ -105,7 +105,7 @@ class PrimitiveIO_AuthoritativeContainer
 	 */
 	function addOptionFromSObject ( $valueObject ) {
 		if (!isset($this->_select))
-			throwError(new Error("No Select Child Available.", "datamanager GUI"));
+			throwError(new HarmoniError("No Select Child Available.", "datamanager GUI"));
 			
 		$this->_select->addOptionFromSObject($valueObject);
 	}

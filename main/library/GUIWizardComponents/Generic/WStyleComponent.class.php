@@ -58,7 +58,7 @@ class WStyleComponent
 		//$this->_showError=false;
 		
 		if(is_null($styleComponent)){
-			throwError(new Error("The Component this references is based on cannot be null","WStyleComponent",true));
+			throwError(new HarmoniError("The Component this references is based on cannot be null","WStyleComponent",true));
 		}
 	
 		if (get_class($styleComponent) == 'colorsc') {

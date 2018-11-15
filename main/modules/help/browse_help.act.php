@@ -269,7 +269,7 @@ class browse_helpAction
 				$_SESSION['__help_dirs-'.$harmoni->config->get('programTitle')][$directory] = array('directory' => $directory, 'urlPath' => $urlPath);
 			}
 		} else
-			throwError(new Error("Invalid Help directory, '$directory'", "polyphony.help", true));
+			throwError(new HarmoniError("Invalid Help directory, '$directory'", "polyphony.help", true));
 	}
 	
 	/**

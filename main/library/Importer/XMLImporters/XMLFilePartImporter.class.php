@@ -55,7 +55,7 @@ class XMLFilePartImporter extends XMLImporter {
 	 * @since 12/6/06
 	 */
 	function getPartStructureIdString () {
-		throwError(new Error(__CLASS__."::".__FUNCTION__."() must be overridded in child classes."));
+		throwError(new HarmoniError(__CLASS__."::".__FUNCTION__."() must be overridded in child classes."));
 	}
 
 	/**
@@ -68,7 +68,7 @@ class XMLFilePartImporter extends XMLImporter {
 	 * @since 10/10/05
 	 */
 	static function isImportable ($element) {
-		throwError(new Error(__CLASS__."::".__FUNCTION__."() must be overridded in child classes."));
+		throwError(new HarmoniError(__CLASS__."::".__FUNCTION__."() must be overridded in child classes."));
 	}
 
 	/**

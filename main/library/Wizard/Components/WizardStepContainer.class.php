@@ -99,7 +99,7 @@ class WizardStepContainer extends WizardComponent {
 				$wizard->triggerLater("edu.middlebury.polyphony.wizard.step_changed", $this, $context);
 			}
 		}else{
-			throwError(new Error("No such step '".$name."'","WizardStepContainer",true));
+			throwError(new HarmoniError("No such step '".$name."'","WizardStepContainer",true));
 		}
 		
 	}
