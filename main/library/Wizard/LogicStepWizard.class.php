@@ -90,8 +90,8 @@ class LogicStepWizard extends StepWizard {
 	 * @return ref object
 	 * @static
 	 */
-	static function withText ($text) {
-		return parent::withText($text, 'LogicStepWizard');
+	static function withText ($text, $class = 'LogicStepWizard') {
+		return parent::withText($text, $class);
 	}
 	
 	/**

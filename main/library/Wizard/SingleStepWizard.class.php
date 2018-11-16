@@ -61,7 +61,7 @@ class SingleStepWizard
 	 * @return ref object
 	 * @static
 	 */
-	static function withDefaultLayout ($pre = '') {
+	static function withDefaultLayout ($pre = '', $class="SingleStepWizard") {
 		return parent::withText($pre . 
 				"<div>\n" .
 				"<table width='100%' border='0' cellpadding='0' cellspacing='2'>\n" .
@@ -76,7 +76,7 @@ class SingleStepWizard
 				"<hr/>\n" .
 				"<div>\n" .
 				"[[_steps]]" .
-				"</div>\n", "SingleStepWizard");
+				"</div>\n", $class);
 	}
 	
 }
