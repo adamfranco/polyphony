@@ -30,8 +30,8 @@ class WOrderedRepeatableComponentCollection
     var $_orderedSet;
     var $_nextId;
     
-    function WOrderedRepeatableComponentCollection() {
-    	parent::WRepeatableComponentCollection();
+    function __construct() {
+    	parent::__construct();
     	$idManager = Services::getService("Id");
     	$this->_orderedSet = new OrderedSet($idManager->getId("unimportant"));
     	$this->_nextId = 0;

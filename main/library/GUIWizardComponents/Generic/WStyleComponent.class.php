@@ -37,7 +37,7 @@ class WStyleComponent
 	var $_showError;
 	
 	
-	function WStyleComponent ($callBack, $component, $property, $collection) {
+	function __construct ($callBack, $component, $property, $collection) {
 		$this->_getThemeCallBack = $callBack;
 		$this->_collection = $collection;
 		$this->_property = $property;
@@ -58,7 +58,7 @@ class WStyleComponent
 		//$this->_showError=false;
 		
 		if(is_null($styleComponent)){
-			throwError(new Error("The Component this references is based on cannot be null","WStyleComponent",true));
+			throwError(new HarmoniError("The Component this references is based on cannot be null","WStyleComponent",true));
 		}
 	
 		if (get_class($styleComponent) == 'colorsc') {

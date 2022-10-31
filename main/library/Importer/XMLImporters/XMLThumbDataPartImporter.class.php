@@ -30,8 +30,8 @@ class XMLThumbDataPartImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/10/05
 	 */
-	function XMLThumbDataPartImporter ($existingArray) {
-		parent::XMLImporter($existingArray);
+	function __construct ($existingArray) {
+		parent::__construct($existingArray);
 	}
 
 	/**

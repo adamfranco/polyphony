@@ -38,7 +38,7 @@ class WAgentBrowser
 	
 	var $_actionSelected = "nop";
 	
-	function WAgentBrowser ()
+	function __construct ()
 	{
 		$this->_searchField = new WTextField();
 		$this->_searchField->setSize(20);
@@ -218,9 +218,9 @@ class AgentBrowserResultPrinter
 	
 	var $_options = array();
 	
-	function AgentBrowserResultPrinter(	$array, $numColumns, 
+	function __construct(	$array, $numColumns, 
 										$numResultsPerPage, $callbackFunction, $fieldName) {
-		parent::EmbeddedArrayResultPrinter($array, $numColumns, $numResultsPerPage, $callbackFunction);
+		parent::__construct($array, $numColumns, $numResultsPerPage, $callbackFunction);
 		$this->_colors = array("#aaa", "#ccc");
 		$this->setTDStyle("background-color: ".$this->_colors[0]."; padding: 2px;");
 		$this->_fieldName = $fieldName;

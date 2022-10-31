@@ -36,8 +36,8 @@ class XMLRepositoryExporter extends XMLExporter {
 	 * @access public
 	 * @since 10/17/05
 	 */
-	function XMLRepositoryExporter() {	
-		parent::XMLExporter();
+	function __construct() {	
+		parent::__construct();
 	}
 
 	/**

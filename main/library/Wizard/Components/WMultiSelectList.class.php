@@ -37,7 +37,7 @@ class WMultiSelectList
 	 * @access public
 	 * @return WMultiSelectList
 	 */
-	function WMultiSelectList () {
+	function __construct () {
 		// do nothing
 	}
 	

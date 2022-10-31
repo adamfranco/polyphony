@@ -66,7 +66,7 @@ class WizardEventListener
 	 * @return boolean - TRUE if everything is OK
 	 */
 	function update ($fieldName) {
-		throwError(new Error(__CLASS__."::".__FUNCTION__."() must be overridded in child classes."));
+		throwError(new HarmoniError(__CLASS__."::".__FUNCTION__."() must be overridded in child classes."));
 	}
 		
 	/**
@@ -101,7 +101,7 @@ class WizardEventListener
 	 * @return void
 	 */
 	function handleEvent ($eventType, $source, $context) {
-		throwError(new Error(__CLASS__."::".__FUNCTION__."() must be overridded in child classes."));
+		throwError(new HarmoniError(__CLASS__."::".__FUNCTION__."() must be overridded in child classes."));
 	}
 }
 ?>

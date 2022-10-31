@@ -35,9 +35,9 @@ class ExifRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function ExifRepositoryImporter ($filepath, $repositoryId, $dieOnError=false) {
+	function __construct ($filepath, $repositoryId, $dieOnError=false) {
 		$this->_assetIteratorClass = "ExifAssetIterator";
-		parent::RepositoryImporter($filepath, $repositoryId, $dieOnError);
+		parent::__construct($filepath, $repositoryId, $dieOnError);
 	}
 
 	/**
@@ -435,4 +435,3 @@ class ExifRepositoryImporter
 		return $null;
 	}
 }
-

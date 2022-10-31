@@ -93,7 +93,7 @@ class StartupCheck {
 	var $_currentWizard;
 	
 
-	function StartupCheck() {
+	function __construct() {
 		$this->_requirements = array();
 		$this->_status = array();
 	}
@@ -127,7 +127,7 @@ class StartupCheck {
 
 			// check if the status is an error, if so, print a fatty error.
 			//			if ($status == STARTUP_STATUS_ERROR) {
-			//				throwError( new Error(
+			//				throwError( new HarmoniError(
 			//					"StartupCheck::checkAllRequirements() - While processing requirement '".$this->_requirements[$key]->getDisplayName()."' a FATAL ERROR occured and the program could not continue. See other errors for more details.","StartupCheck",true)
 			//					);
 			//			}

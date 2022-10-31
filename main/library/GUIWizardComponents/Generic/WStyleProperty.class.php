@@ -36,7 +36,7 @@ class WStyleProperty
 	
 	
 	
-	function WStyleProperty ($callBack, $property, $collection) {
+	function __construct ($callBack, $property, $collection) {
 		$this->_getThemeCallBack = $callBack;
 		
 		
@@ -159,7 +159,7 @@ class WStyleProperty
 			if(is_null($children[$key])){
 				printpre(array_keys($children));
 				print $key;
-				throwError(new Error("prob",""));	
+				throwError(new HarmoniError("prob",""));	
 			}
 			
 			if (!$children[$key]->update($fieldName."_".$key)) {

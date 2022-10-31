@@ -62,18 +62,18 @@ class WGUIComponent
 		}
 		$rule = ExtendsValidatorRule::getRule("StyleProperty");
 		if(!$rule->check($property)){
-			throwError(new Error("Failed to get StyleProperty","GUIWizardComponents",true));
+			throwError(new HarmoniError("Failed to get StyleProperty","GUIWizardComponents",true));
 		}	
 		
 		//get the first value in case the next value is not legitamate
 		$componentTemp =$styleProperty->getStyleComponent($componentClass);		
 		$rule = ExtendsValidatorRule::getRule("StyleComponent");
 		if(!$rule->check($componentTemp)){
-			throwError(new Error("Passed in Style property must have a component of given class, '".$componentClass."'","GUIWizardComponents",true));
+			throwError(new HarmoniError("Passed in Style property must have a component of given class, '".$componentClass."'","GUIWizardComponents",true));
 		}
 		$this->_defaultValue = $componentTemp->getValue();
 		if(!$this->isPossibleValue($this->_defaultValue)){
-			throwError(new Error("Passed in StyleComponent must have an acceptable value for the WizardComponent.","GUIWizardComponents",true));
+			throwError(new HarmoniError("Passed in StyleComponent must have an acceptable value for the WizardComponent.","GUIWizardComponents",true));
 		}
 		
 		//get the component, using the default one, if need be.  Then check to make sure we've succeeded.
@@ -106,12 +106,12 @@ class WGUIComponent
 		
 		$rule = ExtendsValidatorRule::getRule("Theme");
 		if(!$rule->check($theme)){
-			throwError(new Error("Callback ".$this->_getThemeCallBack."() did not return a theme ","GUIWizardComponents",true));
+			throwError(new HarmoniError("Callback ".$this->_getThemeCallBack."() did not return a theme ","GUIWizardComponents",true));
 		}		
 		$collection =$theme->getStyleCollection($this->_collection);
 		$rule = ExtendsValidatorRule::getRule("StyleCollection");
 		if(!$rule->check($collection)){
-			throwError(new Error("Theme ".$theme->getDisplayName()." did not have StyleCollection ".$this->_collection,"GUIWizardComponents",true));
+			throwError(new HarmoniError("Theme ".$theme->getDisplayName()." did not have StyleCollection ".$this->_collection,"GUIWizardComponents",true));
 		}	
 		return $collection;		
 	}

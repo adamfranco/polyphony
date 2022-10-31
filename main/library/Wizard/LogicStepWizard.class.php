@@ -50,7 +50,7 @@ class LogicStepWizard extends StepWizard {
 	 * @access public
 	 * @since 5/31/06
 	 */
-	function LogicStepWizard () {
+	function __construct () {
 		$this->_stepContainer = new WLogicStepContainer();
 		$this->addComponent('_steps', $this->_stepContainer);
 		
@@ -90,8 +90,8 @@ class LogicStepWizard extends StepWizard {
 	 * @return ref object
 	 * @static
 	 */
-	static function withText ($text) {
-		return parent::withText($text, 'LogicStepWizard');
+	static function withText ($text, $class = 'LogicStepWizard') {
+		return parent::withText($text, $class);
 	}
 	
 	/**

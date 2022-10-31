@@ -39,7 +39,7 @@ class WSelectList
 	 * @access public
 	 * @return WSelectList
 	 */
-	function WSelectList () {
+	function __construct () {
 		// do nothing
 	}
 	

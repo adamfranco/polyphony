@@ -35,7 +35,7 @@ class XMLFileRecordExporter {
 	 * @access public
 	 * @since 10/17/05
 	 */
-	function XMLFileRecordExporter ($xmlFile, $fileDir) {
+	function __construct ($xmlFile, $fileDir) {
 		$this->_xml =$xmlFile;
 		$this->_fileDir = $fileDir; 
 		

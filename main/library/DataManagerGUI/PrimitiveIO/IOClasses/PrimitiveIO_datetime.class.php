@@ -20,7 +20,7 @@
  */
 class PrimitiveIO_datetime extends WTextField /* implements PrimitiveIO */ {
 
-	function PrimitiveIO_datetime() {
+	function __construct() {
 		$this->setErrorText(dgettext("polyphony", "Enter a date/time string. (example: YYYY-MM-DD HH:MM:SS)"));
 // 		$this->setErrorRule(new WECNonZeroRegex("[\\w]+"));
 	}

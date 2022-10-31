@@ -35,7 +35,7 @@ class WStepDisplayBar
 	 * @access public
 	 * @return void
 	 */
-	function WStepDisplayBar ($stepContainer) {
+	function __construct ($stepContainer) {
 		$this->_stepContainer =$stepContainer;
 	}
 	

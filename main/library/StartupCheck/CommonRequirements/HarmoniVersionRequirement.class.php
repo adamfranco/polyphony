@@ -29,7 +29,7 @@ class HarmoniVersionRequirement extends StartupRequirement {
 	 * @param ref object $harmoni A reference to a {$link Harmoni} object.
 	 * @param string $version The harmoni version string, ie, "1.5.2".
 	 */
-	function HarmoniVersionRequirement($harmoni, $version) {
+	function __construct($harmoni, $version) {
 
 		$this->_harmoni =$harmoni;
 		$this->_versionStr = $harmoni->getVersionStr($version);

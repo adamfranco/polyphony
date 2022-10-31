@@ -41,7 +41,7 @@ class ArrayResultPrinter
 	 * @access public
 	 * @date 8/5/04
 	 */
-	function ArrayResultPrinter ($array, $numColumns, 
+	function __construct ($array, $numColumns, 
 									$numResultsPerPage, $callbackFunction = NULL) {
 		ArgumentValidator::validate($array, ArrayValidatorRule::getRule());
 		ArgumentValidator::validate($numColumns, IntegerValidatorRule::getRule());

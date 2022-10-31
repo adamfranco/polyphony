@@ -31,7 +31,7 @@ class XMLExporter {
 	 * @access public
 	 * @since 10/17/05
 	 */
-	function XMLExporter () {
+	function __construct () {
 		$this->setupSelf();
 	}
 

@@ -36,7 +36,7 @@ class RepositoryImporter {
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function RepositoryImporter ($filepath, $repositoryId, $dieOnError = false) {
+	function __construct ($filepath, $repositoryId, $dieOnError = false) {
 		$this->_filepath = $filepath;
 		$this->_repositoryId =$repositoryId;
 		$this->_dieOnError = $dieOnError;
@@ -377,7 +377,7 @@ class RepositoryImporter {
 		switch($typeString) {
 			case "shortstring":
 			case "string":
-				$obj = String::withValue($part);
+				$obj = HarmoniString::withValue($part);
 				return $obj;
 				break;
 			case "integer":
@@ -389,7 +389,7 @@ class RepositoryImporter {
 				return $obj;
 				break;
 			case "float":
-				$obj = Float::withValue($part);
+				$obj = HarmoniFloat::withValue($part);
 				return $obj;
 				break;
 			case "datetime":

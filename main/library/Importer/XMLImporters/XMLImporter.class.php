@@ -44,7 +44,7 @@ class XMLImporter {
  	 * @access public
  	 * @since 10/5/05
  	 */
- 	function XMLImporter ($existingArray) {
+ 	function __construct ($existingArray) {
 	 	$this->setupSelf();		// gives the importer knowledge about itself
 	 	$this->_errors = array();	// end-user friendly error handling
 	 	$this->_existingArray =$existingArray;
@@ -70,7 +70,7 @@ class XMLImporter {
 		if (!(strtolower($class) == strtolower('XMLImporter')
 			|| is_subclass_of(new $class($existingArray), 'XMLImporter')))
 		{
-			throwError(new Error ("Class, '$class', is not a subclass of 'XMLImporter'.", "XMLImporter"));
+			throwError(new HarmoniError("Class, '$class', is not a subclass of 'XMLImporter'.", "XMLImporter"));
 		}
 		eval('$importer = new '.$class.'($existingArray);');
 		$importer->_xmlFile = $filepath;
@@ -97,7 +97,7 @@ class XMLImporter {
 		if (!(strtolower($class) == strtolower('XMLImporter')
 			|| is_subclass_of(new $class($existingArray), 'XMLImporter')))
 		{
-			throwError(new Error ("Class, '$class', is not a subclass of 'XMLImporter'.", "XMLImporter"));
+			throwError(new HarmoniError("Class, '$class', is not a subclass of 'XMLImporter'.", "XMLImporter"));
 		}
 		eval('$importer = '.$class.'::withFile($existingArray, $filepath, $type, $class);');
 

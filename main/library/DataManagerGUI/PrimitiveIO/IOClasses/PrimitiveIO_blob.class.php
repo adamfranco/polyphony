@@ -24,7 +24,7 @@ class PrimitiveIO_blob
 
 	var $_blob;
 	
-	function PrimitiveIO_blob () {
+	function __construct () {
 		// do nothing.
 	}
 

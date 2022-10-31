@@ -34,7 +34,7 @@ class WNewOnlyEditableRepeatableComponentCollection
 	 * @access public
 	 * @return ref array An array of the components created with the values passed.
 	 */
-	function addValueCollection ($collection, $removable = true) {
+	function &addValueCollection ($collection, $removable = true) {
 		// @todo - make sure that the correct fields/classes are represented
 		$newCollection =& $this->_addElement($removable);
 		foreach (array_keys($newCollection) as $key) {

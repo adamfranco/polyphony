@@ -56,9 +56,9 @@ class Basket
 	 * @access public
 	 * @return void
 	 **/
-	private function __construct() {
+	public function __construct() {
 		$idManager = Services::getService("Id");
-		$this->OrderedSet($idManager->getId("__basket"));	
+		parent::__construct($idManager->getId("__basket"));	
 	}
 	
 	/**

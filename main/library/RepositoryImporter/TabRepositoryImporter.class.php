@@ -34,10 +34,10 @@ class TabRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function TabRepositoryImporter ($filepath, $repositoryId, $dieOnError=false, $dataDir=NULL) {
+	function __construct ($filepath, $repositoryId, $dieOnError=false, $dataDir=NULL) {
 		$this->_assetIteratorClass = "TabAssetIterator";
 		$this->_dataDir = $dataDir;
-		parent::RepositoryImporter($filepath, $repositoryId, $dieOnError);
+		parent::__construct($filepath, $repositoryId, $dieOnError);
 	}
 	
 	/**

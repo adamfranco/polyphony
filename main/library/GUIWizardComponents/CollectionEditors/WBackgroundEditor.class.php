@@ -40,7 +40,7 @@ extends WMoreOptions
 	* of arrays.  Each array should have two elements--an index at 'index', and 
 	* a type at 'type.'  types might be MENU, BLOCK, HEADING and so forth.
 	*/ 
-	function WBackgroundEditor ($callBack, $collectionName, $thingsToApplyCollectionTo) {		
+	function __construct ($callBack, $collectionName, $thingsToApplyCollectionTo) {		
 
 		$this->init();
 		

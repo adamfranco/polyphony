@@ -23,7 +23,7 @@ class PrimitiveIO_Authoritative_datetime
 	/* implements PrimitiveIO */
 {
 
-	function PrimitiveIO_Authoritative_datetime() {
+	function __construct() {
 // 		$this->setErrorText(dgettext("polyphony", "Enter a date/time string. (example: YYYY-MM-DD HH:MM:SS)"));
 // 		$this->setErrorRule(new WECNonZeroRegex("[\\w]+"));
 	}

@@ -30,8 +30,8 @@ class XMLThumbMIMEPartImporter extends XMLImporter {
 	 * @access public
 	 * @since 10/10/05
 	 */
-	function XMLThumbMIMEPartImporter ($existingArray) {
-		parent::XMLImporter($existingArray);
+	function __construct ($existingArray) {
+		parent::__construct($existingArray);
 	}
 
 	/**

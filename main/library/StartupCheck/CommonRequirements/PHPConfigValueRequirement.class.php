@@ -51,7 +51,7 @@ class PHPConfigValueRequirement extends StartupRequirement {
 	* @param mixed $value The value that is required.
 	* @param optional int $opt An optional flag specifying how we should check the requirement. Options are: PHPINI_EQUAL (check for $key=$value, except for booleans), PHPINI_GREATER (check for $key>$value), PHPINI_LESS (check for $key<$value), PHPINI_BOOLEAN (will make sure the $key is true or false, depending on $value, which can be: "on", "off", true, false, 0, 1, "yes", "no", case insensitive)
 	*/
-	function PHPConfigValueRequirement($key, $value, $opt=PHPINI_EQUAL) {
+	function __construct($key, $value, $opt=PHPINI_EQUAL) {
 		// for boolean values, we have to treat the $value specially
 		if ($opt == PHPINI_BOOLEAN) {
 			do {

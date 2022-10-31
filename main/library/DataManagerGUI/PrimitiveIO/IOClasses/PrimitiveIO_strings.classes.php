@@ -50,7 +50,7 @@ class PrimitiveIO_shortstring extends WTextField {
 	 * @return mixed
 	 */
 	function getAllValues () {
-		$obj = new String($this->_value?$this->_value:"");
+		$obj = new HarmoniString($this->_value?$this->_value:"");
 		return $obj;
 	}
 	
@@ -62,7 +62,7 @@ class PrimitiveIO_shortstring extends WTextField {
  */
 class PrimitiveIO_string extends WTextArea {
 	
-	function PrimitiveIO_string () {
+	function __construct () {
 		$this->setRows(5);
 		$this->setColumns(70);
 	}
@@ -97,7 +97,7 @@ class PrimitiveIO_string extends WTextArea {
 	 * @return mixed
 	 */
 	function getAllValues () {
-		$obj = new String($this->_value?$this->_value:"");
+		$obj = new HarmoniString($this->_value?$this->_value:"");
 		return $obj;
 	}
 }

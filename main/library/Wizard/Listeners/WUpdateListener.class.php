@@ -38,7 +38,7 @@ class WUpdateListener
 	 * @access public
 	 * @since 8/04/06
 	 */
-	function WUpdateListener ($callBack) {
+	function __construct ($callBack) {
 		$this->_callBackFunction = $callBack;
 	}	
 		

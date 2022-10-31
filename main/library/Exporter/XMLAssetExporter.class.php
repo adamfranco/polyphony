@@ -33,8 +33,8 @@ class XMLAssetExporter extends XMLExporter {
 	 * @access public
 	 * @since 10/17/05
 	 */
-	function XMLAssetExporter () {
-		parent::XMLExporter();
+	function __construct () {
+		parent::__construct();
 	}
 
 	/**

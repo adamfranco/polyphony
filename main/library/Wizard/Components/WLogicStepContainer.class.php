@@ -41,8 +41,8 @@ class WLogicStepContainer extends WizardStepContainer {
 	 * @access public
 	 * @since 5/31/06
 	 */
-	function WLogicStepContainer () {
-		parent::WizardStepContainer();
+	function __construct () {
+		parent::__construct();
 		$this->_currStep = null;
 		$this->_stepStack = array();
 		$this->_backNamesStack = array();
@@ -202,7 +202,7 @@ class WLogicStepContainer extends WizardStepContainer {
 	
 	function previousStep () {
 		// do nothing, can't go back in logic wizard
-		throwError(new Error("A (logic) Wizard nevers goes back on his word! (or his steps)","WLogicStepContainer",true));
+		throwError(new HarmoniError("A (logic) Wizard nevers goes back on his word! (or his steps)","WLogicStepContainer",true));
 	}
 	
 	/**
@@ -217,7 +217,7 @@ class WLogicStepContainer extends WizardStepContainer {
 	
 	function hasPrevious () {
 		// do nothing, can't go back in logic wizard
-		throwError(new Error("A (logic) Wizard nevers goes back on his word! (or his steps)","WLogicStepContainer",true));
+		throwError(new HarmoniError("A (logic) Wizard nevers goes back on his word! (or his steps)","WLogicStepContainer",true));
 	}
 	
 	/**

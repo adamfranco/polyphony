@@ -33,9 +33,9 @@ class FilesOnlyRepositoryImporter
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function FilesOnlyRepositoryImporter ($filepath, $repositoryId, $dieOnError=false) {
+	function __construct ($filepath, $repositoryId, $dieOnError=false) {
 		$this->_assetIteratorClass = "ExifAssetIterator";
-		parent::RepositoryImporter($filepath, $repositoryId, $dieOnError);
+		parent::__construct($filepath, $repositoryId, $dieOnError);
 	}
 
 	/**

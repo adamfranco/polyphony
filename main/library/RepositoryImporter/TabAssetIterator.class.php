@@ -44,7 +44,7 @@ extends HarmoniIterator
 	 * @access public
 	 * @since 7/20/05
 	 */
-	function TabAssetIterator ($srcDir, $parentRepositoryImporter) {		
+	function __construct ($srcDir, $parentRepositoryImporter) {		
 		if (Services::serviceRunning("Logging")) {
 			$loggingManager = Services::getService("Logging");
 			$log =$loggingManager->getLogForWriting("Harmoni");

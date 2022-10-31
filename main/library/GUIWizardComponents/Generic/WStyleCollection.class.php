@@ -35,7 +35,7 @@ class WStyleCollection
 	
 	
 	
-	function WStyleCollection ($callBack, $collection) {
+	function __construct ($callBack, $collection) {
 		$this->_getThemeCallBack = $callBack;
 		
 		
@@ -183,7 +183,7 @@ class WStyleCollection
 			if(is_null($children[$key])){
 				printpre(array_keys($children));
 				print $key;
-				throwError(new Error("prob",""));	
+				throwError(new HarmoniError("prob",""));	
 			}
 			
 			if (!$children[$key]->update($fieldName."_".$key)) {

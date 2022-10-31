@@ -40,7 +40,7 @@ class RepositoryInputOutputModuleManager
 	 * @access public
 	 * @since 10/19/04
 	 */
-	function RepositoryInputOutputModuleManager () {
+	function __construct () {
 		$this->_modules = array();
 		
 		$type = new Type("RecordStructures", 
@@ -133,7 +133,7 @@ class RepositoryInputOutputModuleManager
 		$format = $recordStructure->getFormat();
 		
 		if (!is_object($this->_modules[$format]))
-			throwError(new Error("Unsupported Format, '$format'", "RepositoryInputOutputModuleManager", true));
+			throwError(new HarmoniError("Unsupported Format, '$format'", "RepositoryInputOutputModuleManager", true));
 		
 		return $this->_modules[$format]->createWizardStepsForPartStructures($record, $wizard, $partStructures);
 	}
@@ -154,7 +154,7 @@ class RepositoryInputOutputModuleManager
 		$format = $recordStructure->getFormat();
 		
 		if (!is_object($this->_modules[$format]))
-			throwError(new Error("Unsupported Format, '$format'", "RepositoryInputOutputModuleManager", true));
+			throwError(new HarmoniError("Unsupported Format, '$format'", "RepositoryInputOutputModuleManager", true));
 		
 		return $this->_modules[$format]->createWizardSteps($record, $wizard);
 	}
@@ -174,7 +174,7 @@ class RepositoryInputOutputModuleManager
 		$format = $recordStructure->getFormat();
 		
 		if (!is_object($this->_modules[$format]))
-			throwError(new Error("Unsupported Format, '$format'", "RepositoryInputOutputModuleManager", true));
+			throwError(new HarmoniError("Unsupported Format, '$format'", "RepositoryInputOutputModuleManager", true));
 		
 		return $this->_modules[$format]->updateFromWizard($record, $wizard);
 	}
@@ -192,7 +192,7 @@ class RepositoryInputOutputModuleManager
 		$format = $recordStructure->getFormat();
 		
 		if (!is_object($this->_modules[$format]))
-			throwError(new Error("Unsupported Format, '$format'", "RepositoryInputOutputModuleManager", true));
+			throwError(new HarmoniError("Unsupported Format, '$format'", "RepositoryInputOutputModuleManager", true));
 		
 		return $this->_modules[$format]->generateDisplay($repositoryId, $assetId, $record);
 	}
@@ -221,7 +221,7 @@ class RepositoryInputOutputModuleManager
 		}
 		
 		if (!is_object($this->_modules[$type->asString()]))
-			throwError(new Error("Unsupported Format, '".$type->asString()."'", "RepositoryInputOutputModuleManager", true));
+			throwError(new HarmoniError("Unsupported Format, '".$type->asString()."'", "RepositoryInputOutputModuleManager", true));
 		
 		return $this->_modules[$type->asString()]->generateDisplayForPartStructures($repositoryId, $assetId, $record, $partStructures);
 	}

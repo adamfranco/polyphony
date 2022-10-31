@@ -31,7 +31,7 @@ class WizardStepContainer extends WizardComponent {
 	 * @access public
 	 * @return void
 	 */
-	function WizardStepContainer () {
+	function __construct () {
 		$this->_currStep = 0;
 		$this->_steps = array();
 		$this->_stepNames = array();
@@ -99,7 +99,7 @@ class WizardStepContainer extends WizardComponent {
 				$wizard->triggerLater("edu.middlebury.polyphony.wizard.step_changed", $this, $context);
 			}
 		}else{
-			throwError(new Error("No such step '".$name."'","WizardStepContainer",true));
+			throwError(new HarmoniError("No such step '".$name."'","WizardStepContainer",true));
 		}
 		
 	}

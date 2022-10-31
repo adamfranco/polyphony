@@ -54,11 +54,11 @@ class ConfigSystem {
 	* The constructor.
 	* @param string $program The name of the program to setup configuration for, such as "Segue" or "Concerto".
 	**/
-	function ConfigSystem($program) {
+	function __construct($program) {
 		// here we need to get/create a Schema for this setup
 		if (!Services::serviceAvailable("SchemaManager")) {
 			throwError(
-			new Error(
+			new HarmoniError(
 			"ConfigSystem - could not continue because the SchemaManager service is not available!","ConfigSystem",true)
 			);
 			return;
@@ -139,7 +139,7 @@ class ConfigSystem {
 	{
 		if ($this->_setup && !$force) {
 			throwError(
-			new Error("ConfigSystem::getRecord() - setup must first be completed by calling finishSetup() before the Record will be available.","ConfigSystem",true));
+			new HarmoniError("ConfigSystem::getRecord() - setup must first be completed by calling finishSetup() before the Record will be available.","ConfigSystem",true));
 		}
 
 		if ($this->_record) return $this->_record;

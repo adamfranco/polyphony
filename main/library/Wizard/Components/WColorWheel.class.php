@@ -38,7 +38,7 @@ class WColorWheel
 	 * @access public
 	 * @return WSelectList
 	 */
-	function WColorWheel () {
+	function __construct () {
 		// do nothing
 	}
 	
