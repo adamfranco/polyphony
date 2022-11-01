@@ -56,7 +56,11 @@ class HierarchyPrinter {
 		
 		// Break the path info into parts for the enviroment and parts that
 		// designate which nodes to expand.
-		$expandedNodes = explode("!", $harmoni->request->get('expanded_nodes'));
+		if (empty($harmoni->request->get('expanded_nodes'))) {
+			$expandedNodes = [];
+		} else {
+			$expandedNodes = explode("!", $harmoni->request->get('expanded_nodes'));
+		}
 		
 		print "\n\n<table>\n\t<tr><td valign='top'>";
 		// Print The node

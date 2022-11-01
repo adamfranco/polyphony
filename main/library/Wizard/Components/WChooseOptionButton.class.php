@@ -82,7 +82,10 @@ class WChooseOptionButton
 	function update ($fieldName) {
 		parent::update($fieldName);
 		$val = RequestContext::value($fieldName);
-		$option = stripslashes(RequestContext::value($fieldName."_option"));
+		$option = RequestContext::value($fieldName."_option");
+		if (!empty($option)) {
+			$option = stripslashes($option);
+		}
 		if ($val) {
 			$this->_option = $option;
 		}
@@ -103,7 +106,11 @@ class WChooseOptionButton
 		$values = array();
 		$values['pressed'] = $val;
 		$values['option_name'] = $option;
+		if (empty($this->_options[$option])) {
+			$values['option'] = '';
+		} else {
 		$values['option'] =$this->_options[$option];
+		}
 		return $values;
 	}
 	

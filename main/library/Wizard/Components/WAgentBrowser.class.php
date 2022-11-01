@@ -132,7 +132,9 @@ class WAgentBrowser
 			$this->_resultPrinter->setOptions($this->_options);
 		}
 		
+		if (!empty($this->_resultPrinter)) {
 		$this->_resultPrinter->_selected = $this->_agentsSelected;
+	}
 	}
 
 	/**

@@ -135,7 +135,11 @@ class edit_authorizationsAction
 		
 		// Break the path info into parts for the enviroment and parts that
 		// designate which nodes to expand.
+		if (empty($harmoni->request->get('expanded_nodes'))) {
+			$this->expandedNodes = [];
+		} else {
 		$this->expandedNodes = explode("!", $harmoni->request->get('expanded_nodes'));
+		}
 		
 		 
 		// Buttons to go back to edit auths for a different user, or to go home
@@ -928,5 +932,3 @@ class edit_authorizationsAction
 
 
 }
-
-

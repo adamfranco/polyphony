@@ -137,7 +137,7 @@ class WTextArea
 			$m .= "\n\t\t\t\tonblur='if (this.value == \"\") { this.value=\"$v\";  this.style.color=\"#888\";}'";
 			$m .= " style='color: #888'>".$v;			
 		} else {
-			$m .= ">".htmlspecialchars($this->_value);;
+			$m .= ">".htmlspecialchars($this->_value? $this->_value : '');
 		}
 		
 		$m .= "</textarea>";

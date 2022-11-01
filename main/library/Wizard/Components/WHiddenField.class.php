@@ -101,7 +101,11 @@ class WHiddenField
 	function getMarkup ($fieldName) {
 		$name = RequestContext::name($fieldName);
 		
+		if (empty($this->_value)) {
+			$val = '';
+		} else {
 		$val = htmlspecialchars($this->_value, ENT_QUOTES);
+		}
 		$m = "<input type='hidden' name='$name' id='$name' value='$val' />";
 		
 		return $m;
