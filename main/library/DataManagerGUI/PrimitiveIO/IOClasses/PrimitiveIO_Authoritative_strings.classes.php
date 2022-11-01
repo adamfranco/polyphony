@@ -34,7 +34,7 @@ class PrimitiveIO_Authoritative_string
 			$null = null;
 			return $null;
 		}
-		$obj = new String($this->_value?$this->_value:"");
+		$obj = new HarmoniString($this->_value?$this->_value:"");
 		return $obj;
 	}
 	
