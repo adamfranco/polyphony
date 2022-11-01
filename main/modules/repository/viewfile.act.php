@@ -310,7 +310,7 @@ class RepositoryImageCache {
 	 * @access public
 	 * @since 2/13/06
 	 */
-	function RepositoryImageCache ( $id, $size, $websafe, $parts ) {
+	function __construct ( $id, $size, $websafe, $parts ) {
 		$this->_id =$id;
 		$this->_size = intval($size);
 		$this->_websafe = $websafe;
