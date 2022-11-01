@@ -63,6 +63,9 @@ class WECRegex
 	 */
 	function checkValue ($component) {
 		$value = $component->getAllValues();
+		if (is_null($value)) {
+			$value = '';
+		}
 		if (preg_match("/".$this->_regex."/", $value)) return true;
 		return false;
 	}
