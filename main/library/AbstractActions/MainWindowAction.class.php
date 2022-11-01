@@ -103,11 +103,15 @@ abstract class MainWindowAction
 		ob_start();
 		
 		// Remove any existing title tags from the head text
-		print preg_replace("/<title>[^<]*<\/title>/", "", $outputHandler->getHead());
-		
+		if (!empty($outputHandler->getHead())) {
+			print preg_replace("/<title>[^<]*<\/title>/", "", $outputHandler->getHead());
+		}
+
 		//Add our new title
 		print "\n\t\t<title>";
-		print strip_tags(preg_replace("/<(\/)?(em|i|b|strong)>/", "*", $pageTitle));
+		if (!empty($pageTitle)) {
+			print strip_tags(preg_replace("/<(\/)?(em|i|b|strong)>/", "*", $pageTitle));
+		}
 		print "</title>";
 		
 		// Add our common Harmoni javascript libraries
