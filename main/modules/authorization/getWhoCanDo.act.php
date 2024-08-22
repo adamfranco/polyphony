@@ -65,7 +65,11 @@ class getWhoCanDoAction
 			
 			if ($agent =$agentMan->getAgentOrGroup($agentId)) {
 				print "\n\t<agent id=\"".$agentId->getIdString()."\"";
-				print " displayName=\"".$agent->getDisplayName()."\"";
+				try {
+					print " displayName=\"".$agent->getDisplayName()."\"";
+				} catch (Exception $e) {
+					print " displayName=\"".$agentId->getIdString()."\"";
+				}
 				print " agentOrGroup=\"".((method_exists($agent, 'getMembers'))?"group":"agent")."\"";
 				print ">";
 				

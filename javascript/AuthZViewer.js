@@ -138,7 +138,7 @@ function AuthZViewer ( qualifierId, positionElement ) {
 			
 			for (var i = 0; i < agents.length; i++) {
 				html = "<tr>";
-				html += "<td style='font-weight: bold; border-top: 1px dotted;'>"
+				html += "<td style='font-weight: bold; border-top: 1px dotted; max-width: 10em; overflow: hidden;'>"
 				html += "<a href='#' onclick='AgentInfoPanel.run(\"" + agents[i].getAttribute('id') + "\", \"" + agents[i].getAttribute('displayName') + "\", this); return false;'>"
 				html += agents[i].getAttribute('displayName')
 				html += "</a>"
@@ -203,4 +203,3 @@ function AuthZViewer ( qualifierId, positionElement ) {
 		
 		this.contentElement.innerHTML = html;
 	}
-	
