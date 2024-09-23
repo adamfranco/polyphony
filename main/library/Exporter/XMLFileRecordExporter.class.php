@@ -54,24 +54,31 @@ class XMLFileRecordExporter {
 		$this->_object =$record;
 		$this->_myId =$this->_object->getId();
 
-		$this->getFileParts();
+		try {
+			$this->getFileParts();
 
-		fwrite($this->_xml,
-"\t\t<filerecord ".
-"id=\"".$this->_myId->getIdString()."\">\n".
-"\t\t\t<filedatapart>".$this->_info['f_name']."</filedatapart>\n".
-"\t\t\t<filedimensionspart>\n".
-"\t\t\t\t<width>".(is_array($this->_info['f_dime'])?$this->_info['f_dime'][0]:'')."</width>\n".
-"\t\t\t\t<height>".(is_array($this->_info['f_dime'])?$this->_info['f_dime'][1]:'')."</height>\n".
-"\t\t\t</filedimensionspart>\n".
-"\t\t\t<mimepart>".$this->_info['f_mime']."</mimepart>\n".
-"\t\t\t<thumbdatapart>".$this->_info['t_name']."</thumbdatapart>\n".
-"\t\t\t<thumbdimensionspart>\n".
-"\t\t\t\t<width>".(is_array($this->_info['t_dime'])?$this->_info['t_dime'][0]:'')."</width>\n".
-"\t\t\t\t<height>".(is_array($this->_info['t_dime'])?$this->_info['t_dime'][1]:'')."</height>\n".
-"\t\t\t</thumbdimensionspart>\n".
-"\t\t\t<thumbmimepart>".$this->_info['t_mime']."</thumbmimepart>\n".
-"\t\t</filerecord>\n");
+			fwrite($this->_xml,
+				"\t\t<filerecord ".
+				"id=\"".$this->_myId->getIdString()."\">\n".
+				"\t\t\t<filedatapart>".$this->_info['f_name']."</filedatapart>\n".
+				"\t\t\t<filedimensionspart>\n".
+				"\t\t\t\t<width>".(is_array($this->_info['f_dime'])?$this->_info['f_dime'][0]:'')."</width>\n".
+				"\t\t\t\t<height>".(is_array($this->_info['f_dime'])?$this->_info['f_dime'][1]:'')."</height>\n".
+				"\t\t\t</filedimensionspart>\n".
+				"\t\t\t<mimepart>".$this->_info['f_mime']."</mimepart>\n".
+				"\t\t\t<thumbdatapart>".$this->_info['t_name']."</thumbdatapart>\n".
+				"\t\t\t<thumbdimensionspart>\n".
+				"\t\t\t\t<width>".(is_array($this->_info['t_dime'])?$this->_info['t_dime'][0]:'')."</width>\n".
+				"\t\t\t\t<height>".(is_array($this->_info['t_dime'])?$this->_info['t_dime'][1]:'')."</height>\n".
+				"\t\t\t</thumbdimensionspart>\n".
+				"\t\t\t<thumbmimepart>".$this->_info['t_mime']."</thumbmimepart>\n".
+				"\t\t</filerecord>\n"
+			);
+		} catch (Exception $e) {
+			if ($e->getCode() == 404) {
+				// Ignore records with empty filenames/data.
+			}
+		}
 	}
 
 	/**
@@ -99,6 +106,11 @@ class XMLFileRecordExporter {
 		if ($parts->count() == 1) {
 			$part =$parts->next();
 			$path = $this->_fileDir."/".$part->getValue();
+			if (empty($part->getValue())) {
+				// We have a empty file name for an invalid record.
+				// This is a data error we should skip.
+				throw new Exception("Expected a FILE_NAME, but got empty data.", 404);
+			}
 // CHECK FOR FILE NAME UNIQUENESS HERE
 			$this->_dataFile = fopen($path, "wb");
 			
